@@ -29,6 +29,7 @@ import {
 
 export default function VizionGrowthSuite() {
   const [activeTab, setActiveTab] = useState<string>("diagnostics");
+  const [isLaunchpadOpen, setIsLaunchpadOpen] = useState<boolean>(false);
 
   // State for Tool 1: Business Diagnostics Wizard
   const [t1MonthlyOrders, setT1MonthlyOrders] = useState<number>(100);
@@ -311,35 +312,111 @@ export default function VizionGrowthSuite() {
       {/* Main Grid: Tabs Sidebar + Active Tab Content */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* MOBILE SELECTOR / DROPDOWN (Visible only on mobile/tablet) */}
-        <div className="lg:hidden w-full bg-gradient-to-b from-[#0F1735]/80 to-[#040B24]/95 border border-[#D4A017]/30 rounded-2xl p-4 shadow-xl mb-2 text-right">
-          <label className="text-[11px] font-black text-[#F0C040] block mb-2 uppercase tracking-wider">
-            ⚙️ اختر الأداة التفاعلية لتشغيلها:
-          </label>
-          <div className="relative">
-            <select
-              value={activeTab}
-              onChange={(e) => {
-                setActiveTab(e.target.value);
-                // Reset show status for smoother navigation
-                setT1ShowReport(false);
-                setT2ShowAnalysis(false);
-                setT3ShowAnalysis(false);
-                setT4ShowReport(false);
-                setT8ShowScore(false);
-              }}
-              className="w-full bg-black/50 border border-white/10 hover:border-[#D4A017]/60 rounded-xl px-4 py-3 text-white text-xs text-right focus:border-[#D4A017] outline-none appearance-none cursor-pointer font-bold"
+        {/* MOBILE SELECTOR & LAUNCHPAD (Visible only on mobile/tablet) */}
+        <div className="lg:hidden w-full space-y-3 mb-4 text-right">
+          
+          {/* Active Tool Label & Launchpad Toggle Button */}
+          <div className="flex items-center justify-between bg-gradient-to-r from-[#0F1735]/60 to-[#040B24]/90 border border-white/10 p-3 rounded-2xl shadow-lg">
+            <div className="text-right">
+              <span className="text-[10px] text-white/40 block leading-none mb-1 font-medium">الأداة النشطة حالياً:</span>
+              <span className="text-sm font-black text-[#F0C040] flex items-center gap-1.5 justify-end">
+                <span>{toolTabs.find(t => t.id === activeTab)?.label}</span>
+              </span>
+            </div>
+            
+            <button
+              onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
+              className="px-3.5 py-2 bg-[#D4A017]/10 hover:bg-[#D4A017]/20 border border-[#D4A017]/30 hover:border-[#D4A017]/50 rounded-xl text-[#F0C040] text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-[#D4A017]/2"
             >
-              {toolTabs.map((tab) => (
-                <option key={tab.id} value={tab.id} className="bg-[#040B24] text-white text-right font-bold">
-                  {tab.label} — {tab.desc}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-white/50">
-              <ChevronDown className="w-4 h-4 text-[#F0C040]" />
+              <span>{isLaunchpadOpen ? "إغلاق اللوحة ✕" : "عرض كل الأدوات (١٣) 🔍"}</span>
+            </button>
+          </div>
+
+          {/* 1. Horizontal Swipeable Ribbon */}
+          <div className="relative bg-white/[0.02] border border-white/5 rounded-2xl p-2">
+            <div className="flex overflow-x-auto gap-2 pb-1.5 pt-1 px-1 no-scrollbar scroll-smooth" style={{ direction: 'rtl' }}>
+              {toolTabs.map((tab) => {
+                const isActive = tab.id === activeTab;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setIsLaunchpadOpen(false); // Close launchpad when a tool is selected
+                      // Reset show status for smoother navigation
+                      setT1ShowReport(false);
+                      setT2ShowAnalysis(false);
+                      setT3ShowAnalysis(false);
+                      setT4ShowReport(false);
+                      setT8ShowScore(false);
+                    }}
+                    className={`whitespace-nowrap px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 border cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                      isActive
+                        ? "bg-gradient-to-l from-[#D4A017] to-amber-500 text-[#040B24] border-[#D4A017] shadow-md shadow-[#D4A017]/10 scale-102"
+                        : "bg-white/[0.03] border-white/5 text-white/80 hover:bg-white/10 hover:border-white/15"
+                    }`}
+                  >
+                    <span>{tab.label.split(" ")[0]}</span> {/* Emoji */}
+                    <span>{tab.label.substring(tab.label.indexOf(" ") + 1)}</span> {/* Text */}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="text-[10px] text-white/30 text-center mt-1.5 font-light flex items-center justify-center gap-1">
+              <span>← اسحب لليمين واليسار للتنقل السريع بين الأدوات الـ ١٣ →</span>
             </div>
           </div>
+
+          {/* 2. Expandable Launchpad Grid */}
+          {isLaunchpadOpen && (
+            <div className="bg-gradient-to-b from-[#0F1735]/95 to-[#040B24]/98 border border-[#D4A017]/40 rounded-2xl p-4 shadow-2xl relative overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300 z-10">
+              <div className="absolute top-0 left-0 w-24 h-24 bg-[#D4A017]/5 rounded-full blur-xl pointer-events-none" />
+              
+              <div className="text-right mb-4 border-b border-white/10 pb-3 flex justify-between items-center">
+                <span className="text-[10px] text-white/40">اضغط على أي أداة لتفعيلها فوراً:</span>
+                <h4 className="text-xs font-black text-[#F0C040] uppercase tracking-wider flex items-center gap-1.5 justify-end">
+                  <span>لوحة اختيار الأدوات المباشرة</span>
+                  <span>⚙️</span>
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 max-h-[380px] overflow-y-auto pr-1 no-scrollbar">
+                {toolTabs.map((tab) => {
+                  const isActive = tab.id === activeTab;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        setActiveTab(tab.id);
+                        setIsLaunchpadOpen(false); // Close after selection
+                        // Reset show status for smoother navigation
+                        setT1ShowReport(false);
+                        setT2ShowAnalysis(false);
+                        setT3ShowAnalysis(false);
+                        setT4ShowReport(false);
+                        setT8ShowScore(false);
+                      }}
+                      className={`p-3 rounded-xl border text-right transition-all duration-200 cursor-pointer flex flex-col justify-between h-[95px] ${
+                        isActive
+                          ? "bg-gradient-to-bl from-[#D4A017]/20 to-[#040B24] border-[#D4A017] text-[#F0C040] shadow-md shadow-[#D4A017]/5"
+                          : "bg-white/[0.02] border-white/5 text-white/80 hover:bg-white/[0.05] hover:border-white/10"
+                      }`}
+                    >
+                      <span className="text-lg block mb-1">{tab.label.split(" ")[0]}</span>
+                      <div className="space-y-0.5">
+                        <span className="text-[11px] font-black block truncate leading-tight">
+                          {tab.label.substring(tab.label.indexOf(" ") + 1)}
+                        </span>
+                        <span className="text-[9px] text-white/45 block line-clamp-1 font-light leading-none">
+                          {tab.desc}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* SIDE BAR / SELECTOR RAIL (4 Columns, hidden on mobile/tablet) */}
