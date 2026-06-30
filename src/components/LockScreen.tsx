@@ -358,39 +358,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             </button>
           </form>
         </div>
-
-        {/* Demo Access Helper - Extremely elegant and useful */}
-        <div className="mt-8 p-4 glass-panel rounded-xl border border-white/5 text-center shadow-lg">
-          <p className="text-xs text-[#F0F4FF]/70 mb-3">
-            🔑 هل أنت مقيّم أو زائر جديد؟ استخدم أحد رموز الدخول الذهبية المتاحة:
-          </p>
-          <div className="flex flex-wrap justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickLogin("iraq#gold")}
-              className="px-3 py-1 text-xs font-mono bg-white/5 hover:bg-[#D4A017]/10 hover:text-[#F0C040] hover:border-[#D4A017]/30 border border-white/10 rounded-lg text-white/90 transition-all duration-200"
-            >
-              iraq#gold
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin("premium2026")}
-              className="px-3 py-1 text-xs font-mono bg-white/5 hover:bg-[#D4A017]/10 hover:text-[#F0C040] hover:border-[#D4A017]/30 border border-white/10 rounded-lg text-white/90 transition-all duration-200"
-            >
-              premium2026
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin("admin#1")}
-              className="px-3 py-1 text-xs font-mono bg-white/5 hover:bg-[#D4A017]/10 hover:text-[#F0C040] hover:border-[#D4A017]/30 border border-white/10 rounded-lg text-white/90 transition-all duration-200"
-            >
-              admin#1
-            </button>
-          </div>
-          <span className="block mt-2.5 text-[10px] text-[#F0F4FF]/45">
-            * اضغط على الرمز لملئه تلقائياً ثم اضغط زر الدخول
-          </span>
-        </div>
       </div>
 
       {/* Footer copyright */}
