@@ -116,7 +116,7 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, userCode 
               title="نظام تشغيل وأدوات فيزيون التفاعلية"
             >
               <span>⚡</span>
-              <span>أدوات Vizion OS</span>
+              <span>أدوات Vizion</span>
             </button>
 
             {/* Logout */}
