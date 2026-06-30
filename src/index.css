@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Tajawal", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  
+  /* Scale up default sizes for pristine Arabic readability */
+  --font-size-xs: 0.875rem;      /* ~14px (Default was 12px) */
+  --font-size-sm: 1rem;          /* ~16px (Default was 14px) */
+  --font-size-base: 1.125rem;    /* ~18px (Default was 16px) */
+  --font-size-lg: 1.25rem;       /* ~20px (Default was 18px) */
+  --font-size-xl: 1.45rem;       /* ~23.2px (Default was 20px) */
+  --font-size-2xl: 1.75rem;      /* ~28px (Default was 24px) */
+  --font-size-3xl: 2.15rem;      /* ~34.4px (Default was 30px) */
+  --font-size-4xl: 2.75rem;      /* ~44px (Default was 36px) */
+  --font-size-5xl: 3.5rem;       /* ~56px (Default was 48px) */
+
+  /* Custom Color System */
+  --color-bg-primary: #040B24;
+  --color-navy-dark: #0D1B56;
+  --color-navy-secondary: #1A2B73;
+  --color-gold-main: #D4A017;
+  --color-gold-bright: #F0C040;
+  --color-text-main: #F0F4FF;
+  --color-text-secondary: rgba(240, 244, 255, 0.75);
+  --color-text-muted: rgba(240, 244, 255, 0.45);
+  --color-glass-card: rgba(255, 255, 255, 0.04);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+}
+
+:root {
+  --color-bg: #040B24;
+  --color-navy-dark: #0D1B56;
+  --color-navy-secondary: #1A2B73;
+  --color-gold: #D4A017;
+  --color-gold-bright: #F0C040;
+  --color-text-main: #F0F4FF;
+  --color-text-secondary: rgba(240, 244, 255, 0.75);
+  --color-text-muted: rgba(240, 244, 255, 0.45);
+  --color-glass-card: rgba(255, 255, 255, 0.04);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  font-family: "Tajawal", "IBM Plex Sans Arabic", sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  direction: rtl;
+  text-align: right;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  line-height: 1.625;
+}
+
+/* Guard rails to ensure Arabic script does not get cramped/distorted by letter-spacing utility classes */
+body, button, input, select, textarea, p, span, h1, h2, h3, h4, h5, h6 {
+  letter-spacing: normal !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy-secondary);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+/* Gold Gradient and Shimmer */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #F0C040 0%, #D4A017 50%, #F0C040 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 4s linear infinite;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #D4A017 0%, #F0C040 50%, #D4A017 100%);
+  background-size: 200% auto;
+  animation: goldShimmer 4s linear infinite;
+}
+
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 160, 23, 0.25);
+}
+
+.gold-glow-hover:hover {
+  box-shadow: 0 0 30px rgba(240, 192, 64, 0.45);
+}
+
+/* Shimmer Animation */
+@keyframes goldShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating animation */
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite alternate;
+}
+
+.animate-float-medium {
+  animation: floatMedium 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0) scale(1); opacity: 0.3; }
+  50% { transform: translateY(-15px) scale(1.05); opacity: 0.5; }
+  100% { transform: translateY(10px) scale(0.95); opacity: 0.3; }
+}
+
+@keyframes floatMedium {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.4; }
+  50% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.6; }
+  100% { transform: translateY(15px) translateX(-10px) scale(0.9); opacity: 0.4; }
+}
+
+/* Custom styles for glass cards */
+.glass-panel {
+  background: var(--color-glass-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.glass-panel-gold {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(240, 192, 64, 0.2);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

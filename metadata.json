@@ -1,0 +1,6 @@
+{
+  "name": "فيزيون • Vizion",
+  "description": "نظام تشغيل متكامل مخصص للمشاريع الإلكترونية العراقية لمعالجة ضعف المبيعات وهدر ميزانيات الإعلانات، تقليل مرتجعات التوصيل، وإغلاق صفقات المبيعات بالأرقام والتحليل بدلاً من التخمين.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
