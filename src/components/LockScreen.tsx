@@ -29,7 +29,8 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     "mustafa#1",
     "brhoom#1",
     "hayfaa#1",
-    "mohammed#1"
+    "mohammed#1",
+    "jomana#1"
   ];
 
   // Helper to normalize strings for robust comparison on both mobile and PC
