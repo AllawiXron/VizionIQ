@@ -6,40 +6,38 @@ import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
 
-async function startServer() {
-  const app = express();
-  const PORT = 3000;
+export const app = express();
+app.use(express.json({ limit: "2mb" }));
 
-  app.use(express.json({ limit: "2mb" }));
-
-  // Initialize Gemini AI Client
-  const getGeminiClient = () => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      throw new Error("GEMINI_API_KEY غير معرف في متغيرة البيئة السيرفرية. يرجى إضافة GEMINI_API_KEY في إعدادات البيئة على منصة الاستضافة (مثل Wasmer).");
-    }
-    return new GoogleGenAI({
-      apiKey: apiKey,
-      httpOptions: {
-        headers: {
-          "User-Agent": "aistudio-build",
-        },
+// Initialize Gemini AI Client
+const getGeminiClient = () => {
+  const rawKey = process.env.GEMINI_API_KEY;
+  const apiKey = rawKey ? rawKey.trim() : "";
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY غير معرف في متغيرة البيئة السيرفرية. يرجى إضافة GEMINI_API_KEY في إعدادات البيئة على منصة الاستضافة.");
+  }
+  return new GoogleGenAI({
+    apiKey: apiKey,
+    httpOptions: {
+      headers: {
+        "User-Agent": "aistudio-build",
       },
-    });
-  };
+    },
+  });
+};
 
-  // AI Advisor Chat Endpoint
-  app.post("/api/advisor/chat", async (req, res) => {
-    try {
-      const { messages, userContext } = req.body;
+// AI Advisor Chat Endpoint
+app.post("/api/advisor/chat", async (req, res) => {
+  try {
+    const { messages, userContext } = req.body;
 
-      if (!messages || !Array.isArray(messages) || messages.length === 0) {
-        return res.status(400).json({ error: "Messages array is required." });
-      }
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: "Messages array is required." });
+    }
 
-      const ai = getGeminiClient();
+    const ai = getGeminiClient();
 
-      const systemInstruction = `
+    const systemInstruction = `
 أنت "فيزيون بوت" (Vizion AI Advisor)، المستشار الرقمي الذكي المخصص لمنظومة "فيزيون • Vizion" للتجارة الإلكترونية في السوق العراقي.
 
 مهمتك ومجال خبرتك:
@@ -64,58 +62,73 @@ async function startServer() {
 - حافظ على إجابات منظمة باستخدام النقاط أو الخطوات (1. 2. 3.) والرموز التعبيرية المناسبة.
 `;
 
-      // Format messages into Gemini format
-      const formattedContents = messages.map((m: { role: string; text: string }) => ({
-        role: m.role === "user" ? "user" : "model",
-        parts: [{ text: m.text }],
-      }));
+    // Format messages into Gemini format
+    const formattedContents = messages.map((m: { role: string; text: string }) => ({
+      role: m.role === "user" ? "user" : "model",
+      parts: [{ text: m.text }],
+    }));
 
-      // Include optional context if present
-      if (userContext) {
-        formattedContents.unshift({
-          role: "user",
-          parts: [{ text: `سياق المستخدم الحالي: ${JSON.stringify(userContext)}` }],
-        });
-      }
-
-      let response;
-      try {
-        response = await ai.models.generateContent({
-          model: "gemini-3.6-flash",
-          contents: formattedContents,
-          config: {
-            systemInstruction,
-            temperature: 0.7,
-          },
-        });
-      } catch (firstErr) {
-        console.warn("Primary model gemini-3.6-flash failed, trying gemini-flash-latest:", firstErr);
-        response = await ai.models.generateContent({
-          model: "gemini-flash-latest",
-          contents: formattedContents,
-          config: {
-            systemInstruction,
-            temperature: 0.7,
-          },
-        });
-      }
-
-      return res.json({
-        reply: response.text || "عذراً، لم أتمكن من توليد الإجابة المناسبة حالياً. يرجى إعادة المحاولة.",
-      });
-    } catch (error: any) {
-      console.error("Gemini Advisor API Error:", error);
-      return res.status(500).json({
-        error: "حدث خطأ في التواصل مع المستشار الذكي.",
-        details: error.message || "Unknown error",
+    // Include optional context if present
+    if (userContext) {
+      formattedContents.unshift({
+        role: "user",
+        parts: [{ text: `سياق المستخدم الحالي: ${JSON.stringify(userContext)}` }],
       });
     }
-  });
 
-  // Health check
-  app.get("/api/health", (_req, res) => {
-    res.json({ status: "ok", service: "Vizion AI Advisor Server" });
-  });
+    let response;
+    try {
+      response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: formattedContents,
+        config: {
+          systemInstruction,
+          temperature: 0.7,
+        },
+      });
+    } catch (firstErr) {
+      console.warn("Primary model gemini-2.5-flash failed, trying gemini-2.0-flash:", firstErr);
+      try {
+        response = await ai.models.generateContent({
+          model: "gemini-2.0-flash",
+          contents: formattedContents,
+          config: {
+            systemInstruction,
+            temperature: 0.7,
+          },
+        });
+      } catch (secondErr) {
+        console.warn("Fallback gemini-2.0-flash failed, trying gemini-1.5-flash:", secondErr);
+        response = await ai.models.generateContent({
+          model: "gemini-1.5-flash",
+          contents: formattedContents,
+          config: {
+            systemInstruction,
+            temperature: 0.7,
+          },
+        });
+      }
+    }
+
+    return res.json({
+      reply: response.text || "عذراً، لم أتمكن من توليد الإجابة المناسبة حالياً. يرجى إعادة المحاولة.",
+    });
+  } catch (error: any) {
+    console.error("Gemini Advisor API Error:", error);
+    return res.status(500).json({
+      error: "حدث خطأ في التواصل مع المستشار الذكي.",
+      details: error.message || "Unknown error",
+    });
+  }
+});
+
+// Health check
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok", service: "Vizion AI Advisor Server" });
+});
+
+async function startServer() {
+  const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
   // Vite development middleware vs Static Production serving
   if (process.env.NODE_ENV !== "production") {
@@ -137,6 +150,10 @@ async function startServer() {
   });
 }
 
-startServer().catch((err) => {
-  console.error("Failed to start Vizion server:", err);
-});
+if (!process.env.VERCEL) {
+  startServer().catch((err) => {
+    console.error("Failed to start Vizion server:", err);
+  });
+}
+
+export default app;
