@@ -124,6 +124,18 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdv
               </button>
             )}
 
+            {/* Pricing Section Link - ONLY FOR FREE TRIAL USERS */}
+            {isFreeTrialUser(userCode) && (
+              <button
+                onClick={() => handleScrollTo("pricing-section")}
+                className="p-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-500/60 rounded-xl text-amber-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5 text-xs font-black"
+                title="باقات واسعار الاشتراك"
+              >
+                <span>👑</span>
+                <span>الاشتراكات</span>
+              </button>
+            )}
+
             {/* Secrets trigger button */}
             <button
               onClick={() => handleScrollTo("vizion-growth-suite")}
@@ -166,109 +178,172 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdv
             {isFreeTrialUser(userCode) ? (
               <button
                 onClick={onOpenUpgrade}
-                className="px-2 py-1 bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] rounded-lg text-[10px] font-black flex items-center gap-1"
+                className="px-2.5 py-1.5 bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] rounded-xl text-xs font-black flex items-center gap-1 active:scale-95 transition-all shadow-md shadow-[#D4A017]/20"
+                title="ترقية الحساب إلى النسخة الكاملة"
               >
-                <Crown className="w-3 h-3" />
+                <Crown className="w-3.5 h-3.5" />
                 <span>ترقية ⚡</span>
               </button>
             ) : (
-              <span className="px-2 py-0.5 text-[9px] bg-emerald-950/60 border border-emerald-500/20 text-emerald-400 rounded-md font-mono">
+              <span className="px-2.5 py-1 text-[10px] bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 rounded-lg font-mono font-bold">
                 {userCode}
               </span>
             )}
             
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/80 border border-white/10 cursor-pointer"
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/80 border border-white/10 active:scale-95 transition-all cursor-pointer"
+              aria-label="القائمة المنسدلة"
             >
-              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isOpen ? <X className="w-5 h-5 text-[#F0C040]" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
         </div>
       </nav>
 
-      {/* Fullscreen Mobile Dropdown Overlay Menu */}
+      {/* Fullscreen Mobile Dropdown Drawer Menu */}
       <div
-        className={`fixed inset-x-0 bottom-0 top-16 z-30 bg-[#040B24] border-t border-white/10 lg:hidden transition-all duration-300 flex flex-col justify-between p-6 ${
-          isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
+        className={`fixed inset-x-0 bottom-0 top-16 z-40 bg-[#040B24]/98 backdrop-blur-3xl border-t border-[#D4A017]/30 lg:hidden transition-all duration-300 flex flex-col justify-between p-4 sm:p-6 overflow-y-auto dir-rtl ${
+          isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
         }`}
       >
-        <div className="space-y-3 overflow-y-auto max-h-[60vh] no-scrollbar">
-          <span className="text-[10px] text-white/40 block font-bold tracking-wider mr-2 uppercase">أدوات العمليات والمساعد:</span>
+        <div className="space-y-4 max-w-lg mx-auto w-full">
           
-          {onOpenAdvisor && (
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                onOpenAdvisor();
-              }}
-              className="w-full p-4 mb-2 bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] rounded-xl text-right text-xs font-black transition-all flex items-center justify-between shadow-lg shadow-[#D4A017]/20 cursor-pointer"
-            >
-              <span className="flex items-center gap-2">
-                <Bot className="w-5 h-5" />
-                <span>فيزيون بوت (المستشار الرقمي)</span>
-              </span>
-              <span className="bg-[#040B24] text-[#F0C040] text-[9px] font-black px-2 py-0.5 rounded-full uppercase">ذكاء اصطناعي</span>
-            </button>
-          )}
+          {/* User Account & Subscription Status Header Card */}
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-white/[0.04] to-white/[0.01] border border-white/10 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-[#D4A017]/15 border border-[#D4A017]/30 flex items-center justify-center text-[#F0C040]">
+                {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4" />}
+              </div>
+              <div className="text-right">
+                <div className="text-xs font-black text-white">
+                  {isFreeTrialUser(userCode) ? "حساب تجريبي مجاني" : `عضوية VIP : ${userCode}`}
+                </div>
+                <div className="text-[10px] text-white/50 font-light">
+                  {isFreeTrialUser(userCode) ? "رمز الوصول: free#1" : "وصول كامل لكافة الأدوات"}
+                </div>
+              </div>
+            </div>
 
-          <button
-            onClick={() => handleScrollTo("vizion-growth-suite")}
-            className="w-full p-4 mb-2 bg-gradient-to-r from-[#D4A017]/15 to-amber-500/5 hover:from-[#D4A017]/25 hover:to-amber-500/10 border border-[#D4A017]/30 text-[#F0C040] hover:text-white rounded-xl text-right text-xs font-black transition-all flex items-center justify-between"
-          >
-            <span className="flex items-center gap-2">
-              <span>⚡</span>
-              <span>أدوات Vizion التفاعلية (١٣ أداة)</span>
-            </span>
-            <span className="bg-[#D4A017] text-[#040B24] text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase">مفتوح</span>
-          </button>
-
-          <span className="text-[10px] text-white/40 block font-bold tracking-wider mr-2 uppercase mt-4">فهرس فصول الدليل:</span>
-          
-          {/* Mobile Elite Secrets Button */}
-          <button
-            onClick={() => handleScrollTo("elite-secrets-section")}
-            className="w-full p-4 mb-2 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white/90 hover:text-white rounded-xl text-right text-xs font-black transition-all flex items-center justify-between"
-          >
-            <span className="flex items-center gap-2">
-              <span>💡</span>
-              <span>حقائق يكتشفها التجار بعد ما يخسرون</span>
-            </span>
-            <span className="bg-[#D4A017] text-[#040B24] text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase">مفتوح</span>
-          </button>
-
-          {navItems.map((item) => {
-            const isActive = activeSection === item.id;
-            return (
+            {isFreeTrialUser(userCode) && (
               <button
-                key={item.id}
-                onClick={() => handleScrollTo(item.id)}
-                className={`w-full p-3.5 rounded-xl text-right text-xs font-bold border transition-all flex items-center justify-between ${
-                  isActive
-                    ? "bg-[#D4A017]/10 border-[#D4A017] text-[#F0C040]"
-                    : "bg-white/[0.02] border-white/5 text-white/80"
-                }`}
+                onClick={() => {
+                  setIsOpen(false);
+                  onOpenUpgrade?.();
+                }}
+                className="px-2.5 py-1 bg-[#D4A017] text-[#040B24] rounded-lg text-[10px] font-black hover:bg-amber-400 transition-colors"
               >
-                <span>{item.label}</span>
-                {isActive && <span className="text-[#F0C040] text-xs">●</span>}
+                ترقية الآن
               </button>
-            );
-          })}
-        </div>
-
-        {/* Mobile controls */}
-        <div className="space-y-3 pt-6 border-t border-white/15">
-          <button
-            onClick={onLogout}
-            className="w-full py-3 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-xl text-red-400 hover:text-red-300 transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold"
-          >
-            <LogOut className="w-4 h-4" />
-            <span>تسجيل الخروج</span>
-          </button>
-          <div className="text-center text-[10px] text-white/30 font-light mt-2">
-            تم تسجيل الدخول برمز {userCode} بنجاح.
+            )}
           </div>
+
+          {/* Quick Action Cards Grid (2 Columns) */}
+          <div className="grid grid-cols-2 gap-2">
+            {/* AI Advisor Button */}
+            {onOpenAdvisor && (
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  onOpenAdvisor();
+                }}
+                className="p-3 rounded-2xl bg-gradient-to-br from-[#D4A017]/20 via-amber-500/10 to-[#040B24] border border-[#D4A017]/40 text-right space-y-1.5 active:scale-95 transition-all group cursor-pointer"
+              >
+                <div className="flex items-center justify-between">
+                  <Bot className="w-5 h-5 text-[#F0C040]" />
+                  <span className="text-[9px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-mono">ذكاء اصطناعي</span>
+                </div>
+                <div className="text-xs font-black text-[#F0C040]">فيزيون بوت</div>
+                <div className="text-[10px] text-white/60 font-light">المستشار المباشر</div>
+              </button>
+            )}
+
+            {/* Growth Tools Button */}
+            <button
+              onClick={() => handleScrollTo("vizion-growth-suite")}
+              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-95 transition-all group cursor-pointer"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-base">⚡</span>
+                <span className="text-[9px] bg-[#D4A017]/20 text-[#F0C040] px-1.5 py-0.5 rounded font-mono">١٣ أداة</span>
+              </div>
+              <div className="text-xs font-black text-white">منظومة الأدوات</div>
+              <div className="text-[10px] text-white/60 font-light">الحسابات والتحليل</div>
+            </button>
+
+            {/* Subscriptions Pricing Button (for Free Trial) */}
+            {isFreeTrialUser(userCode) && (
+              <button
+                onClick={() => handleScrollTo("pricing-section")}
+                className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-700/10 border border-amber-500/40 text-right space-y-1.5 active:scale-95 transition-all group cursor-pointer col-span-2"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-xs font-black text-[#F0C040]">
+                    <Crown className="w-4 h-4 text-[#F0C040]" />
+                    <span>باقات واسعار الاشتراك المتاحة</span>
+                  </span>
+                  <span className="text-[10px] font-mono font-bold bg-[#D4A017] text-[#040B24] px-2 py-0.5 rounded-full">29,000 - 49,000 د.ع</span>
+                </div>
+                <div className="text-[10px] text-amber-200/80 font-light">اشتراك مدى الحياة بدون تجديد شهري</div>
+              </button>
+            )}
+
+            {/* Elite Secrets Button */}
+            <button
+              onClick={() => handleScrollTo("elite-secrets-section")}
+              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-95 transition-all group cursor-pointer col-span-2"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black text-white flex items-center gap-1.5">
+                  <Flame className="w-4 h-4 text-amber-400" />
+                  <span>حقائق وأسرار التجار</span>
+                </span>
+                <span className="text-[9px] bg-white/10 text-white/80 px-1.5 py-0.5 rounded">سيناريوهات حقيقية</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Chapters Index Grid Header */}
+          <div className="pt-2">
+            <div className="text-[11px] text-white/50 font-bold mb-2 flex items-center justify-between px-1">
+              <span>فهرس فصول الدليل (١١ فصل):</span>
+              <span className="text-[10px] text-[#F0C040]">اضغط للتنقل السريع</span>
+            </div>
+
+            {/* Grid of Chapter Pills */}
+            <div className="grid grid-cols-2 gap-1.5">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleScrollTo(item.id)}
+                    className={`p-2.5 rounded-xl text-right text-xs font-bold border transition-all flex items-center justify-between cursor-pointer active:scale-95 ${
+                      isActive
+                        ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] shadow-md shadow-[#D4A017]/10"
+                        : "bg-white/[0.02] hover:bg-white/[0.05] border-white/10 text-white/80"
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#F0C040] animate-ping" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Logout Section */}
+          <div className="pt-4 pb-6">
+            <button
+              onClick={onLogout}
+              className="w-full py-2.5 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-xl text-red-400 hover:text-red-300 transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold active:scale-95"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>تسجيل الخروج وقفل التطبيق</span>
+            </button>
+          </div>
+
         </div>
       </div>
     </>

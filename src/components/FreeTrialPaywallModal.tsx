@@ -93,7 +93,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             <div className="text-center space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-xs font-black text-[#F0C040]">
                 <Sparkles className="w-3.5 h-3.5 text-[#F0C040]" />
-                <span>منظومة التسويق الرقمي وإدارة المبيعات في العراق</span>
+                <span>اشتراك لمرة واحدة مدى الحياة • بدون أي رسوم شهرية</span>
               </div>
               <h3 className="text-lg sm:text-2xl font-black text-white leading-tight">
                 {title}
@@ -103,31 +103,93 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               </p>
             </div>
 
-            {/* Feature Comparison / What you unlock */}
-            <div className="bg-[#040B24] border border-white/10 rounded-2xl p-4 sm:p-5 space-y-3.5">
-              <h4 className="text-xs font-bold text-[#F0C040] uppercase tracking-wider flex items-center gap-1.5 border-b border-white/10 pb-2">
-                <Zap className="w-4 h-4 text-[#F0C040]" />
-                <span>ماذا تفتح عند الترقية للنسخة الكاملة؟</span>
-              </h4>
+            {/* TWO SUBSCRIPTION TIERS CARDS */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-right">
+              {/* Standard Tier */}
+              <div className="bg-[#040B24] border border-white/15 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <div>
+                      <span className="text-[10px] bg-white/10 text-white/80 font-bold px-2 py-0.5 rounded-full block w-fit mb-1">
+                        الاشتراك الأساسي
+                      </span>
+                      <h4 className="text-base font-black text-white">الاشتراك الاعتيادي</h4>
+                    </div>
+                    <div className="text-left">
+                      <span className="text-xl font-black text-white font-mono block">29,000</span>
+                      <span className="text-[10px] text-[#F0C040] font-bold block">د.ع • مدى الحياة</span>
+                    </div>
+                  </div>
 
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-white/85">
-                <li className="flex items-start gap-2 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>فتح كافة المحاور الـ 8 بالتفصيل والتطبيق العملي.</span>
-                </li>
-                <li className="flex items-start gap-2 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>حاسبة هامش الربح والمرتجعات التفاعلية (Vizion Calc).</span>
-                </li>
-                <li className="flex items-start gap-2 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>مولد سيناريوهات الإعلانات ونصائح الممول العراقي.</span>
-                </li>
-                <li className="flex items-start gap-2 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>شجرة اتخاذ القرار لتقليل رفض الشحنات.</span>
-                </li>
-              </ul>
+                  <p className="text-[11px] text-white/70 font-light mt-2 mb-3 leading-relaxed">
+                    يشمل الكورس بالكامل والمنصة لتأسيس مبيعات وإعلانات ناجحة.
+                  </p>
+
+                  <ul className="space-y-2 text-[11px] text-white/85">
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>تسوي إعلانات تجيب مبيعات حقيقية.</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>تقليل تكلفة الرسائل والوصول للجمهور الصح.</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>تحويل الاستفسارات لطلبات واستبعاد الفضوليين.</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>أدوات اختبار الإعلانات، حوار البيع وحاسبة الأرباح.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* VIP Tier */}
+              <div className="bg-gradient-to-b from-[#121C42] to-[#080E2B] border-2 border-[#D4A017] rounded-2xl p-4 space-y-3 flex flex-col justify-between shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 bg-[#D4A017] text-[#040B24] font-black text-[9px] px-2.5 py-0.5 rounded-br-lg">
+                  👑 الموصى به - أسرع نتيجة
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between border-b border-[#D4A017]/30 pb-2.5 pt-2">
+                    <div>
+                      <span className="text-[10px] bg-[#D4A017]/20 text-[#F0C040] font-bold px-2 py-0.5 rounded-full block w-fit mb-1 border border-[#D4A017]/40">
+                        الاشتراك الكامل VIP
+                      </span>
+                      <h4 className="text-base font-black text-[#F0C040]">اشتراك VIP</h4>
+                    </div>
+                    <div className="text-left">
+                      <span className="text-2xl font-black text-[#F0C040] font-mono block">49,000</span>
+                      <span className="text-[10px] text-amber-200 font-bold block">د.ع • مدى الحياة</span>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-amber-100/90 font-bold mt-2 mb-3 leading-relaxed">
+                    إذا تريد أسرع نتيجة وأقل أخطاء وتوجيه مباشر خطوة بخطوة.
+                  </p>
+
+                  <ul className="space-y-2 text-[11px] text-white">
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <span><strong>كل مميزات الاعتيادي</strong> + المتابعة المباشرة وياي.</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <span>مراجعة إعلاناتك وإعطاء ملاحظات فورية عليها.</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <span>مساعدتك باختيار المنتج، الاستهداف والعروض.</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <span>توجيه مخصص لمشروعك + مستشار ذكاء اصطناعي (Vizion AI).</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             {/* Upgrade Password Input Form */}

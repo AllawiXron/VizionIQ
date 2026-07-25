@@ -1,5 +1,6 @@
 import React from "react";
-import { BookOpen, Wrench, Bot } from "lucide-react";
+import { BookOpen, Wrench, Bot, Crown, Sparkles, Flame } from "lucide-react";
+import { isFreeTrialUser, isVipUser } from "./LockScreen";
 
 interface MobileBottomNavProps {
   activeSection: string;
@@ -9,12 +10,17 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
+  activeSection,
   onOpenAdvisor,
+  userCode = "",
 }) => {
+  const isFreeTrial = isFreeTrialUser(userCode);
+  const isVip = isVipUser(userCode);
+
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const offset = 60;
+      const offset = 70;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = el.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -27,52 +33,95 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     }
   };
 
+  const isChaptersActive = activeSection === "chapters-grid-section" || activeSection.startsWith("chapter") || activeSection.startsWith("ch");
+  const isToolsActive = activeSection === "vizion-growth-suite";
+  const isPricingActive = activeSection === "pricing-section";
+  const isSecretsActive = activeSection === "elite-secrets-section";
+
   return (
-    <div className="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-[#040B24]/90 backdrop-blur-2xl border-t border-[#D4A017]/30 px-4 py-2 shadow-[0_-12px_35px_rgba(0,0,0,0.85)] dir-rtl">
-      <div className="grid grid-cols-3 items-center max-w-xs sm:max-w-sm mx-auto text-center gap-2">
-        {/* 1. Chapters */}
+    <div className="lg:hidden fixed bottom-2 inset-x-2 z-50 max-w-lg mx-auto dir-rtl pointer-events-none">
+      <div className="pointer-events-auto bg-[#040B24]/92 backdrop-blur-2xl border border-[#D4A017]/40 rounded-2xl px-2 py-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)] flex items-center justify-between gap-1">
+        
+        {/* 1. Chapters Tab */}
         <button
           onClick={() => scrollToSection("chapters-grid-section")}
-          className="flex flex-col items-center justify-center py-1.5 px-2 rounded-2xl text-white/70 hover:text-[#F0C040] hover:bg-white/[0.04] active:scale-95 transition-all cursor-pointer group"
+          className={`flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer active:scale-95 relative ${
+            isChaptersActive
+              ? "text-[#F0C040] bg-[#D4A017]/15 border border-[#D4A017]/30"
+              : "text-white/70 hover:text-white hover:bg-white/[0.04]"
+          }`}
         >
-          <div className="p-1.5 rounded-xl bg-white/[0.03] group-hover:bg-[#D4A017]/10 transition-colors">
-            <BookOpen className="w-5 h-5 text-[#F0C040]" />
-          </div>
-          <span className="text-[11px] font-black mt-1 leading-tight text-white/80 group-hover:text-[#F0C040]">
+          <BookOpen className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${isChaptersActive ? "scale-110 text-[#F0C040]" : "text-white/70"}`} />
+          <span className="text-[10px] font-black mt-1 leading-none">
             الفصول
           </span>
         </button>
 
-        {/* 2. Vizion Bot AI (Center Highlighted) */}
-        <button
-          onClick={onOpenAdvisor}
-          className="flex flex-col items-center justify-center -mt-6 cursor-pointer group"
-        >
-          <div className="relative p-[2px] rounded-2xl bg-gradient-to-br from-[#F0C040] via-[#D4A017] to-amber-600 shadow-xl shadow-[#D4A017]/30 group-hover:shadow-[#D4A017]/50 group-active:scale-95 transition-all duration-300">
-            <div className="w-12 h-12 rounded-[14px] bg-[#040B24] flex items-center justify-center text-[#F0C040] relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#D4A017]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <Bot className="w-6 h-6 animate-pulse relative z-10 text-[#F0C040]" />
-            </div>
-          </div>
-          <span className="text-[11px] font-black text-[#F0C040] mt-1 leading-tight flex items-center gap-1 drop-shadow-sm">
-            المستشار
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-          </span>
-        </button>
-
-        {/* 3. Tools Suite */}
+        {/* 2. Tools Suite Tab */}
         <button
           onClick={() => scrollToSection("vizion-growth-suite")}
-          className="flex flex-col items-center justify-center py-1.5 px-2 rounded-2xl text-white/70 hover:text-[#F0C040] hover:bg-white/[0.04] active:scale-95 transition-all cursor-pointer group"
+          className={`flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer active:scale-95 relative ${
+            isToolsActive
+              ? "text-[#F0C040] bg-[#D4A017]/15 border border-[#D4A017]/30"
+              : "text-white/70 hover:text-white hover:bg-white/[0.04]"
+          }`}
         >
-          <div className="p-1.5 rounded-xl bg-white/[0.03] group-hover:bg-[#D4A017]/10 transition-colors">
-            <Wrench className="w-5 h-5 text-amber-400" />
-          </div>
-          <span className="text-[11px] font-black mt-1 leading-tight text-white/80 group-hover:text-[#F0C040]">
+          <Wrench className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${isToolsActive ? "scale-110 text-amber-400" : "text-white/70"}`} />
+          <span className="text-[10px] font-black mt-1 leading-none">
             الأدوات
           </span>
         </button>
+
+        {/* 3. Center AI Advisor Launcher */}
+        <button
+          onClick={onOpenAdvisor}
+          className="flex-1 flex flex-col items-center justify-center -mt-4 cursor-pointer group active:scale-95 transition-transform"
+        >
+          <div className="relative p-[2px] rounded-2xl bg-gradient-to-br from-[#F0C040] via-[#D4A017] to-amber-600 shadow-lg shadow-[#D4A017]/30 group-hover:shadow-[#D4A017]/60 transition-all duration-300">
+            <div className="w-11 h-11 rounded-[14px] bg-[#040B24] flex items-center justify-center text-[#F0C040] relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#D4A017]/30 to-transparent animate-pulse" />
+              <Bot className="w-5 h-5 relative z-10 text-[#F0C040]" />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            </div>
+          </div>
+          <span className="text-[10px] font-black text-[#F0C040] mt-0.5 leading-none flex items-center gap-0.5">
+            المستشار
+          </span>
+        </button>
+
+        {/* 4. Subscriptions or Secrets Tab */}
+        {isFreeTrial ? (
+          <button
+            onClick={() => scrollToSection("pricing-section")}
+            className={`flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer active:scale-95 relative ${
+              isPricingActive
+                ? "text-[#F0C040] bg-[#D4A017]/25 border border-[#D4A017]"
+                : "text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20"
+            }`}
+          >
+            <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-[#F0C040] animate-bounce" />
+            <span className="text-[10px] font-black mt-1 leading-none text-[#F0C040]">
+              الاشتراكات
+            </span>
+          </button>
+        ) : (
+          <button
+            onClick={() => scrollToSection("elite-secrets-section")}
+            className={`flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer active:scale-95 relative ${
+              isSecretsActive
+                ? "text-[#F0C040] bg-[#D4A017]/15 border border-[#D4A017]/30"
+                : "text-white/70 hover:text-white hover:bg-white/[0.04]"
+            }`}
+          >
+            <Flame className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${isSecretsActive ? "scale-110 text-amber-400" : "text-white/70"}`} />
+            <span className="text-[10px] font-black mt-1 leading-none">
+              الأسرار
+            </span>
+          </button>
+        )}
+
       </div>
     </div>
   );
 };
+

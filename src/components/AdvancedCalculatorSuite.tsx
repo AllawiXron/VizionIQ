@@ -4,12 +4,20 @@
  */
 
 import React, { useState } from "react";
-import { Calculator, TrendingUp, DollarSign, PieChart, ShieldAlert, Layers, ArrowRight, CheckCircle2, RefreshCw, BarChart3, HelpCircle } from "lucide-react";
+import { Calculator, TrendingUp, DollarSign, PieChart, ShieldAlert, Layers, ArrowRight, CheckCircle2, RefreshCw, BarChart3, HelpCircle, Lock, Crown } from "lucide-react";
+import { isFreeTrialUser } from "./LockScreen";
 
 export default function AdvancedCalculatorSuite() {
   const [activeTab, setActiveTab] = useState<
     "roas" | "ltv" | "scaling" | "breakeven" | "margin" | "cac_ltv" | "pricing" | "budget" | "returns"
   >("roas");
+
+  const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
+  const isFreeTrial = isFreeTrialUser(userCode);
+
+  const triggerUpgradeModal = () => {
+    window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
+  };
 
   // 1. ROAS & Net Profit State
   const [roasInputs, setRoasInputs] = useState({
@@ -270,6 +278,26 @@ export default function AdvancedCalculatorSuite() {
 
       {/* TAB CONTENT: 2. LTV CALCULATOR */}
       {activeTab === "ltv" && (
+        isFreeTrial ? (
+          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div className="space-y-2 max-w-md mx-auto">
+              <h4 className="text-xl font-black text-white">حاسبة LTV مقفلة في النسخة التجريبية</h4>
+              <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                حاسبة القيمة العمرية وهوامش إعادة الشراء متاحة فقط للحسابات الكاملة. ترقية حسابك تتيح لك الوصول الفوري لجميع الـ 9 حواسب مئوية وتجارية.
+              </p>
+            </div>
+            <button
+              onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <Crown className="w-4 h-4 text-[#040B24]" />
+              <span>فتح حاسبة LTV وجميع الأدوات الآن ⚡</span>
+            </button>
+          </div>
+        ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
           <h4 className="text-xl font-bold text-[#F0C040]">حاسبة القيمة العمرية للعميل (Customer Lifetime Value - LTV)</h4>
           <p className="text-xs md:text-sm text-white/70">
@@ -322,10 +350,31 @@ export default function AdvancedCalculatorSuite() {
             </div>
           </div>
         </div>
+        )
       )}
 
       {/* TAB CONTENT: 3. SCALING SIMULATOR */}
       {activeTab === "scaling" && (
+        isFreeTrial ? (
+          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div className="space-y-2 max-w-md mx-auto">
+              <h4 className="text-xl font-black text-white">محاكي التوسع الإعلاني مقفل في النسخة التجريبية</h4>
+              <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                محاكي مضاعفة الميزانية والتوقع المالي لحملات فيسبوك وانستغرام متاح فقط للحسابات المسجلة بالكامل.
+              </p>
+            </div>
+            <button
+              onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <Crown className="w-4 h-4 text-[#040B24]" />
+              <span>ترقية الحساب وفتح محاكي التوسع الآن ⚡</span>
+            </button>
+          </div>
+        ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
           <h4 className="text-xl font-bold text-[#F0C040]">محاكي ومحسّن التوسع الإعلاني (Scaling Simulator)</h4>
           <p className="text-xs md:text-sm text-white/70">
@@ -363,10 +412,31 @@ export default function AdvancedCalculatorSuite() {
             </div>
           </div>
         </div>
+        )
       )}
 
       {/* TAB CONTENT: 4. BREAK-EVEN CALCULATOR */}
       {activeTab === "breakeven" && (
+        isFreeTrial ? (
+          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div className="space-y-2 max-w-md mx-auto">
+              <h4 className="text-xl font-black text-white">حاسبة نقطة التعادل مقفلة في النسخة التجريبية</h4>
+              <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                حاسبة تحديد عدد الشحنات المطلوبة لتغطية المصاريف الثابتة متاح للحسابات الكاملة.
+              </p>
+            </div>
+            <button
+              onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <Crown className="w-4 h-4 text-[#040B24]" />
+              <span>ترقية الحساب وفتح الآلة الحاسبة ⚡</span>
+            </button>
+          </div>
+        ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
           <h4 className="text-xl font-bold text-[#F0C040]">حاسبة نقطة التعادل الشهرية (Break-Even Orders)</h4>
           <p className="text-xs md:text-sm text-white/70">
@@ -405,10 +475,31 @@ export default function AdvancedCalculatorSuite() {
             </div>
           </div>
         </div>
+        )
       )}
 
       {/* TAB CONTENT: 5. MARGIN OPTIMIZER (50/30/20) */}
       {activeTab === "margin" && (
+        isFreeTrial ? (
+          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div className="space-y-2 max-w-md mx-auto">
+              <h4 className="text-xl font-black text-white">مطور الهوامش 50/30/20 مقفل في النسخة التجريبية</h4>
+              <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                أداة تقسيم الهوامش وحساب كلفة الشراء والإعلانات وصافي الربح ممتلكات كاملة.
+              </p>
+            </div>
+            <button
+              onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <Crown className="w-4 h-4 text-[#040B24]" />
+              <span>ترقية الحساب والوصول الفوري ⚡</span>
+            </button>
+          </div>
+        ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
           <h4 className="text-xl font-bold text-[#F0C040]">مطور ومحسّن الهوامش المالية (قاعدة 50/30/20)</h4>
           <p className="text-xs md:text-sm text-white/70">
@@ -443,10 +534,31 @@ export default function AdvancedCalculatorSuite() {
             </div>
           </div>
         </div>
+        )
       )}
 
       {/* TAB CONTENT: 6. RETURN RATE IMPACT */}
       {activeTab === "returns" && (
+        isFreeTrial ? (
+          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div className="space-y-2 max-w-md mx-auto">
+              <h4 className="text-xl font-black text-white">حاسبة أثر خفض المرتجع مقفلة في النسخة التجريبية</h4>
+              <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                احسب المبالغ المستردة عند خفض المرتجع لـ 6%. متاح في الاشتراك الكامل.
+              </p>
+            </div>
+            <button
+              onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <Crown className="w-4 h-4 text-[#040B24]" />
+              <span>ترقية الحساب وفتح الحسبة الآن ⚡</span>
+            </button>
+          </div>
+        ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
           <h4 className="text-xl font-bold text-[#F0C040]">حاسبة أثر خفض المرتجع على الأرباح الصافية</h4>
           <p className="text-xs md:text-sm text-white/70">
@@ -497,6 +609,7 @@ export default function AdvancedCalculatorSuite() {
             </div>
           </div>
         </div>
+        )
       )}
 
     </div>

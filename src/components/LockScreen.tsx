@@ -405,19 +405,41 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             </button>
           </form>
 
-          {/* Quick Free Trial Access Link */}
-          <div className="pt-2 text-center">
+          {/* Quick Free Trial Access Link & Pricing Info */}
+          <div className="pt-2 text-center space-y-3">
             <button
               type="button"
               onClick={() => {
                 setPassword("free#1");
                 setError(null);
               }}
-              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-[#F0C040] hover:text-white transition-all cursor-pointer inline-flex items-center gap-1.5 font-medium"
+              className="px-3.5 py-2 rounded-xl bg-[#D4A017]/15 hover:bg-[#D4A017]/25 border border-[#D4A017]/40 text-xs text-[#F0C040] hover:text-white transition-all cursor-pointer inline-flex items-center gap-2 font-bold w-full justify-center shadow-md"
             >
-              <span>✨ لا تملك رمزاُ مدفوعاً؟ جرب النسخة التجريبية:</span>
-              <span className="font-mono text-emerald-400 font-bold underline underline-offset-2">free#1</span>
+              <span>✨ جرب النسخة التجريبية مجاناً بالرمز:</span>
+              <span className="font-mono text-emerald-400 font-extrabold underline underline-offset-2">free#1</span>
             </button>
+
+            {/* Lifetime Pricing Tiers Banner */}
+            <div className="bg-black/40 border border-white/10 rounded-xl p-3 text-right space-y-2 text-xs">
+              <div className="flex items-center justify-between border-b border-white/10 pb-1.5 text-[11px]">
+                <span className="font-bold text-[#F0C040] flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>باقات الاشتراك لمرة واحدة مدى الحياة:</span>
+                </span>
+                <span className="text-emerald-400 font-bold text-[10px]">بدون اشتراك شهري</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-[10px] text-white/90">
+                <div className="bg-white/5 p-2 rounded-lg border border-white/5">
+                  <span className="font-black block text-white text-[11px]">🔹 الاعتيادي: 29,000 د.ع</span>
+                  <span className="text-white/60 font-light block mt-0.5">الكورس + المنصة + أدوات البيع</span>
+                </div>
+                <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 p-2 rounded-lg border border-[#D4A017]/40">
+                  <span className="font-black block text-[#F0C040] text-[11px]">👑 VIP النخبة: 49,000 د.ع</span>
+                  <span className="text-amber-100/70 font-light block mt-0.5">متابعة مباشرة + مراجعة إعلانات + ذكاء اصطناعي</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -6,12 +6,20 @@
 import React, { useState } from "react";
 import { swipeFilesList } from "../data/swipeFilesData";
 import { SwipeFile } from "../types";
-import { FolderDown, Copy, Check, Search, Download, FileText, MessageSquare, PhoneCall, CheckSquare } from "lucide-react";
+import { FolderDown, Copy, Check, Search, Download, FileText, MessageSquare, PhoneCall, CheckSquare, Lock, Crown } from "lucide-react";
+import { isFreeTrialUser } from "./LockScreen";
 
 export default function SwipeFilesDrawer() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
+  const isFreeTrial = isFreeTrialUser(userCode);
+
+  const triggerUpgradeModal = () => {
+    window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
+  };
 
   const categories = [
     { id: "all", label: "الكل (جميع الملفات)" },
@@ -91,65 +99,89 @@ export default function SwipeFilesDrawer() {
 
       {/* FILES GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {filteredFiles.map((sf) => (
-          <div
-            key={sf.id}
-            className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all hover:-translate-y-1"
-          >
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#F0C040] font-bold">
-                  {sf.category}
-                </span>
-                {sf.dialect && (
-                  <span className="text-[10px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/20 px-2 py-0.5 rounded-md">
-                    لهجة: {sf.dialect}
+        {filteredFiles.map((sf, idx) => {
+          const isLocked = isFreeTrial && idx >= 2;
+          return (
+            <div
+              key={sf.id}
+              className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all hover:-translate-y-1 relative overflow-hidden"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#F0C040] font-bold">
+                    {sf.category}
                   </span>
-                )}
-              </div>
+                  {sf.dialect && (
+                    <span className="text-[10px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                      لهجة: {sf.dialect}
+                    </span>
+                  )}
+                </div>
 
-              <h4 className="text-base font-bold text-white leading-snug">
-                {sf.title}
-              </h4>
-              <p className="text-xs text-white/60 leading-relaxed">
-                {sf.description}
-              </p>
+                <h4 className="text-base font-bold text-white leading-snug flex items-center justify-between">
+                  <span>{sf.title}</span>
+                  {isLocked && <Lock className="w-4 h-4 text-[#F0C040]" />}
+                </h4>
+                <p className="text-xs text-white/60 leading-relaxed">
+                  {sf.description}
+                </p>
 
-              {/* Code/Text Container */}
-              <div className="bg-black/50 border border-white/10 rounded-2xl p-4 font-mono text-xs text-white/90 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap dir-rtl no-scrollbar">
-                {sf.content}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-              <button
-                onClick={() => handleCopy(sf.content, sf.id)}
-                className="flex-1 py-2.5 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md"
-              >
-                {copiedId === sf.id ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    <span>تم النسخ بنجاح!</span>
-                  </>
+                {/* Code/Text Container */}
+                {!isLocked ? (
+                  <div className="bg-black/50 border border-white/10 rounded-2xl p-4 font-mono text-xs text-white/90 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap dir-rtl no-scrollbar">
+                    {sf.content}
+                  </div>
                 ) : (
-                  <>
-                    <Copy className="w-4 h-4" />
-                    <span>نسخ النص للذاكرة</span>
-                  </>
+                  <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-2">
+                    <p className="text-xs text-white/40 blur-[3px] select-none line-clamp-2">
+                      {sf.content}
+                    </p>
+                    <div className="pt-1">
+                      <span className="text-xs font-black text-[#F0C040] block mb-2">🔒 سكريبت سوايب مدفوع ومحمي بالكامل</span>
+                      <button
+                        onClick={triggerUpgradeModal}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
+                      >
+                        <Crown className="w-3.5 h-3.5" />
+                        <span>ترقية الحساب ونسخ السكريبت ⚡</span>
+                      </button>
+                    </div>
+                  </div>
                 )}
-              </button>
+              </div>
 
-              <button
-                onClick={() => handleDownloadTxt(sf)}
-                className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs flex items-center justify-center cursor-pointer transition-all"
-                title="تنزيل كملف نصي .txt"
-              >
-                <Download className="w-4 h-4" />
-              </button>
+              {/* Action Buttons */}
+              {!isLocked && (
+                <div className="flex items-center gap-3 pt-2 border-t border-white/10">
+                  <button
+                    onClick={() => handleCopy(sf.content, sf.id)}
+                    className="flex-1 py-2.5 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md"
+                  >
+                    {copiedId === sf.id ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        <span>تم النسخ بنجاح!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        <span>نسخ النص للذاكرة</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    onClick={() => handleDownloadTxt(sf)}
+                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs flex items-center justify-center cursor-pointer transition-all"
+                    title="تنزيل كملف نصي .txt"
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
     </div>

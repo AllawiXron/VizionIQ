@@ -19,6 +19,7 @@ import VizionGrowthSuite from "./components/VizionGrowthSuite";
 import { VizionAdvisorModal } from "./components/VizionAdvisorModal";
 import { MobileBottomNav } from "./components/MobileBottomNav";
 import { FreeTrialPaywallModal } from "./components/FreeTrialPaywallModal";
+import { PricingSection } from "./components/PricingSection";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -83,6 +84,7 @@ export default function App() {
       "contents-section",
       "vizion-growth-suite",
       "elite-secrets-section",
+      "pricing-section",
       "chapter1",
       "chapter2",
       "chapter3",
@@ -205,14 +207,14 @@ export default function App() {
           >
             <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#D4A017]/20 to-[#D4A017]/5 border border-[#D4A017]/30 text-xs md:text-sm text-[#F0C040] font-bold tracking-wide shadow-lg backdrop-blur-md">
               <BookOpen className="w-4 h-4" />
-              <span>فهرس الخطوات والنظام التشغيلي</span>
+              <span>فهرس خطوات الدليل</span>
             </div>
             
             <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-xl">
-              خريطة طريقك <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-[#FFE58F] to-[#D4A017]">الكاملة للأرباح الصافية</span>
+              مسارك المباشر <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-[#FFE58F] to-[#D4A017]">لتكبير مبيعاتك وأرباحك الصافية</span>
             </h2>
             <p className="text-sm md:text-lg text-white/60 max-w-2xl mx-auto font-light leading-relaxed">
-              ١١ فصل متسلسل خطوة بخطوة. بعد ماكو مساحة للتخمين والشغل العشوائي؛ هذا النظام مصمم حتى ياخذك من الصفر لمرحلة الأرباح المستقرة.
+              11 فصل عملي ومباشر، يعلمك أصول السوق والتسويق والتوصيل بالعراق خطوة بخطوة حتى تضمن نتائج ممتازة بمشروعك.
             </p>
             <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4A017]/50 to-transparent mx-auto mt-6" />
           </motion.div>
@@ -376,6 +378,16 @@ export default function App() {
           <div id="iraqi-market-section" className="scroll-mt-20" />
           <IraqiInsights />
         </section>
+
+        {/* SUBSCRIPTION PLANS SECTION (PRICING TIERS) - ONLY FOR FREE TRIAL USERS */}
+        {isFreeTrialUser(userCode) && (
+          <section
+            id="pricing-section"
+            className="py-6 md:py-12 border-b border-white/5 scroll-mt-20 relative"
+          >
+            <PricingSection onOpenUpgradeModal={() => setIsUpgradeModalOpen(true)} />
+          </section>
+        )}
 
         {/* loop and render each chapter dynamically */}
         {chaptersList.map((chapter) => (

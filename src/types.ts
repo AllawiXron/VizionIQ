@@ -142,7 +142,7 @@ export interface SwipeFile {
   title: string;
   description: string;
   content: string;
-  dialect?: "بغدادي" | "بصراوي" | "فصحة بسيطة" | "كردي مائل للعربية" | "دارج (عراقي)";
+  dialect?: "بغدادي" | "بصراوي" | "فصحة بسيطة" | "كردي مائل للعربية" | "دارج (عراقي)" | "دارج";
   downloadUrl?: string;
 }
 
@@ -187,7 +187,7 @@ export interface DiagnosticResult {
 export interface ScenarioChallenge {
   id: string;
   title: string;
-  difficulty: "مبتدئ" | "متوسط" | "متقدم خبير";
+  difficulty: "مبتدئ" | "متوسط" | "متقدم خبير" | "متقدم";
   scenarioDescription: string;
   budget: string;
   metricsGiven: string;

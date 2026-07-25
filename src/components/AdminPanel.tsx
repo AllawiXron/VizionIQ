@@ -200,7 +200,28 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           
           {/* TAB 1: CODES REGISTRY */}
           {activeTab === "codes" && (
-            <div className="space-y-3">
+            <div className="space-y-4">
+              {/* Quick Export Box */}
+              <div className="p-4 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+                <div className="space-y-0.5 text-right w-full sm:w-auto">
+                  <h4 className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
+                    <FileSpreadsheet className="w-4 h-4 text-[#D4A017]" />
+                    <span>تصدير كافة نصوص ومحتوى الموقع بالكامل (JSON)</span>
+                  </h4>
+                  <p className="text-[10px] text-white/60">
+                    يمكنك تنزيل ملف شامل لجميع الفصول، الدروس، الدراسات، وسكريبتات السوايب لتعديل الصياغة أو اللهجة.
+                  </p>
+                </div>
+                <a
+                  href="/all_website_texts.json"
+                  download="all_website_texts.json"
+                  className="px-4 py-2 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shrink-0 shadow-lg transition-all hover:scale-105"
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  <span>تحميل ملف JSON كامل ⚡</span>
+                </a>
+              </div>
+
               <div className="flex justify-between items-center text-[10px] sm:text-xs text-white/50 pb-1">
                 <span>سجل الأكواد الصالحة والملغاة</span>
                 <span>الأحدث أولاً</span>

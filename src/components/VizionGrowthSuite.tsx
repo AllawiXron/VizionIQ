@@ -397,7 +397,10 @@ export default function VizionGrowthSuite() {
                           }`}
                         >
                           <div className="text-right flex-1">
-                            <div className={`text-sm font-black mb-1.5 ${isActive ? "text-[#F0C040]" : "text-white"}`}>{tab.label}</div>
+                            <div className={`text-sm font-black mb-1.5 flex items-center justify-between ${isActive ? "text-[#F0C040]" : "text-white"}`}>
+                              <span>{tab.label}</span>
+                              {isFreeTrial && <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />}
+                            </div>
                             <div className="text-[11px] text-white/50 leading-relaxed font-light">{tab.desc}</div>
                           </div>
                           {isActive && (
@@ -445,8 +448,9 @@ export default function VizionGrowthSuite() {
                 >
                   <div className="flex items-center gap-4">
                     <div className="space-y-1.5 text-right">
-                      <h4 className={`font-black text-sm transition-colors duration-300 ${isActive ? "text-[#F0C040]" : "text-white group-hover:text-[#F0C040]"}`}>
-                        {tab.label}
+                      <h4 className={`font-black text-sm transition-colors duration-300 flex items-center gap-2 ${isActive ? "text-[#F0C040]" : "text-white group-hover:text-[#F0C040]"}`}>
+                        <span>{tab.label}</span>
+                        {isFreeTrial && <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />}
                       </h4>
                       <p className={`text-[10px] transition-colors duration-300 font-light ${isActive ? "text-white/80" : "text-white/40 group-hover:text-white/60"}`}>
                         {tab.desc}
@@ -475,6 +479,73 @@ export default function VizionGrowthSuite() {
               transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
               className="space-y-8 w-full relative z-10"
             >
+              
+            {isFreeTrial ? (
+              <div className="flex flex-col items-center justify-center text-center p-6 sm:p-10 space-y-6 min-h-[550px] my-auto relative z-20">
+                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#D4A017]/30 via-amber-600/20 to-[#040B24] border-2 border-[#D4A017] flex items-center justify-center shadow-[0_0_50px_rgba(212,160,23,0.35)] relative group animate-bounce">
+                  <Lock className="w-10 h-10 text-[#F0C040]" />
+                  <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-600 to-amber-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full border border-white/20 shadow-md">
+                    PRO ONLY
+                  </div>
+                </div>
+
+                <div className="space-y-3 max-w-xl">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-xs font-black text-[#F0C040]">
+                    <Crown className="w-4 h-4 text-[#F0C040]" />
+                    <span>الأدوات مقفلة لحساب المعاينة المجانية (free#1)</span>
+                  </div>
+                  
+                  <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
+                    أداة "{toolTabs.find(t => t.id === activeTab)?.label}" غير متاحة في النسخة المجانية
+                  </h3>
+                  
+                  <p className="text-xs md:text-sm text-white/80 font-light leading-relaxed">
+                    جميع أدوات المنظومة الـ 13 التشغيلية والمالية لمشروعك مقفلة بالكامل لحساب المعاينة (<code className="bg-amber-950/80 text-[#F0C040] px-2 py-0.5 rounded border border-[#D4A017]/50 font-mono">free#1</code>). للحصول على إمكانية إدخال أرقامك، تحليل حملاتك، وحساب أرباحك الصافية بالأرقام الدقيقة، يرجى ترقية حسابك.
+                  </p>
+                </div>
+
+                <div className="w-full max-w-md bg-white/[0.03] border border-[#D4A017]/30 rounded-2xl p-5 space-y-3 text-right">
+                  <span className="text-xs font-black text-[#F0C040] block border-b border-white/10 pb-2">
+                    ⚡ مميزات المنظومة الكاملة بعد الترقية:
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-white/80">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <span>مقييم سلامة البزنس العراقي</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <span>مستشار الحملات الإعلانية</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <span>حاسبة التسعير والربح الصافي</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <span>متوقع أرباح الحملة قبل التفعيل</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <span>مخطط الميزانية والوصول</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <span>كاشف تسرب الفلوس المرتجعة</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={triggerUpgradeModal}
+                  className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm md:text-base shadow-[0_10px_30px_rgba(212,160,23,0.35)] hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-3 group"
+                >
+                  <Crown className="w-5 h-5 text-[#040B24] group-hover:rotate-12 transition-transform" />
+                  <span>افتح الـ 13 أداة وترقية الحساب الآن ⚡</span>
+                </button>
+              </div>
+            ) : (
+              <>
               
             {/* TOOL 1: Business Diagnostics Wizard */}
             {activeTab === "diagnostics" && (
@@ -1722,6 +1793,8 @@ export default function VizionGrowthSuite() {
                   );
                 })()}
               </div>
+            )}
+            </>
             )}
 
           </motion.div>

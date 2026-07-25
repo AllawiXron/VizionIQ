@@ -221,7 +221,7 @@ export default function Hero() {
           <div className="absolute -inset-1 bg-gradient-to-r from-[#D4A017]/0 via-[#D4A017]/30 to-[#D4A017]/0 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
           <div className="relative inline-flex items-center gap-2 sm:gap-3 px-3.5 py-2 sm:px-6 sm:py-3 rounded-full bg-[#040B24]/80 backdrop-blur-xl border border-[#D4A017]/40 shadow-[0_0_30px_rgba(212,160,23,0.2)] text-[11px] sm:text-sm text-[#F0C040] font-black tracking-wider sm:tracking-widest uppercase">
             <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-[#F0C040] animate-pulse" />
-            <span>نظام التشغيل التسويقي الأول في العراق</span>
+            <span>الدليل العملي والشامل للتجارة الإلكترونية بالعراق</span>
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping ml-1" />
           </div>
         </motion.div>
@@ -285,8 +285,8 @@ export default function Hero() {
                   <Flame className="w-5 h-5 sm:w-7 sm:h-7 text-[#040B24]" />
                 </div>
                 <div>
-                  <h3 className="font-black text-base sm:text-2xl text-white">رسالة من قلب المعاناة..</h3>
-                  <p className="text-xs sm:text-sm text-[#F0C040] font-bold">لأننا بدأنا من الصفر مثلك تماماً</p>
+                  <h3 className="font-black text-base sm:text-2xl text-white">رسالة صريحة قبل لا تبدأ..</h3>
+                  <p className="text-xs sm:text-sm text-[#F0C040] font-bold">لأن شبعنا خسارة وتعلمنا من أخطائنا</p>
                 </div>
               </div>
             </div>
@@ -302,7 +302,7 @@ export default function Hero() {
               <div className="relative mt-4 sm:mt-8 p-4 sm:p-8 rounded-xl sm:rounded-2xl bg-gradient-to-r from-emerald-900/30 to-transparent border-r-4 border-emerald-50 overflow-hidden">
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMTYsIDE4NSwgMTI5LCAwLjEpIi8+PC9zdmc+')] opacity-50" />
                 <p className="relative z-10 text-xs sm:text-xl text-emerald-50 leading-relaxed font-black">
-                  لكن تخيل لو أن كل رسالة تتحول لمبيعة.. وكل إعلان يرجعلك ضعف ما صرفته.. والمندوب يدق بابك ليسلمك كاش الأرباح، مو بضاعة راجعة. <span className="text-emerald-400">هذا بالضبط ما سيفعله لك نظام Vizion.</span>
+                  تخيل وياي: كل رسالة تجيك تتحول لطلب مؤكد.. وكل دينار تصرفه بالإعلان يرجعلك أرباح.. والمندوب يسلّمك أرباحك كاش بيدك بدون ما يرجعلك طرد راجع. <span className="text-emerald-400">هذا هو هدف دليل Vizion بالضبط.</span>
                 </p>
               </div>
             </div>

@@ -6,13 +6,21 @@
 import React, { useState } from "react";
 import { caseStudiesList } from "../data/caseStudiesData";
 import { CaseStudy } from "../types";
-import { Award, MapPin, TrendingUp, CheckCircle2, ChevronDown, ChevronUp, Copy, Check, Sparkles, MessageSquare } from "lucide-react";
+import { Award, MapPin, TrendingUp, CheckCircle2, ChevronDown, ChevronUp, Copy, Check, Sparkles, MessageSquare, Lock, Crown } from "lucide-react";
 import FadeInUp from "./FadeInUp";
+import { isFreeTrialUser } from "./LockScreen";
 
 export default function CaseStudySection() {
   const [selectedCity, setSelectedCity] = useState<string>("جميع المحافظات");
   const [expandedId, setExpandedId] = useState<string | null>(caseStudiesList[0].id);
   const [copiedScript, setCopiedScript] = useState<string | null>(null);
+
+  const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
+  const isFreeTrial = isFreeTrialUser(userCode);
+
+  const triggerUpgradeModal = () => {
+    window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
+  };
 
   const cities = ["جميع المحافظات", "بغداد", "البصرة", "أربيل", "النجف وكربلاء", "الموصل"];
 
@@ -103,8 +111,28 @@ export default function CaseStudySection() {
               {/* EXPANDED CONTENT DETAILS */}
               {isExpanded && (
                 <div className="p-6 md:p-8 border-t border-white/10 space-y-6 bg-black/20 animate-[fadeIn_0.3s_ease-out]">
-                  
-                  {/* Before vs After Metrics Comparison */}
+                  {isFreeTrial && idx >= 1 ? (
+                    <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] via-[#121A3D] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl">
+                      <div className="w-12 h-12 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+                        <Crown className="w-6 h-6" />
+                      </div>
+                      <div className="space-y-1 max-w-md mx-auto">
+                        <h4 className="text-base sm:text-lg font-black text-white">تفاصيل دراسة الحالة والأرقام التنفيذية مغلقة</h4>
+                        <p className="text-xs text-white/70 leading-relaxed font-light">
+                          يتضمن تفكيك حالة {cs.businessName} في {cs.city} الخطاف الإعلاني الفائز وسكريبت الواتساب الذي رفع المبيعات. متاح لحسابات الكورس الكاملة.
+                        </p>
+                      </div>
+                      <button
+                        onClick={triggerUpgradeModal}
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+                      >
+                        <Lock className="w-4 h-4 text-[#040B24]" />
+                        <span>فتح دراسة الحالة كاملة مع السكريبتات ⚡</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Before vs After Metrics Comparison */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
                     <div>
                       <span className="text-[10px] text-white/50 block font-bold">عائد الإعلانات ROAS</span>
@@ -200,7 +228,8 @@ export default function CaseStudySection() {
                       ))}
                     </ul>
                   </div>
-
+                    </>
+                  )}
                 </div>
               )}
             </div>

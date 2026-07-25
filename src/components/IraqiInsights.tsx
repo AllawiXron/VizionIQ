@@ -25,6 +25,8 @@ import {
 } from "lucide-react";
 
 import { Insight, insightsList } from "../data/insightsData";
+import { isFreeTrialUser } from "./LockScreen";
+import { Lock, Crown } from "lucide-react";
 
 export default function IraqiInsights() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,6 +35,13 @@ export default function IraqiInsights() {
   const [randomInsight, setRandomInsight] = useState<Insight | null>(null);
   const [showRandomModal, setShowRandomModal] = useState(false);
   const [expandedInsightId, setExpandedInsightId] = useState<string | null>(null);
+
+  const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
+  const isFreeTrial = isFreeTrialUser(userCode);
+
+  const triggerUpgradeModal = () => {
+    window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
+  };
 
   // Load votes from localStorage
   useEffect(() => {
@@ -251,21 +260,42 @@ export default function IraqiInsights() {
 
                 {/* EXPANDABLE CORNER (DIAGNOSTIC DETAILED LESSON) */}
                 {isExpanded && (
-                  <div className="pt-4 border-t border-white/10 space-y-4 text-right animate-[fadeIn_0.3s_ease]">
-                    <div className="space-y-1.5">
-                      <span className="text-[11px] font-black text-white/50 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-[#F0C040]"/> تحليل الخلل:</span>
-                      <p className="fluid-prose text-white/80 font-light pr-3 border-r border-white/10">
+                  isFreeTrial && index >= 3 ? (
+                    <div className="pt-4 border-t border-white/10 space-y-3 text-center bg-gradient-to-br from-[#0F1735] to-[#040B24] p-4 rounded-2xl border border-[#D4A017]/30">
+                      <p className="text-xs text-white/50 blur-[2px] select-none">
                         {insight.lesson}
                       </p>
+                      <div className="pt-1">
+                        <span className="text-xs font-black text-[#F0C040] block mb-2">🔒 الحل والخطوات العملية المحمية لهذا الموقف</span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            triggerUpgradeModal();
+                          }}
+                          className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black text-xs shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
+                        >
+                          <Crown className="w-3.5 h-3.5" />
+                          <span>ترقية الحساب وكشف الحل الفوري ⚡</span>
+                        </button>
+                      </div>
                     </div>
+                  ) : (
+                    <div className="pt-4 border-t border-white/10 space-y-4 text-right animate-[fadeIn_0.3s_ease]">
+                      <div className="space-y-1.5">
+                        <span className="text-[11px] font-black text-white/50 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-[#F0C040]"/> تحليل الخلل:</span>
+                        <p className="fluid-prose text-white/80 font-light pr-3 border-r border-white/10">
+                          {insight.lesson}
+                        </p>
+                      </div>
 
-                    <div className="space-y-1.5 bg-gradient-to-br from-[#D4A017]/10 to-transparent border border-[#D4A017]/30 p-4 sm:p-5 rounded-2xl shadow-inner">
-                      <span className="text-[11px] font-black text-[#F0C040] block flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400"/> الحل والخطوة العملية:</span>
-                      <p className="fluid-prose text-white/95 font-bold">
-                        {insight.practicalAction}
-                      </p>
+                      <div className="space-y-1.5 bg-gradient-to-br from-[#D4A017]/10 to-transparent border border-[#D4A017]/30 p-4 sm:p-5 rounded-2xl shadow-inner">
+                        <span className="text-[11px] font-black text-[#F0C040] block flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400"/> الحل والخطوة العملية:</span>
+                        <p className="fluid-prose text-white/95 font-bold">
+                          {insight.practicalAction}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )
                 )}
 
               </div>

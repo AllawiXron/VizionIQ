@@ -207,7 +207,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
             <div className="space-y-5 sm:space-y-8 pt-1">
               {detailedData.coreFramework?.sections?.map((sec, idx) => {
-                const isLockedSection = isFreeTrial ? (id !== "chapter1" || idx >= 1) : false;
+                const isLockedSection = isFreeTrial ? (id !== "chapter1" && id !== "chapter2" ? true : idx >= 1) : false;
                 return (
                   <FadeInUp key={idx} delay={idx * 0.08}>
                     <div className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 space-y-3.5 sm:space-y-4 shadow-md relative overflow-hidden">
@@ -329,32 +329,64 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
       {/* TAB CONTENT 2: DEEP DIVE */}
       {activeTab === "deepdive" && (
-        <div className="bg-[#0A122E] border border-white/10 rounded-[2.5rem] p-6 md:p-12 shadow-xl space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
-          <h3 className="text-2xl sm:text-3xl font-black text-[#F0C040] flex items-center gap-3 pb-2 border-b border-white/10">
-            <Layers className="w-7 h-7 text-[#D4A017] shrink-0" />
-            <span>{detailedData.deepDive?.title || "الغوص العميق والتطبيقات المتقدمة"}</span>
+        <div className="bg-[#0A122E] border border-white/10 rounded-[2.5rem] p-6 md:p-12 shadow-xl space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out] relative overflow-hidden">
+          <h3 className="text-2xl sm:text-3xl font-black text-[#F0C040] flex items-center justify-between pb-2 border-b border-white/10 flex-wrap gap-2">
+            <div className="flex items-center gap-3">
+              <Layers className="w-7 h-7 text-[#D4A017] shrink-0" />
+              <span>{detailedData.deepDive?.title || "الغوص العميق والتطبيقات المتقدمة"}</span>
+            </div>
+            {isFreeTrial && (
+              <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-[#F0C040]" />
+                <span>معاينة النسخة المجانية</span>
+              </span>
+            )}
           </h3>
 
           <div className="space-y-6">
-            {detailedData.deepDive?.sections?.map((sec, idx) => (
-              <FadeInUp key={idx} delay={idx * 0.1}>
-                <div className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-4">
-                  <h4 className="text-base sm:text-xl font-bold text-white border-r-4 border-[#D4A017] pr-3">{sec.heading}</h4>
-                  <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
-
-                  {sec.examples && (
-                    <div className="bg-black/40 p-5 rounded-2xl space-y-2 border border-white/5">
-                      <span className="text-xs sm:text-sm font-bold text-[#F0C040] block">أمثلة تطبيقية من الشارع العراقي:</span>
-                      <ul className="list-disc list-inside text-xs sm:text-sm text-white/80 space-y-1.5 leading-relaxed">
-                        {sec.examples.map((ex, eidx) => (
-                          <li key={eidx}>{ex}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </FadeInUp>
-            ))}
+            {detailedData.deepDive?.sections?.map((sec, idx) => {
+              const isLockedDeep = isFreeTrial && idx >= 1;
+              return (
+                <FadeInUp key={idx} delay={idx * 0.1}>
+                  <div className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-4 relative">
+                    <h4 className="text-base sm:text-xl font-bold text-white border-r-4 border-[#D4A017] pr-3">{sec.heading}</h4>
+                    {!isLockedDeep ? (
+                      <>
+                        <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
+                        {sec.examples && (
+                          <div className="bg-black/40 p-5 rounded-2xl space-y-2 border border-white/5">
+                            <span className="text-xs sm:text-sm font-bold text-[#F0C040] block">أمثلة تطبيقية من الشارع العراقي:</span>
+                            <ul className="list-disc list-inside text-xs sm:text-sm text-white/80 space-y-1.5 leading-relaxed">
+                              {sec.examples.map((ex, eidx) => (
+                                <li key={eidx}>{ex}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="mt-2 p-5 rounded-2xl bg-gradient-to-br from-[#0F1735] to-[#0B102B] border border-[#D4A017]/40 text-center space-y-3 shadow-xl">
+                        <p className="text-xs text-white/40 blur-[3px] select-none line-clamp-1">{sec.content}</p>
+                        <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#D4A017]/20 text-[#F0C040]">
+                          <Crown className="w-5 h-5" />
+                        </div>
+                        <h5 className="text-sm font-black text-white">تحليلات الغوص العميق محميّة بالكامل</h5>
+                        <p className="text-xs text-white/70 max-w-md mx-auto">
+                          احصل على رمز الحساب المدفوع لفتح جميع الأمثلة العملية وخطط التطبيق في العراق.
+                        </p>
+                        <button
+                          onClick={triggerUpgradeModal}
+                          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+                        >
+                          <KeyRound className="w-4 h-4 text-[#040B24]" />
+                          <span>ترقية الحساب وافتح المحتوى العميق ⚡</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </FadeInUp>
+              );
+            })}
           </div>
         </div>
       )}
@@ -364,7 +396,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
         <div className="max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
           {relatedCaseStudy ? (
             <FadeInUp>
-              <div className="bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-12 shadow-xl space-y-8">
+              <div className="bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-12 shadow-xl space-y-8 relative overflow-hidden">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <span className="px-4 py-1.5 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 text-[#F0C040] text-xs sm:text-sm font-bold">
                     تفكيك حالة حية: {relatedCaseStudy.businessName}
@@ -373,26 +405,49 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                 </div>
 
                 <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">{relatedCaseStudy.title}</h3>
-                <p className="fluid-prose text-white/85 font-normal max-readable-prose">{relatedCaseStudy.thePsychology}</p>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-white/5 p-6 rounded-2xl border border-white/5 text-center">
-                  <div>
-                    <span className="text-xs text-white/50 block font-bold mb-1">العائد ROAS</span>
-                    <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.roas}</span>
+                
+                {!isFreeTrial ? (
+                  <>
+                    <p className="fluid-prose text-white/85 font-normal max-readable-prose">{relatedCaseStudy.thePsychology}</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-white/5 p-6 rounded-2xl border border-white/5 text-center">
+                      <div>
+                        <span className="text-xs text-white/50 block font-bold mb-1">العائد ROAS</span>
+                        <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.roas}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-white/50 block font-bold mb-1">كلفة CPA</span>
+                        <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.cpa}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-white/50 block font-bold mb-1">نسبة الراجع</span>
+                        <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.returnRate}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-white/50 block font-bold mb-1">الطلبات اليومية</span>
+                        <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.dailyOrders}</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="p-6 rounded-2xl bg-gradient-to-r from-[#0F1735] via-[#121A3D] to-[#0F1735] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl">
+                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[#D4A017]/20 text-[#F0C040]">
+                      <Lock className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-base font-black text-white">الأرقام الدقيقة ودراسة الحالة الحية محميّة</h4>
+                      <p className="text-xs text-white/70 max-w-lg mx-auto">
+                        شاهد كيف حوّلنا مشروع {relatedCaseStudy.businessName} في {relatedCaseStudy.city} إلى مبيعات متضاعفة وتقليل المرتجعات. متاح لحملة الحساب الكامل.
+                      </p>
+                    </div>
+                    <button
+                      onClick={triggerUpgradeModal}
+                      className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+                    >
+                      <Crown className="w-4 h-4 text-[#040B24]" />
+                      <span>فتح دراسة الحالة الكاملة الآن ⚡</span>
+                    </button>
                   </div>
-                  <div>
-                    <span className="text-xs text-white/50 block font-bold mb-1">كلفة CPA</span>
-                    <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.cpa}</span>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50 block font-bold mb-1">نسبة الراجع</span>
-                    <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.returnRate}</span>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50 block font-bold mb-1">الطلبات اليومية</span>
-                    <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.dailyOrders}</span>
-                  </div>
-                </div>
+                )}
               </div>
             </FadeInUp>
           ) : (
@@ -404,19 +459,38 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
       {/* TAB CONTENT 5: SWIPE FILES */}
       {activeTab === "swipe" && (
         <div className="bg-[#0A122E] border border-white/10 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-8 md:p-12 shadow-xl space-y-6 sm:space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
-          <h3 className="text-xl sm:text-2xl font-black text-[#F0C040]">سكريبتات وملفات السوايب المخصصة لهذا الفصل:</h3>
+          <h3 className="text-xl sm:text-2xl font-black text-[#F0C040] flex items-center justify-between">
+            <span>سكريبتات وملفات السوايب المخصصة لهذا الفصل:</span>
+            {isFreeTrial && <span className="text-xs text-amber-300 font-normal">بعض السكريبتات مقفولة</span>}
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            {relatedSwipeFiles.map((sf, idx) => (
-              <FadeInUp key={sf.id} delay={idx * 0.1}>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 space-y-3 sm:space-y-4">
-                  <h4 className="text-base sm:text-lg font-bold text-white">{sf.title}</h4>
-                  <p className="text-xs sm:text-sm text-white/70 leading-relaxed">{sf.description}</p>
-                  <pre className="bg-black/60 p-3 sm:p-4 rounded-xl text-xs font-mono text-white/90 whitespace-pre-wrap dir-rtl max-h-48 overflow-y-auto border border-white/5">
-                    {sf.content}
-                  </pre>
-                </div>
-              </FadeInUp>
-            ))}
+            {relatedSwipeFiles.map((sf, idx) => {
+              const isSwipeLocked = isFreeTrial && idx >= 1;
+              return (
+                <FadeInUp key={sf.id} delay={idx * 0.1}>
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 space-y-3 sm:space-y-4 relative">
+                    <h4 className="text-base sm:text-lg font-bold text-white">{sf.title}</h4>
+                    <p className="text-xs sm:text-sm text-white/70 leading-relaxed">{sf.description}</p>
+                    {!isSwipeLocked ? (
+                      <pre className="bg-black/60 p-3 sm:p-4 rounded-xl text-xs font-mono text-white/90 whitespace-pre-wrap dir-rtl max-h-48 overflow-y-auto border border-white/5">
+                        {sf.content}
+                      </pre>
+                    ) : (
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/30 text-center space-y-2">
+                        <Lock className="w-5 h-5 text-[#F0C040] mx-auto" />
+                        <p className="text-xs text-white/80 font-bold">السكريبت التنسيقي الاحترافي مغلق</p>
+                        <button
+                          onClick={triggerUpgradeModal}
+                          className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black text-xs shadow hover:scale-105 transition-all cursor-pointer"
+                        >
+                          نسخ السكريبتات الكاملة ⚡
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </FadeInUp>
+              );
+            })}
           </div>
         </div>
       )}
@@ -424,18 +498,40 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
       {/* TAB CONTENT 6: INTERACTIVE TOOLS */}
       {activeTab === "tools" && (
         <div className="space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
-          {id === "chapter1" && <RoiCalculator />}
-          {id === "chapter2" && <ScriptSimulator />}
-          {id === "chapter3" && <AdvancedCalculatorSuite />}
-          {id === "chapter4" && <AdSimulator />}
-          {id === "chapter5" && <AdSimulator />}
-          {id === "chapter7" && <ScriptSimulator />}
-          {id === "chapter10" && <AdvancedCalculatorSuite />}
-          {id === "chapter11" && <ThirtyDayPlan />}
-          
-          {/* Default Suite Fallback */}
-          {!["chapter1", "chapter2", "chapter3", "chapter4", "chapter5", "chapter7", "chapter10", "chapter11"].includes(id) && (
-            <AdvancedCalculatorSuite />
+          {isFreeTrial && !["chapter1", "chapter2"].includes(id) ? (
+            <div className="p-8 sm:p-12 rounded-[2.5rem] bg-gradient-to-b from-[#0F1735] via-[#0A122E] to-[#040B24] border border-[#D4A017]/40 text-center space-y-5 shadow-2xl">
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+                <Crown className="w-8 h-8" />
+              </div>
+              <div className="space-y-2 max-w-xl mx-auto">
+                <h3 className="text-xl sm:text-2xl font-black text-white">الأدوات والحاسبات التفاعلية لهذا الفصل مغلقة</h3>
+                <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+                  تتضمن هذه المحاكاة حساب هامش الربح، كلفة الرسالة الفعليه، واختبار ردود الواتساب التلقائية بالسوق العراقي. متوفرة بالكامل في النسخة المدفوعة.
+                </p>
+              </div>
+              <button
+                onClick={triggerUpgradeModal}
+                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl shadow-[#D4A017]/25 hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+              >
+                <KeyRound className="w-5 h-5 text-[#040B24]" />
+                <span>افتح جميع الأدوات والحاسبات التفاعلية الآن ⚡</span>
+              </button>
+            </div>
+          ) : (
+            <>
+              {id === "chapter1" && <RoiCalculator />}
+              {id === "chapter2" && <ScriptSimulator />}
+              {id === "chapter3" && <AdvancedCalculatorSuite />}
+              {id === "chapter4" && <AdSimulator />}
+              {id === "chapter5" && <AdSimulator />}
+              {id === "chapter7" && <ScriptSimulator />}
+              {id === "chapter10" && <AdvancedCalculatorSuite />}
+              {id === "chapter11" && <ThirtyDayPlan />}
+              
+              {!["chapter1", "chapter2", "chapter3", "chapter4", "chapter5", "chapter7", "chapter10", "chapter11"].includes(id) && (
+                <AdvancedCalculatorSuite />
+              )}
+            </>
           )}
         </div>
       )}
