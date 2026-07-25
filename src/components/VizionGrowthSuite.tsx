@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Sparkles,
   TrendingUp,
@@ -291,141 +292,104 @@ export default function VizionGrowthSuite() {
   const currentWeekData = roadmapData.find(w => w.week === t10SelectedWeek) || roadmapData[0];
 
   return (
-    <div className="space-y-12 py-8 px-4 max-w-7xl mx-auto" id="vizion-growth-suite">
+    <div className="space-y-16 py-12 px-4 max-w-7xl mx-auto relative" id="vizion-growth-suite">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4A017]/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#1A2B73]/10 rounded-full blur-[150px] pointer-events-none" />
       
       {/* Dynamic Main Header */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-xs text-[#F0C040] font-bold">
-          <Sparkles className="w-3.5 h-3.5" />
+      <div className="text-center space-y-6 max-w-4xl mx-auto relative z-10">
+        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#D4A017]/20 to-[#D4A017]/5 border border-[#D4A017]/30 text-xs md:text-sm text-[#F0C040] font-black shadow-lg backdrop-blur-md">
+          <Sparkles className="w-4 h-4 animate-pulse-slow" />
           <span>Vizion OS • لوحة التحكم والتشغيل المالي والتسويقي التفاعلية</span>
         </div>
         
-        <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
-          لا تخمن أرقامك.. تحكّم بمشروعك مثل المحترفين
+        <h2 className="text-4xl md:text-6xl font-black text-white leading-tight drop-shadow-xl">
+          لا تخمن أرقامك.. تحكّم بمشروعك مثل <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-[#FFE58F] to-[#D4A017]">المحترفين</span>
         </h2>
         
-        <p className="text-sm text-white/60 leading-relaxed font-light">
-          صممنا لك نظاماً تفاعلياً متكاملاً يحتوي على <strong className="text-[#F0C040]">13 أداة ومحاكياً ذكياً</strong> مبنياً بالكامل على واقع السوق العراقي، لمساعدتك على اتخاذ قراراتك بناءً على الأرقام الصارمة بدلاً من التخمين والشك اليومي.
+        <p className="text-base md:text-lg text-white/70 leading-relaxed font-light max-w-3xl mx-auto">
+          صممنا لك نظاماً تفاعلياً متكاملاً يحتوي على <strong className="text-[#F0C040] font-bold">13 أداة ومحاكياً ذكياً</strong> مبنياً بالكامل على واقع السوق العراقي، لمساعدتك على اتخاذ قراراتك بناءً على الأرقام الصارمة بدلاً من التخمين والشك اليومي.
         </p>
       </div>
 
       {/* Main Grid: Tabs Sidebar + Active Tab Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
         {/* MOBILE SELECTOR & LAUNCHPAD (Visible only on mobile/tablet) */}
-        <div className="lg:hidden w-full space-y-3 mb-4 text-right">
-          
-          {/* Active Tool Label & Launchpad Toggle Button */}
-          <div className="flex items-center justify-between bg-gradient-to-r from-[#0F1735]/60 to-[#040B24]/90 border border-white/10 p-3 rounded-2xl shadow-lg">
-            <div className="text-right">
-              <span className="text-[10px] text-white/40 block leading-none mb-1 font-medium">الأداة النشطة حالياً:</span>
-              <span className="text-sm font-black text-[#F0C040] flex items-center gap-1.5 justify-end">
-                <span>{toolTabs.find(t => t.id === activeTab)?.label}</span>
-              </span>
-            </div>
-            
+        <div className="lg:hidden w-full mb-6 relative z-30">
+          <div className="bg-gradient-to-b from-[#0F1735]/90 to-[#040B24] border border-[#D4A017]/40 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
             <button
               onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
-              className="px-3.5 py-2 bg-[#D4A017]/10 hover:bg-[#D4A017]/20 border border-[#D4A017]/30 hover:border-[#D4A017]/50 rounded-xl text-[#F0C040] text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-[#D4A017]/2"
+              className="w-full flex items-center justify-between p-5 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent hover:bg-white/[0.06] transition-colors cursor-pointer"
             >
-              <span>{isLaunchpadOpen ? "إغلاق اللوحة ✕" : "عرض كل الأدوات (١٣) 🔍"}</span>
+              <div className="text-right">
+                <span className="text-[11px] text-[#F0C040]/70 block font-bold mb-1.5 uppercase tracking-widest animate-pulse">👈 اضغط هنا لتبديل الأداة (١٣ أداة متاحة)</span>
+                <span className="text-base font-black text-white flex items-center gap-2 drop-shadow-md">
+                  {toolTabs.find(t => t.id === activeTab)?.label}
+                </span>
+              </div>
+              <div className={`w-12 h-12 shrink-0 rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center transition-transform duration-500 shadow-inner ${isLaunchpadOpen ? 'rotate-180 bg-[#D4A017] border-[#D4A017]' : ''}`}>
+                <ChevronDown className={`w-6 h-6 transition-colors duration-500 ${isLaunchpadOpen ? 'text-[#040B24]' : 'text-[#F0C040]'}`} />
+              </div>
             </button>
+            
+            {/* Expandable Menu */}
+            <AnimatePresence>
+              {isLaunchpadOpen && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="border-t border-[#D4A017]/20 max-h-[60vh] overflow-y-auto no-scrollbar bg-black/80 backdrop-blur-2xl"
+                >
+                  <div className="p-4 space-y-2.5">
+                    {toolTabs.map((tab) => {
+                      const isActive = tab.id === activeTab;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => {
+                            setActiveTab(tab.id);
+                            setIsLaunchpadOpen(false);
+                            setT1ShowReport(false);
+                            setT2ShowAnalysis(false);
+                            setT3ShowAnalysis(false);
+                            setT4ShowReport(false);
+                            setT8ShowScore(false);
+                          }}
+                          className={`w-full flex items-center justify-between p-4.5 rounded-xl transition-all duration-300 cursor-pointer border ${
+                            isActive 
+                              ? "bg-gradient-to-r from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] shadow-[0_5px_15px_rgba(212,160,23,0.15)]" 
+                              : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20"
+                          }`}
+                        >
+                          <div className="text-right flex-1">
+                            <div className={`text-sm font-black mb-1.5 ${isActive ? "text-[#F0C040]" : "text-white"}`}>{tab.label}</div>
+                            <div className="text-[11px] text-white/50 leading-relaxed font-light">{tab.desc}</div>
+                          </div>
+                          {isActive && (
+                            <div className="w-8 h-8 rounded-full bg-[#D4A017] flex items-center justify-center shrink-0 ml-3 shadow-[0_0_15px_#D4A017]">
+                              <CheckCircle2 className="w-5 h-5 text-[#040B24]" />
+                            </div>
+                          )}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-
-          {/* 1. Horizontal Swipeable Ribbon */}
-          <div className="relative bg-white/[0.02] border border-white/5 rounded-2xl p-2">
-            <div className="flex overflow-x-auto gap-2 pb-1.5 pt-1 px-1 no-scrollbar scroll-smooth" style={{ direction: 'rtl' }}>
-              {toolTabs.map((tab) => {
-                const isActive = tab.id === activeTab;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => {
-                      setActiveTab(tab.id);
-                      setIsLaunchpadOpen(false); // Close launchpad when a tool is selected
-                      // Reset show status for smoother navigation
-                      setT1ShowReport(false);
-                      setT2ShowAnalysis(false);
-                      setT3ShowAnalysis(false);
-                      setT4ShowReport(false);
-                      setT8ShowScore(false);
-                    }}
-                    className={`whitespace-nowrap px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 border cursor-pointer flex items-center gap-1.5 shrink-0 ${
-                      isActive
-                        ? "bg-gradient-to-l from-[#D4A017] to-amber-500 text-[#040B24] border-[#D4A017] shadow-md shadow-[#D4A017]/10 scale-102"
-                        : "bg-white/[0.03] border-white/5 text-white/80 hover:bg-white/10 hover:border-white/15"
-                    }`}
-                  >
-                    <span>{tab.label.split(" ")[0]}</span> {/* Emoji */}
-                    <span>{tab.label.substring(tab.label.indexOf(" ") + 1)}</span> {/* Text */}
-                  </button>
-                );
-              })}
-            </div>
-            <div className="text-[10px] text-white/30 text-center mt-1.5 font-light flex items-center justify-center gap-1">
-              <span>← اسحب لليمين واليسار للتنقل السريع بين الأدوات الـ ١٣ →</span>
-            </div>
-          </div>
-
-          {/* 2. Expandable Launchpad Grid */}
-          {isLaunchpadOpen && (
-            <div className="bg-gradient-to-b from-[#0F1735]/95 to-[#040B24]/98 border border-[#D4A017]/40 rounded-2xl p-4 shadow-2xl relative overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300 z-10">
-              <div className="absolute top-0 left-0 w-24 h-24 bg-[#D4A017]/5 rounded-full blur-xl pointer-events-none" />
-              
-              <div className="text-right mb-4 border-b border-white/10 pb-3 flex justify-between items-center">
-                <span className="text-[10px] text-white/40">اضغط على أي أداة لتفعيلها فوراً:</span>
-                <h4 className="text-xs font-black text-[#F0C040] uppercase tracking-wider flex items-center gap-1.5 justify-end">
-                  <span>لوحة اختيار الأدوات المباشرة</span>
-                  <span>⚙️</span>
-                </h4>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 max-h-[380px] overflow-y-auto pr-1 no-scrollbar">
-                {toolTabs.map((tab) => {
-                  const isActive = tab.id === activeTab;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => {
-                        setActiveTab(tab.id);
-                        setIsLaunchpadOpen(false); // Close after selection
-                        // Reset show status for smoother navigation
-                        setT1ShowReport(false);
-                        setT2ShowAnalysis(false);
-                        setT3ShowAnalysis(false);
-                        setT4ShowReport(false);
-                        setT8ShowScore(false);
-                      }}
-                      className={`p-3 rounded-xl border text-right transition-all duration-200 cursor-pointer flex flex-col justify-between h-[95px] ${
-                        isActive
-                          ? "bg-gradient-to-bl from-[#D4A017]/20 to-[#040B24] border-[#D4A017] text-[#F0C040] shadow-md shadow-[#D4A017]/5"
-                          : "bg-white/[0.02] border-white/5 text-white/80 hover:bg-white/[0.05] hover:border-white/10"
-                      }`}
-                    >
-                      <span className="text-lg block mb-1">{tab.label.split(" ")[0]}</span>
-                      <div className="space-y-0.5">
-                        <span className="text-[11px] font-black block truncate leading-tight">
-                          {tab.label.substring(tab.label.indexOf(" ") + 1)}
-                        </span>
-                        <span className="text-[9px] text-white/45 block line-clamp-1 font-light leading-none">
-                          {tab.desc}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* SIDE BAR / SELECTOR RAIL (4 Columns, hidden on mobile/tablet) */}
-        <div className="hidden lg:block lg:col-span-4 bg-gradient-to-b from-[#0F1735]/60 to-[#040B24]/90 border border-white/5 rounded-3xl p-4 md:p-5 space-y-3 shadow-2xl h-[650px] overflow-y-auto pr-1 no-scrollbar">
-          <span className="text-[11px] font-black text-[#F0C040] block mr-1 uppercase tracking-wider">
-            ⚙️ أدوات نظام التشغيل والتحكم (Vizion OS Tools):
+        <div className="hidden lg:flex lg:col-span-4 bg-gradient-to-b from-[#0F1735]/80 to-[#040B24]/90 backdrop-blur-xl border border-[#D4A017]/20 rounded-[2.5rem] p-5 md:p-6 flex-col space-y-4 shadow-[0_0_50px_rgba(212,160,23,0.05)] h-[750px] overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-1.5 h-full bg-gradient-to-b from-[#F0C040] to-transparent opacity-50" />
+          <span className="text-[12px] font-black text-[#F0C040] block mr-3 uppercase tracking-widest border-b border-white/10 pb-4">
+            ⚙️ أدوات نظام التشغيل والتحكم:
           </span>
           
-          <div className="space-y-1.5">
+          <div className="space-y-2 overflow-y-auto pr-2 no-scrollbar flex-1 pb-4">
             {toolTabs.map((tab) => {
               const isActive = tab.id === activeTab;
               return (
@@ -440,23 +404,23 @@ export default function VizionGrowthSuite() {
                     setT4ShowReport(false);
                     setT8ShowScore(false);
                   }}
-                  className={`w-full p-3.5 rounded-2xl border text-right transition-all duration-300 relative cursor-pointer flex items-center justify-between group overflow-hidden ${
+                  className={`w-full p-4 rounded-2xl border text-right transition-all duration-400 relative cursor-pointer flex items-center justify-between group overflow-hidden ${
                     isActive
-                      ? "bg-gradient-to-l from-[#D4A017]/15 to-[#040B24] border-[#D4A017] text-[#F0C040] shadow-xl shadow-[#D4A017]/5 scale-[1.01]"
-                      : "bg-white/[0.01] border-white/5 text-white/70 hover:bg-white/[0.03] hover:border-white/10"
+                      ? "bg-gradient-to-l from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] shadow-[0_10px_20px_rgba(212,160,23,0.15)] scale-[1.02] z-10"
+                      : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20 hover:-translate-y-0.5"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="space-y-0.5 text-right">
-                      <h4 className="font-extrabold text-xs text-white group-hover:text-[#F0C040] transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="space-y-1.5 text-right">
+                      <h4 className={`font-black text-sm transition-colors duration-300 ${isActive ? "text-[#F0C040]" : "text-white group-hover:text-[#F0C040]"}`}>
                         {tab.label}
                       </h4>
-                      <p className="text-[9px] text-white/40 group-hover:text-white/60 transition-colors">
+                      <p className={`text-[10px] transition-colors duration-300 font-light ${isActive ? "text-white/80" : "text-white/40 group-hover:text-white/60"}`}>
                         {tab.desc}
                       </p>
                     </div>
                   </div>
-                  <span className={`text-[10px] transition-transform ${isActive ? "text-[#F0C040] translate-x-1" : "text-white/20 group-hover:text-white/40"}`}>
+                  <span className={`text-sm transition-all duration-500 ${isActive ? "text-[#F0C040] translate-x-1 opacity-100" : "text-white/20 group-hover:text-white/40 opacity-0 group-hover:opacity-100"}`}>
                     ◀
                   </span>
                 </button>
@@ -466,13 +430,22 @@ export default function VizionGrowthSuite() {
         </div>
 
         {/* CONTENT VIEWPORT (8 Columns) */}
-        <div className="lg:col-span-8 bg-gradient-to-b from-[#0F1735]/40 to-black/80 border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative min-h-[650px] flex flex-col justify-between overflow-hidden">
+        <div className="lg:col-span-8 bg-gradient-to-b from-[#0F1735]/60 to-[#040B24]/90 backdrop-blur-2xl border border-[#D4A017]/30 rounded-[2.5rem] p-8 md:p-12 shadow-[0_0_60px_rgba(212,160,23,0.1)] relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
+          <div className="absolute -top-32 -left-32 w-64 h-64 bg-[#D4A017]/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-[#D4A017]/20 transition-all duration-1000" />
           
-          <div className="space-y-6">
-            
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={activeTab}
+              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+              transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
+              className="space-y-8 w-full relative z-10"
+            >
+              
             {/* TOOL 1: Business Diagnostics Wizard */}
             {activeTab === "diagnostics" && (
-              <div className="space-y-6 text-right animate-fade-in">
+              <div className="space-y-6 text-right">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">🩺</span>
                   <div>
@@ -1718,7 +1691,8 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-          </div>
+          </motion.div>
+          </AnimatePresence>
 
           {/* Golden Footer branding for Vizion OS */}
           <div className="mt-8 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] text-white/45">

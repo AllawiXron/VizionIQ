@@ -6,6 +6,77 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-react";
 
+// 1. HARDCODED CODES LIST:
+// You can directly edit, add, or remove passwords in this array!
+// - Passwords WITH '#vip' (e.g. "ali") -> Full access to website + AI Assistant (فيزيون بوت).
+// - Passwords WITHOUT '#vip' (e.g. "ali#1", "bker#2") -> Full access to website ONLY (No AI Assistant access).
+export const HARDCODED_CODES = [
+  "bker#2",
+  "brandek#1",
+  "ehab#1",
+  "maryam#1",
+  "mustafa#1",
+  "brhoom#1",
+  "hayfaa#1",
+  "mohammed#1",
+  "jomana#1",
+  "ali#3",
+  "zaid#1",
+  "zaid#vip",
+  "fatima#1",
+  "mohanned#1",
+  "said#1"
+];
+
+// Helper to normalize strings for robust comparison on both mobile and PC
+export const normalizeCode = (str: string): string => {
+  if (!str) return "";
+  let normalized = str.trim().toLowerCase();
+  
+  const arabicDigits = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+  const persianDigits = ["۰", "۱", "۲", "۳", "٤", "٥", "٦", "٧", "٨", "٩"];
+  
+  for (let i = 0; i < 10; i++) {
+    normalized = normalized.split(arabicDigits[i]).join(String(i));
+    normalized = normalized.split(persianDigits[i]).join(String(i));
+  }
+  
+  return normalized;
+};
+
+// Retrieve all valid active codes (HARDCODED_CODES + active Admin Panel entries)
+export const getAllValidCodes = (): string[] => {
+  const stored = localStorage.getItem("sales_guide_codes");
+  const valid = new Set<string>(HARDCODED_CODES.map(c => normalizeCode(c)));
+
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        parsed.forEach((item: any) => {
+          if (!item.isRevoked && item.code) {
+            valid.add(normalizeCode(item.code));
+          }
+        });
+      }
+    } catch (e) {
+      console.error("Error parsing codes", e);
+    }
+  }
+
+  return Array.from(valid);
+};
+
+export const isVipUser = (code: string): boolean => {
+  if (!code) return false;
+  const normalized = normalizeCode(code);
+  if (!normalized.includes("#vip")) return false;
+  
+  // Verify code is strictly valid (exists in HARDCODED_CODES or active admin list)
+  const allCodes = getAllValidCodes();
+  return allCodes.includes(normalized);
+};
+
 interface LockScreenProps {
   onSuccess: (code: string) => void;
 }
@@ -18,42 +89,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [shake, setShake] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  // 1. HARDCODED CODES: You can directly edit, add, or remove passwords in this array!
-  // Any change made here will take effect immediately on both PC and mobile.
-  const HARDCODED_CODES = [
-    "bker#2",
-    "brandek#1",
-    "ehab#1",
-    "maryam#1",
-    "mustafa#1",
-    "brhoom#1",
-    "hayfaa#1",
-    "mohammed#1",
-    "jomana#1",
-    "ali#3",
-    "zaid#1",
-    "fatima#1",
-    "mohanned#1",
-    "said#1"
-  ];
-
-  // Helper to normalize strings for robust comparison on both mobile and PC
-  // This trims trailing spaces, converts everything to lowercase, and translates Arabic/Persian numerals
-  const normalizeCode = (str: string): string => {
-    if (!str) return "";
-    let normalized = str.trim().toLowerCase();
-    
-    const arabicDigits = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-    const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-    
-    for (let i = 0; i < 10; i++) {
-      normalized = normalized.split(arabicDigits[i]).join(String(i));
-      normalized = normalized.split(persianDigits[i]).join(String(i));
-    }
-    
-    return normalized;
-  };
 
   // Synchronize hardcoded default codes with localStorage on component mount
   useEffect(() => {
@@ -106,22 +141,9 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     }
   }, []);
 
-  // Load active codes from localStorage
+  // Load active codes
   const getValidCodes = (): string[] => {
-    const stored = localStorage.getItem("sales_guide_codes");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed
-            .filter((item: any) => !item.isRevoked)
-            .map((item: any) => item.code);
-        }
-      } catch (e) {
-        console.error("Error parsing codes", e);
-      }
-    }
-    return HARDCODED_CODES;
+    return getAllValidCodes();
   };
 
   // Canvas animation for golden particle sparks
@@ -281,27 +303,27 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         id="lock-card"
       >
         {/* Glass Card */}
-        <div className="glass-panel-gold rounded-2xl p-8 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/10">
+        <div className="glass-panel-gold rounded-2xl p-5 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/10 dir-rtl">
           {/* Decorative Corner Borders */}
-          <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#D4A017] rounded-tr-xl opacity-85" />
-          <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#D4A017] rounded-bl-xl opacity-85" />
+          <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-t-2 border-r-2 border-[#D4A017] rounded-tr-xl opacity-85" />
+          <div className="absolute bottom-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-b-2 border-l-2 border-[#D4A017] rounded-bl-xl opacity-85" />
 
           {/* Logo and Icon */}
-          <div className="flex flex-col items-center mb-8 text-center">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#D4A017] to-[#F0C040] flex items-center justify-center shadow-lg shadow-[#D4A017]/30 mb-5 relative group">
-              <Lock className="w-8 h-8 text-[#040B24] stroke-[2.5]" />
+          <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-[#D4A017] to-[#F0C040] flex items-center justify-center shadow-lg shadow-[#D4A017]/30 mb-3 sm:mb-5 relative group">
+              <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-[#040B24] stroke-[2.5]" />
               <div className="absolute inset-0 rounded-full bg-white/20 animate-ping opacity-25" />
             </div>
             
-            <h1 className="text-3xl font-extrabold text-white tracking-tight mb-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1.5">
               فيزيون • Vizion
             </h1>
-            <p className="text-[#F0F4FF]/75 text-sm md:text-base font-medium">
+            <p className="text-[#F0F4FF]/75 text-xs sm:text-sm md:text-base font-medium">
               نظام التشغيل والتحكم المالي للمشاريع الإلكترونية بالعراق
             </p>
 
             {/* Premium Divider */}
-            <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4A017] to-transparent my-4" />
+            <div className="w-20 sm:w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4A017] to-transparent my-3 sm:my-4" />
           </div>
 
           {/* Action Form */}

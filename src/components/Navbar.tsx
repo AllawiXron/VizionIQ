@@ -4,17 +4,18 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, ShieldAlert, Settings, LogOut, Flame } from "lucide-react";
+import { Menu, X, ShieldAlert, Settings, LogOut, Flame, Bot, Sparkles } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
 
 interface NavbarProps {
   activeSection: string;
   onLogout: () => void;
   onOpenAdmin: () => void;
+  onOpenAdvisor?: () => void;
   userCode: string;
 }
 
-export default function Navbar({ activeSection, onLogout, onOpenAdmin, userCode }: NavbarProps) {
+export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdvisor, userCode }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -67,8 +68,8 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, userCode 
       <nav
         className={`fixed top-0 inset-x-0 h-16 z-40 transition-all duration-300 border-b ${
           scrolled
-            ? "bg-[#040B24]/90 backdrop-blur-md border-white/10 shadow-lg"
-            : "bg-transparent border-transparent"
+            ? "bg-[#040B24]/85 backdrop-blur-2xl border-[#D4A017]/30 shadow-[0_10px_30px_rgba(4,11,36,0.8)]"
+            : "bg-[#040B24]/40 backdrop-blur-md border-white/5"
         }`}
         id="main-navbar"
       >
@@ -77,10 +78,10 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, userCode 
           {/* Logo Brand */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-2 text-[#F0C040] font-black text-sm md:text-base cursor-pointer tracking-wider"
+            className="flex items-center gap-2 text.transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-[#D4A017] to-[#F0C040] font-black text-sm md:text-base cursor-pointer tracking-wider hover:opacity-90 transition-opacity"
           >
-            <span className="text-xl">⚡</span>
-            <span>فيزيون • Vizion</span>
+            <span className="text-xl drop-shadow-[0_0_10px_#F0C040]">⚡</span>
+            <span className="text-[#F0C040]">فيزيون • Vizion</span>
           </button>
 
           {/* Desktop Navigation Links */}
@@ -109,6 +110,18 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, userCode 
 
           {/* User Controls and Action Buttons */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* AI Advisor Button */}
+            {onOpenAdvisor && (
+              <button
+                onClick={onOpenAdvisor}
+                className="px-3 py-1.5 bg-gradient-to-r from-[#D4A017] to-amber-500 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] rounded-xl font-black transition-all cursor-pointer flex items-center gap-1.5 text-xs shadow-lg shadow-[#D4A017]/25 hover:scale-105 active:scale-95"
+                title="المستشار الرقمي المباشر الذكي"
+              >
+                <Bot className="w-4 h-4" />
+                <span>فيزيون بوت</span>
+              </button>
+            )}
+
             {/* Secrets trigger button */}
             <button
               onClick={() => handleScrollTo("vizion-growth-suite")}
@@ -160,12 +173,41 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, userCode 
         }`}
       >
         <div className="space-y-3 overflow-y-auto max-h-[60vh] no-scrollbar">
-          <span className="text-[10px] text-white/40 block font-bold tracking-wider mr-2 uppercase">فهرس فصول الدليل:</span>
+          <span className="text-[10px] text-white/40 block font-bold tracking-wider mr-2 uppercase">أدوات العمليات والمساعد:</span>
+          
+          {onOpenAdvisor && (
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                onOpenAdvisor();
+              }}
+              className="w-full p-4 mb-2 bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] rounded-xl text-right text-xs font-black transition-all flex items-center justify-between shadow-lg shadow-[#D4A017]/20 cursor-pointer"
+            >
+              <span className="flex items-center gap-2">
+                <Bot className="w-5 h-5" />
+                <span>فيزيون بوت (المستشار الرقمي)</span>
+              </span>
+              <span className="bg-[#040B24] text-[#F0C040] text-[9px] font-black px-2 py-0.5 rounded-full uppercase">ذكاء اصطناعي</span>
+            </button>
+          )}
+
+          <button
+            onClick={() => handleScrollTo("vizion-growth-suite")}
+            className="w-full p-4 mb-2 bg-gradient-to-r from-[#D4A017]/15 to-amber-500/5 hover:from-[#D4A017]/25 hover:to-amber-500/10 border border-[#D4A017]/30 text-[#F0C040] hover:text-white rounded-xl text-right text-xs font-black transition-all flex items-center justify-between"
+          >
+            <span className="flex items-center gap-2">
+              <span>⚡</span>
+              <span>أدوات Vizion التفاعلية (١٣ أداة)</span>
+            </span>
+            <span className="bg-[#D4A017] text-[#040B24] text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase">مفتوح</span>
+          </button>
+
+          <span className="text-[10px] text-white/40 block font-bold tracking-wider mr-2 uppercase mt-4">فهرس فصول الدليل:</span>
           
           {/* Mobile Elite Secrets Button */}
           <button
             onClick={() => handleScrollTo("elite-secrets-section")}
-            className="w-full p-4 mb-2 bg-gradient-to-r from-[#D4A017]/15 to-amber-500/5 hover:from-[#D4A017]/25 hover:to-amber-500/10 border border-[#D4A017]/30 text-[#F0C040] hover:text-white rounded-xl text-right text-xs font-black transition-all flex items-center justify-between"
+            className="w-full p-4 mb-2 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white/90 hover:text-white rounded-xl text-right text-xs font-black transition-all flex items-center justify-between"
           >
             <span className="flex items-center gap-2">
               <span>💡</span>

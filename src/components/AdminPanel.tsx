@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { X, Shield, Plus, Ban, Check, RefreshCw, Key, FileSpreadsheet, Users } from "lucide-react";
 import { AccessCode } from "../types";
 
@@ -118,16 +119,33 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
   const activeCodes = totalCodes - revokedCodes;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease]">
-      
-      {/* Modal Card */}
-      <div className="relative w-full max-w-2xl bg-[#040B24] border border-[#D4A017]/30 rounded-2xl overflow-hidden shadow-2xl glass-panel-gold max-h-[90vh] flex flex-col">
-        
-        {/* Modal Header */}
-        <div className="flex justify-between items-center px-6 py-4 border-b border-white/10 bg-[#0D1B56]/50">
-          <div className="flex items-center gap-2.5 text-[#F0C040]">
-            <Shield className="w-5 h-5 text-[#F0C040]" />
-            <span className="font-extrabold text-base md:text-lg">بوابة التحكم الإدارية للأعضاء والأكواد</span>
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm">
+          {/* Modal Card */}
+          <motion.div
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0, bottom: 0.5 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.y > 100 || info.velocity.y > 400) {
+                onClose();
+              }
+            }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.2 }}
+            className="relative w-full max-w-2xl bg-[#040B24] border border-[#D4A017]/30 rounded-2xl overflow-hidden shadow-2xl glass-panel-gold max-h-[95vh] sm:max-h-[90vh] flex flex-col dir-rtl touch-pan-y"
+          >
+            {/* Mobile Drag Down Bar Indicator */}
+            <div className="w-12 h-1 bg-white/30 rounded-full mx-auto my-1 sm:hidden shrink-0 cursor-grab active:cursor-grabbing" />
+            
+            {/* Modal Header */}
+        <div className="flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 border-b border-white/10 bg-[#0D1B56]/50">
+          <div className="flex items-center gap-2 text-[#F0C040]">
+            <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-[#F0C040] shrink-0" />
+            <span className="font-extrabold text-sm sm:text-base md:text-lg">بوابة التحكم بالأعضاء والأكواد</span>
           </div>
           <button
             onClick={onClose}
@@ -138,18 +156,18 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
         </div>
 
         {/* Stats Strip */}
-        <div className="grid grid-cols-3 gap-4 px-6 py-4 bg-white/[0.02] border-b border-white/5 text-center">
-          <div className="bg-white/5 border border-white/5 rounded-xl py-2 px-3">
-            <span className="text-[10px] text-white/50 block font-semibold">إجمالي الأكواد</span>
-            <span className="text-lg font-bold text-white block mt-0.5">{totalCodes}</span>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 px-3 sm:px-6 py-2.5 sm:py-4 bg-white/[0.02] border-b border-white/5 text-center">
+          <div className="bg-white/5 border border-white/5 rounded-xl py-1.5 sm:py-2 px-1.5 sm:px-3">
+            <span className="text-[9px] sm:text-[10px] text-white/50 block font-semibold">إجمالي الأكواد</span>
+            <span className="text-base sm:text-lg font-bold text-white block mt-0.5">{totalCodes}</span>
           </div>
-          <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl py-2 px-3">
-            <span className="text-[10px] text-emerald-400 block font-semibold">الأكواد الفعالة</span>
-            <span className="text-lg font-bold text-emerald-400 block mt-0.5">{activeCodes}</span>
+          <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl py-1.5 sm:py-2 px-1.5 sm:px-3">
+            <span className="text-[9px] sm:text-[10px] text-emerald-400 block font-semibold">الأكواد الفعالة</span>
+            <span className="text-base sm:text-lg font-bold text-emerald-400 block mt-0.5">{activeCodes}</span>
           </div>
-          <div className="bg-red-500/5 border border-red-500/20 rounded-xl py-2 px-3">
-            <span className="text-[10px] text-red-400 block font-semibold">الملغية / الموقوفة</span>
-            <span className="text-lg font-bold text-red-400 block mt-0.5">{revokedCodes}</span>
+          <div className="bg-red-500/5 border border-red-500/20 rounded-xl py-1.5 sm:py-2 px-1.5 sm:px-3">
+            <span className="text-[9px] sm:text-[10px] text-red-400 block font-semibold">الملغية والموقوفة</span>
+            <span className="text-base sm:text-lg font-bold text-red-400 block mt-0.5">{revokedCodes}</span>
           </div>
         </div>
 
@@ -157,35 +175,35 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
         <div className="flex border-b border-white/5 bg-black/25">
           <button
             onClick={() => setActiveTab("codes")}
-            className={`flex-1 py-3 text-xs font-bold transition-all border-b-2 cursor-pointer ${
+            className={`flex-1 py-2.5 sm:py-3 text-[11px] sm:text-xs font-bold transition-all border-b-2 cursor-pointer ${
               activeTab === "codes"
                 ? "border-[#D4A017] text-[#F0C040] bg-white/[0.02]"
                 : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]"
             }`}
           >
-            📋 قائمة الأكواد الحالية
+            📋 قائمة الأكواد
           </button>
           <button
             onClick={() => setActiveTab("add")}
-            className={`flex-1 py-3 text-xs font-bold transition-all border-b-2 cursor-pointer ${
+            className={`flex-1 py-2.5 sm:py-3 text-[11px] sm:text-xs font-bold transition-all border-b-2 cursor-pointer ${
               activeTab === "add"
                 ? "border-[#D4A017] text-[#F0C040] bg-white/[0.02]"
                 : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]"
             }`}
           >
-            ➕ إضافة مشترك ومشتري جديد
+            ➕ إضافة مشترِ جديد
           </button>
         </div>
 
         {/* Content Body */}
-        <div className="p-6 overflow-y-auto flex-1 no-scrollbar space-y-4">
+        <div className="p-3 sm:p-6 overflow-y-auto flex-1 no-scrollbar space-y-4">
           
           {/* TAB 1: CODES REGISTRY */}
           {activeTab === "codes" && (
             <div className="space-y-3">
-              <div className="flex justify-between items-center text-xs text-white/50 pb-1">
-                <span>سجل الأكواد الصالحة والملغاة للدليل</span>
-                <span>ترتيب الأحدث أولاً</span>
+              <div className="flex justify-between items-center text-[10px] sm:text-xs text-white/50 pb-1">
+                <span>سجل الأكواد الصالحة والملغاة</span>
+                <span>الأحدث أولاً</span>
               </div>
 
               {codes.length === 0 ? (
@@ -197,15 +215,15 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   {codes.map((item, idx) => (
                     <div
                       key={idx}
-                      className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-all ${
+                      className={`p-3 sm:p-3.5 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 transition-all ${
                         item.isRevoked
                           ? "bg-red-950/15 border-red-900/30 text-white/40"
                           : "bg-white/[0.02] border-white/5 text-white"
                       }`}
                     >
-                      <div className="space-y-1">
+                      <div className="space-y-1 w-full sm:w-auto">
                         <div className="flex items-center gap-2">
-                          <span className={`font-mono font-bold text-sm select-all px-2 py-0.5 rounded ${
+                          <span className={`font-mono font-bold text-xs sm:text-sm select-all px-2 py-0.5 rounded ${
                             item.isRevoked ? "bg-red-950 text-red-400 line-through" : "bg-white/10 text-[#F0C040]"
                           }`}>
                             {item.code}
@@ -216,16 +234,16 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                             {item.isRevoked ? "ملغي" : "نشط"}
                           </span>
                         </div>
-                        <div className="text-[11px] text-white/60 flex items-center gap-1">
+                        <div className="text-[10px] sm:text-[11px] text-white/60 flex items-center gap-1 flex-wrap">
                           <span className="font-semibold text-white/80">{item.buyerName || "بدون اسم"}</span>
                           <span>· تاريخ التسجيل: {item.dateAdded}</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5 w-full sm:w-auto justify-end border-t sm:border-0 border-white/5 pt-2 sm:pt-0">
                         <button
                           onClick={() => handleToggleRevoke(item.code)}
-                          className={`p-1.5 rounded-lg border transition-all text-xs cursor-pointer flex items-center gap-1 ${
+                          className={`px-2.5 py-1.5 rounded-lg border transition-all text-xs cursor-pointer flex items-center gap-1 ${
                             item.isRevoked
                               ? "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
                               : "bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400"
@@ -237,7 +255,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                         </button>
                         <button
                           onClick={() => handleDeleteCode(item.code)}
-                          className="p-1.5 bg-white/5 hover:bg-red-500/15 hover:border-red-500/40 text-white/60 hover:text-red-300 rounded-lg border border-white/10 transition-all text-xs cursor-pointer"
+                          className="px-2.5 py-1.5 bg-white/5 hover:bg-red-500/15 hover:border-red-500/40 text-white/60 hover:text-red-300 rounded-lg border border-white/10 transition-all text-xs cursor-pointer"
                           title="حذف نهائي"
                         >
                           حذف
@@ -312,7 +330,9 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           تذكر: جميع الأكواد تحفظ محلياً بالكامل بالمتصفح، ولا يتم إرسالها لأي خادم بعيد لتأمين الخصوصية الكاملة.
         </div>
 
-      </div>
-    </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 }

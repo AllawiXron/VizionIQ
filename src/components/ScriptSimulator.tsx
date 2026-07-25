@@ -80,7 +80,7 @@ export default function ScriptSimulator() {
           <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
               <span className="text-[10px] bg-amber-500/20 text-[#F0C040] px-2 py-0.5 rounded font-bold">{activeScript.title}</span>
-              <p className="text-xs text-white/70 mt-1.5 font-medium">{activeScript.description}</p>
+              <p className="text-xs text-white/70 mt-1.5 font-medium">{activeScript.description || activeScript.psychologyNote}</p>
             </div>
             
             <button
@@ -150,7 +150,7 @@ export default function ScriptSimulator() {
               💡 نصيحة الخبير الذهبية:
             </h5>
             <p className="text-xs text-white/70 leading-relaxed font-light">
-              {activeScript.tip}
+              {activeScript.tip || activeScript.goldenOutcome}
             </p>
           </div>
 

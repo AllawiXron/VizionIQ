@@ -4,16 +4,16 @@
 @theme {
   --font-sans: "Tajawal", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
   
-  /* Scale up default sizes for pristine Arabic readability */
-  --font-size-xs: 0.875rem;      /* ~14px (Default was 12px) */
-  --font-size-sm: 1rem;          /* ~16px (Default was 14px) */
-  --font-size-base: 1.125rem;    /* ~18px (Default was 16px) */
-  --font-size-lg: 1.25rem;       /* ~20px (Default was 18px) */
-  --font-size-xl: 1.45rem;       /* ~23.2px (Default was 20px) */
-  --font-size-2xl: 1.75rem;      /* ~28px (Default was 24px) */
-  --font-size-3xl: 2.15rem;      /* ~34.4px (Default was 30px) */
-  --font-size-4xl: 2.75rem;      /* ~44px (Default was 36px) */
-  --font-size-5xl: 3.5rem;       /* ~56px (Default was 48px) */
+  /* Scale up default sizes for pristine Arabic readability & clear distinction between headings and body */
+  --font-size-xs: 0.875rem;      /* ~14px */
+  --font-size-sm: 1rem;          /* ~16px */
+  --font-size-base: 1.125rem;    /* ~18px */
+  --font-size-lg: 1.35rem;       /* ~21.6px */
+  --font-size-xl: 1.6rem;        /* ~25.6px */
+  --font-size-2xl: 2rem;         /* ~32px */
+  --font-size-3xl: 2.5rem;       /* ~40px */
+  --font-size-4xl: 3.25rem;      /* ~52px */
+  --font-size-5xl: 4.25rem;      /* ~68px */
 
   /* Custom Color System */
   --color-bg-primary: #040B24;
@@ -39,22 +39,119 @@
   --color-text-muted: rgba(240, 244, 255, 0.45);
   --color-glass-card: rgba(255, 255, 255, 0.04);
   --color-glass-border: rgba(255, 255, 255, 0.08);
+
+  /* Fluid Typography & Spacing System for Chapters & Mobile Screens */
+  --fluid-font-body: clamp(0.875rem, 0.8rem + 0.45vw, 1.125rem);       /* ~14px on 320px -> 18px on desktop */
+  --fluid-font-lead: clamp(0.95rem, 0.88rem + 0.55vw, 1.25rem);       /* ~15.2px -> 20px */
+  --fluid-font-h1: clamp(1.65rem, 1.35rem + 1.8vw, 3.25rem);          /* ~26.4px -> 52px */
+  --fluid-font-h2: clamp(1.3rem, 1.1rem + 1.2vw, 2.25rem);           /* ~20.8px -> 36px */
+  --fluid-font-h3: clamp(1.1rem, 1rem + 0.8vw, 1.6rem);               /* ~17.6px -> 25.6px */
+  
+  --fluid-line-height-body: clamp(1.65, 1.55 + 0.35vw, 1.95);       /* Fluid line height prevents text overlap on mobile */
+  --fluid-line-height-heading: clamp(1.2, 1.15 + 0.25vw, 1.4);
+  
+  --fluid-paragraph-margin: clamp(0.625rem, 0.45rem + 0.8vw, 1.5rem);/* Fluid paragraph margin */
+  --fluid-heading-margin: clamp(0.75rem, 0.5rem + 1vw, 1.75rem);
+  --fluid-section-gap: clamp(1rem, 0.75rem + 1.5vw, 2.5rem);
+}
+
+/* Fluid Typography Classes for Chapter Prose and Content */
+.fluid-prose {
+  font-size: var(--fluid-font-body);
+  line-height: var(--fluid-line-height-body);
+}
+
+.fluid-prose p {
+  margin-bottom: var(--fluid-paragraph-margin);
+  line-height: var(--fluid-line-height-body);
+}
+
+.fluid-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.fluid-lead-text {
+  font-size: var(--fluid-font-lead);
+  line-height: var(--fluid-line-height-body);
+  margin-bottom: var(--fluid-paragraph-margin);
+}
+
+.fluid-heading-1 {
+  font-size: var(--fluid-font-h1);
+  line-height: var(--fluid-line-height-heading);
+  margin-bottom: var(--fluid-heading-margin);
+}
+
+.fluid-heading-2 {
+  font-size: var(--fluid-font-h2);
+  line-height: var(--fluid-line-height-heading);
+  margin-bottom: var(--fluid-heading-margin);
+}
+
+.fluid-heading-3 {
+  font-size: var(--fluid-font-h3);
+  line-height: var(--fluid-line-height-heading);
+  margin-bottom: var(--fluid-heading-margin);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 body {
   font-family: "Tajawal", "IBM Plex Sans Arabic", sans-serif;
+  font-weight: 400;
   background-color: var(--color-bg);
   color: var(--color-text-main);
   direction: rtl;
   text-align: right;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  line-height: 1.625;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern";
 }
 
 /* Guard rails to ensure Arabic script does not get cramped/distorted by letter-spacing utility classes */
 body, button, input, select, textarea, p, span, h1, h2, h3, h4, h5, h6 {
   letter-spacing: normal !important;
+}
+
+/* Typography Hierarchy Scale & Heading Consistency */
+h1, .h1-display {
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+h2, .h2-title {
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+h3, .h3-subtitle {
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+h4, .h4-heading {
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Prevent text stretching on wide screens: limit long article paragraphs to 65-75ch */
+p {
+  max-width: 75ch;
+  line-height: 1.8;
+}
+
+.max-readable-prose {
+  max-width: 52rem; /* ~832px max width for comfortable Arabic scanning */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Custom Scrollbar */
@@ -123,19 +220,81 @@ body, button, input, select, textarea, p, span, h1, h2, h3, h4, h5, h6 {
   100% { transform: translateY(15px) translateX(-10px) scale(0.9); opacity: 0.4; }
 }
 
-/* Custom styles for glass cards */
+/* Cinematic Pulse and Glow */
+.animate-pulse-slow {
+  animation: pulseSlow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.animate-glow-breathing {
+  animation: glowBreathing 6s ease-in-out infinite alternate;
+}
+@keyframes glowBreathing {
+  0% { box-shadow: 0 0 20px rgba(212, 160, 23, 0.1); }
+  50% { box-shadow: 0 0 50px rgba(212, 160, 23, 0.3), inset 0 0 20px rgba(212, 160, 23, 0.1); }
+  100% { box-shadow: 0 0 20px rgba(212, 160, 23, 0.1); }
+}
+
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Custom styles for glass cards and metallic borders */
 .glass-panel {
   background: var(--color-glass-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-glass-border);
 }
 
 .glass-panel-gold {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(240, 192, 64, 0.2);
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.08) 0%, rgba(4, 11, 36, 0.6) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(240, 192, 64, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(212, 160, 23, 0.1);
+}
+
+.gold-glow-card {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gold-glow-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, rgba(240, 192, 64, 0.4), rgba(212, 160, 23, 0.1), rgba(240, 192, 64, 0.2));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gold-glow-card:hover::after {
+  opacity: 1;
+}
+
+.gold-glow-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px -8px rgba(212, 160, 23, 0.3);
+}
+
+.shimmer-line {
+  background: linear-gradient(90deg, transparent 0%, rgba(240, 192, 64, 0.6) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmerMove 3s infinite linear;
+}
+
+@keyframes shimmerMove {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 /* Hide scrollbar utility */
