@@ -78,14 +78,27 @@ async function startServer() {
         });
       }
 
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: formattedContents,
-        config: {
-          systemInstruction,
-          temperature: 0.7,
-        },
-      });
+      let response;
+      try {
+        response = await ai.models.generateContent({
+          model: "gemini-3.6-flash",
+          contents: formattedContents,
+          config: {
+            systemInstruction,
+            temperature: 0.7,
+          },
+        });
+      } catch (firstErr) {
+        console.warn("Primary model gemini-3.6-flash failed, trying gemini-flash-latest:", firstErr);
+        response = await ai.models.generateContent({
+          model: "gemini-flash-latest",
+          contents: formattedContents,
+          config: {
+            systemInstruction,
+            temperature: 0.7,
+          },
+        });
+      }
 
       return res.json({
         reply: response.text || "عذراً، لم أتمكن من توليد الإجابة المناسبة حالياً. يرجى إعادة المحاولة.",
