@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
@@ -27,7 +26,7 @@ const getGeminiClient = () => {
 };
 
 // AI Advisor Chat Endpoint
-app.post("/api/advisor/chat", async (req, res) => {
+app.post(["/api/advisor/chat", "/advisor/chat"], async (req, res) => {
   try {
     const { messages, userContext } = req.body;
 
@@ -123,7 +122,7 @@ app.post("/api/advisor/chat", async (req, res) => {
 });
 
 // Health check
-app.get("/api/health", (_req, res) => {
+app.get(["/api/health", "/health"], (_req, res) => {
   res.json({ status: "ok", service: "Vizion AI Advisor Server" });
 });
 
@@ -132,6 +131,7 @@ async function startServer() {
 
   // Vite development middleware vs Static Production serving
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
