@@ -16,7 +16,7 @@ async function startServer() {
   const getGeminiClient = () => {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is not defined in environment variables.");
+      throw new Error("GEMINI_API_KEY غير معرف في متغيرة البيئة السيرفرية. يرجى إضافة GEMINI_API_KEY في إعدادات البيئة على منصة الاستضافة (مثل Wasmer).");
     }
     return new GoogleGenAI({
       apiKey: apiKey,
@@ -79,7 +79,7 @@ async function startServer() {
       }
 
       const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
+        model: "gemini-2.5-flash",
         contents: formattedContents,
         config: {
           systemInstruction,
