@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 
@@ -125,6 +126,20 @@ app.post(["/api/advisor/chat", "/advisor/chat"], async (req, res) => {
 app.get(["/api/health", "/health"], (_req, res) => {
   res.json({ status: "ok", service: "Vizion AI Advisor Server" });
 });
+
+// Serve static files from dist directory if available
+const distPath = path.join(process.cwd(), "dist");
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get("*", (_req, res) => {
+    const indexPath = path.join(distPath, "index.html");
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.status(404).send("Index file not found");
+    }
+  });
+}
 
 async function startServer() {
   const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
