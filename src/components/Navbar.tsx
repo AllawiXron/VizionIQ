@@ -4,18 +4,20 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, ShieldAlert, Settings, LogOut, Flame, Bot, Sparkles } from "lucide-react";
+import { Menu, X, ShieldAlert, Settings, LogOut, Flame, Bot, Sparkles, Crown } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
+import { isFreeTrialUser, isVipUser } from "./LockScreen";
 
 interface NavbarProps {
   activeSection: string;
   onLogout: () => void;
   onOpenAdmin: () => void;
   onOpenAdvisor?: () => void;
+  onOpenUpgrade?: () => void;
   userCode: string;
 }
 
-export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdvisor, userCode }: NavbarProps) {
+export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdvisor, onOpenUpgrade, userCode }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -142,18 +144,38 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdv
               <span>خروج</span>
             </button>
 
-            {/* User Code Tag */}
-            <span className="px-2.5 py-1 text-[10px] bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 rounded-lg font-mono font-medium">
-              عضو: {userCode}
-            </span>
+            {/* Free Trial Upgrade Button or User Tag */}
+            {isFreeTrialUser(userCode) ? (
+              <button
+                onClick={onOpenUpgrade}
+                className="px-3 py-1.5 bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 hover:scale-105 rounded-xl text-[#040B24] transition-all cursor-pointer flex items-center gap-1.5 text-xs font-black shadow-lg shadow-[#D4A017]/20"
+                title="اضغط للترقية إلى الحساب الكامل"
+              >
+                <Crown className="w-3.5 h-3.5" />
+                <span>ترقية الكورس ⚡</span>
+              </button>
+            ) : (
+              <span className="px-2.5 py-1 text-[10px] bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 rounded-lg font-mono font-medium">
+                عضو: {userCode}
+              </span>
+            )}
           </div>
 
           {/* Hamburger Menu Toggle (Mobile & Tablet) */}
           <div className="flex items-center gap-2 lg:hidden">
-            {/* Quick user code display */}
-            <span className="px-2 py-0.5 text-[9px] bg-emerald-950/60 border border-emerald-500/20 text-emerald-400 rounded-md font-mono">
-              {userCode}
-            </span>
+            {isFreeTrialUser(userCode) ? (
+              <button
+                onClick={onOpenUpgrade}
+                className="px-2 py-1 bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] rounded-lg text-[10px] font-black flex items-center gap-1"
+              >
+                <Crown className="w-3 h-3" />
+                <span>ترقية ⚡</span>
+              </button>
+            ) : (
+              <span className="px-2 py-0.5 text-[9px] bg-emerald-950/60 border border-emerald-500/20 text-emerald-400 rounded-md font-mono">
+                {userCode}
+              </span>
+            )}
             
             <button
               onClick={() => setIsOpen(!isOpen)}

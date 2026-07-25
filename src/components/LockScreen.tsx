@@ -10,6 +10,7 @@ import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-re
 // You can directly edit, add, or remove passwords in this array!
 // - Passwords WITH '#vip' (e.g. "ali") -> Full access to website + AI Assistant (فيزيون بوت).
 // - Passwords WITHOUT '#vip' (e.g. "ali#1", "bker#2") -> Full access to website ONLY (No AI Assistant access).
+// - Passwords WITH 'free' (e.g. "free#1") -> Free Trial access with psychological gatekeeping & cliffhangers.
 export const HARDCODED_CODES = [
   "bker#2",
   "brandek#1",
@@ -25,7 +26,8 @@ export const HARDCODED_CODES = [
   "zaid#vip",
   "fatima#1",
   "mohanned#1",
-  "said#1"
+  "said#1",
+  "free#1"
 ];
 
 // Helper to normalize strings for robust comparison on both mobile and PC
@@ -75,6 +77,19 @@ export const isVipUser = (code: string): boolean => {
   // Verify code is strictly valid (exists in HARDCODED_CODES or active admin list)
   const allCodes = getAllValidCodes();
   return allCodes.includes(normalized);
+};
+
+export const isFreeTrialUser = (code: string): boolean => {
+  if (!code) return false;
+  const normalized = normalizeCode(code);
+  return normalized.includes("free");
+};
+
+export const isPaidUser = (code: string): boolean => {
+  if (!code) return false;
+  const normalized = normalizeCode(code);
+  const allCodes = getAllValidCodes();
+  return allCodes.includes(normalized) && !isFreeTrialUser(code);
 };
 
 interface LockScreenProps {
@@ -389,6 +404,21 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               )}
             </button>
           </form>
+
+          {/* Quick Free Trial Access Link */}
+          <div className="pt-2 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setPassword("free#1");
+                setError(null);
+              }}
+              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-[#F0C040] hover:text-white transition-all cursor-pointer inline-flex items-center gap-1.5 font-medium"
+            >
+              <span>✨ لا تملك رمزاُ مدفوعاً؟ جرب النسخة التجريبية:</span>
+              <span className="font-mono text-emerald-400 font-bold underline underline-offset-2">free#1</span>
+            </button>
+          </div>
         </div>
       </div>
 

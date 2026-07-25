@@ -163,7 +163,8 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to fetch response");
+        const errorDetails = data.details ? ` (${data.details})` : "";
+        throw new Error((data.error || "Failed to fetch response") + errorDetails);
       }
 
       const botMessage: Message = {
@@ -179,7 +180,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        text: "⚠️ عذراً، تعذر الاتصال بالمستشار الذكي في هذه اللحظة. يرجى التأكد من تشغيل السيرفر أو تجربة سؤال آخر.",
+        text: `⚠️ ${err.message || "عذراً، تعذر الاتصال بالمستشار الذكي في هذه اللحظة. يرجى التأكد من تشغيل السيرفر وإضافة GEMINI_API_KEY."}`,
         timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" })
       };
       setMessages((prev) => [...prev, errorMessage]);

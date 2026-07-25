@@ -8,8 +8,10 @@ import { motion } from "motion/react";
 import { 
   CheckCircle2, AlertTriangle, Lightbulb, Star, ShieldCheck, 
   MapPin, BookOpen, Layers, Zap, Play, FileText, Compass, 
-  ChevronLeft, ArrowRight, Sparkles, HelpCircle, CheckSquare, Wrench
+  ChevronLeft, ArrowRight, Sparkles, HelpCircle, CheckSquare, Wrench,
+  Lock, Crown, KeyRound
 } from "lucide-react";
+import { isVipUser, isFreeTrialUser } from "./LockScreen";
 import { chaptersList, chaptersDetailedMap } from "../data/chaptersData";
 import { caseStudiesList } from "../data/caseStudiesData";
 import { swipeFilesList } from "../data/swipeFilesData";
@@ -49,6 +51,13 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
   const chapterIndex = chaptersList.findIndex((c) => c.id === id);
   const prevChapter = chapterIndex > 0 ? chaptersList[chapterIndex - 1] : null;
   const nextChapter = chapterIndex < chaptersList.length - 1 ? chaptersList[chapterIndex + 1] : null;
+
+  const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
+  const isFreeTrial = isFreeTrialUser(userCode);
+
+  const triggerUpgradeModal = () => {
+    window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
+  };
 
   const scrollToChapter = (chapterId: string) => {
     const element = document.getElementById(chapterId);
@@ -197,32 +206,75 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
             </p>
 
             <div className="space-y-5 sm:space-y-8 pt-1">
-              {detailedData.coreFramework?.sections?.map((sec, idx) => (
-                <FadeInUp key={idx} delay={idx * 0.08}>
-                  <div className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 space-y-3.5 sm:space-y-4 shadow-md">
-                    <h4 className="text-base sm:text-xl font-black text-white border-r-4 border-[#D4A017] pr-2.5 sm:pr-3">{sec.heading}</h4>
-                    <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
+              {detailedData.coreFramework?.sections?.map((sec, idx) => {
+                const isLockedSection = isFreeTrial ? (id !== "chapter1" || idx >= 1) : false;
+                return (
+                  <FadeInUp key={idx} delay={idx * 0.08}>
+                    <div className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 space-y-3.5 sm:space-y-4 shadow-md relative overflow-hidden">
+                      <h4 className="text-base sm:text-xl font-black text-white border-r-4 border-[#D4A017] pr-2.5 sm:pr-3 flex items-center justify-between">
+                        <span>{sec.heading}</span>
+                        {isLockedSection && (
+                          <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] sm:text-xs font-black flex items-center gap-1">
+                            <Lock className="w-3 h-3 text-[#F0C040]" />
+                            <span>محتوى مغلق (النسخة التجريبية)</span>
+                          </span>
+                        )}
+                      </h4>
 
-                    {sec.keyTakeaway && (
-                      <div className="bg-[#D4A017]/10 border border-[#D4A017]/30 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl text-xs sm:text-sm text-[#F0C040] font-bold flex items-start gap-2.5 sm:gap-3">
-                        <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5 text-[#F0C040]" />
-                        <span className="leading-relaxed">{sec.keyTakeaway}</span>
-                      </div>
-                    )}
+                      {!isLockedSection ? (
+                        <>
+                          <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
 
-                    {sec.bulletPoints && (
-                      <ul className="space-y-2.5 pt-1 sm:pt-2">
-                        {sec.bulletPoints.map((bp, bidx) => (
-                          <li key={bidx} className="text-xs sm:text-sm text-white/80 flex items-start gap-2.5 leading-relaxed">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
-                            <span>{bp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </FadeInUp>
-              ))}
+                          {sec.keyTakeaway && (
+                            <div className="bg-[#D4A017]/10 border border-[#D4A017]/30 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl text-xs sm:text-sm text-[#F0C040] font-bold flex items-start gap-2.5 sm:gap-3">
+                              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5 text-[#F0C040]" />
+                              <span className="leading-relaxed">{sec.keyTakeaway}</span>
+                            </div>
+                          )}
+
+                          {sec.bulletPoints && (
+                            <ul className="space-y-2.5 pt-1 sm:pt-2">
+                              {sec.bulletPoints.map((bp, bidx) => (
+                                <li key={bidx} className="text-xs sm:text-sm text-white/80 flex items-start gap-2.5 leading-relaxed">
+                                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                                  <span>{bp}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </>
+                      ) : (
+                        /* Zeigarnik Effect Cliffhanger Paywall */
+                        <div className="relative pt-2">
+                          <p className="text-xs sm:text-sm text-white/40 blur-[3px] select-none leading-relaxed line-clamp-2">
+                            {sec.content}
+                          </p>
+                          <div className="mt-3 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-[#0F1735] via-[#121A3D] to-[#0F1735] border border-[#D4A017]/40 text-center space-y-3 shadow-2xl">
+                            <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[#D4A017]/20 border border-[#D4A017]/50 text-[#F0C040]">
+                              <Lock className="w-5 h-5" />
+                            </div>
+                            <div className="space-y-1">
+                              <h5 className="text-sm sm:text-base font-black text-white">
+                                الخلطة السرية والتطبيق العملي محمي
+                              </h5>
+                              <p className="text-xs text-white/70 max-w-lg mx-auto font-light">
+                                يتضمن هذا المحور المعادلة التنفيذية الدقيقة لمنع المرتجعات وزيادة المبيعات. متاح فوراً في النسخة المدفوعة الكاملة.
+                              </p>
+                            </div>
+                            <button
+                              onClick={triggerUpgradeModal}
+                              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg shadow-[#D4A017]/20 hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+                            >
+                              <Crown className="w-4 h-4 text-[#040B24]" />
+                              <span>افتح السر الآن واستكمل الكورس الكامل ⚡</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </FadeInUp>
+                );
+              })}
             </div>
           </div>
 

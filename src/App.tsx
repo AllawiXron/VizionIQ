@@ -9,7 +9,7 @@ import { motion } from "motion/react";
 import { chaptersList } from "./data/chaptersData";
 
 // Import modular components
-import LockScreen, { isVipUser } from "./components/LockScreen";
+import LockScreen, { isVipUser, isFreeTrialUser } from "./components/LockScreen";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ChapterView from "./components/ChapterView";
@@ -18,6 +18,7 @@ import IraqiInsights from "./components/IraqiInsights";
 import VizionGrowthSuite from "./components/VizionGrowthSuite";
 import { VizionAdvisorModal } from "./components/VizionAdvisorModal";
 import { MobileBottomNav } from "./components/MobileBottomNav";
+import { FreeTrialPaywallModal } from "./components/FreeTrialPaywallModal";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +26,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("hero-section");
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [chapterFilter, setChapterFilter] = useState("all");
 
@@ -39,6 +41,12 @@ export default function App() {
 
   // Check login state on mount
   useEffect(() => {
+    const handleOpenVip = () => setIsAdvisorOpen(true);
+    const handleOpenUpgrade = () => setIsUpgradeModalOpen(true);
+
+    window.addEventListener("open-vip-advisor", handleOpenVip);
+    window.addEventListener("open-upgrade-modal", handleOpenUpgrade);
+
     const sessionToken = localStorage.getItem("sales_guide_user_token");
     const sessionCode = localStorage.getItem("sales_guide_user_code");
     
@@ -46,6 +54,11 @@ export default function App() {
       setIsLoggedIn(true);
       setUserCode(sessionCode);
     }
+
+    return () => {
+      window.removeEventListener("open-vip-advisor", handleOpenVip);
+      window.removeEventListener("open-upgrade-modal", handleOpenUpgrade);
+    };
   }, []);
 
   // Back to top scroll handler
@@ -162,6 +175,7 @@ export default function App() {
         onLogout={handleLogout}
         onOpenAdmin={() => setIsAdminOpen(true)}
         onOpenAdvisor={() => setIsAdvisorOpen(true)}
+        onOpenUpgrade={() => setIsUpgradeModalOpen(true)}
         userCode={userCode}
       />
 
@@ -448,6 +462,17 @@ export default function App() {
         onUpgradeSuccess={(newVipCode) => {
           setUserCode(newVipCode);
           localStorage.setItem("sales_guide_user_code", newVipCode);
+        }}
+      />
+
+      {/* FREE TRIAL UPGRADE PAYWALL MODAL */}
+      <FreeTrialPaywallModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        userCode={userCode}
+        onUpgradeSuccess={(newCode) => {
+          setUserCode(newCode);
+          localStorage.setItem("sales_guide_user_code", newCode);
         }}
       />
 

@@ -25,12 +25,22 @@ import {
   ChevronUp,
   RotateCcw,
   Target,
-  FileText
+  FileText,
+  Lock,
+  Crown
 } from "lucide-react";
+import { isFreeTrialUser } from "./LockScreen";
 
 export default function VizionGrowthSuite() {
   const [activeTab, setActiveTab] = useState<string>("diagnostics");
   const [isLaunchpadOpen, setIsLaunchpadOpen] = useState<boolean>(false);
+
+  const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
+  const isFreeTrial = isFreeTrialUser(userCode);
+
+  const triggerUpgradeModal = () => {
+    window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
+  };
 
   // State for Tool 1: Business Diagnostics Wizard
   const [t1MonthlyOrders, setT1MonthlyOrders] = useState<number>(100);
@@ -310,6 +320,29 @@ export default function VizionGrowthSuite() {
         <p className="text-base md:text-lg text-white/70 leading-relaxed font-light max-w-3xl mx-auto">
           صممنا لك نظاماً تفاعلياً متكاملاً يحتوي على <strong className="text-[#F0C040] font-bold">13 أداة ومحاكياً ذكياً</strong> مبنياً بالكامل على واقع السوق العراقي، لمساعدتك على اتخاذ قراراتك بناءً على الأرقام الصارمة بدلاً من التخمين والشك اليومي.
         </p>
+
+        {/* Free Trial Gatekeeping Banner */}
+        {isFreeTrial && (
+          <div className="bg-gradient-to-r from-amber-950/80 via-[#0F1735] to-amber-950/80 border-2 border-[#D4A017] p-5 sm:p-6 rounded-3xl shadow-2xl space-y-3 text-center relative overflow-hidden my-4 z-20 animate-[fadeIn_0.3s_ease]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-xs font-black text-[#F0C040]">
+              <Lock className="w-4 h-4 text-[#F0C040]" />
+              <span>معاينة النسخة التجريبية (Free Trial Mode)</span>
+            </div>
+            <h3 className="text-lg sm:text-2xl font-black text-white leading-tight">
+              أنت الآن تستعرض أداة محاكاة الحسابات بوضع المعاينة
+            </h3>
+            <p className="text-xs sm:text-sm text-white/80 max-w-2xl mx-auto font-light leading-relaxed">
+              أدوات Vizion OS الحسابية ومولدات السيناريوهات مقفلة جزئياً لمنع العبث بالنماذج المالية. احصل على الحساب الكامل لفتح جميع الـ 13 أداة وحساب أرباحك الصافية بالأرقام الدقيقة.
+            </p>
+            <button
+              onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl shadow-[#D4A017]/25 hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <Crown className="w-4 h-4 text-[#040B24]" />
+              <span>افتح المنظومة كاملة وترقية الحساب الآن ⚡</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Main Grid: Tabs Sidebar + Active Tab Content */}

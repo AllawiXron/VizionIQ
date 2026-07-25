@@ -27,7 +27,7 @@ const getGeminiClient = () => {
 };
 
 // AI Advisor Chat Endpoint
-app.post(["/api/advisor/chat", "/advisor/chat"], async (req, res) => {
+app.post(["/api/advisor/chat", "/advisor/chat", "/api", "/"], async (req, res) => {
   try {
     const { messages, userContext } = req.body;
 
