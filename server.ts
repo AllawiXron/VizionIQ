@@ -9,12 +9,23 @@ dotenv.config();
 export const app = express();
 app.use(express.json({ limit: "2mb" }));
 
+// Enable CORS
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Initialize Gemini AI Client
 const getGeminiClient = () => {
   const rawKey = process.env.GEMINI_API_KEY;
   const apiKey = rawKey ? rawKey.trim() : "";
   if (!apiKey) {
-    throw new Error("GEMINI_API_KEY غير معرف في متغيرة البيئة السيرفرية. يرجى إضافة GEMINI_API_KEY في إعدادات البيئة على منصة الاستضافة.");
+    throw new Error("GEMINI_API_KEY غير معرف في متغيرة البيئة السيرفرية. يرجى إضافة GEMINI_API_KEY في إعدادات Vercel Environment Variables.");
   }
   return new GoogleGenAI({
     apiKey: apiKey,
@@ -28,6 +39,7 @@ const getGeminiClient = () => {
 
 // AI Advisor Chat Endpoint
 app.post(["/api/advisor/chat", "/advisor/chat", "/api", "/"], async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
   try {
     const { messages, userContext } = req.body;
 
@@ -98,9 +110,9 @@ app.post(["/api/advisor/chat", "/advisor/chat", "/api", "/"], async (req, res) =
           },
         });
       } catch (secondErr) {
-        console.warn("Fallback gemini-2.0-flash failed, trying gemini-1.5-flash:", secondErr);
+        console.warn("Fallback gemini-2.0-flash failed, trying gemini-2.5-pro:", secondErr);
         response = await ai.models.generateContent({
-          model: "gemini-1.5-flash",
+          model: "gemini-2.5-pro",
           contents: formattedContents,
           config: {
             systemInstruction,

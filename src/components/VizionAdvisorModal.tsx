@@ -160,7 +160,14 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        const cleanText = responseText.replace(/<[^>]*>?/gm, '').trim();
+        throw new Error(`خطأ في استجابة السيرفر (كود ${response.status}): ${cleanText.slice(0, 150) || "لا توجد تفاصيل"}`);
+      }
 
       if (!response.ok) {
         const errorDetails = data.details ? ` (${data.details})` : "";
