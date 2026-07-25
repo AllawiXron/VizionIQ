@@ -25,9 +25,9 @@ export default async function handler(req: any, res: any) {
     return res.status(200).json({ reply });
   } catch (error: any) {
     console.error("Vercel Advisor API Error:", error);
+    const msg = error.message || "حدث خطأ في التواصل مع المستشار الذكي.";
     return res.status(500).json({
-      error: "حدث خطأ في التواصل مع المستشار الذكي.",
-      details: error.message || "Unknown error",
+      error: msg,
     });
   }
 }

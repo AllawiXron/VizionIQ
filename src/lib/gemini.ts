@@ -56,39 +56,39 @@ export async function handleAdvisorChat(messages: any[], userContext?: any) {
     });
   }
 
-  let response;
-  try {
-    response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: formattedContents,
-      config: {
-        systemInstruction: advisorSystemInstruction,
-        temperature: 0.7,
-      },
-    });
-  } catch (firstErr) {
-    console.warn("Primary model gemini-2.5-flash failed, trying gemini-2.0-flash:", firstErr);
+  const modelsToTry = [
+    "gemini-3.6-flash",
+    "gemini-flash-latest",
+    "gemini-3.1-flash-lite",
+  ];
+
+  let lastError: any = null;
+
+  for (const model of modelsToTry) {
     try {
-      response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
+      const response = await ai.models.generateContent({
+        model,
         contents: formattedContents,
         config: {
           systemInstruction: advisorSystemInstruction,
           temperature: 0.7,
         },
       });
-    } catch (secondErr) {
-      console.warn("Fallback gemini-2.0-flash failed, trying gemini-2.5-pro:", secondErr);
-      response = await ai.models.generateContent({
-        model: "gemini-2.5-pro",
-        contents: formattedContents,
-        config: {
-          systemInstruction: advisorSystemInstruction,
-          temperature: 0.7,
-        },
-      });
+
+      if (response && response.text) {
+        return response.text;
+      }
+    } catch (err: any) {
+      console.warn(`Model ${model} failed:`, err?.message || err);
+      lastError = err;
     }
   }
 
-  return response.text || "عذراً، لم أتمكن من توليد الإجابة المناسبة حالياً. يرجى إعادة المحاولة.";
+  // If all models failed, construct a helpful Arabic error message
+  const errStr = JSON.stringify(lastError?.message || lastError || "");
+  if (errStr.includes("429") || errStr.includes("RESOURCE_EXHAUSTED") || errStr.includes("Quota exceeded") || errStr.includes("rate-limits")) {
+    throw new Error("تجاوز مفتاح Gemini API الحد الأقصى المسموح به من الطلبات المجانية (Quota Exceeded). يرجى الانتظار بضع ثوانٍ وإعادة المحاولة، أو التأكد من إعدادات الفوترة والمشاريع في Google AI Studio.");
+  }
+
+  throw lastError || new Error("عذراً، تعذر الحصول على رد من نماذج الذكاء الاصطناعي حالياً.");
 }

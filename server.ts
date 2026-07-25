@@ -34,9 +34,9 @@ app.post(["/api/advisor/chat", "/advisor/chat"], async (req, res) => {
     return res.json({ reply });
   } catch (error: any) {
     console.error("Gemini Advisor API Error:", error);
+    const msg = error.message || "حدث خطأ في التواصل مع المستشار الذكي.";
     return res.status(500).json({
-      error: "حدث خطأ في التواصل مع المستشار الذكي.",
-      details: error.message || "Unknown error",
+      error: msg,
     });
   }
 });
