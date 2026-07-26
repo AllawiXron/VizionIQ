@@ -81,7 +81,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-6 overflow-x-hidden overflow-y-auto dir-rtl font-sans">
+      <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-6 overflow-x-hidden overflow-y-auto dir-rtl font-sans">
         
         {/* Heavenly Dark Backdrop overlay with luxury blur & ambient glow */}
         <motion.div
@@ -89,44 +89,44 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-[#020512]/92 backdrop-blur-3xl transition-all"
+          className="fixed inset-0 bg-[#020512]/98 backdrop-blur-md sm:backdrop-blur-2xl transition-all z-[200]"
         />
 
         {/* Floating Heavenly Golden Dust & Light Particles */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-          {[...Array(22)].map((_, i) => (
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-[201]">
+          {[...Array(typeof window !== "undefined" && window.innerWidth < 768 ? 6 : 14)].map((_, i) => (
             <motion.div
               key={i}
               initial={{
                 x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 400),
                 y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 800),
-                scale: Math.random() * 0.7 + 0.3,
-                opacity: Math.random() * 0.8 + 0.2,
+                scale: Math.random() * 0.6 + 0.3,
+                opacity: Math.random() * 0.7 + 0.2,
               }}
               animate={{
-                y: [0, -80, 0],
-                x: [0, Math.sin(i) * 25, 0],
-                opacity: [0.2, 0.9, 0.2],
-                scale: [0.4, 1.1, 0.4],
+                y: [0, -50, 0],
+                x: [0, Math.sin(i) * 12, 0],
+                opacity: [0.2, 0.7, 0.2],
+                scale: [0.4, 0.9, 0.4],
               }}
               transition={{
-                duration: 5 + Math.random() * 5,
+                duration: 6 + Math.random() * 4,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: i * 0.25,
+                delay: i * 0.3,
               }}
-              className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-[#F0C040] to-amber-300 shadow-[0_0_15px_#F0C040]"
+              className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-[#F0C040] to-amber-300 shadow-[0_0_10px_#F0C040]"
             />
           ))}
         </div>
 
         {/* MAIN DIALOG CONTAINER */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 25 }}
+          initial={{ opacity: 0, scale: 0.92, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.92, y: 15 }}
-          transition={{ type: "spring", damping: 26, stiffness: 240 }}
-          className="relative z-10 w-full max-w-xl bg-[#040B24] border-2 border-[#D4A017]/70 rounded-3xl shadow-[0_20px_90px_rgba(212,160,23,0.4)] overflow-hidden text-white flex flex-col max-h-[88vh] sm:max-h-[90vh] my-auto"
+          exit={{ opacity: 0, scale: 0.94, y: 10 }}
+          transition={{ type: "spring", damping: 28, stiffness: 260 }}
+          className="relative z-[202] w-full max-w-xl bg-[#040B24] border-2 border-[#D4A017]/70 rounded-2xl sm:rounded-3xl shadow-[0_20px_90px_rgba(212,160,23,0.4)] overflow-hidden text-white flex flex-col max-h-[90vh] sm:max-h-[88vh] my-auto"
         >
           
           {/* Celestial Ray & Top Ambient Light */}
@@ -377,18 +377,18 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           </div>
 
           {/* STICKY FOOTER ACTIONS & NAVIGATION FOR MOBILE */}
-          <div className="p-4 sm:p-5 bg-[#040B24]/95 border-t border-white/10 flex items-center justify-between gap-3 dir-rtl shrink-0 z-20">
+          <div className="p-3.5 sm:p-5 pb-5 sm:pb-5 bg-[#040B24]/98 border-t border-white/10 flex items-center justify-between gap-2.5 dir-rtl shrink-0 z-30 relative">
             
             {/* Dots Indicator */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               {steps.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentStep(idx)}
                   className={`h-2 rounded-full transition-all cursor-pointer ${
                     currentStep === idx
-                      ? "w-8 sm:w-10 bg-[#F0C040] shadow-[0_0_10px_#F0C040]"
-                      : "w-2.5 bg-white/20 hover:bg-white/40"
+                      ? "w-6 sm:w-10 bg-[#F0C040] shadow-[0_0_10px_#F0C040]"
+                      : "w-2 sm:w-2.5 bg-white/20 hover:bg-white/40"
                   }`}
                   aria-label={`الذهاب للخطوة ${idx + 1}`}
                 />
@@ -396,11 +396,11 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             </div>
 
             {/* Navigation Buttons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {currentStep > 0 && (
                 <button
                   onClick={() => setCurrentStep(prev => prev - 1)}
-                  className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/5 hover:bg-white/10 active:scale-95 text-white/80 hover:text-white border border-white/10 text-sm font-bold transition-all cursor-pointer"
+                  className="px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white/90 hover:text-white border border-white/15 text-xs sm:text-sm font-bold transition-all cursor-pointer min-h-[42px] flex items-center justify-center"
                 >
                   رجوع
                 </button>
@@ -408,10 +408,10 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
               <button
                 onClick={handleNext}
-                className="px-5 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] font-black text-sm sm:text-base shadow-[0_0_20px_rgba(212,160,23,0.4)] hover:scale-[1.02] active:scale-95 transition-all duration-300 cursor-pointer flex items-center gap-2"
+                className="px-4 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] font-black text-xs sm:text-base shadow-[0_0_20px_rgba(212,160,23,0.4)] hover:scale-[1.02] active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 min-h-[44px]"
               >
                 <span>{currentStep === steps.length - 1 ? "🚀 استكشف المنظومة هسة" : "التالي"}</span>
-                {currentStep !== steps.length - 1 && <ChevronLeft className="w-5 h-5" />}
+                {currentStep !== steps.length - 1 && <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />}
               </button>
             </div>
 

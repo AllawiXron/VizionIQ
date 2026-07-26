@@ -55,7 +55,8 @@ export default function Hero() {
     }
 
     const sparks: Spark[] = [];
-    const maxSparks = 80;
+    const isMobile = window.innerWidth < 768;
+    const maxSparks = isMobile ? 18 : 50;
 
     for (let i = 0; i < maxSparks; i++) {
       sparks.push({
@@ -175,12 +176,11 @@ export default function Hero() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 40, filter: 'blur(10px)' },
+    hidden: { opacity: 0, y: 25 },
     visible: { 
       opacity: 1, 
       y: 0,
-      filter: 'blur(0px)',
-      transition: { type: "spring", stiffness: 80, damping: 20 }
+      transition: { duration: 0.5, ease: "easeOut" }
     }
   };
 
@@ -188,10 +188,10 @@ export default function Hero() {
     <div className="relative min-h-screen w-full flex flex-col items-center overflow-hidden pt-20 sm:pt-32 pb-16 sm:pb-24 px-3 sm:px-6 text-center select-none bg-grid-pattern" id="hero-section">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none mix-blend-screen" />
 
-      {/* Ultra Cinematic Background Glows */}
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[#D4A017]/10 rounded-full blur-[150px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-0 left-0 w-[60vw] h-[60vh] bg-[#0D1B56]/60 rounded-full blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-emerald-900/10 rounded-full blur-[180px] pointer-events-none" />
+      {/* Ultra Cinematic Background Glows - Mobile Optimized */}
+      <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[#D4A017]/10 rounded-full blur-3xl sm:blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[60vw] h-[60vh] bg-[#0D1B56]/60 rounded-full blur-3xl sm:blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-emerald-900/10 rounded-full blur-3xl sm:blur-[180px] pointer-events-none" />
 
       {/* Floating abstract success shapes */}
       <motion.div 
@@ -216,15 +216,6 @@ export default function Hero() {
         className="max-w-6xl z-10 space-y-10 sm:space-y-20 flex flex-col items-center w-full relative"
       >
         
-        {/* Supreme Hook Badge */}
-        <motion.div variants={itemVariants} className="relative group cursor-pointer">
-          <div className="absolute -inset-1 bg-gradient-to-r from-[#D4A017]/0 via-[#D4A017]/30 to-[#D4A017]/0 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
-          <div className="relative inline-flex items-center gap-2 sm:gap-3 px-3.5 py-2 sm:px-6 sm:py-3 rounded-full bg-[#040B24]/80 backdrop-blur-xl border border-[#D4A017]/40 shadow-[0_0_30px_rgba(212,160,23,0.2)] text-[11px] sm:text-sm text-[#F0C040] font-black tracking-wider sm:tracking-widest uppercase">
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-[#F0C040] animate-pulse" />
-            <span>الدليل العملي والشامل للتجارة الإلكترونية بالعراق</span>
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping ml-1" />
-          </div>
-        </motion.div>
 
         {/* Hyper-Emotional Headings */}
         <motion.div variants={itemVariants} className="space-y-4 sm:space-y-8 max-w-5xl relative z-10 px-1">

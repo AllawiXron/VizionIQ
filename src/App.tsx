@@ -185,9 +185,9 @@ export default function App() {
       <div className="relative min-h-screen bg-[#040B24] text-[#F0F4FF] overflow-x-hidden selection:bg-[#D4A017] selection:text-[#040B24]">
       
       {/* Background Ambience Globs (Global layout decorations) */}
-      <div className="absolute top-[5%] right-[5%] w-[600px] h-[600px] bg-[#D4A017]/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-[40%] left-[2%] w-[500px] h-[500px] bg-[#1A2B73]/20 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[3%] w-[550px] h-[550px] bg-[#D4A017]/3 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-[5%] right-[5%] w-[280px] sm:w-[600px] h-[280px] sm:h-[600px] bg-[#D4A017]/5 rounded-full blur-2xl sm:blur-[120px] pointer-events-none" />
+      <div className="absolute top-[40%] left-[2%] w-[260px] sm:w-[500px] h-[260px] sm:h-[500px] bg-[#1A2B73]/20 rounded-full blur-2xl sm:blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[3%] w-[280px] sm:w-[550px] h-[280px] sm:h-[550px] bg-[#D4A017]/3 rounded-full blur-2xl sm:blur-[100px] pointer-events-none" />
 
       {/* FIXED HEADER NAVIGATION */}
       <Navbar
@@ -565,13 +565,15 @@ export default function App() {
         <ArrowUp className="w-5 h-5" />
       </button>
 
-      {/* FIXED MOBILE BOTTOM NAVIGATION BAR */}
-      <MobileBottomNav
-        activeSection={activeSection}
-        onOpenAdvisor={() => setIsAdvisorOpen(true)}
-        onOpenAdmin={() => setIsAdminOpen(true)}
-        userCode={userCode}
-      />
+      {/* FIXED MOBILE BOTTOM NAVIGATION BAR (Hidden during modals or intro) */}
+      {!isWelcomeModalOpen && !isAdvisorOpen && !isAdminOpen && !isUpgradeModalOpen && (
+        <MobileBottomNav
+          activeSection={activeSection}
+          onOpenAdvisor={() => setIsAdvisorOpen(true)}
+          onOpenAdmin={() => setIsAdminOpen(true)}
+          userCode={userCode}
+        />
+      )}
 
     </div>
     </SensoryProvider>
