@@ -38,8 +38,13 @@ export default function Hero() {
 
     const handleResize = () => {
       if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+      // Prevent canvas reset on mobile address bar collapse/expand
+      if (Math.abs(newWidth - width) > 30 || Math.abs(newHeight - height) > 120) {
+        width = canvas.width = newWidth;
+        height = canvas.height = newHeight;
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -186,12 +191,12 @@ export default function Hero() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center overflow-hidden pt-20 sm:pt-32 pb-16 sm:pb-24 px-3 sm:px-6 text-center select-none bg-grid-pattern" id="hero-section">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none mix-blend-screen" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-80" />
 
-      {/* Ultra Cinematic Background Glows - Mobile Optimized */}
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[#D4A017]/10 rounded-full blur-3xl sm:blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[60vw] h-[60vh] bg-[#0D1B56]/60 rounded-full blur-3xl sm:blur-[150px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-emerald-900/10 rounded-full blur-3xl sm:blur-[180px] pointer-events-none" />
+      {/* Ultra Cinematic Background Glows - Mobile Optimized Radial Gradients */}
+      <div className="absolute top-0 right-0 w-[60vw] h-[60vh] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.12)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[70vw] h-[70vh] bg-[radial-gradient(circle_at_center,rgba(13,27,86,0.65)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vh] bg-[radial-gradient(circle_at_center,rgba(6,78,59,0.12)_0%,transparent_70%)] pointer-events-none" />
 
       {/* Floating abstract success shapes */}
       <motion.div 

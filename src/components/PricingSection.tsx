@@ -51,10 +51,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
   return (
     <section id="pricing-section" className="py-8 sm:py-16 md:py-20 relative overflow-hidden text-right">
-      {/* Background Glow Highlights - Optimized for Mobile Performance */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-gradient-to-tr from-[#D4A017]/15 via-amber-600/10 to-transparent rounded-full blur-3xl sm:blur-[160px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-48 sm:w-96 h-48 sm:h-96 bg-blue-600/10 rounded-full blur-2xl sm:blur-[140px] pointer-events-none" />
-      <div className="absolute top-10 left-10 w-48 sm:w-96 h-48 sm:h-96 bg-emerald-500/10 rounded-full blur-2xl sm:blur-[140px] pointer-events-none" />
+      {/* Background Glow Highlights - Optimized Radial Gradients */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.15)_0%,rgba(217,119,6,0.05)_40%,transparent_70%)] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.12)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-10 left-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.12)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 space-y-8 sm:space-y-12">
         

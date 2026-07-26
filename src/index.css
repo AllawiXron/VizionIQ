@@ -306,3 +306,26 @@ p {
   scrollbar-width: none;
 }
 
+/* Mobile GPU Hardware Acceleration & Anti-Flicker Optimizations */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Cap backdrop blurs on mobile to prevent WebKit GPU memory buffer flickering */
+  .backdrop-blur-3xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  
+  /* Prevent transform jitter on mobile scroll */
+  canvas, iframe, video {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+

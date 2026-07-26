@@ -184,10 +184,10 @@ export default function App() {
     <SensoryProvider>
       <div className="relative min-h-screen bg-[#040B24] text-[#F0F4FF] overflow-x-hidden selection:bg-[#D4A017] selection:text-[#040B24]">
       
-      {/* Background Ambience Globs (Global layout decorations) */}
-      <div className="absolute top-[5%] right-[5%] w-[280px] sm:w-[600px] h-[280px] sm:h-[600px] bg-[#D4A017]/5 rounded-full blur-2xl sm:blur-[120px] pointer-events-none" />
-      <div className="absolute top-[40%] left-[2%] w-[260px] sm:w-[500px] h-[260px] sm:h-[500px] bg-[#1A2B73]/20 rounded-full blur-2xl sm:blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[3%] w-[280px] sm:w-[550px] h-[280px] sm:h-[550px] bg-[#D4A017]/3 rounded-full blur-2xl sm:blur-[100px] pointer-events-none" />
+      {/* Background Ambience Globs (Global layout decorations - Radial Gradients) */}
+      <div className="absolute top-[5%] right-[5%] w-[280px] sm:w-[600px] h-[280px] sm:h-[600px] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.06)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-[40%] left-[2%] w-[260px] sm:w-[500px] h-[260px] sm:h-[500px] bg-[radial-gradient(circle_at_center,rgba(26,43,115,0.25)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[3%] w-[280px] sm:w-[550px] h-[280px] sm:h-[550px] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.05)_0%,transparent_70%)] pointer-events-none" />
 
       {/* FIXED HEADER NAVIGATION */}
       <Navbar
@@ -212,8 +212,8 @@ export default function App() {
         >
           <div id="chapters-grid-section" className="scroll-mt-20" />
           {/* Ambient Glows for Section */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4A017]/5 rounded-full blur-[150px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#1A2B73]/10 rounded-full blur-[150px] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.06)_0%,transparent_70%)] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(26,43,115,0.15)_0%,transparent_70%)] pointer-events-none" />
 
           {/* Header Title */}
           <motion.div 
