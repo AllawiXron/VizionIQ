@@ -20,6 +20,8 @@ import { VizionAdvisorModal } from "./components/VizionAdvisorModal";
 import { MobileBottomNav } from "./components/MobileBottomNav";
 import { FreeTrialPaywallModal } from "./components/FreeTrialPaywallModal";
 import { PricingSection } from "./components/PricingSection";
+import { WelcomeIntroModal } from "./components/WelcomeIntroModal";
+import { SensoryProvider } from "./components/SensoryProvider";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,6 +30,7 @@ export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [chapterFilter, setChapterFilter] = useState("all");
 
@@ -44,9 +47,11 @@ export default function App() {
   useEffect(() => {
     const handleOpenVip = () => setIsAdvisorOpen(true);
     const handleOpenUpgrade = () => setIsUpgradeModalOpen(true);
+    const handleOpenWelcome = () => setIsWelcomeModalOpen(true);
 
     window.addEventListener("open-vip-advisor", handleOpenVip);
     window.addEventListener("open-upgrade-modal", handleOpenUpgrade);
+    window.addEventListener("open-welcome-intro", handleOpenWelcome);
 
     const sessionToken = localStorage.getItem("sales_guide_user_token");
     const sessionCode = localStorage.getItem("sales_guide_user_code");
@@ -54,11 +59,18 @@ export default function App() {
     if (sessionToken === "true" && sessionCode) {
       setIsLoggedIn(true);
       setUserCode(sessionCode);
+
+      // Check if welcome intro was already shown
+      const welcomeSeen = localStorage.getItem(`sales_guide_welcome_seen_${sessionCode}`);
+      if (!welcomeSeen) {
+        setIsWelcomeModalOpen(true);
+      }
     }
 
     return () => {
       window.removeEventListener("open-vip-advisor", handleOpenVip);
       window.removeEventListener("open-upgrade-modal", handleOpenUpgrade);
+      window.removeEventListener("open-welcome-intro", handleOpenWelcome);
     };
   }, []);
 
@@ -127,6 +139,7 @@ export default function App() {
     localStorage.setItem("sales_guide_user_code", validCode);
     setIsLoggedIn(true);
     setUserCode(validCode);
+    setIsWelcomeModalOpen(true);
     
     // Smooth scroll to top on login
     window.scrollTo({ top: 0 });
@@ -160,11 +173,16 @@ export default function App() {
 
   // If not authenticated, render password lock screen
   if (!isLoggedIn) {
-    return <LockScreen onSuccess={handleLoginSuccess} />;
+    return (
+      <SensoryProvider>
+        <LockScreen onSuccess={handleLoginSuccess} />
+      </SensoryProvider>
+    );
   }
 
   return (
-    <div className="relative min-h-screen bg-[#040B24] text-[#F0F4FF] overflow-x-hidden selection:bg-[#D4A017] selection:text-[#040B24]">
+    <SensoryProvider>
+      <div className="relative min-h-screen bg-[#040B24] text-[#F0F4FF] overflow-x-hidden selection:bg-[#D4A017] selection:text-[#040B24]">
       
       {/* Background Ambience Globs (Global layout decorations) */}
       <div className="absolute top-[5%] right-[5%] w-[600px] h-[600px] bg-[#D4A017]/5 rounded-full blur-[120px] pointer-events-none" />
@@ -488,6 +506,22 @@ export default function App() {
         }}
       />
 
+      {/* HEAVENLY WELCOME INTRO MODAL */}
+      <WelcomeIntroModal
+        isOpen={isWelcomeModalOpen}
+        onClose={() => {
+          setIsWelcomeModalOpen(false);
+          if (userCode) {
+            localStorage.setItem(`sales_guide_welcome_seen_${userCode}`, "true");
+          }
+        }}
+        userCode={userCode}
+        onOpenAdvisor={() => {
+          setIsWelcomeModalOpen(false);
+          setIsAdvisorOpen(true);
+        }}
+      />
+
       {/* FLOATING VIZION AI ADVISOR TRIGGER BUTTON (Desktop only, since MobileBottomNav handles mobile) */}
       <div className="hidden lg:block fixed bottom-6 right-6 z-45">
         <button
@@ -540,5 +574,6 @@ export default function App() {
       />
 
     </div>
+    </SensoryProvider>
   );
 }

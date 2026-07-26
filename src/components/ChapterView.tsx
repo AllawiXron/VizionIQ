@@ -124,7 +124,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
         {/* Mobile Swipe Hint Badge */}
         <div className="sm:hidden flex items-center justify-between bg-[#D4A017]/10 border border-[#D4A017]/25 px-2.5 py-1.5 rounded-xl text-[10px] text-[#F0C040] mb-3">
           <span className="flex items-center gap-1 font-semibold">
-            <span>👆</span> اسحب لليسار/اليمين للتنقل بين الفصول
+            <span>👆</span> اسحب يمنة ويسرة حتى تكلب بين الفصول
           </span>
           <span className="font-mono text-[9px] text-white/50">{chapterIndex + 1} / {chaptersList.length}</span>
         </div>
@@ -140,7 +140,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
               <span className="px-2.5 py-0.5 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/30 text-[#F0C040] text-[10px] sm:text-xs font-bold">
                 {detailedData.chapterNumber ? `الفصل ${detailedData.chapterNumber}` : number}
               </span>
-              <span className="text-[10px] sm:text-xs text-white/50 font-mono">25-35 دقيقة قراءة وتطبيق</span>
+              <span className="text-[10px] sm:text-xs text-white/50 font-mono">25-35 دقيقة قراءة وتطبيق عملي</span>
             </div>
 
             <h2 className="text-lg sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight tracking-tight">
@@ -159,17 +159,17 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
         {/* Chapter Internal Navigation Tabs */}
         <div className="space-y-2 pt-4 sm:pt-6 border-t border-white/10 mt-4 sm:mt-6">
           <div className="sm:hidden flex items-center justify-between text-[10px] text-white/60 font-mono px-1">
-            <span className="font-bold text-[#F0C040]">تصفح محاور الفصل:</span>
-            <span className="text-white/40">اسحب أفقياً 👈</span>
+            <span className="font-bold text-[#F0C040]">تصفح أقسام الفصل:</span>
+            <span className="text-white/40">اسحب يمنة ويسرة 👈</span>
           </div>
           
           <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar snap-x touch-pan-x">
             {[
-              { id: "framework", label: "📘 الإطار العملي الرئيسي", icon: BookOpen },
-              { id: "deepdive", label: "🔬 الغوص العميق والمحليات", icon: Layers },
-              { id: "casestudy", label: "💼 دراسة حالة عراقية حية", icon: Sparkles },
-              { id: "swipe", label: "📝 سكريبتات وملفات السوايب", icon: FileText },
-              { id: "tools", label: "🧰 الأدوات والتطبيقات التفاعلية", icon: Wrench }
+              { id: "framework", label: "📘 الفكرة الأساسية وشلون تطبقها", icon: BookOpen },
+              { id: "deepdive", label: "🔬 تفاصيل أكثر وأمثلة حقيقية", icon: Layers },
+              { id: "casestudy", label: "💼 أمثلة من مشاريع حقيقية", icon: Sparkles },
+              { id: "swipe", label: "📝 رسائل جاهزة للنسخ", icon: FileText },
+              { id: "tools", label: "🧰 حاسبات وأدوات عملية", icon: Wrench }
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -198,7 +198,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
           <div className="bg-[#0A122E] border border-white/10 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-8 md:p-12 shadow-xl space-y-6 sm:space-y-8">
             <h3 className="text-xl sm:text-3xl font-black text-[#F0C040] flex items-center gap-2.5 pb-2 border-b border-white/10">
               <BookOpen className="w-5 h-5 sm:w-7 sm:h-7 text-[#D4A017] shrink-0" />
-              <span>{detailedData.coreFramework?.title || "الإطار العملي المكتمل للفصل"}</span>
+              <span>{detailedData.coreFramework?.title || "الفكرة الأساسية لهذا الفصل"}</span>
             </h3>
 
             <p className="fluid-prose text-white/90 font-normal bg-white/5 p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border border-white/5 max-readable-prose">
@@ -216,7 +216,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                         {isLockedSection && (
                           <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] sm:text-xs font-black flex items-center gap-1">
                             <Lock className="w-3 h-3 text-[#F0C040]" />
-                            <span>محتوى مغلق (النسخة التجريبية)</span>
+                            <span>محتوى مقفول (نسخة تجريبية)</span>
                           </span>
                         )}
                       </h4>
@@ -255,10 +255,10 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                             </div>
                             <div className="space-y-1">
                               <h5 className="text-sm sm:text-base font-black text-white">
-                                الخلطة السرية والتطبيق العملي محمي
+                                الخطوات المضبوطة للتطبيق محميّة
                               </h5>
                               <p className="text-xs text-white/70 max-w-lg mx-auto font-light">
-                                يتضمن هذا المحور المعادلة التنفيذية الدقيقة لمنع المرتجعات وزيادة المبيعات. متاح فوراً في النسخة المدفوعة الكاملة.
+                                هذا الجزء بي الخطوات المضبوطة حتى توكف الراجع وتزيد مبيعاتك. ينفتحلك فوراً بالنسخة المدفوعة.
                               </p>
                             </div>
                             <button
@@ -266,7 +266,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                               className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg shadow-[#D4A017]/20 hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
                             >
                               <Crown className="w-4 h-4 text-[#040B24]" />
-                              <span>افتح السر الآن واستكمل الكورس الكامل ⚡</span>
+                              <span>افتح هذا القسم وكمل الكورس هسة ⚡</span>
                             </button>
                           </div>
                         </div>
@@ -286,7 +286,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
               <div className="bg-[#0A122E] border border-emerald-500/30 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-6 md:p-8 space-y-4 shadow-xl h-full">
                 <h4 className="text-sm sm:text-base font-bold text-emerald-400 flex items-center gap-2">
                   <CheckSquare className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>خطوات التنفيذ العملية (Action Plan):</span>
+                  <span>خطوات الشغل (شلون تطبق):</span>
                 </h4>
                 <div className="space-y-2.5 sm:space-y-3">
                   {detailedData.actionSteps?.map((st) => (
@@ -307,7 +307,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
               <div className="bg-[#0A122E] border border-red-500/30 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-6 md:p-8 space-y-4 shadow-xl h-full">
                 <h4 className="text-sm sm:text-base font-bold text-red-400 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>الأخطاء الشائعة وفخاخ الفشل:</span>
+                  <span>أغلاط دير بالك توكع بيها:</span>
                 </h4>
                 <div className="space-y-2.5 sm:space-y-3">
                   {detailedData.commonMistakes?.map((m, idx) => (
@@ -333,12 +333,12 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
           <h3 className="text-2xl sm:text-3xl font-black text-[#F0C040] flex items-center justify-between pb-2 border-b border-white/10 flex-wrap gap-2">
             <div className="flex items-center gap-3">
               <Layers className="w-7 h-7 text-[#D4A017] shrink-0" />
-              <span>{detailedData.deepDive?.title || "الغوص العميق والتطبيقات المتقدمة"}</span>
+              <span>{detailedData.deepDive?.title || "تفاصيل أكثر وشلون تطبقها"}</span>
             </div>
             {isFreeTrial && (
               <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5 text-[#F0C040]" />
-                <span>معاينة النسخة المجانية</span>
+                <span>نسخة مجانية للتجربة</span>
               </span>
             )}
           </h3>
@@ -355,7 +355,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                         <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
                         {sec.examples && (
                           <div className="bg-black/40 p-5 rounded-2xl space-y-2 border border-white/5">
-                            <span className="text-xs sm:text-sm font-bold text-[#F0C040] block">أمثلة تطبيقية من الشارع العراقي:</span>
+                            <span className="text-xs sm:text-sm font-bold text-[#F0C040] block">أمثلة حقيقية من سوكنا:</span>
                             <ul className="list-disc list-inside text-xs sm:text-sm text-white/80 space-y-1.5 leading-relaxed">
                               {sec.examples.map((ex, eidx) => (
                                 <li key={eidx}>{ex}</li>
@@ -370,16 +370,16 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                         <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#D4A017]/20 text-[#F0C040]">
                           <Crown className="w-5 h-5" />
                         </div>
-                        <h5 className="text-sm font-black text-white">تحليلات الغوص العميق محميّة بالكامل</h5>
+                        <h5 className="text-sm font-black text-white">التفاصيل والأمثلة العميقة مقفولة هسة</h5>
                         <p className="text-xs text-white/70 max-w-md mx-auto">
-                          احصل على رمز الحساب المدفوع لفتح جميع الأمثلة العملية وخطط التطبيق في العراق.
+                          اشترك بالحساب المدفوع حتى تفتح كل الأمثلة العملية وخطط الشغل.
                         </p>
                         <button
                           onClick={triggerUpgradeModal}
                           className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
                         >
                           <KeyRound className="w-4 h-4 text-[#040B24]" />
-                          <span>ترقية الحساب وافتح المحتوى العميق ⚡</span>
+                          <span>رقي حسابك وافتح كل التفاصيل ⚡</span>
                         </button>
                       </div>
                     )}
@@ -399,9 +399,9 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
               <div className="bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-12 shadow-xl space-y-8 relative overflow-hidden">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <span className="px-4 py-1.5 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 text-[#F0C040] text-xs sm:text-sm font-bold">
-                    تفكيك حالة حية: {relatedCaseStudy.businessName}
+                    مثال حقيقي: {relatedCaseStudy.businessName}
                   </span>
-                  <span className="text-xs sm:text-sm text-white/60 font-mono">المدينة: {relatedCaseStudy.city}</span>
+                  <span className="text-xs sm:text-sm text-white/60 font-mono">المحافظة: {relatedCaseStudy.city}</span>
                 </div>
 
                 <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">{relatedCaseStudy.title}</h3>
@@ -411,11 +411,11 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                     <p className="fluid-prose text-white/85 font-normal max-readable-prose">{relatedCaseStudy.thePsychology}</p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-white/5 p-6 rounded-2xl border border-white/5 text-center">
                       <div>
-                        <span className="text-xs text-white/50 block font-bold mb-1">العائد ROAS</span>
+                        <span className="text-xs text-white/50 block font-bold mb-1">الربح من الإعلان</span>
                         <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.roas}</span>
                       </div>
                       <div>
-                        <span className="text-xs text-white/50 block font-bold mb-1">كلفة CPA</span>
+                        <span className="text-xs text-white/50 block font-bold mb-1">كلفة الطلب</span>
                         <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.cpa}</span>
                       </div>
                       <div>
@@ -423,7 +423,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                         <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.returnRate}</span>
                       </div>
                       <div>
-                        <span className="text-xs text-white/50 block font-bold mb-1">الطلبات اليومية</span>
+                        <span className="text-xs text-white/50 block font-bold mb-1">الطلبات باليوم</span>
                         <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">{relatedCaseStudy.afterMetrics.dailyOrders}</span>
                       </div>
                     </div>
@@ -434,9 +434,9 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                       <Lock className="w-5 h-5" />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-base font-black text-white">الأرقام الدقيقة ودراسة الحالة الحية محميّة</h4>
+                      <h4 className="text-base font-black text-white">الأرقام المضبوطة وتفاصيل الشغل مقفولة</h4>
                       <p className="text-xs text-white/70 max-w-lg mx-auto">
-                        شاهد كيف حوّلنا مشروع {relatedCaseStudy.businessName} في {relatedCaseStudy.city} إلى مبيعات متضاعفة وتقليل المرتجعات. متاح لحملة الحساب الكامل.
+                        شوف شلون صعدنا مبيعات مشروع {relatedCaseStudy.businessName} بـ {relatedCaseStudy.city} وقللنا الراجع. تنفتحلك من تشترك بالحساب الكامل.
                       </p>
                     </div>
                     <button
@@ -444,14 +444,14 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                       className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
                     >
                       <Crown className="w-4 h-4 text-[#040B24]" />
-                      <span>فتح دراسة الحالة الكاملة الآن ⚡</span>
+                      <span>افتح القصة والأرقام كاملة هسة ⚡</span>
                     </button>
                   </div>
                 )}
               </div>
             </FadeInUp>
           ) : (
-            <p className="text-sm text-white/60">راجع قسم دراسات الحالة في الأدوات العامة لمزيد من النماذج.</p>
+            <p className="text-sm text-white/60">شوف قسم الأمثلة الحقيقية بالأدوات حتى تشوف نماذج أكثر.</p>
           )}
         </div>
       )}
@@ -460,8 +460,8 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
       {activeTab === "swipe" && (
         <div className="bg-[#0A122E] border border-white/10 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-8 md:p-12 shadow-xl space-y-6 sm:space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
           <h3 className="text-xl sm:text-2xl font-black text-[#F0C040] flex items-center justify-between">
-            <span>سكريبتات وملفات السوايب المخصصة لهذا الفصل:</span>
-            {isFreeTrial && <span className="text-xs text-amber-300 font-normal">بعض السكريبتات مقفولة</span>}
+            <span>رسائل جاهزة للنسخ تفيدك بهذا الفصل:</span>
+            {isFreeTrial && <span className="text-xs text-amber-300 font-normal">بعض الرسائل مقفولة</span>}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {relatedSwipeFiles.map((sf, idx) => {
@@ -478,12 +478,12 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                     ) : (
                       <div className="p-4 rounded-xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/30 text-center space-y-2">
                         <Lock className="w-5 h-5 text-[#F0C040] mx-auto" />
-                        <p className="text-xs text-white/80 font-bold">السكريبت التنسيقي الاحترافي مغلق</p>
+                        <p className="text-xs text-white/80 font-bold">الرسائل الاحترافية مقفولة هسة</p>
                         <button
                           onClick={triggerUpgradeModal}
                           className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black text-xs shadow hover:scale-105 transition-all cursor-pointer"
                         >
-                          نسخ السكريبتات الكاملة ⚡
+                          افتح وانسخ كل الرسائل ⚡
                         </button>
                       </div>
                     )}
@@ -504,9 +504,9 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                 <Crown className="w-8 h-8" />
               </div>
               <div className="space-y-2 max-w-xl mx-auto">
-                <h3 className="text-xl sm:text-2xl font-black text-white">الأدوات والحاسبات التفاعلية لهذا الفصل مغلقة</h3>
+                <h3 className="text-xl sm:text-2xl font-black text-white">الأدوات والحاسبات مال هذا الفصل مقفولة</h3>
                 <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
-                  تتضمن هذه المحاكاة حساب هامش الربح، كلفة الرسالة الفعليه، واختبار ردود الواتساب التلقائية بالسوق العراقي. متوفرة بالكامل في النسخة المدفوعة.
+                  هاي الأدوات تحسبلك شكد تربح صافي، وشكد تكلفك الرسالة، وتختبرلك رسائل الواتساب. تنفتحلك بالكامل بالنسخة المدفوعة.
                 </p>
               </div>
               <button
@@ -514,7 +514,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                 className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl shadow-[#D4A017]/25 hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
               >
                 <KeyRound className="w-5 h-5 text-[#040B24]" />
-                <span>افتح جميع الأدوات والحاسبات التفاعلية الآن ⚡</span>
+                <span>افتح كل الأدوات والحاسبات هسة ⚡</span>
               </button>
             </div>
           ) : (
@@ -545,14 +545,14 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
           >
             <ArrowRight className="w-4 h-4 text-[#F0C040] group-hover:translate-x-1 transition-transform shrink-0" />
             <div className="text-right">
-              <span className="text-[10px] text-white/50 block font-normal">الفصل السابق</span>
+              <span className="text-[10px] text-white/50 block font-normal">الفصل القبله</span>
               <span className="text-xs sm:text-sm text-[#F0C040] line-clamp-1">{prevChapter.number}: {prevChapter.title}</span>
             </div>
           </button>
         ) : <div className="hidden sm:block" />}
 
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/25 text-[11px] text-[#F0C040]">
-          <span>👈 اسحب لليمين/اليسار للتنقل بين الفصول 👉</span>
+          <span>👈 اسحب يمنة ويسرة حتى تكلب بين الفصول 👉</span>
         </div>
 
         {nextChapter ? (
@@ -561,7 +561,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
             className="w-full sm:w-auto px-4 py-3 rounded-2xl bg-gradient-to-r from-[#D4A017]/20 to-[#D4A017]/10 hover:from-[#D4A017]/30 hover:to-[#D4A017]/20 border border-[#D4A017]/40 text-white font-bold text-xs sm:text-sm flex items-center justify-between sm:justify-end gap-3 transition-all cursor-pointer group"
           >
             <div className="text-right">
-              <span className="text-[10px] text-[#F0C040]/80 block font-normal">الفصل التالي</span>
+              <span className="text-[10px] text-[#F0C040]/80 block font-normal">الفصل الجاي</span>
               <span className="text-xs sm:text-sm text-[#F0C040] line-clamp-1">{nextChapter.number}: {nextChapter.title}</span>
             </div>
             <ChevronLeft className="w-4 h-4 text-[#F0C040] group-hover:-translate-x-1 transition-transform shrink-0" />

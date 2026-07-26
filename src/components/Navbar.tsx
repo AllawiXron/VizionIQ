@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, ShieldAlert, Settings, LogOut, Flame, Bot, Sparkles, Crown } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
 import { isFreeTrialUser, isVipUser } from "./LockScreen";
+import { SoundToggleButton } from "./SoundToggleButton";
 
 interface NavbarProps {
   activeSection: string;
@@ -112,6 +113,9 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdv
 
           {/* User Controls and Action Buttons */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Audio ASMR Sensory Sound Toggle */}
+            <SoundToggleButton variant="compact" />
+
             {/* AI Advisor Button */}
             {onOpenAdvisor && (
               <button
@@ -175,6 +179,8 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdv
 
           {/* Hamburger Menu Toggle (Mobile & Tablet) */}
           <div className="flex items-center gap-2 lg:hidden">
+            <SoundToggleButton variant="compact" />
+
             {isFreeTrialUser(userCode) ? (
               <button
                 onClick={onOpenUpgrade}
