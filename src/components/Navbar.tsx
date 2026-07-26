@@ -226,17 +226,27 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdv
               </div>
             </div>
 
-            {isFreeTrialUser(userCode) && (
+            <div className="flex items-center gap-2">
+              {isFreeTrialUser(userCode) && (
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    onOpenUpgrade?.();
+                  }}
+                  className="px-2.5 py-1.5 bg-[#D4A017] text-[#040B24] rounded-lg text-[10px] font-black hover:bg-amber-400 transition-colors shadow-sm"
+                >
+                  ترقية
+                </button>
+              )}
               <button
-                onClick={() => {
-                  setIsOpen(false);
-                  onOpenUpgrade?.();
-                }}
-                className="px-2.5 py-1 bg-[#D4A017] text-[#040B24] rounded-lg text-[10px] font-black hover:bg-amber-400 transition-colors"
+                onClick={onLogout}
+                className="px-2.5 py-1.5 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-400 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                title="تسجيل الخروج"
               >
-                ترقية الآن
+                <LogOut className="w-3.5 h-3.5" />
+                <span>خروج</span>
               </button>
-            )}
+            </div>
           </div>
 
           {/* Quick Action Cards Grid (2 Columns) */}
@@ -334,10 +344,10 @@ export default function Navbar({ activeSection, onLogout, onOpenAdmin, onOpenAdv
           </div>
 
           {/* Logout Section */}
-          <div className="pt-4 pb-6">
+          <div className="pt-4 pb-28">
             <button
               onClick={onLogout}
-              className="w-full py-2.5 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-xl text-red-400 hover:text-red-300 transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold active:scale-95"
+              className="w-full py-3 px-4 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 rounded-xl text-red-400 hover:text-red-300 transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold active:scale-95 shadow-md"
             >
               <LogOut className="w-4 h-4" />
               <span>تسجيل الخروج وقفل التطبيق</span>
