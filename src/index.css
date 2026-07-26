@@ -311,13 +311,23 @@ p {
   * {
     -webkit-tap-highlight-color: transparent;
   }
+
+  /* Disable continuous heavy transform & opacity animation keyframes on mobile to stop screen flashing */
+  .animate-pulse-slow,
+  .animate-glow-breathing,
+  .gold-gradient-text,
+  .gold-gradient-bg {
+    animation: none !important;
+  }
   
   /* Cap backdrop blurs on mobile to prevent WebKit GPU memory buffer flickering */
   .backdrop-blur-3xl,
   .backdrop-blur-2xl,
-  .backdrop-blur-xl {
-    -webkit-backdrop-filter: blur(12px) !important;
-    backdrop-filter: blur(12px) !important;
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(8px) !important;
+    backdrop-filter: blur(8px) !important;
   }
   
   /* Prevent transform jitter on mobile scroll */

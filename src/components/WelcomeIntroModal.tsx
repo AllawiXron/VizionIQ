@@ -83,62 +83,29 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
     <AnimatePresence>
       <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-6 overflow-x-hidden overflow-y-auto dir-rtl font-sans">
         
-        {/* Heavenly Dark Backdrop overlay with luxury blur & ambient glow */}
+        {/* Heavenly Dark Backdrop overlay - solid performance opacity on mobile to prevent GPU flicker */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-[#020512]/98 backdrop-blur-md sm:backdrop-blur-2xl transition-all z-[200]"
+          className="fixed inset-0 bg-[#020512]/98 sm:backdrop-blur-xl transition-opacity z-[200]"
         />
-
-        {/* Floating Heavenly Golden Dust & Light Particles */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden z-[201]">
-          {[...Array(typeof window !== "undefined" && window.innerWidth < 768 ? 6 : 14)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{
-                x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 400),
-                y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 800),
-                scale: Math.random() * 0.6 + 0.3,
-                opacity: Math.random() * 0.7 + 0.2,
-              }}
-              animate={{
-                y: [0, -50, 0],
-                x: [0, Math.sin(i) * 12, 0],
-                opacity: [0.2, 0.7, 0.2],
-                scale: [0.4, 0.9, 0.4],
-              }}
-              transition={{
-                duration: 6 + Math.random() * 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: i * 0.3,
-              }}
-              className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-[#F0C040] to-amber-300 shadow-[0_0_10px_#F0C040]"
-            />
-          ))}
-        </div>
 
         {/* MAIN DIALOG CONTAINER */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92, y: 15 }}
+          initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.94, y: 10 }}
-          transition={{ type: "spring", damping: 28, stiffness: 260 }}
+          exit={{ opacity: 0, scale: 0.95, y: 10 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
           className="relative z-[202] w-full max-w-xl bg-[#040B24] border-2 border-[#D4A017]/70 rounded-2xl sm:rounded-3xl shadow-[0_20px_90px_rgba(212,160,23,0.4)] overflow-hidden text-white flex flex-col max-h-[90vh] sm:max-h-[88vh] my-auto"
         >
           
-          {/* Celestial Ray & Top Ambient Light */}
-          <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-[#D4A017]/35 via-[#D4A017]/10 to-transparent pointer-events-none" />
-          <motion.div 
-            animate={{ scale: [1, 1.25, 1], opacity: [0.35, 0.65, 0.35] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-80 bg-[#D4A017]/25 rounded-full blur-[80px] pointer-events-none" 
-          />
+          {/* Celestial Ray & Top Ambient Light - High Performance Radial Gradient */}
+          <div className="absolute top-0 inset-x-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(212,160,23,0.25)_0%,rgba(212,160,23,0.05)_50%,transparent_100%)] pointer-events-none" />
 
           {/* Header Bar */}
-          <div className="relative px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#040B24]/85 backdrop-blur-md z-20">
+          <div className="relative px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#040B24] sm:bg-[#040B24]/85 sm:backdrop-blur-md z-20">
             {/* VIP / Code Badge */}
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 rounded-full bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-md shadow-[#D4A017]/30">
@@ -167,30 +134,21 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             {currentStep === 0 && (
               <motion.div
                 key="step0"
-                initial={{ opacity: 0, x: -15 }}
+                initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 15 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, x: 10 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-4 sm:space-y-5 text-center"
               >
-                {/* Glowing Crown Icon Emblem with Heavenly Aura Rings */}
+                {/* Crown Icon Emblem with Crisp Heavenly Glow */}
                 <div className="relative mx-auto w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
-                  <motion.div 
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0.1, 0.6] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 rounded-full border-2 border-[#F0C040]/50"
-                  />
-                  <motion.div 
-                    animate={{ scale: [1, 1.25, 1], opacity: [0.8, 0.2, 0.8] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                    className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-[#D4A017] via-amber-400 to-amber-600 opacity-70 blur-md"
-                  />
+                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(240,192,64,0.4)_0%,transparent_70%)]" />
 
-                  <div className="relative w-full h-full rounded-3xl bg-[#040B24] border-2 border-[#F0C040] flex items-center justify-center text-[#F0C040] shadow-[0_0_35px_rgba(240,192,64,0.55)]">
-                    <Crown className="w-10 h-10 sm:w-12 sm:h-12 animate-bounce" />
+                  <div className="relative w-full h-full rounded-3xl bg-[#040B24] border-2 border-[#F0C040] flex items-center justify-center text-[#F0C040] shadow-[0_0_25px_rgba(240,192,64,0.4)]">
+                    <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-[#F0C040]" />
                   </div>
 
-                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-[#F0C040] animate-spin" style={{ animationDuration: "7s" }} />
+                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-[#F0C040]" />
                   <Flame className="absolute -bottom-1 -left-1 w-5 h-5 text-amber-400" />
                 </div>
 
@@ -325,12 +283,8 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
               >
                 {/* Shield Emblem */}
                 <div className="relative mx-auto w-20 h-20 flex items-center justify-center">
-                  <motion.div 
-                    animate={{ scale: [1, 1.25, 1], opacity: [0.7, 0.2, 0.7] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 rounded-2xl bg-emerald-500/40 blur-md"
-                  />
-                  <div className="relative w-full h-full rounded-2xl bg-[#040B24] border-2 border-emerald-400 flex items-center justify-center text-emerald-400 shadow-[0_0_25px_rgba(52,211,153,0.4)]">
+                  <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.4)_0%,transparent_70%)]" />
+                  <div className="relative w-full h-full rounded-2xl bg-[#040B24] border-2 border-emerald-400 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.35)]">
                     <ShieldCheck className="w-10 h-10" />
                   </div>
                 </div>
