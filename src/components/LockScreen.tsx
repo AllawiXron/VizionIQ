@@ -13,7 +13,6 @@ import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-re
 // - Passwords WITH 'free' (e.g. "free#1") -> Free Trial access with psychological gatekeeping & cliffhangers.
 export const HARDCODED_CODES = [
   "bker#2",
-  "brandek#1",
   "ehab#1",
   "maryam#1",
   "mustafa#1",
@@ -35,6 +34,7 @@ export const HARDCODED_CODES = [
   "uthman#vip",
   "ali4#vip",
   "hamad#vip",
+  "mahmoud#1",
   "free#1"
 ];
 
