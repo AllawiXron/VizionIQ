@@ -43,6 +43,7 @@ export const HARDCODED_CODES = [
   "omar#vip",
   "omar-ali#12",
   "amro#vip",
+  "zahraa#vip",
   "free#1"
 ];
 
