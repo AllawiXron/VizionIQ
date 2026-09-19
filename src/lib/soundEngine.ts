@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// Apple-Grade ASMR Sound Engine using Web Audio API synthesis
+// Apple-Grade sound feedback Sound Engine using Web Audio API synthesis
 // Low-latency, ultra-smooth, zero-network dependency audio engine.
 
 let audioCtx: AudioContext | null = null;

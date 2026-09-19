@@ -42,22 +42,22 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
         whileTap={{ scale: 0.95 }}
         onClick={handleToggle}
         onMouseEnter={() => soundEngine.playHover()}
-        className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 text-xs font-bold transition-all cursor-pointer ${
+        className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${
           !muted
-            ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] shadow-[0_0_12px_rgba(212,160,23,0.3)]"
+            ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] md:shadow-[0_0_12px_rgba(212,160,23,0.3)] shadow-xl"
             : "bg-white/5 border-white/10 text-white/60 hover:text-white"
         } ${className}`}
-        title={muted ? "تشغيل المؤثرات الصوتية الفاخرة (ASMR)" : "كتم المؤثرات الصوتية"}
+        title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}
       >
         {!muted ? (
           <>
             <Volume2 className="w-4 h-4 text-[#F0C040] animate-pulse" />
-            <span>الصوت: مفعّل 🔊</span>
+            <span>الصوت مفعّل</span>
           </>
         ) : (
           <>
-            <VolumeX className="w-4 h-4 text-white/50" />
-            <span>الصوت: مكتوم 🔇</span>
+            <VolumeX className="w-4 h-4 text-white/70" />
+            <span>الصوت مكتوم</span>
           </>
         )}
       </motion.button>
@@ -70,17 +70,17 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
       whileTap={{ scale: 0.92 }}
       onClick={handleToggle}
       onMouseEnter={() => soundEngine.playHover()}
-      className={`p-2 rounded-xl border transition-all cursor-pointer ${
+      className={`p-2 rounded-xl border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${
         !muted
-          ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] shadow-[0_0_15px_rgba(212,160,23,0.35)]"
+          ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] md:shadow-[0_0_15px_rgba(212,160,23,0.35)] shadow-xl"
           : "bg-white/5 hover:bg-white/10 border-white/10 text-white/60 hover:text-white"
       } ${className}`}
-      title={muted ? "تشغيل المؤثرات الصوتية الفاخرة (ASMR)" : "كتم المؤثرات الصوتية"}
+      title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}
     >
       {!muted ? (
         <Volume2 className="w-4 h-4 text-[#F0C040]" />
       ) : (
-        <VolumeX className="w-4 h-4 text-white/50" />
+        <VolumeX className="w-4 h-4 text-white/70" />
       )}
     </motion.button>
   );

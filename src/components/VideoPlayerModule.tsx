@@ -143,17 +143,12 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
             {videoLessonsList.map((v) => {
               const isActive = v.id === activeLesson.id;
               return (
-                <button
-                  key={v.id}
+                <button                   key={v.id}
                   onClick={() => setActiveLesson(v)}
-                  className={`w-full p-4 rounded-2xl border text-right transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                    isActive
-                      ? "bg-[#D4A017]/15 border-[#D4A017] text-[#F0C040] shadow-md scale-[1.02]"
-                      : "bg-white/[0.03] border-white/5 text-white/80 hover:bg-white/5 hover:border-white/20"
-                  }`}
+                  className={`w-full p-4 rounded-2xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between gap-3 ${ isActive ? "bg-[#D4A017]/15 border-[#D4A017] text-[#F0C040] shadow-md scale-[1.02]" : "bg-white/[0.03] border-white/5 text-white/80 hover:bg-white/5 hover:border-white/20" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                 >
                   <div className="space-y-1">
-                    <span className="text-[10px] text-white/50 block font-mono">الفصل {v.chapterNumber}</span>
+                    <span className="text-[10px] text-white/70 block font-mono">الفصل {v.chapterNumber}</span>
                     <h5 className="text-xs font-bold leading-snug">{v.title}</h5>
                   </div>
                   <span className="text-[10px] font-mono text-white/60 bg-black/40 px-2 py-0.5 rounded-md border border-white/10 shrink-0">

@@ -22,8 +22,8 @@
   --color-gold-main: #D4A017;
   --color-gold-bright: #F0C040;
   --color-text-main: #F0F4FF;
-  --color-text-secondary: rgba(240, 244, 255, 0.75);
-  --color-text-muted: rgba(240, 244, 255, 0.45);
+  --color-text-secondary: rgba(240, 244, 255, 0.82);
+  --color-text-muted: rgba(240, 244, 255, 0.65);
   --color-glass-card: rgba(255, 255, 255, 0.04);
   --color-glass-border: rgba(255, 255, 255, 0.08);
 }
@@ -35,8 +35,8 @@
   --color-gold: #D4A017;
   --color-gold-bright: #F0C040;
   --color-text-main: #F0F4FF;
-  --color-text-secondary: rgba(240, 244, 255, 0.75);
-  --color-text-muted: rgba(240, 244, 255, 0.45);
+  --color-text-secondary: rgba(240, 244, 255, 0.82);
+  --color-text-muted: rgba(240, 244, 255, 0.65);
   --color-glass-card: rgba(255, 255, 255, 0.04);
   --color-glass-border: rgba(255, 255, 255, 0.08);
 
@@ -339,3 +339,605 @@ p {
   }
 }
 
+/* Reduced Motion Support for Accessibility and Calm Reading Experience */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .shimmer-line,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-ping {
+    animation: none !important;
+  }
+}
+
+/* Keyboard Navigation Focus Rings (WCAG 2.1 Focus Visible Compliant) */
+:focus-visible {
+  outline: 2px solid #F0C040 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.35) !important;
+}
+
+/* RTL Number, Currency & Technical Term Isolation to prevent visual glitching */
+.bidi-isolate {
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+
+.num-iqd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  unicode-bidi: isolate;
+  direction: ltr;
+  display: inline-block;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Safe Area Inset Utilities */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.safe-area-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+.safe-area-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Universal safe text wrapping for mixed Arabic & English words, URLs, and currency */
+*, ::before, ::after {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+pre, code, kbd, samp, .no-word-break {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Prevent auto-zooming in mobile WebKit / Safari on form inputs */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="number"],
+  input[type="password"],
+  input[type="email"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+
+
+
+
+
+
+
+/* Advisor Modal Modern Layout & Scroll Optimization */
+.vizion-advisor-modal {
+  container-type: inline-size;
+  container-name: advisor;
+}
+
+/* Universal Tab Bar styling: smooth horizontal scrolling, hidden scrollbars, touch acceleration */
+.vizion-advisor-tab-strip {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-behavior: smooth !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.vizion-advisor-tab-strip::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Chat Scroll Container Fixes */
+.vizion-advisor-chat {
+  min-height: 0;
+  flex: 1 1 auto;
+  overscroll-behavior: contain;
+  overflow-x: hidden;
+  touch-action: pan-y;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vizion-advisor-composer {
+  flex: 0 0 auto;
+  box-shadow: 0 -8px 24px rgba(4, 11, 36, 0.4);
+}
+
+.vizion-advisor-composer textarea {
+  line-height: 1.55;
+}
+
+@container advisor (max-width: 640px) {
+  .vizion-advisor-modal {
+    border: 0;
+    border-radius: 0;
+    background: #040B24;
+  }
+}
+
+.vizion-advisor-modal .vizion-advisor-composer textarea {
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .vizion-advisor-modal,
+  .vizion-advisor-modal > * {
+    min-height: 0;
+  }
+
+  .vizion-advisor-modal .vizion-advisor-chat {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .vizion-advisor-modal .vizion-advisor-chat::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vizion-advisor-modal .vizion-advisor-composer {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 0.75rem);
+  }
+}
+
+/* Mobile tools design system: calm surfaces, clear hierarchy, comfortable controls. */
+.vizion-tools-suite,
+.vizion-calculator-suite,
+.vizion-roi-calculator {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vizion-tools-suite input,
+.vizion-tools-suite select,
+.vizion-tools-suite textarea,
+.vizion-calculator-suite input,
+.vizion-calculator-suite select,
+.vizion-calculator-suite textarea,
+.vizion-roi-calculator input,
+.vizion-roi-calculator select,
+.vizion-roi-calculator textarea {
+  min-height: 48px;
+}
+
+.vizion-tool-categories,
+.vizion-calculator-tabs {
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.vizion-tool-categories > button,
+.vizion-calculator-tabs > button {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 640px) {
+  .vizion-tools-suite {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+    gap: 1.75rem;
+  }
+
+  .vizion-tools-suite .vizion-tools-header {
+    gap: 1rem;
+  }
+
+  .vizion-tools-suite .vizion-tools-header > div:first-child {
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .vizion-tools-suite .vizion-tools-header h2 {
+    font-size: clamp(1.7rem, 7vw, 2.2rem);
+    line-height: 1.35;
+    text-shadow: none;
+  }
+
+  .vizion-tools-suite .vizion-tools-header p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .vizion-tool-categories {
+    justify-content: flex-start;
+    margin-inline: -0.25rem;
+    padding-inline: 0.25rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .vizion-tool-categories > button {
+    min-height: 46px;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.85rem;
+    font-size: 0.78rem;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .vizion-tool-layout {
+    gap: 0.9rem;
+  }
+
+  .vizion-tool-picker {
+    margin-bottom: 0.25rem;
+  }
+
+  .vizion-tool-picker > div {
+    border-radius: 1rem;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+    backdrop-filter: none;
+  }
+
+  .vizion-tool-picker button {
+    padding: 0.9rem 1rem;
+  }
+
+  .vizion-calculator-suite {
+    padding: 1rem;
+    border-radius: 1.25rem;
+    gap: 1.25rem;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+  }
+
+  .vizion-calculator-suite h3 {
+    font-size: 1.35rem;
+    line-height: 1.45;
+  }
+
+  .vizion-calculator-suite .vizion-calculator-tabs {
+    margin-inline: -0.25rem;
+    padding-inline: 0.25rem;
+  }
+
+  .vizion-calculator-tabs > button {
+    min-height: 48px;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.85rem;
+    font-size: 0.76rem;
+    box-shadow: none !important;
+  }
+
+  .vizion-roi-calculator {
+    padding: 1rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+  }
+
+  .vizion-roi-calculator h3 {
+    font-size: 1.1rem;
+    line-height: 1.55;
+  }
+
+  .vizion-tools-suite button,
+  .vizion-calculator-suite button,
+  .vizion-roi-calculator button {
+    touch-action: manipulation;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vizion-tool-categories,
+  .vizion-calculator-tabs {
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+  }
+}
+
+/* Strong visible treatment for the tools area. */
+.vizion-tools-suite .vizion-tool-picker,
+.vizion-tools-suite .vizion-tool-viewport {
+  isolation: isolate;
+}
+
+.vizion-tools-suite .vizion-tool-picker {
+  position: relative;
+}
+
+.vizion-tools-suite .vizion-tool-picker::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 1.05rem;
+  border: 1px solid rgba(240, 192, 64, 0.22);
+  pointer-events: none;
+}
+
+.vizion-tools-suite .vizion-tool-viewport {
+  border-color: rgba(240, 192, 64, 0.28);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+}
+
+.vizion-tools-suite .vizion-tool-viewport h3,
+.vizion-tools-suite .vizion-tool-viewport h4 {
+  letter-spacing: 0 !important;
+}
+
+.vizion-calculator-suite,
+.vizion-roi-calculator {
+  border-color: rgba(240, 192, 64, 0.26);
+}
+
+@media (max-width: 640px) {
+  .vizion-tools-suite .vizion-tool-viewport {
+    min-height: auto;
+    padding: 1rem;
+    border-radius: 1.1rem;
+    background: #08102c;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
+  }
+
+  .vizion-tools-suite .vizion-tool-viewport > div:first-child {
+    display: none;
+  }
+
+  .vizion-tools-suite .vizion-tool-viewport > div:nth-child(2) {
+    gap: 1.15rem;
+  }
+
+  .vizion-tools-suite .vizion-tool-viewport .grid {
+    gap: 0.75rem;
+  }
+
+  .vizion-tools-suite .vizion-tool-viewport input,
+  .vizion-tools-suite .vizion-tool-viewport select,
+  .vizion-tools-suite .vizion-tool-viewport textarea {
+    border-radius: 0.75rem;
+    background: #050b24;
+  }
+
+  .vizion-tools-suite .vizion-tool-viewport button:not([aria-label]) {
+    min-height: 48px;
+  }
+}
+
+/* Tool cards: make each active tool read as a focused task, not a long dashboard. */
+.vizion-tool-viewport .space-y-6 > .flex.items-center {
+  border-bottom-color: rgba(240, 192, 64, 0.22);
+}
+
+.vizion-tool-viewport .space-y-6 > .flex.items-center > span:first-child {
+  display: none;
+}
+
+.vizion-tool-viewport .space-y-6 > p {
+  max-width: 48rem;
+  color: rgba(240, 244, 255, 0.72);
+}
+
+.vizion-tool-viewport label {
+  line-height: 1.5;
+}
+
+.vizion-tool-viewport input[type="number"],
+.vizion-tool-viewport input[type="text"],
+.vizion-tool-viewport select,
+.vizion-tool-viewport textarea {
+  border-color: rgba(255, 255, 255, 0.14);
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.vizion-tool-viewport input[type="number"]:focus,
+.vizion-tool-viewport input[type="text"]:focus,
+.vizion-tool-viewport select:focus,
+.vizion-tool-viewport textarea:focus {
+  border-color: rgba(240, 192, 64, 0.75);
+  background-color: rgba(4, 11, 36, 0.95);
+  box-shadow: 0 0 0 3px rgba(240, 192, 64, 0.12);
+}
+
+.vizion-tool-viewport [class*="bg-white/5"] {
+  background-color: rgba(255, 255, 255, 0.045);
+}
+
+@media (max-width: 640px) {
+  .vizion-tool-viewport .space-y-6 > .flex.items-center {
+    padding-bottom: 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .vizion-tool-viewport .space-y-6 > .flex.items-center h3 {
+    font-size: 1.15rem;
+    line-height: 1.45;
+  }
+
+  .vizion-tool-viewport .space-y-6 > .flex.items-center span:not(:first-child) {
+    font-size: 0.7rem;
+  }
+
+  .vizion-tool-viewport label {
+    font-size: 0.78rem;
+    color: rgba(240, 244, 255, 0.84);
+  }
+
+  .vizion-tool-viewport input[type="number"],
+  .vizion-tool-viewport input[type="text"],
+  .vizion-tool-viewport select,
+  .vizion-tool-viewport textarea {
+    min-height: 50px;
+    font-size: 0.95rem;
+  }
+
+  .vizion-tool-viewport button.bg-\[\#D4A017\],
+  .vizion-tool-viewport button.bg-amber-500 {
+    min-height: 52px;
+    border-radius: 0.85rem;
+    font-size: 0.9rem;
+    box-shadow: none;
+  }
+
+  .vizion-tool-viewport [class*="grid-cols-4"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vizion-tool-viewport [class*="grid-cols-3"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Keyboard-safe mobile behavior. The JS viewport manager adds keyboard-is-open. */
+:root {
+  --keyboard-height: 0px;
+  --visual-viewport-height: 100dvh;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+
+  body.keyboard-is-open {
+    min-height: var(--visual-viewport-height);
+  }
+
+  body.keyboard-is-open .mobile-bottom-nav {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(110%);
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  body.keyboard-is-open .vizion-advisor-modal {
+    height: var(--visual-viewport-height);
+    max-height: var(--visual-viewport-height);
+  }
+
+  body.keyboard-is-open .vizion-advisor-composer {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  body.keyboard-is-open .vizion-advisor-chat {
+    padding-bottom: calc(5.5rem + var(--keyboard-height));
+  }
+
+  body.keyboard-is-open [role="dialog"] {
+    max-height: var(--visual-viewport-height);
+  }
+
+  input,
+  textarea,
+  select {
+    scroll-margin-block: 7rem;
+  }
+}
+
+@supports (height: 100dvh) {
+  @media (max-width: 768px) {
+    .vizion-advisor-modal {
+      min-height: min(100dvh, var(--visual-viewport-height));
+    }
+  }
+}
+
+/* Diagnostic stepper: keep form content and navigation inside the keyboard viewport. */
+.vizion-diagnostic-stepper {
+  min-height: 0;
+}
+
+.vizion-diagnostic-body {
+  overscroll-behavior: contain;
+  scroll-padding-block: 1rem 5.5rem;
+}
+
+.vizion-diagnostic-footer {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+  .vizion-diagnostic-stepper {
+    width: 100%;
+    max-width: 100%;
+    max-height: min(85vh, 720px);
+    border-radius: 1rem;
+  }
+
+  .vizion-diagnostic-stepper input,
+  .vizion-diagnostic-stepper textarea,
+  .vizion-diagnostic-stepper select {
+    scroll-margin-block: 1rem 6rem;
+  }
+
+  .vizion-diagnostic-body {
+    padding: 1rem 0.85rem 1.25rem;
+  }
+
+  .vizion-diagnostic-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    padding: 0.7rem 0.85rem;
+    padding-bottom: max(0.7rem, env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -10px 24px rgba(4, 11, 36, 0.7);
+  }
+
+  .vizion-diagnostic-footer button {
+    min-height: 50px;
+    padding-inline: 1.25rem;
+  }
+
+  body.keyboard-is-open .vizion-diagnostic-stepper {
+    height: var(--visual-viewport-height);
+    max-height: var(--visual-viewport-height);
+    border-radius: 0;
+  }
+
+  body.keyboard-is-open .vizion-diagnostic-stepper > div:first-child {
+    padding: 0.65rem 0.85rem;
+  }
+
+  body.keyboard-is-open .vizion-diagnostic-stepper > div:first-child h2 {
+    font-size: 0.9rem;
+  }
+
+  body.keyboard-is-open .vizion-diagnostic-stepper > div:first-child p {
+    display: none;
+  }
+
+  body.keyboard-is-open .vizion-diagnostic-body {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  body.keyboard-is-open .vizion-diagnostic-footer {
+    padding-top: 0.55rem;
+    padding-bottom: max(0.55rem, env(safe-area-inset-bottom, 0px));
+  }
+}

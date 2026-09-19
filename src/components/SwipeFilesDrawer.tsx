@@ -69,28 +69,22 @@ export default function SwipeFilesDrawer() {
 
         {/* Search Bar */}
         <div className="relative w-full md:w-64">
-          <input
-            type="text"
+          <input             type="text"
             placeholder="بحث في السكريبتات والنصوص..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 focus:border-[#D4A017] rounded-xl px-4 py-2 pr-9 text-xs text-white placeholder-white/40 outline-none transition-all"
+            className="w-full bg-white/5 border border-white/10 focus:border-[#D4A017] rounded-xl px-4 py-2 pr-9 text-xs text-white placeholder-white/40 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
           />
-          <Search className="w-4 h-4 text-white/40 absolute right-3 top-2.5" />
+          <Search className="w-4 h-4 text-white/60 absolute right-3 top-2.5" />
         </div>
       </div>
 
       {/* Category Pills */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
         {categories.map((cat) => (
-          <button
-            key={cat.id}
+          <button             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${
-              selectedCategory === cat.id
-                ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] font-black"
-                : "bg-white/5 text-white/70 hover:text-white border-white/10"
-            }`}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ selectedCategory === cat.id ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
           >
             {cat.label}
           </button>
@@ -104,7 +98,7 @@ export default function SwipeFilesDrawer() {
           return (
             <div
               key={sf.id}
-              className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all hover:-translate-y-1 relative overflow-hidden"
+              className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 relative overflow-hidden"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -133,14 +127,13 @@ export default function SwipeFilesDrawer() {
                   </div>
                 ) : (
                   <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-2">
-                    <p className="text-xs text-white/40 blur-[3px] select-none line-clamp-2">
+                    <p className="text-xs text-white/60 blur-[3px] select-none line-clamp-2">
                       {sf.content}
                     </p>
                     <div className="pt-1">
                       <span className="text-xs font-black text-[#F0C040] block mb-2">🔒 سكريبت سوايب مدفوع ومحمي بالكامل</span>
-                      <button
-                        onClick={triggerUpgradeModal}
-                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
+                      <button                         onClick={triggerUpgradeModal}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       >
                         <Crown className="w-3.5 h-3.5" />
                         <span>ترقية الحساب ونسخ السكريبت ⚡</span>
@@ -153,9 +146,8 @@ export default function SwipeFilesDrawer() {
               {/* Action Buttons */}
               {!isLocked && (
                 <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-                  <button
-                    onClick={() => handleCopy(sf.content, sf.id)}
-                    className="flex-1 py-2.5 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md"
+                  <button                     onClick={() => handleCopy(sf.content, sf.id)}
+                    className="flex-1 py-2.5 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   >
                     {copiedId === sf.id ? (
                       <>
@@ -170,9 +162,8 @@ export default function SwipeFilesDrawer() {
                     )}
                   </button>
 
-                  <button
-                    onClick={() => handleDownloadTxt(sf)}
-                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs flex items-center justify-center cursor-pointer transition-all"
+                  <button                     onClick={() => handleDownloadTxt(sf)}
+                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs flex items-center justify-center cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     title="تنزيل كملف نصي .txt"
                   >
                     <Download className="w-4 h-4" />

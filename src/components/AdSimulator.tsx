@@ -15,7 +15,7 @@ export default function AdSimulator() {
   const [cta, setCta] = useState("اطلب الآن - توصيل سريع");
 
   return (
-    <div className="w-full glass-panel rounded-2xl border border-white/5 p-4 sm:p-6 md:p-8 shadow-2xl relative" id="ad-simulator">
+    <div className="w-full glass-panel rounded-2xl border border-white/5 p-3.5 sm:p-6 md:p-8 shadow-2xl relative" id="ad-simulator">
       {/* Glow */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-[#D4A017]/5 rounded-full blur-2xl pointer-events-none" />
 
@@ -24,7 +24,7 @@ export default function AdSimulator() {
         <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           🎬 جرب إعلانك وشوف شكله وتأثيره قبل لا تصرف أي دينار على الترويج
         </h3>
-        <p className="text-xs text-white/50 mt-1">اختبر مظهر إعلانك على فيسبوك، انستغرام وتيك توك محلياً وتأكد من جاذبيته للجمهور العراقي</p>
+        <p className="text-xs text-white/70 mt-1">اختبر مظهر إعلانك على فيسبوك، انستغرام وتيك توك محلياً وتأكد من جاذبيته للجمهور العراقي</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -37,35 +37,32 @@ export default function AdSimulator() {
           <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/5">
             <span className="text-[10px] text-[#F0C040] font-bold block">💡 صيغ كتابة إعلانية عراقية ناجحة (اضغط للتجربة):</span>
             <div className="grid grid-cols-3 gap-1.5">
-              <button
-                onClick={() => {
+              <button                 onClick={() => {
                   setHeadline("مقاوم لتراب وعواصف بغداد والجنوب! 🚗🌪️");
                   setAdText("تعبت من غسيل سيارتك كل يوم والتراب يغطيها الصبح؟ 🚗🌪️ عواصف تراب العراق ما ترحم، والحل صار بيدك! غلاف السيارة النانو عازل للغبار والمطر بنسبة 100%.\n\n✅ يحمي الصبغ من الخدوش وأشعة الشمس الحارقة.\n✅ تفصال خاص لكل موديل سيارة (صالون، جيب، بيك اب).\n\n👇 اطلب الحين وافحص خامته وجودته بنفسك قبل ما تدفع للمندوب!");
                   setCta("اطلب الآن - توصيل سريع");
                 }}
-                className="py-1.5 px-1 bg-white/5 hover:bg-[#D4A017]/10 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors"
+                className="py-1.5 px-1 bg-white/5 hover:bg-[#D4A017]/10 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 title="صيغة حل مشكلة الغبار العراقي"
               >
                 🌪️ مشكلة الغبار
               </button>
-              <button
-                onClick={() => {
+              <button                 onClick={() => {
                   setHeadline("من اليوم ماكو كشخة تخرب بسبب الكشنات! ✨🧥");
-                  setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ 🤦‍♂️ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\n✅ حجمها صغير ومثالية لكشنات وزوايا السيارة.\n✅ شحن USB يدوم لأسابيع.\n✅ التوصيل لباب بيتك مجاني هذا الأسبوع!\n\n👇 اضغط على 'اطلب الآن' واحصل عليها بخصم خاص اليوم!");
+                  setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ 🤦‍♂️ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\n✅ حجمها صغير ومثالية لكشنات وزوايا السيارة.\n✅ تعبئة USB يدوم لأسابيع.\n✅ التوصيل لباب بيتك مجاني هذا الأسبوع!\n\n👇 اضغط على 'اطلب الآن' واحصل عليها بخصم خاص اليوم!");
                   setCta("تسوق الآن");
                 }}
-                className="py-1.5 px-1 bg-white/5 hover:bg-[#D4A017]/10 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors"
+                className="py-1.5 px-1 bg-white/5 hover:bg-[#D4A017]/10 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 title="صيغة الكشخة وتفادي الغبار"
               >
                 ✨ كشخة الملابس
               </button>
-              <button
-                onClick={() => {
+              <button                 onClick={() => {
                   setHeadline("اشتري وحدة الك والثانية لبيت أبوك مجاناً! 🎁");
-                  setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة! 🏡☀️\n\n✅ يشحن من شمس الصيف الحارة ويشتغل تلقائياً بالليل.\n✅ خامة قوية ومقاومة للأمطار وعواصف الغبار.\n✅ توصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف فقط!\n\n👇 العرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
+                  setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة! 🏡☀️\n\n✅ يشتغل من شمس الصيف الحارة ويشتغل تلقائياً بالليل.\n✅ خامة قوية ومقاومة للأمطار وعواصف الغبار.\n✅ توصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف فقط!\n\n👇 العرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
                   setCta("اشتري قطعتين والتوصيل مجاني");
                 }}
-                className="py-1.5 px-1 bg-white/5 hover:bg-[#D4A017]/10 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors"
+                className="py-1.5 px-1 bg-white/5 hover:bg-[#D4A017]/10 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 title="صيغة عرض الكرم العراقي"
               >
                 🎁 الكرم العائلي
@@ -75,35 +72,20 @@ export default function AdSimulator() {
           
           {/* Platform Selector Buttons */}
           <div className="grid grid-cols-3 gap-2">
-            <button
-              onClick={() => setPlatform("facebook")}
-              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all cursor-pointer ${
-                platform === "facebook"
-                  ? "bg-[#1877F2]/10 border-[#1877F2] text-[#1877F2]"
-                  : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
-              }`}
+            <button               onClick={() => setPlatform("facebook")}
+              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "facebook" ? "bg-[#1877F2]/10 border-[#1877F2] text-[#1877F2]" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
             >
               <Facebook className="w-4 h-4" />
               <span>فيسبوك</span>
             </button>
-            <button
-              onClick={() => setPlatform("instagram")}
-              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all cursor-pointer ${
-                platform === "instagram"
-                  ? "bg-[#E1306C]/10 border-[#E1306C] text-[#E1306C]"
-                  : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
-              }`}
+            <button               onClick={() => setPlatform("instagram")}
+              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "instagram" ? "bg-[#E1306C]/10 border-[#E1306C] text-[#E1306C]" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
             >
               <Instagram className="w-4 h-4" />
               <span>إنستغرام</span>
             </button>
-            <button
-              onClick={() => setPlatform("tiktok")}
-              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all cursor-pointer ${
-                platform === "tiktok"
-                  ? "bg-black/40 border-cyan-400 text-cyan-300 shadow-[0_0_10px_rgba(34,211,238,0.2)]"
-                  : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
-              }`}
+            <button               onClick={() => setPlatform("tiktok")}
+              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "tiktok" ? "bg-black/40 border-cyan-400 text-cyan-300 md:shadow-[0_0_10px_rgba(34,211,238,0.2)] shadow-xl" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
             >
               <span className="font-bold">🎵</span>
               <span>تيك توك</span>
@@ -113,32 +95,29 @@ export default function AdSimulator() {
           {/* Ad text input */}
           <div className="space-y-1">
             <label className="text-xs text-white/60 block">نص الإعلان الترويجي (Ad Copy):</label>
-            <textarea
-              value={adText}
+            <textarea               value={adText}
               onChange={(e) => setAdText(e.target.value)}
               rows={4}
-              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#D4A017] leading-relaxed resize-none"
+              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#D4A017] leading-relaxed resize-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
           {/* Ad headline */}
           <div className="space-y-1">
             <label className="text-xs text-white/60 block">عنوان الإعلان الأساسي (Headline):</label>
-            <input
-              type="text"
+            <input               type="text"
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
-              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#D4A017]"
+              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#D4A017] min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
           {/* Ad call to action */}
           <div className="space-y-1">
             <label className="text-xs text-white/60 block">نص زر الإجراء (Call To Action):</label>
-            <select
-              value={cta}
+            <select               value={cta}
               onChange={(e) => setCta(e.target.value)}
-              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#D4A017] appearance-none"
+              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#D4A017] appearance-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <option value="اطلب الآن - توصيل سريع">اطلب الآن - توصيل سريع</option>
               <option value="تسوق الآن">تسوق الآن</option>
@@ -165,10 +144,10 @@ export default function AdSimulator() {
                       سوق الرافدين الإلكتروني
                       <span className="text-[#1877F2] text-[10px]">● ممول</span>
                     </h5>
-                    <span className="text-[10px] text-white/50">الآن · 🌐</span>
+                    <span className="text-[10px] text-white/70">الآن · 🌐</span>
                   </div>
                 </div>
-                <button className="text-white/60 hover:text-white">
+                <button className="text-white/60 hover:text-white min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
               </div>
@@ -193,25 +172,25 @@ export default function AdSimulator() {
               {/* CTA footer bar */}
               <div className="p-3 bg-[#242526] flex justify-between items-center border-t border-white/5">
                 <div className="max-w-[70%]">
-                  <span className="text-[10px] text-white/50 uppercase block">WWW.ALRAFIDAIN.SHOP</span>
+                  <span className="text-[10px] text-white/70 uppercase block">WWW.ALRAFIDAIN.SHOP</span>
                   <span className="font-bold text-white text-[12px] truncate block">{headline}</span>
                 </div>
-                <button className="px-3.5 py-1.5 bg-[#3a3b3c] hover:bg-[#4e4f50] font-semibold rounded text-white text-[11px] transition-all whitespace-nowrap">
+                <button className="px-3.5 py-1.5 bg-[#3a3b3c] hover:bg-[#4e4f50] font-semibold rounded text-white text-[11px] transition-all motion-reduce:transition-none motion-reduce:transform-none whitespace-nowrap min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                   {cta}
                 </button>
               </div>
 
               {/* Social actions */}
               <div className="p-3 flex justify-around items-center border-t border-white/5 text-white/60">
-                <button className="flex items-center gap-1.5 hover:text-[#1877F2]">
+                <button className="flex items-center gap-1.5 hover:text-[#1877F2] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                   <span>👍</span>
                   <span>أعجبني</span>
                 </button>
-                <button className="flex items-center gap-1.5 hover:text-white">
+                <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                   <MessageCircle className="w-4 h-4" />
                   <span>تعليق</span>
                 </button>
-                <button className="flex items-center gap-1.5 hover:text-white">
+                <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                   <Share2 className="w-4 h-4" />
                   <span>مشاركة</span>
                 </button>
@@ -235,7 +214,7 @@ export default function AdSimulator() {
                     <span className="text-[9px] text-white/60 block -mt-0.5">Sponsored</span>
                   </div>
                 </div>
-                <button className="text-white/60">
+                <button className="text-white/60 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
               </div>
@@ -261,11 +240,11 @@ export default function AdSimulator() {
               {/* Action Icons */}
               <div className="p-3 flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <button className="hover:text-red-500"><Heart className="w-5 h-5" /></button>
-                  <button><MessageCircle className="w-5 h-5" /></button>
-                  <button><Send className="w-5 h-5" /></button>
+                  <button className="hover:text-red-500 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"><Heart className="w-5 h-5" /></button>
+                  <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] min-h-[44px] active:scale-95 transition-all"><MessageCircle className="w-5 h-5" /></button>
+                  <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] min-h-[44px] active:scale-95 transition-all"><Send className="w-5 h-5" /></button>
                 </div>
-                <button><Bookmark className="w-5 h-5" /></button>
+                <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] min-h-[44px] active:scale-95 transition-all"><Bookmark className="w-5 h-5" /></button>
               </div>
 
               {/* Likes & Captions */}
@@ -275,7 +254,7 @@ export default function AdSimulator() {
                   <span className="font-bold mr-1 block text-amber-400">alrafidain.shop</span>
                   <span className="text-white/90 whitespace-pre-line">{adText}</span>
                 </p>
-                <span className="text-[9px] text-white/40 uppercase block mt-1">View all 14 comments</span>
+                <span className="text-[9px] text-white/60 uppercase block mt-1">View all 14 comments</span>
               </div>
             </div>
           )}
@@ -297,7 +276,7 @@ export default function AdSimulator() {
                 <p className="text-xs text-cyan-400 font-medium mt-1">#تسوق_بالعراق #مبيعات_اونلاين</p>
                 
                 {/* Call to action floating ribbon */}
-                <div className="absolute bottom-32 inset-x-4 bg-cyan-500 hover:bg-cyan-600 p-3 rounded-lg flex justify-between items-center transition-all cursor-pointer shadow-lg shadow-cyan-500/30 z-10">
+                <div className="absolute bottom-32 inset-x-4 bg-cyan-500 hover:bg-cyan-600 p-3 rounded-lg flex justify-between items-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer shadow-lg shadow-cyan-500/30 z-10">
                   <span className="font-bold text-black text-xs">{cta}</span>
                   <span className="text-black font-extrabold">⚡</span>
                 </div>

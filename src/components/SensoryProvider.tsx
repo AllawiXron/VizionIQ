@@ -12,7 +12,7 @@ interface SensoryProviderProps {
 
 export function SensoryProvider({ children }: SensoryProviderProps) {
   useEffect(() => {
-    // 1. Global Delegated Mouseover / PointerEnter for Subtle Hover ASMR
+    // 1. Global Delegated Mouseover / PointerEnter for Subtle Hover sound feedback
     let lastHoverTime = 0;
 
     const handleMouseOver = (e: MouseEvent) => {

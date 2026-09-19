@@ -8,11 +8,12 @@ import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-re
 
 // 1. HARDCODED CODES LIST:
 // You can directly edit, add, or remove passwords in this array!
-// - Passwords WITH '#vip' (e.g. "ali") -> Full access to website + AI Assistant (فيزيون بوت).
+// - Passwords WITH '#vip' (e.g. "ali") -> Full access to website + AI Assistant (مستشار فيزيون).
 // - Passwords WITHOUT '#vip' (e.g. "ali#1", "bker#2") -> Full access to website ONLY (No AI Assistant access).
 // - Passwords WITH 'free' (e.g. "free#1") -> Free Trial access with psychological gatekeeping & cliffhangers.
 export const HARDCODED_CODES = [
   "bker#2",
+  "brandek#1",
   "ehab#1",
   "maryam#1",
   "mustafa#1",
@@ -26,27 +27,7 @@ export const HARDCODED_CODES = [
   "fatima#1",
   "mohanned#1",
   "said#1",
-  "rusul#1",
-  "rusul#vip",
-  "mohammed#2",
-  "tabarak#1",
-  "fadak#1",
-  "uthman#vip",
-  "ali4#vip",
-  "hamad#vip",
-  "mahmoud#1",
-  "hamody#vip",
-  "sura#vip",
-  "raniah#vip",
-  "hassanein#1",
-  "lujain#1",
-  "omar#vip",
-  "omar-ali#12",
-  "amro#vip",
-  "zahraa#vip",
-  "gaith#vip",
-  "sadiq#1",
-  "jafar#vip",
+  "allawidev#vip",
   "free#1"
 ];
 
@@ -304,7 +285,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         }, 800);
       } else {
         setIsLoading(false);
-        setError("رمز الوصول المدخل غير صحيح أو تم إلغاؤه! يرجى التحقق وإعادة المحاولة.");
+        setError("رمز الوصول المدخل غير صحيح أو تم إلغاؤه! رجاءً التحقق وإعادة المحاولة.");
         triggerShake();
       }
     }, 1200);
@@ -322,35 +303,35 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
   };
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-hidden font-sans select-none px-4 py-8">
+    <div className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-x-hidden font-sans select-none px-3 py-6 sm:px-4 sm:py-8 safe-area-top safe-area-bottom">
       {/* Background Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0" />
 
       {/* Floating Glowing Blobs */}
-      <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] rounded-full bg-[#D4A017]/10 blur-[80px] z-0 animate-float-slow" />
-      <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-[#0D1B56]/40 blur-[100px] z-0 animate-float-medium" />
+      <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] rounded-full bg-[#D4A017]/10 md:blur-[80px] blur-3xl z-0 md:animate-float-slow" />
+      <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-[#0D1B56]/40 md:blur-[100px] blur-3xl z-0 md:animate-float-medium" />
 
       {/* Main Authentication Container */}
       <div
-        className={`relative w-full max-w-[460px] z-10 transition-transform duration-500 ${
+        className={`relative w-full max-w-[460px] z-10 transition-transform duration-500 my-auto ${
           shake ? "animate-[bounce_0.5s_ease-in-out_infinite] border-red-500" : ""
         }`}
         id="lock-card"
       >
         {/* Glass Card */}
-        <div className="glass-panel-gold rounded-2xl p-5 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/10 dir-rtl">
+        <div className="glass-panel-gold rounded-2xl p-4 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/10 dir-rtl">
           {/* Decorative Corner Borders */}
           <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-t-2 border-r-2 border-[#D4A017] rounded-tr-xl opacity-85" />
           <div className="absolute bottom-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-b-2 border-l-2 border-[#D4A017] rounded-bl-xl opacity-85" />
 
           {/* Logo and Icon */}
-          <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-[#D4A017] to-[#F0C040] flex items-center justify-center shadow-lg shadow-[#D4A017]/30 mb-3 sm:mb-5 relative group">
+          <div className="flex flex-col items-center mb-5 sm:mb-8 text-center">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-[#D4A017] to-[#F0C040] flex items-center justify-center shadow-lg md:shadow-[#D4A017] shadow-xl/30 mb-3 sm:mb-5 relative group">
               <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-[#040B24] stroke-[2.5]" />
               <div className="absolute inset-0 rounded-full bg-white/20 animate-ping opacity-25" />
             </div>
             
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1.5">
+            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight mb-1">
               فيزيون • Vizion
             </h1>
             <p className="text-[#F0F4FF]/75 text-xs sm:text-sm md:text-base font-medium">
@@ -358,42 +339,40 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             </p>
 
             {/* Premium Divider */}
-            <div className="w-20 sm:w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4A017] to-transparent my-3 sm:my-4" />
+            <div className="w-16 sm:w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4A017] to-transparent my-2.5 sm:my-4" />
           </div>
 
           {/* Action Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="space-y-1.5 sm:space-y-2">
               <label className="text-xs text-[#F0F4FF]/60 font-semibold tracking-wider block mr-1">
                 رمز التحقق الفردي
               </label>
               
               <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
+                <input                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="أدخل رمز الوصول هنا..."
-                  className="w-full h-12 pr-4 pl-12 bg-black/40 border border-white/10 rounded-xl text-white placeholder-white/30 text-center text-lg font-mono tracking-wider focus:outline-none focus:border-[#D4A017] focus:ring-1 focus:ring-[#D4A017]/50 transition-all duration-300"
+                  className="w-full h-11 sm:h-12 pr-3 sm:pr-4 pl-10 sm:pl-12 bg-black/40 border border-white/10 rounded-xl text-white placeholder-white/30 text-center text-base sm:text-lg font-mono tracking-wider focus:outline-none focus:border-[#D4A017] focus:ring-1 focus:ring-[#D4A017]/50 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   disabled={isLoading || isSuccess}
                 />
                 
                 {/* Visibility Toggle */}
-                <button
-                  type="button"
+                <button                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors duration-200"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
                 </button>
               </div>
             </div>
 
             {/* Error Message Box */}
             {error && (
-              <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-xl flex items-start gap-3 animate-[fadeIn_0.3s_ease]">
-                <ShieldAlert className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+              <div className="p-2.5 sm:p-3 bg-red-950/40 border border-red-500/30 rounded-xl flex items-start gap-2.5 sm:gap-3 animate-[fadeIn_0.3s_ease]">
+                <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 shrink-0 mt-0.5" />
                 <span className="text-xs text-red-200 font-medium leading-relaxed">
                   {error}
                 </span>
@@ -401,10 +380,9 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             )}
 
             {/* Submit Button */}
-            <button
-              type="submit"
+            <button               type="submit"
               disabled={isLoading || isSuccess}
-              className="w-full h-12 rounded-xl gold-gradient-bg text-[#040B24] font-bold text-base tracking-wide flex items-center justify-center shadow-lg shadow-[#D4A017]/25 hover:shadow-[#D4A017]/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer disabled:opacity-50"
+              className="w-full h-11 sm:h-12 rounded-xl gold-gradient-bg text-[#040B24] font-bold text-sm sm:text-base tracking-wide flex items-center justify-center shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:shadow-[#D4A017] shadow-xl/40 hover:-translate-y-0.5 active:translate-y-0 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer disabled:opacity-50 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -426,22 +404,21 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
           </form>
 
           {/* Quick Free Trial Access Link & Pricing Info */}
-          <div className="pt-2 text-center space-y-3">
-            <button
-              type="button"
+          <div className="pt-2 text-center space-y-2.5 sm:space-y-3">
+            <button               type="button"
               onClick={() => {
                 setPassword("free#1");
                 setError(null);
               }}
-              className="px-3.5 py-2 rounded-xl bg-[#D4A017]/15 hover:bg-[#D4A017]/25 border border-[#D4A017]/40 text-xs text-[#F0C040] hover:text-white transition-all cursor-pointer inline-flex items-center gap-2 font-bold w-full justify-center shadow-md"
+              className="px-3 py-2 rounded-xl bg-[#D4A017]/15 hover:bg-[#D4A017]/25 border border-[#D4A017]/40 text-xs text-[#F0C040] hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-1.5 sm:gap-2 font-bold w-full justify-center shadow-md flex-wrap min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
-              <span>✨ جرب النسخة التجريبية مجاناً بالرمز:</span>
+              <span>✨ جرب النسخة التجريبية بالرمز:</span>
               <span className="font-mono text-emerald-400 font-extrabold underline underline-offset-2">free#1</span>
             </button>
 
             {/* Lifetime Pricing Tiers Banner */}
-            <div className="bg-black/40 border border-white/10 rounded-xl p-3 text-right space-y-2 text-xs">
-              <div className="flex items-center justify-between border-b border-white/10 pb-1.5 text-[11px]">
+            <div className="bg-black/40 border border-white/10 rounded-xl p-2.5 sm:p-3 text-right space-y-2 text-xs">
+              <div className="flex flex-wrap items-center justify-between gap-1 border-b border-white/10 pb-1.5 text-[11px]">
                 <span className="font-bold text-[#F0C040] flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>باقات الاشتراك لمرة واحدة مدى الحياة:</span>
@@ -449,14 +426,14 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
                 <span className="text-emerald-400 font-bold text-[10px]">بدون اشتراك شهري</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[10px] text-white/90">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] text-white/90">
                 <div className="bg-white/5 p-2 rounded-lg border border-white/5">
                   <span className="font-black block text-white text-[11px]">🔹 الاعتيادي: 29,000 د.ع</span>
                   <span className="text-white/60 font-light block mt-0.5">الكورس + المنصة + أدوات البيع</span>
                 </div>
                 <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 p-2 rounded-lg border border-[#D4A017]/40">
                   <span className="font-black block text-[#F0C040] text-[11px]">👑 VIP النخبة: 49,000 د.ع</span>
-                  <span className="text-amber-100/70 font-light block mt-0.5">متابعة مباشرة + مراجعة إعلانات + ذكاء اصطناعي</span>
+                  <span className="text-amber-100/70 font-light block mt-0.5">متابعة مباشرة + مراجعة إعلانات + مستشار ذكي</span>
                 </div>
               </div>
             </div>
@@ -465,7 +442,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
       </div>
 
       {/* Footer copyright */}
-      <div className="absolute bottom-4 text-center z-10 text-[11px] text-[#F0F4FF]/30 tracking-wider">
+      <div className="relative text-center z-10 text-[10px] sm:text-[11px] text-[#F0F4FF]/30 tracking-wider mt-4 sm:mt-6 pb-2 safe-area-bottom">
         © 2026 فيزيون • Vizion. جميع الحقوق محفوظة للنخبة المسجلة.
       </div>
     </div>

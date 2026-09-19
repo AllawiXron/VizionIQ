@@ -114,7 +114,7 @@ export default function RoiCalculator() {
   }, [inputs]);
 
   return (
-    <div className="w-full glass-panel rounded-2xl border border-white/5 p-4 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden" id="roi-calculator">
+    <div className="vizion-roi-calculator w-full glass-panel rounded-2xl border border-white/5 p-3.5 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden" id="roi-calculator">
       {/* Glow */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4A017]/5 rounded-full blur-2xl pointer-events-none" />
 
@@ -126,14 +126,13 @@ export default function RoiCalculator() {
           </div>
           <div>
             <h3 className="text-base sm:text-lg md:text-xl font-black text-white leading-tight">📊 احسب أرباحك وخسائرك المتوقعة قبل ما تطلق الحملة وتعرف إذا تستاهل تصرف عليها أو لا</h3>
-            <p className="text-[10px] sm:text-xs text-white/50 mt-1">أدخل تكاليف منتجك والشحن والترويج مسبقاً، واحمِ رأس مالك من الحملات الفاشلة في السوق العراقي</p>
+            <p className="text-[10px] sm:text-xs text-white/70 mt-1">أدخل تكاليف منتجك والتوصيل والترويج مسبقاً، واحمِ رأس مالك من الحملات الفاشلة في السوق العراقي</p>
           </div>
         </div>
 
         {/* Currency Switcher */}
-        <button
-          onClick={() => setCurrency(currency === "USD" ? "IQD" : "USD")}
-          className="flex items-center gap-2 px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[11px] sm:text-xs text-[#F0C040] transition-all cursor-pointer font-medium w-full sm:w-auto justify-center"
+        <button           onClick={() => setCurrency(currency === "USD" ? "IQD" : "USD")}
+          className="flex items-center gap-2 px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[11px] sm:text-xs text-[#F0C040] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer font-medium w-full sm:w-auto justify-center min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
         >
           <ArrowRightLeft className="w-3.5 h-3.5" />
           <span>تغيير العملة: {currency === "USD" ? "الدينار العراقي (IQD)" : "الدولار الأمريكي ($)"}</span>
@@ -155,14 +154,13 @@ export default function RoiCalculator() {
               <span className="text-white/70 font-medium">الميزانية الإعلانية الإجمالية</span>
               <span className="text-[#F0C040] font-mono">{formatValue(inputs.budget)}</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="50"
               max="2000"
               step="10"
               value={inputs.budget}
               onChange={(e) => handleInputChange("budget", parseFloat(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
@@ -172,14 +170,13 @@ export default function RoiCalculator() {
               <span className="text-white/70 font-medium">تكلفة الألف ظهور (CPM)</span>
               <span className="text-[#F0C040] font-mono">{formatValue(inputs.cpm)}</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="0.5"
               max="10"
               step="0.1"
               value={inputs.cpm}
               onChange={(e) => handleInputChange("cpm", parseFloat(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
@@ -189,14 +186,13 @@ export default function RoiCalculator() {
               <span className="text-white/70 font-medium">نسبة النقر إلى الظهور (CTR)</span>
               <span className="text-[#F0C040] font-mono">{inputs.ctr}%</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="0.2"
               max="5"
               step="0.1"
               value={inputs.ctr}
               onChange={(e) => handleInputChange("ctr", parseFloat(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
@@ -206,14 +202,13 @@ export default function RoiCalculator() {
               <span className="text-white/70 font-medium">معدل التحويل للمتجر (CVR)</span>
               <span className="text-[#F0C040] font-mono">{inputs.cvr}%</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="0.1"
               max="6"
               step="0.1"
               value={inputs.cvr}
               onChange={(e) => handleInputChange("cvr", parseFloat(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
@@ -223,31 +218,29 @@ export default function RoiCalculator() {
               <span className="text-white/70 font-medium">تكلفة شراء السلعة (سعر الجملة)</span>
               <span className="text-[#F0C040] font-mono">{formatValue(inputs.productCost)}</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="1"
               max="100"
               step="0.5"
               value={inputs.productCost}
               onChange={(e) => handleInputChange("productCost", parseFloat(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
           {/* Input: Shipping Cost */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">تكلفة شحن وتوصيل الطرد الفردي</span>
+              <span className="text-white/70 font-medium">تكلفة التوصيل وتوصيل الطلب الفردي</span>
               <span className="text-[#F0C040] font-mono">{formatValue(inputs.shippingCost)}</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="1"
               max="15"
               step="0.5"
               value={inputs.shippingCost}
               onChange={(e) => handleInputChange("shippingCost", parseFloat(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
@@ -257,14 +250,13 @@ export default function RoiCalculator() {
               <span className="text-white/70 font-medium">سعر بيع السلعة النهائي للزبون</span>
               <span className="text-[#F0C040] font-mono">{formatValue(inputs.sellingPrice)}</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="5"
               max="200"
               step="1"
               value={inputs.sellingPrice}
               onChange={(e) => handleInputChange("sellingPrice", parseFloat(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-[#D4A017] cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
@@ -274,14 +266,13 @@ export default function RoiCalculator() {
               <span className="text-white/70 font-medium">نسبة نجاح التسليم والاستلام (Delivery Success)</span>
               <span className="text-emerald-400 font-bold">{inputs.deliveryRate}%</span>
             </div>
-            <input
-              type="range"
+            <input               type="range"
               min="20"
               max="95"
               step="1"
               value={inputs.deliveryRate}
               onChange={(e) => handleInputChange("deliveryRate", parseFloat(e.target.value))}
-              className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-white/10 rounded-lg"
+              className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
         </div>
@@ -290,25 +281,25 @@ export default function RoiCalculator() {
         <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
           
           {/* Main Profit Card */}
-          <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between min-h-[160px]">
+          <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 sm:p-6 relative overflow-hidden flex flex-col justify-between min-h-[160px]">
             <div className="absolute top-0 left-0 w-2 h-full gold-gradient-bg" />
             
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start flex-wrap gap-2">
               <div>
-                <span className="text-xs text-white/50 block font-semibold uppercase tracking-wider">صافي الأرباح المتوقعة</span>
-                <span className={`text-4xl md:text-5xl font-black mt-2 inline-block tracking-tight ${results.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                <span className="text-xs text-white/70 block font-semibold uppercase tracking-wider">صافي الأرباح المتوقعة</span>
+                <span className={`text-3xl sm:text-4xl md:text-5xl font-black mt-2 inline-block tracking-tight ${results.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                   {formatValue(results.netProfit)}
                 </span>
               </div>
-              <div className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${results.netProfit >= 0 ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-red-300"}`}>
+              <div className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0 ${results.netProfit >= 0 ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-red-300"}`}>
                 <TrendingUp className="w-3.5 h-3.5" />
                 <span>العائد ROI: {results.roi.toFixed(1)}%</span>
               </div>
             </div>
 
-            <p className="text-xs text-white/40 mt-4 flex items-center gap-1.5 border-t border-white/5 pt-3">
-              <Info className="w-3.5 h-3.5 text-[#F0C040]" />
-              <span>* تم خصم {formatValue(results.shippingCostTotal)} مصاريف شحن وتسوية طرود مرتجعة (بمعدل غرامة $1.5 للطرد المسترجع).</span>
+            <p className="text-xs text-white/60 mt-4 flex items-center gap-1.5 border-t border-white/5 pt-3">
+              <Info className="w-3.5 h-3.5 text-[#F0C040] shrink-0" />
+              <span>* تم خصم {formatValue(results.shippingCostTotal)} مصاريف توصيل وتسوية طرود مرتجعة (بمعدل غرامة $1.5 للطلب المسترجع).</span>
             </p>
           </div>
 
@@ -316,20 +307,20 @@ export default function RoiCalculator() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             
             <div className="bg-white/5 border border-white/5 rounded-xl p-3.5 text-center">
-              <span className="text-[11px] text-white/50 block font-semibold">إجمالي عدد النقرات</span>
+              <span className="text-[11px] text-white/70 block font-semibold">إجمالي عدد النقرات</span>
               <span className="text-lg font-bold text-white mt-1 block font-mono">{results.clicks.toLocaleString("ar-IQ")}</span>
               <span className="text-[10px] text-white/45 block mt-0.5">تكلفة النقرة CPC: {formatValue(results.cpc)}</span>
             </div>
 
             <div className="bg-white/5 border border-white/5 rounded-xl p-3.5 text-center">
-              <span className="text-[11px] text-white/50 block font-semibold">الطلبات الكلية بالمتجر</span>
+              <span className="text-[11px] text-white/70 block font-semibold">الطلبات الكلية بالمتجر</span>
               <span className="text-lg font-bold text-[#F0C040] mt-1 block font-mono">{results.orders} طلب</span>
               <span className="text-[10px] text-white/45 block mt-0.5">تكلفة الاستحواذ CPA: {formatValue(results.cpa)}</span>
             </div>
 
             <div className="bg-white/5 border border-white/5 rounded-xl p-3.5 text-center col-span-2 sm:col-span-1">
-              <span className="text-[11px] text-white/50 block font-semibold">الطرود المستلمة فعلياً</span>
-              <span className="text-lg font-bold text-emerald-400 mt-1 block font-mono">{results.deliveredOrders} طرد</span>
+              <span className="text-[11px] text-white/70 block font-semibold">الطرود المستلمة فعلياً</span>
+              <span className="text-lg font-bold text-emerald-400 mt-1 block font-mono">{results.deliveredOrders} طلب</span>
               <span className="text-[10px] text-emerald-400/70 block mt-0.5">نسبة استلام: {inputs.deliveryRate}%</span>
             </div>
 
@@ -355,7 +346,7 @@ export default function RoiCalculator() {
             </div>
 
             <div className="flex justify-between">
-              <span className="text-white/60">تكلفة الشحن لشركات الشحن + غرامة المرتجعات:</span>
+              <span className="text-white/60">كلفة التوصيل لشركات التوصيل + غرامة المرتجعات:</span>
               <span className="text-red-400 font-medium font-mono">-{formatValue(results.shippingCostTotal)}</span>
             </div>
 

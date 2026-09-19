@@ -23,7 +23,7 @@ export default function ScriptSimulator() {
   };
 
   return (
-    <div className="w-full glass-panel rounded-2xl border border-white/5 p-4 sm:p-6 md:p-8 shadow-2xl relative" id="script-simulator">
+    <div className="w-full glass-panel rounded-2xl border border-white/5 p-3.5 sm:p-6 md:p-8 shadow-2xl relative" id="script-simulator">
       {/* Background glow */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-[#D4A017]/5 rounded-full blur-2xl pointer-events-none" />
 
@@ -32,7 +32,7 @@ export default function ScriptSimulator() {
         <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           💬 تدرب على التعامل مع الزبائن وتجرب أكثر من طريقة حتى تعرف أي أسلوب يجيب طلبات أكثر
         </h3>
-        <p className="text-xs text-white/50 mt-1">اضغط على نوع المشتري بالجانب لتعلم كيف تحول المتردد والمشوش لعميل حقيقي يدفع كاش بلهجة عراقية محببة</p>
+        <p className="text-xs text-white/70 mt-1">اضغط على نوع المشتري بالجانب لتعلم كيف تحول المتردد والمشوش لعميل حقيقي يدفع كاش بلهجة عراقية محببة</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -41,23 +41,18 @@ export default function ScriptSimulator() {
         <div className="lg:col-span-4 space-y-3">
           <span className="text-xs font-semibold text-[#F0C040] block">👤 حدد نمط زبونك بالاتصال:</span>
           {phoneScripts.map((script, idx) => (
-            <button
-              key={idx}
+            <button               key={idx}
               onClick={() => {
                 setActiveIndex(idx);
                 setCopied(false);
               }}
-              className={`w-full p-4 rounded-xl text-right border transition-all cursor-pointer flex items-center justify-between ${
-                activeIndex === idx
-                  ? "bg-[#D4A017]/10 border-[#D4A017] text-[#F0C040] shadow-md"
-                  : "bg-white/5 border-white/10 text-white/80 hover:bg-white/10"
-              }`}
+              className={`w-full p-4 rounded-xl text-right border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between ${ activeIndex === idx ? "bg-[#D4A017]/10 border-[#D4A017] text-[#F0C040] shadow-md" : "bg-white/5 border-white/10 text-white/80 hover:bg-white/10" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
             >
               <div>
                 <h4 className="font-bold text-sm">{script.title}</h4>
-                <p className="text-[11px] text-white/50 mt-1 line-clamp-1">{script.customerType}</p>
+                <p className="text-[11px] text-white/70 mt-1 line-clamp-1">{script.customerType}</p>
               </div>
-              <PhoneCall className={`w-4 h-4 shrink-0 mr-2 ${activeIndex === idx ? "text-[#F0C040]" : "text-white/40"}`} />
+              <PhoneCall className={`w-4 h-4 shrink-0 mr-2 ${activeIndex === idx ? "text-[#F0C040]" : "text-white/60"}`} />
             </button>
           ))}
 
@@ -68,7 +63,7 @@ export default function ScriptSimulator() {
               القاعدة المليونية للـ COD:
             </span>
             <p className="text-[11px] text-white/70 leading-relaxed">
-              الاتصال السريع بالعميل (في غضون ٣٠ دقيقة بحد أقصى) يزيد من نسبة استلام الطرود بمعدل ٢٥٪ عن المرتجع المتأخر.
+              الاتصال السريع بالزبون (في غضون ٣٠ دقيقة بحد أقصى) يزيد من نسبة استلام الطرود بمعدل ٢٥٪ عن المرتجع المتأخر.
             </p>
           </div>
         </div>
@@ -83,9 +78,8 @@ export default function ScriptSimulator() {
               <p className="text-xs text-white/70 mt-1.5 font-medium">{activeScript.description || activeScript.psychologyNote}</p>
             </div>
             
-            <button
-              onClick={handleCopy}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-white/80 transition-all cursor-pointer"
+            <button               onClick={handleCopy}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-white/80 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               {copied ? (
                 <>
@@ -125,8 +119,8 @@ export default function ScriptSimulator() {
 
                   {/* Speech Bubble */}
                   <div className="space-y-1">
-                    <span className="text-[9px] text-white/40 block">
-                      {isAgent ? "مسؤول تأكيد الطلبات" : "العميل العراقي"}
+                    <span className="text-[9px] text-white/60 block">
+                      {isAgent ? "مسؤول تأكيد الطلبات" : "الزبون العراقي"}
                     </span>
                     <div
                       className={`p-3 rounded-2xl text-xs leading-relaxed ${

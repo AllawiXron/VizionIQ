@@ -96,12 +96,12 @@ export default function AdvancedCalculatorSuite() {
   const monthlySavingsIQD = savedReturnsCount * (returnRateInputs.returnShippingFeeIQD + returnRateInputs.itemSellingPriceIQD * 0.15); // Saved shipping + unrecoverable repackaging
 
   return (
-    <div className="bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-10 shadow-2xl space-y-8 text-right">
+    <div className="vizion-calculator-suite bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-10 shadow-2xl space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-xs font-bold mb-2">
+          <div className="inline-flex justify-center items-center gap-2 w-full py-1 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-sm py-3.5 font-bold mb-2">
             <Calculator className="w-3.5 h-3.5" />
             <span>منظومة الحسابات المالية المتقدمة • 9 حواسب متفاعلة</span>
           </div>
@@ -115,7 +115,7 @@ export default function AdvancedCalculatorSuite() {
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+      <div className="vizion-calculator-tabs flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
         {[
           { id: "roas", label: "أرباح ROAS الصافية", icon: TrendingUp },
           { id: "ltv", label: "القيمة العمرية LTV", icon: DollarSign },
@@ -127,14 +127,9 @@ export default function AdvancedCalculatorSuite() {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
-            <button
-              key={tab.id}
+            <button               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer border ${
-                isActive
-                  ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] shadow-lg shadow-[#D4A017]/20 font-black"
-                  : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10"
-              }`}
+              className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ isActive ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] shadow-lg md:shadow-[#D4A017] shadow-xl/20 font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
             >
               <Icon className="w-4 h-4" />
               <span>{tab.label}</span>
@@ -148,86 +143,89 @@ export default function AdvancedCalculatorSuite() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-[fadeIn_0.3s_ease-out]">
           
           {/* Controls Inputs */}
-          <div className="lg:col-span-7 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <div className="lg:col-span-7 order-2 lg:order-1 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h4 className="text-lg font-bold text-[#F0C040] flex items-center gap-2">
               <Calculator className="w-5 h-5" />
               <span>مدخلات الحملة والتكاليف بالدينار والـ $</span>
             </h4>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-y-5 gap-4">
               <div className="space-y-2">
                 <label className="text-xs text-white/70 block font-medium">الميزانية اليومية الإعلانية ($)</label>
-                <input
-                  type="number"
+                <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={roasInputs.budgetUSD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, budgetUSD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">$</span>
+</div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs text-white/70 block font-medium">نسبة النقر CTR (%)</label>
-                <input
-                  type="number"
+                <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="0.1"
                   value={roasInputs.ctr}
                   onChange={(e) => setRoasInputs({ ...roasInputs, ctr: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs text-white/70 block font-medium">تكلفة الشراء للقطعة (د.ع)</label>
-                <input
-                  type="number"
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="500"
                   value={roasInputs.productCostIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, productCostIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs text-white/70 block font-medium">سعر بيع القطعة للزبون (د.ع)</label>
-                <input
-                  type="number"
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="1000"
                   value={roasInputs.sellingPriceIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, sellingPriceIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs text-white/70 block font-medium">أجور الشحن للمحافظات (د.ع)</label>
-                <input
-                  type="number"
+                <label className="text-xs text-white/70 block font-medium">أجور التوصيل للمحافظات (د.ع)</label>
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="500"
                   value={roasInputs.shippingCostIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, shippingCostIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs text-white/70 block font-medium">نسبة الاستلام والنجاح (%)</label>
-                <input
-                  type="number"
+                <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={roasInputs.deliveryRatePct}
                   onChange={(e) => setRoasInputs({ ...roasInputs, deliveryRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
               </div>
             </div>
           </div>
 
           {/* Dynamic Results Display */}
-          <div className="lg:col-span-5 bg-gradient-to-b from-[#0F1A42] to-[#040B24] border border-[#D4A017]/40 rounded-3xl p-6 space-y-6 shadow-xl">
+          <div className="lg:col-span-5 order-1 lg:order-2 sticky top-4 bg-gradient-to-b from-[#0F1A42] to-[#040B24] border border-[#D4A017]/40 rounded-3xl p-6 space-y-6 shadow-xl">
             <h4 className="text-[#F0C040] font-black text-sm uppercase tracking-wider border-b border-white/10 pb-3">
               نتائج الرياضيات الصافية اليومية
             </h4>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-y-5 gap-4">
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
                 <span className="text-[10px] text-white/60 block font-bold">العائد الإعلاني ROAS</span>
                 <span className={`text-3xl font-mono font-black ${Number(roasVal) >= 3 ? "text-emerald-400" : Number(roasVal) >= 2 ? "text-amber-400" : "text-red-400"}`}>
@@ -245,7 +243,7 @@ export default function AdvancedCalculatorSuite() {
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
                 <span className="text-[10px] text-white/60 block font-bold">إجمالي الطلبات الفردية</span>
                 <span className="text-2xl font-mono font-black text-white">
-                  {deliveredOrders} / {orders} <span className="text-xs text-white/50">طرد</span>
+                  {deliveredOrders} / {orders} <span className="text-xs text-white/70">طلب</span>
                 </span>
               </div>
 
@@ -289,9 +287,8 @@ export default function AdvancedCalculatorSuite() {
                 حاسبة القيمة العمرية وهوامش إعادة الشراء متاحة فقط للحسابات الكاملة. ترقية حسابك تتيح لك الوصول الفوري لجميع الـ 9 حواسب مئوية وتجارية.
               </p>
             </div>
-            <button
-              onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            <button               onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <Crown className="w-4 h-4 text-[#040B24]" />
               <span>فتح حاسبة LTV وجميع الأدوات الآن ⚡</span>
@@ -304,37 +301,37 @@ export default function AdvancedCalculatorSuite() {
             احسب كم القيمة المالية الإجمالية التي يدفعها لك الزبون العراقي على مدار علاقتهم ببراندك عند نجاح تطبيق استراتيجية إعادة الشراء.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+          <div className="grid grid-cols-1 gap-y-5 gap-6 pt-4">
             <div className="space-y-4">
               <div>
                 <label className="text-xs text-white/80 block mb-1">متوسط قيمة الطلب الواحد AOV (د.ع)</label>
-                <input
-                  type="number"
+                <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="1000"
                   value={ltvInputs.aovIQD}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, aovIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+</div>
               </div>
 
               <div>
                 <label className="text-xs text-white/80 block mb-1">عدد مرات الشراء سنوياً للزبون الواحد</label>
-                <input
-                  type="number"
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="0.1"
                   value={ltvInputs.purchaseFreqPerYear}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, purchaseFreqPerYear: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
 
               <div>
                 <label className="text-xs text-white/80 block mb-1">مدة ولاء الزبون بالسنوات</label>
-                <input
-                  type="number"
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={ltvInputs.lifespanYears}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, lifespanYears: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
             </div>
@@ -345,7 +342,7 @@ export default function AdvancedCalculatorSuite() {
                 {ltvValueIQD.toLocaleString()} <span className="text-base text-white/70">د.ع</span>
               </span>
               <p className="text-xs text-white/70 leading-relaxed">
-                معنى هذا الرقم: يمكنك صرف حتى <span className="text-[#F0C040] font-bold">{(ltvValueIQD * 0.25).toLocaleString()} د.ع</span> للاستحواذ على هذا الزبون المرة الأولى، وستظل مربحاً جداً بفضل إعادة الشراء!
+                معنى هذا الرقم: تكدر صرف حتى <span className="text-[#F0C040] font-bold">{(ltvValueIQD * 0.25).toLocaleString()} د.ع</span> للاستحواذ على هذا الزبون المرة الأولى، وستظل مربحاً جداً بفضل إعادة الشراء!
               </p>
             </div>
           </div>
@@ -366,9 +363,8 @@ export default function AdvancedCalculatorSuite() {
                 محاكي مضاعفة الميزانية والتوقع المالي لحملات فيسبوك وانستغرام متاح فقط للحسابات المسجلة بالكامل.
               </p>
             </div>
-            <button
-              onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            <button               onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <Crown className="w-4 h-4 text-[#040B24]" />
               <span>ترقية الحساب وفتح محاكي التوسع الآن ⚡</span>
@@ -386,21 +382,23 @@ export default function AdvancedCalculatorSuite() {
               <span>نسبة زيادة المصرف الإعلاني: +{scalePct}%</span>
               <span>المصرف الجديد: ${scaledSpendUSD.toFixed(0)} / يومياً</span>
             </div>
-            <input
-              type="range"
+            <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
               min="20"
               max="300"
               step="10"
               value={scalePct}
               onChange={(e) => setScalePct(Number(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer"
+              className="w-full accent-[#D4A017] cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+</div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+          <div className="grid grid-cols-1 gap-y-5 gap-4 pt-4">
             <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
               <span className="text-[10px] text-white/60 block font-bold">الطلبات اليومية المتوقعة</span>
-              <span className="text-3xl font-mono font-black text-white">{scaledDelivered} طرد</span>
+              <span className="text-3xl font-mono font-black text-white">{scaledDelivered} طلب</span>
             </div>
             <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
               <span className="text-[10px] text-white/60 block font-bold">الإيرادات المجمعة</span>
@@ -425,12 +423,11 @@ export default function AdvancedCalculatorSuite() {
             <div className="space-y-2 max-w-md mx-auto">
               <h4 className="text-xl font-black text-white">حاسبة نقطة التعادل مقفلة في النسخة التجريبية</h4>
               <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
-                حاسبة تحديد عدد الشحنات المطلوبة لتغطية المصاريف الثابتة متاح للحسابات الكاملة.
+                حاسبة تحديد عدد التوصيلات المطلوبة لتغطية المصاريف الثابتة متاح للحسابات الكاملة.
               </p>
             </div>
-            <button
-              onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            <button               onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <Crown className="w-4 h-4 text-[#040B24]" />
               <span>ترقية الحساب وفتح الآلة الحاسبة ⚡</span>
@@ -443,27 +440,28 @@ export default function AdvancedCalculatorSuite() {
             كم عدد الطلبات الواجب بيعها وتسليمها شهرياً لتغطي كافة التكاليف الثابتة (رواتب، إيجار، اشتراكات، إعلانات) وتصل لـ 0$ خسارة؟
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-y-5 gap-6">
             <div className="space-y-4">
               <div>
                 <label className="text-xs text-white/80 block mb-1">إجمالي المصاريف الثابتة شهرياً (د.ع)</label>
-                <input
-                  type="number"
+                <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="50000"
                   value={breakEvenInputs.fixedCostsIQD}
                   onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, fixedCostsIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+</div>
               </div>
 
               <div>
                 <label className="text-xs text-white/80 block mb-1">ربح القطعة الواحدة قبل المصاريف الثابتة (د.ع)</label>
-                <input
-                  type="number"
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   step="1000"
                   value={breakEvenInputs.unitContributionMarginIQD}
                   onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, unitContributionMarginIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
             </div>
@@ -491,9 +489,8 @@ export default function AdvancedCalculatorSuite() {
                 أداة تقسيم الهوامش وحساب كلفة الشراء والإعلانات وصافي الربح ممتلكات كاملة.
               </p>
             </div>
-            <button
-              onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            <button               onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <Crown className="w-4 h-4 text-[#040B24]" />
               <span>ترقية الحساب والوصول الفوري ⚡</span>
@@ -503,23 +500,22 @@ export default function AdvancedCalculatorSuite() {
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
           <h4 className="text-xl font-bold text-[#F0C040]">مطور ومحسّن الهوامش المالية (قاعدة 50/30/20)</h4>
           <p className="text-xs md:text-sm text-white/70">
-            أدخل سعر البيع المستهدف لترى كيف يجب توزيع الميزانية بين كلفة المنتج والشحن والإعلانات والصافي.
+            أدخل سعر البيع المستهدف لترى كيف يجب توزيع الميزانية بين كلفة المنتج والتوصيل والإعلانات والصافي.
           </p>
 
           <div className="space-y-2">
             <label className="text-xs text-white/80 block">سعر البيع المستهدف للزبون (د.ع)</label>
-            <input
-              type="number"
+            <input type="number" inputMode="numeric" pattern="[0-9]*"
               step="1000"
               value={marginSellingPrice}
               onChange={(e) => setMarginSellingPrice(Number(e.target.value))}
-              className="w-full max-w-xs bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+              className="w-full max-w-xs bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div className="grid grid-cols-1 gap-y-5 gap-4 pt-2">
             <div className="bg-blue-950/40 border border-blue-500/30 p-5 rounded-2xl text-center">
-              <span className="text-xs font-bold text-blue-300 block mb-1">50% كلفة الشراء والتغليف والشحن</span>
+              <span className="text-xs font-bold text-blue-300 block mb-1">50% كلفة الشراء والتغليف والتوصيل</span>
               <span className="text-2xl font-mono font-black text-white">{targetCogs.toLocaleString()} د.ع</span>
             </div>
 
@@ -550,9 +546,8 @@ export default function AdvancedCalculatorSuite() {
                 احسب المبالغ المستردة عند خفض المرتجع لـ 6%. متاح في الاشتراك الكامل.
               </p>
             </div>
-            <button
-              onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            <button               onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <Crown className="w-4 h-4 text-[#040B24]" />
               <span>ترقية الحساب وفتح الحسبة الآن ⚡</span>
@@ -562,38 +557,38 @@ export default function AdvancedCalculatorSuite() {
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
           <h4 className="text-xl font-bold text-[#F0C040]">حاسبة أثر خفض المرتجع على الأرباح الصافية</h4>
           <p className="text-xs md:text-sm text-white/70">
-            اكتشف كم من الأموال المهدورة يمكنك استعادتها فوراً عند تطبيق تكتيكات المكالمة الذهبية وتقليص المرتجع.
+            اكتشف كم من الأموال المهدورة تكدر استعادتها فوراً عند تطبيق تكتيكات المكالمة الذهبية وتقليص المرتجع.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-y-5 gap-6">
             <div className="space-y-4">
               <div>
-                <label className="text-xs text-white/80 block mb-1">إجمالي الشحنات الشهرية</label>
-                <input
-                  type="number"
+                <label className="text-xs text-white/80 block mb-1">إجمالي الطلبات التوصيل الشهرية</label>
+                <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.monthlyOrders}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, monthlyOrders: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
               </div>
 
               <div>
                 <label className="text-xs text-white/80 block mb-1">نسبة المرتجع الحالية (%)</label>
-                <input
-                  type="number"
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.currentReturnRatePct}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, currentReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
 
               <div>
                 <label className="text-xs text-white/80 block mb-1">النسبة المستهدفة بعد تطبيق الدليل (%)</label>
-                <input
-                  type="number"
+                <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.targetReturnRatePct}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, targetReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr"
+                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
               </div>
             </div>
@@ -604,7 +599,7 @@ export default function AdvancedCalculatorSuite() {
                 {monthlySavingsIQD.toLocaleString()} <span className="text-base text-white/70">د.ع</span>
               </span>
               <p className="text-xs text-white/70">
-                تقليص المرتجع يمنع ضياع <span className="text-[#F0C040] font-bold">{savedReturnsCount} شحنات</span> مهدورة شهرياً ويعيدها لأرباحك المباشرة!
+                تقليص المرتجع يمنع ضياع <span className="text-[#F0C040] font-bold">{savedReturnsCount} توصيلات</span> مهدورة شهرياً ويعيدها لأرباحك المباشرة!
               </p>
             </div>
           </div>

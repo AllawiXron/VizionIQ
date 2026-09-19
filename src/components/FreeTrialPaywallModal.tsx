@@ -18,7 +18,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
   userCode,
   onUpgradeSuccess,
   title = "افتح الكورس الكامل والمنظومة التسويقية الشاملة",
-  subtitle = "أنت الآن تستخدم النسخة التجريبية (Free Trial). قم بترقية حسابك للوصول الفوري لكافة الاستراتيجيات والأدوات المتقدمة."
+  subtitle = "أنت الآن تستخدم النسخة التجريبية (Free Trial). سَوِّ ترقية حسابك للوصول الفوري لكافة الاستراتيجيات والأدوات المتقدمة."
 }) => {
   const [inputCode, setInputCode] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
         onClose();
       }, 1200);
     } else if (isFreeTrialUser(normalized)) {
-      setError("الرمز المدخل هو رمز نسخة تجريبية. يرجى إدخال رمز الحساب الكامل.");
+      setError("الرمز المدخل هو رمز نسخة تجريبية. رجاءً إدخال رمز الحساب الكامل.");
     } else {
       setError("رمز الوصول المدخل غير صحيح أو غير مسجل في النظام.");
     }
@@ -56,46 +56,45 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md safe-area-top safe-area-bottom">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="w-full max-w-2xl bg-gradient-to-b from-[#0F1735] via-[#0A122E] to-[#040B24] border border-[#D4A017]/40 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+          className="w-full max-w-2xl bg-gradient-to-b from-[#0F1735] via-[#0A122E] to-[#040B24] border border-[#D4A017]/40 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[90vh] my-auto"
         >
           {/* Header */}
-          <div className="px-5 py-4 bg-gradient-to-r from-[#121A3D] via-[#0F1735] to-[#0B102B] border-b border-[#D4A017]/30 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#D4A017] to-amber-600 p-[1px] flex items-center justify-center shadow-lg shadow-[#D4A017]/20">
-                <div className="w-full h-full bg-[#040B24] rounded-[11px] flex items-center justify-center text-[#F0C040]">
-                  <Crown className="w-5 h-5" />
+          <div className="px-3.5 sm:px-5 py-3 sm:py-4 bg-gradient-to-r from-[#121A3D] via-[#0F1735] to-[#0B102B] border-b border-[#D4A017]/30 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#D4A017] to-amber-600 p-[1px] flex items-center justify-center shadow-lg md:shadow-[#D4A017] shadow-xl/20 shrink-0">
+                <div className="w-full h-full bg-[#040B24] rounded-[10px] sm:rounded-[11px] flex items-center justify-center text-[#F0C040]">
+                  <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </div>
-              <div>
-                <span className="text-xs font-black text-[#F0C040] uppercase tracking-wider block">
+              <div className="min-w-0">
+                <span className="text-[10px] sm:text-xs font-black text-[#F0C040] uppercase tracking-wider block truncate">
                   ترقية الحساب • Upgrade Access
                 </span>
-                <span className="text-sm font-bold text-white">النسخة المدفوعة الكاملة</span>
+                <span className="text-xs sm:text-sm font-bold text-white truncate block">النسخة المدفوعة الكاملة</span>
               </div>
             </div>
 
-            <button
-              onClick={onClose}
-              className="p-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-white/70 hover:text-rose-400 transition-colors border border-white/10 cursor-pointer"
+            <button               onClick={onClose}
+              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-white/70 hover:text-rose-400 transition-colors border border-white/10 cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
 
           {/* Body */}
-          <div className="p-5 sm:p-8 overflow-y-auto space-y-6">
+          <div className="p-3 sm:p-8 overflow-y-auto space-y-4 sm:space-y-6">
             {/* Title & Badge */}
             <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-xs font-black text-[#F0C040]">
-                <Sparkles className="w-3.5 h-3.5 text-[#F0C040]" />
-                <span>اشتراك لمرة واحدة مدى الحياة • بدون أي رسوم شهرية</span>
+              <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-[10px] sm:text-xs font-black text-[#F0C040]">
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#F0C040]" />
+                <span>اشتراك لمرة واحدة مدى الحياة • بدون رسوم شهرية</span>
               </div>
-              <h3 className="text-lg sm:text-2xl font-black text-white leading-tight">
+              <h3 className="text-base sm:text-2xl font-black text-white leading-tight">
                 {title}
               </h3>
               <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-lg mx-auto font-light">
@@ -104,9 +103,9 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             </div>
 
             {/* TWO SUBSCRIPTION TIERS CARDS */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-right">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-right">
               {/* Standard Tier */}
-              <div className="bg-[#040B24] border border-white/15 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+              <div className="bg-[#040B24] border border-white/15 rounded-2xl p-3 sm:p-4 space-y-2.5 sm:space-y-3 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                     <div>
@@ -185,7 +184,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                     </li>
                     <li className="flex items-start gap-1.5">
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
-                      <span>توجيه مخصص لمشروعك + مستشار ذكاء اصطناعي (Vizion AI).</span>
+                      <span>توجيه مخصص لمشروعك + مستشار مستشار ذكي (Vizion AI).</span>
                     </li>
                   </ul>
                 </div>
@@ -199,21 +198,19 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                   <KeyRound className="w-4 h-4 text-[#F0C040]" />
                   <span>تمتلك رمز وصول مدفوع؟ أدخله هنا للترقية الفورية:</span>
                 </label>
-                <p className="text-[11px] text-white/50">سيتم فتح جميع الاستراتيجيات فوراً ودون الحاجة لإعادة التسجيل.</p>
+                <p className="text-[11px] text-white/70">سيتم فتح جميع الاستراتيجيات فوراً ودون الحاجة لإعادة التسجيل.</p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2">
-                <input
-                  type="text"
+                <input                   type="text"
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
                   placeholder="أدخل رمز الوصول الخاص بك..."
-                  className="flex-1 px-4 py-3 bg-[#040B24] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-[#D4A017] outline-none text-center sm:text-right"
+                  className="flex-1 px-4 py-3 bg-[#040B24] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-[#D4A017] outline-none text-center sm:text-right min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 />
 
-                <button
-                  type="submit"
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg shadow-[#D4A017]/25 hover:scale-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+                <button                   type="submit"
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 >
                   ترقية الحساب الآن ⚡
                 </button>

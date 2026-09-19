@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Sparkles,
@@ -112,22 +112,70 @@ export default function VizionGrowthSuite() {
   const [t13TargetProfit, setT13TargetProfit] = useState<number>(1500000);
   const [t13ProfitMargin, setT13ProfitMargin] = useState<number>(15000);
 
-  // Constants
-  const toolTabs = [
-    { id: "diagnostics", label: "🩺 فحص مشروعك", desc: "افحص صحة وربحية شغلك" },
-    { id: "campaign-advisor", label: "🤖 مستشار الحملات", desc: "شيك أداء حملاتك الإعلانية" },
-    { id: "competitors", label: "🔍 محلل المنافسين", desc: "شيك صفحات ومحتوى اللي ينافسوك" },
-    { id: "message-diagnoser", label: "💬 جودة الرسائل", desc: "وين دي يضيع زبونك بالخاص؟" },
-    { id: "pricing-calculator", label: "💰 حاسبة التسعير والربح", desc: "احسب أسعارك وأرباحك بالضبط" },
-    { id: "customer-types", label: "👥 دليل أنواع الزبائن", desc: "ردود جاهزة ومقنعة لغلق الطلبات" },
-    { id: "ads-library", label: "📚 مكتبة الإعلانات", desc: "شلون تشتغل الإعلانات الناجحة" },
-    { id: "product-evaluator", label: "📦 تقييم المنتج", desc: "افحص المنتج قبل لا تصرف عليه" },
-    { id: "profit-leak", label: "📉 كاشف تسرب الأرباح", desc: "احسب فلوسك الضايعة من الراجع" },
-    { id: "roadmap", label: "🎯 مخطط الـ 100 طلب", desc: "خطة يومية حتى تبدي شغلك صح" },
-    { id: "sales-blocker", label: "🧠 ليش ماكو مبيعات؟", desc: "اعرف الخلل وين بمشروعك" },
-    { id: "forecaster", label: "📈 متوقع الأرباح", desc: "توقع مبيعاتك قبل لا تشغل الإعلان" },
-    { id: "budget-planner", label: "💵 مخطط الميزانية", desc: "خطط ميزانيتك حتى توصل لهدفك" }
+  // Tool Category State (افهم، احسب، حسّن، نفّذ)
+  const [selectedCategory, setSelectedCategory] = useState<"all" | "understand" | "calculate" | "optimize" | "execute">("all");
+
+  useEffect(() => {
+    const handleCategoryEvent = (e: Event) => {
+      const custom = e as CustomEvent<{ category?: "all" | "understand" | "calculate" | "optimize" | "execute"; toolId?: string }>;
+      if (custom.detail?.category) {
+        setSelectedCategory(custom.detail.category);
+        if (custom.detail.category === "calculate") {
+          setActiveTab("pricing-calculator");
+        } else if (custom.detail.category === "understand") {
+          setActiveTab("diagnostics");
+        } else if (custom.detail.category === "optimize") {
+          setActiveTab("campaign-advisor");
+        } else if (custom.detail.category === "execute") {
+          setActiveTab("roadmap");
+        }
+      }
+      if (custom.detail?.toolId) {
+        setActiveTab(custom.detail.toolId);
+      }
+    };
+
+    window.addEventListener("open-tool-category", handleCategoryEvent);
+    return () => {
+      window.removeEventListener("open-tool-category", handleCategoryEvent);
+    };
+  }, []);
+
+  const toolCategories = [
+    { id: "all" as const, label: "جميع الأدوات (١٣)", icon: "" },
+    { id: "understand" as const, label: "١. افهم", icon: "", subtitle: "تشخيص واقع المشروع والمنافسين" },
+    { id: "calculate" as const, label: "٢. احسب", icon: "", subtitle: "حاسبات الأرباح، التسعير، والميزانيات" },
+    { id: "optimize" as const, label: "٣. حسّن", icon: "", subtitle: "تحسين الإعلانات، المحادثات، والمنتج" },
+    { id: "execute" as const, label: "٤. نفّذ", icon: "", subtitle: "خطط العمل والتشغيل اليومي" },
   ];
+
+  // Constants - Categorized into افهم، احسب، حسّن، نفّذ
+  const toolTabs = [
+    // 1. افهم (Understand)
+    { id: "diagnostics", category: "understand" as const, label: "فحص مشروعك", desc: "افحص صحة وربحية شغلك" },
+    { id: "sales-blocker", category: "understand" as const, label: "ليش ماكو مبيعات؟", desc: "اعرف الخلل وين بمشروعك" },
+    { id: "customer-types", category: "understand" as const, label: "دليل أنواع الزبائن", desc: "ردود جاهزة ومقنعة لغلق الطلبات" },
+    { id: "competitors", category: "understand" as const, label: "محلل المنافسين", desc: "شيك صفحات ومحتوى اللي ينافسوك" },
+
+    // 2. احسب (Calculate)
+    { id: "pricing-calculator", category: "calculate" as const, label: "حاسبة التسعير والربح", desc: "احسب أسعارك وأرباحك بالضبط" },
+    { id: "profit-leak", category: "calculate" as const, label: "كاشف تسرب الأرباح", desc: "احسب فلوسك الضايعة من الراجع" },
+    { id: "forecaster", category: "calculate" as const, label: "متوقع الأرباح", desc: "توقع مبيعاتك قبل لا تشغل الإعلان" },
+    { id: "budget-planner", category: "calculate" as const, label: "مخطط الميزانية", desc: "خطط ميزانيتك حتى توصل لهدفك" },
+
+    // 3. حسّن (Optimize)
+    { id: "campaign-advisor", category: "optimize" as const, label: "مستشار الحملات", desc: "شيك أداء حملاتك الإعلانية" },
+    { id: "message-diagnoser", category: "optimize" as const, label: "جودة الرسائل", desc: "وين دي يضيع زبونك بالخاص؟" },
+    { id: "product-evaluator", category: "optimize" as const, label: "تقييم المنتج", desc: "افحص المنتج قبل لا تصرف عليه" },
+    { id: "ads-library", category: "optimize" as const, label: "مكتبة الإعلانات", desc: "شلون تشتغل الإعلانات الناجحة" },
+
+    // 4. نفّذ (Execute)
+    { id: "roadmap", category: "execute" as const, label: "مخطط الـ 100 طلب", desc: "خطة يومية حتى تبدي شغلك صح" },
+  ];
+
+  const filteredToolTabs = selectedCategory === "all" 
+    ? toolTabs 
+    : toolTabs.filter(t => t.category === selectedCategory);
 
   // Helper calculation for Tool 1
   const runDiagnosticsCalculator = () => {
@@ -193,7 +241,7 @@ export default function VizionGrowthSuite() {
       warning += " ونسبة استلام الطلبات مالتك تعبانة (" + deliveryRate + "%).";
       recommendations.push("المناديب ديواجهون صعوبة يحصلون الزبون أو الزباين ديبطلون لأن التوصيل يتأخر.");
       recommendations.push("خابر الزبائن خلال نص ساعة من يدزون الرسالة حتى تأكد الطلب تلفونياً ولا تطلع أي طلب بدون تأكيد.");
-      recommendations.push("دز فيديو للتعبئة للزبون عالواتساب قبل لا تدز الطرد حتى يحس بمسؤولية ويستلم.");
+      recommendations.push("دز فيديو للتعبئة للزبون عالواتساب قبل لا تدز الطلب حتى يحس بمسؤولية ويستلم.");
     }
 
     if (recommendations.length === 0) {
@@ -240,7 +288,7 @@ export default function VizionGrowthSuite() {
       title: "الأسبوع الأول: الأساس المضبوط والجدوى المالية",
       days: [
         { day: 1, title: "اختيار وتصفية فكرة المنتج وحساب الأرباح الصافية بالأرقام." },
-        { day: 2, title: "فحص جودة المنتج زين وهل يتحمل شحن لمحافظات بعيدة." },
+        { day: 2, title: "فحص جودة المنتج زين وهل يتحمل توصيل لمحافظات بعيدة." },
         { day: 3, title: "التواصل ويا شركتين توصيل ومقارنة أسعارهم ونسبة الراجع عدهم." },
         { day: 4, title: "تجهيز السعر النهائي وتحديد ميزانية الحملة التجريبية بالضبط." },
         { day: 5, title: "تأسيس بيجات الانستغرام والفيسبوك بترتيب بسيط وحلو." },
@@ -254,7 +302,7 @@ export default function VizionGrowthSuite() {
       days: [
         { day: 8, title: "تصوير 3 فيديوهات حقيقية للمنتج بكاميرا موبايل وإضاءة زينة." },
         { day: 9, title: "ترتيب الفيديوهات والتركيز على أول 3 ثواني (الخطاف القوي)." },
-        { day: 10, title: "ترتيب 3 عروض قوية (عرض توفير، قطعتين، أو شحن مجاني)." },
+        { day: 10, title: "ترتيب 3 عروض قوية (عرض توفير، قطعتين، أو توصيل مجاني)." },
         { day: 11, title: "نشر البوستات وتثبيت المهم منها حتى تنطي ثقة للزبون." },
         { day: 12, title: "ترتيب حساب الإعلانات وربط وسيلة الدفع (زين كاش أو غيرها)." },
         { day: 13, title: "تشغيل أول حملة تجريبية حتى تختبر تفاعل الناس وسعر الرسالة." },
@@ -302,29 +350,29 @@ export default function VizionGrowthSuite() {
   const currentWeekData = roadmapData.find(w => w.week === t10SelectedWeek) || roadmapData[0];
 
   return (
-    <div className="space-y-16 py-12 px-4 max-w-7xl mx-auto relative" id="vizion-growth-suite">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4A017]/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#1A2B73]/10 rounded-full blur-[150px] pointer-events-none" />
+    <div className="vizion-tools-suite space-y-16 py-12 px-4 max-w-7xl mx-auto relative" id="vizion-growth-suite">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4A017]/5 rounded-full md:blur-[150px] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#1A2B73]/10 rounded-full md:blur-[150px] blur-3xl pointer-events-none" />
       
       {/* Dynamic Main Header */}
-      <div className="text-center space-y-6 max-w-4xl mx-auto relative z-10">
+      <div className="vizion-tools-header text-center space-y-6 max-w-4xl mx-auto relative z-10">
         <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#D4A017]/20 to-[#D4A017]/5 border border-[#D4A017]/30 text-xs md:text-sm text-[#F0C040] font-black shadow-lg backdrop-blur-md">
           <Sparkles className="w-4 h-4 animate-pulse-slow" />
-          <span>Vizion OS • لوحة التحكم والتشغيل التفاعلية</span>
+          <span>أدوات فيزيون • لوحة متابعة مشروعك</span>
         </div>
         
         <h2 className="text-4xl md:text-6xl font-black text-white leading-tight drop-shadow-xl">
-          لا تتوقع أرقامك.. سيطر على شغلك مثل <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-[#FFE58F] to-[#D4A017]">المحترفين</span>
+          افهم أرقامك وخلي قراراتك أوضح
         </h2>
         
         <p className="text-base md:text-lg text-white/70 leading-relaxed font-light max-w-3xl mx-auto">
-          صممنالك نظام متكامل بي <strong className="text-[#F0C040] font-bold">13 أداة ومحاكي ذكي</strong> مرتب على سوكنا بالضبط، حتى تتخذ قراراتك بناءً على أرقام مضبوطة بدل التخمين والشك.
+          هنا تلگى <strong className="text-[#F0C040] font-bold">13 أداة عملية</strong> تساعدك تفحص مشروعك، تحسب كلفتك، وتحسن خطوات البيع والتوصيل بدون تعقيد.
         </p>
 
         {/* Free Trial Gatekeeping Banner */}
         {isFreeTrial && (
           <div className="bg-gradient-to-r from-amber-950/80 via-[#0F1735] to-amber-950/80 border-2 border-[#D4A017] p-5 sm:p-6 rounded-3xl shadow-2xl space-y-3 text-center relative overflow-hidden my-4 z-20 animate-[fadeIn_0.3s_ease]">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-xs font-black text-[#F0C040]">
+            <div className="inline-flex justify-center items-center gap-2 w-full py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-sm py-3.5 font-black text-[#F0C040]">
               <Lock className="w-4 h-4 text-[#F0C040]" />
               <span>نسخة مجانية للتجربة (Free Trial Mode)</span>
             </div>
@@ -334,9 +382,8 @@ export default function VizionGrowthSuite() {
             <p className="text-xs sm:text-sm text-white/80 max-w-2xl mx-auto font-light leading-relaxed">
               أدوات النظام الـ 13 مقفولة جزئياً بهذي النسخة. رقي حسابك حتى تفتح كل الأدوات وتكدر تدخل أرقامك وتحلل حملاتك وتحسب أرباحك الصافية بالضبط.
             </p>
-            <button
-              onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl shadow-[#D4A017]/25 hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+            <button               onClick={triggerUpgradeModal}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl md:shadow-[#D4A017] shadow-xl/25 hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <Crown className="w-4 h-4 text-[#040B24]" />
               <span>افتح المنظومة كاملة ورقي حسابك هسة ⚡</span>
@@ -345,18 +392,46 @@ export default function VizionGrowthSuite() {
         )}
       </div>
 
+      {/* Category Tabs Filter Bar (افهم، احسب، حسّن، نفّذ) */}
+      <div className="vizion-tool-categories flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-2 pb-2 relative z-10 px-1">
+        {toolCategories.map((cat) => {
+          const isActive = selectedCategory === cat.id;
+          const count = cat.id === "all" ? toolTabs.length : toolTabs.filter(t => t.category === cat.id).length;
+          return (
+            <button               key={cat.id}
+              onClick={() => {
+                setSelectedCategory(cat.id);
+                // If current tab not in selected category, switch to first tab of that category
+                if (cat.id !== "all") {
+                  const firstInCat = toolTabs.find(t => t.category === cat.id);
+                  if (firstInCat && !toolTabs.filter(t => t.category === cat.id).some(t => t.id === activeTab)) {
+                    setActiveTab(firstInCat.id);
+                  }
+                }
+              }}
+              className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer border whitespace-nowrap ${ isActive ? "bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] border-[#D4A017] font-black shadow-lg md:shadow-[#D4A017] shadow-xl/25 scale-105" : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10 hover:border-white/20" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+            >
+              <span>{cat.icon}</span>
+              <span>{cat.label}</span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-[#040B24]/20 text-[#040B24] font-black' : 'bg-white/10 text-white/60'}`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Main Grid: Tabs Sidebar + Active Tab Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
+      <div className="vizion-tool-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
         {/* MOBILE SELECTOR & LAUNCHPAD (Visible only on mobile/tablet) */}
-        <div className="lg:hidden w-full mb-6 relative z-30">
+        <div className="vizion-tool-picker lg:hidden w-full mb-6 relative z-30">
           <div className="bg-gradient-to-b from-[#0F1735]/90 to-[#040B24] border border-[#D4A017]/40 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
-            <button
-              onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
-              className="w-full flex items-center justify-between p-5 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent hover:bg-white/[0.06] transition-colors cursor-pointer"
+            <button               onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
+              className="w-full flex items-center justify-between p-5 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent hover:bg-white/[0.06] transition-colors cursor-pointer min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             >
               <div className="text-right">
-                <span className="text-[11px] text-[#F0C040]/70 block font-bold mb-1.5 uppercase tracking-widest animate-pulse">👈 اضغط هنا حتى تبدل الأداة (١٣ أداة)</span>
+                <span className="text-[11px] text-[#F0C040]/70 block font-bold mb-1.5">اختار أداة من القائمة ({filteredToolTabs.length})</span>
                 <span className="text-base font-black text-white flex items-center gap-2 drop-shadow-md">
                   {toolTabs.find(t => t.id === activeTab)?.label}
                 </span>
@@ -376,11 +451,10 @@ export default function VizionGrowthSuite() {
                   className="border-t border-[#D4A017]/20 max-h-[60vh] overflow-y-auto no-scrollbar bg-black/80 backdrop-blur-2xl"
                 >
                   <div className="p-4 space-y-2.5">
-                    {toolTabs.map((tab) => {
+                    {filteredToolTabs.map((tab) => {
                       const isActive = tab.id === activeTab;
                       return (
-                        <button
-                          key={tab.id}
+                        <button                           key={tab.id}
                           onClick={() => {
                             setActiveTab(tab.id);
                             setIsLaunchpadOpen(false);
@@ -390,21 +464,17 @@ export default function VizionGrowthSuite() {
                             setT4ShowReport(false);
                             setT8ShowScore(false);
                           }}
-                          className={`w-full flex items-center justify-between p-4.5 rounded-xl transition-all duration-300 cursor-pointer border ${
-                            isActive 
-                              ? "bg-gradient-to-r from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] shadow-[0_5px_15px_rgba(212,160,23,0.15)]" 
-                              : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20"
-                          }`}
+                          className={`w-full flex items-center justify-between p-4.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer border ${ isActive ? "bg-gradient-to-r from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] md:shadow-[0_5px_15px_rgba(212,160,23,0.15)] shadow-xl" : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                         >
                           <div className="text-right flex-1">
                             <div className={`text-sm font-black mb-1.5 flex items-center justify-between ${isActive ? "text-[#F0C040]" : "text-white"}`}>
                               <span>{tab.label}</span>
                               {isFreeTrial && <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />}
                             </div>
-                            <div className="text-[11px] text-white/50 leading-relaxed font-light">{tab.desc}</div>
+                            <div className="text-[11px] text-white/70 leading-relaxed font-light">{tab.desc}</div>
                           </div>
                           {isActive && (
-                            <div className="w-8 h-8 rounded-full bg-[#D4A017] flex items-center justify-center shrink-0 ml-3 shadow-[0_0_15px_#D4A017]">
+                            <div className="w-8 h-8 rounded-full bg-[#D4A017] flex items-center justify-center shrink-0 ml-3 md:shadow-[0_0_15px_#D4A017] shadow-xl">
                               <CheckCircle2 className="w-5 h-5 text-[#040B24]" />
                             </div>
                           )}
@@ -419,18 +489,26 @@ export default function VizionGrowthSuite() {
         </div>
 
         {/* SIDE BAR / SELECTOR RAIL (4 Columns, hidden on mobile/tablet) */}
-        <div className="hidden lg:flex lg:col-span-4 bg-gradient-to-b from-[#0F1735]/80 to-[#040B24]/90 backdrop-blur-xl border border-[#D4A017]/20 rounded-[2.5rem] p-5 md:p-6 flex-col space-y-4 shadow-[0_0_50px_rgba(212,160,23,0.05)] h-[750px] overflow-hidden relative">
+        <div className="hidden lg:flex lg:col-span-4 bg-gradient-to-b from-[#0F1735]/80 to-[#040B24]/90 backdrop-blur-xl border border-[#D4A017]/20 rounded-[2.5rem] p-5 md:p-6 flex-col space-y-4 md:shadow-[0_0_50px_rgba(212,160,23,0.05)] shadow-xl h-[750px] overflow-hidden relative">
           <div className="absolute top-0 right-0 w-1.5 h-full bg-gradient-to-b from-[#F0C040] to-transparent opacity-50" />
-          <span className="text-[12px] font-black text-[#F0C040] block mr-3 uppercase tracking-widest border-b border-white/10 pb-4">
-            ⚙️ أدوات نظام التشغيل والتحكم:
-          </span>
+          <div className="flex items-center justify-between border-b border-white/10 pb-4 mr-3">
+            <span className="text-[12px] font-black text-[#F0C040] uppercase tracking-widest">
+              ⚙️ حقيبة الأدوات ({filteredToolTabs.length}):
+            </span>
+            {selectedCategory !== "all" && (
+              <button                 onClick={() => setSelectedCategory("all")}
+                className="text-[10px] text-white/60 hover:text-[#F0C040] transition-colors cursor-pointer min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              >
+                عرض الكل
+              </button>
+            )}
+          </div>
           
           <div className="space-y-2 overflow-y-auto pr-2 no-scrollbar flex-1 pb-4">
-            {toolTabs.map((tab) => {
+            {filteredToolTabs.map((tab) => {
               const isActive = tab.id === activeTab;
               return (
-                <button
-                  key={tab.id}
+                <button                   key={tab.id}
                   onClick={() => {
                     setActiveTab(tab.id);
                     // Reset show status for smoother navigation
@@ -440,11 +518,7 @@ export default function VizionGrowthSuite() {
                     setT4ShowReport(false);
                     setT8ShowScore(false);
                   }}
-                  className={`w-full p-4 rounded-2xl border text-right transition-all duration-400 relative cursor-pointer flex items-center justify-between group overflow-hidden ${
-                    isActive
-                      ? "bg-gradient-to-l from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] shadow-[0_10px_20px_rgba(212,160,23,0.15)] scale-[1.02] z-10"
-                      : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20 hover:-translate-y-0.5"
-                  }`}
+                  className={`w-full p-4 rounded-2xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none duration-400 relative cursor-pointer flex items-center justify-between group overflow-hidden ${ isActive ? "bg-gradient-to-l from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] md:shadow-[0_10px_20px_rgba(212,160,23,0.15)] shadow-xl scale-[1.02] z-10" : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20 hover:-translate-y-0.5" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                 >
                   <div className="flex items-center gap-4">
                     <div className="space-y-1.5 text-right">
@@ -452,12 +526,12 @@ export default function VizionGrowthSuite() {
                         <span>{tab.label}</span>
                         {isFreeTrial && <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />}
                       </h4>
-                      <p className={`text-[10px] transition-colors duration-300 font-light ${isActive ? "text-white/80" : "text-white/40 group-hover:text-white/60"}`}>
+                      <p className={`text-[10px] transition-colors duration-300 font-light ${isActive ? "text-white/80" : "text-white/60 group-hover:text-white/60"}`}>
                         {tab.desc}
                       </p>
                     </div>
                   </div>
-                  <span className={`text-sm transition-all duration-500 ${isActive ? "text-[#F0C040] translate-x-1 opacity-100" : "text-white/20 group-hover:text-white/40 opacity-0 group-hover:opacity-100"}`}>
+                  <span className={`text-sm transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500 ${isActive ? "text-[#F0C040] translate-x-1 opacity-100" : "text-white/20 group-hover:text-white/60 opacity-0 group-hover:opacity-100"}`}>
                     ◀
                   </span>
                 </button>
@@ -467,8 +541,8 @@ export default function VizionGrowthSuite() {
         </div>
 
         {/* CONTENT VIEWPORT (8 Columns) */}
-        <div className="lg:col-span-8 bg-gradient-to-b from-[#0F1735]/60 to-[#040B24]/90 backdrop-blur-2xl border border-[#D4A017]/30 rounded-[2.5rem] p-8 md:p-12 shadow-[0_0_60px_rgba(212,160,23,0.1)] relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
-          <div className="absolute -top-32 -left-32 w-64 h-64 bg-[#D4A017]/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-[#D4A017]/20 transition-all duration-1000" />
+        <div className="vizion-tool-viewport lg:col-span-8 bg-gradient-to-b from-[#0F1735]/60 to-[#040B24]/90 backdrop-blur-2xl border border-[#D4A017]/30 rounded-[2.5rem] p-8 md:p-12 md:shadow-[0_0_60px_rgba(212,160,23,0.1)] shadow-xl relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
+          <div className="absolute -top-32 -left-32 w-64 h-64 bg-[#D4A017]/10 rounded-full md:blur-[80px] blur-3xl pointer-events-none group-hover:bg-[#D4A017]/20 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-1000" />
           
           <AnimatePresence mode="wait">
             <motion.div 
@@ -482,7 +556,7 @@ export default function VizionGrowthSuite() {
               
             {isFreeTrial ? (
               <div className="flex flex-col items-center justify-center text-center p-6 sm:p-10 space-y-6 min-h-[550px] my-auto relative z-20">
-                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#D4A017]/30 via-amber-600/20 to-[#040B24] border-2 border-[#D4A017] flex items-center justify-center shadow-[0_0_50px_rgba(212,160,23,0.35)] relative group animate-bounce">
+                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#D4A017]/30 via-amber-600/20 to-[#040B24] border-2 border-[#D4A017] flex items-center justify-center md:shadow-[0_0_50px_rgba(212,160,23,0.35)] shadow-xl relative group animate-bounce">
                   <Lock className="w-10 h-10 text-[#F0C040]" />
                   <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-600 to-amber-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full border border-white/20 shadow-md">
                     مقفول
@@ -490,7 +564,7 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <div className="space-y-3 max-w-xl">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-xs font-black text-[#F0C040]">
+                  <div className="inline-flex justify-center items-center gap-2 w-full py-1.5 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-sm py-3.5 font-black text-[#F0C040]">
                     <Crown className="w-4 h-4 text-[#F0C040]" />
                     <span>الأدوات مقفولة لحساب المعاينة المجانية (free#1)</span>
                   </div>
@@ -506,9 +580,9 @@ export default function VizionGrowthSuite() {
 
                 <div className="w-full max-w-md bg-white/[0.03] border border-[#D4A017]/30 rounded-2xl p-5 space-y-3 text-right">
                   <span className="text-xs font-black text-[#F0C040] block border-b border-white/10 pb-2">
-                    ⚡ مميزات المنظومة الكاملة بعد الترقية:
+                    مميزات الأدوات الكاملة:
                   </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-white/80">
+                  <div className="grid grid-cols-1 gap-y-5 gap-2.5 text-xs text-white/80">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
                       <span>مقييم سلامة البزنس مالتك</span>
@@ -536,9 +610,8 @@ export default function VizionGrowthSuite() {
                   </div>
                 </div>
 
-                <button
-                  onClick={triggerUpgradeModal}
-                  className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm md:text-base shadow-[0_10px_30px_rgba(212,160,23,0.35)] hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-3 group"
+                <button                   onClick={triggerUpgradeModal}
+                  className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm md:text-base md:shadow-[0_10px_30px_rgba(212,160,23,0.35)] shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-3 group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                 >
                   <Crown className="w-5 h-5 text-[#040B24] group-hover:rotate-12 transition-transform" />
                   <span>افتح الـ 13 أداة ورقي حسابك هسة ⚡</span>
@@ -562,77 +635,88 @@ export default function VizionGrowthSuite() {
                   دخل أرقام مشروعك الحالية حتى نكشفلك فوراً نقاط قوتك ووين كاعد تضيع فلوسك ويقل ربحك بدون ما تحس.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">عدد الطلبات بالشهر (اللي تدزها):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1MonthlyOrders}
-                      onChange={(e) => setT1MonthlyOrders(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none"
+                      onChange={(e) => setT1MonthlyOrders(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">سعر البيع للزبون (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1SellingPrice}
-                      onChange={(e) => setT1SellingPrice(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT1SellingPrice(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1ProductCost}
-                      onChange={(e) => setT1ProductCost(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT1ProductCost(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">سعر الرسالة بالإعلان (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1MessageCost}
-                      onChange={(e) => setT1MessageCost(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT1MessageCost(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">نسبة الراجع المتوقعة (%):</label>
                     <div className="flex items-center gap-3">
-                      <input
-                        type="range"
+                      <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                         min="0"
                         max="80"
                         value={t1ReturnRate}
                         onChange={(e) => setT1ReturnRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017]"
+                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
                       <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t1ReturnRate}%</span>
                     </div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد من الرسايل تصير طلبات (%):</label>
                     <div className="flex items-center gap-3">
-                      <input
-                        type="range"
+                      <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                         min="1"
                         max="50"
                         value={t1ConversionRate}
                         onChange={(e) => setT1ConversionRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017]"
+                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
                       <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t1ConversionRate}%</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex justify-center pt-2">
-                  <button
-                    onClick={() => setT1ShowReport(true)}
-                    className="px-6 py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-2"
+                <div className="pt-4 w-full">
+                  <button                     onClick={() => setT1ShowReport(true)}
+                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   >
                     <span>افحص مشروعي وشوفني التقرير</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -641,26 +725,34 @@ export default function VizionGrowthSuite() {
 
                 {t1ShowReport && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
+      <div className="flex justify-end">
+        <button onClick={() => {
+          navigator.clipboard.writeText(`تقرير التشخيص:
+الإيرادات: ${diagResult.totalRevenue.toLocaleString()} د.ع
+الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`);
+          alert('تم النسخ!');
+        }} className="text-xs text-[#F0C040] hover:text-white border border-[#D4A017]/30 px-3 py-1 rounded-lg min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">نسخ النتيجة 📋</button>
+      </div>
                     <h4 className="text-sm font-black text-[#F0C040] flex items-center gap-2 border-b border-white/5 pb-2">
                       <span>📊</span>
                       <span>تقرير فحص الأداء والربح:</span>
                     </h4>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+                    <div className="grid grid-cols-1 gap-y-5 md:grid-cols-4 gap-3 text-center">
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                        <span className="text-[10px] text-white/40 block">الطلبات المستلمة</span>
-                        <span className="text-base font-black text-emerald-400 font-mono">{diagResult.estimatedDelivered} طرد</span>
+                        <span className="text-[10px] text-white/60 block">الطلبات المستلمة</span>
+                        <span className="text-base font-black text-emerald-400 font-mono">{diagResult.estimatedDelivered} طلب</span>
                       </div>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                        <span className="text-[10px] text-white/40 block">الطلبات الراجعة</span>
-                        <span className="text-base font-black text-red-400 font-mono">{diagResult.estimatedReturned} طرد</span>
+                        <span className="text-[10px] text-white/60 block">الطلبات الراجعة</span>
+                        <span className="text-base font-black text-red-400 font-mono">{diagResult.estimatedReturned} طلب</span>
                       </div>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                        <span className="text-[10px] text-white/40 block">ميزانية الإعلان المطلوبة</span>
+                        <span className="text-[10px] text-white/60 block">ميزانية الإعلان المطلوبة</span>
                         <span className="text-xs sm:text-sm font-black text-[#F0C040] font-mono">{(diagResult.totalAdSpend).toLocaleString()} دينار</span>
                       </div>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                        <span className="text-[10px] text-white/40 block">صافي الربح الفعلي</span>
+                        <span className="text-[10px] text-white/60 block">صافي الربح الفعلي</span>
                         <span className={`text-xs sm:text-sm font-black font-mono ${diagResult.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                           {(diagResult.netProfit).toLocaleString()} دينار
                         </span>
@@ -674,7 +766,7 @@ export default function VizionGrowthSuite() {
                         {t1ReturnRate > 20 && (
                           <li className="flex items-start gap-1.5 text-red-300">
                             <span>❌</span>
-                            <span><strong>الراجع دياكل أرباحك:</strong> نسبة المرتجع عندك ({t1ReturnRate}%) عالية وتخسرك كروة شحن وفلوس إعلانات. لازم تأكد طلباتك بالتلفون وتدز فيديوهات للزبون.</span>
+                            <span><strong>الراجع دياكل أرباحك:</strong> نسبة المرتجع عندك ({t1ReturnRate}%) عالية وتخسرك أجور التوصيل وفلوس إعلانات. لازم تأكد طلباتك بالتلفون وتدز فيديوهات للزبون.</span>
                           </li>
                         )}
                         {t1ConversionRate < 10 && (
@@ -686,7 +778,7 @@ export default function VizionGrowthSuite() {
                         {t1SellingPrice - t1ProductCost < 15000 && (
                           <li className="flex items-start gap-1.5 text-red-300">
                             <span>❌</span>
-                            <span><strong>الربح قليل:</strong> الفرق بين سعر الشراء والبيع قليل وما يغطي كروة الشحن والإعلانات.</span>
+                            <span><strong>الربح قليل:</strong> الفرق بين سعر الشراء والبيع قليل وما يغطي كروة التوصيل والإعلانات.</span>
                           </li>
                         )}
                         {t1ReturnRate <= 20 && t1ConversionRate >= 10 && t1SellingPrice - t1ProductCost >= 15000 && (
@@ -722,49 +814,53 @@ export default function VizionGrowthSuite() {
                   دخل أرقام حملتك الإعلانية اللي مشغلها هسه، والنظام راح يحللها ويكشفلك الخلل وين بالضبط وينطيك الحل بسرعة.
                 </p>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد صارف عالإعلان (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Spend}
-                      onChange={(e) => setT2Spend(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT2Spend(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد رسايل اجتك:</label>
-                    <input
-                      type="number"
+                    <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Messages}
-                      onChange={(e) => setT2Messages(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT2Messages(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها:</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Confirmed}
-                      onChange={(e) => setT2Confirmed(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT2Confirmed(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">الطلبات اللي استلموها الزبائن فعلياً:</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Delivered}
-                      onChange={(e) => setT2Delivered(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT2Delivered(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">رسالة</span>
+</div>
                   </div>
                 </div>
 
-                <div className="flex justify-center pt-2">
-                  <button
-                    onClick={() => setT2ShowAnalysis(true)}
-                    className="px-6 py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-2"
+                <div className="pt-4 w-full">
+                  <button                     onClick={() => setT2ShowAnalysis(true)}
+                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   >
                     <span>حلل نتائج الإعلان هسة</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -775,7 +871,7 @@ export default function VizionGrowthSuite() {
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <h4 className="text-sm font-black text-[#F0C040]">🔍 النتيجة والتحليل الفني:</h4>
-                      <span className="text-xs text-white/40 font-mono">سعر الرسالة عندك: {getAdAnalysis().costPerMsg.toLocaleString()} دينار</span>
+                      <span className="text-xs text-white/60 font-mono">سعر الرسالة عندك: {getAdAnalysis().costPerMsg.toLocaleString()} دينار</span>
                     </div>
 
                     <p className="text-xs font-bold text-white leading-relaxed">
@@ -819,23 +915,21 @@ export default function VizionGrowthSuite() {
                   اكتب اسم أو مجال أي بيج ينافسك ويبيع نفس منتجاتك، وراح نكشفلك طريقتهم بالنشر ونقاط ضعفهم اللي تكدر تستغلها حتى تتغلب عليهم.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">اسم بيج المنافس (اختياري):</label>
-                    <input
-                      type="text"
+                    <input                       type="text"
                       placeholder="مثال: بيج الهدايا الفخمة"
                       value={t3Name}
                       onChange={(e) => setT3Name(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-right focus:border-[#D4A017] outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-right focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">مجال أو فئة بضاعته:</label>
-                    <select
-                      value={t3Niche}
+                    <select                       value={t3Niche}
                       onChange={(e) => setT3Niche(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs focus:border-[#D4A017] outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     >
                       <option value="clothing">الملابس والأزياء العصرية</option>
                       <option value="perfumes">العطور ومستحضرات التجميل</option>
@@ -845,10 +939,9 @@ export default function VizionGrowthSuite() {
                   </div>
                 </div>
 
-                <div className="flex justify-center pt-2">
-                  <button
-                    onClick={() => setT3ShowAnalysis(true)}
-                    className="px-6 py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-2"
+                <div className="pt-4 w-full">
+                  <button                     onClick={() => setT3ShowAnalysis(true)}
+                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   >
                     <span>حلل شغله واعرضلي الفرص</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -897,31 +990,31 @@ export default function VizionGrowthSuite() {
                   إذا دتعاني من كثرة الأسئلة وماكو ناس تشتري، دخل أرقام الرسايل والطلبات حتى تعرف المشكلة وين بالضبط.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل كلياً:</label>
-                    <input
-                      type="number"
+                    <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t4Messages}
-                      onChange={(e) => setT4Messages(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT4Messages(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها بنجاح:</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t4Orders}
-                      onChange={(e) => setT4Orders(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT4Orders(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+</div>
                   </div>
                 </div>
 
-                <div className="flex justify-center pt-2">
-                  <button
-                    onClick={() => setT4ShowReport(true)}
-                    className="px-6 py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-2"
+                <div className="pt-4 w-full">
+                  <button                     onClick={() => setT4ShowReport(true)}
+                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   >
                     <span>حلل الرسايل واكشف الخلل</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -930,10 +1023,18 @@ export default function VizionGrowthSuite() {
 
                 {t4ShowReport && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
+      <div className="flex justify-end">
+        <button onClick={() => {
+          navigator.clipboard.writeText(`تقرير المحادثات:
+معدل الإغلاق: ${((t4Orders / t4Messages) * 100).toFixed(1)}%
+`);
+          alert('تم النسخ!');
+        }} className="text-xs text-[#F0C040] hover:text-white border border-[#D4A017]/30 px-3 py-1 rounded-lg min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">نسخ النتيجة 📋</button>
+      </div>
                     {/* Diagnostic Score Card */}
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <h4 className="text-sm font-black text-[#F0C040]">📝 نتيجة غلق الصفقات:</h4>
-                      <span className="text-xs text-white/50 font-mono">نسبة التحويل: {((t4Orders / t4Messages) * 100).toFixed(1)}%</span>
+                      <span className="text-xs text-white/70 font-mono">نسبة التحويل: {((t4Orders / t4Messages) * 100).toFixed(1)}%</span>
                     </div>
 
                     {((t4Orders / t4Messages) * 100) < 5 ? (
@@ -989,54 +1090,61 @@ export default function VizionGrowthSuite() {
                   أغلبية البيجات تخسر لأن ما يحسبون كلفة الراجع الضايعة. احسب أسعارك وأرباحك وشكد لازم تبيع حتى ما تخسر ولا دينار.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة (جملة - دينار):</label>
-                    <input
-                      type="number"
+                    <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5Cost}
-                      onChange={(e) => setT5Cost(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT5Cost(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد ناوي تبيعها للزبون (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5Price}
-                      onChange={(e) => setT5Price(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT5Price(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد كروة التوصيل (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5Shipping}
-                      onChange={(e) => setT5Shipping(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT5Shipping(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد كلفك الطلب من الإعلان (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5AdCost}
-                      onChange={(e) => setT5AdCost(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT5AdCost(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5 sm:col-span-2">
                     <label className="text-xs font-bold text-white/80 block">شكد تتوقع نسبة الراجع (%):</label>
                     <div className="flex items-center gap-3">
-                      <input
-                        type="range"
+                      <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                         min="0"
                         max="80"
                         value={t5ReturnRate}
                         onChange={(e) => setT5ReturnRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017]"
+                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
                       <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t5ReturnRate}%</span>
                     </div>
                   </div>
@@ -1062,17 +1170,17 @@ export default function VizionGrowthSuite() {
                       <div className="space-y-3 text-xs">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <span className="text-[10px] text-white/50 block">صافي ربحك الحقيقي لكل طلب</span>
+                            <span className="text-[10px] text-white/70 block">صافي ربحك الحقيقي لكل طلب</span>
                             <span className={`text-base font-black font-mono ${netProfitReal > 0 ? "text-emerald-400" : "text-red-400"}`}>
                               {Math.round(netProfitReal).toLocaleString()} دينار
                             </span>
                           </div>
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <span className="text-[10px] text-white/50 block">أقل سعر تبيع بي حتى ما تخسر</span>
+                            <span className="text-[10px] text-white/70 block">أقل سعر تبيع بي حتى ما تخسر</span>
                             <span className="text-base font-black text-amber-400 font-mono">{minSafePrice.toLocaleString()} دينار</span>
                           </div>
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <span className="text-[10px] text-white/50 block">طلبات تحتاجها لتربح (١.٥ مليون)</span>
+                            <span className="text-[10px] text-white/70 block">طلبات تحتاجها لتربح (١.٥ مليون)</span>
                             <span className="text-base font-black text-white font-mono">
                               {ordersToTarget > 0 && ordersToTarget < 10000 ? ordersToTarget : "شغلة صعبة"} طلب
                             </span>
@@ -1081,7 +1189,7 @@ export default function VizionGrowthSuite() {
 
                         {netProfitReal <= 0 ? (
                           <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-[11px] text-red-300">
-                            ⚠️ <strong>تنبيه دتخسر!</strong> بهالأسعار ونسبة الراجع مالتك، إنت دتخسر فعلياً من كل طرد دزه. صعد سعرك أو نزل كلفة الإعلان والراجع بسرعة.
+                            ⚠️ <strong>تنبيه دتخسر!</strong> بهالأسعار ونسبة الراجع مالتك، إنت دتخسر فعلياً من كل طلب دزه. صعد سعرك أو نزل كلفة الإعلان والراجع بسرعة.
                           </div>
                         ) : (
                           <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-[11px] text-emerald-300">
@@ -1111,34 +1219,29 @@ export default function VizionGrowthSuite() {
                 </p>
 
                 {/* Grid of customers */}
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                  <button
-                    onClick={() => setActiveCustomer("ghoster")}
-                    className={`p-3 rounded-xl border text-center transition-all cursor-pointer text-[11px] font-bold ${activeCustomer === "ghoster" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"}`}
+                <div className="grid grid-cols-1 gap-y-5 sm:grid-cols-5 gap-2">
+                  <button                     onClick={() => setActiveCustomer("ghoster")}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "ghoster" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                   >
                     👻 يسأل (ببيش؟) ويختفي
                   </button>
-                  <button
-                    onClick={() => setActiveCustomer("bargainer")}
-                    className={`p-3 rounded-xl border text-center transition-all cursor-pointer text-[11px] font-bold ${activeCustomer === "bargainer" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"}`}
+                  <button                     onClick={() => setActiveCustomer("bargainer")}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "bargainer" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                   >
                     💵 (أريد خصم)
                   </button>
-                  <button
-                    onClick={() => setActiveCustomer("hesitant")}
-                    className={`p-3 rounded-xl border text-center transition-all cursor-pointer text-[11px] font-bold ${activeCustomer === "hesitant" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"}`}
+                  <button                     onClick={() => setActiveCustomer("hesitant")}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "hesitant" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                   >
                     🧐 الزبون المتردد
                   </button>
-                  <button
-                    onClick={() => setActiveCustomer("delayed")}
-                    className={`p-3 rounded-xl border text-center transition-all cursor-pointer text-[11px] font-bold ${activeCustomer === "delayed" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"}`}
+                  <button                     onClick={() => setActiveCustomer("delayed")}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "delayed" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                   >
                     ⏳ (أرجعلك بعدين)
                   </button>
-                  <button
-                    onClick={() => setActiveCustomer("comparer")}
-                    className={`p-3 rounded-xl border text-center transition-all cursor-pointer text-[11px] font-bold ${activeCustomer === "comparer" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"}`}
+                  <button                     onClick={() => setActiveCustomer("comparer")}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "comparer" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                   >
                     ⚖️ يقارن ويا البقية
                   </button>
@@ -1150,7 +1253,7 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">👻 اللي يسأل عن السعر ويشرد:</span>
-                        <p className="text-white/50 text-[10px] mt-0.5">ليش هيج يسوي؟ يحس ردك آلي ومجرد فضول ديدور.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحس ردك آلي ومجرد فضول ديدور.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-[#F0C040]">شلون تحلها:</strong> لا تنطي السعر وتسكت. اشرح قيمة العرض، وكوله تكدر تفحص المنتج عند الباب حتى يرتاح ويطمئن.
@@ -1158,7 +1261,7 @@ export default function VizionGrowthSuite() {
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
-                          "يا هلا بيك عيني الغالي.. بخصوص العطر، سعره ويا الشحن والضمان هو 35 ألف بس. والميزة يمنا: المندوب من يوصلك تكدر تفتح الطرد وتفحص وتتأكد بنفسك، وإذا ما عجبك ترجعه بدون ما تدفع أي شي! كم قطعة حاب نثبتلك عيني؟"
+                          "يا هلا بيك عيني الغالي.. بخصوص العطر، سعره ويا التوصيل والضمان هو 35 ألف بس. والميزة يمنا: المندوب من يوصلك تكدر تفتح الطلب وتفحص وتتأكد بنفسك، وإذا ما عجبك ترجعه بدون ما تدفع أي شي! كم قطعة حاب نثبتلك عيني؟"
                         </p>
                       </div>
                     </div>
@@ -1168,15 +1271,15 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">💵 اللي يكول (أكو خصم عيني؟ أريده أرخص):</span>
-                        <p className="text-white/50 text-[10px] mt-0.5">ليش هيج يسوي؟ يحب يحس نفسه حصل شغلة زينة وبسعر أرخص.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحب يحس نفسه حصل شغلة زينة وبسعر أرخص.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-[#F0C040]">شلون تحلها:</strong> لا تكوله "لا" قبل. انطيه عرض ثاني أو هدية (مثل شحن مجاني للقطعتين) بدل ما تنزل سعر المنتج.
+                        <strong className="text-[#F0C040]">شلون تحلها:</strong> لا تكوله "لا" قبل. انطيه عرض ثاني أو هدية (مثل توصيل مجاني للقطعتين) بدل ما تنزل سعر المنتج.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
-                          "عيني فدوة لكلبك السعر قفل لأن البضاعة أصلية ومكفولة، بس لعيونك.. إذا تاخذ قطعتين اليوم، راح نلغي كروة التوصيل ويصير الشحن مجاني! أو نهديك هدية حلوة وياها. تحب العرض الذهبي؟"
+                          "عيني فدوة لكلبك السعر قفل لأن البضاعة أصلية ومكفولة، بس لعيونك.. إذا تاخذ قطعتين اليوم، راح نلغي كروة التوصيل ويصير التوصيل مجاني! أو نهديك هدية حلوة وياها. تحب العرض الذهبي؟"
                         </p>
                       </div>
                     </div>
@@ -1186,7 +1289,7 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">🧐 الزبون المتردد / يخاف من النصب:</span>
-                        <p className="text-white/50 text-[10px] mt-0.5">ليش هيج يسوي؟ مضروب بوري قبل من بيجات وهمية وميأمن.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ مضروب بوري قبل من بيجات وهمية وميأمن.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-[#F0C040]">شلون تحلها:</strong> شيل الخوف منه من تنطيه كفالة وتخليه يفحص كدام المندوب قبل ما يستلم.
@@ -1204,7 +1307,7 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">⏳ اللي يكول (أفكر وأرجعلك / من أستلم الراتب):</span>
-                        <p className="text-white/50 text-[10px] mt-0.5">ليش هيج يسوي؟ يحتاج حافز قوي حتى يبطل تردد ويقرر يشتري.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحتاج حافز قوي حتى يبطل تردد ويقرر يشتري.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-[#F0C040]">شلون تحلها:</strong> حسسه إن الكمية حتخلص أو انطيه عرض إنو تدز الطلب يوم راتبه.
@@ -1222,7 +1325,7 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">⚖️ اللي يقارن (شفت بيج ثاني يبيعه أرخص):</span>
-                        <p className="text-white/50 text-[10px] mt-0.5">ليش هيج يسوي؟ يريد يبرر فرق السعر حتى يرتاح نفسياً.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يريد يبرر فرق السعر حتى يرتاح نفسياً.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-[#F0C040]">شلون تحلها:</strong> لا تهاجم المنافسين. بس وضحله ليش إنت أغلى (جودة خامة، ضمان، خدمات ما بعد البيع).
@@ -1255,7 +1358,7 @@ export default function VizionGrowthSuite() {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all">
+                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
                     <span className="text-2xl">🎬</span>
                     <h4 className="text-xs font-black text-white">١. إعلان ملابس (بداية قوية)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
@@ -1266,7 +1369,7 @@ export default function VizionGrowthSuite() {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all">
+                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
                     <span className="text-2xl">🎥</span>
                     <h4 className="text-xs font-black text-white">٢. إعلان عطور (تجربة حقيقية)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
@@ -1277,7 +1380,7 @@ export default function VizionGrowthSuite() {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all">
+                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
                     <span className="text-2xl">📦</span>
                     <h4 className="text-xs font-black text-white">٣. إعلان هدايا (يلعب عالعاطفة)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
@@ -1310,48 +1413,47 @@ export default function VizionGrowthSuite() {
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">ربحك بالقطعة يعبر الـ 15,000 دينار؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Margin(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Margin ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>إي</button>
-                      <button onClick={() => setT8Margin(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Margin ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>لا</button>
+                      <button onClick={() => setT8Margin(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Margin ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
+                      <button onClick={() => setT8Margin(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Margin ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">تكدر تشرح فائدته وتلزم انتباه الزبون بأول 3 ثواني؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Benefit(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Benefit ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>إي</button>
-                      <button onClick={() => setT8Benefit(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Benefit ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>لا</button>
+                      <button onClick={() => setT8Benefit(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Benefit ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
+                      <button onClick={() => setT8Benefit(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Benefit ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">موجود بكل مكان بالسوك (مثل الشورجة أو الكرادة) ومتروس؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Problem(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Problem ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>إي</button>
-                      <button onClick={() => setT8Problem(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Problem ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>لا</button>
+                      <button onClick={() => setT8Problem(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Problem ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
+                      <button onClick={() => setT8Problem(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Problem ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                    <span className="text-xs text-white font-bold">المنتج وزنه خفيف وسهل التغليف والشحن بدون ما ينكسر؟</span>
+                    <span className="text-xs text-white font-bold">المنتج وزنه خفيف وسهل التغليف والتوصيل بدون ما ينكسر؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Ship(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Ship ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>إي</button>
-                      <button onClick={() => setT8Ship(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Ship ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>لا</button>
+                      <button onClick={() => setT8Ship(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Ship ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
+                      <button onClick={() => setT8Ship(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Ship ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">عندك فيديوهات إنت مصورها بيدك للمنتج (مو مسروقة)؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Video(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Video ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>إي</button>
-                      <button onClick={() => setT8Video(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Video ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"}`}>لا</button>
+                      <button onClick={() => setT8Video(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Video ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
+                      <button onClick={() => setT8Video(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Video ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex justify-center pt-2">
-                  <button
-                    onClick={() => setT8ShowScore(true)}
-                    className="px-6 py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-2"
+                <div className="pt-4 w-full">
+                  <button                     onClick={() => setT8ShowScore(true)}
+                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   >
                     <span>احسب نتيجة المنتج هسة</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -1386,7 +1488,7 @@ export default function VizionGrowthSuite() {
                             </div>
                           ) : (
                             <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-red-300 leading-relaxed font-light">
-                              ❌ <strong>مخاطرة جبيرة!</strong> هذا المنتج ممكن يطير ميزانيتك لأن ربحه قليل أو صعب تشحنه. لا تصرف فلوس إعلان عليه إلا إذا حليت هاي المشاكل وصورت فيديوهاتك بيدك.
+                              ❌ <strong>مخاطرة جبيرة!</strong> هذا المنتج ممكن يطير ميزانيتك لأن ربحه قليل أو صعب تتوصيله. لا تصرف فلوس إعلان عليه إلا إذا حليت هاي المشاكل وصورت فيديوهاتك بيدك.
                             </div>
                           )}
                         </div>
@@ -1412,36 +1514,42 @@ export default function VizionGrowthSuite() {
                   هواية أصحاب بيجات ما يدرون شكد ديخسرون من كروة الراجع وغرامات التوصيل. احسب خسارتك من الراجع هسة حتى توكف النزيف.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">الطلبات الكلية اللي تدزها بالشهر:</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t9Orders}
-                      onChange={(e) => setT9Orders(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT9Orders(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">كروة التوصيل للراجع (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t9ReturnFee}
-                      onChange={(e) => setT9ReturnFee(Math.max(0, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT9ReturnFee(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد تتوقع الراجع (%):</label>
                     <div className="flex items-center gap-3">
-                      <input
-                        type="range"
+                      <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                         min="0"
                         max="80"
                         value={t9ReturnRate}
                         onChange={(e) => setT9ReturnRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017]"
+                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
                       <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t9ReturnRate}%</span>
                     </div>
                   </div>
@@ -1460,15 +1568,15 @@ export default function VizionGrowthSuite() {
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">الطرود اللي دترجعلك</span>
-                          <span className="text-sm font-black text-red-400 font-mono">{numReturned} طرد بالشهر</span>
+                          <span className="text-[10px] text-white/60 block">الطرود اللي دترجعلك</span>
+                          <span className="text-sm font-black text-red-400 font-mono">{numReturned} طلب بالشهر</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">خسارة كروة الراجع</span>
+                          <span className="text-[10px] text-white/60 block">خسارة كروة الراجع</span>
                           <span className="text-sm font-black text-red-400 font-mono">{(directLossWasted).toLocaleString()} دينار</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">إجمالي فلوسك اللي تطير بالهوى</span>
+                          <span className="text-[10px] text-white/60 block">إجمالي فلوسك اللي تطير بالهوى</span>
                           <span className="text-sm font-black text-[#F0C040] font-mono">{(totalWastedWithAds).toLocaleString()} دينار</span>
                         </div>
                       </div>
@@ -1500,10 +1608,9 @@ export default function VizionGrowthSuite() {
                 {/* Week selector */}
                 <div className="flex justify-between border-b border-white/10 pb-2">
                   {[1, 2, 3, 4].map((wk) => (
-                    <button
-                      key={wk}
+                    <button                       key={wk}
                       onClick={() => setT10SelectedWeek(wk)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${t10SelectedWeek === wk ? "bg-[#D4A017] text-[#040B24] shadow-md" : "text-white/60 hover:text-white"}`}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${t10SelectedWeek === wk ? "bg-[#D4A017] text-[#040B24] shadow-md" : "text-white/60 hover:text-white"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                     >
                       أسبوع {wk}
                     </button>
@@ -1519,10 +1626,10 @@ export default function VizionGrowthSuite() {
                       <div
                         key={d.day}
                         onClick={() => handleToggleDay(d.day)}
-                        className={`p-3 rounded-xl border text-right transition-all cursor-pointer flex items-center justify-between group ${isChecked ? "bg-emerald-500/5 border-emerald-500/30 text-emerald-300" : "bg-white/5 border-white/5 text-white/80 hover:bg-white/10"}`}
+                        className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between group ${isChecked ? "bg-emerald-500/5 border-emerald-500/30 text-emerald-300" : "bg-white/5 border-white/5 text-white/80 hover:bg-white/10"}`}
                       >
                         <div className="flex items-start gap-2.5">
-                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${isChecked ? "bg-emerald-500/20 text-emerald-300" : "bg-white/5 text-white/40"}`}>يوم {d.day}</span>
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${isChecked ? "bg-emerald-500/20 text-emerald-300" : "bg-white/5 text-white/60"}`}>يوم {d.day}</span>
                           <span className="text-xs leading-relaxed font-light">{d.title}</span>
                         </div>
                         <span className={`text-xs font-mono font-bold shrink-0 w-6 text-left ${isChecked ? "text-emerald-400" : "text-white/10"}`}>
@@ -1556,10 +1663,10 @@ export default function VizionGrowthSuite() {
                   جاوب بصدق على هاي الأسئلة الأربعة عن أرقامك هسة، وراح نكشفلك بالضبط الخلل وين صاير بشغلك وشلون تحله فوراً.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-right">
+                <div className="grid grid-cols-1 gap-y-5 gap-4 text-xs text-right">
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">١. شكد نسبة النقر عالفيديو مالتك؟</label>
-                    <select value={t11CTR} onChange={(e) => setT11CTR(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none">
+                    <select value={t11CTR} onChange={(e) => setT11CTR(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                       <option value="low">ضعيفة (أقل من 1% - الزباين يعبرون الفيديو)</option>
                       <option value="medium">متوسطة (1% إلى 2%)</option>
                       <option value="high">قوية (أكثر من 2% - التفاعل عالي)</option>
@@ -1568,7 +1675,7 @@ export default function VizionGrowthSuite() {
 
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">٢. شلون الرسايل اللي تجيك للبيج؟</label>
-                    <select value={t11Messages} onChange={(e) => setT11Messages(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none">
+                    <select value={t11Messages} onChange={(e) => setT11Messages(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                       <option value="low">قليلة كلش وميتة</option>
                       <option value="high">رسايل هواية ومستمرة يومية</option>
                     </select>
@@ -1576,7 +1683,7 @@ export default function VizionGrowthSuite() {
 
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">٣. شلون سرعتك وطريقتك بالرد عالخاص؟</label>
-                    <select value={t11Speed} onChange={(e) => setT11Speed(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none">
+                    <select value={t11Speed} onChange={(e) => setT11Speed(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                       <option value="slow">بطيء (أكثر من ساعتين) أو أرد رد جاهز وناشف</option>
                       <option value="fast">سريع جداً (أقل من 15 دقيقة) وبأسلوب حلو وودود</option>
                     </select>
@@ -1584,17 +1691,16 @@ export default function VizionGrowthSuite() {
 
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">٤. شكد نسبة استلام طلباتك من تطلع توصيل؟</label>
-                    <select value={t11Delivery} onChange={(e) => setT11Delivery(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none">
+                    <select value={t11Delivery} onChange={(e) => setT11Delivery(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
                       <option value="low">تعبانة (أقل من 70% راجع هواية)</option>
                       <option value="high">ممتازة (أكثر من 70% الناس تستلم)</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="flex justify-center pt-2">
-                  <button
-                    onClick={() => setT11ShowResult(true)}
-                    className="px-6 py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-2"
+                <div className="pt-4 w-full">
+                  <button                     onClick={() => setT11ShowResult(true)}
+                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                   >
                     <span>اعرف المشكلة وعالجها فوراً</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -1659,36 +1765,42 @@ export default function VizionGrowthSuite() {
                   قبل لا تشغل أي حملة ترويجية عالفيس أو الانستا، دخل الميزانية اللي ناوي تصرفها حتى تشوف شكد تتوقع مبيعات وطلبات وصافي فلوس راح تجيك.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد ناوي تصرف عالحملة (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t12Budget}
-                      onChange={(e) => setT12Budget(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT12Budget(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد تتوقع سعر الرسالة (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t12MsgCost}
-                      onChange={(e) => setT12MsgCost(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT12MsgCost(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد نسبة الرسايل اللي تصير طلبات (%):</label>
                     <div className="flex items-center gap-2">
-                      <input
-                        type="range"
+                      <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                         min="1"
                         max="30"
                         value={t12ConvRate}
                         onChange={(e) => setT12ConvRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017]"
+                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+</div>
                       <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-10 text-left">{t12ConvRate}%</span>
                     </div>
                   </div>
@@ -1705,15 +1817,15 @@ export default function VizionGrowthSuite() {
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">الرسايل اللي راح تجيك متوقعة</span>
+                          <span className="text-[10px] text-white/60 block">الرسايل اللي راح تجيك متوقعة</span>
                           <span className="text-sm font-black text-white font-mono">{expectedMessages} رسالة</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">الطلبات المؤكدة اللي راح تطلعها</span>
+                          <span className="text-[10px] text-white/60 block">الطلبات المؤكدة اللي راح تطلعها</span>
                           <span className="text-sm font-black text-emerald-400 font-mono">{expectedOrders} طلب</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">شكد كلفك الطلب من الإعلان</span>
+                          <span className="text-[10px] text-white/60 block">شكد كلفك الطلب من الإعلان</span>
                           <span className="text-sm font-black text-amber-400 font-mono">{(costPerOrder).toLocaleString()} دينار / طلب</span>
                         </div>
                       </div>
@@ -1738,24 +1850,28 @@ export default function VizionGrowthSuite() {
                   حدد الأرباح الصافية اللي تريد توصللها بالشهر وهامش ربح منتجك الصافي، والنظام راح يخططلك الميزانية الإعلانية التقريبية اللي تحتاجها حتى توصل لهدفك.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">صافي الربح اللي تريد تطلعه بالشهر (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t13TargetProfit}
-                      onChange={(e) => setT13TargetProfit(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT13TargetProfit(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">هامش ربح القطعة الصافي (قبل لا تحسب الإعلان) (دينار):</label>
-                    <input
-                      type="number"
+                    <div className="relative flex items-center">
+  <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t13ProfitMargin}
-                      onChange={(e) => setT13ProfitMargin(Math.max(1, Number(e.target.value)))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono"
+                      onChange={(e) => setT13ProfitMargin(Number(e.target.value))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                     />
+  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+</div>
                   </div>
                 </div>
 
@@ -1767,22 +1883,22 @@ export default function VizionGrowthSuite() {
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
                       <h4 className="text-xs font-black text-[#F0C040] border-b border-white/5 pb-2">📋 الخطة المالية المقترحة لهدفك:</h4>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-center text-xs">
+                      <div className="grid grid-cols-1 gap-y-5 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">الطلبات اللي لازم تبيعها بالشهر</span>
+                          <span className="text-[10px] text-white/60 block">الطلبات اللي لازم تبيعها بالشهر</span>
                           <span className="text-sm font-black text-emerald-400 font-mono">
                             {requiredOrders > 0 && requiredOrders < 100000 ? requiredOrders : "هامش ربحك قليل كلش"} طلب
                           </span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/40 block">ميزانية الإعلان التقريبية اللي تحتاجها</span>
+                          <span className="text-[10px] text-white/60 block">ميزانية الإعلان التقريبية اللي تحتاجها</span>
                           <span className="text-sm font-black text-[#F0C040] font-mono">
                             {estimatedBudgetRequired > 0 && estimatedBudgetRequired < 1000000000 ? (estimatedBudgetRequired).toLocaleString() : 0} دينار
                           </span>
                         </div>
                       </div>
 
-                      <p className="text-[10px] text-white/40 text-center leading-relaxed">
+                      <p className="text-[10px] text-white/60 text-center leading-relaxed">
                         * الأرقام الفوك تقريبية وتعتمد على جودة استهدافك وتصميم إعلانك وشلون تتعامل ويا المناديب والتوصيل.
                       </p>
                     </div>

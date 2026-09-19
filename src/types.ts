@@ -210,3 +210,47 @@ export interface DayTask {
   checklist?: string[];
   completed: boolean;
 }
+
+// Guided Business Diagnostic Profile
+export interface BusinessDiagnosticProfile {
+  businessType: string;
+  productOrService: string;
+  salesChannel: string;
+  sellingPrice: number | null;
+  productCost: number | null;
+  dailyMessages: number | null;
+  dailyOrders: number | null;
+  returnRate?: number | null;
+  deliveryAreas?: string;
+  mainProblem: string;
+  notes?: string;
+}
+
+export interface DiagnosticMetrics {
+  conversionRate: number | null;
+  conversionRateLabel: string;
+  grossMargin: number | null;
+  grossMarginPercent: number | null;
+  estimatedDailyRevenue: number | null;
+  estimatedDailyGrossProfit: number | null;
+  isConversionEstimated: boolean;
+  isMarginEstimated: boolean;
+  assumptions: string[];
+}
+
+export interface StructuredDiagnosticSection {
+  diagnosis: string;
+  keyMetrics: string;
+  probableCauses: string[];
+  next48HoursSteps: string[];
+  readyScriptOrSOP: string;
+  metricToTrack: string;
+  recommendedChapterOrTool: {
+    chapterId?: string;
+    chapterTitle?: string;
+    toolId?: string;
+    toolTitle?: string;
+  };
+  clarificationQuestion?: string;
+}
+

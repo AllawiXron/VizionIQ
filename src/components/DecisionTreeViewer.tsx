@@ -38,9 +38,8 @@ export default function DecisionTreeViewer() {
         </div>
 
         {selectedResult && (
-          <button
-            onClick={handleReset}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+          <button             onClick={handleReset}
+            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>إعادة التشخيص</span>
@@ -62,16 +61,15 @@ export default function DecisionTreeViewer() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentTree.options.map((opt, idx) => (
-              <button
-                key={idx}
+              <button                 key={idx}
                 onClick={() => handleSelectOption(opt)}
-                className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/60 p-6 rounded-3xl text-right transition-all hover:-translate-y-1 hover:shadow-xl cursor-pointer space-y-3 group"
+                className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/60 p-6 rounded-3xl text-right transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 hover:shadow-xl cursor-pointer space-y-3 group min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
               >
                 <div className="flex items-center justify-between">
                   <span className="w-7 h-7 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-xs font-bold flex items-center justify-center">
                     {idx + 1}
                   </span>
-                  <Zap className="w-4 h-4 text-white/30 group-hover:text-[#F0C040] transition-colors" />
+                  <Zap className="w-4 h-4 text-white/60 group-hover:text-[#F0C040] transition-colors" />
                 </div>
                 <h5 className="text-sm md:text-base font-bold text-white group-hover:text-[#F0C040] transition-colors">
                   {opt.label}

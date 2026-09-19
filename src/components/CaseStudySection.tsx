@@ -52,14 +52,9 @@ export default function CaseStudySection() {
         {/* City Filter Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 no-scrollbar">
           {cities.map((city) => (
-            <button
-              key={city}
+            <button               key={city}
               onClick={() => setSelectedCity(city)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap border ${
-                selectedCity === city
-                  ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] font-black"
-                  : "bg-white/5 text-white/70 hover:text-white border-white/10"
-              }`}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap border ${ selectedCity === city ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
             >
               {city}
             </button>
@@ -74,12 +69,11 @@ export default function CaseStudySection() {
           return (
             <FadeInUp key={cs.id} delay={idx * 0.08}>
               <div
-                className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl overflow-hidden transition-all shadow-lg"
+                className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl overflow-hidden transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-lg"
               >
               {/* Card Title Banner (Toggle Header) */}
-              <button
-                onClick={() => setExpandedId(isExpanded ? null : cs.id)}
-                className="w-full p-6 text-right flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
+              <button                 onClick={() => setExpandedId(isExpanded ? null : cs.id)}
+                className="w-full p-6 text-right flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02] min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
               >
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -94,7 +88,7 @@ export default function CaseStudySection() {
                   <h4 className="text-lg md:text-xl font-bold text-white">
                     {cs.title}
                   </h4>
-                  <p className="text-xs text-white/50">{cs.businessName}</p>
+                  <p className="text-xs text-white/70">{cs.businessName}</p>
                 </div>
 
                 <div className="flex items-center gap-4 flex-shrink-0">
@@ -122,9 +116,8 @@ export default function CaseStudySection() {
                           يتضمن تفكيك حالة {cs.businessName} في {cs.city} الخطاف الإعلاني الفائز وسكريبت الواتساب الذي رفع المبيعات. متاح لحسابات الكورس الكاملة.
                         </p>
                       </div>
-                      <button
-                        onClick={triggerUpgradeModal}
-                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
+                      <button                         onClick={triggerUpgradeModal}
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       >
                         <Lock className="w-4 h-4 text-[#040B24]" />
                         <span>فتح دراسة الحالة كاملة مع السكريبتات ⚡</span>
@@ -135,25 +128,25 @@ export default function CaseStudySection() {
                       {/* Before vs After Metrics Comparison */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
                     <div>
-                      <span className="text-[10px] text-white/50 block font-bold">عائد الإعلانات ROAS</span>
+                      <span className="text-[10px] text-white/70 block font-bold">عائد الإعلانات ROAS</span>
                       <span className="text-xs text-red-400 line-through font-mono ml-1">{cs.beforeMetrics.roas}</span>
                       <span className="text-sm text-emerald-400 font-bold font-mono">{cs.afterMetrics.roas}</span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] text-white/50 block font-bold">كلفة الطلب CPA</span>
+                      <span className="text-[10px] text-white/70 block font-bold">كلفة الطلب CPA</span>
                       <span className="text-xs text-red-400 line-through font-mono ml-1">{cs.beforeMetrics.cpa}</span>
                       <span className="text-sm text-emerald-400 font-bold font-mono">{cs.afterMetrics.cpa}</span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] text-white/50 block font-bold">نسبة المرتجع الراجع</span>
+                      <span className="text-[10px] text-white/70 block font-bold">نسبة المرتجع الراجع</span>
                       <span className="text-xs text-red-400 line-through font-mono ml-1">{cs.beforeMetrics.returnRate}</span>
                       <span className="text-sm text-emerald-400 font-bold font-mono">{cs.afterMetrics.returnRate}</span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] text-white/50 block font-bold">الطلبات اليومية</span>
+                      <span className="text-[10px] text-white/70 block font-bold">الطلبات اليومية</span>
                       <span className="text-xs text-red-400 line-through font-mono ml-1">{cs.beforeMetrics.dailyOrders}</span>
                       <span className="text-sm text-emerald-400 font-bold font-mono">{cs.afterMetrics.dailyOrders}</span>
                     </div>
@@ -199,9 +192,8 @@ export default function CaseStudySection() {
                         <span>مقتطف سكريبت الواتساب الحقيقي:</span>
                       </span>
 
-                      <button
-                        onClick={() => handleCopy(cs.whatsappScriptSnippet, cs.id)}
-                        className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-all"
+                      <button                         onClick={() => handleCopy(cs.whatsappScriptSnippet, cs.id)}
+                        className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
                       >
                         {copiedScript === cs.id ? (
                           <>

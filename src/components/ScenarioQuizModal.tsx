@@ -55,9 +55,8 @@ export default function ScenarioQuizModal() {
 
         <div className="flex items-center gap-2">
           <span className="text-xs text-white/60 font-bold">النتيجة: {score} / {scenarioChallengesList.length}</span>
-          <button
-            onClick={handleReset}
-            className="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white text-xs cursor-pointer"
+          <button             onClick={handleReset}
+            className="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white text-xs cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
             title="إعادة الاختبار"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -74,7 +73,7 @@ export default function ScenarioQuizModal() {
             <span className="px-2.5 py-0.5 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 text-[#F0C040] text-xs font-bold">
               المستوى: {currentScenario.difficulty}
             </span>
-            <span className="text-xs text-white/50 font-mono">تحدي {currentIndex + 1} من {scenarioChallengesList.length}</span>
+            <span className="text-xs text-white/70 font-mono">تحدي {currentIndex + 1} من {scenarioChallengesList.length}</span>
           </div>
 
           <h4 className="text-xl md:text-2xl font-black text-white">
@@ -109,18 +108,9 @@ export default function ScenarioQuizModal() {
 
             return (
               <div key={opt.id} className="space-y-2">
-                <button
-                  onClick={() => handleSelectOption(opt.id, opt.isCorrect)}
+                <button                   onClick={() => handleSelectOption(opt.id, opt.isCorrect)}
                   disabled={hasAnswered}
-                  className={`w-full p-5 rounded-2xl border text-right transition-all cursor-pointer flex items-center justify-between gap-4 ${
-                    showCorrect
-                      ? "bg-emerald-950/60 border-emerald-500 text-emerald-200"
-                      : showWrong
-                      ? "bg-red-950/60 border-red-500 text-red-200"
-                      : isSelected
-                      ? "bg-[#D4A017]/20 border-[#D4A017] text-white"
-                      : "bg-white/5 border-white/10 hover:border-white/30 text-white/90"
-                  }`}
+                  className={`w-full p-5 rounded-2xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between gap-4 ${ showCorrect ? "bg-emerald-950/60 border-emerald-500 text-emerald-200" : showWrong ? "bg-red-950/60 border-red-500 text-red-200" : isSelected ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/10 hover:border-white/30 text-white/90" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
                 >
                   <span className="text-xs md:text-sm font-bold leading-relaxed">{opt.label}</span>
                   {showCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />}
@@ -142,9 +132,8 @@ export default function ScenarioQuizModal() {
 
         {/* Next Scenario Button */}
         {hasAnswered && currentIndex < scenarioChallengesList.length - 1 && (
-          <button
-            onClick={handleNext}
-            className="w-full py-3.5 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black rounded-2xl text-xs md:text-sm flex items-center justify-center gap-2 cursor-pointer transition-all shadow-xl"
+          <button             onClick={handleNext}
+            className="w-full py-3.5 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black rounded-2xl text-xs md:text-sm flex items-center justify-center gap-2 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-xl min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
           >
             <span>التحدي التالي</span>
             <ArrowRight className="w-4 h-4 rotate-180" />
