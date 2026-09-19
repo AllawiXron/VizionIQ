@@ -14,11 +14,9 @@ import {
   Flame,
   Crown,
   Sparkles,
-  Shield,
   LogOut,
   TrendingUp,
-  Tv,
-  ChevronLeft
+  Tv
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { isFreeTrialUser, isVipUser } from "./LockScreen";
@@ -275,27 +273,6 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     <SoundToggleButton variant="pill" />
                   </div>
                 </div>
-
-                {/* Admin and Management Link */}
-                {onOpenAdmin && (
-                  <button                     onClick={() => {
-                      setMoreSheetOpen(false);
-                      onOpenAdmin();
-                    }}
-                    className="w-full p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 flex items-center justify-between text-right cursor-pointer active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300">
-                        <Shield className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-white">بوابة الإدارة والتحكم بالأكواد</div>
-                        <div className="text-[10px] text-white/70 font-light">توليد وإيقاف أكواد وصول المشتركين</div>
-                      </div>
-                    </div>
-                    <ChevronLeft className="w-4 h-4 text-white/60" />
-                  </button>
-                )}
 
                 {/* Logout Action Button */}
                 {onLogout && (
