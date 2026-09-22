@@ -175,17 +175,41 @@ export async function handleAdvisorChat(
     throw new Error("ماكو رسائل صالحة للإرسال للمستشار.");
   }
 
-  const modelsToTry = [
-    "gemini-3-flash-preview",
+  let lastError: any = null;
+
+  // 1. Primary Model: gemini-3-flash-preview with automatic backoff retries for transient 503 spikes
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: formattedContents,
+        config: {
+          systemInstruction: advisorSystemInstruction,
+          temperature: 0.7,
+        },
+      });
+
+      if (response && response.text) {
+        return response.text;
+      }
+    } catch (err: any) {
+      console.warn(`[Advisor Server] Attempt ${attempt + 1} on gemini-3-flash-preview failed:`, err?.message || err);
+      lastError = err;
+      if (attempt < 2) {
+        await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+      }
+    }
+  }
+
+  // 2. Fallbacks if primary model is completely down
+  const fallbackModels = [
     "gemini-3.5-flash",
     "gemini-3.8-flash",
     "gemini-3.6-flash",
     "gemini-flash-latest",
   ];
 
-  let lastError: any = null;
-
-  for (const model of modelsToTry) {
+  for (const model of fallbackModels) {
     try {
       const response = await ai.models.generateContent({
         model,
