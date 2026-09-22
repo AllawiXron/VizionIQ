@@ -1,4 +1,4 @@
-import { handleAdvisorChat } from "../../src/lib/gemini.js";
+import { handleAdvisorChat } from "../../src/lib/gemini.ts";
 
 export default async function handler(req: any, res: any) {
   // CORS Headers

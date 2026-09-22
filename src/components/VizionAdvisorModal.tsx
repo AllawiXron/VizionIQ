@@ -382,7 +382,7 @@ interface ChatInputFormProps {
   onCloseSuggestions: () => void;
   suggestions: { label: string; prompt: string; suggestions?: string[]; topicId?: string }[];
   onSendSuggestion: (prompt: string, suggestions?: string[], topicId?: string) => void;
-  lastFailedPrompt?: { text: string; presetSuggestions?: string[] } | null;
+  lastFailedPrompt?: { text: string; presetSuggestions?: string[]; errorText?: string } | null;
   onRetryLast?: () => void;
   restoredText?: string;
   onTextRestored?: () => void;
@@ -489,7 +489,7 @@ function ChatInputForm({
         >
           <div className="flex items-center gap-2" role="alert" aria-live="assertive">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span className="font-bold text-xs sm:text-sm">صار خلل بسيط. جرّب مرة ثانية.</span>
+            <span className="font-bold text-xs sm:text-sm">{lastFailedPrompt.errorText || "صار خلل بسيط. جرّب مرة ثانية."}</span>
           </div>
 
           <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end">
@@ -904,7 +904,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const [vipUpgradeInput, setVipUpgradeInput] = useState("");
   const [upgradeError, setUpgradeError] = useState<string | null>(null);
   const [upgradeSuccessMsg, setUpgradeSuccessMsg] = useState<string | null>(null);
-  const [lastFailedPrompt, setLastFailedPrompt] = useState<{ text: string; presetSuggestions?: string[] } | null>(null);
+  const [lastFailedPrompt, setLastFailedPrompt] = useState<{ text: string; presetSuggestions?: string[]; errorText?: string } | null>(null);
   const [restoredText, setRestoredText] = useState<string>("");
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState<boolean>(false);
@@ -1326,7 +1326,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         ]
       };
       setMessages((prev) => [...prev, errorMessage]);
-      setLastFailedPrompt({ text, presetSuggestions });
+      setLastFailedPrompt({ text, presetSuggestions, errorText });
     } finally {
       isLoadingRef.current = false;
       setIsLoading(false);
@@ -2208,9 +2208,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                         aria-live="assertive"
                                         className="p-3.5 sm:p-4 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-100 text-xs sm:text-sm space-y-3"
                                       >
-                                        <div className="flex items-center gap-2 text-rose-300 font-bold text-sm sm:text-base">
-                                          <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
-                                          <span>صار خلل بسيط. جرّب مرة ثانية.</span>
+                                        <div className="flex items-start gap-2 text-rose-300 font-bold text-sm sm:text-base">
+                                          <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                                          <span className="leading-relaxed">{msg.text || "صار خلل بسيط. جرّب مرة ثانية."}</span>
                                         </div>
 
                                         {msg.failedPrompt?.text && (
