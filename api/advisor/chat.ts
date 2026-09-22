@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { generateIraqiAdvisorFallback } from "../../src/lib/iraqiAdvisorFallback";
+import { generateIraqiAdvisorFallback } from "../../src/lib/iraqiAdvisorFallback.js";
 
 const advisorSystemInstruction = `
 أنت "مستشار فيزيون التكتيكي" (Vizion AI Advisor) — الخبير الاستشاري والمدرب التكتيكي الأول للتجارة الإلكترونية والتسويق الرقمي وإدارة المبيعات في السوق العراقي.
