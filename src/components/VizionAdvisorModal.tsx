@@ -44,6 +44,7 @@ import { getAllValidCodes, normalizeCode } from "./LockScreen";
 import { BusinessDiagnosticStepper } from "./BusinessDiagnosticStepper";
 import { StructuredDiagnosticCard } from "./StructuredDiagnosticCard";
 import { AdvisorActionCard } from "./AdvisorActionCard";
+import { AdvisorMessageFeedbackBar, MessageFeedbackData } from "./AdvisorMessageFeedbackBar";
 import { AdvisorToast, ToastMessage } from "./AdvisorToast";
 import {
   SavedRecommendation,
@@ -362,14 +363,14 @@ const EXAMPLE_QUESTIONS = [
 const DEFAULT_WELCOME_MESSAGE: Message = {
   id: "welcome-1",
   role: "assistant",
-  text: "هلا بيك. هذا مستشار فيزيون لمساعدتك بقرارات البيع والتسويق والتوصيل بالسوق العراقي.\n\nتكدر تختار موضوع من القائمة، أو تكتب سؤالك مباشرة. سجل المحادثة يبقى محفوظ على جهازك حتى ترجعله بوقت ثاني.",
+  text: "هلا بيك يا غالي. أني مستشار فيزيون التكتيكي لمساعدتك بقرارات البيع، التسويق، التسعير بالدينار، وإدارة التوصيل وتقليل الراجع بالسوق العراقي.\n\nتكدر تختار موضوع جاهز أو تطرح سؤالك الميداني مباشرة، ونحسبها وياك ورقة وقلم.",
   timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
   suggestions: [
     "ابدأ تشخيص مشروعي (4 خطوات)",
     "شلون أقلل نسبة الراجع بالمحافظات؟",
-    "اكتبلي رد على اعتراض: السعر غالي",
+    "اكتبلي سكريبت رد على اعتراض 'السعر غالي'",
     "إعلاني يجيب رسائل بس ماكو مبيعات، شنو الحل؟",
-    "شلون أسعر منتجي وأحسب الربح الصافي؟"
+    "شلون أسعر منتجي وأحسب الربح الصافي بالدينار؟"
   ]
 };
 
@@ -842,23 +843,34 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [messageFeedback, setMessageFeedback] = useState<
-    Record<
-      string,
-      {
-        rating: "helpful" | "unhelpful";
-        reason?: string;
-        showReasonPicker?: boolean;
-      }
-    >
-  >({});
+  
+  const getFeedbackStorageKey = (code?: string) => `vizion_advisor_feedback_${normalizeCode(code)}`;
 
-  const FEEDBACK_REASONS = [
-    "عام جداً",
-    "مو مرتبط بسؤالي",
-    "الحساب غير واضح",
-    "أريد تفاصيل أكثر",
-  ];
+  const [messageFeedback, setMessageFeedback] = useState<
+    Record<string, MessageFeedbackData>
+  >(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      const raw = localStorage.getItem(getFeedbackStorageKey(userCode));
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  // Reload feedback whenever modal opens or userCode changes
+  useEffect(() => {
+    if (isOpen && typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem(getFeedbackStorageKey(userCode));
+        if (raw) {
+          setMessageFeedback(JSON.parse(raw));
+        }
+      } catch (e) {
+        console.warn("Failed to load feedback from localStorage:", e);
+      }
+    }
+  }, [isOpen, userCode]);
 
   const handleCopy = (id: string, text: string) => {
     navigator.clipboard.writeText(text);
@@ -873,32 +885,63 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const handleFeedback = (
     messageId: string,
     rating: "helpful" | "unhelpful",
-    reason?: string
+    reason?: string,
+    customNote?: string
   ) => {
-    setMessageFeedback((prev) => ({
-      ...prev,
-      [messageId]: {
-        rating,
-        reason: reason || prev[messageId]?.reason,
-        showReasonPicker: rating === "unhelpful" && !reason,
-      },
-    }));
+    setMessageFeedback((prev) => {
+      const updated = {
+        ...prev,
+        [messageId]: {
+          rating,
+          reason: reason !== undefined ? reason : prev[messageId]?.reason,
+          customNote: customNote !== undefined ? customNote : prev[messageId]?.customNote,
+          timestamp: new Date().toISOString(),
+        },
+      };
+
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem(getFeedbackStorageKey(userCode), JSON.stringify(updated));
+        } catch (e) {
+          console.warn("Failed to write feedback to localStorage:", e);
+        }
+      }
+
+      return updated;
+    });
 
     trackEvent("advisor_feedback_submitted", {
       rating,
-      reason: reason || (rating === "helpful" ? "مفيد ودقيق" : undefined),
+      reason: reason || (rating === "helpful" ? "إجابة مفيدة ومناسبة لواقع السوق العراقي" : undefined),
+      customNote,
       messageId,
       topicId: currentTopicRef.current,
     });
 
-    if (rating === "helpful" || reason) {
+    if (rating === "helpful" || reason || customNote) {
       showToast(
         "success",
         rating === "helpful"
-          ? "شكراً لتقييمك! ساعدتنا في تحسين المستشار 👍"
-          : "شكراً لملاحظتك! سنعمل على تطوير الإجابات ✍️"
+          ? "شكراً لتقييمك! سعداء بأن الإجابة أفادتك بالسوق العراقي 👍"
+          : "شكراً لملاحظتك! سنعمل على تطوير الإجابات لواقع التجارة بالعراق ✍️"
       );
     }
+  };
+
+  const handleClearFeedback = (messageId: string) => {
+    setMessageFeedback((prev) => {
+      const updated = { ...prev };
+      delete updated[messageId];
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem(getFeedbackStorageKey(userCode), JSON.stringify(updated));
+        } catch (e) {
+          console.warn("Failed to delete feedback from localStorage:", e);
+        }
+      }
+      return updated;
+    });
+    showToast("success", "تمت إعادة تعيين التقييم، تكدر تقيم من جديد 🔄");
   };
 
   const [vipUpgradeInput, setVipUpgradeInput] = useState("");
@@ -1243,35 +1286,68 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       // Append current user message
       historyPayload.push({ role: "user", text: text, topicId });
 
-      const response = await fetch("/api/advisor/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Request-ID": clientRequestId
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
-          messages: historyPayload,
-          requestId: clientRequestId,
-          topicContext: options.topicContext || topicId,
-          isNewTopic: options.isNewTopic,
-          diagnosticProfile: options.diagnosticProfile,
-          userContext: {
-            isVip,
-            platform: "Vizion Iraq E-Commerce Suite"
+      let response: Response | null = null;
+      let responseText = "";
+      let data: any = {};
+
+      for (let clientAttempt = 0; clientAttempt < 2; clientAttempt++) {
+        try {
+          if (clientAttempt > 0) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
           }
-        })
-      });
+
+          response = await fetch("/api/advisor/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Request-ID": clientRequestId
+            },
+            signal: controller.signal,
+            body: JSON.stringify({
+              messages: historyPayload,
+              requestId: clientRequestId,
+              topicContext: options.topicContext || topicId,
+              isNewTopic: options.isNewTopic,
+              diagnosticProfile: options.diagnosticProfile,
+              userContext: {
+                isVip,
+                platform: "Vizion Iraq E-Commerce Suite"
+              }
+            })
+          });
+
+          responseText = await response.text();
+          try {
+            data = JSON.parse(responseText);
+          } catch {
+            data = {};
+          }
+
+          if (response.ok && data.reply) {
+            break;
+          }
+
+          // If it was a 503 or temporary unavailability, retry once automatically
+          if (
+            clientAttempt === 0 &&
+            (response.status === 503 ||
+              (data.error && (data.error.includes("503") || data.error.includes("ضغطاً مؤقتاً"))))
+          ) {
+            console.log("[Advisor Client] 503 detected, performing automatic fast retry...");
+            continue;
+          }
+        } catch (fetchErr: any) {
+          if (clientAttempt === 0 && !controller.signal.aborted) {
+            continue;
+          }
+          throw fetchErr;
+        }
+      }
 
       clearTimeout(timeoutId);
 
-      const responseText = await response.text();
-      let data: any = {};
-      try {
-        data = JSON.parse(responseText);
-      } catch {
-        const cleanText = responseText.replace(/<[^>]*>?/gm, "").trim();
-        throw new Error(`خطأ في استجابة السيرفر (كود ${response.status}): ${cleanText.slice(0, 150) || "ماكو تفاصيل"}`);
+      if (!response) {
+        throw new Error("تعذر إرسال الطلب إلى السيرفر.");
       }
 
       if (!response.ok) {
@@ -2334,11 +2410,26 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                       </>
                                     )}
 
-                                    {/* Message Footer Actions */}
+                                    {/* Message Footer Actions & Iraqi Market Feedback Bar */}
                                     {!msg.isError && (
-                                      <div className={`mt-2 pt-1.5 border-t ${isUser ? "border-black/15" : "border-white/10"} text-[10px] flex items-center justify-between`}>
-                                        <span className={`font-mono text-[9px] sm:text-[10px] ${isUser ? "text-[#040B24]/60 font-semibold" : "text-white/60"}`}>{msg.timestamp}</span>
-                                      </div>
+                                      isUser ? (
+                                        <div className="mt-2 pt-1.5 border-t border-black/15 text-[10px] flex items-center justify-between">
+                                          <span className="font-mono text-[9px] sm:text-[10px] text-[#040B24]/60 font-semibold">{msg.timestamp}</span>
+                                        </div>
+                                      ) : (
+                                        <AdvisorMessageFeedbackBar
+                                          messageId={msg.id}
+                                          feedback={messageFeedback[msg.id]}
+                                          onRate={(rating, reason, customNote) => handleFeedback(msg.id, rating, reason, customNote)}
+                                          onClearFeedback={() => handleClearFeedback(msg.id)}
+                                          onCopy={() => {
+                                            handleCopy(msg.id, msg.text);
+                                            showToast("copy", "تم نسخ الرد بالكامل بنجاح 📋");
+                                          }}
+                                          isCopied={copiedId === msg.id}
+                                          timestamp={msg.timestamp}
+                                        />
+                                      )
                                     )}
                                   </div>
                                 </div>
