@@ -176,6 +176,10 @@ export async function handleAdvisorChat(
   }
 
   const modelsToTry = [
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-preview",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
     "gemini-1.5-flash",
   ];
 
