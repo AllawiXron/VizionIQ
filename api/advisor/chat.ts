@@ -191,7 +191,6 @@ export default async function handler(req: any, res: any) {
 
     const modelsToTry = [
       "gemini-1.5-flash",
-      "gemini-2.0-flash-exp",
     ];
 
     let reply = "";

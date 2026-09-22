@@ -177,7 +177,6 @@ export async function handleAdvisorChat(
 
   const modelsToTry = [
     "gemini-1.5-flash",
-    "gemini-2.0-flash-exp",
   ];
 
   let lastError: any = null;
