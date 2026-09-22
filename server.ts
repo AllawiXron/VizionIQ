@@ -72,7 +72,7 @@ app.get(["/api/health", "/health"], (_req, res) => {
 
 
 async function startServer() {
-  const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+  const PORT = 3000;
 
   // Vite development middleware vs Static Production serving
   if (process.env.NODE_ENV !== "production") {
