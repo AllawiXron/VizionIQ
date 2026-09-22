@@ -21,12 +21,10 @@ import FadeInUp from "./FadeInUp";
 
 // Interactive Tools
 const RoiCalculator = React.lazy(() => import("./RoiCalculator"));
-import AdSimulator from "./AdSimulator";
+const AdSimulator = React.lazy(() => import("./AdSimulator"));
 const ScriptSimulator = React.lazy(() => import("./ScriptSimulator"));
 const ThirtyDayPlan = React.lazy(() => import("./ThirtyDayPlan"));
-import AdvancedCalculatorSuite from "./AdvancedCalculatorSuite";
-import DecisionTreeViewer from "./DecisionTreeViewer";
-import VideoPlayerModule from "./VideoPlayerModule";
+const AdvancedCalculatorSuite = React.lazy(() => import("./AdvancedCalculatorSuite"));
 
 interface ChapterViewProps {
   key?: string;
@@ -511,15 +509,15 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
             <>
               {id === "chapter1" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><RoiCalculator /></React.Suspense>}
               {id === "chapter2" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><ScriptSimulator /></React.Suspense>}
-              {id === "chapter3" && <AdvancedCalculatorSuite />}
-              {id === "chapter4" && <AdSimulator />}
-              {id === "chapter5" && <AdSimulator />}
+              {id === "chapter3" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdvancedCalculatorSuite /></React.Suspense>}
+              {id === "chapter4" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdSimulator /></React.Suspense>}
+              {id === "chapter5" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdSimulator /></React.Suspense>}
               {id === "chapter7" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><ScriptSimulator /></React.Suspense>}
-              {id === "chapter10" && <AdvancedCalculatorSuite />}
+              {id === "chapter10" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdvancedCalculatorSuite /></React.Suspense>}
               {id === "chapter11" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><ThirtyDayPlan /></React.Suspense>}
               
               {!["chapter1", "chapter2", "chapter3", "chapter4", "chapter5", "chapter7", "chapter10", "chapter11"].includes(id) && (
-                <AdvancedCalculatorSuite />
+                <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdvancedCalculatorSuite /></React.Suspense>
               )}
             </>
           )}

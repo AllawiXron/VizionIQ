@@ -189,14 +189,24 @@ export default async function handler(req: any, res: any) {
       });
     }
 
+    const modelsToTry = [
+      "gemini-2.5-flash",
+      "gemini-2.5-flash-preview",
+      "gemini-2.0-flash",
+      "gemini-1.5-flash",
+      "gemini-3.8-flash",
+      "gemini-3.5-flash",
+      "gemini-3-flash-preview",
+      "gemini-flash-latest",
+    ];
+
     let reply = "";
     let lastError: any = null;
 
-    // 1. Primary Model: gemini-3-flash-preview with automatic backoff retries for transient 503 spikes
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (const model of modelsToTry) {
       try {
         const response = await ai.models.generateContent({
-          model: "gemini-3-flash-preview",
+          model,
           contents: formattedContents,
           config: {
             systemInstruction: advisorSystemInstruction,
@@ -209,42 +219,8 @@ export default async function handler(req: any, res: any) {
           break;
         }
       } catch (err: any) {
-        console.warn(`[Advisor Serverless] Attempt ${attempt + 1} on gemini-3-flash-preview failed:`, err?.message || err);
+        console.warn(`[Advisor Serverless] Model ${model} failed:`, err?.message || err);
         lastError = err;
-        if (attempt < 2) {
-          await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
-        }
-      }
-    }
-
-    // 2. Fallbacks if primary model is completely down
-    if (!reply) {
-      const fallbackModels = [
-        "gemini-3.5-flash",
-        "gemini-3.8-flash",
-        "gemini-3.6-flash",
-        "gemini-flash-latest",
-      ];
-
-      for (const model of fallbackModels) {
-        try {
-          const response = await ai.models.generateContent({
-            model,
-            contents: formattedContents,
-            config: {
-              systemInstruction: advisorSystemInstruction,
-              temperature: 0.7,
-            },
-          });
-
-          if (response && response.text) {
-            reply = response.text;
-            break;
-          }
-        } catch (err: any) {
-          console.warn(`[Advisor Serverless] Fallback model ${model} failed:`, err?.message || err);
-          lastError = err;
-        }
       }
     }
 
