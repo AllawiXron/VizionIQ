@@ -1302,10 +1302,19 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       clearTimeout(timeoutId);
       console.error("AI Advisor error:", err);
 
+      let errorText = "صار خلل بسيط. جرّب مرة ثانية.";
+      if (err?.name === "AbortError") {
+        errorText = "استغرقت الاستجابة وقتاً أطول من المعتاد بسبب ضغط الخوادم المؤقت. يرجى الضغط على زر 'إعادة المحاولة'.";
+      } else if (err?.message && typeof err.message === "string" && err.message.length > 3 && !err.message.includes("Failed to fetch")) {
+        errorText = err.message;
+      } else if (err?.message?.includes("Failed to fetch")) {
+        errorText = "تعذر الاتصال بالسيرفر. يرجى التأكد من تشغيل الخادم وإضافة GEMINI_API_KEY في إعدادات البيئة ثم إعادة المحاولة.";
+      }
+
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        text: "صار خلل بسيط. جرّب مرة ثانية.",
+        text: errorText,
         timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
         topicId: topicId,
         isError: true,
