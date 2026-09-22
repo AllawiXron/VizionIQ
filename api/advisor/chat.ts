@@ -190,12 +190,8 @@ export default async function handler(req: any, res: any) {
     }
 
     const modelsToTry = [
-      "gemini-2.0-flash",
-      "gemini-1.5-flash-002",
-      "gemini-1.5-flash-001",
-      "gemini-1.5-pro",
-      "gemini-1.0-pro",
-      "gemini-pro",
+      "gemini-3.5-flash-lite",
+      "gemini-3.1-flash-lite",
     ];
 
     let reply = "";
