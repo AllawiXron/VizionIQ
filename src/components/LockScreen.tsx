@@ -8,8 +8,8 @@ import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-re
 
 // 1. HARDCODED CODES LIST:
 // You can directly edit, add, or remove passwords in this array!
-// - Passwords WITH '#vip' (e.g. "ali") -> Full access to website + AI Assistant (مستشار فيزيون).
-// - Passwords WITHOUT '#vip' (e.g. "ali#1", "bker#2") -> Full access to website ONLY (No AI Assistant access).
+// - Passwords WITH '#vip' (e.g. "ali#vip") -> Full access to website ONLY (No AI Assistant access).
+// - Passwords WITH '#ai' (e.g. "ali#ai") -> Full access to AI Assistant (مستشار فيزيون).
 // - Passwords WITH 'free' (e.g. "free#1") -> Free Trial access with psychological gatekeeping & cliffhangers.
 export const HARDCODED_CODES = [
   "bker#2",
@@ -45,6 +45,8 @@ export const HARDCODED_CODES = [
   "amro#vip",
   "zahraa#vip",
   "gaith#vip",
+  "allawidev#vip",
+  "allawidev#vip#ai",
   "free#1"
 ];
 
@@ -93,6 +95,15 @@ export const isVipUser = (code: string): boolean => {
   if (!normalized.includes("#vip")) return false;
   
   // Verify code is strictly valid (exists in HARDCODED_CODES or active admin list)
+  const allCodes = getAllValidCodes();
+  return allCodes.includes(normalized);
+};
+
+export const isAiUser = (code: string): boolean => {
+  if (!code) return false;
+  const normalized = normalizeCode(code);
+  if (!normalized.includes("#ai")) return false;
+  
   const allCodes = getAllValidCodes();
   return allCodes.includes(normalized);
 };

@@ -1081,13 +1081,13 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
     const trimmed = vipUpgradeInput.trim();
     if (!trimmed) {
-      setUpgradeError("الرجاء إدخال رمز VIP للمتابعة.");
+      setUpgradeError("الرجاء إدخال رمز التفعيل للمتابعة.");
       return;
     }
 
     const normalizedInput = normalizeCode(trimmed);
-    if (!normalizedInput.includes("#vip")) {
-      setUpgradeError("الرمز المدخل لا يتضمن صلاحية VIP (يجب أن يحتوي على #vip).");
+    if (!normalizedInput.includes("#ai")) {
+      setUpgradeError("الرمز المدخل لا يتضمن صلاحية المستشار الذكي (يجب أن يحتوي على #ai).");
       return;
     }
 
@@ -1095,7 +1095,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const isValid = validCodes.includes(normalizedInput);
 
     if (isValid) {
-      setUpgradeSuccessMsg("تم تفعيل حساب VIP بنجاح! جاري فتح المستشار الذكي...");
+      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي بنجاح! جاري فتح النظام...");
       localStorage.setItem("sales_guide_user_code", trimmed);
       setTimeout(() => {
         if (onUpgradeSuccess) {
@@ -1103,7 +1103,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         }
       }, 1000);
     } else {
-      setUpgradeError("رمز VIP المدخل غير موجود في قائمة كلمات المرور المعتمدة.");
+      setUpgradeError("الرمز المدخل غير صحيح أو غير مفعل.");
     }
   };
 
@@ -1467,95 +1467,152 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               </div>
             </div>
 
-            {/* IF NOT VIP: Render VIP Restricted Screen */}
+            {/* IF NOT VIP: Render High-Converting AI Advisor Subscription Screen */}
             {!isVip ? (
               <div 
                 role="region"
-                aria-label="الوصول لعضوية VIP"
-                className="flex-1 overflow-y-auto p-5 sm:p-8 flex flex-col items-center justify-center text-center bg-[#040B24] space-y-5"
+                aria-label="اشتراك المستشار الذكي"
+                className="flex-1 overflow-y-auto p-4 sm:p-8 bg-gradient-to-b from-[#040B24] via-[#081030] to-[#040B24] space-y-6 text-right"
               >
-                <div className="relative">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#0F1735] border border-[#D4A017]/40 shadow-xl flex items-center justify-center text-[#F0C040]">
-                    <Crown className="w-8 h-8 sm:w-10 sm:h-10 text-[#F0C040]" />
-                  </div>
-                  <span className="absolute -bottom-1.5 -right-1.5 p-1.5 bg-[#040B24] border border-[#D4A017] rounded-full text-[#F0C040]">
-                    <Lock className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-
-                <div className="space-y-2 max-w-md">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-xs font-bold text-[#F0C040]">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>خاص بأعضاء باقة VIP</span>
+                {/* Top Header Card */}
+                <div className="max-w-xl mx-auto text-center space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#D4A017]/20 via-amber-500/20 to-[#D4A017]/20 border border-[#D4A017]/50 text-xs sm:text-sm font-black text-[#F0C040] shadow-md">
+                    <Sparkles className="w-4 h-4 text-[#F0C040] animate-pulse" />
+                    <span>مستشارك الشخصي للتجارة الإلكترونية بالسوق العراقي</span>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-black text-white leading-tight">
-                    المستشار الذكي متاح حصرياً لعضوية VIP
+                  <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
+                    اشترك الآن في <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-amber-300 to-[#D4A017]">المستشار الذكي</span> بـ 14,000 دينار فقط!
                   </h3>
-                  <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
-                    هذه الميزة مخصصة للمشتركين في باقة VIP لتشخيص الحملات الإعلانية، وتقديم استشارات تسعير وتوصيل فورية، وتوليد سكريبتات إغلاق صفقات مخصصة للسوق العراقي.
+                  
+                  <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
+                    احصل على خبير إعلانات ومبيعات يعمل في هاتفك 24 ساعة بدون توقف لتشخيص حملاتك وتوليد سكريبتات إغلاق الصفقات عبر الواتساب.
                   </p>
                 </div>
 
-                {/* VIP Code Entry / Upgrade Form */}
-                <div className="w-full max-w-md space-y-3">
-                  <form onSubmit={handleVipUpgrade} className="bg-[#081030] p-4 sm:p-5 rounded-2xl border border-[#D4A017]/30 space-y-3.5 shadow-xl text-right">
-                    <div className="space-y-1">
-                      <label htmlFor="vip-code-input" className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
-                        <KeyRound className="w-4 h-4 text-[#F0C040]" />
-                        <span>عندك رمز تفعيل VIP؟ أدخله هنا:</span>
-                      </label>
-                      <p className="text-[11px] text-white/60">أدخل رمز التفعيل الذي ينتهي بـ #vip للترقية الفورية والوصول لجميع الأدوات.</p>
+                {/* Price Breakdown & Value Pitch Box */}
+                <div className="max-w-xl mx-auto bg-gradient-to-br from-[#0F1738] via-[#162252] to-[#0D1638] border-2 border-[#D4A017] rounded-3xl p-5 sm:p-7 shadow-2xl space-y-5 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
+                    <Flame className="w-3.5 h-3.5 fill-[#040B24]" />
+                    <span>عرض الاشتراك الشهري الفوري</span>
+                  </div>
+
+                  {/* Main Pricing Highlight */}
+                  <div className="flex items-center justify-between border-b border-[#D4A017]/30 pb-4 pt-3">
+                    <div>
+                      <span className="text-xs font-bold text-amber-300 block mb-1">الاشتراك الشهري المباشر</span>
+                      <h4 className="text-lg sm:text-2xl font-black text-white">المستشار الذكي (Vizion AI)</h4>
+                      <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full inline-block mt-1">
+                        فقط 466 د.ع باليوم! (أقل من سعر استكان شاي ☕)
+                      </span>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <input 
-                        id="vip-code-input"
-                        type="text"
-                        value={vipUpgradeInput}
-                        onChange={(e) => setVipUpgradeInput(e.target.value)}
-                        placeholder="VIZION-VIP-XXXX#vip"
-                        className="flex-1 px-3.5 py-2.5 bg-[#040B24] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-[#D4A017] outline-none text-center sm:text-right min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
-                        aria-label="رمز تفعيل VIP"
-                      />
-
-                      <button 
-                        type="submit"
-                        className="px-5 py-2.5 rounded-xl bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap min-h-[44px] flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] min-w-[44px]"
-                      >
-                        <span>تفعيل الرمز</span>
-                        <ArrowLeft className="w-4 h-4" />
-                      </button>
+                    <div className="text-left shrink-0">
+                      <div className="text-2xl sm:text-4xl font-black text-[#F0C040] font-mono tracking-tight">14,000</div>
+                      <div className="text-xs font-bold text-amber-200">د.ع / شهرياً</div>
                     </div>
+                  </div>
 
-                    {upgradeError && (
-                      <div role="alert" aria-live="assertive" className="p-2.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-xs text-rose-200 flex items-center gap-2 text-right">
-                        <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0" />
-                        <span>{upgradeError}</span>
-                      </div>
-                    )}
+                  {/* Why it's worth every dinar (Value Comparison) */}
+                  <div className="bg-[#040B24]/80 border border-amber-500/30 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
+                    <div className="flex items-center gap-2 text-[#F0C040] font-bold text-xs sm:text-sm">
+                      <TrendingDown className="w-4 h-4 text-emerald-400" />
+                      <span>حسبة بسيطة: ليش هذا الاشتراك يوفر عليك ثروة؟</span>
+                    </div>
+                    <p className="text-[11px] sm:text-xs text-white/75 leading-relaxed">
+                      حملة إعلانية واحدة فاشلة بالفيسبوك تضيع عليك <strong className="text-rose-400">50,000 إلى 100,000 دينار</strong>. المستشار الذكي يحميك من الخسارة بحسبة تسعير واحدة أو سكريبت رد واحد بالواتساب ويرجعلك المبلغ أضعاف من أول يوم!
+                    </p>
+                  </div>
 
-                    {upgradeSuccessMsg && (
-                      <div role="status" aria-live="polite" className="p-2.5 bg-emerald-950/70 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 flex items-center gap-2 text-right">
-                        <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                        <span>{upgradeSuccessMsg}</span>
-                      </div>
-                    )}
-                  </form>
+                  {/* Features Checklist */}
+                  <div className="space-y-2.5">
+                    <span className="text-xs font-black text-white/90 block border-b border-white/10 pb-1.5">
+                      ✨ شنو ينفتحلك فوراً بعد الاشتراك؟
+                    </span>
+                    <ul className="space-y-2 text-xs sm:text-sm text-white/90">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span>تشخيص <strong className="text-rose-400">الخلل الحقيقي</strong> (سعر، منتج، استهداف، لو محادثة) قبل لا تغير إعلانك للمرة العاشرة.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span>تحليل <strong className="text-white">المحادثات الفاشلة</strong> — دخل المحادثة للمستشار وراح يكشفلك أخطاءك وينطيك الرد الصح.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span>حل مشكلة <strong className="text-white">الزبون الي يسأل ويختفي</strong> — وسكريبتات تخلي المتردد يشتري فوراً.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span>تكتشف <strong className="text-[#F0C040]">وين تضيع ميزانيتك</strong> — وتفهم شلون الإعلان والمنتج والزبون مرتبطين ببعض.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span><strong className="text-white">خبير بصفك 24 ساعة</strong> — مو بس تتعلم تسويق، تتعلم شلون تفهم مشروعك وتحل مشاكله.</span>
+                      </li>
+                    </ul>
+                  </div>
 
-                  {/* Support Contact */}
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-center space-y-2">
-                    <p className="text-xs text-white/80 font-medium">ما عندك كود تفعيل VIP وتريد تشترك؟</p>
+                  {/* Instant Subscribe via WhatsApp Button */}
+                  <div className="pt-2 space-y-3">
                     <a 
-                      href="https://wa.me/9647702723456?text=مرحباً،%20أريد%20الاشتراك%20في%20باقة%20VIP%20للمستشار%20الذكي"
+                      href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition min-h-[44px] w-full cursor-pointer active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-95 transition cursor-pointer min-h-[50px]"
                     >
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>تواصل مع الدعم للترقية إلى VIP</span>
+                      <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
+                      <span>اشترك الآن عبر الواتساب (14,000 د.ع / شهرياً) 💬</span>
                     </a>
+                    <p className="text-[11px] text-center text-white/60">
+                      تواصل مباشر مع الدعم عبر الواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
+                    </p>
                   </div>
+                </div>
+
+                {/* Existing Subscriber Code Entry */}
+                <div className="max-w-xl mx-auto bg-[#081030] p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3 text-right">
+                  <div className="space-y-1">
+                    <label htmlFor="vip-code-input" className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
+                      <KeyRound className="w-4 h-4 text-[#F0C040]" />
+                      <span>عندك رمز تفعيل الاشتراك؟ أدخله هنا:</span>
+                    </label>
+                    <p className="text-[11px] text-white/60">أدخل الرمز الذي استلمته عبر الواتساب للتفعيل الفوري.</p>
+                  </div>
+
+                  <form onSubmit={handleVipUpgrade} className="flex flex-col sm:flex-row gap-2">
+                    <input 
+                      id="vip-code-input"
+                      type="text"
+                      value={vipUpgradeInput}
+                      onChange={(e) => setVipUpgradeInput(e.target.value)}
+                      placeholder="VIZION-VIP-XXXX#vip"
+                      className="flex-1 px-3.5 py-2.5 bg-[#040B24] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-[#D4A017] outline-none text-center sm:text-right min-h-[44px]"
+                      aria-label="رمز تفعيل VIP"
+                    />
+
+                    <button 
+                      type="submit"
+                      className="px-5 py-2.5 rounded-xl bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs sm:text-sm shadow-md active:scale-95 transition cursor-pointer whitespace-nowrap min-h-[44px] flex items-center justify-center gap-1.5"
+                    >
+                      <span>تفعيل الرمز</span>
+                      <ArrowLeft className="w-4 h-4" />
+                    </button>
+                  </form>
+
+                  {upgradeError && (
+                    <div role="alert" className="p-2.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-xs text-rose-200 flex items-center gap-2">
+                      <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0" />
+                      <span>{upgradeError}</span>
+                    </div>
+                  )}
+
+                  {upgradeSuccessMsg && (
+                    <div role="status" className="p-2.5 bg-emerald-950/70 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>{upgradeSuccessMsg}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (

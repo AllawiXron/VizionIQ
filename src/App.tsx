@@ -9,7 +9,7 @@ import { motion } from "motion/react";
 import { chaptersList } from "./data/chaptersData";
 
 // Import modular components
-import LockScreen, { isVipUser, isFreeTrialUser } from "./components/LockScreen";
+import LockScreen, { isVipUser, isFreeTrialUser, isAiUser } from "./components/LockScreen";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ChapterView from "./components/ChapterView";
@@ -526,7 +526,7 @@ export default function App() {
             new CustomEvent("open-tool-category", { detail: { category: category || "all", toolId } })
           );
         }}
-        isVip={isVipUser(userCode)}
+        isVip={isAiUser(userCode)}
         userCode={userCode}
         onUpgradeSuccess={(newVipCode) => {
           setUserCode(newVipCode);
@@ -571,7 +571,7 @@ export default function App() {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#D4A017] to-amber-600 flex items-center justify-center text-[#040B24] font-bold shadow-md">
               <Bot className="w-5 h-5 animate-pulse" />
             </div>
-            {isVipUser(userCode) ? (
+            {isAiUser(userCode) ? (
               <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-[#040B24]" />
             ) : (
               <span className="absolute -top-1 -right-1 text-[10px]">👑</span>
@@ -580,14 +580,14 @@ export default function App() {
           <div className="text-right">
             <div className="text-[#F0C040] text-xs font-black leading-none flex items-center gap-1">
               مستشار فيزيون
-              {isVipUser(userCode) ? (
+              {isAiUser(userCode) ? (
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
               ) : (
-                <span className="px-1 py-0.2 bg-amber-500/20 text-amber-300 text-[8px] rounded font-mono">VIP</span>
+                <span className="px-1 py-0.2 bg-amber-500/20 text-amber-300 text-[8px] rounded font-mono">AI</span>
               )}
             </div>
             <div className="text-[10px] text-white/70 font-light mt-1">
-              {isVipUser(userCode) ? "المستشار الرقمي الذكي" : "خاص بأعضاء VIP 👑"}
+              {isAiUser(userCode) ? "المستشار الرقمي الذكي" : "اشتراك إضافي للمستشار 👑"}
             </div>
           </div>
         </button>

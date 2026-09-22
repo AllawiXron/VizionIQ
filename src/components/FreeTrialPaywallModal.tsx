@@ -230,6 +230,22 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                 </div>
               )}
             </form>
+
+            {/* Direct WhatsApp Purchase Contact */}
+            <div className="p-4 rounded-2xl bg-[#040B24] border border-[#D4A017]/30 text-center space-y-2">
+              <p className="text-xs text-white/90 font-bold">
+                ما عندك رمز تفعيل وتريد تشترك فوراً؟ (14,000 د.ع للمستشار الذكي)
+              </p>
+              <a 
+                href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition w-full cursor-pointer shadow-lg active:scale-95"
+              >
+                <Sparkles className="w-4 h-4 text-amber-300" />
+                <span>تواصل معنا عبر الواتساب للاشتراك والتفعيل الفوري (07757851379) 💬</span>
+              </a>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -72,7 +72,7 @@ app.get(["/api/health", "/health"], (_req, res) => {
 
 
 async function startServer() {
-  const PORT = 3000;
+  const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
   // Vite development middleware vs Static Production serving
   if (process.env.NODE_ENV !== "production") {
@@ -95,8 +95,10 @@ async function startServer() {
   });
 }
 
-startServer().catch((err) => {
-  console.error("Failed to start Vizion server:", err);
-});
+if (!process.env.VERCEL) {
+  startServer().catch((err) => {
+    console.error("Failed to start Vizion server:", err);
+  });
+}
 
 export default app;

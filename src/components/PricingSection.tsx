@@ -325,6 +325,45 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
         </div>
 
+        {/* STANDALONE AI ADVISOR SUBSCRIPTION CARD */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-5xl mx-auto bg-gradient-to-r from-[#0D183E] via-[#152355] to-[#0D183E] border-2 border-[#D4A017] rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden text-right"
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+            <div className="space-y-3 flex-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 text-xs font-black text-[#F0C040]">
+                <Bot className="w-4 h-4 text-[#F0C040]" />
+                <span>اشتراك خاص بالمستشار الذكي (Vizion AI)</span>
+              </div>
+              <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
+                تريد المستشار الذكي فقط؟ اشترك بـ <span className="text-[#F0C040]">14,000 دينار عراقي / شهرياً</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed">
+                احصل على خبير إعلانات ومبيعات يعمل بذكاء اصطناعي 24/7 في هاتفك لتشخيص هدر الإعلانات، توليد سكريبتات الواتساب، وحساب أرباحك بالدينار العراقي (فقط 466 د.ع باليوم!).
+              </p>
+            </div>
+
+            <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-3">
+              <div className="text-center">
+                <span className="text-3xl sm:text-4xl font-black text-[#F0C040] font-mono block">14,000</span>
+                <span className="text-xs font-bold text-amber-200">د.ع / شهرياً</span>
+              </div>
+              <a 
+                href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl hover:scale-105 active:scale-95 transition cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4 text-amber-300" />
+                <span>اشترك الآن عبر الواتساب (07757851379) 💬</span>
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
         {/* GUARANTEE & TRUST FOOTER */}
         <div className="max-w-3xl mx-auto pt-8 text-center space-y-4 border-t border-white/10">
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-white/80">

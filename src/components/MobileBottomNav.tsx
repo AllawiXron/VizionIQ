@@ -14,9 +14,11 @@ import {
   Flame,
   Crown,
   Sparkles,
+  Shield,
   LogOut,
   TrendingUp,
-  Tv
+  Tv,
+  ChevronLeft
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { isFreeTrialUser, isVipUser } from "./LockScreen";
