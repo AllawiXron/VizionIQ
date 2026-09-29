@@ -47,6 +47,7 @@ export const HARDCODED_CODES = [
   "gaith#vip",
   "allawidev#vip",
   "allawidev#vip#ai",
+  "masarra#vip#ai",
   "free#1"
 ];
 
