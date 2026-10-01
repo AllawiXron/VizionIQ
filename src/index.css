@@ -943,184 +943,104 @@ body,
 }
 
 
-/* -------------------------------------------------------------------------- */
-/* Vizion Apple Glass System — layered over the existing functional UI         */
-/* -------------------------------------------------------------------------- */
+/* Vizion Apple system — intentionally scoped to named surfaces to protect layout. */
 :root {
-  --vizion-ink: #070708;
-  --vizion-ink-soft: #101012;
-  --vizion-pearl: #f4f1eb;
-  --vizion-muted: rgba(244, 241, 235, 0.62);
-  --vizion-line: rgba(255, 255, 255, 0.12);
-  --vizion-line-strong: rgba(255, 255, 255, 0.2);
-  --vizion-gold: #d6b36a;
-  --vizion-gold-bright: #f2d59a;
+  --vizion-black: #080808;
+  --vizion-black-soft: #111112;
+  --vizion-pearl: #f5f2ec;
+  --vizion-pearl-muted: rgba(245, 242, 236, 0.68);
+  --vizion-gold: #d8b574;
+  --vizion-gold-light: #f3dca8;
+  --vizion-border: rgba(255, 255, 255, 0.13);
   --vizion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --vizion-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html {
-  background: var(--vizion-ink);
-  scroll-padding-top: 5.5rem;
-}
-
+html { background: var(--vizion-black); scroll-padding-top: 5rem; }
 body {
-  background:
-    radial-gradient(circle at 78% -12%, rgba(214, 179, 106, 0.12), transparent 31rem),
-    radial-gradient(circle at -12% 42%, rgba(255, 255, 255, 0.055), transparent 34rem),
-    linear-gradient(180deg, #09090a 0%, #050506 52%, #080809 100%);
-  color: var(--vizion-pearl);
+  background: radial-gradient(circle at 80% -10%, rgba(216,181,116,0.12), transparent 34rem),
+    linear-gradient(180deg, #0b0b0c 0%, #070708 55%, #0b0b0c 100%);
 }
 
 .vizion-app {
-  --tw-bg-opacity: 1;
-  background:
-    linear-gradient(180deg, rgba(6, 6, 7, 0.92), rgba(8, 8, 9, 0.97)),
-    radial-gradient(circle at 50% 0%, rgba(214, 179, 106, 0.08), transparent 44rem) !important;
   isolation: isolate;
-}
-
-/* Neutralize the old navy cast while preserving all existing utilities/content. */
-.vizion-app [class*="bg-\\[\\#040B24\\]"] { background-color: transparent !important; }
-.vizion-app [class*="bg-\\[\\#0F1735\\]"] { background-color: rgba(255, 255, 255, 0.045) !important; }
-.vizion-app [class*="bg-\\[\\#0A122E\\]"] { background-color: rgba(255, 255, 255, 0.03) !important; }
-.vizion-app [class*="bg-\\[\\#0D1B56\\]"] { background-color: rgba(214, 179, 106, 0.05) !important; }
-.vizion-app [class*="border-white\\/"] { border-color: var(--vizion-line) !important; }
-.vizion-app [class*="border-\\[\\#D4A017\\]"] { border-color: rgba(214, 179, 106, 0.38) !important; }
-.vizion-app [class*="text-white\\/"] { color: var(--vizion-muted) !important; }
-.vizion-app [class*="text-\\[\\#F0C040\\]"] { color: var(--vizion-gold-bright) !important; }
-
-/* Physical glass hierarchy: primary surfaces, elevated surfaces, floating controls. */
-.vizion-app [class*="backdrop-blur"] {
-  -webkit-backdrop-filter: blur(22px) saturate(125%);
-  backdrop-filter: blur(22px) saturate(125%);
+  background: linear-gradient(180deg, rgba(8,8,9,0.96), rgba(8,8,9,0.99)) !important;
 }
 
 .vizion-app .glass-panel,
 .vizion-app .glass-panel-gold,
-.vizion-app [class*="from-\\#0F1735"],
-.vizion-app [class*="from-white\\/[0.03\\]"] {
-  background: linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025)) !important;
-  border-color: var(--vizion-line) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 22px 60px rgba(0,0,0,0.26) !important;
+.vizion-auth-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.028)) !important;
+  border-color: var(--vizion-border) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 18px 48px rgba(0,0,0,0.28) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
 }
 
-.vizion-app [class*="rounded-2xl"],
-.vizion-app [class*="rounded-3xl"],
-.vizion-app [class*="rounded-\\[2rem\\]"] {
-  border-radius: 1.35rem;
-}
-
-.vizion-app button,
-.vizion-app [role="button"] {
-  transition-property: transform, opacity, background-color, border-color, box-shadow, color, filter;
-  transition-duration: 360ms;
-  transition-timing-function: var(--vizion-ease);
-  will-change: transform;
-}
-
-.vizion-app button:hover,
-.vizion-app [role="button"]:hover {
-  filter: brightness(1.06);
-}
-
-.vizion-app button:active,
-.vizion-app [role="button"]:active {
-  transform: scale(0.975);
-  transition-duration: 120ms;
-}
-
-/* Cards gain a restrained reflection and depth response, not a gaming tilt. */
-.vizion-app .group[class*="border"],
-.vizion-app [class*="shadow-xl"][class*="border"] {
-  position: relative;
-  overflow: hidden;
-  transition: transform 520ms var(--vizion-spring), box-shadow 520ms var(--vizion-ease), border-color 360ms var(--vizion-ease), background-color 360ms var(--vizion-ease);
-}
-
-.vizion-app .group[class*="border"]::before,
-.vizion-app [class*="shadow-xl"][class*="border"]::before {
+.vizion-app .glass-panel,
+.vizion-app .glass-panel-gold { position: relative; }
+.vizion-app .glass-panel::after,
+.vizion-app .glass-panel-gold::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,0.12), transparent 65%);
-  transition: opacity 500ms var(--vizion-ease);
-  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(255,255,255,0.07), transparent 24%, transparent 76%, rgba(216,181,116,0.04));
+  opacity: 0.7;
 }
 
-.vizion-app .group[class*="border"]:hover,
-.vizion-app [class*="shadow-xl"][class*="border"]:hover {
-  transform: translateY(-4px);
-  border-color: rgba(214, 179, 106, 0.38) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 24px 70px rgba(0,0,0,0.36) !important;
+.vizion-app button,
+.vizion-app [role="button"] {
+  transition-timing-function: var(--vizion-ease);
 }
 
-.vizion-app .group[class*="border"]:hover::before,
-.vizion-app [class*="shadow-xl"][class*="border"]:hover::before { opacity: 1; }
+.vizion-app button:active,
+.vizion-app [role="button"]:active { transition-duration: 120ms; }
 
-/* Navigation morphs from transparent masthead to compact floating glass. */
 .vizion-navbar {
-  height: 5.25rem !important;
-  background: rgba(7, 7, 8, 0.42) !important;
-  border-bottom-color: rgba(255,255,255,0.08) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(135%);
-  backdrop-filter: blur(18px) saturate(135%);
-  transition: height 520ms var(--vizion-spring), background-color 520ms var(--vizion-ease), box-shadow 520ms var(--vizion-ease), border-color 360ms var(--vizion-ease);
+  height: 4.5rem !important;
+  background: rgba(8,8,9,0.58) !important;
+  border-bottom-color: rgba(255,255,255,0.09) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  backdrop-filter: blur(18px) saturate(125%);
+  transition: height 420ms var(--vizion-ease), background-color 420ms var(--vizion-ease), box-shadow 420ms var(--vizion-ease), border-color 420ms var(--vizion-ease);
 }
-
 .vizion-navbar.vizion-navbar-scrolled {
-  height: 4.25rem !important;
-  background: rgba(12, 12, 13, 0.76) !important;
-  border-bottom-color: rgba(214,179,106,0.2) !important;
-  box-shadow: 0 18px 50px rgba(0,0,0,0.32);
+  height: 4rem !important;
+  background: rgba(14,14,15,0.84) !important;
+  border-bottom-color: rgba(216,181,116,0.2) !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.3);
 }
 
 .vizion-hero {
-  background: radial-gradient(circle at 50% 8%, rgba(214,179,106,0.08), transparent 32rem) !important;
+  background: radial-gradient(circle at 50% 4%, rgba(216,181,116,0.1), transparent 30rem) !important;
+}
+.vizion-hero > canvas { opacity: 0.18 !important; }
+.vizion-hero .hero-magnetic {
+  transform: translate3d(var(--magnet-x, 0px), var(--magnet-y, 0px), 0);
+  transition: transform 260ms var(--vizion-ease), filter 260ms var(--vizion-ease), box-shadow 260ms var(--vizion-ease);
 }
 
-.vizion-hero h1 { text-wrap: balance; }
-.vizion-hero > canvas { opacity: 0.24 !important; mix-blend-mode: screen; }
-.vizion-hero .hero-magnetic { transform: translate3d(var(--magnet-x, 0), var(--magnet-y, 0), 0); }
-
-/* Page-load staging is intentionally short and quiet. */
-.vizion-app { animation: vizion-page-in 720ms var(--vizion-ease) both; }
-@keyframes vizion-page-in {
-  from { opacity: 0; filter: blur(5px); transform: translateY(6px); }
-  to { opacity: 1; filter: blur(0); transform: translateY(0); }
-}
-
-/* Better modal/sheet continuity for existing overlays. */
-.vizion-app [class*="fixed"][class*="z-[90]"],
-.vizion-app [class*="fixed"][class*="z-[100]"] { isolation: isolate; }
-.vizion-app [class*="rounded-t-3xl"] {
-  background: linear-gradient(180deg, rgba(28,28,30,0.92), rgba(10,10,11,0.98)) !important;
-  border-color: rgba(214,179,106,0.28) !important;
-  box-shadow: 0 -24px 70px rgba(0,0,0,0.48) !important;
-}
-
-.vizion-auth-card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.035)) !important;
-  border: 1px solid rgba(255,255,255,0.16) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 30px 100px rgba(0,0,0,0.46) !important;
-}
+.vizion-auth-card { background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.035)) !important; }
 
 @media (max-width: 768px) {
-  .vizion-navbar { height: 4.5rem !important; }
-  .vizion-navbar.vizion-navbar-scrolled { height: 4rem !important; }
-  .vizion-app [class*="backdrop-blur"] { -webkit-backdrop-filter: blur(13px) saturate(115%); backdrop-filter: blur(13px) saturate(115%); }
-  .vizion-app .group[class*="border"]:hover,
-  .vizion-app [class*="shadow-xl"][class*="border"]:hover { transform: translateY(-2px); }
+  .vizion-app { width: 100%; max-width: 100%; overflow-x: hidden; }
+  .vizion-navbar { height: 4.25rem !important; }
+  .vizion-navbar.vizion-navbar-scrolled { height: 3.9rem !important; }
+  .vizion-app .glass-panel,
+  .vizion-app .glass-panel-gold,
+  .vizion-auth-card {
+    -webkit-backdrop-filter: blur(12px) saturate(112%);
+    backdrop-filter: blur(12px) saturate(112%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 12px 30px rgba(0,0,0,0.22) !important;
+  }
+  .vizion-hero .hero-magnetic { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vizion-app { animation: none !important; }
   .vizion-app *, .vizion-app *::before, .vizion-app *::after {
-    transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }

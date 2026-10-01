@@ -37,22 +37,6 @@ export default function App() {
   const [chapterFilter, setChapterFilter] = useState("all");
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
 
-  // Cursor-aware glass lighting uses CSS variables only; it never runs a render loop.
-  useEffect(() => {
-    const handlePointerMove = (event: PointerEvent) => {
-      if (window.matchMedia("(hover: none)").matches) return;
-      const target = (event.target as HTMLElement | null)?.closest<HTMLElement>(
-        '.vizion-app .group[class*="border"], .vizion-app [class*="shadow-xl"][class*="border"]'
-      );
-      if (!target) return;
-      const rect = target.getBoundingClientRect();
-      target.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-      target.style.setProperty("--my", `${event.clientY - rect.top}px`);
-    };
-    document.addEventListener("pointermove", handlePointerMove, { passive: true });
-    return () => document.removeEventListener("pointermove", handlePointerMove);
-  }, []);
-
   // Filter chapters helper
   const filteredChapters = chaptersList.filter((chap, index) => {
     if (chapterFilter === "foundation") return index < 3; // Chapters 1, 2, 3

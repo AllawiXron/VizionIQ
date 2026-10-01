@@ -199,6 +199,10 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isMobile || prefersReducedMotion) return;
+
     let animationFrameId: number;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
@@ -223,7 +227,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     }
 
     const particles: Particle[] = [];
-    const maxParticles = 60;
+    const maxParticles = 36;
 
     for (let i = 0; i < maxParticles; i++) {
       particles.push({

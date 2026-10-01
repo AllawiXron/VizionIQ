@@ -43,6 +43,10 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isMobile || prefersReducedMotion) return;
+
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     let animationFrameId: number;
@@ -70,8 +74,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
     }
 
     const sparks: Spark[] = [];
-    const isMobile = window.innerWidth < 768;
-    const maxSparks = isMobile ? 12 : 30;
+    const maxSparks = 24;
 
     for (let i = 0; i < maxSparks; i++) {
       sparks.push({
