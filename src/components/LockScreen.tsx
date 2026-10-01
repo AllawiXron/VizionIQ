@@ -348,7 +348,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         id="lock-card"
       >
         {/* Glass Card */}
-        <div className="glass-panel-gold rounded-2xl p-4 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/10 dir-rtl">
+        <div className="vizion-auth-card glass-panel-gold rounded-2xl p-4 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/10 dir-rtl">
           {/* Decorative Corner Borders */}
           <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-t-2 border-r-2 border-[#D4A017] rounded-tr-xl opacity-85" />
           <div className="absolute bottom-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-b-2 border-l-2 border-[#D4A017] rounded-bl-xl opacity-85" />

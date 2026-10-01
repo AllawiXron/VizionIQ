@@ -156,6 +156,20 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
     }
   };
 
+  const handleMagneticMove = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (window.matchMedia("(hover: none)").matches) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = Math.max(-7, Math.min(7, (event.clientX - (rect.left + rect.width / 2)) * 0.08));
+    const y = Math.max(-5, Math.min(5, (event.clientY - (rect.top + rect.height / 2)) * 0.08));
+    event.currentTarget.style.setProperty("--magnet-x", `${x}px`);
+    event.currentTarget.style.setProperty("--magnet-y", `${y}px`);
+  };
+
+  const resetMagnetic = (event: React.PointerEvent<HTMLButtonElement>) => {
+    event.currentTarget.style.setProperty("--magnet-x", "0px");
+    event.currentTarget.style.setProperty("--magnet-y", "0px");
+  };
+
   const painPoints = [
     {
       id: 1,
@@ -217,7 +231,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
   };
 
   return (
-    <div className="relative min-h-[85vh] sm:min-h-[90vh] w-full flex flex-col items-center overflow-hidden pt-16 sm:pt-24 pb-14 sm:pb-20 px-3 sm:px-6 text-center select-none bg-grid-pattern dir-rtl" id="hero-section">
+    <div className="vizion-hero relative min-h-[85vh] sm:min-h-[90vh] w-full flex flex-col items-center overflow-hidden pt-16 sm:pt-24 pb-14 sm:pb-20 px-3 sm:px-6 text-center select-none bg-grid-pattern dir-rtl" id="hero-section">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-60" />
 
       {/* Ambient Radial Background Glows - Calm & Performance Balanced */}
@@ -254,8 +268,8 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
           {/* Focused Primary & Secondary CTAs (Easy to tap, >= 44px) */}
           <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto w-full">
             {/* Primary Action */}
-            <button               onClick={handlePrimaryCTA}
-              className="w-full sm:w-auto flex-1 min-h-[48px] sm:min-h-[52px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:scale-[1.02] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border border-[#F0C040]/40 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            <button               onClick={handlePrimaryCTA} onPointerMove={handleMagneticMove} onPointerLeave={resetMagnetic}
+              className="hero-magnetic w-full sm:w-auto flex-1 min-h-[48px] sm:min-h-[52px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:scale-[1.02] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border border-[#F0C040]/40 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
               aria-label="ابدأ تشخيص مشروعك — 3 دقائق"
             >
               <Zap className="w-5 h-5 text-[#040B24] fill-[#040B24]" />

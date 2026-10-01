@@ -96,9 +96,9 @@ export default function Navbar({
   return (
     <>
       <nav
-        className={`fixed top-0 inset-x-0 h-16 z-40 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 border-b ${
+        className={`vizion-navbar fixed top-0 inset-x-0 h-16 z-40 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 border-b ${
           scrolled
-            ? "bg-[#040B24]/85 backdrop-blur-2xl border-[#D4A017]/30 md:shadow-[0_10px_30px_rgba(4,11,36,0.8)] shadow-xl"
+            ? "vizion-navbar-scrolled bg-[#040B24]/85 backdrop-blur-2xl border-[#D4A017]/30 md:shadow-[0_10px_30px_rgba(4,11,36,0.8)] shadow-xl"
             : "bg-[#040B24]/40 backdrop-blur-md border-white/5"
         }`}
         id="main-navbar"

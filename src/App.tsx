@@ -37,6 +37,22 @@ export default function App() {
   const [chapterFilter, setChapterFilter] = useState("all");
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
 
+  // Cursor-aware glass lighting uses CSS variables only; it never runs a render loop.
+  useEffect(() => {
+    const handlePointerMove = (event: PointerEvent) => {
+      if (window.matchMedia("(hover: none)").matches) return;
+      const target = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+        '.vizion-app .group[class*="border"], .vizion-app [class*="shadow-xl"][class*="border"]'
+      );
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      target.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+      target.style.setProperty("--my", `${event.clientY - rect.top}px`);
+    };
+    document.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => document.removeEventListener("pointermove", handlePointerMove);
+  }, []);
+
   // Filter chapters helper
   const filteredChapters = chaptersList.filter((chap, index) => {
     if (chapterFilter === "foundation") return index < 3; // Chapters 1, 2, 3
@@ -213,7 +229,7 @@ export default function App() {
 
   return (
     <SensoryProvider>
-      <div className="relative min-h-screen bg-[#040B24] text-[#F0F4FF] overflow-x-hidden selection:bg-[#D4A017] selection:text-[#040B24]">
+      <div className="vizion-app relative min-h-screen bg-[#040B24] text-[#F0F4FF] overflow-x-hidden selection:bg-[#D4A017] selection:text-[#040B24]">
       
       {/* Background Ambience Globs (Global layout decorations - Radial Gradients) */}
       <div className="absolute top-[5%] right-[5%] w-[280px] sm:w-[600px] h-[280px] sm:h-[600px] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.06)_0%,transparent_70%)] pointer-events-none" />
