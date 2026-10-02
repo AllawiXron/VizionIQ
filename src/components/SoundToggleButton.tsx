@@ -44,14 +44,14 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
         onMouseEnter={() => soundEngine.playHover()}
         className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${
           !muted
-            ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] md:shadow-[0_0_12px_rgba(212,160,23,0.3)] shadow-xl"
+            ? "bg-white/10 border-white/35 text-zinc-100 md:shadow-[0_0_12px_rgba(0,0,0,0.6)] shadow-xl"
             : "bg-white/5 border-white/10 text-white/60 hover:text-white"
         } ${className}`}
         title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}
       >
         {!muted ? (
           <>
-            <Volume2 className="w-4 h-4 text-[#F0C040] animate-pulse" />
+            <Volume2 className="w-4 h-4 text-zinc-100 animate-pulse" />
             <span>الصوت مفعّل</span>
           </>
         ) : (
@@ -72,13 +72,13 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
       onMouseEnter={() => soundEngine.playHover()}
       className={`p-2 rounded-xl border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${
         !muted
-          ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] md:shadow-[0_0_15px_rgba(212,160,23,0.35)] shadow-xl"
+          ? "bg-white/10 border-white/35 text-zinc-100 md:shadow-[0_0_15px_rgba(0,0,0,0.6)] shadow-xl"
           : "bg-white/5 hover:bg-white/10 border-white/10 text-white/60 hover:text-white"
       } ${className}`}
       title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}
     >
       {!muted ? (
-        <Volume2 className="w-4 h-4 text-[#F0C040]" />
+        <Volume2 className="w-4 h-4 text-zinc-100" />
       ) : (
         <VolumeX className="w-4 h-4 text-white/70" />
       )}

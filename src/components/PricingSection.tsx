@@ -52,8 +52,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
   return (
     <section id="pricing-section" className="py-8 sm:py-16 md:py-20 relative overflow-hidden text-right">
       {/* Background Glow Highlights - Optimized Radial Gradients */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.15)_0%,rgba(217,119,6,0.05)_40%,transparent_70%)] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.12)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.052)_0%,rgba(255,255,255,0.017)_40%,transparent_70%)] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.036)_0%,transparent_70%)] pointer-events-none" />
       <div className="absolute top-10 left-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.12)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 space-y-8 sm:space-y-12">
@@ -64,9 +64,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-[#D4A017]/20 via-amber-500/15 to-[#D4A017]/20 border border-[#D4A017]/50 text-xs sm:text-sm font-black text-[#F0C040] md:shadow-[0_0_20px_rgba(212,160,23,0.15)] shadow-xl"
+            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-white/10 via-white/8 to-white/10 border border-white/22 text-xs sm:text-sm font-black text-zinc-100 md:shadow-[0_0_20px_rgba(0,0,0,0.33)] shadow-xl"
           >
-            <Sparkles className="w-4 h-4 text-[#F0C040] animate-pulse" />
+            <Sparkles className="w-4 h-4 text-zinc-100 animate-pulse" />
             <span>اشتراك مرة وحدة مدى الحياة • وبدون أي اشتراك شهري</span>
           </motion.div>
 
@@ -77,7 +77,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             transition={{ delay: 0.1 }}
             className="text-xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight px-2"
           >
-            اختار الباقة اللي تناسب شغلك وانضم للـ <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-amber-300 to-[#D4A017] drop-md:shadow-[0_2px_10px_rgba(240,192,64,0.3)] shadow-xl">1% الأوائل بالسوق</span>
+            اختار الباقة اللي تناسب شغلك وانضم للـ <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#F5F5F7] drop-md:shadow-[0_2px_10px_rgba(0,0,0,0.6)] shadow-xl">1% الأوائل بالسوق</span>
           </motion.h2>
 
           <motion.p 
@@ -96,14 +96,14 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-[#0F1735]/95 via-[#162354]/95 to-[#0F1735]/95 border border-[#D4A017]/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:shadow-[0_10px_40px_rgba(0,0,0,0.5)] shadow-xl backdrop-blur-md relative overflow-hidden group"
+          className="bg-gradient-to-r from-[#1d1d1f]/95 via-[#2a2a2c]/95 to-[#1d1d1f]/95 border border-white/18 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:shadow-[0_10px_40px_rgba(0,0,0,0.5)] shadow-xl backdrop-blur-md relative overflow-hidden group"
         >
-          <div className="absolute -right-10 -bottom-10 w-36 sm:w-48 h-36 sm:h-48 bg-[#D4A017]/10 rounded-full blur-xl group-hover:bg-[#D4A017]/20 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500" />
+          <div className="absolute -right-10 -bottom-10 w-36 sm:w-48 h-36 sm:h-48 bg-white/5 rounded-full blur-xl group-hover:bg-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500" />
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 relative z-10">
             <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
-              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#D4A017] via-amber-500 to-amber-700 p-0.5 shrink-0 shadow-lg md:shadow-[#D4A017] shadow-xl/25">
-                <div className="w-full h-full bg-[#040B24] rounded-[10px] sm:rounded-[14px] flex items-center justify-center text-[#F0C040]">
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#F5F5F7] via-[#F5F5F7] to-zinc-300 p-0.5 shrink-0 shadow-lg md:shadow-black/40 shadow-xl/25">
+                <div className="w-full h-full bg-[#050506] rounded-[10px] sm:rounded-[14px] flex items-center justify-center text-zinc-100">
                   <TrendingUp className="w-5 h-5 sm:w-7 sm:h-7" />
                 </div>
               </div>
@@ -120,7 +120,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               </div>
             </div>
 
-            <div className="w-full md:w-auto shrink-0 flex items-center justify-center gap-2 sm:gap-3 bg-white/5 hover:bg-white/10 px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/15 text-[11px] sm:text-xs text-[#F0C040] font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-inner">
+            <div className="w-full md:w-auto shrink-0 flex items-center justify-center gap-2 sm:gap-3 bg-white/5 hover:bg-white/10 px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/15 text-[11px] sm:text-xs text-zinc-100 font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-inner">
               <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0" />
               <span>تدفع مرة وحدة • وينفتحلك الحساب مدى الحياة</span>
             </div>
@@ -136,9 +136,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className={`rounded-2xl sm:rounded-3xl border transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex flex-col justify-between p-5 sm:p-8 relative bg-gradient-to-b from-[#0B122E]/95 via-[#0A112B]/90 to-[#040B24] backdrop-blur-md hover:-translate-y-1 ${
+            className={`rounded-2xl sm:rounded-3xl border transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex flex-col justify-between p-5 sm:p-8 relative bg-gradient-to-b from-[#171719]/95 via-[#161618]/90 to-[#050506] backdrop-blur-md hover:-translate-y-1 ${
               selectedPlan === "standard" 
-                ? "border-[#D4A017] md:shadow-[0_0_35px_rgba(212,160,23,0.2)] shadow-xl" 
+                ? "border-white/35 md:shadow-[0_0_35px_rgba(0,0,0,0.44)] shadow-xl" 
                 : "border-white/15 hover:border-white/30 shadow-xl"
             }`}
           >
@@ -146,8 +146,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {/* Card Header */}
               <div className="flex items-start justify-between border-b border-white/10 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
                 <div>
-                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 sm:py-1 rounded-full mb-2 border border-amber-400/30 shadow-sm">
-                    <CheckCircle2 className="w-3 h-3 text-amber-300" />
+                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-zinc-100 bg-white/5 px-2.5 py-0.5 sm:py-1 rounded-full mb-2 border border-white/14 shadow-sm">
+                    <CheckCircle2 className="w-3 h-3 text-zinc-100" />
                     <span>الأساس المضبوط لأصحاب المشاريع</span>
                   </div>
                   <h3 className="text-lg sm:text-2xl font-black text-white">الاشتراك العادي</h3>
@@ -156,7 +156,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 
                 <div className="text-left shrink-0">
                   <div className="text-2xl sm:text-4xl font-black text-white font-mono tracking-tight">29,000</div>
-                  <div className="text-[11px] sm:text-xs font-bold text-[#F0C040]">دينار</div>
+                  <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-md inline-block mt-0.5">مدى الحياة</span>
                 </div>
               </div>
@@ -208,7 +208,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
             {/* CTA Button */}
             <button               onClick={() => handleChoose("standard")}
-              className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/25 text-white font-bold text-xs sm:text-base transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-2 group min-h-[48px] min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/25 text-white font-bold text-xs sm:text-base transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-2 group min-h-[48px] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               <span>اشترك هسة بالباقة العادية (29,000 دينار)</span>
               <ArrowRight className="w-4 h-4 transform rotate-180 group-hover:-translate-x-1 transition-transform" />
@@ -221,88 +221,88 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="rounded-2xl sm:rounded-3xl border-2 border-[#D4A017] md:shadow-[0_0_50px_rgba(212,160,23,0.3)] shadow-xl flex flex-col justify-between p-5 sm:p-8 relative bg-gradient-to-b from-[#162252] via-[#0F1738] to-[#050B24] backdrop-blur-md hover:-translate-y-1 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 overflow-hidden"
+            className="rounded-2xl sm:rounded-3xl border-2 border-white/35 md:shadow-[0_0_50px_rgba(0,0,0,0.6)] shadow-xl flex flex-col justify-between p-5 sm:p-8 relative bg-gradient-to-b from-[#29292b] via-[#1d1d1f] to-[#101012] backdrop-blur-md hover:-translate-y-1 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 overflow-hidden"
           >
             {/* Ambient Inner Crown Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-32 bg-[#D4A017]/20 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
 
             {/* TOP POPULAR BADGE */}
-            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] font-black text-[11px] sm:text-xs py-1.5 sm:py-2 text-center tracking-wider shadow-lg flex items-center justify-center gap-1.5 border-b border-amber-300/40">
-              <Flame className="w-3.5 h-3.5 fill-[#040B24] animate-bounce" />
+            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black text-[11px] sm:text-xs py-1.5 sm:py-2 text-center tracking-wider shadow-lg flex items-center justify-center gap-1.5 border-b border-white/18">
+              <Flame className="w-3.5 h-3.5 fill-[#050506]" />
               <span>الباقة الكاملة • VIP</span>
             </div>
 
             <div className="pt-5 sm:pt-6">
               {/* Card Header */}
-              <div className="flex items-start justify-between border-b border-[#D4A017]/35 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
+              <div className="flex items-start justify-between border-b border-white/16 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
                 <div>
-                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-[#040B24] bg-gradient-to-r from-[#F0C040] to-amber-400 px-2.5 py-0.5 rounded-full mb-2 shadow-md md:shadow-[#D4A017] shadow-xl/20">
-                    <Crown className="w-3 h-3 fill-[#040B24]" />
+                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-[#050506] bg-gradient-to-r from-white to-[#F5F5F7] px-2.5 py-0.5 rounded-full mb-2 shadow-md md:shadow-black/40 shadow-xl/20">
+                    <Crown className="w-3 h-3 fill-[#050506]" />
                     <span>اشتراك الـ VIP</span>
                   </div>
                   <h3 className="text-lg sm:text-3xl font-black text-white flex items-center gap-2">
                     <span>اشتراك VIP</span>
-                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-[#F0C040] animate-pulse" />
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100 animate-pulse" />
                   </h3>
-                  <p className="text-[11px] sm:text-xs text-amber-200/90 font-bold mt-0.5 leading-relaxed">إذا تريد نتيجة سريعة وبدون أخطاء وتوجيه خطوة بخطوة</p>
+                  <p className="text-[11px] sm:text-xs text-zinc-100/90 font-bold mt-0.5 leading-relaxed">إذا تريد نتيجة سريعة وبدون أخطاء وتوجيه خطوة بخطوة</p>
                 </div>
 
                 <div className="text-left shrink-0">
-                  <div className="text-2xl sm:text-5xl font-black text-[#F0C040] font-mono tracking-tight drop-md:shadow-[0_2px_10px_rgba(240,192,64,0.3)] shadow-xl">49,000</div>
-                  <div className="text-[11px] sm:text-xs font-bold text-amber-200">دينار</div>
+                  <div className="text-2xl sm:text-5xl font-black text-zinc-100 font-mono tracking-tight drop-md:shadow-[0_2px_10px_rgba(0,0,0,0.6)] shadow-xl">49,000</div>
+                  <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-black bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-md inline-block mt-0.5 shadow-sm">مدى الحياة</span>
                 </div>
               </div>
 
               {/* VIP Perks */}
               <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-[#D4A017]/40 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl flex items-center gap-2 text-[11px] sm:text-xs text-[#F0C040] font-bold shadow-inner">
-                  <BadgeCheck className="w-4 h-4 sm:w-5 sm:h-5 text-[#F0C040] shrink-0" />
+                <div className="bg-gradient-to-r from-white/10 to-white/5 border border-white/18 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl flex items-center gap-2 text-[11px] sm:text-xs text-zinc-100 font-bold shadow-inner">
+                  <BadgeCheck className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100 shrink-0" />
                   <span>يشمل كل ميزات الباقة العادية بالكامل + المميزات الجوا:</span>
                 </div>
 
                 <ul className="space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm text-white">
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-amber-500/25 border border-[#D4A017]/60 flex items-center justify-center shrink-0 mt-0.5 text-[#F0C040] shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
                       <Crown className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-[#F0C040] font-bold">متابعة مباشرة وياي من تطبق:</strong> أتابعك خطوة بخطوة حتى ما تغلط وتضمن أحسن نتيجة لشغلك.</span>
+                    <span><strong className="text-zinc-100 font-bold">متابعة مباشرة وياي من تطبق:</strong> أتابعك خطوة بخطوة حتى ما تغلط وتضمن أحسن نتيجة لشغلك.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-amber-500/25 border border-[#D4A017]/60 flex items-center justify-center shrink-0 mt-0.5 text-[#F0C040] shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
                       <Target className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-[#F0C040] font-bold">مراجعة إعلاناتك:</strong> أشيك إعلاناتك وطريقة شغلك وأنطيك التعديلات المضبوطة حتى تربح.</span>
+                    <span><strong className="text-zinc-100 font-bold">مراجعة إعلاناتك:</strong> أشيك إعلاناتك وطريقة شغلك وأنطيك التعديلات المضبوطة حتى تربح.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-amber-500/25 border border-[#D4A017]/60 flex items-center justify-center shrink-0 mt-0.5 text-[#F0C040] shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
                       <PhoneCall className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-[#F0C040] font-bold">أجاوب كل أسئلتك أول بأول:</strong> أجاوب على كل استفساراتك بشكل مباشر وبدون أي تأخير.</span>
+                    <span><strong className="text-zinc-100 font-bold">أجاوب كل أسئلتك أول بأول:</strong> أجاوب على كل استفساراتك بشكل مباشر وبدون أي تأخير.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-amber-500/25 border border-[#D4A017]/60 flex items-center justify-center shrink-0 mt-0.5 text-[#F0C040] shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
                       <Zap className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-[#F0C040] font-bold">أوكف وياك قبل لا تصرف:</strong> أساعدك تختار المنتج، وترتب الزبائن والعروض قبل لا تصرف أي فلس.</span>
+                    <span><strong className="text-zinc-100 font-bold">أوكف وياك قبل لا تصرف:</strong> أساعدك تختار المنتج، وترتب الزبائن والعروض قبل لا تصرف أي فلس.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-amber-500/25 border border-[#D4A017]/60 flex items-center justify-center shrink-0 mt-0.5 text-[#F0C040] shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-[#F0C040] font-bold">خطة مخصصة لشغلك:</strong> أرتبلك خطة تمشي عليها تناسب مشروعك إنت بالذات، مو مجرد حجي عام.</span>
+                    <span><strong className="text-zinc-100 font-bold">خطة مخصصة لشغلك:</strong> أرتبلك خطة تمشي عليها تناسب مشروعك إنت بالذات، مو مجرد حجي عام.</span>
                   </li>
 
-                  <li className="flex items-start gap-2.5 sm:gap-3.5 bg-gradient-to-r from-amber-500/25 via-amber-600/15 to-[#040B24] p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-[#D4A017]/70 md:shadow-[0_4px_20px_rgba(212,160,23,0.15)] shadow-xl relative overflow-hidden">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gradient-to-br from-[#D4A017] to-amber-500 flex items-center justify-center shrink-0 mt-0.5 text-[#040B24] font-black shadow-md">
+                  <li className="flex items-start gap-2.5 sm:gap-3.5 bg-gradient-to-r from-white/12 via-white/8 to-[#050506] p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-white/32 md:shadow-[0_4px_20px_rgba(0,0,0,0.33)] shadow-xl relative overflow-hidden">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gradient-to-br from-[#F5F5F7] to-[#F5F5F7] flex items-center justify-center shrink-0 mt-0.5 text-[#050506] font-black shadow-md">
                       <Bot className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[#F0C040] font-black block text-xs sm:text-sm flex items-center gap-1.5">
+                      <span className="text-zinc-100 font-black block text-xs sm:text-sm flex items-center gap-1.5">
                         مستشار فيزيون
                       </span>
                       <span className="text-white/90 text-[11px] sm:text-xs font-light leading-relaxed block mt-0.5">
@@ -316,9 +316,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
             {/* VIP CTA Button */}
             <button               onClick={() => handleChoose("vip")}
-              className="w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] font-black text-xs sm:text-base md:shadow-[0_10px_40px_rgba(212,160,23,0.45)] shadow-xl hover:shadow-[0_15px_50px_rgba(212,160,23,0.6)] shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-2 group relative overflow-hidden min-h-[50px] min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black text-xs sm:text-base md:shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-xl hover:shadow-[0_15px_50px_rgba(0,0,0,0.6)] shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-2 group relative overflow-hidden min-h-[50px] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
-              <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-[#040B24] group-hover:rotate-12 transition-transform" />
+              <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-[#050506] transition-transform" />
               <span>انضم لاشتراك الـ VIP هسة واضمن نتائجك (49,000 دينار)</span>
             </button>
           </motion.div>
@@ -330,16 +330,16 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-5xl mx-auto bg-gradient-to-r from-[#0D183E] via-[#152355] to-[#0D183E] border-2 border-[#D4A017] rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden text-right"
+          className="max-w-5xl mx-auto bg-gradient-to-r from-[#1e1e20] via-[#2a2a2c] to-[#1e1e20] border-2 border-white/35 rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden text-right"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
             <div className="space-y-3 flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 text-xs font-black text-[#F0C040]">
-                <Bot className="w-4 h-4 text-[#F0C040]" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/18 text-xs font-black text-zinc-100">
+                <Bot className="w-4 h-4 text-zinc-100" />
                 <span>اشتراك خاص بالمستشار الذكي (Vizion AI)</span>
               </div>
               <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
-                تريد المستشار الذكي فقط؟ اشترك بـ <span className="text-[#F0C040]">14,000 دينار عراقي / شهرياً</span>
+                تريد المستشار الذكي فقط؟ اشترك بـ <span className="text-zinc-100">14,000 دينار عراقي / شهرياً</span>
               </h3>
               <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed">
                 احصل على خبير إعلانات ومبيعات يعمل بذكاء اصطناعي 24/7 في هاتفك لتشخيص هدر الإعلانات، توليد سكريبتات الواتساب، وحساب أرباحك بالدينار العراقي (فقط 466 د.ع باليوم!).
@@ -348,16 +348,16 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
             <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-3">
               <div className="text-center">
-                <span className="text-3xl sm:text-4xl font-black text-[#F0C040] font-mono block">14,000</span>
-                <span className="text-xs font-bold text-amber-200">د.ع / شهرياً</span>
+                <span className="text-3xl sm:text-4xl font-black text-zinc-100 font-mono block">14,000</span>
+                <span className="text-xs font-bold text-zinc-100">د.ع / شهرياً</span>
               </div>
               <a 
                 href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl hover:scale-105 active:scale-95 transition cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl hover:scale-[1.02] active:scale-[0.97] transition cursor-pointer"
               >
-                <Sparkles className="w-4 h-4 text-amber-300" />
+                <Sparkles className="w-4 h-4 text-zinc-100" />
                 <span>اشترك الآن عبر الواتساب (07757851379) 💬</span>
               </a>
             </div>
@@ -372,11 +372,11 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               <span>حساب يتفعل فوراً</span>
             </span>
             <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-              <Clock className="w-4 h-4 text-[#F0C040]" />
+              <Clock className="w-4 h-4 text-zinc-100" />
               <span>حساب يبقى الك طول العمر</span>
             </span>
             <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-              <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+              <Star className="w-4 h-4 text-zinc-100 fill-zinc-100" />
               <span>تقييم 4.7/5 من أكثر من 73 مشترك</span>
             </span>
           </div>

@@ -186,19 +186,19 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="relative w-full max-w-2xl bg-[#040B24] border border-[#D4A017]/30 rounded-2xl overflow-hidden shadow-2xl glass-panel-gold max-h-[94dvh] sm:max-h-[90vh] flex flex-col dir-rtl touch-pan-y my-auto"
+            className="relative w-full max-w-2xl bg-[#050506] border border-white/14 rounded-2xl overflow-hidden shadow-2xl glass-panel-gold max-h-[94dvh] sm:max-h-[90vh] flex flex-col dir-rtl touch-pan-y my-auto"
           >
             {/* Mobile Drag Down Bar Indicator */}
             <div className="w-12 h-1 bg-white/30 rounded-full mx-auto my-1 sm:hidden shrink-0 cursor-grab active:cursor-grabbing" />
             
             {/* Modal Header */}
-        <div className="flex justify-between items-center px-3.5 sm:px-6 py-3 sm:py-4 border-b border-white/10 bg-[#0D1B56]/50">
-          <div className="flex items-center gap-2 text-[#F0C040] min-w-0">
-            <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-[#F0C040] shrink-0" />
+        <div className="flex justify-between items-center px-3.5 sm:px-6 py-3 sm:py-4 border-b border-white/10 bg-[#222224]/50">
+          <div className="flex items-center gap-2 text-zinc-100 min-w-0">
+            <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100 shrink-0" />
             <span className="font-extrabold text-xs sm:text-base md:text-lg truncate">بوابة التحكم بالأعضاء والأكواد</span>
           </div>
           <button             onClick={onClose}
-            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-white/70 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-white/70 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
@@ -223,12 +223,12 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
         {/* Tab Buttons */}
         <div className="flex border-b border-white/5 bg-black/25 overflow-x-auto no-scrollbar">
           <button             onClick={() => setActiveTab("codes")}
-            className={`flex-1 min-w-[90px] py-2 sm:py-3 text-[10px] sm:text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none border-b-2 cursor-pointer whitespace-nowrap px-1 ${ activeTab === "codes" ? "border-[#D4A017] text-[#F0C040] bg-white/[0.02]" : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+            className={`flex-1 min-w-[90px] py-2 sm:py-3 text-[10px] sm:text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none border-b-2 cursor-pointer whitespace-nowrap px-1 ${ activeTab === "codes" ? "border-white/35 text-zinc-100 bg-white/[0.02]" : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
           >
             📋 الأكواد
           </button>
           <button             onClick={() => setActiveTab("add")}
-            className={`flex-1 min-w-[90px] py-2 sm:py-3 text-[10px] sm:text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none border-b-2 cursor-pointer whitespace-nowrap px-1 ${ activeTab === "add" ? "border-[#D4A017] text-[#F0C040] bg-white/[0.02]" : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+            className={`flex-1 min-w-[90px] py-2 sm:py-3 text-[10px] sm:text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none border-b-2 cursor-pointer whitespace-nowrap px-1 ${ activeTab === "add" ? "border-white/35 text-zinc-100 bg-white/[0.02]" : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
           >
             ➕ إضافة مشترِ
           </button>
@@ -236,7 +236,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
               setActiveTab("analytics_eval");
               loadAnalytics();
             }}
-            className={`flex-1 min-w-[90px] py-2 sm:py-3 text-[10px] sm:text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none border-b-2 cursor-pointer flex items-center justify-center gap-1 whitespace-nowrap px-1 ${ activeTab === "analytics_eval" ? "border-[#D4A017] text-[#F0C040] bg-white/[0.02]" : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+            className={`flex-1 min-w-[90px] py-2 sm:py-3 text-[10px] sm:text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none border-b-2 cursor-pointer flex items-center justify-center gap-1 whitespace-nowrap px-1 ${ activeTab === "analytics_eval" ? "border-white/35 text-zinc-100 bg-white/[0.02]" : "border-transparent text-white/60 hover:text-white hover:bg-white/[0.01]" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
           >
             <BarChart3 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             <span>التحليلات والتقييم</span>
@@ -250,10 +250,10 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           {activeTab === "codes" && (
             <div className="space-y-4">
               {/* Quick Export Box */}
-              <div className="p-4 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+              <div className="p-4 bg-gradient-to-r from-white/5 via-white/3 to-transparent border border-white/14 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
                 <div className="space-y-0.5 text-right w-full sm:w-auto">
-                  <h4 className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
-                    <FileSpreadsheet className="w-4 h-4 text-[#D4A017]" />
+                  <h4 className="text-xs font-bold text-zinc-100 flex items-center gap-1.5">
+                    <FileSpreadsheet className="w-4 h-4 text-zinc-200" />
                     <span>تصدير كافة نصوص ومحتوى الموقع بالكامل (JSON)</span>
                   </h4>
                   <p className="text-[10px] text-white/60">
@@ -262,7 +262,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 </div>
                 <a                   href="/all_website_texts.json"
                   download="all_website_texts.json"
-                  className="px-4 py-2 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shrink-0 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:scale-105 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="px-4 py-2 bg-[#F5F5F7] hover:bg-[#F5F5F7] text-[#050506] font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shrink-0 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:scale-[1.02] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 >
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   <span>تحميل ملف JSON كامل ⚡</span>
@@ -292,7 +292,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                       <div className="space-y-1 w-full sm:w-auto">
                         <div className="flex items-center gap-2">
                           <span className={`font-mono font-bold text-xs sm:text-sm select-all px-2 py-0.5 rounded ${
-                            item.isRevoked ? "bg-red-950 text-red-400 line-through" : "bg-white/10 text-[#F0C040]"
+                            item.isRevoked ? "bg-red-950 text-red-400 line-through" : "bg-white/10 text-zinc-100"
                           }`}>
                             {item.code}
                           </span>
@@ -310,14 +310,14 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
                       <div className="flex items-center gap-1.5 w-full sm:w-auto justify-end border-t sm:border-0 border-white/5 pt-2 sm:pt-0">
                         <button                           onClick={() => handleToggleRevoke(item.code)}
-                          className={`px-2.5 py-1.5 rounded-lg border transition-all motion-reduce:transition-none motion-reduce:transform-none text-xs cursor-pointer flex items-center gap-1 ${ item.isRevoked ? "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400" : "bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                          className={`px-2.5 py-1.5 rounded-lg border transition-all motion-reduce:transition-none motion-reduce:transform-none text-xs cursor-pointer flex items-center gap-1 ${ item.isRevoked ? "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400" : "bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
                           title={item.isRevoked ? "تفعيل الكود مجدداً" : "تعطيل الكود وإلغاء الدخول"}
                         >
                           {item.isRevoked ? <Check className="w-3.5 h-3.5" /> : <Ban className="w-3.5 h-3.5" />}
                           <span>{item.isRevoked ? "تفعيل" : "إلغاء"}</span>
                         </button>
                         <button                           onClick={() => handleDeleteCode(item.code)}
-                          className="px-2.5 py-1.5 bg-white/5 hover:bg-red-500/15 hover:border-red-500/40 text-white/60 hover:text-red-300 rounded-lg border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none text-xs cursor-pointer min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                          className="px-2.5 py-1.5 bg-white/5 hover:bg-red-500/15 hover:border-red-500/40 text-white/60 hover:text-red-300 rounded-lg border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none text-xs cursor-pointer min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                           title="حذف نهائي"
                         >
                           حذف
@@ -333,7 +333,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           {/* TAB 2: ADD NEW BUYER/CODE */}
           {activeTab === "add" && (
             <form onSubmit={handleCreateCode} className="space-y-4">
-              <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl mb-2 text-xs text-[#F0C040] leading-relaxed">
+              <div className="p-4 bg-white/3 border border-white/9 rounded-xl mb-2 text-xs text-zinc-100 leading-relaxed">
                 💡 تكدر توليد كود دخول ذهبي تلقائي للمشتركين الذين اشتروا الدليل يدوياً أو ترغب بمنحهم وصولاً خاصاً.
               </div>
 
@@ -344,7 +344,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   value={newBuyerName}
                   onChange={(e) => setNewBuyerName(e.target.value)}
                   placeholder="أدخل الاسم الثلاثي للمشتري..."
-                  className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white text-xs focus:outline-none focus:border-[#D4A017] min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white text-xs focus:outline-none focus:border-white/35 min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
 
@@ -355,7 +355,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   value={customCode}
                   onChange={(e) => setCustomCode(e.target.value)}
                   placeholder="مثال: ali#gold (أحرف إنجليزية وأرقام فقط)"
-                  className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-[#D4A017] min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-white/35 min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
 
@@ -374,7 +374,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
               {/* Submit */}
               <button                 type="submit"
-                className="w-full py-3 rounded-xl gold-gradient-bg text-[#040B24] font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] transition-transform shadow-lg md:shadow-[#D4A017] shadow-xl/25 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="w-full py-3 rounded-xl gold-gradient-bg text-[#050506] font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] transition-transform shadow-lg md:shadow-black/40 shadow-xl/25 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <Plus className="w-4 h-4" />
                 <span>إنشاء وتوثيق كود الوصول الجديد</span>
@@ -407,7 +407,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
                 <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-center">
                   <span className="text-[10px] text-white/70 block font-semibold">تقييمات المستشار</span>
-                  <span className="text-lg font-extrabold text-[#F0C040] block mt-0.5">
+                  <span className="text-lg font-extrabold text-zinc-100 block mt-0.5">
                     {analytics?.feedback.total || 0}
                   </span>
                 </div>
@@ -457,7 +457,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                       clearAnalyticsData();
                       loadAnalytics();
                     }}
-                    className="text-[10px] text-rose-400 hover:text-rose-300 flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="text-[10px] text-rose-400 hover:text-rose-300 flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                   >
                     <Trash2 className="w-3 h-3" />
                     <span>تصفير السجل</span>
@@ -487,11 +487,11 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
                     <span className="text-white/60 text-[11px]">تمارين منجزة:</span>
-                    <span className="font-bold text-amber-400 font-mono">{analytics?.eventsByType.exercise_completed || 0}</span>
+                    <span className="font-bold text-zinc-100 font-mono">{analytics?.eventsByType.exercise_completed || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
                     <span className="text-white/60 text-[11px]">استفسارات المستشار:</span>
-                    <span className="font-bold text-[#F0C040] font-mono">{analytics?.eventsByType.advisor_prompt_submitted || 0}</span>
+                    <span className="font-bold text-zinc-100 font-mono">{analytics?.eventsByType.advisor_prompt_submitted || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
                     <span className="text-white/60 text-[11px]">إجابات مكتملة:</span>
@@ -511,7 +511,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
                     <span className="text-white/60 text-[11px]">خطط مكتملة 100%:</span>
-                    <span className="font-bold text-[#F0C040] font-mono">{analytics?.eventsByType.plan_completed || 0}</span>
+                    <span className="font-bold text-zinc-100 font-mono">{analytics?.eventsByType.plan_completed || 0}</span>
                   </div>
                 </div>
               </div>
@@ -520,8 +520,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
               <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                   <div className="space-y-0.5">
-                    <h4 className="text-sm font-bold text-[#F0C040] flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-[#F0C040]" />
+                    <h4 className="text-sm font-bold text-zinc-100 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-zinc-100" />
                       <span>مجموعة التقييم المعياري لجودة المستشار (8 حالات & 6 معايير)</span>
                     </h4>
                     <p className="text-[10px] text-white/60">
@@ -531,7 +531,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
                   <button                     onClick={handleRunEvaluation}
                     disabled={isEvaluating}
-                    className="px-4 py-2 rounded-xl gold-gradient-bg text-[#040B24] font-black text-xs flex items-center justify-center gap-1.5 shadow-lg md:shadow-[#D4A017] shadow-xl/20 hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer disabled:opacity-50 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="px-4 py-2 rounded-xl gold-gradient-bg text-[#050506] font-black text-xs flex items-center justify-center gap-1.5 shadow-lg md:shadow-black/40 shadow-xl/20 hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer disabled:opacity-50 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                   >
                     {isEvaluating ? (
                       <>
@@ -587,7 +587,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                             }`}
                           >
                             <button                               onClick={() => setExpandedTestId(isExpanded ? null : report.testCaseId)}
-                              className="w-full p-3 flex items-center justify-between text-right cursor-pointer hover:bg-white/5 transition-colors min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                              className="w-full p-3 flex items-center justify-between text-right cursor-pointer hover:bg-white/5 transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                             >
                               <div className="flex items-center gap-2.5">
                                 {report.passedAll ? (
@@ -609,7 +609,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                                 <span className={`text-xs font-bold px-2 py-0.5 rounded-lg ${
                                   report.overallScore >= 90
                                     ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                                    : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                                    : "bg-white/10 text-zinc-100 border border-white/14"
                                 }`}>
                                   {report.overallScore}/100
                                 </span>

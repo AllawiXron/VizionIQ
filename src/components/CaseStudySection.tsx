@@ -35,12 +35,12 @@ export default function CaseStudySection() {
   };
 
   return (
-    <div className="bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-10 shadow-2xl space-y-8 text-right">
+    <div className="bg-[#171719] border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-xs font-bold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-zinc-100 text-xs font-bold mb-2">
             <Award className="w-3.5 h-3.5" />
             <span>تفكيك التجارب الناجحة • 5-10 Case Studies عراقية</span>
           </div>
@@ -54,7 +54,7 @@ export default function CaseStudySection() {
           {cities.map((city) => (
             <button               key={city}
               onClick={() => setSelectedCity(city)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap border ${ selectedCity === city ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap border ${ selectedCity === city ? "bg-[#F5F5F7] text-[#050506] border-white/35 font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
             >
               {city}
             </button>
@@ -69,19 +69,19 @@ export default function CaseStudySection() {
           return (
             <FadeInUp key={cs.id} delay={idx * 0.08}>
               <div
-                className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl overflow-hidden transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-lg"
+                className="bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/10 hover:border-white/18 rounded-3xl overflow-hidden transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-lg"
               >
               {/* Card Title Banner (Toggle Header) */}
               <button                 onClick={() => setExpandedId(isExpanded ? null : cs.id)}
-                className="w-full p-6 text-right flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02] min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="w-full p-6 text-right flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 text-[#F0C040] text-[10px] font-bold">
+                    <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/18 text-zinc-100 text-[10px] font-bold">
                       {cs.category}
                     </span>
                     <span className="flex items-center gap-1 text-xs text-white/60">
-                      <MapPin className="w-3 h-3 text-[#D4A017]" />
+                      <MapPin className="w-3 h-3 text-zinc-200" />
                       {cs.city}
                     </span>
                   </div>
@@ -106,8 +106,8 @@ export default function CaseStudySection() {
               {isExpanded && (
                 <div className="p-6 md:p-8 border-t border-white/10 space-y-6 bg-black/20 animate-[fadeIn_0.3s_ease-out]">
                   {isFreeTrial && idx >= 1 ? (
-                    <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] via-[#121A3D] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl">
-                      <div className="w-12 h-12 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+                    <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1d1d1f] via-[#212123] to-[#050506] border border-white/18 text-center space-y-4 shadow-2xl">
+                      <div className="w-12 h-12 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
                         <Crown className="w-6 h-6" />
                       </div>
                       <div className="space-y-1 max-w-md mx-auto">
@@ -117,9 +117,9 @@ export default function CaseStudySection() {
                         </p>
                       </div>
                       <button                         onClick={triggerUpgradeModal}
-                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs sm:text-sm shadow-xl hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                       >
-                        <Lock className="w-4 h-4 text-[#040B24]" />
+                        <Lock className="w-4 h-4 text-[#050506]" />
                         <span>فتح دراسة الحالة كاملة مع السكريبتات ⚡</span>
                       </button>
                     </div>
@@ -167,7 +167,7 @@ export default function CaseStudySection() {
 
                   {/* Offer Stack */}
                   <div className="space-y-2">
-                    <span className="text-xs font-bold text-[#F0C040]">حزمة العرض المركب (Offer Stack):</span>
+                    <span className="text-xs font-bold text-zinc-100">حزمة العرض المركب (Offer Stack):</span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {cs.theOfferStack.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-2 bg-white/5 p-2.5 rounded-xl border border-white/5 text-xs text-white/90">
@@ -180,7 +180,7 @@ export default function CaseStudySection() {
 
                   {/* Ad Creative Hook */}
                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-1">
-                    <span className="text-xs font-bold text-[#F0C040] block">🎬 الخطاف الإعلاني الفائز (Hook):</span>
+                    <span className="text-xs font-bold text-zinc-100 block">🎬 الخطاف الإعلاني الفائز (Hook):</span>
                     <p className="text-xs text-white/80 font-mono leading-relaxed">{cs.adCreativeHook}</p>
                   </div>
 
@@ -193,7 +193,7 @@ export default function CaseStudySection() {
                       </span>
 
                       <button                         onClick={() => handleCopy(cs.whatsappScriptSnippet, cs.id)}
-                        className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                       >
                         {copiedScript === cs.id ? (
                           <>

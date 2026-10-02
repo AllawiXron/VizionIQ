@@ -64,13 +64,13 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
   };
 
   return (
-    <div className="space-y-3.5 my-1 text-slate-100 text-[15px] sm:text-[16px] leading-[1.75] sm:leading-[1.85] break-words [overflow-wrap:anywhere]">
+    <div className="space-y-3.5 my-1 text-zinc-100 text-[15px] sm:text-[16px] leading-[1.75] sm:leading-[1.85] break-words [overflow-wrap:anywhere]">
 
       {/* 1. Diagnosis Overview */}
       {data.diagnosis && (
-        <div className="p-3 sm:p-4 rounded-xl bg-[#0F1735]/80 border border-amber-500/25 sm:border-amber-500/30">
-          <div className="flex items-center gap-1.5 mb-1.5 text-amber-400 font-bold text-xs sm:text-sm">
-            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-3 sm:p-4 rounded-xl bg-[#1d1d1f]/80 border border-white/11 sm:border-white/14">
+          <div className="flex items-center gap-1.5 mb-1.5 text-zinc-100 font-bold text-xs sm:text-sm">
+            <Sparkles className="w-4 h-4 text-zinc-100 shrink-0" />
             <span>1. التشخيص الشامل لواقع المشروع:</span>
           </div>
           <p className="text-white/90 leading-relaxed text-xs sm:text-sm whitespace-pre-line">
@@ -81,9 +81,9 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 2. Key Metrics Analysis */}
       {data.keyMetrics && (
-        <div className="p-3 sm:p-3.5 rounded-xl bg-[#0A122E]/80 border border-white/10">
-          <div className="flex items-center gap-1.5 mb-1.5 text-sky-400 font-bold text-xs sm:text-sm">
-            <TrendingUp className="w-4 h-4 text-sky-400 shrink-0" />
+        <div className="p-3 sm:p-3.5 rounded-xl bg-[#171719]/80 border border-white/10">
+          <div className="flex items-center gap-1.5 mb-1.5 text-zinc-300 font-bold text-xs sm:text-sm">
+            <TrendingUp className="w-4 h-4 text-zinc-300 shrink-0" />
             <span>2. قراءة الأرقام والمؤشرات الحيوية:</span>
           </div>
           <p className="text-white/80 leading-relaxed text-xs whitespace-pre-line">
@@ -94,7 +94,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 3. Probable Causes */}
       {data.probableCauses.length > 0 && (
-        <div className="p-3 sm:p-3.5 rounded-xl bg-[#0A122E]/80 border border-white/10">
+        <div className="p-3 sm:p-3.5 rounded-xl bg-[#171719]/80 border border-white/10">
           <div className="flex items-center gap-1.5 mb-1.5 text-rose-400 font-bold text-xs sm:text-sm">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
             <span>3. الأسباب الجذرية المحتملة:</span>
@@ -112,7 +112,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 4. First 3 Steps within 48 Hours */}
       {data.next48HoursSteps.length > 0 && (
-        <div className="p-3.5 rounded-xl bg-slate-900/90 border border-emerald-500/30 bg-emerald-950/10">
+        <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-emerald-500/30 bg-emerald-950/10">
           <div className="flex items-center gap-2 mb-2 text-emerald-400 font-bold text-xs sm:text-sm">
             <Clock className="w-4 h-4 text-emerald-400" />
             <span>4. أول 3 خطوات للبدء خلال 48 ساعة:</span>
@@ -121,7 +121,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
             {data.next48HoursSteps.map((step, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-2.5 p-2 rounded-lg bg-slate-950/60 border border-emerald-500/20 text-xs text-slate-200"
+                className="flex items-start gap-2.5 p-2 rounded-lg bg-zinc-950/60 border border-emerald-500/20 text-xs text-zinc-200"
               >
                 <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0 text-[11px]">
                   {idx + 1}
@@ -135,15 +135,15 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 5. Ready-to-use Script / SOP */}
       {data.readyScriptOrSOP && (
-        <div className="p-3.5 rounded-xl bg-[#050C22] border border-amber-500/25">
+        <div className="p-3.5 rounded-xl bg-[#101012] border border-white/11">
           <div className="flex items-center justify-between gap-2 mb-2">
-            <div className="flex items-center gap-2 text-amber-300 font-bold text-xs sm:text-sm">
-              <MessageSquare className="w-4 h-4 text-amber-400" />
+            <div className="flex items-center gap-2 text-zinc-100 font-bold text-xs sm:text-sm">
+              <MessageSquare className="w-4 h-4 text-zinc-100" />
               <span>5. سكربت المحادثة / الإجراء الجاهز للنسخ:</span>
             </div>
             <button               type="button"
               onClick={() => handleCopyScript(data.readyScriptOrSOP)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-amber-300 text-xs font-semibold transition cursor-pointer min-h-[44px] min-w-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-zinc-100 text-xs font-semibold transition cursor-pointer min-h-[44px] min-w-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               {copiedScript ? (
                 <>
@@ -158,7 +158,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
               )}
             </button>
           </div>
-          <div className="p-3 bg-[#030614] rounded-lg border border-white/5 text-[14px] sm:text-[15px] text-amber-100/90 leading-[1.8] font-sans whitespace-pre-line select-all overflow-x-auto max-w-full">
+          <div className="p-3 bg-[#030304] rounded-lg border border-white/5 text-[14px] sm:text-[15px] text-zinc-100/90 leading-[1.8] font-sans whitespace-pre-line select-all overflow-x-auto max-w-full">
             {data.readyScriptOrSOP}
           </div>
         </div>
@@ -167,24 +167,24 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
       {/* 6. Metric to Track & 7. Recommended Chapter */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {data.metricToTrack && (
-          <div className="p-3 rounded-xl bg-[#060D24] border border-white/10">
-            <div className="flex items-center gap-1.5 text-purple-300 font-bold text-xs mb-1">
-              <BarChart3 className="w-4 h-4 text-purple-400" />
+          <div className="p-3 rounded-xl bg-[#111113] border border-white/10">
+            <div className="flex items-center gap-1.5 text-zinc-200 font-bold text-xs mb-1">
+              <BarChart3 className="w-4 h-4 text-zinc-300" />
               <span>6. المقياس الواجب متابعته:</span>
             </div>
-            <p className="text-[14px] text-slate-300 leading-[1.75]">
+            <p className="text-[14px] text-zinc-300 leading-[1.75]">
               {data.metricToTrack}
             </p>
           </div>
         )}
 
         {data.recommendedChapterOrTool && data.recommendedChapterOrTool.chapterTitle && (
-          <div className="p-3 rounded-xl bg-[#060D24] border border-white/10">
-            <div className="flex items-center gap-1.5 text-amber-400 font-bold text-xs mb-1">
+          <div className="p-3 rounded-xl bg-[#111113] border border-white/10">
+            <div className="flex items-center gap-1.5 text-zinc-100 font-bold text-xs mb-1">
               <BookOpen className="w-4 h-4" />
               <span>7. الفصل المقترح:</span>
             </div>
-            <p className="text-[14px] text-slate-300 leading-[1.75]">
+            <p className="text-[14px] text-zinc-300 leading-[1.75]">
               {data.recommendedChapterOrTool.chapterTitle}
             </p>
           </div>
@@ -193,10 +193,10 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* Optional Clarification Prompt */}
       {data.clarificationQuestion && (
-        <div className="p-3 rounded-xl bg-blue-950/20 border border-blue-500/30 flex items-start gap-2.5 text-[14px] text-blue-200 leading-[1.7]">
-          <HelpCircle className="w-4 h-4 text-blue-400 shrink-0 mt-1" />
+        <div className="p-3 rounded-xl bg-zinc-900/20 border border-white/14 flex items-start gap-2.5 text-[14px] text-zinc-200 leading-[1.7]">
+          <HelpCircle className="w-4 h-4 text-zinc-300 shrink-0 mt-1" />
           <div>
-            <span className="font-bold block mb-0.5 text-xs text-blue-300">سؤال توضيحي من المستشار:</span>
+            <span className="font-bold block mb-0.5 text-xs text-zinc-200">سؤال توضيحي من المستشار:</span>
             <span>{data.clarificationQuestion}</span>
           </div>
         </div>

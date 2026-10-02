@@ -53,12 +53,12 @@ export default function SwipeFilesDrawer() {
   };
 
   return (
-    <div className="bg-[#0A122E] border border-[#D4A017]/30 rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
+    <div className="bg-[#171719] border border-white/14 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-xs font-bold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-zinc-100 text-xs font-bold mb-2">
             <FolderDown className="w-3.5 h-3.5" />
             <span>خزانة الموارد وسوايب فايلز • Swipe Files & Templates</span>
           </div>
@@ -73,7 +73,7 @@ export default function SwipeFilesDrawer() {
             placeholder="بحث في السكريبتات والنصوص..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 focus:border-[#D4A017] rounded-xl px-4 py-2 pr-9 text-xs text-white placeholder-white/40 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="w-full bg-white/5 border border-white/10 focus:border-white/35 rounded-xl px-4 py-2 pr-9 text-xs text-white placeholder-white/40 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
           />
           <Search className="w-4 h-4 text-white/60 absolute right-3 top-2.5" />
         </div>
@@ -84,7 +84,7 @@ export default function SwipeFilesDrawer() {
         {categories.map((cat) => (
           <button             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ selectedCategory === cat.id ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ selectedCategory === cat.id ? "bg-[#F5F5F7] text-[#050506] border-white/35 font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
           >
             {cat.label}
           </button>
@@ -98,11 +98,11 @@ export default function SwipeFilesDrawer() {
           return (
             <div
               key={sf.id}
-              className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/40 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 relative overflow-hidden"
+              className="bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/10 hover:border-white/18 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 relative overflow-hidden"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#F0C040] font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-zinc-100 font-bold">
                     {sf.category}
                   </span>
                   {sf.dialect && (
@@ -114,7 +114,7 @@ export default function SwipeFilesDrawer() {
 
                 <h4 className="text-base font-bold text-white leading-snug flex items-center justify-between">
                   <span>{sf.title}</span>
-                  {isLocked && <Lock className="w-4 h-4 text-[#F0C040]" />}
+                  {isLocked && <Lock className="w-4 h-4 text-zinc-100" />}
                 </h4>
                 <p className="text-xs text-white/60 leading-relaxed">
                   {sf.description}
@@ -126,14 +126,14 @@ export default function SwipeFilesDrawer() {
                     {sf.content}
                   </div>
                 ) : (
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-2">
+                  <div className="p-4 rounded-2xl bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/18 text-center space-y-2">
                     <p className="text-xs text-white/60 blur-[3px] select-none line-clamp-2">
                       {sf.content}
                     </p>
                     <div className="pt-1">
-                      <span className="text-xs font-black text-[#F0C040] block mb-2">🔒 سكريبت سوايب مدفوع ومحمي بالكامل</span>
+                      <span className="text-xs font-black text-zinc-100 block mb-2">🔒 سكريبت سوايب مدفوع ومحمي بالكامل</span>
                       <button                         onClick={triggerUpgradeModal}
-                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                       >
                         <Crown className="w-3.5 h-3.5" />
                         <span>ترقية الحساب ونسخ السكريبت ⚡</span>
@@ -147,7 +147,7 @@ export default function SwipeFilesDrawer() {
               {!isLocked && (
                 <div className="flex items-center gap-3 pt-2 border-t border-white/10">
                   <button                     onClick={() => handleCopy(sf.content, sf.id)}
-                    className="flex-1 py-2.5 bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="flex-1 py-2.5 bg-[#F5F5F7] hover:bg-[#F5F5F7] text-[#050506] font-black rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                   >
                     {copiedId === sf.id ? (
                       <>
@@ -163,7 +163,7 @@ export default function SwipeFilesDrawer() {
                   </button>
 
                   <button                     onClick={() => handleDownloadTxt(sf)}
-                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs flex items-center justify-center cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs flex items-center justify-center cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                     title="تنزيل كملف نصي .txt"
                   >
                     <Download className="w-4 h-4" />

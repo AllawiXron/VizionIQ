@@ -61,18 +61,18 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="w-full max-w-2xl bg-gradient-to-b from-[#0F1735] via-[#0A122E] to-[#040B24] border border-[#D4A017]/40 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[90vh] my-auto"
+          className="w-full max-w-2xl bg-gradient-to-b from-[#1d1d1f] via-[#171719] to-[#050506] border border-white/18 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[90vh] my-auto"
         >
           {/* Header */}
-          <div className="px-3.5 sm:px-5 py-3 sm:py-4 bg-gradient-to-r from-[#121A3D] via-[#0F1735] to-[#0B102B] border-b border-[#D4A017]/30 flex items-center justify-between shrink-0">
+          <div className="px-3.5 sm:px-5 py-3 sm:py-4 bg-gradient-to-r from-[#212123] via-[#1d1d1f] to-[#161618] border-b border-white/14 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#D4A017] to-amber-600 p-[1px] flex items-center justify-center shadow-lg md:shadow-[#D4A017] shadow-xl/20 shrink-0">
-                <div className="w-full h-full bg-[#040B24] rounded-[10px] sm:rounded-[11px] flex items-center justify-center text-[#F0C040]">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#F5F5F7] to-zinc-200 p-[1px] flex items-center justify-center shadow-lg md:shadow-black/40 shadow-xl/20 shrink-0">
+                <div className="w-full h-full bg-[#050506] rounded-[10px] sm:rounded-[11px] flex items-center justify-center text-zinc-100">
                   <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] sm:text-xs font-black text-[#F0C040] uppercase tracking-wider block truncate">
+                <span className="text-[10px] sm:text-xs font-black text-zinc-100 uppercase tracking-wider block truncate">
                   ترقية الحساب • Upgrade Access
                 </span>
                 <span className="text-xs sm:text-sm font-bold text-white truncate block">النسخة المدفوعة الكاملة</span>
@@ -80,7 +80,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             </div>
 
             <button               onClick={onClose}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-white/70 hover:text-rose-400 transition-colors border border-white/10 cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-white/70 hover:text-rose-400 transition-colors border border-white/10 cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -90,8 +90,8 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
           <div className="p-3 sm:p-8 overflow-y-auto space-y-4 sm:space-y-6">
             {/* Title & Badge */}
             <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-[10px] sm:text-xs font-black text-[#F0C040]">
-                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#F0C040]" />
+              <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/8 border border-white/18 text-[10px] sm:text-xs font-black text-zinc-100">
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-zinc-100" />
                 <span>اشتراك لمرة واحدة مدى الحياة • بدون رسوم شهرية</span>
               </div>
               <h3 className="text-base sm:text-2xl font-black text-white leading-tight">
@@ -105,7 +105,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             {/* TWO SUBSCRIPTION TIERS CARDS */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-right">
               {/* Standard Tier */}
-              <div className="bg-[#040B24] border border-white/15 rounded-2xl p-3 sm:p-4 space-y-2.5 sm:space-y-3 flex flex-col justify-between">
+              <div className="bg-[#050506] border border-white/15 rounded-2xl p-3 sm:p-4 space-y-2.5 sm:space-y-3 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                     <div>
@@ -116,7 +116,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                     </div>
                     <div className="text-left">
                       <span className="text-xl font-black text-white font-mono block">29,000</span>
-                      <span className="text-[10px] text-[#F0C040] font-bold block">د.ع • مدى الحياة</span>
+                      <span className="text-[10px] text-zinc-100 font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>
 
@@ -146,44 +146,44 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               </div>
 
               {/* VIP Tier */}
-              <div className="bg-gradient-to-b from-[#121C42] to-[#080E2B] border-2 border-[#D4A017] rounded-2xl p-4 space-y-3 flex flex-col justify-between shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 bg-[#D4A017] text-[#040B24] font-black text-[9px] px-2.5 py-0.5 rounded-br-lg">
+              <div className="bg-gradient-to-b from-[#222224] to-[#131315] border-2 border-white/35 rounded-2xl p-4 space-y-3 flex flex-col justify-between shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 bg-[#F5F5F7] text-[#050506] font-black text-[9px] px-2.5 py-0.5 rounded-br-lg">
                   👑 الموصى به - أسرع نتيجة
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between border-b border-[#D4A017]/30 pb-2.5 pt-2">
+                  <div className="flex items-center justify-between border-b border-white/14 pb-2.5 pt-2">
                     <div>
-                      <span className="text-[10px] bg-[#D4A017]/20 text-[#F0C040] font-bold px-2 py-0.5 rounded-full block w-fit mb-1 border border-[#D4A017]/40">
+                      <span className="text-[10px] bg-white/10 text-zinc-100 font-bold px-2 py-0.5 rounded-full block w-fit mb-1 border border-white/18">
                         الاشتراك الكامل VIP
                       </span>
-                      <h4 className="text-base font-black text-[#F0C040]">اشتراك VIP</h4>
+                      <h4 className="text-base font-black text-zinc-100">اشتراك VIP</h4>
                     </div>
                     <div className="text-left">
-                      <span className="text-2xl font-black text-[#F0C040] font-mono block">49,000</span>
-                      <span className="text-[10px] text-amber-200 font-bold block">د.ع • مدى الحياة</span>
+                      <span className="text-2xl font-black text-zinc-100 font-mono block">49,000</span>
+                      <span className="text-[10px] text-zinc-100 font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-amber-100/90 font-bold mt-2 mb-3 leading-relaxed">
+                  <p className="text-[11px] text-zinc-100/90 font-bold mt-2 mb-3 leading-relaxed">
                     إذا تريد أسرع نتيجة وأقل أخطاء وتوجيه مباشر خطوة بخطوة.
                   </p>
 
                   <ul className="space-y-2 text-[11px] text-white">
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
                       <span><strong>كل مميزات الاعتيادي</strong> + المتابعة المباشرة وياي.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
                       <span>مراجعة إعلاناتك وإعطاء ملاحظات فورية عليها.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
                       <span>مساعدتك باختيار المنتج، الاستهداف والعروض.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
                       <span>توجيه مخصص لمشروعك + مستشار مستشار ذكي (Vizion AI).</span>
                     </li>
                   </ul>
@@ -192,10 +192,10 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             </div>
 
             {/* Upgrade Password Input Form */}
-            <form onSubmit={handleUpgrade} className="bg-gradient-to-r from-[#0F1735] via-[#141E47] to-[#0F1735] p-5 rounded-2xl border border-[#D4A017]/40 space-y-4 shadow-xl">
+            <form onSubmit={handleUpgrade} className="bg-gradient-to-r from-[#1d1d1f] via-[#252527] to-[#1d1d1f] p-5 rounded-2xl border border-white/18 space-y-4 shadow-xl">
               <div className="space-y-1 text-right">
-                <label className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
-                  <KeyRound className="w-4 h-4 text-[#F0C040]" />
+                <label className="text-xs font-bold text-zinc-100 flex items-center gap-1.5">
+                  <KeyRound className="w-4 h-4 text-zinc-100" />
                   <span>تمتلك رمز وصول مدفوع؟ أدخله هنا للترقية الفورية:</span>
                 </label>
                 <p className="text-[11px] text-white/70">سيتم فتح جميع الاستراتيجيات فوراً ودون الحاجة لإعادة التسجيل.</p>
@@ -206,11 +206,11 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
                   placeholder="أدخل رمز الوصول الخاص بك..."
-                  className="flex-1 px-4 py-3 bg-[#040B24] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-[#D4A017] outline-none text-center sm:text-right min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="flex-1 px-4 py-3 bg-[#050506] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-white/35 outline-none text-center sm:text-right min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
 
                 <button                   type="submit"
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs sm:text-sm shadow-lg md:shadow-black/40 shadow-xl/25 hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 >
                   ترقية الحساب الآن ⚡
                 </button>
@@ -232,7 +232,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             </form>
 
             {/* Direct WhatsApp Purchase Contact */}
-            <div className="p-4 rounded-2xl bg-[#040B24] border border-[#D4A017]/30 text-center space-y-2">
+            <div className="p-4 rounded-2xl bg-[#050506] border border-white/14 text-center space-y-2">
               <p className="text-xs text-white/90 font-bold">
                 ما عندك رمز تفعيل وتريد تشترك فوراً؟ (14,000 د.ع للمستشار الذكي)
               </p>
@@ -240,9 +240,9 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                 href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition w-full cursor-pointer shadow-lg active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition w-full cursor-pointer shadow-lg active:scale-[0.97]"
               >
-                <Sparkles className="w-4 h-4 text-amber-300" />
+                <Sparkles className="w-4 h-4 text-zinc-100" />
                 <span>تواصل معنا عبر الواتساب للاشتراك والتفعيل الفوري (07757851379) 💬</span>
               </a>
             </div>

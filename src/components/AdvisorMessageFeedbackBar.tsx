@@ -94,7 +94,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             onClick={handleThumbsUp}
             title="إجابة مفيدة وعملية بالسوق العراقي"
             aria-label="إجابة مفيدة"
-            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
+            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
               currentRating === "helpful"
                 ? "bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-sm ring-1 ring-emerald-400/40"
                 : "bg-white/5 hover:bg-emerald-500/15 border-white/10 text-white/70 hover:text-emerald-300"
@@ -110,7 +110,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             onClick={handleThumbsDown}
             title="تحتاج تحسين أو غير دقيقة"
             aria-label="تحتاج تحسين"
-            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 ${
+            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 ${
               currentRating === "unhelpful"
                 ? "bg-rose-500/25 border-rose-400 text-rose-300 shadow-sm ring-1 ring-rose-400/40"
                 : "bg-white/5 hover:bg-rose-500/15 border-white/10 text-white/70 hover:text-rose-300"
@@ -126,16 +126,16 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             onClick={onCopy}
             title="نسخ نص الإجابة كاملاً"
             aria-label="نسخ الرد"
-            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] ${
+            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
               isCopied
-                ? "bg-amber-500/20 border-amber-400 text-amber-300"
+                ? "bg-white/10 border-white/35 text-zinc-100"
                 : "bg-white/5 hover:bg-white/10 border-white/10 text-white/70 hover:text-white"
             }`}
           >
             {isCopied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-amber-400" />
-                <span className="text-amber-300 font-bold">تم النسخ</span>
+                <Check className="w-3.5 h-3.5 text-zinc-100" />
+                <span className="text-zinc-100 font-bold">تم النسخ</span>
               </>
             ) : (
               <>
@@ -179,7 +179,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
 
       {/* Unhelpful Reasons Picker (Tailored to Iraqi Market) */}
       {currentRating === "unhelpful" && isPickerExpanded && (
-        <div className="mt-2.5 p-3 rounded-xl bg-[#03081E] border border-rose-500/30 text-slate-200 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="mt-2.5 p-3 rounded-xl bg-[#070708] border border-rose-500/30 text-zinc-200 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="flex items-center justify-between text-rose-300 font-bold text-[11px] sm:text-xs">
             <div className="flex items-center gap-1.5">
               <MessageSquareHeart className="w-4 h-4 text-rose-400 shrink-0" />
@@ -204,10 +204,10 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
                   key={r.id}
                   type="button"
                   onClick={() => handleSelectReason(r.label)}
-                  className={`px-2.5 py-1.5 rounded-lg text-right text-[11px] sm:text-xs font-medium border transition-all flex items-center gap-2 cursor-pointer min-h-[36px] active:scale-95 ${
+                  className={`px-2.5 py-1.5 rounded-lg text-right text-[11px] sm:text-xs font-medium border transition-all flex items-center gap-2 cursor-pointer min-h-[36px] active:scale-[0.97] ${
                     isSelected
                       ? "bg-rose-500/30 border-rose-400 text-white font-bold shadow-sm"
-                      : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-300 hover:text-white"
+                      : "bg-white/5 hover:bg-white/10 border-white/10 text-zinc-300 hover:text-white"
                   }`}
                 >
                   <span className="text-sm shrink-0">{r.icon}</span>
@@ -223,7 +223,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
               <button
                 type="button"
                 onClick={() => setShowCustomInput(true)}
-                className="text-[11px] text-amber-300 hover:text-amber-200 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-[11px] text-zinc-100 hover:text-zinc-100 hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>+ إضافة ملاحظة أو تفاصيل أخرى</span>
               </button>
@@ -241,7 +241,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
                   value={customText}
                   onChange={(e) => setCustomText(e.target.value)}
                   placeholder="اكتب ملاحظتك لتحسين الإجابة للسوق العراقي..."
-                  className="flex-1 px-3 py-1.5 bg-[#081030] border border-white/20 rounded-lg text-white text-xs placeholder-white/40 focus:border-[#D4A017] outline-none"
+                  className="flex-1 px-3 py-1.5 bg-[#151517] border border-white/20 rounded-lg text-white text-xs placeholder-white/40 focus:border-white/35 outline-none"
                   autoFocus
                 />
                 <button

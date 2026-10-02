@@ -3,11 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { Menu, X, ShieldAlert, Settings, LogOut, Flame, Bot, Sparkles, Crown } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
 import { isFreeTrialUser, isVipUser } from "./LockScreen";
 import { SoundToggleButton } from "./SoundToggleButton";
+import { Magnetic } from "./ui/Motion";
+import { SPRING, SPRING_SNAPPY } from "../lib/motion";
 
 interface NavbarProps {
   activeSection: string;
@@ -20,6 +23,9 @@ interface NavbarProps {
   isMoreOpen?: boolean;
 }
 
+/** Distance (px) over which the bar condenses into the floating capsule. */
+const CONDENSE_DISTANCE = 140;
+
 export default function Navbar({
   activeSection,
   onLogout,
@@ -31,7 +37,6 @@ export default function Navbar({
   isMoreOpen = false
 }: NavbarProps) {
   const [internalOpen, setInternalOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const isMenuOpen = onOpenMore ? isMoreOpen : internalOpen;
   const toggleMenu = () => {
@@ -49,18 +54,20 @@ export default function Navbar({
     setInternalOpen(false);
   };
 
-  // Detect scroll to style navbar background
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Glass morphing: one continuous 0 → 1 progress drives every dimension of the bar.
+  const reduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+  const rawProgress = useTransform(scrollY, [0, CONDENSE_DISTANCE], [0, 1], { clamp: true });
+  const smoothProgress = useSpring(rawProgress, { stiffness: 320, damping: 38, mass: 0.6 });
+  const progress = reduceMotion ? rawProgress : smoothProgress;
+
+  const barMaxWidth = useTransform(progress, (v) => `min(${Math.round(1280 - 200 * v)}px, calc(100% - ${Math.round(20 * v)}px))`);
+  const barOffset = useTransform(progress, [0, 1], [0, 10]);
+  const barHeight = useTransform(progress, [0, 1], [64, 56]);
+  const barRadius = useTransform(progress, [0, 1], [0, 22]);
+  const glassOpacity = useTransform(progress, [0, 0.85], [0, 1]);
+  const hairlineOpacity = useTransform(progress, [0, 0.4], [1, 0]);
+  const logoScale = useTransform(progress, [0, 1], [1, 0.94]);
 
   const handleScrollTo = (id: string) => {
     closeMenu();
@@ -93,84 +100,106 @@ export default function Navbar({
     { label: "١١ متقدم", id: "ch11" }
   ];
 
+  const desktopLinks = [
+    { id: "hero-section", label: "الرئيسية", active: activeSection === "hero-section" || !activeSection },
+    {
+      id: "contents-section",
+      label: "مسار الفصول (٤ مراحل)",
+      active:
+        activeSection === "contents-section" ||
+        activeSection === "chapters-grid-section" ||
+        activeSection.startsWith("chapter") ||
+        activeSection.startsWith("ch")
+    },
+    { id: "vizion-growth-suite", label: "حقيبة الأدوات (١٣ أداة)", active: activeSection === "vizion-growth-suite" },
+    { id: "elite-secrets-section", label: "أسرار السوق", active: activeSection === "elite-secrets-section" }
+  ];
+
+  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]";
+
   return (
     <>
-      <nav
-        className={`fixed top-0 inset-x-0 h-16 z-40 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 border-b ${
-          scrolled
-            ? "bg-[#040B24]/85 backdrop-blur-2xl border-[#D4A017]/30 md:shadow-[0_10px_30px_rgba(4,11,36,0.8)] shadow-xl"
-            : "bg-[#040B24]/40 backdrop-blur-md border-white/5"
-        }`}
+      <motion.nav
         id="main-navbar"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ ...SPRING, delay: 0.06, opacity: { duration: 0.4, delay: 0.06 } }}
+        className="fixed top-0 inset-x-0 z-40 pointer-events-none safe-area-top"
       >
-        <div className="w-full max-w-7xl mx-auto h-full px-2.5 sm:px-6 flex items-center justify-between">
-          
+        <motion.div
+          style={{ maxWidth: barMaxWidth, marginTop: barOffset, height: barHeight, borderRadius: barRadius }}
+          className="pointer-events-auto relative mx-auto"
+        >
+          {/* Floating glass layer: fades in as the bar condenses (blur stays constant, only opacity animates). */}
+          <motion.div aria-hidden="true" style={{ opacity: glassOpacity }} className="absolute inset-0 rounded-[inherit] glass-floating glass-edge" />
+          {/* Resting state: a single hairline under a transparent bar. */}
+          <motion.div aria-hidden="true" style={{ opacity: hairlineOpacity }} className="absolute inset-x-0 bottom-0 vz-hairline" />
+
+          <div className="relative w-full h-full px-2.5 sm:px-5 flex items-center justify-between gap-3">
+
           {/* Logo Brand: Clear Vizion brand */}
-          <button             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-2 group cursor-pointer select-none text-right shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+          <motion.button
+            style={{ scale: logoScale }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className={`flex items-center gap-2.5 group cursor-pointer select-none text-right shrink-0 min-h-[44px] min-w-[44px] rounded-full origin-right active:opacity-70 transition-opacity ${focusRing}`}
             aria-label="فيزيون - الصفحة الرئيسية"
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#D4A017]/25 to-[#D4A017]/5 border border-[#D4A017]/40 flex items-center justify-center text-sm sm:text-base md:shadow-[0_0_12px_rgba(212,160,23,0.25)] shadow-xl group-hover:scale-105 transition-transform shrink-0">
-              ⚡
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[11px] bg-gradient-to-b from-white to-zinc-300 flex items-center justify-center text-[#050506] shadow-[inset_0_1px_0_#fff,0_4px_14px_-4px_rgba(255,255,255,0.25)] shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.4} />
             </div>
             <div className="flex flex-col text-right leading-none">
-              <span className="text-white font-black text-xs sm:text-sm md:text-base tracking-tight group-hover:text-[#F0C040] transition-colors flex items-center gap-1.5">
+              <span className="text-white font-black text-xs sm:text-sm md:text-base tracking-tight flex items-center gap-1.5">
                 <span>فيزيون</span>
-                <span className="text-[#F0C040] text-[10px] sm:text-xs font-black font-mono tracking-wider">VIZION</span>
+                <span className="text-white/45 text-[10px] sm:text-xs font-bold font-mono tracking-[0.18em]">VIZION</span>
               </span>
-              <span className="text-[9px] text-white/70 font-normal hidden sm:inline-block tracking-wide mt-0.5">
+              <span className="text-[9px] text-white/50 font-normal hidden sm:inline-block tracking-wide mt-1">
                 منظومة التجارة والنمو
               </span>
             </div>
-          </button>
+          </motion.button>
 
-          {/* Desktop Navigation Links - Clean, Elegant & Focused */}
-          <div className="hidden lg:flex items-center gap-1.5 xl:gap-2">
-            <button               onClick={() => handleScrollTo("hero-section")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ activeSection === "hero-section" || !activeSection ? "text-[#F0C040] bg-[#D4A017]/15 border border-[#D4A017]/30" : "text-white/70 hover:text-white hover:bg-white/[0.04]" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-            >
-              الرئيسية
-            </button>
-
-            <button               onClick={() => handleScrollTo("contents-section")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ activeSection === "contents-section" || activeSection === "chapters-grid-section" || activeSection.startsWith("chapter") || activeSection.startsWith("ch") ? "text-[#F0C040] bg-[#D4A017]/15 border border-[#D4A017]/30" : "text-white/70 hover:text-white hover:bg-white/[0.04]" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-            >
-              مسار الفصول (٤ مراحل)
-            </button>
-
-            <button               onClick={() => handleScrollTo("vizion-growth-suite")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ activeSection === "vizion-growth-suite" ? "text-[#F0C040] bg-[#D4A017]/15 border border-[#D4A017]/30" : "text-white/70 hover:text-white hover:bg-white/[0.04]" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-            >
-              حقيبة الأدوات (١٣ أداة)
-            </button>
-
-            <button               onClick={() => handleScrollTo("elite-secrets-section")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ activeSection === "elite-secrets-section" ? "text-[#F0C040] bg-[#D4A017]/15 border border-[#D4A017]/30" : "text-white/70 hover:text-white hover:bg-white/[0.04]" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-            >
-              أسرار السوق
-            </button>
+          {/* Desktop Navigation Links: segmented control with a sliding glass pill */}
+          <div className="hidden lg:flex items-center gap-0.5 p-1 rounded-full bg-white/[0.035] border border-white/[0.06]">
+            {desktopLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => handleScrollTo(link.id)}
+                aria-current={link.active ? "true" : undefined}
+                className={`relative px-3.5 xl:px-4 min-h-[38px] rounded-full text-xs font-bold cursor-pointer transition-colors duration-300 ${
+                  link.active ? "text-white" : "text-white/55 hover:text-white"
+                } ${focusRing}`}
+              >
+                {link.active && (
+                  <motion.span
+                    layoutId="navbar-active-pill"
+                    transition={SPRING_SNAPPY}
+                    className="absolute inset-0 rounded-full bg-gradient-to-b from-white/[0.14] to-white/[0.06] border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_14px_-6px_rgba(0,0,0,0.6)]"
+                  />
+                )}
+                <span className="relative">{link.label}</span>
+              </button>
+            ))}
           </div>
 
           {/* User Controls and Action Buttons */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-1.5 xl:gap-2">
             {/* Optional sound feedback toggle */}
             <SoundToggleButton variant="compact" />
 
-            {/* AI Advisor Button */}
-            {onOpenAdvisor && (
-              <button                 onClick={onOpenAdvisor}
-                className="px-3 py-1.5 bg-gradient-to-r from-[#D4A017] to-amber-500 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] rounded-xl font-black transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 text-xs shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:scale-105 active:scale-95 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
-                title="المستشار الرقمي المباشر الذكي"
-              >
-                <Bot className="w-4 h-4" />
-                <span>مستشار فيزيون</span>
-              </button>
-            )}
+            {/* Secrets trigger button */}
+            <button
+              onClick={() => handleScrollTo("vizion-growth-suite")}
+              className={`btn btn-ghost px-3 text-xs ${focusRing}`}
+              title="أدوات فيزيون"
+            >
+              <span>أدوات Vizion</span>
+            </button>
 
             {/* Pricing Section Link - ONLY FOR FREE TRIAL USERS */}
             {isFreeTrialUser(userCode) && (
-              <button                 onClick={() => handleScrollTo("pricing-section")}
-                className="p-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-500/60 rounded-xl text-amber-300 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 text-xs font-black min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              <button
+                onClick={() => handleScrollTo("pricing-section")}
+                className={`btn btn-ghost px-3 text-xs ${focusRing}`}
                 title="باقات واسعار الاشتراك"
               >
                 <span>👑</span>
@@ -178,17 +207,10 @@ export default function Navbar({
               </button>
             )}
 
-            {/* Secrets trigger button */}
-            <button               onClick={() => handleScrollTo("vizion-growth-suite")}
-              className="p-1.5 bg-[#D4A017]/10 hover:bg-[#D4A017]/20 border border-[#D4A017]/40 hover:border-[#D4A017]/80 rounded-xl text-[#F0C040] hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 text-xs font-black shadow md:shadow-[#D4A017] shadow-xl/10 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
-              title="أدوات فيزيون"
-            >
-              <span>أدوات Vizion</span>
-            </button>
-
             {/* Logout */}
-            <button               onClick={onLogout}
-              className="p-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-xl text-red-400 hover:text-red-300 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 text-xs font-bold min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            <button
+              onClick={onLogout}
+              className={`btn btn-ghost px-3 text-xs text-white/55 hover:!text-red-300 ${focusRing}`}
               title="خروج وقفل الدليل"
             >
               <LogOut className="w-4 h-4" />
@@ -197,39 +219,65 @@ export default function Navbar({
 
             {/* Free Trial Upgrade Button or User Tag */}
             {isFreeTrialUser(userCode) ? (
-              <button                 onClick={onOpenUpgrade}
-                className="px-3 py-1.5 bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 hover:scale-105 rounded-xl text-[#040B24] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 text-xs font-black shadow-lg md:shadow-[#D4A017] shadow-xl/20 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              <button
+                onClick={onOpenUpgrade}
+                className={`btn btn-glass px-3.5 text-xs rounded-full ${focusRing}`}
                 title="اضغط للترقية إلى الحساب الكامل"
               >
                 <Crown className="w-3.5 h-3.5" />
                 <span>ترقية الكورس</span>
               </button>
             ) : (
-              <span className="px-2.5 py-1 text-[10px] bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 rounded-lg font-mono font-medium">
+              <span className="px-3 py-1.5 text-[10px] rounded-full font-mono font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 عضو: {userCode}
               </span>
+            )}
+
+            {/* AI Advisor Button — the primary action, gently magnetic */}
+            {onOpenAdvisor && (
+              <Magnetic strength={0.18} max={5} reach={10}>
+                <button
+                  onClick={onOpenAdvisor}
+                  className={`btn btn-primary px-4 text-xs rounded-full ${focusRing}`}
+                  title="المستشار الرقمي المباشر الذكي"
+                >
+                  <Bot className="w-4 h-4" />
+                  <span>مستشار فيزيون</span>
+                </button>
+              </Magnetic>
             )}
           </div>
 
           {/* Simplified Mobile Controls: keep the top bar minimal; destinations live in the bottom nav. */}
           <div className="flex items-center gap-2 lg:hidden">
             {/* Compact Menu Toggle */}
-            <button               onClick={toggleMenu}
-              className="rounded-xl bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/10 flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer shrink-0 min-h-[44px] min-w-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            <button
+              onClick={toggleMenu}
+              className={`btn btn-glass w-11 h-11 !min-h-0 rounded-full shrink-0 ${focusRing}`}
               aria-label="قائمة الخيارات"
               aria-expanded={isMenuOpen}
             >
-              {isMenuOpen ? <X className="w-4 h-4 text-[#F0C040]" /> : <Menu className="w-4 h-4" />}
+              <motion.span
+                key={isMenuOpen ? "close" : "open"}
+                initial={{ opacity: 0, rotate: -45, scale: 0.7 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                transition={SPRING_SNAPPY}
+                className="flex"
+              >
+                {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              </motion.span>
             </button>
           </div>
 
-        </div>
-      </nav>
+          </div>
+        </motion.div>
+      </motion.nav>
 
       {/* Fallback Mobile Drawer Menu (only rendered if onOpenMore is not supplied) */}
       {!onOpenMore && (
         <div
-          className={`fixed inset-x-0 bottom-0 top-16 z-40 bg-[#040B24]/98 backdrop-blur-3xl border-t border-[#D4A017]/30 lg:hidden transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex flex-col justify-between p-3.5 sm:p-6 overflow-y-auto safe-area-bottom dir-rtl ${
+          className={`fixed inset-x-0 bottom-0 top-[4.5rem] z-40 glass-elevated rounded-t-4xl lg:hidden transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500 flex flex-col justify-between p-3.5 sm:p-6 overflow-y-auto safe-area-bottom dir-rtl ${
             isMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
           }`}
         >
@@ -238,7 +286,7 @@ export default function Navbar({
           {/* User Account & Subscription Status Header Card */}
           <div className="p-3.5 rounded-2xl bg-gradient-to-r from-white/[0.04] to-white/[0.01] border border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#D4A017]/15 border border-[#D4A017]/30 flex items-center justify-center text-[#F0C040]">
+              <div className="w-8 h-8 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-zinc-100">
                 {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4" />}
               </div>
               <div className="text-right">
@@ -257,13 +305,13 @@ export default function Navbar({
                     closeMenu();
                     onOpenUpgrade?.();
                   }}
-                  className="px-2.5 py-1.5 bg-[#D4A017] text-[#040B24] rounded-lg text-[10px] font-black hover:bg-amber-400 transition-colors shadow-sm min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="px-2.5 py-1.5 bg-[#F5F5F7] text-[#050506] rounded-lg text-[10px] font-black hover:bg-[#F5F5F7] transition-colors shadow-sm min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 >
                   ترقية
                 </button>
               )}
               <button                 onClick={onLogout}
-                className="px-2.5 py-1.5 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-400 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="px-2.5 py-1.5 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-400 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 title="تسجيل الخروج"
               >
                 <LogOut className="w-3.5 h-3.5" />
@@ -280,24 +328,24 @@ export default function Navbar({
                   closeMenu();
                   onOpenAdvisor();
                 }}
-                className="p-3 rounded-2xl bg-gradient-to-br from-[#D4A017]/20 via-amber-500/10 to-[#040B24] border border-[#D4A017]/40 text-right space-y-1.5 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="p-3 rounded-2xl bg-gradient-to-br from-white/10 via-white/5 to-[#050506] border border-white/18 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <div className="flex items-center justify-between">
-                  <Bot className="w-5 h-5 text-[#F0C040]" />
+                  <Bot className="w-5 h-5 text-zinc-100" />
                   <span className="text-[9px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-mono">متاح</span>
                 </div>
-                <div className="text-xs font-black text-[#F0C040]">مستشار فيزيون</div>
+                <div className="text-xs font-black text-zinc-100">مستشار فيزيون</div>
                 <div className="text-[10px] text-white/60 font-light">المستشار المباشر</div>
               </button>
             )}
 
             {/* Growth Tools Button */}
             <button               onClick={() => handleScrollTo("vizion-growth-suite")}
-              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               <div className="flex items-center justify-between">
                 <span className="text-base">⚡</span>
-                <span className="text-[9px] bg-[#D4A017]/20 text-[#F0C040] px-1.5 py-0.5 rounded font-mono">١٣ أداة</span>
+                <span className="text-[9px] bg-white/10 text-zinc-100 px-1.5 py-0.5 rounded font-mono">١٣ أداة</span>
               </div>
               <div className="text-xs font-black text-white">منظومة الأدوات</div>
               <div className="text-[10px] text-white/60 font-light">الحسابات والتحليل</div>
@@ -306,26 +354,26 @@ export default function Navbar({
             {/* Subscriptions Pricing Button (for Free Trial) */}
             {isFreeTrialUser(userCode) && (
               <button                 onClick={() => handleScrollTo("pricing-section")}
-                className="p-3 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-700/10 border border-amber-500/40 text-right space-y-1.5 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="p-3 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/18 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs font-black text-[#F0C040]">
-                    <Crown className="w-4 h-4 text-[#F0C040]" />
+                  <span className="flex items-center gap-1.5 text-xs font-black text-zinc-100">
+                    <Crown className="w-4 h-4 text-zinc-100" />
                     <span>باقات واسعار الاشتراك المتاحة</span>
                   </span>
-                  <span className="text-[10px] font-mono font-bold bg-[#D4A017] text-[#040B24] px-2 py-0.5 rounded-full">29,000 - 49,000 د.ع</span>
+                  <span className="text-[10px] font-mono font-bold bg-[#F5F5F7] text-[#050506] px-2 py-0.5 rounded-full">29,000 - 49,000 د.ع</span>
                 </div>
-                <div className="text-[10px] text-amber-200/80 font-light">اشتراك مدى الحياة بدون تجديد شهري</div>
+                <div className="text-[10px] text-zinc-100/80 font-light">اشتراك مدى الحياة بدون تجديد شهري</div>
               </button>
             )}
 
             {/* Elite Secrets Button */}
             <button               onClick={() => handleScrollTo("elite-secrets-section")}
-              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-white flex items-center gap-1.5">
-                  <Flame className="w-4 h-4 text-amber-400" />
+                  <Flame className="w-4 h-4 text-zinc-100" />
                   <span>حقائق وأسرار التجار</span>
                 </span>
                 <span className="text-[9px] bg-white/10 text-white/80 px-1.5 py-0.5 rounded">سيناريوهات حقيقية</span>
@@ -337,7 +385,7 @@ export default function Navbar({
           <div className="pt-2">
             <div className="text-[11px] text-white/70 font-bold mb-2 flex items-center justify-between px-1">
               <span>فهرس فصول الدليل (١١ فصل):</span>
-              <span className="text-[10px] text-[#F0C040]">اضغط للتنقل السريع</span>
+              <span className="text-[10px] text-zinc-100">اضغط للتنقل السريع</span>
             </div>
 
             {/* Grid of Chapter Pills */}
@@ -347,10 +395,10 @@ export default function Navbar({
                 return (
                   <button                     key={item.id}
                     onClick={() => handleScrollTo(item.id)}
-                    className={`p-2.5 rounded-xl text-right text-xs font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between cursor-pointer active:scale-95 ${ isActive ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] shadow-md md:shadow-[#D4A017] shadow-xl/10" : "bg-white/[0.02] hover:bg-white/[0.05] border-white/10 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                    className={`p-2.5 rounded-xl text-right text-xs font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between cursor-pointer active:scale-[0.97] ${ isActive ? "bg-white/10 border-white/35 text-zinc-100 shadow-md md:shadow-black/40 shadow-xl/10" : "bg-white/[0.02] hover:bg-white/[0.05] border-white/10 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
                   >
                     <span>{item.label}</span>
-                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#F0C040] animate-ping" />}
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white animate-breathe" />}
                   </button>
                 );
               })}
@@ -360,7 +408,7 @@ export default function Navbar({
           {/* Logout Section */}
           <div className="pt-4 pb-28">
             <button               onClick={onLogout}
-              className="w-full py-3 px-4 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 rounded-xl text-red-400 hover:text-red-300 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-center gap-2 text-xs font-bold active:scale-95 shadow-md min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="w-full py-3 px-4 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 rounded-xl text-red-400 hover:text-red-300 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-center gap-2 text-xs font-bold active:scale-[0.97] shadow-md min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               <LogOut className="w-4 h-4" />
               <span>تسجيل الخروج وقفل التطبيق</span>

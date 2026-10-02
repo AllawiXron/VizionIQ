@@ -89,7 +89,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-[#020512]/98 sm:backdrop-blur-xl transition-opacity z-[200]"
+          className="fixed inset-0 bg-[#000000]/98 sm:backdrop-blur-xl transition-opacity z-[200]"
         />
 
         {/* MAIN DIALOG CONTAINER */}
@@ -98,28 +98,28 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          role="dialog" aria-modal="true" className="relative z-[202] w-full max-w-xl bg-[#040B24] border-2 border-[#D4A017]/70 rounded-2xl sm:rounded-3xl md:shadow-[0_20px_90px_rgba(212,160,23,0.4)] shadow-xl overflow-hidden text-white flex flex-col max-h-[92dvh] sm:max-h-[88vh] my-auto"
+          role="dialog" aria-modal="true" className="relative z-[202] w-full max-w-xl bg-[#050506] border-2 border-white/32 rounded-2xl sm:rounded-3xl md:shadow-[0_20px_90px_rgba(0,0,0,0.6)] shadow-xl overflow-hidden text-white flex flex-col max-h-[92dvh] sm:max-h-[88vh] my-auto"
         >
           
           {/* Celestial Ray & Top Ambient Light - High Performance Radial Gradient */}
-          <div className="absolute top-0 inset-x-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(212,160,23,0.25)_0%,rgba(212,160,23,0.05)_50%,transparent_100%)] pointer-events-none" />
+          <div className="absolute top-0 inset-x-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.087)_0%,rgba(255,255,255,0.017)_50%,transparent_100%)] pointer-events-none" />
 
           {/* Header Bar */}
-          <div className="relative px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#040B24] sm:bg-[#040B24]/85 sm:backdrop-blur-md z-20">
+          <div className="relative px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#050506] sm:bg-[#050506]/85 sm:backdrop-blur-md z-20">
             {/* VIP / Code Badge */}
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-full bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-md md:shadow-[#D4A017] shadow-xl/30">
-                {isVip ? <Crown className="w-3.5 h-3.5 fill-[#040B24]" /> : <Lock className="w-3.5 h-3.5 fill-[#040B24]" />}
+              <span className="px-2.5 py-1 rounded-full bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-[#F5F5F7] text-[#050506] text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-md md:shadow-black/40 shadow-xl/30">
+                {isVip ? <Crown className="w-3.5 h-3.5 fill-[#050506]" /> : <Lock className="w-3.5 h-3.5 fill-[#050506]" />}
                 <span>{isVip ? "عضوية VIP النخبة" : isFree ? "النسخة التجريبية المحدودة" : "الاشتراك الذهبي الكامل"}</span>
               </span>
-              <span className="text-[10px] sm:text-xs text-amber-200/80 font-mono font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">
+              <span className="text-[10px] sm:text-xs text-zinc-100/80 font-mono font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">
                 {userCode}
               </span>
             </div>
 
             {/* Skip / Close Button */}
             <button               onClick={onClose}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 active:scale-95 text-white/70 hover:text-white border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 active:scale-[0.97] text-white/70 hover:text-white border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               title="إغلاق النافذة"
             >
               <X className="w-4 h-4" />
@@ -127,11 +127,11 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           </div>
 
           {/* Explicit mobile escape hatch: do not make the tour the only path into the course. */}
-          <div className="px-4 pt-3 sm:hidden bg-[#040B24]">
+          <div className="px-4 pt-3 sm:hidden bg-[#050506]">
             <button
               type="button"
               onClick={onClose}
-              className="w-full min-h-[44px] rounded-xl border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-bold text-white/75 hover:bg-white/[0.08] hover:text-white active:scale-[0.98] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="w-full min-h-[44px] rounded-xl border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-bold text-white/75 hover:bg-white/[0.08] hover:text-white active:scale-[0.98] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               aria-label="تخطي المقدمة والانتقال إلى المحتوى"
             >
               تخطي المقدمة والانتقال إلى المحتوى
@@ -153,32 +153,32 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
               >
                 {/* Crown Icon Emblem with Crisp Heavenly Glow */}
                 <div className="relative mx-auto w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(240,192,64,0.4)_0%,transparent_70%)]" />
+                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.14)_0%,transparent_70%)]" />
 
-                  <div className="relative w-full h-full rounded-3xl bg-[#040B24] border-2 border-[#F0C040] flex items-center justify-center text-[#F0C040] md:shadow-[0_0_25px_rgba(240,192,64,0.4)] shadow-xl">
-                    <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-[#F0C040]" />
+                  <div className="relative w-full h-full rounded-3xl bg-[#050506] border-2 border-white/35 flex items-center justify-center text-zinc-100 md:shadow-[0_0_25px_rgba(0,0,0,0.6)] shadow-xl">
+                    <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-zinc-100" />
                   </div>
 
-                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-[#F0C040]" />
-                  <Flame className="absolute -bottom-1 -left-1 w-5 h-5 text-amber-400" />
+                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-zinc-100" />
+                  <Flame className="absolute -bottom-1 -left-1 w-5 h-5 text-zinc-100" />
                 </div>
 
                 {/* Badge & Title */}
                 <div className="space-y-1.5">
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-[11px] sm:text-xs font-black text-[#F0C040] shadow-sm">
+                  <span className="inline-block px-3.5 py-1 rounded-full bg-white/10 border border-white/22 text-[11px] sm:text-xs font-black text-zinc-100 shadow-sm">
                     {steps[0].badge}
                   </span>
                   <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
                     {steps[0].title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-amber-300 to-amber-500 max-w-md mx-auto leading-relaxed">
+                  <p className="text-xs sm:text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#F5F5F7] max-w-md mx-auto leading-relaxed">
                     {steps[0].subtitle}
                   </p>
                 </div>
 
                 {/* Contrast Box: The Pain vs The Cure */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-red-500/5 via-white/[0.02] to-transparent border border-white/10 text-xs text-white/90 leading-relaxed font-light text-right space-y-4 shadow-inner relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-1 bg-gradient-to-b from-red-500 to-amber-500 h-full" />
+                  <div className="absolute top-0 right-0 w-1 bg-gradient-to-b from-red-500 to-[#F5F5F7] h-full" />
                   <p className="text-justify leading-relaxed text-sm">
                     تعبت من رسايل <span className="text-red-400 font-bold">"بيش هاي؟"</span> اللي ما وراها بيعة؟ فلوسك دتحترق بإعلانات غالية؟ والـ <span className="text-red-400 font-bold">راجع كاسر ظهرك</span> وكروة التوصيل دتاكل براس مالك؟
                   </p>
@@ -200,7 +200,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                 className="space-y-4"
               >
                 <div className="text-center space-y-1.5">
-                  <span className="inline-block px-3 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-[11px] sm:text-xs font-black text-[#F0C040]">
+                  <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/22 text-[11px] sm:text-xs font-black text-zinc-100">
                     {steps[1].badge}
                   </span>
                   <h3 className="text-lg sm:text-2xl font-black text-white">
@@ -217,13 +217,13 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                   {/* Pillar 1: Chapters (The Brain) */}
                   <motion.div 
                     whileHover={{ scale: 1.02 }}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-white/[0.03] to-transparent border border-[#D4A017]/40 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
+                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-white/8 via-white/[0.03] to-transparent border border-white/18 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-[#D4A017]/25 border border-[#D4A017]/50 flex items-center justify-center text-[#F0C040] shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/12 border border-white/22 flex items-center justify-center text-zinc-100 shrink-0 mt-0.5 shadow-sm">
                       <BookOpen className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-[#F0C040]">1. الدليل الذهبي للبيع (11 فصل تكتيكي)</h4>
+                      <h4 className="text-sm font-black text-zinc-100">1. الدليل الذهبي للبيع (11 فصل تكتيكي)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         مو مجرد تنظير.. هاي خطوات ميدانية حتى تقلل تكلفة الرسالة، تستهدف المحافظات بذكاء، وتقنع الزبون المتردد يشتري فوراً.
                       </p>
@@ -233,13 +233,13 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                   {/* Pillar 2: AI Advisor (The Secret Weapon) */}
                   <motion.div 
                     whileHover={{ scale: 1.02 }}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-blue-500/15 via-white/[0.03] to-transparent border border-blue-500/40 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
+                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-white/8 via-white/[0.03] to-transparent border border-white/18 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/25 border border-blue-500/50 flex items-center justify-center text-blue-400 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/12 border border-white/22 flex items-center justify-center text-zinc-300 shrink-0 mt-0.5 shadow-sm">
                       <Bot className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-blue-300">2. مستشارك الخاص (Vizion AI 24/7)</h4>
+                      <h4 className="text-sm font-black text-zinc-200">2. مستشارك الخاص (Vizion AI 24/7)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         انسى الحيرة. هذا الذكاء الاصطناعي مدرب خصيصاً على عقلية الزبون العراقي، يكتبلك إعلاناتك ويحل مشاكلك التسويقية بثواني.
                       </p>
@@ -265,13 +265,13 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                   {/* Pillar 4: Swipe Files (The Shortcut) */}
                   <motion.div 
                     whileHover={{ scale: 1.02 }}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-purple-500/15 via-white/[0.03] to-transparent border border-purple-500/40 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
+                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-white/8 via-white/[0.03] to-transparent border border-white/18 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/25 border border-purple-500/50 flex items-center justify-center text-purple-300 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/12 border border-white/22 flex items-center justify-center text-zinc-200 shrink-0 mt-0.5 shadow-sm">
                       <FileText className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-purple-300">4. مكتبة النسخ واللصق (النصوص السحرية)</h4>
+                      <h4 className="text-sm font-black text-zinc-200">4. مكتبة النسخ واللصق (النصوص السحرية)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         قوالب جاهزة للرد على الزبائن، نصوص إعلانية مجربة وناجحة، وسيناريوهات تفاوض بس تنسخها وتلصقها حتى تقفل البيعة.
                       </p>
@@ -295,7 +295,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                 {/* Shield Emblem */}
                 <div className="relative mx-auto w-20 h-20 flex items-center justify-center">
                   <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.4)_0%,transparent_70%)]" />
-                  <div className="relative w-full h-full rounded-2xl bg-[#040B24] border-2 border-emerald-400 flex items-center justify-center text-emerald-400 md:shadow-[0_0_20px_rgba(52,211,153,0.35)] shadow-xl">
+                  <div className="relative w-full h-full rounded-2xl bg-[#050506] border-2 border-emerald-400 flex items-center justify-center text-emerald-400 md:shadow-[0_0_20px_rgba(0,0,0,0.6)] shadow-xl">
                     <ShieldCheck className="w-10 h-10" />
                   </div>
                 </div>
@@ -315,21 +315,21 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                 {/* 3 Step Quick Action List - Actionable and psychological */}
                 <div className="space-y-3 text-right mt-4">
                   <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4 hover:bg-white/10 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A017] to-amber-500 text-[#040B24] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">1</div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">1</div>
                     <p className="text-white/90 text-sm leading-relaxed">
-                      راح تتصفح <strong className="text-[#F0C040]">الفصل 1 و 2</strong> فوراً حتى تكتشف الثغرة اللي دتسرق أرباحك وشلون تسدها.
+                      راح تتصفح <strong className="text-zinc-100">الفصل 1 و 2</strong> فوراً حتى تكتشف الثغرة اللي دتسرق أرباحك وشلون تسدها.
                     </p>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4 hover:bg-white/10 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-[#040B24] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">2</div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#F5F5F7] to-zinc-200 text-[#050506] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">2</div>
                     <p className="text-white/90 text-sm leading-relaxed">
-                      تفتح <strong className="text-blue-300">المستشار الذكي (Vizion)</strong> وتطلب منه يكتبلك إعلان منتجك الجاي بلهجة عراقية تقنع الزبون.
+                      تفتح <strong className="text-zinc-200">المستشار الذكي (Vizion)</strong> وتطلب منه يكتبلك إعلان منتجك الجاي بلهجة عراقية تقنع الزبون.
                     </p>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4 hover:bg-white/10 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-[#040B24] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">3</div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-[#050506] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">3</div>
                     <p className="text-white/90 text-sm leading-relaxed">
                       تستخدم <strong className="text-emerald-300">حاسبة تسعير المنتجات</strong> حتى تضمن كل طلبية تطلع بيها ربح حقيقي يفوت لجيبك.
                     </p>
@@ -342,14 +342,14 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           </div>
 
           {/* STICKY FOOTER ACTIONS & NAVIGATION FOR MOBILE */}
-          <div className="p-3 sm:p-5 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] sm:pb-5 bg-[#040B24]/98 border-t border-white/10 flex items-center justify-between gap-2 dir-rtl shrink-0 z-30 relative">
+          <div className="p-3 sm:p-5 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] sm:pb-5 bg-[#050506]/98 border-t border-white/10 flex items-center justify-between gap-2 dir-rtl shrink-0 z-30 relative">
             
             {/* Dots Indicator */}
             <div className="flex items-center gap-1 sm:gap-2">
               {steps.map((_, idx) => (
                 <button                   key={idx}
                   onClick={() => setCurrentStep(idx)}
-                  className={`rounded-full transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ currentStep === idx ? " sm: bg-[#F0C040] md:shadow-[0_0_10px_#F0C040] shadow-xl" : " sm:.5 bg-white/20 hover:bg-white/40" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                  className={`rounded-full transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ currentStep === idx ? " sm: bg-white md:shadow-[0_0_10px_rgba(255,255,255,0.3)] shadow-xl" : " sm:.5 bg-white/20 hover:bg-white/40" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
                   aria-label={`الذهاب للخطوة ${idx + 1}`}
                 />
               ))}
@@ -359,14 +359,14 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             <div className="flex items-center gap-1.5 sm:gap-3">
               {currentStep > 0 && (
                 <button                   onClick={() => setCurrentStep(prev => prev - 1)}
-                  className="px-3 sm:px-5 py-2 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white/90 hover:text-white border border-white/15 text-xs sm:text-sm font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[40px] flex items-center justify-center min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="px-3 sm:px-5 py-2 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.97] text-white/90 hover:text-white border border-white/15 text-xs sm:text-sm font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[40px] flex items-center justify-center min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 >
                   رجوع
                 </button>
               )}
 
               <button                 onClick={handleNext}
-                className="px-3.5 sm:px-8 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] font-black text-xs sm:text-base md:shadow-[0_0_20px_rgba(212,160,23,0.4)] shadow-xl hover:scale-[1.02] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-1 sm:gap-2 min-h-[42px] min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="px-3.5 sm:px-8 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black text-xs sm:text-base md:shadow-[0_0_20px_rgba(0,0,0,0.6)] shadow-xl hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-1 sm:gap-2 min-h-[42px] min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <span>{currentStep === steps.length - 1 ? "🚀 استكشف المنظومة" : "التالي"}</span>
                 {currentStep !== steps.length - 1 && <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />}
