@@ -5,7 +5,7 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render VizionReel out/vizion-reel.mp4",
-    "still": "remotion still VizionReel out/cover.png --frame=40"
+    "still": "remotion still VizionReel out/cover.png --frame=84"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.532",
