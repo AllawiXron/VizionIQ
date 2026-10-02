@@ -3,8 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-react";
+import { EASE_OUT, SPRING, allowBlur } from "../lib/motion";
+import { Magnetic } from "./ui/Motion";
 
 // 1. HARDCODED CODES LIST:
 // You can directly edit, add, or remove passwords in this array!
@@ -67,9 +70,14 @@ export const normalizeCode = (str: string): string => {
   return normalized;
 };
 
+// Membership checks run during render all over the app, so the parsed list is
+// memoised against the raw localStorage string (re-parsed only when it changes).
+let validCodesCache: { raw: string | null; codes: string[] } | null = null;
+
 // Retrieve all valid active codes (HARDCODED_CODES + active Admin Panel entries)
 export const getAllValidCodes = (): string[] => {
   const stored = localStorage.getItem("sales_guide_codes");
+  if (validCodesCache && validCodesCache.raw === stored) return validCodesCache.codes;
   const valid = new Set<string>(HARDCODED_CODES.map(c => normalizeCode(c)));
 
   if (stored) {
@@ -87,7 +95,9 @@ export const getAllValidCodes = (): string[] => {
     }
   }
 
-  return Array.from(valid);
+  const codes = Array.from(valid);
+  validCodesCache = { raw: stored, codes };
+  return codes;
 };
 
 export const isVipUser = (code: string): boolean => {
@@ -133,7 +143,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [shake, setShake] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Synchronize hardcoded default codes with localStorage on component mount
   useEffect(() => {
@@ -191,102 +200,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     return getAllValidCodes();
   };
 
-  // Canvas animation for golden particle sparks
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    // Particle class
-    interface Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-      fadeSpeed: number;
-    }
-
-    const particles: Particle[] = [];
-    const maxParticles = 60;
-
-    for (let i = 0; i < maxParticles; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 2 + 1,
-        speedX: (Math.random() - 0.5) * 0.4,
-        speedY: (Math.random() - 0.5) * 0.4 - 0.2, // Drift slightly upwards
-        opacity: Math.random() * 0.6 + 0.2,
-        fadeSpeed: Math.random() * 0.005 + 0.002
-      });
-    }
-
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      // Draw subtle background radial glow
-      const radialGlow = ctx.createRadialGradient(
-        width / 2,
-        height / 2,
-        100,
-        width / 2,
-        height / 2,
-        width * 0.8
-      );
-      radialGlow.addColorStop(0, "#081236");
-      radialGlow.addColorStop(1, "#040B24");
-      ctx.fillStyle = radialGlow;
-      ctx.fillRect(0, 0, width, height);
-
-      // Render and update golden particles
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(240, 192, 64, ${p.opacity})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = "#D4A017";
-        ctx.fill();
-        ctx.shadowBlur = 0; // reset
-
-        // Move
-        p.x += p.speedX;
-        p.y += p.speedY;
-
-        // Wrap around borders
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-      }
-
-      animationFrameId = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!password.trim()) {
@@ -331,66 +244,87 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     setError(null);
   };
 
-  return (
-    <div className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-x-hidden font-sans select-none px-3 py-6 sm:px-4 sm:py-8 safe-area-top safe-area-bottom">
-      {/* Background Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0" />
+  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
+  const blur = allowBlur();
+  const rise = (delay: number) => ({
+    initial: { opacity: 0, y: 14, filter: blur ? "blur(8px)" : "blur(0px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+    transition: { duration: 0.65, delay, ease: EASE_OUT },
+  });
 
-      {/* Floating Glowing Blobs */}
-      <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] rounded-full bg-[#D4A017]/10 md:blur-[80px] blur-3xl z-0 md:animate-float-slow" />
-      <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-[#0D1B56]/40 md:blur-[100px] blur-3xl z-0 md:animate-float-medium" />
+  return (
+    <div className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-x-hidden font-sans select-none px-4 py-6 sm:py-8 safe-area-top safe-area-bottom">
+      {/* Soft key light above the card */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.4, ease: EASE_OUT }}
+        className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120vw] sm:w-[70vw] max-w-[1000px] h-[80vh] bg-[radial-gradient(ellipse_at_center,rgba(72,128,255,0.26)_0%,rgba(72,128,255,0.078)_40%,transparent_70%)] pointer-events-none"
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern pointer-events-none" />
 
       {/* Main Authentication Container */}
-      <div
-        className={`relative w-full max-w-[460px] z-10 transition-transform duration-500 my-auto ${
-          shake ? "animate-[bounce_0.5s_ease-in-out_infinite] border-red-500" : ""
-        }`}
+      <motion.div
+        initial={{ opacity: 0, y: 28, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ ...SPRING, delay: 0.1, opacity: { duration: 0.5, delay: 0.1, ease: EASE_OUT } }}
+        className="relative w-full max-w-[440px] z-10 my-auto"
         id="lock-card"
       >
+        <div className={shake ? "animate-shake" : undefined}>
         {/* Glass Card */}
-        <div className="glass-panel-gold rounded-2xl p-4 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl border border-white/10 dir-rtl">
-          {/* Decorative Corner Borders */}
-          <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-t-2 border-r-2 border-[#D4A017] rounded-tr-xl opacity-85" />
-          <div className="absolute bottom-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-b-2 border-l-2 border-[#D4A017] rounded-bl-xl opacity-85" />
+        <div className="glass-elevated glass-edge rounded-4xl p-6 sm:p-9 md:p-10 relative overflow-hidden dir-rtl">
 
           {/* Logo and Icon */}
-          <div className="flex flex-col items-center mb-5 sm:mb-8 text-center">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-[#D4A017] to-[#F0C040] flex items-center justify-center shadow-lg md:shadow-[#D4A017] shadow-xl/30 mb-3 sm:mb-5 relative group">
-              <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-[#040B24] stroke-[2.5]" />
-              <div className="absolute inset-0 rounded-full bg-white/20 animate-ping opacity-25" />
-            </div>
+          <div className="flex flex-col items-center mb-7 sm:mb-9 text-center">
+            <motion.div
+              {...rise(0.25)}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-[20px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_14px_34px_-12px_rgba(47,107,255,0.6)] mb-4 sm:mb-5"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {isSuccess ? (
+                  <motion.span key="ok" initial={{ scale: 0.4, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={SPRING} className="flex">
+                    <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-white stroke-[2.5]" />
+                  </motion.span>
+                ) : (
+                  <motion.span key="lock" exit={{ scale: 0.6, opacity: 0, transition: { duration: 0.15 } }} className="flex">
+                    <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-white stroke-[2.5]" />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.div>
             
-            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight mb-1">
+            <motion.h1 {...rise(0.32)} className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1.5">
               فيزيون • Vizion
-            </h1>
-            <p className="text-[#F0F4FF]/75 text-xs sm:text-sm md:text-base font-medium">
+            </motion.h1>
+            <motion.p {...rise(0.38)} className="text-white/55 text-xs sm:text-sm md:text-base font-medium mx-auto">
               نظام التشغيل والتحكم المالي للمشاريع الإلكترونية بالعراق
-            </p>
-
-            {/* Premium Divider */}
-            <div className="w-16 sm:w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4A017] to-transparent my-2.5 sm:my-4" />
+            </motion.p>
           </div>
 
           {/* Action Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-            <div className="space-y-1.5 sm:space-y-2">
-              <label className="text-xs text-[#F0F4FF]/60 font-semibold tracking-wider block mr-1">
+          <motion.form {...rise(0.45)} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+            <div className="space-y-2">
+              <label className="text-xs text-white/50 font-semibold tracking-wider block mr-1">
                 رمز التحقق الفردي
               </label>
               
               <div className="relative">
-                <input                   type={showPassword ? "text" : "password"}
+                <input
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="أدخل رمز الوصول هنا..."
-                  className="w-full h-11 sm:h-12 pr-3 sm:pr-4 pl-10 sm:pl-12 bg-black/40 border border-white/10 rounded-xl text-white placeholder-white/30 text-center text-base sm:text-lg font-mono tracking-wider focus:outline-none focus:border-[#D4A017] focus:ring-1 focus:ring-[#D4A017]/50 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="vz-field w-full h-12 sm:h-[52px] pr-4 pl-12 rounded-2xl text-white text-center text-base sm:text-lg font-mono tracking-wider min-h-[44px]"
                   disabled={isLoading || isSuccess}
                 />
                 
                 {/* Visibility Toggle */}
-                <button                   type="button"
+                <button
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className={`absolute left-1.5 top-1/2 -translate-y-1/2 rounded-xl text-white/50 hover:text-white transition-colors duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.92] ${focusRing}`}
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
@@ -399,81 +333,98 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             </div>
 
             {/* Error Message Box */}
-            {error && (
-              <div className="p-2.5 sm:p-3 bg-red-950/40 border border-red-500/30 rounded-xl flex items-start gap-2.5 sm:gap-3 animate-[fadeIn_0.3s_ease]">
-                <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 shrink-0 mt-0.5" />
-                <span className="text-xs text-red-200 font-medium leading-relaxed">
-                  {error}
-                </span>
-              </div>
-            )}
+            <AnimatePresence initial={false}>
+              {error && (
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0, height: 0, y: -4 }}
+                  animate={{ opacity: 1, height: "auto", y: 0, transition: { ...SPRING, opacity: { duration: 0.2 } } }}
+                  exit={{ opacity: 0, height: 0, transition: { duration: 0.2, ease: EASE_OUT } }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-3 bg-red-500/[0.08] border border-red-400/20 rounded-2xl flex items-start gap-2.5 sm:gap-3">
+                    <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-300 shrink-0 mt-0.5" />
+                    <span className="text-xs text-red-200/90 font-medium leading-relaxed">
+                      {error}
+                    </span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Submit Button */}
-            <button               type="submit"
+            <Magnetic strength={0.08} max={3} reach={8}>
+            <button
+              type="submit"
               disabled={isLoading || isSuccess}
-              className="w-full h-11 sm:h-12 rounded-xl gold-gradient-bg text-[#040B24] font-bold text-sm sm:text-base tracking-wide flex items-center justify-center shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:shadow-[#D4A017] shadow-xl/40 hover:-translate-y-0.5 active:translate-y-0 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer disabled:opacity-50 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className={`btn btn-primary w-full h-12 sm:h-[52px] rounded-2xl text-sm sm:text-base ${focusRing}`}
             >
+              <AnimatePresence mode="wait" initial={false}>
               {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-[#040B24] border-t-transparent rounded-full animate-spin" />
+                <motion.div key="loading" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-[#040e33] border-t-transparent rounded-full animate-spin" />
                   <span>جاري التحقق من الصلاحية...</span>
-                </div>
+                </motion.div>
               ) : isSuccess ? (
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 animate-bounce text-[#040B24]" />
+                <motion.div key="success" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-white" />
                   <span>تم التوثيق! جاري فتح الدليل...</span>
-                </div>
+                </motion.div>
               ) : (
-                <span className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#040B24]" />
+                <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-white" />
                   دخول للدليل المالي
-                </span>
+                </motion.span>
               )}
+              </AnimatePresence>
             </button>
-          </form>
+            </Magnetic>
+          </motion.form>
 
           {/* Quick Free Trial Access Link & Pricing Info */}
-          <div className="pt-2 text-center space-y-2.5 sm:space-y-3">
-            <button               type="button"
+          <motion.div {...rise(0.55)} className="pt-4 text-center space-y-3">
+            <button
+              type="button"
               onClick={() => {
                 setPassword("free#1");
                 setError(null);
               }}
-              className="px-3 py-2 rounded-xl bg-[#D4A017]/15 hover:bg-[#D4A017]/25 border border-[#D4A017]/40 text-xs text-[#F0C040] hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-1.5 sm:gap-2 font-bold w-full justify-center shadow-md flex-wrap min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className={`btn btn-glass w-full rounded-2xl px-3 py-2 text-xs font-bold flex-wrap gap-1.5 sm:gap-2 ${focusRing}`}
             >
               <span>✨ جرب النسخة التجريبية بالرمز:</span>
-              <span className="font-mono text-emerald-400 font-extrabold underline underline-offset-2">free#1</span>
+              <span className="font-mono text-emerald-300 font-extrabold underline underline-offset-4 decoration-emerald-300/40">free#1</span>
             </button>
 
             {/* Lifetime Pricing Tiers Banner */}
-            <div className="bg-black/40 border border-white/10 rounded-xl p-2.5 sm:p-3 text-right space-y-2 text-xs">
-              <div className="flex flex-wrap items-center justify-between gap-1 border-b border-white/10 pb-1.5 text-[11px]">
-                <span className="font-bold text-[#F0C040] flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" />
+            <div className="glass-subtle rounded-2xl p-3 text-right space-y-2.5 text-xs">
+              <div className="flex flex-wrap items-center justify-between gap-1 border-b border-white/[0.07] pb-2 text-[11px]">
+                <span className="font-bold text-white/80 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 opacity-70" />
                   <span>باقات الاشتراك لمرة واحدة مدى الحياة:</span>
                 </span>
-                <span className="text-emerald-400 font-bold text-[10px]">بدون اشتراك شهري</span>
+                <span className="text-emerald-300 font-bold text-[10px]">بدون اشتراك شهري</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] text-white/90">
-                <div className="bg-white/5 p-2 rounded-lg border border-white/5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] text-white/85">
+                <div className="bg-white/[0.035] p-2.5 rounded-xl border border-white/[0.06]">
                   <span className="font-black block text-white text-[11px]">🔹 الاعتيادي: 29,000 د.ع</span>
-                  <span className="text-white/60 font-light block mt-0.5">الكورس + المنصة + أدوات البيع</span>
+                  <span className="text-white/50 font-light block mt-0.5">الكورس + المنصة + أدوات البيع</span>
                 </div>
-                <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 p-2 rounded-lg border border-[#D4A017]/40">
-                  <span className="font-black block text-[#F0C040] text-[11px]">👑 VIP النخبة: 49,000 د.ع</span>
-                  <span className="text-amber-100/70 font-light block mt-0.5">متابعة مباشرة + مراجعة إعلانات + مستشار ذكي</span>
+                <div className="bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-2.5 rounded-xl border border-white/[0.12]">
+                  <span className="font-black block text-white text-[11px]">👑 VIP النخبة: 49,000 د.ع</span>
+                  <span className="text-white/55 font-light block mt-0.5">متابعة مباشرة + مراجعة إعلانات + مستشار ذكي</span>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+        </div>
+      </motion.div>
 
       {/* Footer copyright */}
-      <div className="relative text-center z-10 text-[10px] sm:text-[11px] text-[#F0F4FF]/30 tracking-wider mt-4 sm:mt-6 pb-2 safe-area-bottom">
+      <motion.div {...rise(0.7)} className="relative text-center z-10 text-[10px] sm:text-[11px] text-white/30 tracking-wider mt-5 sm:mt-7 pb-2 safe-area-bottom">
         © 2026 فيزيون • Vizion. جميع الحقوق محفوظة للنخبة المسجلة.
-      </div>
+      </motion.div>
     </div>
   );
 }

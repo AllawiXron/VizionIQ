@@ -21,6 +21,8 @@ import {
   ChevronLeft
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { EASE_OUT, SPRING, SPRING_SNAPPY, bottomSheetMotion, overlayMotion, sheetMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
 import { isFreeTrialUser, isVipUser } from "./LockScreen";
 import { SoundToggleButton } from "./SoundToggleButton";
 
@@ -105,38 +107,64 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       activeSection === "script-simulator" ||
       activeSection === "thirty-day-plan");
 
+  const dockItems = [
+    { key: "home", label: "الرئيسية", aria: "الانتقال إلى الرئيسية", icon: Home, active: isHomeActive, current: isHomeActive, onClick: () => scrollToSection("hero-section") },
+    { key: "path", label: "مساري", aria: "الانتقال إلى مساري وفصول الدليل", icon: Compass, active: isPathActive, current: isPathActive, onClick: () => scrollToSection("contents-section") },
+    { key: "tools", label: "الأدوات", aria: "الانتقال إلى حقيبة الأدوات الذكية", icon: Wrench, active: isToolsActive, current: isToolsActive, onClick: () => scrollToSection("vizion-growth-suite") },
+    {
+      key: "advisor",
+      label: "المستشار",
+      aria: "فتح مستشار فيزيون للذكاء الاصطناعي",
+      icon: Bot,
+      active: false,
+      accent: true,
+      onClick: () => {
+        setMoreSheetOpen(false);
+        onOpenAdvisor();
+      }
+    },
+    { key: "more", label: "المزيد", aria: "فتح قائمة المزيد والخدمات الثانوية", icon: SlidersHorizontal, active: isMoreSheetOpen, expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
+  ];
+
+  // The More sheet grows out of the dock button (or top menu button) like a liquid-glass panel.
+  const originSheet = useOriginSheet(isMoreSheetOpen, { width: 480, anchor: "bottom", height: 560 });
+  const moreSheetMotion = originSheet === sheetMotion ? bottomSheetMotion : originSheet;
+
   return (
     <>
       {/* 1. SLIDE-UP BOTTOM SHEET FOR "المزيد" (SECONDARY ACTIONS) */}
       <AnimatePresence>
         {isMoreSheetOpen && (
           <div className="fixed inset-0 z-[90] lg:hidden dir-rtl">
-            {/* Backdrop with comfortable blur */}
+            {/* Backdrop: darkens while its blur fades in */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              {...overlayMotion}
               onClick={() => setMoreSheetOpen(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer"
+              className="absolute inset-0 vz-backdrop cursor-pointer"
               aria-hidden="true"
             />
 
-            {/* Bottom Sheet Modal Container - Ergonomically anchored to thumb reach */}
+            {/* Bottom Sheet — anchored to thumb reach, drag down to dismiss */}
             <motion.div
-              initial={{ y: "100%", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: "100%", opacity: 0 }}
-              transition={{ type: "spring", damping: 28, stiffness: 300 }}
-              className="absolute inset-x-0 bottom-0 max-h-[85vh] bg-gradient-to-b from-[#0F1735] via-[#0A122E] to-[#040B24] border-t-2 border-[#D4A017]/40 rounded-t-3xl md:shadow-[0_-15px_45px_rgba(0,0,0,0.95)] shadow-xl overflow-hidden flex flex-col pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] touch-pan-y"
+              {...moreSheetMotion}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0.04, bottom: 0.6 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 110 || info.velocity.y > 500) setMoreSheetOpen(false);
+              }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="المزيد من الوجهات والخدمات"
+              className="absolute inset-x-0 bottom-0 max-h-[85vh] glass-elevated glass-edge rounded-t-4xl overflow-hidden flex flex-col pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] touch-pan-y"
             >
               {/* Drag bar indicator */}
-              <div className="w-12 h-1.5 bg-white/30 rounded-full mx-auto my-2.5 shrink-0" />
+              <div className="w-10 h-[5px] bg-white/25 rounded-full mx-auto mt-2.5 mb-1.5 shrink-0 cursor-grab active:cursor-grabbing" />
 
               {/* Sheet Header */}
-              <div className="px-4 py-2.5 border-b border-white/10 flex items-center justify-between shrink-0 bg-[#040B24]/60">
+              <div className="px-4 py-2.5 border-b border-white/[0.07] flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2 text-right min-w-0">
-                  <div className="w-8 h-8 rounded-xl bg-[#D4A017]/15 border border-[#D4A017]/30 flex items-center justify-center text-[#F0C040] shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-vz-accent shrink-0">
                     <SlidersHorizontal className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
@@ -147,7 +175,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
                 <button                   onClick={() => setMoreSheetOpen(false)}
                   aria-label="إغلاق قائمة المزيد"
-                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -159,8 +187,8 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 {/* User Status / Upgrade Card */}
                 <div className="p-3 rounded-2xl bg-gradient-to-r from-white/[0.04] to-white/[0.01] border border-white/10 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-9 h-9 rounded-xl bg-[#D4A017]/15 border border-[#D4A017]/30 flex items-center justify-center text-[#F0C040] shrink-0">
-                      {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4 text-amber-400" />}
+                    <div className="w-9 h-9 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-vz-accent shrink-0">
+                      {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4 text-vz-accent" />}
                     </div>
                     <div className="min-w-0">
                       <div className="text-xs font-black text-white truncate">
@@ -177,7 +205,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                         setMoreSheetOpen(false);
                         onOpenUpgrade();
                       }}
-                      className="px-3 py-1.5 bg-gradient-to-r from-[#D4A017] to-amber-500 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] rounded-xl text-xs font-black shadow-md md:shadow-[#D4A017] shadow-xl/20 flex items-center gap-1 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none shrink-0 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="btn btn-primary px-3 py-1.5 text-white rounded-xl text-xs font-black flex items-center gap-1 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <Crown className="w-3 h-3" />
                       <span>ترقية ⚡</span>
@@ -191,11 +219,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <div className="grid grid-cols-2 gap-2">
                     {/* Elite Secrets */}
                     <button                       onClick={() => scrollToSection("elite-secrets-section")}
-                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <div className="flex items-center justify-between">
-                        <Flame className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-                        <span className="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono">نخبة</span>
+                        <Flame className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
+                        <span className="text-[9px] bg-white/10 text-vz-accent px-1.5 py-0.5 rounded font-mono">نخبة</span>
                       </div>
                       <div className="text-xs font-black text-white">أسرار السوق</div>
                       <div className="text-[10px] text-white/70 font-light truncate">حقائق التجار وأخطاء الإعلانات</div>
@@ -211,22 +239,22 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                             scrollToSection("pricing-section");
                           }
                         }}
-                        className="p-3 rounded-2xl bg-gradient-to-br from-[#D4A017]/15 via-amber-500/10 to-transparent border border-[#D4A017]/40 text-right space-y-1 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="p-3 rounded-2xl bg-gradient-to-br from-white/8 via-white/5 to-transparent border border-white/18 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <div className="flex items-center justify-between">
-                          <Crown className="w-4 h-4 text-[#F0C040] group-hover:scale-110 transition-transform" />
-                          <span className="text-[9px] bg-[#D4A017]/30 text-[#F0C040] px-1.5 py-0.5 rounded font-mono">خصم</span>
+                          <Crown className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
+                          <span className="text-[9px] bg-white/15 text-vz-accent px-1.5 py-0.5 rounded font-mono">خصم</span>
                         </div>
-                        <div className="text-xs font-black text-[#F0C040]">باقات الاشتراك</div>
-                        <div className="text-[10px] text-amber-200/60 font-light truncate">مدى الحياة بدون رسوم شهرية</div>
+                        <div className="text-xs font-black text-vz-accent">باقات الاشتراك</div>
+                        <div className="text-[10px] text-vz-accent/60 font-light truncate">مدى الحياة بدون رسوم شهرية</div>
                       </button>
                     ) : (
                       /* Quick ROI calculator */
                       <button                         onClick={() => scrollToSection("roi-calculator")}
-                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <div className="flex items-center justify-between">
-                          <TrendingUp className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                          <TrendingUp className="w-4 h-4 text-emerald-400 group-hover:scale-[1.04] transition-transform" />
                           <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono">حاسبة</span>
                         </div>
                         <div className="text-xs font-black text-white">حاسبة الأرباح ROI</div>
@@ -236,11 +264,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
                     {/* Ad simulator */}
                     <button                       onClick={() => scrollToSection("ad-simulator")}
-                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <div className="flex items-center justify-between">
-                        <Tv className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
-                        <span className="text-[9px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-mono">محاكي</span>
+                        <Tv className="w-4 h-4 text-slate-300 group-hover:scale-[1.04] transition-transform" />
+                        <span className="text-[9px] bg-white/10 text-slate-200 px-1.5 py-0.5 rounded font-mono">محاكي</span>
                       </div>
                       <div className="text-xs font-black text-white">محاكي الإعلانات</div>
                       <div className="text-[10px] text-white/70 font-light truncate">تجربة سيناريوهات الحملات</div>
@@ -252,10 +280,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                           setMoreSheetOpen(false);
                           onOpenIntro();
                         }}
-                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <div className="flex items-center justify-between">
-                          <Sparkles className="w-4 h-4 text-[#F0C040] group-hover:scale-110 transition-transform" />
+                          <Sparkles className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
                           <span className="text-[9px] bg-white/10 text-white/80 px-1.5 py-0.5 rounded font-mono">دليل</span>
                         </div>
                         <div className="text-xs font-black text-white">جولة المنظومة</div>
@@ -282,7 +310,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                       setMoreSheetOpen(false);
                       onLogout();
                     }}
-                    className="w-full py-3 px-4 rounded-2xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 text-xs font-bold flex items-center justify-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer active:scale-95 shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="w-full py-3 px-4 rounded-2xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 text-xs font-bold flex items-center justify-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer active:scale-[0.97] shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>تسجيل الخروج وقفل المنظومة</span>
@@ -296,92 +324,53 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       </AnimatePresence>
 
       {/* 2. THE FLOATING MOBILE BOTTOM NAVIGATION DOCK (USABLE WITH ONE HAND) */}
-      <nav
+      <motion.nav
         role="navigation"
         aria-label="شريط التنقل السفلي المخصص للجوال"
-        className="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-[45] pb-[max(0.4rem,env(safe-area-inset-bottom,0px))] px-2 sm:px-4 pointer-events-none dir-rtl"
+        initial={{ y: 96, opacity: 0 }}
+        animate={{ y: 0, opacity: 1, transition: { ...SPRING, delay: 0.35 } }}
+        exit={{ y: 96, opacity: 0, transition: { duration: 0.25, ease: EASE_OUT } }}
+        className="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-[45] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] px-3 sm:px-4 pointer-events-none dir-rtl"
       >
-        <div className="pointer-events-auto max-w-md mx-auto bg-[#040B24]/95 backdrop-blur-2xl border border-[#D4A017]/35 rounded-2xl p-1 md:shadow-[0_12px_45px_rgba(0,0,0,0.9),0_0_20px_rgba(212,160,23,0.15)] shadow-xl flex items-center justify-between gap-1">
-          
-          {/* 1. الرئيسية (Home) */}
-          <button             onClick={() => scrollToSection("hero-section")}
-            aria-label="الانتقال إلى الرئيسية"
-            aria-current={isHomeActive ? "page" : undefined}
-            className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none duration-200 cursor-pointer active:scale-95 min-h-[50px] relative ${ isHomeActive ? "text-[#F0C040] bg-gradient-to-b from-[#D4A017]/25 to-[#D4A017]/10 border border-[#D4A017]/40 shadow-sm" : "text-white/65 hover:text-white hover:bg-white/[0.04] border border-transparent" } min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-          >
-            {isHomeActive && (
-              <span className="absolute -top-1 w-5 h-0.5 bg-[#F0C040] rounded-full md:shadow-[0_0_8px_#F0C040] shadow-xl" />
-            )}
-            <Home className={`w-5 h-5 transition-transform ${isHomeActive ? "scale-110 text-[#F0C040]" : "text-white/70"}`} />
-            <span className="text-[10px] sm:text-[11px] font-bold mt-1 leading-none tracking-tight">
-              الرئيسية
-            </span>
-          </button>
-
-          {/* 2. مساري (My Path / Chapters) */}
-          <button             onClick={() => scrollToSection("contents-section")}
-            aria-label="الانتقال إلى مساري وفصول الدليل"
-            aria-current={isPathActive ? "page" : undefined}
-            className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none duration-200 cursor-pointer active:scale-95 min-h-[50px] relative ${ isPathActive ? "text-[#F0C040] bg-gradient-to-b from-[#D4A017]/25 to-[#D4A017]/10 border border-[#D4A017]/40 shadow-sm" : "text-white/65 hover:text-white hover:bg-white/[0.04] border border-transparent" } min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-          >
-            {isPathActive && (
-              <span className="absolute -top-1 w-5 h-0.5 bg-[#F0C040] rounded-full md:shadow-[0_0_8px_#F0C040] shadow-xl" />
-            )}
-            <Compass className={`w-5 h-5 transition-transform ${isPathActive ? "scale-110 text-[#F0C040]" : "text-white/70"}`} />
-            <span className="text-[10px] sm:text-[11px] font-bold mt-1 leading-none tracking-tight">
-              مساري
-            </span>
-          </button>
-
-          {/* 3. الأدوات (Tools / Vizion Growth Suite) */}
-          <button             onClick={() => scrollToSection("vizion-growth-suite")}
-            aria-label="الانتقال إلى حقيبة الأدوات الذكية"
-            aria-current={isToolsActive ? "page" : undefined}
-            className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none duration-200 cursor-pointer active:scale-95 min-h-[50px] relative ${ isToolsActive ? "text-[#F0C040] bg-gradient-to-b from-[#D4A017]/25 to-[#D4A017]/10 border border-[#D4A017]/40 shadow-sm" : "text-white/65 hover:text-white hover:bg-white/[0.04] border border-transparent" } min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-          >
-            {isToolsActive && (
-              <span className="absolute -top-1 w-5 h-0.5 bg-[#F0C040] rounded-full md:shadow-[0_0_8px_#F0C040] shadow-xl" />
-            )}
-            <Wrench className={`w-5 h-5 transition-transform ${isToolsActive ? "scale-110 text-[#F0C040]" : "text-white/70"}`} />
-            <span className="text-[10px] sm:text-[11px] font-bold mt-1 leading-none tracking-tight">
-              الأدوات
-            </span>
-          </button>
-
-          {/* 4. المستشار (Vizion AI Advisor) */}
-          <button             onClick={() => {
-              setMoreSheetOpen(false);
-              onOpenAdvisor();
-            }}
-            aria-label="فتح مستشار فيزيون للذكاء الاصطناعي"
-            className="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none duration-200 cursor-pointer active:scale-95 min-h-[50px] relative text-[#F0C040] hover:bg-[#D4A017]/10 border border-transparent hover:border-[#D4A017]/30 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
-          >
-            <div className="relative">
-              <Bot className="w-5 h-5 text-[#F0C040]" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            </div>
-            <span className="text-[10px] sm:text-[11px] font-black mt-1 leading-none tracking-tight text-[#F0C040]">
-              المستشار
-            </span>
-          </button>
-
-          {/* 5. المزيد (Secondary Menu & Settings) */}
-          <button             onClick={() => setMoreSheetOpen(!isMoreSheetOpen)}
-            aria-label="فتح قائمة المزيد والخدمات الثانوية"
-            aria-expanded={isMoreSheetOpen}
-            className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none duration-200 cursor-pointer active:scale-95 min-h-[50px] relative ${ isMoreSheetOpen ? "text-[#F0C040] bg-gradient-to-b from-[#D4A017]/25 to-[#D4A017]/10 border border-[#D4A017]/40 shadow-sm" : "text-white/65 hover:text-white hover:bg-white/[0.04] border border-transparent" } min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
-          >
-            {isMoreSheetOpen && (
-              <span className="absolute -top-1 w-5 h-0.5 bg-[#F0C040] rounded-full md:shadow-[0_0_8px_#F0C040] shadow-xl" />
-            )}
-            <SlidersHorizontal className={`w-5 h-5 transition-transform ${isMoreSheetOpen ? "scale-110 text-[#F0C040]" : "text-white/70"}`} />
-            <span className="text-[10px] sm:text-[11px] font-bold mt-1 leading-none tracking-tight">
-              المزيد
-            </span>
-          </button>
-
+        <div className="pointer-events-auto max-w-md mx-auto glass-floating glass-edge rounded-[26px] p-1.5 flex items-center justify-between gap-1">
+          {dockItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.key}
+                onClick={item.onClick}
+                aria-label={item.aria}
+                aria-current={item.current ? "page" : undefined}
+                aria-expanded={item.expanded}
+                className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-[20px] cursor-pointer min-h-[52px] relative transition-[color,scale] duration-300 active:scale-[0.94] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+                  item.active ? "text-white" : item.accent ? "text-white/90" : "text-white/50"
+                }`}
+              >
+                {item.active && (
+                  <motion.span
+                    layoutId="dock-active"
+                    transition={SPRING_SNAPPY}
+                    className="absolute inset-0 rounded-[20px] bg-gradient-to-b from-white/[0.14] to-white/[0.05] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]"
+                  />
+                )}
+                <motion.span
+                  className="relative flex"
+                  initial={false}
+                  animate={item.active ? { scale: [1, 1.24, 0.94, 1], y: [0, -3, 0, 0] } : { scale: 1, y: 0 }}
+                  transition={{ duration: 0.55, times: [0, 0.35, 0.7, 1], ease: EASE_OUT }}
+                  whileTap={{ scale: 0.82 }}
+                >
+                  <Icon className="w-5 h-5" strokeWidth={item.active ? 2.4 : 2} />
+                  {item.accent && <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#0c1a4a]" />}
+                </motion.span>
+                <span className={`relative text-[10px] sm:text-[11px] mt-1 leading-none tracking-tight ${item.active || item.accent ? "font-black" : "font-bold"}`}>
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
-      </nav>
+      </motion.nav>
     </>
   );
 };

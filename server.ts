@@ -2,12 +2,12 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import dotenv from "dotenv";
-import { handleAdvisorChat } from "./src/lib/gemini.js";
+import { handleAdvisorRequest } from "./src/lib/advisor/core.js";
 
 dotenv.config();
 
 export const app = express();
-app.use(express.json({ limit: "2mb" }));
+app.use(express.json({ limit: "12mb" }));
 
 // Enable CORS
 app.use((req, res, next) => {
@@ -20,48 +20,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// AI Advisor Chat Endpoint
-app.post(["/api/advisor/chat", "/advisor/chat"], async (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-
-  const clientRequestId =
-    req.headers["x-request-id"] ||
-    req.body?.requestId ||
-    `req_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-
-  res.setHeader("X-Request-ID", clientRequestId);
-
-  try {
-    const { messages, userContext, isNewTopic, topicContext, diagnosticProfile, requestId } = req.body || {};
-
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return res.status(400).json({
-        error: "Messages array is required.",
-        requestId: clientRequestId,
-      });
-    }
-
-    const reply = await handleAdvisorChat(messages, {
-      userContext,
-      isNewTopic: Boolean(isNewTopic),
-      topicContext,
-      diagnosticProfile,
-      requestId: requestId || clientRequestId,
-    });
-
-    return res.json({
-      reply,
-      requestId: clientRequestId,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error: any) {
-    console.error(`[Advisor API Error] [${clientRequestId}]:`, error);
-    const msg = error.message || "حدث خطأ في التواصل مع المستشار الذكي.";
-    return res.status(500).json({
-      error: msg,
-      requestId: clientRequestId,
-    });
-  }
+// AI Advisor Chat Endpoint (streaming NDJSON, shared with the Vercel function)
+app.post(["/api/advisor/chat", "/advisor/chat"], (req, res) => {
+  handleAdvisorRequest(req, res).catch((error) => {
+    console.error("[Advisor API Error]:", error);
+    if (!res.headersSent) res.status(500).json({ error: "حدث خطأ في التواصل مع المستشار الذكي." });
+    else res.end();
+  });
 });
 
 // Health check

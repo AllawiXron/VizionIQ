@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { isSoundMuted, toggleSoundMute, soundEngine } from "../lib/soundEngine";
 import { motion } from "motion/react";
+import { SPRING_SNAPPY } from "../lib/motion";
 
 interface SoundToggleButtonProps {
   className?: string;
@@ -38,20 +39,21 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
   if (variant === "pill") {
     return (
       <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.96 }}
+        transition={SPRING_SNAPPY}
         onClick={handleToggle}
         onMouseEnter={() => soundEngine.playHover()}
-        className={`px-3 py-1.5 rounded-xl border flex items-center gap-2 text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${
+        className={`px-3.5 min-h-[40px] rounded-full border flex items-center gap-2 text-xs font-bold transition-colors duration-300 cursor-pointer ${
           !muted
-            ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] md:shadow-[0_0_12px_rgba(212,160,23,0.3)] shadow-xl"
-            : "bg-white/5 border-white/10 text-white/60 hover:text-white"
+            ? "bg-vz-blue text-white border-vz-blue-light shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]"
+            : "bg-white/[0.05] border-white/10 text-white/60 hover:text-white"
         } ${className}`}
         title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}
       >
         {!muted ? (
           <>
-            <Volume2 className="w-4 h-4 text-[#F0C040] animate-pulse" />
+            <Volume2 className="w-4 h-4" />
             <span>الصوت مفعّل</span>
           </>
         ) : (
@@ -66,19 +68,20 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
 
   return (
     <motion.button
-      whileHover={{ scale: 1.08 }}
-      whileTap={{ scale: 0.92 }}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.94 }}
+      transition={SPRING_SNAPPY}
       onClick={handleToggle}
       onMouseEnter={() => soundEngine.playHover()}
-      className={`p-2 rounded-xl border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${
+      className={`w-9 h-9 flex items-center justify-center rounded-full border transition-colors duration-300 cursor-pointer ${
         !muted
-          ? "bg-[#D4A017]/20 border-[#D4A017] text-[#F0C040] md:shadow-[0_0_15px_rgba(212,160,23,0.35)] shadow-xl"
-          : "bg-white/5 hover:bg-white/10 border-white/10 text-white/60 hover:text-white"
+          ? "bg-white/[0.12] border-white/20 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+          : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] text-white/55 hover:text-white"
       } ${className}`}
       title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}
     >
       {!muted ? (
-        <Volume2 className="w-4 h-4 text-[#F0C040]" />
+        <Volume2 className="w-4 h-4" />
       ) : (
         <VolumeX className="w-4 h-4 text-white/70" />
       )}

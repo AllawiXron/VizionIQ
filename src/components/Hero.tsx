@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { 
-  Sparkles, 
-  ChevronDown, 
-  CheckCircle2, 
-  XCircle, 
-  Flame, 
+import React, { useState } from "react";
+import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from "motion/react";
+import {
+  Sparkles,
+  ChevronDown,
+  CheckCircle2,
+  XCircle,
+  Flame,
   ArrowRight,
   TrendingUp,
   MessageSquare,
@@ -19,6 +19,8 @@ import {
   Compass,
   ArrowDown
 } from "lucide-react";
+import { CountUp, Magnetic, Reveal, RevealGroup, RevealItem, WordsReveal } from "./ui/Motion";
+import { EASE_OUT, SPRING, SPRING_SNAPPY, allowBlur, collapseMotion } from "../lib/motion";
 
 interface HeroProps {
   onOpenAdvisor?: () => void;
@@ -26,8 +28,9 @@ interface HeroProps {
   onScrollToSection?: (id: string) => void;
 }
 
+const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
+
 export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }: HeroProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [activePainPoint, setActivePainPoint] = useState<number | null>(() => {
     if (typeof window !== "undefined" && window.innerWidth < 768) {
       return null;
@@ -35,88 +38,28 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
     return 0;
   });
 
-  // Sparkles background effect - subtle and lightweight
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // Scroll-linked depth: content drifts slower than the page and the lighting shifts.
+  // Phones get a lighter version (smaller drift, no fade) so reading is never disturbed.
+  const reduceMotion = useReducedMotion();
+  const desktopDepth = !reduceMotion && allowBlur();
+  const { scrollY } = useScroll();
+  // Phones keep the moving light but not the content drift: no per-frame
+  // transform on the large text block while reading.
+  const contentY = useTransform(scrollY, [0, 640], [0, desktopDepth ? 64 : 0]);
+  const contentOpacity = useTransform(scrollY, [0, 560], [1, desktopDepth ? 0.35 : 1]);
+  const contentScale = useTransform(scrollY, [0, 640], [1, desktopDepth ? 0.975 : 1]);
+  const lightY = useTransform(scrollY, [0, 900], [0, reduceMotion ? 0 : 180]);
+  const lightScale = useTransform(scrollY, [0, 900], [1, reduceMotion ? 1 : 1.25]);
+  const lightOpacity = useTransform(scrollY, [0, 900], [1, 0.45]);
+  const sideLightX = useTransform(scrollY, [0, 900], [0, reduceMotion ? 0 : -90]);
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-    let animationFrameId: number;
-
-    const handleResize = () => {
-      if (!canvas) return;
-      const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
-      if (Math.abs(newWidth - width) > 30 || Math.abs(newHeight - height) > 120) {
-        width = canvas.width = newWidth;
-        height = canvas.height = newHeight;
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    interface Spark {
-      x: number;
-      y: number;
-      size: number;
-      speedY: number;
-      opacity: number;
-      wobble: number;
-      wobbleSpeed: number;
-    }
-
-    const sparks: Spark[] = [];
-    const isMobile = window.innerWidth < 768;
-    const maxSparks = isMobile ? 12 : 30;
-
-    for (let i = 0; i < maxSparks; i++) {
-      sparks.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 1.8 + 0.5,
-        speedY: (Math.random() * -0.25) - 0.08, 
-        opacity: Math.random() * 0.4 + 0.1,
-        wobble: Math.random() * Math.PI * 2,
-        wobbleSpeed: Math.random() * 0.03 + 0.01
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = 0; i < sparks.length; i++) {
-        const s = sparks[i];
-        ctx.beginPath();
-        
-        const xWobble = s.x + Math.sin(s.wobble) * 1.5;
-        
-        ctx.arc(xWobble, s.y, s.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(212, 160, 23, ${s.opacity})`;
-        ctx.fill();
-
-        s.y += s.speedY;
-        s.wobble += s.wobbleSpeed;
-        
-        if (s.y < 0) {
-          s.y = height;
-          s.x = Math.random() * width;
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
+  // Staged entrance: each tier rises out of a soft blur, ~0.9s end to end.
+  const blur = allowBlur();
+  const rise = (delay: number, extra: Record<string, number> = {}) => ({
+    initial: { opacity: 0, y: 18, filter: blur ? "blur(10px)" : "blur(0px)", ...extra },
+    animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+    transition: { duration: 0.7, delay, ease: EASE_OUT },
+  });
 
   const handleScrollToId = (id: string) => {
     if (onScrollToSection) {
@@ -199,320 +142,320 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 18 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.45, ease: "easeOut" }
-    }
-  };
+  const entryChoices = [
+    {
+      id: "learn" as const,
+      aria: "أريد أتعلم من الصفر",
+      icon: BookOpen,
+      badge: "مسار منظم",
+      title: "“أريد أتعلم من الصفر”",
+      desc: "ادخل في مسار الفصول الـ 11 المرتبة في 4 مراحل: من التأسيس وصناعة العرض حتى إطلاق الإعلانات وإدارة التوصيل.",
+      cta: "تصفح مسار الفصول",
+      featured: false,
+    },
+    {
+      id: "diagnose" as const,
+      aria: "عندي مشكلة حالياً",
+      icon: Bot,
+      badge: "⚡ تشخيص فوري 3 دقائق",
+      title: "“عندي مشكلة حالياً”",
+      desc: "راجع عالي؟ رسائل بلا شراء؟ ميزانية محروقة؟ اطلب تحليل فوري من مستشار فيزيون الذكي المخصص لواقع السوق العراقي.",
+      cta: "شخّص مشكلتك الآن",
+      featured: true,
+    },
+    {
+      id: "calculate" as const,
+      aria: "أريد أحسب أرقامي",
+      icon: Calculator,
+      badge: "حاسبات تفاعلية",
+      title: "“أريد أحسب أرقامي”",
+      desc: "احسب هامش ربحك الصافي، تكلفة الراجع بالمحافظات، وسعر بيعك المطلوب بالدينار العراقي قبل أن تطلق الإعلان.",
+      cta: "فتح حاسبة الأرباح والتسعير",
+      featured: false,
+    },
+  ];
 
   return (
-    <div className="relative min-h-[85vh] sm:min-h-[90vh] w-full flex flex-col items-center overflow-hidden pt-16 sm:pt-24 pb-14 sm:pb-20 px-3 sm:px-6 text-center select-none bg-grid-pattern dir-rtl" id="hero-section">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-60" />
+    <div className="relative min-h-[85vh] sm:min-h-[90vh] w-full flex flex-col items-center overflow-hidden pt-24 sm:pt-32 pb-14 sm:pb-20 px-3 sm:px-6 text-center select-none dir-rtl" id="hero-section">
+      {/* Hero lighting — static gradients moved by scroll (no render loop) */}
+      <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+      <motion.div
+        aria-hidden="true"
+        style={{ y: lightY, scale: lightScale, opacity: lightOpacity }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: EASE_OUT }}
+        className="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[140vw] sm:w-[90vw] max-w-[1400px] h-[90vh] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(72,128,255,0.286)_0%,rgba(72,128,255,0.091)_35%,transparent_68%)] [will-change:transform,opacity]"
+      />
+      <motion.div
+        aria-hidden="true"
+        style={{ x: sideLightX }}
+        className="absolute top-[18%] -right-[10%] w-[55vw] h-[55vh] pointer-events-none bg-[radial-gradient(circle_at_center,rgba(95,168,255,0.16)_0%,transparent_65%)]"
+      />
 
-      {/* Ambient Radial Background Glows - Calm & Performance Balanced */}
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.08)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[50vw] h-[50vh] bg-[radial-gradient(circle_at_center,rgba(13,27,86,0.45)_0%,transparent_70%)] pointer-events-none" />
+      <div className="max-w-5xl z-10 space-y-8 sm:space-y-12 flex flex-col items-center w-full relative">
 
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="max-w-5xl z-10 space-y-6 sm:space-y-10 flex flex-col items-center w-full relative"
-      >
-        
-        {/* Top Operational OS Badge */}
-        <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#0F1735]/90 border border-[#D4A017]/40 text-xs sm:text-sm text-[#F0C040] font-bold shadow-md backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <Sparkles className="w-3.5 h-3.5 text-[#F0C040]" />
-          <span>منظومة التشغيل العملية للتجارة الإلكترونية في العراق</span>
-        </motion.div>
+        {/* ABOVE THE FOLD — drifts back as the page moves forward */}
+        <motion.div
+          style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
+          className="flex flex-col items-center space-y-6 sm:space-y-9 w-full origin-top md:will-change-transform"
+        >
+          {/* Top Operational OS Badge */}
+          <motion.div {...rise(0.12)} className="vz-eyebrow text-xs sm:text-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-breathe" />
+            <span>منظومة التشغيل العملية للتجارة الإلكترونية في العراق</span>
+          </motion.div>
 
-        {/* Primary Clear Hero Value Proposition */}
-        <motion.div variants={itemVariants} className="space-y-3 sm:space-y-5 max-w-4xl relative z-10 px-2 flex flex-col items-center">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.6rem] font-black text-white tracking-tight leading-snug sm:leading-[1.18] drop-shadow-xl">
-            نظام عملي للتاجر العراقي <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-[#FFE58F] to-[#D4A017]">
-              حتى يبيع أكثر ويعرف وين تروح فلوسه
-            </span>
-          </h1>
-          
-          <p className="text-xs sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto font-normal leading-relaxed">
-            شخّص مشكلتك، احسب ربحك الصافي، وخذ خطوة واضحة اليوم — من خلال كورس عملي، 13 أداة وحاسبة بالدينار، ومستشار ذكي للسوق العراقي.
-          </p>
+          {/* Primary Clear Hero Value Proposition */}
+          <div className="space-y-4 sm:space-y-6 max-w-4xl relative z-10 px-2 flex flex-col items-center">
+            <WordsReveal
+              as="h1"
+              trigger="mount"
+              delay={0.18}
+              stagger={0.055}
+              className="text-[1.7rem] sm:text-5xl md:text-6xl lg:text-[4.1rem] font-black text-white tracking-tight leading-[1.3] sm:leading-[1.15]"
+              segments={[
+                "نظام عملي للتاجر العراقي ",
+                { br: "hidden sm:block" },
+                { text: "حتى يبيع أكثر ويعرف وين تروح فلوسه", className: "vz-silver-text" },
+              ]}
+            />
 
-          {/* Focused Primary & Secondary CTAs (Easy to tap, >= 44px) */}
-          <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto w-full">
-            {/* Primary Action */}
-            <button               onClick={handlePrimaryCTA}
-              className="w-full sm:w-auto flex-1 min-h-[48px] sm:min-h-[52px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:scale-[1.02] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border border-[#F0C040]/40 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
-              aria-label="ابدأ تشخيص مشروعك — 3 دقائق"
-            >
-              <Zap className="w-5 h-5 text-[#040B24] fill-[#040B24]" />
-              <span>ابدأ تشخيص مشروعك — 3 دقائق</span>
-            </button>
+            <motion.p {...rise(0.55)} className="text-sm sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-normal leading-relaxed">
+              شخّص مشكلتك، احسب ربحك الصافي، وخذ خطوة واضحة اليوم — من خلال كورس عملي، 13 أداة وحاسبة بالدينار، ومستشار ذكي للسوق العراقي.
+            </motion.p>
 
-            {/* Secondary Action */}
-            <button               onClick={() => handleScrollToId("contents-section")}
-              className="w-full sm:w-auto min-h-[48px] sm:min-h-[52px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 hover:border-white/30 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer active:scale-95 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
-              aria-label="استكشف الفصول"
-            >
-              <BookOpen className="w-4 h-4 text-[#F0C040]" />
-              <span>استكشف الفصول</span>
-            </button>
-          </div>
+            {/* Focused Primary & Secondary CTAs (Easy to tap, >= 44px) */}
+            <motion.div
+              initial={{ opacity: 0, y: 22, scale: 0.92, filter: blur ? "blur(10px)" : "blur(0px)" }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              transition={{ type: "spring", stiffness: 260, damping: 18, mass: 0.9, delay: 0.65, opacity: { duration: 0.5, delay: 0.65, ease: EASE_OUT }, filter: { duration: 0.5, delay: 0.65, ease: EASE_OUT } }}
+              className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto w-full">
+              {/* Primary Action */}
+              <Magnetic className="w-full sm:w-auto sm:flex-1" strength={0.2} max={7}>
+                <button
+                  onClick={handlePrimaryCTA}
+                  className={`btn btn-primary w-full min-h-[50px] sm:min-h-[54px] px-6 sm:px-8 rounded-full text-sm sm:text-base gap-2.5 ${focusRing}`}
+                  aria-label="ابدأ تشخيص مشروعك — 3 دقائق"
+                >
+                  <Zap className="w-[18px] h-[18px] fill-current" />
+                  <span>ابدأ تشخيص مشروعك — 3 دقائق</span>
+                </button>
+              </Magnetic>
 
-          {/* First Screen Value Communication Grid (Above the fold - no long scroll required) */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-2xl pt-2 sm:pt-3">
-            <div className="p-2 sm:p-3 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col items-center justify-center text-center">
-              <span className="text-sm sm:text-base">📚</span>
-              <span className="text-xs sm:text-sm font-black text-white mt-0.5">11 فصلاً عملياً</span>
-              <span className="text-[10px] text-white/70 hidden xs:inline">من الفكرة للتسليم</span>
-            </div>
-            <div className="p-2 sm:p-3 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col items-center justify-center text-center">
-              <span className="text-sm sm:text-base">🧮</span>
-              <span className="text-xs sm:text-sm font-black text-[#F0C040] mt-0.5">13 أداة وحاسبة</span>
-              <span className="text-[10px] text-white/70 hidden xs:inline">أرباح بالدينار</span>
-            </div>
-            <div className="p-2 sm:p-3 rounded-xl bg-[#D4A017]/5 border border-[#D4A017]/30 flex flex-col items-center justify-center text-center">
-              <span className="text-sm sm:text-base">⚡</span>
-              <span className="text-xs sm:text-sm font-black text-emerald-400 mt-0.5">تشخيص بـ 3 دقائق</span>
-              <span className="text-[10px] text-white/70 hidden xs:inline">مستشار ذكي فوري</span>
-            </div>
+              {/* Secondary Action */}
+              <button
+                onClick={() => handleScrollToId("contents-section")}
+                className={`btn btn-glass w-full sm:w-auto min-h-[50px] sm:min-h-[54px] px-6 sm:px-8 rounded-full text-sm sm:text-base font-bold ${focusRing}`}
+                aria-label="استكشف الفصول"
+              >
+                <BookOpen className="w-4 h-4 opacity-80" />
+                <span>استكشف الفصول</span>
+              </button>
+            </motion.div>
+
+            {/* First Screen Value Communication Grid (Above the fold - no long scroll required) */}
+            <motion.div {...rise(0.78)} className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-2xl pt-1 sm:pt-2">
+              {[
+                { icon: "📚", before: "", num: 11, after: " فصلاً عملياً", sub: "من الفكرة للتسليم", tone: "text-white" },
+                { icon: "🧮", before: "", num: 13, after: " أداة وحاسبة", sub: "أرباح بالدينار", tone: "text-white" },
+                { icon: "⚡", before: "تشخيص بـ ", num: 3, after: " دقائق", sub: "مستشار ذكي فوري", tone: "text-emerald-300" },
+              ].map((stat) => (
+                <div key={stat.sub} className="p-2.5 sm:p-3.5 rounded-2xl glass-subtle flex flex-col items-center justify-center text-center">
+                  <span className="text-sm sm:text-base">{stat.icon}</span>
+                  <span className={`text-xs sm:text-sm font-black mt-0.5 ${stat.tone}`}>
+                    {stat.before}<CountUp value={stat.num} />{stat.after}
+                  </span>
+                  <span className="text-[10px] text-white/50 hidden xs:inline">{stat.sub}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </motion.div>
 
         {/* 3 PRIMARY ENTRY CHOICES (FAST-TRACK 60-SECOND PILLARS) */}
-        <motion.div variants={itemVariants} className="w-full pt-4 sm:pt-6">
-          <div className="text-center mb-4 sm:mb-6">
-            <span className="text-xs sm:text-sm font-black text-[#F0C040] uppercase tracking-wider block">
+        <div className="w-full pt-2 sm:pt-4 relative z-10">
+          <motion.div {...rise(0.85)} className="text-center mb-4 sm:mb-6">
+            <span className="text-xs sm:text-sm font-bold text-white/50 block">
               حدد هدفك الآن للبدء مباشرة:
             </span>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 text-right">
-            
-            {/* Entry Choice 1: Learn from scratch */}
-            <div
-              onClick={() => handleEntryChoice("learn")}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  handleEntryChoice("learn");
-                }
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label="أريد أتعلم من الصفر"
-              className="group p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#0F1735]/90 to-[#0A122E]/90 border border-white/10 hover:border-[#D4A017]/60 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(212,160,23,0.15)] shadow-xl cursor-pointer flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:bg-[#D4A017] group-hover:text-[#040B24] group-hover:border-[#D4A017] transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.09, delayChildren: 0.9 } } }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 text-right"
+          >
+            {entryChoices.map((choice) => {
+              const Icon = choice.icon;
+              return (
+                <motion.div
+                  key={choice.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 40, scale: 0.92, rotateX: 8 },
+                    visible: { opacity: 1, y: 0, scale: 1, rotateX: 0, transition: { type: "spring", stiffness: 220, damping: 19, mass: 0.9, opacity: { duration: 0.5, ease: EASE_OUT } } },
+                  }}
+                  className="h-full"
+                  style={{ transformPerspective: 1200 }}
+                >
+                  <div
+                    onClick={() => handleEntryChoice(choice.id)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        handleEntryChoice(choice.id);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={choice.aria}
+                    data-tilt
+                    className={`group h-full p-5 sm:p-6 rounded-3xl cursor-pointer flex flex-col justify-between glass-interactive ${
+                      choice.featured ? "glass-elevated glass-edge" : "glass"
+                    } ${focusRing}`}
+                  >
+                    <div className="glass-depth">
+                      <div className="flex items-center justify-between mb-4">
+                        <div
+                          className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-colors duration-500 ${
+                            choice.featured
+                              ? "bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_20px_-8px_rgba(47,107,255,0.6)]"
+                              : "bg-white/[0.06] border border-white/10 text-white/80 group-hover:text-white group-hover:bg-white/10"
+                          }`}
+                        >
+                          <Icon className="w-5 h-5 sm:w-[22px] sm:h-[22px]" />
+                        </div>
+                        <span
+                          className={`text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full border ${
+                            choice.id === "calculate"
+                              ? "bg-emerald-400/10 text-emerald-300 border-emerald-400/20"
+                              : choice.featured
+                                ? "bg-white/10 text-white border-white/15"
+                                : "bg-white/[0.04] text-white/60 border-white/[0.08]"
+                          }`}
+                        >
+                          {choice.badge}
+                        </span>
+                      </div>
+                      <h3 className="text-base sm:text-lg font-black text-white mb-1.5">
+                        {choice.title}
+                      </h3>
+                      <p className="hidden sm:block text-xs sm:text-sm text-white/55 leading-relaxed font-light mb-4">
+                        {choice.desc}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-white/80 group-hover:text-white pt-3.5 border-t border-white/[0.07] transition-colors">
+                      <span>{choice.cta}</span>
+                      <ArrowRight className="w-3.5 h-3.5 transform rotate-180 transition-transform duration-500 group-hover:-translate-x-1" />
+                    </div>
                   </div>
-                  <span className="text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">
-                    مسار منظم
-                  </span>
-                </div>
-                <h3 className="text-base sm:text-lg font-black text-white group-hover:text-[#F0C040] transition-colors mb-1.5">
-                  “أريد أتعلم من الصفر”
-                </h3>
-                <p className="hidden sm:block text-xs sm:text-sm text-white/70 leading-relaxed font-light mb-4">
-                  ادخل في مسار الفصول الـ 11 المرتبة في 4 مراحل: من التأسيس وصناعة العرض حتى إطلاق الإعلانات وإدارة التوصيل.
-                </p>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#F0C040] pt-3 border-t border-white/5">
-                <span>تصفح مسار الفصول</span>
-                <ArrowRight className="w-3.5 h-3.5 transform rotate-180 group-hover:-translate-x-1 transition-transform" />
-              </div>
-            </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
 
-            {/* Entry Choice 2: Diagnose a current problem */}
-            <div
-              onClick={() => handleEntryChoice("diagnose")}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  handleEntryChoice("diagnose");
-                }
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label="عندي مشكلة حالياً"
-              className="group p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#141A38] to-[#0A122E] border border-[#D4A017]/40 hover:border-[#D4A017] transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(212,160,23,0.25)] shadow-xl cursor-pointer flex flex-col justify-between relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-[#D4A017]/10 rounded-full blur-xl pointer-events-none" />
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[#D4A017] to-amber-600 flex items-center justify-center text-[#040B24] font-black shadow-md md:shadow-[#D4A017] shadow-xl/30 group-hover:scale-105 transition-transform">
-                    <Bot className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-extrabold px-2.5 py-1 rounded-full bg-[#D4A017]/20 text-[#F0C040] border border-[#D4A017]/40">
-                    ⚡ تشخيص فوري 3 دقائق
-                  </span>
-                </div>
-                <h3 className="text-base sm:text-lg font-black text-white group-hover:text-[#F0C040] transition-colors mb-1.5">
-                  “عندي مشكلة حالياً”
-                </h3>
-                <p className="hidden sm:block text-xs sm:text-sm text-white/70 leading-relaxed font-light mb-4">
-                  راجع عالي؟ رسائل بلا شراء؟ ميزانية محروقة؟ اطلب تحليل فوري من مستشار فيزيون الذكي المخصص لواقع السوق العراقي.
-                </p>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#F0C040] pt-3 border-t border-[#D4A017]/20">
-                <span>شخّص مشكلتك الآن</span>
-                <ArrowRight className="w-3.5 h-3.5 transform rotate-180 group-hover:-translate-x-1 transition-transform" />
-              </div>
-            </div>
-
-            {/* Entry Choice 3: Calculate numbers */}
-            <div
-              onClick={() => handleEntryChoice("calculate")}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  handleEntryChoice("calculate");
-                }
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label="أريد أحسب أرقامي"
-              className="group p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#0F1735]/90 to-[#0A122E]/90 border border-white/10 hover:border-emerald-500/60 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(16,185,129,0.15)] shadow-xl cursor-pointer flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-[#040B24] group-hover:border-emerald-500 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <Calculator className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-                    حاسبات تفاعلية
-                  </span>
-                </div>
-                <h3 className="text-base sm:text-lg font-black text-white group-hover:text-emerald-300 transition-colors mb-1.5">
-                  “أريد أحسب أرقامي”
-                </h3>
-                <p className="hidden sm:block text-xs sm:text-sm text-white/70 leading-relaxed font-light mb-4">
-                  احسب هامش ربحك الصافي، تكلفة الراجع بالمحافظات، وسعر بيعك المطلوب بالدينار العراقي قبل أن تطلق الإعلان.
-                </p>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 pt-3 border-t border-white/5">
-                <span>فتح حاسبة الأرباح والتسعير</span>
-                <ArrowRight className="w-3.5 h-3.5 transform rotate-180 group-hover:-translate-x-1 transition-transform" />
-              </div>
-            </div>
-
-          </div>
-        </motion.div>
-
-        {/* Shimmering Subtle Divider */}
-        <motion.div variants={itemVariants} className="w-full max-w-md h-[1px] bg-gradient-to-r from-transparent via-[#D4A017]/30 to-transparent" />
+        {/* Subtle Divider */}
+        <Reveal className="w-full max-w-md vz-hairline" y={0} scale={1} />
 
         {/* The Epiphany Letter (Extreme Trust Builder & Empathy) */}
-        <motion.div variants={itemVariants} className="w-full max-w-4xl relative group text-right">
-          <div className="relative bg-gradient-to-b from-[#0F1735]/80 to-[#040B24]/95 border border-white/10 p-4 sm:p-8 rounded-2xl sm:rounded-3xl text-right space-y-4 shadow-xl">
-            <div className="flex items-center gap-3 border-b border-white/5 pb-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#D4A017]/15 border border-[#D4A017]/30 flex items-center justify-center text-[#F0C040] shrink-0">
+        <Reveal className="w-full max-w-4xl relative text-right">
+          <div className="relative glass glass-edge p-5 sm:p-9 rounded-3xl text-right space-y-4">
+            <div className="flex items-center gap-3 border-b border-white/[0.07] pb-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/85 shrink-0">
                 <Flame className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div>
                 <h3 className="font-black text-base sm:text-xl text-white">رسالة صريحة قبل أن تبدأ..</h3>
-                <p className="text-xs sm:text-sm text-[#F0C040] font-bold">ليش يفشل 90% من التجار على السوشيال ميديا بالعراق؟</p>
+                <p className="text-xs sm:text-sm text-white/55 font-bold">ليش يفشل 90% من التجار على السوشيال ميديا بالعراق؟</p>
               </div>
             </div>
-            
-            <div className="space-y-3 text-xs sm:text-base text-white/80 leading-relaxed font-light">
+
+            <div className="space-y-3 text-xs sm:text-base text-white/75 leading-relaxed font-light">
               <p>
-                أعرف تماماً الإحساس الخانق.. تصرف مئات الدولارات على إعلانات فيسبوك وانستغرام، وتصلك عشرات الرسائل تسأل <span className="text-red-300 font-bold px-1.5 py-0.5 bg-red-500/10 rounded">"ببيش السعر؟"</span>، ثم يختفون كأنهم لم يكونوا.
+                أعرف تماماً الإحساس الخانق.. تصرف مئات الدولارات على إعلانات فيسبوك وانستغرام، وتصلك عشرات الرسائل تسأل <span className="text-red-300 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md">"ببيش السعر؟"</span>، ثم يختفون كأنهم لم يكونوا.
               </p>
               <p>
                 وأعرف الإحباط عندما يتصل المندوب ويخبرك أن الزبون ألغى الطلب أو لم يرد على الاتصال، لتتحمل أنت <span className="text-red-300 font-bold">كروة التوصيل والراجع</span>.
               </p>
-              
-              <div className="p-3.5 sm:p-5 rounded-xl bg-gradient-to-r from-emerald-950/40 to-transparent border-r-4 border-emerald-400">
-                <p className="text-xs sm:text-base text-emerald-100 font-bold">
+
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-l from-emerald-400/[0.07] to-transparent border border-emerald-400/15 border-r-2 border-r-emerald-400/70">
+                <p className="text-xs sm:text-base text-emerald-50/90 font-bold">
                   الفرق بين التاجر الخاسر والتاجر الرابح ليس الحظ.. بل <strong className="text-emerald-300 font-black">النظام التشغيلي المنضبط</strong> الذي يفلتر الزبائن، يغلق الصفقات بالهاتف، ويحمي الأرباح الصافية.
                 </p>
               </div>
             </div>
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* 8 PAIN POINTS ACCORDION (Interactive Problem-Solver) */}
-        <motion.div variants={itemVariants} className="w-full max-w-4xl space-y-4 pt-4 sm:pt-8 text-right">
-          <div className="text-center space-y-1.5 mb-6">
-            <h3 className="text-lg sm:text-2xl font-black text-white">
-              مشاكلك الشائعة.. <span className="text-[#F0C040]">وحلولها العملية في النظام</span>
+        <div className="w-full max-w-4xl space-y-4 pt-4 sm:pt-8 text-right">
+          <Reveal className="text-center space-y-1.5 mb-6">
+            <h3 className="text-lg sm:text-3xl font-black text-white">
+              مشاكلك الشائعة.. <span className="vz-silver-text">وحلولها العملية في النظام</span>
             </h3>
-            <p className="text-xs sm:text-sm text-white/60">اضغط على أي عائق يواجهك الآن لاكتشاف طريقة معالجته فوراً:</p>
-          </div>
+            <p className="text-xs sm:text-sm text-white/50 mx-auto">اضغط على أي عائق يواجهك الآن لاكتشاف طريقة معالجته فوراً:</p>
+          </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-3 items-start" stagger={0.05}>
             {painPoints.map((p, idx) => {
               const isActive = activePainPoint === idx;
               return (
-                <div 
-                  key={p.id}
-                  onClick={() => setActivePainPoint(isActive ? null : idx)}
-                  className={`p-3.5 sm:p-5 rounded-2xl text-right transition-all motion-reduce:transition-none motion-reduce:transform-none duration-200 cursor-pointer border relative overflow-hidden ${
-                    isActive 
-                      ? "bg-gradient-to-br from-[#162252] to-[#0D1638] border-[#D4A017]/60 shadow-md md:shadow-[#D4A017] shadow-xl/10" 
-                      : "bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:border-white/15"
-                  }`}
-                >
-                  <div className="flex items-start gap-3 justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className={`w-6 h-6 sm:w-7 sm:h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-black transition-colors ${isActive ? 'bg-[#D4A017] text-[#040B24]' : 'bg-white/5 text-white/70'}`}>
-                        {p.id}
-                      </div>
-                      <h4 className={`text-xs sm:text-sm font-bold leading-relaxed pr-0.5 ${isActive ? 'text-white' : 'text-white/80'}`}>{p.title}</h4>
-                    </div>
-                    <div className={`w-5 h-5 shrink-0 rounded-full flex items-center justify-center transition-all motion-reduce:transition-none motion-reduce:transform-none ${isActive ? 'rotate-180 text-[#F0C040]' : 'text-white/60'}`}>
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
-                  </div>
-                  
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pt-3 mt-3 border-t border-white/10 text-xs sm:text-sm text-emerald-200/90 leading-relaxed">
-                          <p className="pr-2 border-r-2 border-[#D4A017]">{p.solution}</p>
+                <RevealItem key={p.id}>
+                  <motion.div
+                    layout="position"
+                    onClick={() => setActivePainPoint(isActive ? null : idx)}
+                    className={`p-4 sm:p-5 rounded-2xl text-right cursor-pointer relative overflow-hidden transition-[background-color,border-color,box-shadow] duration-500 ${
+                      isActive
+                        ? "glass-elevated"
+                        : "glass-subtle hover:bg-white/[0.055] hover:border-white/[0.1]"
+                    }`}
+                  >
+                    <div className="flex items-start gap-3 justify-between">
+                      <div className="flex items-start gap-3">
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-black transition-colors duration-500 ${isActive ? 'bg-vz-blue text-white' : 'bg-white/[0.06] text-white/60'}`}>
+                          {p.id}
                         </div>
+                        <h4 className={`text-xs sm:text-sm font-bold leading-relaxed pr-0.5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/75'}`}>{p.title}</h4>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: isActive ? 180 : 0 }}
+                        transition={SPRING_SNAPPY}
+                        className={`w-5 h-5 shrink-0 rounded-full flex items-center justify-center ${isActive ? 'text-white' : 'text-white/45'}`}
+                      >
+                        <ChevronDown className="w-4 h-4" />
                       </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                    </div>
+
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.div {...collapseMotion} className="overflow-hidden">
+                          <div className="pt-3 mt-3 border-t border-white/[0.08] text-xs sm:text-sm text-white/70 leading-relaxed">
+                            <p className="pr-3 border-r-2 border-emerald-400/60">{p.solution}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                </RevealItem>
               );
             })}
-          </div>
-        </motion.div>
+          </RevealGroup>
+        </div>
 
         {/* Scroll Prompt to Chapters */}
-        <motion.div variants={itemVariants} className="pt-6 pb-2">
-          <button             onClick={() => handleScrollToId("contents-section")}
-            className="flex items-center gap-2 text-xs font-bold text-white/70 hover:text-[#F0C040] transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+        <Reveal className="pt-6 pb-2">
+          <button
+            onClick={() => handleScrollToId("contents-section")}
+            className={`btn btn-ghost px-4 rounded-full text-xs font-bold group ${focusRing}`}
           >
             <span>استكشف تفاصيل الفصول والـ 4 مراحل بالأسفل</span>
-            <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
+            <ArrowDown className="w-3.5 h-3.5 transition-transform duration-500 group-hover:translate-y-0.5" />
           </button>
-        </motion.div>
+        </Reveal>
 
-      </motion.div>
+      </div>
     </div>
   );
 }

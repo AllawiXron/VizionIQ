@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { X, Crown, Lock, Sparkles, CheckCircle2, Zap, KeyRound, ShieldAlert, Check } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { collapseMotion, overlayMotion } from "../lib/motion";
+import { CountUp } from "./ui/Motion";
+import { useOriginSheet } from "../lib/origin";
 import { getAllValidCodes, normalizeCode, isFreeTrialUser } from "./LockScreen";
 
 interface FreeTrialPaywallModalProps {
@@ -23,8 +26,6 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
   const [inputCode, setInputCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-
-  if (!isOpen) return null;
 
   const handleUpgrade = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,25 +55,27 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
     }
   };
 
+  // Grows out of whichever upgrade button was pressed, and returns into it.
+  const originSheet = useOriginSheet(isOpen, { width: 672 });
+
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md safe-area-top safe-area-bottom">
+      {isOpen && (
+      <motion.div key="paywall-overlay" {...overlayMotion} className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 vz-backdrop safe-area-top safe-area-bottom">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="w-full max-w-2xl bg-gradient-to-b from-[#0F1735] via-[#0A122E] to-[#040B24] border border-[#D4A017]/40 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[90vh] my-auto"
+          {...originSheet}
+          role="dialog"
+          aria-modal="true"
+          className="w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[90vh] my-auto"
         >
           {/* Header */}
-          <div className="px-3.5 sm:px-5 py-3 sm:py-4 bg-gradient-to-r from-[#121A3D] via-[#0F1735] to-[#0B102B] border-b border-[#D4A017]/30 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2 sm:gap-2.5">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#D4A017] to-amber-600 p-[1px] flex items-center justify-center shadow-lg md:shadow-[#D4A017] shadow-xl/20 shrink-0">
-                <div className="w-full h-full bg-[#040B24] rounded-[10px] sm:rounded-[11px] flex items-center justify-center text-[#F0C040]">
-                  <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+          <div className="px-4 sm:px-6 py-3 sm:py-4 vz-sheet-header flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] shrink-0">
+                <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] sm:text-xs font-black text-[#F0C040] uppercase tracking-wider block truncate">
+                <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-wider block truncate">
                   ترقية الحساب • Upgrade Access
                 </span>
                 <span className="text-xs sm:text-sm font-bold text-white truncate block">النسخة المدفوعة الكاملة</span>
@@ -80,18 +83,19 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             </div>
 
             <button               onClick={onClose}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-rose-500/20 text-white/70 hover:text-rose-400 transition-colors border border-white/10 cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              aria-label="إغلاق"
+              className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <X className="w-4 h-4 sm:w-5 sm:h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Body */}
-          <div className="p-3 sm:p-8 overflow-y-auto space-y-4 sm:space-y-6">
+          <div className="p-4 sm:p-8 overflow-y-auto overscroll-contain space-y-5 sm:space-y-6">
             {/* Title & Badge */}
             <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-[10px] sm:text-xs font-black text-[#F0C040]">
-                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#F0C040]" />
+              <div className="vz-eyebrow text-[10px] sm:text-xs">
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-vz-accent" />
                 <span>اشتراك لمرة واحدة مدى الحياة • بدون رسوم شهرية</span>
               </div>
               <h3 className="text-base sm:text-2xl font-black text-white leading-tight">
@@ -105,7 +109,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             {/* TWO SUBSCRIPTION TIERS CARDS */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-right">
               {/* Standard Tier */}
-              <div className="bg-[#040B24] border border-white/15 rounded-2xl p-3 sm:p-4 space-y-2.5 sm:space-y-3 flex flex-col justify-between">
+              <div className="glass-subtle rounded-3xl p-4 sm:p-5 space-y-2.5 sm:space-y-3 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                     <div>
@@ -115,8 +119,8 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                       <h4 className="text-base font-black text-white">الاشتراك الاعتيادي</h4>
                     </div>
                     <div className="text-left">
-                      <span className="text-xl font-black text-white font-mono block">29,000</span>
-                      <span className="text-[10px] text-[#F0C040] font-bold block">د.ع • مدى الحياة</span>
+                      <CountUp value={29000} className="text-xl font-black text-white font-mono block" />
+                      <span className="text-[10px] text-vz-accent font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>
 
@@ -146,44 +150,44 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               </div>
 
               {/* VIP Tier */}
-              <div className="bg-gradient-to-b from-[#121C42] to-[#080E2B] border-2 border-[#D4A017] rounded-2xl p-4 space-y-3 flex flex-col justify-between shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 bg-[#D4A017] text-[#040B24] font-black text-[9px] px-2.5 py-0.5 rounded-br-lg">
+              <div className="bg-gradient-to-b from-white/[0.1] to-white/[0.025] border border-white/20 rounded-3xl p-4 sm:p-5 space-y-3 flex flex-col justify-between shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_20px_50px_-24px_rgba(0,0,0,0.9)] relative overflow-hidden">
+                <div className="absolute top-3 left-3 bg-vz-blue text-white font-black text-[9px] px-2.5 py-0.5 rounded-full">
                   👑 الموصى به - أسرع نتيجة
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between border-b border-[#D4A017]/30 pb-2.5 pt-2">
+                  <div className="flex items-center justify-between border-b border-white/14 pb-2.5 pt-2">
                     <div>
-                      <span className="text-[10px] bg-[#D4A017]/20 text-[#F0C040] font-bold px-2 py-0.5 rounded-full block w-fit mb-1 border border-[#D4A017]/40">
+                      <span className="text-[10px] bg-white/10 text-vz-accent font-bold px-2 py-0.5 rounded-full block w-fit mb-1 border border-white/18">
                         الاشتراك الكامل VIP
                       </span>
-                      <h4 className="text-base font-black text-[#F0C040]">اشتراك VIP</h4>
+                      <h4 className="text-base font-black text-vz-accent">اشتراك VIP</h4>
                     </div>
                     <div className="text-left">
-                      <span className="text-2xl font-black text-[#F0C040] font-mono block">49,000</span>
-                      <span className="text-[10px] text-amber-200 font-bold block">د.ع • مدى الحياة</span>
+                      <CountUp value={49000} className="text-2xl font-black text-white font-mono block" />
+                      <span className="text-[10px] text-vz-accent font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-amber-100/90 font-bold mt-2 mb-3 leading-relaxed">
+                  <p className="text-[11px] text-vz-accent/90 font-bold mt-2 mb-3 leading-relaxed">
                     إذا تريد أسرع نتيجة وأقل أخطاء وتوجيه مباشر خطوة بخطوة.
                   </p>
 
                   <ul className="space-y-2 text-[11px] text-white">
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span><strong>كل مميزات الاعتيادي</strong> + المتابعة المباشرة وياي.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span>مراجعة إعلاناتك وإعطاء ملاحظات فورية عليها.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span>مساعدتك باختيار المنتج، الاستهداف والعروض.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#F0C040] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span>توجيه مخصص لمشروعك + مستشار مستشار ذكي (Vizion AI).</span>
                     </li>
                   </ul>
@@ -192,10 +196,10 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             </div>
 
             {/* Upgrade Password Input Form */}
-            <form onSubmit={handleUpgrade} className="bg-gradient-to-r from-[#0F1735] via-[#141E47] to-[#0F1735] p-5 rounded-2xl border border-[#D4A017]/40 space-y-4 shadow-xl">
+            <form onSubmit={handleUpgrade} className="glass-subtle p-4 sm:p-5 rounded-3xl space-y-4">
               <div className="space-y-1 text-right">
-                <label className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
-                  <KeyRound className="w-4 h-4 text-[#F0C040]" />
+                <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
+                  <KeyRound className="w-4 h-4 text-vz-accent" />
                   <span>تمتلك رمز وصول مدفوع؟ أدخله هنا للترقية الفورية:</span>
                 </label>
                 <p className="text-[11px] text-white/70">سيتم فتح جميع الاستراتيجيات فوراً ودون الحاجة لإعادة التسجيل.</p>
@@ -206,33 +210,39 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
                   placeholder="أدخل رمز الوصول الخاص بك..."
-                  className="flex-1 px-4 py-3 bg-[#040B24] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-[#D4A017] outline-none text-center sm:text-right min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="vz-field flex-1 px-4 py-3 rounded-2xl text-white text-sm font-mono text-center sm:text-right min-h-[48px]"
                 />
 
                 <button                   type="submit"
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-lg md:shadow-[#D4A017] shadow-xl/25 hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer whitespace-nowrap min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="btn btn-primary px-6 py-3 rounded-2xl text-xs sm:text-sm whitespace-nowrap min-h-[48px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   ترقية الحساب الآن ⚡
                 </button>
               </div>
 
+              <AnimatePresence initial={false}>
               {error && (
-                <div className="p-3 bg-red-950/50 border border-red-500/30 rounded-xl text-xs text-red-200 flex items-center gap-2">
-                  <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
+                <motion.div key="err" {...collapseMotion} className="overflow-hidden">
+                <div className="p-3 bg-red-500/[0.08] border border-red-400/20 rounded-2xl text-xs text-red-200 flex items-center gap-2">
+                  <ShieldAlert className="w-4 h-4 text-red-300 shrink-0" />
                   <span>{error}</span>
                 </div>
+                </motion.div>
               )}
 
               {success && (
-                <div className="p-3 bg-emerald-950/50 border border-emerald-500/30 rounded-xl text-xs text-emerald-300 flex items-center gap-2">
-                  <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                <motion.div key="ok" {...collapseMotion} className="overflow-hidden">
+                <div className="p-3 bg-emerald-500/[0.08] border border-emerald-400/20 rounded-2xl text-xs text-emerald-200 flex items-center gap-2">
+                  <Check className="w-4 h-4 text-emerald-300 shrink-0" />
                   <span>{success}</span>
                 </div>
+                </motion.div>
               )}
+              </AnimatePresence>
             </form>
 
             {/* Direct WhatsApp Purchase Contact */}
-            <div className="p-4 rounded-2xl bg-[#040B24] border border-[#D4A017]/30 text-center space-y-2">
+            <div className="p-4 sm:p-5 rounded-3xl glass-subtle text-center space-y-3">
               <p className="text-xs text-white/90 font-bold">
                 ما عندك رمز تفعيل وتريد تشترك فوراً؟ (14,000 د.ع للمستشار الذكي)
               </p>
@@ -240,15 +250,16 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                 href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition w-full cursor-pointer shadow-lg active:scale-95"
+                className="btn w-full px-5 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 border border-emerald-300/30 text-[#03140c] text-xs font-black shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_10px_28px_-12px_rgba(16,185,129,0.6)]"
               >
-                <Sparkles className="w-4 h-4 text-amber-300" />
+                <Sparkles className="w-4 h-4" />
                 <span>تواصل معنا عبر الواتساب للاشتراك والتفعيل الفوري (07757851379) 💬</span>
               </a>
             </div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
+      )}
     </AnimatePresence>
   );
 };

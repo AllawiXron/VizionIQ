@@ -5,6 +5,14 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { EASE_OUT, SPRING_SNAPPY, allowBlur, overlayMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
+
+// Step transitions blur through on desktop; phones use the same slide without filters.
+const STEP_BLUR = allowBlur();
+const STEP_BLUR_IN = STEP_BLUR ? { filter: "blur(6px)" } : {};
+const STEP_BLUR_OUT = STEP_BLUR ? { filter: "blur(0px)" } : {};
+const STEP_BLUR_EXIT = STEP_BLUR ? { filter: "blur(4px)" } : {};
 import { 
   Sparkles, 
   Crown, 
@@ -45,8 +53,6 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
     }
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const steps = [
     {
       id: "the-secret",
@@ -79,47 +85,45 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
     }
   };
 
+  const originSheet = useOriginSheet(isOpen, { width: 576 });
+
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-6 overflow-x-hidden overflow-y-auto dir-rtl font-sans safe-area-top safe-area-bottom">
+      {isOpen && (
+      <div key="welcome-intro" className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-6 overflow-x-hidden overflow-y-auto dir-rtl font-sans safe-area-top safe-area-bottom">
         
-        {/* Heavenly Dark Backdrop overlay - solid performance opacity on mobile to prevent GPU flicker */}
+        {/* Backdrop: darkens while its blur fades in */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          {...overlayMotion}
           onClick={onClose}
-          className="fixed inset-0 bg-[#020512]/98 sm:backdrop-blur-xl transition-opacity z-[200]"
+          className="fixed inset-0 vz-backdrop bg-black/70 z-[200]"
         />
 
         {/* MAIN DIALOG CONTAINER */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          role="dialog" aria-modal="true" className="relative z-[202] w-full max-w-xl bg-[#040B24] border-2 border-[#D4A017]/70 rounded-2xl sm:rounded-3xl md:shadow-[0_20px_90px_rgba(212,160,23,0.4)] shadow-xl overflow-hidden text-white flex flex-col max-h-[92dvh] sm:max-h-[88vh] my-auto"
+          {...originSheet}
+          role="dialog" aria-modal="true" className="relative z-[202] w-full max-w-xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl overflow-hidden text-white flex flex-col max-h-[92dvh] sm:max-h-[88vh] my-auto"
         >
           
           {/* Celestial Ray & Top Ambient Light - High Performance Radial Gradient */}
-          <div className="absolute top-0 inset-x-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(212,160,23,0.25)_0%,rgba(212,160,23,0.05)_50%,transparent_100%)] pointer-events-none" />
+          <div className="absolute top-0 inset-x-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(72,128,255,0.226)_0%,rgba(72,128,255,0.044)_50%,transparent_100%)] pointer-events-none" />
 
           {/* Header Bar */}
-          <div className="relative px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-white/10 shrink-0 bg-[#040B24] sm:bg-[#040B24]/85 sm:backdrop-blur-md z-20">
+          <div className="relative px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between vz-sheet-header shrink-0 z-20">
             {/* VIP / Code Badge */}
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-full bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-md md:shadow-[#D4A017] shadow-xl/30">
-                {isVip ? <Crown className="w-3.5 h-3.5 fill-[#040B24]" /> : <Lock className="w-3.5 h-3.5 fill-[#040B24]" />}
+              <span className="px-2.5 py-1 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
+                {isVip ? <Crown className="w-3.5 h-3.5 fill-white" /> : <Lock className="w-3.5 h-3.5 fill-white" />}
                 <span>{isVip ? "عضوية VIP النخبة" : isFree ? "النسخة التجريبية المحدودة" : "الاشتراك الذهبي الكامل"}</span>
               </span>
-              <span className="text-[10px] sm:text-xs text-amber-200/80 font-mono font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">
+              <span className="text-[10px] sm:text-xs text-white/60 font-mono font-bold bg-white/[0.05] border border-white/[0.08] px-2 py-0.5 rounded-full">
                 {userCode}
               </span>
             </div>
 
             {/* Skip / Close Button */}
             <button               onClick={onClose}
-              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 active:scale-95 text-white/70 hover:text-white border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               title="إغلاق النافذة"
             >
               <X className="w-4 h-4" />
@@ -127,11 +131,11 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           </div>
 
           {/* Explicit mobile escape hatch: do not make the tour the only path into the course. */}
-          <div className="px-4 pt-3 sm:hidden bg-[#040B24]">
+          <div className="px-4 pt-3 sm:hidden">
             <button
               type="button"
               onClick={onClose}
-              className="w-full min-h-[44px] rounded-xl border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-bold text-white/75 hover:bg-white/[0.08] hover:text-white active:scale-[0.98] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="btn btn-glass w-full rounded-full px-3 py-2 text-xs font-bold text-white/75 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               aria-label="تخطي المقدمة والانتقال إلى المحتوى"
             >
               تخطي المقدمة والانتقال إلى المحتوى
@@ -139,46 +143,46 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
           </div>
 
           {/* SCROLLABLE MODAL BODY SLIDES */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6 relative no-scrollbar">
+          <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-4 sm:space-y-6 relative no-scrollbar">
+            <AnimatePresence mode="wait" initial={false}>
             
             {/* Step 1: Celestial Welcome & Psychological Hook */}
             {currentStep === 0 && (
               <motion.div
                 key="step0"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, x: -18, ...STEP_BLUR_IN }}
+                animate={{ opacity: 1, x: 0, ...STEP_BLUR_OUT }}
+                exit={{ opacity: 0, x: 14, ...STEP_BLUR_EXIT, transition: { duration: 0.16, ease: EASE_OUT } }}
+                transition={{ duration: 0.42, ease: EASE_OUT }}
                 className="space-y-4 sm:space-y-5 text-center"
               >
                 {/* Crown Icon Emblem with Crisp Heavenly Glow */}
                 <div className="relative mx-auto w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(240,192,64,0.4)_0%,transparent_70%)]" />
+                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(72,128,255,0.364)_0%,transparent_70%)]" />
 
-                  <div className="relative w-full h-full rounded-3xl bg-[#040B24] border-2 border-[#F0C040] flex items-center justify-center text-[#F0C040] md:shadow-[0_0_25px_rgba(240,192,64,0.4)] shadow-xl">
-                    <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-[#F0C040]" />
+                  <div className="relative w-full h-full rounded-[28px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_18px_40px_-14px_rgba(47,107,255,0.6)]">
+                    <Crown className="w-10 h-10 sm:w-12 sm:h-12" />
                   </div>
 
-                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-[#F0C040]" />
-                  <Flame className="absolute -bottom-1 -left-1 w-5 h-5 text-amber-400" />
+                  <Sparkles className="absolute -top-2 -right-2 w-5 h-5 text-white/70" />
                 </div>
 
                 {/* Badge & Title */}
                 <div className="space-y-1.5">
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-[11px] sm:text-xs font-black text-[#F0C040] shadow-sm">
+                  <span className="inline-block px-3.5 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] sm:text-xs font-bold text-white/80">
                     {steps[0].badge}
                   </span>
                   <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
                     {steps[0].title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-amber-300 to-amber-500 max-w-md mx-auto leading-relaxed">
+                  <p className="text-xs sm:text-sm font-bold vz-silver-text max-w-md mx-auto leading-relaxed">
                     {steps[0].subtitle}
                   </p>
                 </div>
 
                 {/* Contrast Box: The Pain vs The Cure */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-red-500/5 via-white/[0.02] to-transparent border border-white/10 text-xs text-white/90 leading-relaxed font-light text-right space-y-4 shadow-inner relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-1 bg-gradient-to-b from-red-500 to-amber-500 h-full" />
+                <div className="p-4 sm:p-5 rounded-3xl glass-subtle text-xs text-white/85 leading-relaxed font-light text-right space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-[3px] bg-gradient-to-b from-red-400/80 to-white/20 h-full" />
                   <p className="text-justify leading-relaxed text-sm">
                     تعبت من رسايل <span className="text-red-400 font-bold">"بيش هاي؟"</span> اللي ما وراها بيعة؟ فلوسك دتحترق بإعلانات غالية؟ والـ <span className="text-red-400 font-bold">راجع كاسر ظهرك</span> وكروة التوصيل دتاكل براس مالك؟
                   </p>
@@ -193,14 +197,14 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             {currentStep === 1 && (
               <motion.div
                 key="step1"
-                initial={{ opacity: 0, x: -15 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 15 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, x: -18, ...STEP_BLUR_IN }}
+                animate={{ opacity: 1, x: 0, ...STEP_BLUR_OUT }}
+                exit={{ opacity: 0, x: 14, ...STEP_BLUR_EXIT, transition: { duration: 0.16, ease: EASE_OUT } }}
+                transition={{ duration: 0.42, ease: EASE_OUT }}
                 className="space-y-4"
               >
                 <div className="text-center space-y-1.5">
-                  <span className="inline-block px-3 py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-[11px] sm:text-xs font-black text-[#F0C040]">
+                  <span className="inline-block px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[11px] sm:text-xs font-bold text-white/80">
                     {steps[1].badge}
                   </span>
                   <h3 className="text-lg sm:text-2xl font-black text-white">
@@ -216,14 +220,15 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                   
                   {/* Pillar 1: Chapters (The Brain) */}
                   <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-white/[0.03] to-transparent border border-[#D4A017]/40 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
+                    whileHover={{ y: -2 }}
+                    transition={SPRING_SNAPPY}
+                    className="p-3.5 sm:p-4 rounded-2xl glass-subtle hover:bg-white/[0.05] flex items-start gap-4 transition-colors duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-[#D4A017]/25 border border-[#D4A017]/50 flex items-center justify-center text-[#F0C040] shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-vz-accent shrink-0 mt-0.5 shadow-sm">
                       <BookOpen className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-[#F0C040]">1. الدليل الذهبي للبيع (11 فصل تكتيكي)</h4>
+                      <h4 className="text-sm font-black text-vz-accent">1. الدليل الذهبي للبيع (11 فصل تكتيكي)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         مو مجرد تنظير.. هاي خطوات ميدانية حتى تقلل تكلفة الرسالة، تستهدف المحافظات بذكاء، وتقنع الزبون المتردد يشتري فوراً.
                       </p>
@@ -232,14 +237,15 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
                   {/* Pillar 2: AI Advisor (The Secret Weapon) */}
                   <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-blue-500/15 via-white/[0.03] to-transparent border border-blue-500/40 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
+                    whileHover={{ y: -2 }}
+                    transition={SPRING_SNAPPY}
+                    className="p-3.5 sm:p-4 rounded-2xl glass-subtle hover:bg-white/[0.05] flex items-start gap-4 transition-colors duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/25 border border-blue-500/50 flex items-center justify-center text-blue-400 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-slate-300 shrink-0 mt-0.5 shadow-sm">
                       <Bot className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-blue-300">2. مستشارك الخاص (Vizion AI 24/7)</h4>
+                      <h4 className="text-sm font-black text-slate-200">2. مستشارك الخاص (Vizion AI 24/7)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         انسى الحيرة. هذا الذكاء الاصطناعي مدرب خصيصاً على عقلية الزبون العراقي، يكتبلك إعلاناتك ويحل مشاكلك التسويقية بثواني.
                       </p>
@@ -248,10 +254,11 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
                   {/* Pillar 3: Growth Suite (The Shield) */}
                   <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-white/[0.03] to-transparent border border-emerald-500/40 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
+                    whileHover={{ y: -2 }}
+                    transition={SPRING_SNAPPY}
+                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-l from-emerald-400/[0.08] to-transparent border border-emerald-400/20 flex items-start gap-4 transition-colors duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/25 border border-emerald-500/50 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/25 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5 shadow-sm">
                       <Calculator className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
@@ -264,14 +271,15 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
                   {/* Pillar 4: Swipe Files (The Shortcut) */}
                   <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-purple-500/15 via-white/[0.03] to-transparent border border-purple-500/40 flex items-start gap-4 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none"
+                    whileHover={{ y: -2 }}
+                    transition={SPRING_SNAPPY}
+                    className="p-3.5 sm:p-4 rounded-2xl glass-subtle hover:bg-white/[0.05] flex items-start gap-4 transition-colors duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/25 border border-purple-500/50 flex items-center justify-center text-purple-300 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-slate-200 shrink-0 mt-0.5 shadow-sm">
                       <FileText className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-purple-300">4. مكتبة النسخ واللصق (النصوص السحرية)</h4>
+                      <h4 className="text-sm font-black text-slate-200">4. مكتبة النسخ واللصق (النصوص السحرية)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         قوالب جاهزة للرد على الزبائن، نصوص إعلانية مجربة وناجحة، وسيناريوهات تفاوض بس تنسخها وتلصقها حتى تقفل البيعة.
                       </p>
@@ -286,22 +294,22 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             {currentStep === 2 && (
               <motion.div
                 key="step2"
-                initial={{ opacity: 0, x: -15 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 15 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, x: -18, ...STEP_BLUR_IN }}
+                animate={{ opacity: 1, x: 0, ...STEP_BLUR_OUT }}
+                exit={{ opacity: 0, x: 14, ...STEP_BLUR_EXIT, transition: { duration: 0.16, ease: EASE_OUT } }}
+                transition={{ duration: 0.42, ease: EASE_OUT }}
                 className="space-y-5 text-center"
               >
                 {/* Shield Emblem */}
                 <div className="relative mx-auto w-20 h-20 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.4)_0%,transparent_70%)]" />
-                  <div className="relative w-full h-full rounded-2xl bg-[#040B24] border-2 border-emerald-400 flex items-center justify-center text-emerald-400 md:shadow-[0_0_20px_rgba(52,211,153,0.35)] shadow-xl">
+                  <div className="absolute -inset-4 rounded-full bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.18)_0%,transparent_70%)]" />
+                  <div className="relative w-full h-full rounded-[24px] glass-elevated border-emerald-400/40 flex items-center justify-center text-emerald-300">
                     <ShieldCheck className="w-10 h-10" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-xs font-black text-emerald-300">
+                  <span className="inline-block px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/25 text-xs font-bold text-emerald-300">
                     {steps[2].badge}
                   </span>
                   <h3 className="text-xl sm:text-2xl font-black text-white">
@@ -314,22 +322,22 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
                 {/* 3 Step Quick Action List - Actionable and psychological */}
                 <div className="space-y-3 text-right mt-4">
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4 hover:bg-white/10 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A017] to-amber-500 text-[#040B24] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">1</div>
+                  <div className="p-3.5 rounded-2xl glass-subtle flex items-center gap-4 hover:bg-white/[0.06] transition-colors duration-300">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black flex items-center justify-center text-sm shrink-0 shadow-lg">1</div>
                     <p className="text-white/90 text-sm leading-relaxed">
-                      راح تتصفح <strong className="text-[#F0C040]">الفصل 1 و 2</strong> فوراً حتى تكتشف الثغرة اللي دتسرق أرباحك وشلون تسدها.
+                      راح تتصفح <strong className="text-vz-accent">الفصل 1 و 2</strong> فوراً حتى تكتشف الثغرة اللي دتسرق أرباحك وشلون تسدها.
                     </p>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4 hover:bg-white/10 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-[#040B24] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">2</div>
+                  <div className="p-3.5 rounded-2xl glass-subtle flex items-center gap-4 hover:bg-white/[0.06] transition-colors duration-300">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black flex items-center justify-center text-sm shrink-0 shadow-lg">2</div>
                     <p className="text-white/90 text-sm leading-relaxed">
-                      تفتح <strong className="text-blue-300">المستشار الذكي (Vizion)</strong> وتطلب منه يكتبلك إعلان منتجك الجاي بلهجة عراقية تقنع الزبون.
+                      تفتح <strong className="text-slate-200">المستشار الذكي (Vizion)</strong> وتطلب منه يكتبلك إعلان منتجك الجاي بلهجة عراقية تقنع الزبون.
                     </p>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4 hover:bg-white/10 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-[#040B24] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">3</div>
+                  <div className="p-3.5 rounded-2xl glass-subtle flex items-center gap-4 hover:bg-white/[0.06] transition-colors duration-300">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white font-black flex items-center justify-center text-sm shrink-0 shadow-lg">3</div>
                     <p className="text-white/90 text-sm leading-relaxed">
                       تستخدم <strong className="text-emerald-300">حاسبة تسعير المنتجات</strong> حتى تضمن كل طلبية تطلع بيها ربح حقيقي يفوت لجيبك.
                     </p>
@@ -338,20 +346,29 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
               </motion.div>
             )}
+            </AnimatePresence>
 
           </div>
 
           {/* STICKY FOOTER ACTIONS & NAVIGATION FOR MOBILE */}
-          <div className="p-3 sm:p-5 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] sm:pb-5 bg-[#040B24]/98 border-t border-white/10 flex items-center justify-between gap-2 dir-rtl shrink-0 z-30 relative">
+          <div className="p-3 sm:p-5 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] sm:pb-5 border-t border-white/[0.07] bg-black/20 flex items-center justify-between gap-2 dir-rtl shrink-0 z-30 relative">
             
             {/* Dots Indicator */}
             <div className="flex items-center gap-1 sm:gap-2">
               {steps.map((_, idx) => (
-                <button                   key={idx}
+                <button
+                  key={idx}
                   onClick={() => setCurrentStep(idx)}
-                  className={`rounded-full transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ currentStep === idx ? " sm: bg-[#F0C040] md:shadow-[0_0_10px_#F0C040] shadow-xl" : " sm:.5 bg-white/20 hover:bg-white/40" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                  className="rounded-full cursor-pointer min-h-[44px] min-w-[32px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                   aria-label={`الذهاب للخطوة ${idx + 1}`}
-                />
+                  aria-current={currentStep === idx ? "step" : undefined}
+                >
+                  <motion.span
+                    animate={{ width: currentStep === idx ? 22 : 7, opacity: currentStep === idx ? 1 : 0.3 }}
+                    transition={SPRING_SNAPPY}
+                    className="block h-[7px] rounded-full bg-vz-blue"
+                  />
+                </button>
               ))}
             </div>
 
@@ -359,14 +376,14 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             <div className="flex items-center gap-1.5 sm:gap-3">
               {currentStep > 0 && (
                 <button                   onClick={() => setCurrentStep(prev => prev - 1)}
-                  className="px-3 sm:px-5 py-2 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white/90 hover:text-white border border-white/15 text-xs sm:text-sm font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[40px] flex items-center justify-center min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="btn btn-glass px-4 sm:px-5 rounded-full text-xs sm:text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   رجوع
                 </button>
               )}
 
               <button                 onClick={handleNext}
-                className="px-3.5 sm:px-8 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-400 to-amber-500 text-[#040B24] font-black text-xs sm:text-base md:shadow-[0_0_20px_rgba(212,160,23,0.4)] shadow-xl hover:scale-[1.02] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-1 sm:gap-2 min-h-[42px] min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="btn btn-primary px-4 sm:px-8 rounded-full text-xs sm:text-base gap-1 sm:gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <span>{currentStep === steps.length - 1 ? "🚀 استكشف المنظومة" : "التالي"}</span>
                 {currentStep !== steps.length - 1 && <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />}
@@ -377,6 +394,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
         </motion.div>
       </div>
+      )}
     </AnimatePresence>
   );
 };

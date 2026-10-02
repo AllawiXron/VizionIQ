@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CaseStudy } from "../types";
+import type { CaseStudy } from "../types";
 
 export const caseStudiesList: CaseStudy[] = [
   {

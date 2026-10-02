@@ -23,12 +23,12 @@ export default function DecisionTreeViewer() {
   };
 
   return (
-    <div className="bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-10 shadow-2xl space-y-8 text-right">
+    <div className="glass-subtle border rounded-4xl p-6 md:p-10 space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-xs font-bold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <Compass className="w-3.5 h-3.5" />
             <span>محرك تشخيص الأعطال التفاعلي • Decision Trees</span>
           </div>
@@ -39,7 +39,7 @@ export default function DecisionTreeViewer() {
 
         {selectedResult && (
           <button             onClick={handleReset}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>إعادة التشخيص</span>
@@ -49,7 +49,7 @@ export default function DecisionTreeViewer() {
 
       {/* QUESTION STEP STATE */}
       {!selectedResult ? (
-        <div className="space-y-6 animate-[fadeIn_0.3s_ease-out]">
+        <div className="space-y-6 animate-fade-in">
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-3">
             <h4 className="text-xl md:text-2xl font-black text-white leading-relaxed">
               {currentTree.question}
@@ -63,15 +63,15 @@ export default function DecisionTreeViewer() {
             {currentTree.options.map((opt, idx) => (
               <button                 key={idx}
                 onClick={() => handleSelectOption(opt)}
-                className="bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-white/10 hover:border-[#D4A017]/60 p-6 rounded-3xl text-right transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 hover:shadow-xl cursor-pointer space-y-3 group min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="glass p-6 rounded-3xl text-right cursor-pointer space-y-3 group min-h-[44px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy glass-interactive"
               >
                 <div className="flex items-center justify-between">
-                  <span className="w-7 h-7 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-xs font-bold flex items-center justify-center">
+                  <span className="w-7 h-7 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold flex items-center justify-center">
                     {idx + 1}
                   </span>
-                  <Zap className="w-4 h-4 text-white/60 group-hover:text-[#F0C040] transition-colors" />
+                  <Zap className="w-4 h-4 text-white/60 group-hover:text-vz-accent transition-colors" />
                 </div>
-                <h5 className="text-sm md:text-base font-bold text-white group-hover:text-[#F0C040] transition-colors">
+                <h5 className="text-sm md:text-base font-bold text-white group-hover:text-vz-accent transition-colors">
                   {opt.label}
                 </h5>
                 <p className="text-xs text-white/60 leading-relaxed">
@@ -83,16 +83,16 @@ export default function DecisionTreeViewer() {
         </div>
       ) : (
         /* DIAGNOSTIC RESULT STATE */
-        <div className="space-y-6 animate-[fadeIn_0.4s_ease-out]">
+        <div className="space-y-6 animate-fade-in">
           
           {/* Result Card Header */}
           <div className={`p-6 md:p-8 rounded-3xl border ${
             selectedResult.severity === "critical"
               ? "bg-red-950/30 border-red-500/40 text-red-200"
-              : "bg-amber-950/30 border-amber-500/40 text-amber-200"
+              : "bg-slate-900/30 border-white/18 text-vz-accent"
           }`}>
             <div className="flex items-center gap-3 mb-3">
-              <AlertTriangle className="w-6 h-6 text-amber-400" />
+              <AlertTriangle className="w-6 h-6 text-vz-accent" />
               <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/40 border border-white/10">
                 تشخيص الخلل: {selectedResult.severity === "critical" ? "عطل حاد يتطلب تدخلاً فورياً" : "عطل متوسط"}
               </span>
@@ -101,7 +101,7 @@ export default function DecisionTreeViewer() {
               {selectedResult.title}
             </h4>
             <p className="text-xs md:text-sm leading-relaxed text-white/80">
-              <strong className="text-[#F0C040]">السبب الجذري:</strong> {selectedResult.rootCause}
+              <strong className="text-vz-accent">السبب الجذري:</strong> {selectedResult.rootCause}
             </p>
           </div>
 
@@ -115,7 +115,7 @@ export default function DecisionTreeViewer() {
             <div className="space-y-3">
               {selectedResult.exactActionPlan.map((step, idx) => (
                 <div key={idx} className="flex items-start gap-3 bg-white/5 p-3.5 rounded-2xl border border-white/5 text-xs md:text-sm text-white/90">
-                  <span className="w-5 h-5 rounded-full bg-[#D4A017] text-[#040B24] font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-vz-blue text-white font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
                     {idx + 1}
                   </span>
                   <span className="leading-relaxed">{step}</span>
@@ -126,12 +126,12 @@ export default function DecisionTreeViewer() {
 
           {/* Recommended Tool & Swipe Ref */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-gradient-to-r from-[#D4A017]/15 to-transparent border border-[#D4A017]/30 p-4 rounded-2xl flex items-center justify-between">
+            <div className="bg-gradient-to-r from-white/8 to-transparent border border-white/14 p-4 rounded-2xl flex items-center justify-between">
               <div className="space-y-0.5">
                 <span className="text-[10px] text-white/60 block font-bold">الأداة الموصى بها في الحزمة:</span>
-                <span className="text-xs font-bold text-[#F0C040]">{selectedResult.recommendedTool}</span>
+                <span className="text-xs font-bold text-vz-accent">{selectedResult.recommendedTool}</span>
               </div>
-              <Wrench className="w-5 h-5 text-[#F0C040]" />
+              <Wrench className="w-5 h-5 text-vz-accent" />
             </div>
 
             {selectedResult.relatedSwipeFileId && (

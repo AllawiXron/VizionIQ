@@ -271,14 +271,14 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
 
   return (
     <div
-      className={`rounded-2xl bg-[#060D26] border border-white/10 p-3.5 sm:p-4 text-slate-100 dir-rtl space-y-3 ${className}`}
+      className={`rounded-2xl bg-[#081436] border border-white/10 p-3.5 sm:p-4 text-vz-accent dir-rtl space-y-3 ${className}`}
       data-testid="advisor-action-card"
     >
       {/* 1. Subtle relevance indicator */}
       {relevanceLabel && (
         <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#F0C040]">
-            <Sparkles className="w-3.5 h-3.5 text-[#F0C040] shrink-0" />
+          <div className="flex items-center gap-1.5 text-[11px] font-bold text-vz-accent">
+            <Sparkles className="w-3.5 h-3.5 text-vz-accent shrink-0" />
             <span>الخطوة التالية الموصى بها:</span>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed font-medium">
@@ -292,56 +292,56 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         {primaryType === "tool" && (
           <button             type="button"
             onClick={handleOpenTool}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#D4A017] hover:bg-amber-400 active:bg-amber-500 text-[#040B24] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-white text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             title={`افتح الأداة: ${effectiveToolTitle}`}
           >
             <span className="flex items-center gap-2 text-right">
-              <Wrench className="w-4 h-4 text-[#040B24] shrink-0" />
+              <Wrench className="w-4 h-4 text-white shrink-0" />
               <span>افتح الأداة: {effectiveToolTitle}</span>
             </span>
-            <ArrowLeft className="w-4 h-4 text-[#040B24] shrink-0" />
+            <ArrowLeft className="w-4 h-4 text-white shrink-0" />
           </button>
         )}
 
         {primaryType === "chapter" && (
           <button             type="button"
             onClick={handleOpenChapter}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#D4A017] hover:bg-amber-400 active:bg-amber-500 text-[#040B24] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-white text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             title={`راجع الفصل: ${effectiveChapterTitle}`}
           >
             <span className="flex items-center gap-2 text-right">
-              <BookOpen className="w-4 h-4 text-[#040B24] shrink-0" />
+              <BookOpen className="w-4 h-4 text-white shrink-0" />
               <span>راجع الفصل: {effectiveChapterTitle}</span>
             </span>
-            <ArrowLeft className="w-4 h-4 text-[#040B24] shrink-0" />
+            <ArrowLeft className="w-4 h-4 text-white shrink-0" />
           </button>
         )}
 
         {primaryType === "script" && (
           <button             type="button"
             onClick={handleCopyScript}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#D4A017] hover:bg-amber-400 active:bg-amber-500 text-[#040B24] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-white text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             title="انسخ السكريبت الجاهز للتطبيق"
           >
             <span className="flex items-center gap-2 text-right">
-              {copiedScript ? <Check className="w-4 h-4 text-[#040B24] shrink-0" /> : <Copy className="w-4 h-4 text-[#040B24] shrink-0" />}
+              {copiedScript ? <Check className="w-4 h-4 text-white shrink-0" /> : <Copy className="w-4 h-4 text-white shrink-0" />}
               <span>{copiedScript ? "تم نسخ السكريبت بنجاح ✓" : "انسخ السكريبت الجاهز للتطبيق"}</span>
             </span>
-            <ArrowLeft className="w-4 h-4 text-[#040B24] shrink-0" />
+            <ArrowLeft className="w-4 h-4 text-white shrink-0" />
           </button>
         )}
 
         {primaryType === "plan" && (
           <button             type="button"
             onClick={handleAddToPlan}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#D4A017] hover:bg-amber-400 active:bg-amber-500 text-[#040B24] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-white text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             title="أضفها لخطة 7 أيام"
           >
             <span className="flex items-center gap-2 text-right">
-              {addedToPlan ? <CheckCircle2 className="w-4 h-4 text-[#040B24] shrink-0" /> : <Calendar className="w-4 h-4 text-[#040B24] shrink-0" />}
+              {addedToPlan ? <CheckCircle2 className="w-4 h-4 text-white shrink-0" /> : <Calendar className="w-4 h-4 text-white shrink-0" />}
               <span>{addedToPlan ? "مضافة لخطة 7 أيام ✓" : "أضفها لخطة 7 أيام"}</span>
             </span>
-            <ArrowLeft className="w-4 h-4 text-[#040B24] shrink-0" />
+            <ArrowLeft className="w-4 h-4 text-white shrink-0" />
           </button>
         )}
       </div>
@@ -353,7 +353,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
             onClick={() => setShowSecondary(!showSecondary)}
             aria-expanded={showSecondary}
             aria-controls="advisor-secondary-actions"
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 text-slate-300 border border-white/10 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 text-slate-300 border border-white/10 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           >
             <span>خيارات إضافية</span>
             <ChevronDown
@@ -371,10 +371,10 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               {/* Secondary: Save recommendation */}
               <button                 type="button"
                 onClick={handleSaveRecommendation}
-                className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ saved ? "bg-amber-950/40 border-amber-500/40 text-amber-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ saved ? "bg-slate-900/40 border-white/18 text-vz-accent" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
               >
                 <span className="flex items-center gap-2 text-right">
-                  <Bookmark className={`w-4 h-4 text-amber-400 shrink-0 ${saved ? "fill-amber-400" : ""}`} />
+                  <Bookmark className={`w-4 h-4 text-vz-accent shrink-0 ${saved ? "fill-vz-accent" : ""}`} />
                   <span>{saved ? "تم حفظ التوصية في سجلك ✓" : "حفظ التوصية في سجلك"}</span>
                 </span>
                 <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -384,10 +384,10 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               {primaryType !== "chapter" && hasValidChapter && (
                 <button                   type="button"
                   onClick={handleOpenChapter}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] active:scale-95 transition-all"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy active:scale-[0.97] transition-all"
                 >
                   <span className="flex items-center gap-2 text-right">
-                    <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
+                    <BookOpen className="w-4 h-4 text-vz-accent shrink-0" />
                     <span>راجع الفصل: {effectiveChapterTitle}</span>
                   </span>
                   <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -398,10 +398,10 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               {primaryType !== "tool" && hasValidTool && (
                 <button                   type="button"
                   onClick={handleOpenTool}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] active:scale-95 transition-all"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy active:scale-[0.97] transition-all"
                 >
                   <span className="flex items-center gap-2 text-right">
-                    <Wrench className="w-4 h-4 text-amber-400 shrink-0" />
+                    <Wrench className="w-4 h-4 text-vz-accent shrink-0" />
                     <span>افتح الأداة: {effectiveToolTitle}</span>
                   </span>
                   <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -412,7 +412,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               {primaryType !== "plan" && (
                 <button                   type="button"
                   onClick={handleAddToPlan}
-                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ addedToPlan ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ addedToPlan ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                 >
                   <span className="flex items-center gap-2 text-right">
                     {addedToPlan ? (
@@ -429,7 +429,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               {/* Secondary: Copy response */}
               <button                 type="button"
                 onClick={handleCopyFull}
-                className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ isFullCopiedState ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ isFullCopiedState ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
               >
                 <span className="flex items-center gap-2 text-right">
                   {isFullCopiedState ? (
@@ -446,13 +446,13 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               {hasScript && primaryType !== "script" && (
                 <button                   type="button"
                   onClick={handleCopyScript}
-                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ copiedScript ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                  className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ copiedScript ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                 >
                   <span className="flex items-center gap-2 text-right">
                     {copiedScript ? (
                       <Check className="w-4 h-4 text-emerald-400 shrink-0" />
                     ) : (
-                      <Copy className="w-4 h-4 text-amber-400 shrink-0" />
+                      <Copy className="w-4 h-4 text-vz-accent shrink-0" />
                     )}
                     <span>{copiedScript ? "تم نسخ السكريبت بنجاح ✓" : "نسخ السكريبت الجاهز للتطبيق"}</span>
                   </span>
@@ -469,7 +469,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                       <button                         key={idx}
                         type="button"
                         onClick={() => onExecutePrompt?.(action.prompt)}
-                        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] text-right focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] text-right focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <span>{action.label}</span>
                         <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -486,7 +486,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                   <div className="grid grid-cols-2 gap-2">
                     <button                       type="button"
                       onClick={() => feedback.onRate?.("helpful")}
-                      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ feedback.rating === "helpful" ? "bg-emerald-950/50 border-emerald-500/50 text-emerald-300 font-bold" : "bg-white/5 hover:bg-emerald-500/10 border-white/10 text-slate-300 hover:text-emerald-300" } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ feedback.rating === "helpful" ? "bg-emerald-950/50 border-emerald-500/50 text-emerald-300 font-bold" : "bg-white/5 hover:bg-emerald-500/10 border-white/10 text-slate-300 hover:text-emerald-300" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       <ThumbsUp className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>إجابة مفيدة</span>
@@ -494,7 +494,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
 
                     <button                       type="button"
                       onClick={() => feedback.onRate?.("unhelpful")}
-                      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ feedback.rating === "unhelpful" ? "bg-rose-950/50 border-rose-500/50 text-rose-300 font-bold" : "bg-white/5 hover:bg-rose-500/10 border-white/10 text-slate-300 hover:text-rose-300" } focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ feedback.rating === "unhelpful" ? "bg-rose-950/50 border-rose-500/50 text-rose-300 font-bold" : "bg-white/5 hover:bg-rose-500/10 border-white/10 text-slate-300 hover:text-rose-300" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       <ThumbsDown className="w-4 h-4 text-rose-400 shrink-0" />
                       <span>إجابة غير مفيدة</span>
@@ -511,7 +511,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                           <button                             key={reason}
                             type="button"
                             onClick={() => feedback.onSelectReason?.(reason)}
-                            className={`px-3 py-2 rounded-lg text-xs font-medium border transition cursor-pointer min-h-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] ${ feedback.reason === reason ? "bg-rose-500/30 border-rose-400 text-white font-bold" : "bg-white/5 border-white/10 text-rose-200/90 hover:bg-white/10 hover:text-white" } focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                            className={`px-3 py-2 rounded-lg text-xs font-medium border transition cursor-pointer min-h-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${ feedback.reason === reason ? "bg-rose-500/30 border-rose-400 text-white font-bold" : "bg-white/5 border-white/10 text-rose-200/90 hover:bg-white/10 hover:text-white" } focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                           >
                             {reason}
                           </button>

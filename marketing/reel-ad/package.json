@@ -1,0 +1,21 @@
+{
+  "name": "vizion-reel-ad",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render VizionReel out/vizion-reel.mp4",
+    "still": "remotion still VizionReel out/cover.png --frame=84"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.532",
+    "lucide-react": "^1.49.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.532"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

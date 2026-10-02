@@ -37,22 +37,36 @@ import {
   ThumbsUp,
   ThumbsDown,
   AlertCircle,
-  Edit3
+  Edit3,
+  Brain,
+  ImagePlus,
+  Mic,
+  Square,
+  RotateCcw
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { EASE_OUT, SPRING_SNAPPY, overlayMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
 import { getAllValidCodes, normalizeCode } from "./LockScreen";
 import { BusinessDiagnosticStepper } from "./BusinessDiagnosticStepper";
-import { StructuredDiagnosticCard } from "./StructuredDiagnosticCard";
 import { AdvisorActionCard } from "./AdvisorActionCard";
 import { AdvisorMessageFeedbackBar, MessageFeedbackData } from "./AdvisorMessageFeedbackBar";
 import { AdvisorToast, ToastMessage } from "./AdvisorToast";
+import { RichMessage, ThinkingDots } from "./advisor/RichMessage";
+import { BusinessProfilePanel } from "./advisor/BusinessProfilePanel";
+import { useBusinessProfile } from "./advisor/useBusinessProfile";
+import { useDictation } from "./advisor/useDictation";
+import { AdvisorHttpError, streamAdvisor, type StreamOutcome } from "../lib/advisor/client";
+import { prepareImage, type PreparedImage } from "../lib/advisor/images";
+import { describeProfileUpdate, parseProfileTags, parseSuggestionTags, profileFilledCount, stripAdvisorTags } from "../lib/advisor/profile";
 import {
   SavedRecommendation,
   PlanTaskItem,
   getSavedRecommendationsFromStorage,
   removeSavedRecommendationFromStorage,
   get7DayPlanStorageKey,
-  trackAdvisorAction
+  trackAdvisorAction,
+  addRecommendationTo7DayPlanStorage
 } from "../utils/advisorActionMapper";
 import { BusinessDiagnosticProfile, DiagnosticMetrics } from "../types";
 import { constructDiagnosticPrompt } from "../utils/diagnosticCalculator";
@@ -69,6 +83,16 @@ interface Message {
   isDivider?: boolean;
   isError?: boolean;
   failedPrompt?: { text: string; presetSuggestions?: string[] };
+  /** True while the answer is still streaming in. */
+  streaming?: boolean;
+  /** Small thumbnails of images the merchant attached (full images are never stored). */
+  images?: string[];
+  /** What the advisor learned and saved to the business profile. */
+  profileUpdate?: string[];
+  /** The merchant stopped the answer early. */
+  stopped?: boolean;
+  /** The stream broke after part of the answer arrived. */
+  partialError?: string;
 }
 
 interface VizionAdvisorModalProps {
@@ -388,6 +412,11 @@ interface ChatInputFormProps {
   restoredText?: string;
   onTextRestored?: () => void;
   onInputFocus?: () => void;
+  /** Stops the answer that is streaming in. */
+  onStop?: () => void;
+  attachments?: PreparedImage[];
+  onAttach?: (files: FileList | File[]) => void;
+  onRemoveAttachment?: (index: number) => void;
 }
 
 function ChatInputForm({ 
@@ -402,9 +431,19 @@ function ChatInputForm({
   onRetryLast,
   restoredText,
   onTextRestored,
-  onInputFocus
+  onInputFocus,
+  onStop,
+  attachments = [],
+  onAttach,
+  onRemoveAttachment
 }: ChatInputFormProps) {
   const [inputText, setInputText] = React.useState("");
+  const [interim, setInterim] = React.useState("");
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const dictation = useDictation(
+    (finalText) => setInputText((prev) => (prev ? `${prev} ${finalText}` : finalText)),
+    setInterim
+  );
   const lastDraftRef = React.useRef("");
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -462,25 +501,10 @@ function ChatInputForm({
     }
   };
 
-  const isSendDisabled = !inputText.trim() || isLoading;
+  const isSendDisabled = (!inputText.trim() && attachments.length === 0) || isLoading;
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {/* 1. Loading State in Iraqi Arabic */}
-      {isLoading && (
-        <div 
-          role="status" 
-          aria-live="polite"
-          className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-amber-500/10 border border-[#D4A017]/30 text-[#F0C040] text-xs animate-in fade-in"
-        >
-          <div className="flex items-center gap-2 font-bold">
-            <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#F0C040]" />
-            <span>دا أرتبلك الجواب...</span>
-          </div>
-          <span className="text-[10px] text-amber-200/70 font-sans hidden xs:inline">لحظات ويجهز رد فيزيون</span>
-        </div>
-      )}
-
       {/* 2. Failure State Banner with visible Retry & Restore actions */}
       {!isLoading && lastFailedPrompt && (
         <div 
@@ -497,7 +521,7 @@ function ChatInputForm({
             {onRetryLast && (
               <button                 type="button"
                 onClick={onRetryLast}
-                className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer active:scale-95 transition shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] min-w-[44px] flex items-center justify-center"
+                className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer active:scale-[0.97] transition shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy min-w-[44px] flex items-center justify-center"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>إعادة المحاولة</span>
@@ -510,7 +534,7 @@ function ChatInputForm({
                   textareaRef.current.focus();
                 }
               }}
-              className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-rose-100 font-semibold text-xs flex items-center justify-center gap-1 min-h-[44px] cursor-pointer active:scale-95 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-rose-100 font-semibold text-xs flex items-center justify-center gap-1 min-h-[44px] cursor-pointer active:scale-[0.97] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               title="استرجاع النص للتعديل عليه"
             >
               <Edit3 className="w-3.5 h-3.5" />
@@ -525,16 +549,16 @@ function ChatInputForm({
         <div 
           role="region"
           aria-label="أسئلة مقترحة"
-          className="p-3 sm:p-3.5 rounded-2xl bg-[#081030] border border-[#D4A017]/40 shadow-xl text-white animate-in fade-in slide-in-from-bottom-2 duration-150"
+          className="p-3 sm:p-3.5 rounded-2xl glass-subtle border text-white animate-in fade-in slide-in-from-bottom-2 duration-150"
         >
           <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-white/10">
-            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#F0C040]">
-              <Lightbulb className="w-4 h-4 text-[#F0C040]" />
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-vz-accent">
+              <Lightbulb className="w-4 h-4 text-vz-accent" />
               <span>أسئلة مقترحة</span>
             </div>
             <button               type="button"
               onClick={onCloseSuggestions}
-              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white text-xs font-medium flex items-center gap-1 min-h-[44px] min-w-[44px] cursor-pointer transition active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white text-xs font-medium flex items-center gap-1 min-h-[44px] min-w-[44px] cursor-pointer transition active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               aria-label="إخفاء الاقتراحات"
               title="إخفاء الاقتراحات"
             >
@@ -552,15 +576,48 @@ function ChatInputForm({
                   onSendSuggestion(item.prompt, item.suggestions, item.topicId);
                 }}
                 disabled={isLoading}
-                className="text-right p-2.5 sm:p-3 rounded-xl bg-[#040B24] hover:bg-[#0E1B48] active:bg-[#D4A017]/20 border border-white/10 hover:border-[#D4A017]/50 text-xs sm:text-sm font-medium text-white/90 hover:text-white transition flex items-center justify-between gap-2.5 min-h-[44px] cursor-pointer group disabled:opacity-50 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="text-right p-2.5 sm:p-3 rounded-xl bg-black/30 hover:bg-white/[0.06] active:bg-white/10 border border-white/10 hover:border-white/22 text-xs sm:text-sm font-medium text-white/90 hover:text-white transition flex items-center justify-between gap-2.5 min-h-[44px] cursor-pointer group disabled:opacity-50 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <span className="leading-snug">{item.label}</span>
-                <ArrowLeft className="w-3.5 h-3.5 text-[#F0C040]/70 group-hover:text-[#F0C040] shrink-0 transition-transform group-hover:-translate-x-0.5" />
+                <ArrowLeft className="w-3.5 h-3.5 text-vz-accent/70 group-hover:text-vz-accent shrink-0 transition-transform group-hover:-translate-x-0.5" />
               </button>
             ))}
           </div>
         </div>
       )}
+
+      {/* Attached screenshots */}
+      {attachments.length > 0 && (
+        <div className="flex items-center gap-2 px-1" aria-label="الصور المرفقة">
+          {attachments.map((im, i) => (
+            <div key={i} className="relative">
+              <img src={im.thumb} alt="صورة مرفقة" className="h-14 w-14 rounded-xl object-cover border border-white/20" />
+              <button
+                type="button"
+                onClick={() => onRemoveAttachment?.(i)}
+                className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-black/80 border border-white/30 text-white flex items-center justify-center"
+                aria-label="شيل الصورة"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+          <span className="text-[11px] text-white/55 font-bold">المستشار راح يقرا الصورة ويشخّصها</span>
+        </div>
+      )}
+      {dictation.error && <div className="px-2 text-[11px] font-bold text-rose-300">{dictation.error}</div>}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.files?.length) onAttach?.(e.target.files);
+          e.target.value = "";
+        }}
+      />
 
       {/* 3. Composer Form: [اقتراحات] [اكتب سؤالك هنا...] [إرسال] */}
       <form onSubmit={handleSubmit} dir="rtl" className="flex items-end gap-1.5 sm:gap-2 relative w-full">
@@ -576,11 +633,24 @@ function ChatInputForm({
           title={isSuggestionsOpen ? "إخفاء الاقتراحات" : "اقتراحات"}
           aria-label={isSuggestionsOpen ? "إخفاء الاقتراحات" : "اقتراحات"}
           aria-expanded={isSuggestionsOpen}
-          className={`px-2.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer shrink-0 min-h-[42px] justify-center active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] ${ isSuggestionsOpen ? "bg-[#D4A017]/25 border-[#D4A017] text-[#F0C040]" : "bg-white/5 hover:bg-white/10 border-white/15 text-white/90 hover:text-[#F0C040]" } focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+          className={`px-2.5 py-2 sm:px-3.5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer shrink-0 min-h-[42px] justify-center active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${ isSuggestionsOpen ? "bg-white/12 border-white/35 text-vz-accent" : "bg-white/5 hover:bg-white/10 border-white/15 text-white/90 hover:text-vz-accent" } focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
         >
-          <Lightbulb className="w-4 h-4 text-[#F0C040] shrink-0" />
+          <Lightbulb className="w-4 h-4 text-vz-accent shrink-0" />
           <span className="hidden sm:inline whitespace-nowrap">اقتراحات</span>
         </button>
+
+        {onAttach && (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isLoading || attachments.length >= 3}
+            title="أرفق صورة (لقطة من مدير الإعلانات، إعلان، محادثة…)"
+            aria-label="أرفق صورة"
+            className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-xl border border-white/12 bg-white/[0.04] hover:bg-white/[0.08] text-vz-accent flex items-center justify-center disabled:opacity-40 transition-colors"
+          >
+            <ImagePlus className="w-[18px] h-[18px]" />
+          </button>
+        )}
 
         {/* 2. Text Input Area: [اكتب سؤالك هنا...] */}
         <div className="flex-1 relative flex items-center min-w-0">
@@ -591,31 +661,58 @@ function ChatInputForm({
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
             onFocus={onInputFocus}
-            placeholder="اكتب سؤالك هنا..."
+            onPaste={(e) => {
+              const files = Array.from<File>(e.clipboardData?.files ?? []).filter((f) => f.type.startsWith("image/"));
+              if (files.length && onAttach) {
+                e.preventDefault();
+                onAttach(files);
+              }
+            }}
+            placeholder={dictation.listening ? interim || "دا أسمعك… احچي" : attachments.length ? "اكتب شنو تريد أشوف بالصورة (اختياري)" : "اكتب سؤالك هنا..."}
             aria-label="اكتب سؤالك هنا..."
             disabled={isLoading}
             dir="rtl"
-            className="w-full px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-[#040B24] border border-white/15 focus:border-[#D4A017] text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+            className="w-full ps-4 pe-4 sm:ps-5 sm:pe-5 pl-11 sm:pl-12 py-2.5 sm:py-3 rounded-2xl bg-black/35 border border-white/10 focus:border-white/30 text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           />
+          {dictation.supported && !isLoading && (
+            <button
+              type="button"
+              onClick={() => (dictation.listening ? dictation.stop() : dictation.start())}
+              aria-label={dictation.listening ? "وقف التسجيل" : "احچي بدل الكتابة"}
+              title={dictation.listening ? "وقف التسجيل" : "احچي بدل الكتابة"}
+              className={`absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                dictation.listening ? "bg-rose-500 text-white animate-pulse" : "text-white/55 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <Mic className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
-        {/* 3. Large Send Button: [إرسال] */}
-        <button 
-          type="submit"
-          disabled={isSendDisabled}
-          aria-label="إرسال"
-          title="إرسال"
-          className="px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-[#D4A017] hover:bg-amber-400 active:bg-amber-500 text-[#040B24] font-black text-xs sm:text-sm flex items-center gap-1.5 transition-all motion-reduce:transition-none motion-reduce:transform-none active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 min-h-[42px] justify-center shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24] min-w-[42px]"
-        >
-          {isLoading ? (
-            <RefreshCw className="w-4 h-4 animate-spin text-[#040B24]" />
-          ) : (
-            <>
-              <span className="font-bold whitespace-nowrap">إرسال</span>
-              <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform rotate-180 text-[#040B24] shrink-0" />
-            </>
-          )}
-        </button>
+        {/* 3. Large Send Button: [إرسال] — becomes Stop while an answer streams */}
+        {isLoading && onStop ? (
+          <button
+            type="button"
+            onClick={onStop}
+            aria-label="وقف الجواب"
+            title="وقف الجواب"
+            className="btn btn-glass px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shrink-0 min-h-[44px]"
+          >
+            <Square className="w-3.5 h-3.5 fill-current" />
+            <span className="hidden sm:inline font-bold whitespace-nowrap">وقف</span>
+          </button>
+        ) : (
+          <button
+            type="submit"
+            disabled={isSendDisabled}
+            aria-label="إرسال"
+            title="إرسال"
+            className="btn btn-primary px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full text-white font-black text-xs sm:text-sm flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 min-h-[44px]"
+          >
+            <span className="hidden sm:inline font-bold whitespace-nowrap">إرسال</span>
+            <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform rotate-180 text-white shrink-0" />
+          </button>
+        )}
       </form>
     </div>
   );
@@ -694,7 +791,11 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   }, [isOpen, onClose]);
 
   // Tabs: 'chat' | 'business_diagnostic' | 'diagnostic' | 'script_gen' | 'saved_plan'
-  const [activeTab, setActiveTab] = useState<"chat" | "business_diagnostic" | "diagnostic" | "script_gen" | "saved_plan">("chat");
+  const [activeTab, setActiveTab] = useState<"chat" | "profile" | "business_diagnostic" | "diagnostic" | "script_gen" | "saved_plan">("chat");
+  // What the advisor knows about this merchant's shop (sent with every question).
+  const { profile: businessProfile, save: saveBusinessProfile, merge: mergeBusinessProfile } = useBusinessProfile(userCode);
+  // Screenshots attached in the composer, sent with the next question.
+  const [attachments, setAttachments] = useState<PreparedImage[]>([]);
   const [selectedDiagCat, setSelectedDiagCat] = useState<string>("ads");
   
   // Toast Notification System
@@ -800,6 +901,9 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
   // Track if any user questions have been sent
   const hasUserMessages = messages.some((m) => m.role === "user");
+  const lastAssistantId = [...messages].reverse().find((m) => m.role === "assistant" && !m.isDivider && !m.isError)?.id;
+  // A regenerate resends text only, so skip it when the last question carried a screenshot.
+  const canRegenerate = !([...messages].reverse().find((m) => m.role === "user")?.images?.length);
 
   // Re-sync messages when userCode changes or modal opens
   useEffect(() => {
@@ -841,6 +945,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const [isLoading, setIsLoading] = useState(false);
   const isLoadingRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const stoppedByUserRef = useRef(false);
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
   
@@ -1046,23 +1151,32 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
   // Monitor visualViewport resize (e.g. mobile virtual keyboard)
   useEffect(() => {
-    if (typeof window === "undefined" || !window.visualViewport) return;
+    // Only track the visual viewport while the sheet is open: on phones it
+    // fires on every scroll frame, and the closed modal must stay idle.
+    if (!isOpen || typeof window === "undefined" || !window.visualViewport) return;
 
+    let frame = 0;
     const handleViewportChange = () => {
-      if (window.visualViewport) {
-        setViewportHeight(window.visualViewport.height);
-      }
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (window.visualViewport) {
+          const next = Math.round(window.visualViewport.height);
+          setViewportHeight((prev) => (prev === next ? prev : next));
+        }
+      });
     };
 
     handleViewportChange();
-    window.visualViewport.addEventListener("resize", handleViewportChange);
-    window.visualViewport.addEventListener("scroll", handleViewportChange);
+    window.visualViewport.addEventListener("resize", handleViewportChange, { passive: true });
+    window.visualViewport.addEventListener("scroll", handleViewportChange, { passive: true });
 
     return () => {
+      if (frame) cancelAnimationFrame(frame);
       window.visualViewport?.removeEventListener("resize", handleViewportChange);
       window.visualViewport?.removeEventListener("scroll", handleViewportChange);
     };
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen || !isVip || activeTab !== "chat") {
@@ -1192,6 +1306,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   };
 
   const handleCancelRequest = () => {
+    stoppedByUserRef.current = true;
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
@@ -1228,8 +1343,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       diagnosticProfile?: BusinessDiagnosticProfile;
     }
   ) => {
-    const text = textToSend?.trim() || "";
-    
+    // Screenshots attached in the composer ride along with this question.
+    const pendingImages = attachments;
+    const text = textToSend?.trim() || (pendingImages.length ? "حلل هذي الصورة وشخّصلي على ضوء مشروعي." : "");
+
     // Prevent duplicate submissions
     if (!text || isLoadingRef.current) return;
 
@@ -1247,166 +1364,189 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const clientRequestId = `req_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
     isLoadingRef.current = true;
+    stoppedByUserRef.current = false;
     setIsLoading(true);
     setLastFailedPrompt(null);
+    if (pendingImages.length) setAttachments([]);
 
     trackEvent("advisor_prompt_submitted", { topicId });
 
+    const now = () => new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" });
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
-      text: text,
-      timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
-      topicId: topicId,
-      requestId: clientRequestId
+      text,
+      timestamp: now(),
+      topicId,
+      requestId: clientRequestId,
+      images: pendingImages.length ? pendingImages.map((im) => im.thumb) : undefined,
     };
+    // The answer streams into this placeholder.
+    const botId = (Date.now() + 1).toString();
+    const placeholder: Message = { id: botId, role: "assistant", text: "", timestamp: now(), topicId, requestId: clientRequestId, streaming: true };
 
-    setMessages((prev) => [...prev, userMessage]);
-        setActiveTab("chat"); // Auto switch to chat to see the answer
+    setMessages((prev) => [...prev, userMessage, placeholder]);
+    setActiveTab("chat");
 
-    // Setup AbortController with 90s timeout (ample time for deep diagnostics & high load)
     const controller = new AbortController();
     abortControllerRef.current = controller;
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-    }, 90000);
+    const timeoutId = setTimeout(() => controller.abort(), 170000);
+
+    // Streamed text is buffered and painted ~16 times a second, not per token.
+    let streamed = "";
+    let flushTimer: ReturnType<typeof setTimeout> | null = null;
+    const paint = () => {
+      flushTimer = null;
+      const snapshot = streamed;
+      setMessages((prev) => prev.map((m) => (m.id === botId ? { ...m, text: snapshot } : m)));
+    };
+    const onDelta = (t: string) => {
+      streamed += t;
+      if (!flushTimer) flushTimer = setTimeout(paint, 60);
+    };
+    const finalize = (patch: Partial<Message>) => {
+      if (flushTimer) clearTimeout(flushTimer);
+      flushTimer = null;
+      setMessages((prev) => prev.map((m) => (m.id === botId ? { ...m, ...patch, streaming: false } : m)));
+    };
 
     try {
-      // Build past history strictly filtered to current topic to avoid cross-contamination
-      const topicMessages = messages
-        .filter((m) => !m.isDivider && m.topicId === topicId)
-        .slice(-6); // Sliding window of max 6 recent turns
+      // Recent history of this topic only, to avoid cross-contamination.
+      const history: { role: "user" | "assistant"; text: string; topicId?: string; hadImages?: boolean; images?: { mimeType: string; data: string }[] }[] = messages
+        .filter((m) => !m.isDivider && !m.isError && !m.streaming && m.topicId === topicId && m.text)
+        .slice(-15)
+        .map((m) => ({ role: m.role, text: stripAdvisorTags(m.text), topicId: m.topicId, hadImages: Boolean(m.images?.length) }));
+      history.push({
+        role: "user",
+        text,
+        topicId,
+        images: pendingImages.length ? pendingImages.map(({ mimeType, data }) => ({ mimeType, data })) : undefined,
+      });
 
-      const historyPayload = topicMessages.map((m) => ({
-        role: m.role,
-        text: m.text.replace(/\[SUGGESTIONS:\s*.*?\]/gi, "").trim(),
-        topicId: m.topicId
-      }));
-
-      // Append current user message
-      historyPayload.push({ role: "user", text: text, topicId });
-
-      let response: Response | null = null;
-      let responseText = "";
-      let data: any = {};
-
-      for (let clientAttempt = 0; clientAttempt < 2; clientAttempt++) {
+      const payload = {
+        messages: history,
+        requestId: clientRequestId,
+        topicContext: options.topicContext || topicId,
+        isNewTopic: options.isNewTopic,
+        diagnosticProfile: options.diagnosticProfile,
+        profile: businessProfile,
+        userContext: { isVip, platform: "Vizion Iraq E-Commerce Suite" },
+      };
+      // If the answer comes back cut (server time limit, dropped connection),
+      // quietly ask for the rest — up to twice — into the same bubble.
+      let outcome: StreamOutcome;
+      try {
+        outcome = await streamAdvisor(payload, { onDelta, signal: controller.signal });
+      } catch (e) {
+        // A dropped connection after some text: continue below instead of failing.
+        if (controller.signal.aborted || !streamed.trim()) throw e;
+        outcome = { text: "", cut: true };
+      }
+      for (let round = 0; round < 2 && !controller.signal.aborted && streamed.trim() && (outcome.truncated || outcome.cut || outcome.error); round++) {
         try {
-          if (clientAttempt > 0) {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-
-          response = await fetch("/api/advisor/chat", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Request-ID": clientRequestId
-            },
-            signal: controller.signal,
-            body: JSON.stringify({
-              messages: historyPayload,
-              requestId: clientRequestId,
-              topicContext: options.topicContext || topicId,
-              isNewTopic: options.isNewTopic,
-              diagnosticProfile: options.diagnosticProfile,
-              userContext: {
-                isVip,
-                platform: "Vizion Iraq E-Commerce Suite"
-              }
-            })
-          });
-
-          responseText = await response.text();
-          try {
-            data = JSON.parse(responseText);
-          } catch {
-            data = {};
-          }
-
-          if (response.ok && data.reply) {
-            break;
-          }
-
-          // If it was a 503 or temporary unavailability, retry once automatically
-          if (
-            clientAttempt === 0 &&
-            (response.status === 503 ||
-              (data.error && (data.error.includes("503") || data.error.includes("ضغطاً مؤقتاً"))))
-          ) {
-            console.log("[Advisor Client] 503 detected, performing automatic fast retry...");
-            continue;
-          }
-        } catch (fetchErr: any) {
-          if (clientAttempt === 0 && !controller.signal.aborted) {
-            continue;
-          }
-          throw fetchErr;
+          const more = await streamAdvisor({ ...payload, continueFrom: streamed }, { onDelta, signal: controller.signal });
+          outcome = { ...more, requestId: outcome.requestId };
+        } catch (e) {
+          if (controller.signal.aborted) throw e;
+          outcome = { ...outcome, error: "انقطع الرد بالنص. اضغط 'جواب جديد' حتى أعيده كامل." };
+          break;
         }
       }
-
       clearTimeout(timeoutId);
 
-      if (!response) {
-        throw new Error("تعذر إرسال الطلب إلى السيرفر.");
-      }
-
-      if (!response.ok) {
-        const errorDetails = data.details ? ` (${data.details})` : "";
-        throw new Error((data.error || "Failed to fetch response") + errorDetails);
-      }
-
-      const rawReply = data.reply || "عذراً، حدث خطأ أثناء معالجة الطلب.";
-      const { cleanText, suggestions } = parseResponseSuggestions(rawReply);
-
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        text: cleanText,
-        timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
-        topicId: topicId,
-        requestId: data.requestId || clientRequestId,
-        suggestions: presetSuggestions || (suggestions.length > 0 ? suggestions : undefined)
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
-      setLastFailedPrompt(null);
-      trackEvent("advisor_answer_completed", {
-        topicId,
-        requestId: data.requestId || clientRequestId
+      const raw = streamed;
+      const learned = parseProfileTags(raw);
+      const changed = mergeBusinessProfile(learned);
+      const learnedSummary = changed.length ? describeProfileUpdate(Object.fromEntries(changed.map((k) => [k, learned[k]]))) : [];
+      const suggestions = parseSuggestionTags(raw);
+      finalize({
+        text: stripAdvisorTags(raw),
+        requestId: outcome.requestId || clientRequestId,
+        suggestions: presetSuggestions || (suggestions.length > 0 ? suggestions : undefined),
+        profileUpdate: learnedSummary.length ? learnedSummary : undefined,
+        partialError: outcome.error || (outcome.truncated || outcome.cut ? "الجواب طويل وانقطع بالنص. اضغط 'جواب جديد' أو اسألني 'كمّل'." : undefined),
       });
+      if (learnedSummary.length) showToast("saved", "حدّثت ملف مشروعك 🧠", learnedSummary.join(" • "));
+      setLastFailedPrompt(null);
+      trackEvent("advisor_answer_completed", { topicId, requestId: outcome.requestId || clientRequestId });
     } catch (err: any) {
       clearTimeout(timeoutId);
-      console.error("AI Advisor error:", err);
+      const partial = stripAdvisorTags(streamed);
 
+      if (stoppedByUserRef.current) {
+        if (partial.trim()) finalize({ text: partial, stopped: true });
+        else setMessages((prev) => prev.filter((m) => m.id !== botId));
+        return;
+      }
+      if (partial.trim()) {
+        finalize({ text: partial, partialError: "انقطع الرد بالنص. اضغط 'جواب جديد' حتى أعيده كامل." });
+        return;
+      }
+
+      console.error("AI Advisor error:", err);
       let errorText = "صار خلل بسيط. جرّب مرة ثانية.";
       if (err?.name === "AbortError") {
-        errorText = "استغرقت الاستجابة وقتاً أطول من المعتاد بسبب ضغط الخوادم المؤقت. يرجى الضغط على زر 'إعادة المحاولة'.";
-      } else if (err?.message && typeof err.message === "string" && err.message.length > 3 && !err.message.includes("Failed to fetch")) {
+        errorText = "الرد طوّل أكثر من العادة بسبب ضغط الخوادم. اضغط 'إعادة المحاولة'.";
+      } else if (err instanceof AdvisorHttpError || (err?.message && typeof err.message === "string" && err.message.length > 3 && !err.message.includes("Failed to fetch"))) {
         errorText = err.message;
       } else if (err?.message?.includes("Failed to fetch")) {
-        errorText = "تعذر الاتصال بالسيرفر. يرجى التأكد من تشغيل الخادم وإضافة GEMINI_API_KEY في إعدادات البيئة ثم إعادة المحاولة.";
+        errorText = "تعذر الاتصال بالسيرفر. تأكد من الإنترنت وجرّب مرة ثانية.";
       }
 
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: botId,
         role: "assistant",
         text: errorText,
-        timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
-        topicId: topicId,
+        timestamp: now(),
+        topicId,
         isError: true,
         failedPrompt: { text, presetSuggestions },
-        suggestions: [
-          "🎯 تشخيص ضعف إعلاناتي",
-          "📦 خطة تقليل الراجع بالمحافظات",
-          "💬 سكريبت مبيعات الواتساب"
-        ]
+        suggestions: ["🎯 تشخيص ضعف إعلاناتي", "📦 خطة تقليل الراجع بالمحافظات", "💬 سكريبت مبيعات الواتساب"],
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => prev.map((m) => (m.id === botId ? errorMessage : m)));
       setLastFailedPrompt({ text, presetSuggestions, errorText });
     } finally {
+      if (flushTimer) clearTimeout(flushTimer);
       isLoadingRef.current = false;
       setIsLoading(false);
       abortControllerRef.current = null;
+    }
+  };
+
+  const handleSendMessageRef = useRef(handleSendMessage);
+  handleSendMessageRef.current = handleSendMessage;
+
+  /** Re-asks the last question for a fresh answer. */
+  const handleRegenerate = () => {
+    if (isLoadingRef.current) return;
+    const lastUserIdx = messages.map((m) => m.role === "user" && !m.isDivider).lastIndexOf(true);
+    if (lastUserIdx < 0) return;
+    const lastUser = messages[lastUserIdx];
+    setMessages((prev) => prev.slice(0, lastUserIdx));
+    // Wait a tick so the trimmed history is what gets sent.
+    setTimeout(() => handleSendMessageRef.current?.(lastUser.text, undefined, lastUser.topicId), 0);
+  };
+
+  /** Adds an action item from an answer to the 7-day plan. */
+  const handleAddTaskToPlan = (task: string, topicId?: string) => {
+    const result = addRecommendationTo7DayPlanStorage({ title: task.slice(0, 90), details: task, topicId }, userCode);
+    if (result.success) {
+      showToast("plan", "انضافت لخطتك ✅", "تلگاها بتبويب 'خطتي'");
+      refreshSavedData();
+      return true;
+    }
+    return false;
+  };
+
+  const handleAttachFiles = async (files: FileList | File[]) => {
+    const list = Array.from(files).slice(0, 3 - attachments.length);
+    for (const file of list) {
+      try {
+        const prepared = await prepareImage(file);
+        setAttachments((prev) => (prev.length >= 3 ? prev : [...prev, prepared]));
+      } catch (e: any) {
+        showToast("success", e?.message || "ما گدرت أضيف الصورة");
+      }
     }
   };
 
@@ -1453,20 +1593,18 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
     }
   };
 
-  if (!isOpen) return null;
-
   const currentDiag = DIAGNOSTIC_CATEGORIES.find((c) => c.id === selectedDiagCat) || DIAGNOSTIC_CATEGORIES[0];
+
+  // Opens out of the button/card that summoned it (full-screen on phones).
+  const originSheet = useOriginSheet(isOpen, { width: 896, height: 760 });
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex h-[100dvh] items-center justify-center overflow-hidden overscroll-none p-0 sm:p-4 bg-black/85 backdrop-blur-md">
+        <motion.div key="advisor-overlay" {...overlayMotion} className="fixed inset-0 z-[100] flex h-[100dvh] items-center justify-center overflow-hidden overscroll-none p-0 sm:p-4 vz-backdrop">
           <motion.div
             ref={modalRef}
-            initial={{ opacity: 0, scale: 0.98, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: 20 }}
-            transition={{ duration: 0.2 }}
+            {...originSheet}
             role="dialog"
             aria-modal="true"
             aria-labelledby="advisor-modal-title"
@@ -1475,37 +1613,37 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 ? { height: `${viewportHeight}px`, maxHeight: `${viewportHeight}px` }
                 : undefined
             }
-            className={`vizion-advisor-modal ${isCompactLayout ? "vizion-advisor-compact" : ""} relative w-full max-w-4xl h-[100dvh] sm:h-[88vh] min-h-0 bg-[#040B24] border-0 sm:border border-[#D4A017]/30 rounded-none sm:rounded-3xl shadow-xl flex flex-col overflow-hidden overscroll-none text-white dir-rtl motion-reduce:transition-none motion-reduce:transform-none`}
+            className={`vizion-advisor-modal ${isCompactLayout ? "vizion-advisor-compact" : ""} relative w-full max-w-4xl h-[100dvh] sm:h-[88vh] min-h-0 glass-elevated glass-edge border-0 sm:border rounded-none sm:rounded-4xl flex flex-col overflow-hidden overscroll-none text-white dir-rtl motion-reduce:transition-none motion-reduce:transform-none`}
           >
             {/* Mobile Pull Indicator */}
-            <div className="w-10 h-1 bg-white/20 rounded-full mx-auto my-1 sm:hidden shrink-0" />
+            <div className="w-10 h-[5px] bg-white/20 rounded-full mx-auto mt-1.5 mb-1 sm:hidden shrink-0" />
 
             {/* In-Modal Toast Alerts */}
             <AdvisorToast toast={toast} onDismiss={() => setToast(null)} />
 
             {/* Calm Header */}
-            <div className="px-3 sm:px-6 py-2 sm:py-2.5 bg-[#081030] border-b border-white/10 flex items-center justify-between relative shrink-0">
+            <div className="px-3 sm:px-6 py-2 sm:py-3 vz-sheet-header flex items-center justify-between relative shrink-0">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="relative shrink-0">
-                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-xl bg-[#D4A017]/10 border border-[#D4A017]/30 flex items-center justify-center text-[#F0C040]">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
                     <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                   {isVip && (
-                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-emerald-500 border-2 border-[#040B24] rounded-full" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-emerald-400 border-2 border-[#0c1a4a] rounded-full" />
                   )}
                 </div>
 
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
                     <h3 id="advisor-modal-title" className="text-xs sm:text-base font-bold text-white tracking-wide truncate">
-                      المستشار الذكي <span className="text-[#F0C040] text-[11px] font-normal hidden sm:inline">| فيزيون AI</span>
+                      المستشار الذكي <span className="text-vz-accent text-[11px] font-normal hidden sm:inline">| فيزيون AI</span>
                     </h3>
                     {isVip ? (
-                      <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-[#D4A017]/20 text-[#F0C040] border border-[#D4A017]/30 shrink-0">
+                      <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-white/10 text-vz-accent border border-white/14 shrink-0">
                         VIP
                       </span>
                     ) : (
-                      <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
+                      <span className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-white/10 text-vz-accent border border-white/14 shrink-0">
                         VIP
                       </span>
                     )}
@@ -1523,9 +1661,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       onClick={handleStartNewTopic}
                       title="بدء موضوع استشارة جديد"
                       aria-label="موضوع جديد"
-                      className="px-2 sm:px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[#F0C040] border border-[#D4A017]/30 text-xs sm:text-sm font-bold flex items-center gap-1 cursor-pointer active:scale-95 shrink-0 min-h-[38px] justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040]"
+                      className="btn btn-glass px-3 sm:px-3.5 rounded-full text-xs sm:text-sm font-bold gap-1.5 shrink-0 !min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-[#F0C040]" />
+                      <Sparkles className="w-3.5 h-3.5 text-vz-accent" />
                       <span className="hidden sm:inline">موضوع جديد</span>
                     </button>
 
@@ -1533,7 +1671,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       onClick={handleClearHistory}
                       title="مسح سجل المحادثة"
                       aria-label="مسح السجل"
-                      className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-rose-500/10 text-white/60 hover:text-rose-400 transition-colors border border-white/5 cursor-pointer shrink-0 min-h-[38px] min-w-[38px] flex items-center justify-center active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+                      className="vz-close !w-10 !h-10 hover:!text-rose-300 hover:!bg-rose-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -1544,9 +1682,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   onClick={onClose}
                   aria-label="إغلاق"
                   title="إغلاق"
-                  className="p-1.5 sm:px-3 sm:py-2 rounded-xl bg-transparent sm:bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-colors sm:border border-white/10 cursor-pointer shrink-0 min-h-[38px] min-w-[38px] flex items-center justify-center gap-1 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040]"
+                  className="vz-close sm:!w-auto sm:px-3.5 gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
-                  <X className="w-5 h-5 sm:w-4 sm:h-4" />
+                  <X className="w-4 h-4" />
                   <span className="hidden sm:inline text-xs font-bold">إغلاق</span>
                 </button>
               </div>
@@ -1557,17 +1695,17 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               <div 
                 role="region"
                 aria-label="اشتراك المستشار الذكي"
-                className="flex-1 overflow-y-auto p-4 sm:p-8 bg-gradient-to-b from-[#040B24] via-[#081030] to-[#040B24] space-y-6 text-right"
+                className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 text-right"
               >
                 {/* Top Header Card */}
                 <div className="max-w-xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#D4A017]/20 via-amber-500/20 to-[#D4A017]/20 border border-[#D4A017]/50 text-xs sm:text-sm font-black text-[#F0C040] shadow-md">
-                    <Sparkles className="w-4 h-4 text-[#F0C040] animate-pulse" />
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-white/10 via-white/10 to-white/10 border border-white/22 text-xs sm:text-sm font-black text-vz-accent shadow-md">
+                    <Sparkles className="w-4 h-4 text-vz-accent animate-pulse" />
                     <span>مستشارك الشخصي للتجارة الإلكترونية بالسوق العراقي</span>
                   </div>
 
                   <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
-                    اشترك الآن في <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0C040] via-amber-300 to-[#D4A017]">المستشار الذكي</span> بـ 14,000 دينار فقط!
+                    اشترك الآن في <span className="text-transparent bg-clip-text bg-gradient-to-r from-vz-blue-light via-white to-vz-blue">المستشار الذكي</span> بـ 14,000 دينار فقط!
                   </h3>
                   
                   <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
@@ -1576,16 +1714,16 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* Price Breakdown & Value Pitch Box */}
-                <div className="max-w-xl mx-auto bg-gradient-to-br from-[#0F1738] via-[#162252] to-[#0D1638] border-2 border-[#D4A017] rounded-3xl p-5 sm:p-7 shadow-2xl space-y-5 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
-                    <Flame className="w-3.5 h-3.5 fill-[#040B24]" />
+                <div className="max-w-xl mx-auto glass border-2 rounded-3xl p-5 sm:p-7 space-y-5 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 bg-gradient-to-r from-vz-blue-light to-vz-blue text-white font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
+                    <Flame className="w-3.5 h-3.5 fill-white" />
                     <span>عرض الاشتراك الشهري الفوري</span>
                   </div>
 
                   {/* Main Pricing Highlight */}
-                  <div className="flex items-center justify-between border-b border-[#D4A017]/30 pb-4 pt-3">
+                  <div className="flex items-center justify-between border-b border-white/14 pb-4 pt-3">
                     <div>
-                      <span className="text-xs font-bold text-amber-300 block mb-1">الاشتراك الشهري المباشر</span>
+                      <span className="text-xs font-bold text-vz-accent block mb-1">الاشتراك الشهري المباشر</span>
                       <h4 className="text-lg sm:text-2xl font-black text-white">المستشار الذكي (Vizion AI)</h4>
                       <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full inline-block mt-1">
                         فقط 466 د.ع باليوم! (أقل من سعر استكان شاي ☕)
@@ -1593,14 +1731,14 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     </div>
 
                     <div className="text-left shrink-0">
-                      <div className="text-2xl sm:text-4xl font-black text-[#F0C040] font-mono tracking-tight">14,000</div>
-                      <div className="text-xs font-bold text-amber-200">د.ع / شهرياً</div>
+                      <div className="text-2xl sm:text-4xl font-black text-vz-accent font-mono tracking-tight">14,000</div>
+                      <div className="text-xs font-bold text-vz-accent">د.ع / شهرياً</div>
                     </div>
                   </div>
 
                   {/* Why it's worth every dinar (Value Comparison) */}
-                  <div className="bg-[#040B24]/80 border border-amber-500/30 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
-                    <div className="flex items-center gap-2 text-[#F0C040] font-bold text-xs sm:text-sm">
+                  <div className="bg-black/30 border border-white/14 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
+                    <div className="flex items-center gap-2 text-vz-accent font-bold text-xs sm:text-sm">
                       <TrendingDown className="w-4 h-4 text-emerald-400" />
                       <span>حسبة بسيطة: ليش هذا الاشتراك يوفر عليك ثروة؟</span>
                     </div>
@@ -1629,7 +1767,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تكتشف <strong className="text-[#F0C040]">وين تضيع ميزانيتك</strong> — وتفهم شلون الإعلان والمنتج والزبون مرتبطين ببعض.</span>
+                        <span>تكتشف <strong className="text-vz-accent">وين تضيع ميزانيتك</strong> — وتفهم شلون الإعلان والمنتج والزبون مرتبطين ببعض.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -1644,9 +1782,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-95 transition cursor-pointer min-h-[50px]"
+                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-[0.97] transition cursor-pointer min-h-[50px]"
                     >
-                      <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
+                      <Sparkles className="w-5 h-5 text-vz-accent animate-pulse" />
                       <span>اشترك الآن عبر الواتساب (14,000 د.ع / شهرياً) 💬</span>
                     </a>
                     <p className="text-[11px] text-center text-white/60">
@@ -1656,10 +1794,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* Existing Subscriber Code Entry */}
-                <div className="max-w-xl mx-auto bg-[#081030] p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3 text-right">
+                <div className="max-w-xl mx-auto glass-subtle p-4 sm:p-5 rounded-2xl border space-y-3 text-right">
                   <div className="space-y-1">
-                    <label htmlFor="vip-code-input" className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
-                      <KeyRound className="w-4 h-4 text-[#F0C040]" />
+                    <label htmlFor="vip-code-input" className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
+                      <KeyRound className="w-4 h-4 text-vz-accent" />
                       <span>عندك رمز تفعيل الاشتراك؟ أدخله هنا:</span>
                     </label>
                     <p className="text-[11px] text-white/60">أدخل الرمز الذي استلمته عبر الواتساب للتفعيل الفوري.</p>
@@ -1672,13 +1810,13 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       value={vipUpgradeInput}
                       onChange={(e) => setVipUpgradeInput(e.target.value)}
                       placeholder="VIZION-VIP-XXXX#vip"
-                      className="flex-1 px-3.5 py-2.5 bg-[#040B24] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-[#D4A017] outline-none text-center sm:text-right min-h-[44px]"
+                      className="flex-1 px-3.5 py-2.5 bg-black/35 border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-white/35 outline-none text-center sm:text-right min-h-[44px]"
                       aria-label="رمز تفعيل VIP"
                     />
 
                     <button 
                       type="submit"
-                      className="px-5 py-2.5 rounded-xl bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-xs sm:text-sm shadow-md active:scale-95 transition cursor-pointer whitespace-nowrap min-h-[44px] flex items-center justify-center gap-1.5"
+                      className="btn btn-primary px-5 py-2.5 rounded-xl text-white font-black text-xs sm:text-sm whitespace-nowrap min-h-[44px] flex items-center justify-center gap-1.5"
                     >
                       <span>تفعيل الرمز</span>
                       <ArrowLeft className="w-4 h-4" />
@@ -1703,73 +1841,83 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
             ) : (
               <>
                 {/* Mode Selector - Universal Responsive Horizontal Pill Tab Bar */}
-                <div className="px-2 sm:px-6 py-2 bg-[#081030] border-b border-white/10 shrink-0 w-full overflow-hidden">
+                <div className="px-2 sm:px-6 py-2 border-b border-white/[0.06] shrink-0 w-full overflow-hidden">
                   <div className="vizion-advisor-tab-strip flex flex-row flex-nowrap items-center gap-1.5 sm:gap-2 overflow-x-auto w-full no-scrollbar py-0.5">
                     <button
                       type="button"
                       onClick={() => setActiveTab("chat")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "chat"
-                          ? "bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black shadow-md scale-[1.02]"
-                          : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "chat" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <MessageSquare className="w-4 h-4 shrink-0" />
-                      <span>المحادثة الحرة</span>
+                      {activeTab === "chat" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
+                      <MessageSquare className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">المحادثة الحرة</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab("profile")}
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "profile" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
+                      }`}
+                    >
+                      {activeTab === "profile" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
+                      <Brain className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">ملف مشروعي</span>
+                      <span className="relative min-w-[18px] h-[18px] px-1 rounded-full bg-white/15 text-[10px] font-black flex items-center justify-center tabular-nums">
+                        {profileFilledCount(businessProfile)}
+                      </span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("business_diagnostic")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "business_diagnostic"
-                          ? "bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black shadow-md scale-[1.02]"
-                          : "bg-[#D4A017]/10 hover:bg-[#D4A017]/20 text-[#F0C040] border border-[#D4A017]/30"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "business_diagnostic" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>تشخيص مشروعي</span>
+                      {activeTab === "business_diagnostic" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
+                      <Sparkles className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">تشخيص مشروعي</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("diagnostic")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "diagnostic"
-                          ? "bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black shadow-md scale-[1.02]"
-                          : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "diagnostic" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <Compass className="w-4 h-4 shrink-0" />
-                      <span>مشخّص المشاكل</span>
+                      {activeTab === "diagnostic" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
+                      <Compass className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">مشخّص المشاكل</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("script_gen")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "script_gen"
-                          ? "bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black shadow-md scale-[1.02]"
-                          : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "script_gen" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <FileText className="w-4 h-4 shrink-0" />
-                      <span>مولّد السكريبتات</span>
+                      {activeTab === "script_gen" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
+                      <FileText className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">مولّد السكريبتات</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("saved_plan")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "saved_plan"
-                          ? "bg-gradient-to-r from-[#D4A017] to-amber-600 text-[#040B24] font-black shadow-md scale-[1.02]"
-                          : "bg-[#0A122E]/80 hover:bg-[#D4A017]/10 text-white/80 border border-white/10"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "saved_plan" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <Bookmark className="w-4 h-4 text-[#F0C040] shrink-0" />
-                      <span>التوصيات والخطة</span>
+                      {activeTab === "saved_plan" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
+                      <Bookmark className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">التوصيات والخطة</span>
                       {(savedRecommendations.length > 0 || planTasks.length > 0) && (
-                        <span className="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-[#D4A017] text-[#040B24] shadow-sm ms-1">
+                        <span className="relative px-1.5 rounded-full text-[10px] font-black bg-[#040e33]/10 border border-current/20 ms-1">
                           {savedRecommendations.length + planTasks.filter((t) => !t.completed).length}
                         </span>
                       )}
@@ -1778,8 +1926,22 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* TAB: GUIDED BUSINESS DIAGNOSTIC STEPPER */}
+                {activeTab === "profile" && (
+                  <BusinessProfilePanel
+                    profile={businessProfile}
+                    onSave={(p) => {
+                      saveBusinessProfile(p);
+                      showToast("saved", "انحفظ ملف مشروعك 🧠", "المستشار راح يستعمله بكل جواب");
+                    }}
+                    onAskAdvisor={(prompt) => {
+                      setActiveTab("chat");
+                      handleSendMessage(prompt);
+                    }}
+                  />
+                )}
+
                 {activeTab === "business_diagnostic" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#040B24] via-[#081030] to-[#040B24]">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 ">
                     <BusinessDiagnosticStepper
                       storageKey={getProfileStorageKey(userCode)}
                       onCancel={() => setActiveTab("chat")}
@@ -1790,9 +1952,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB 1: DIAGNOSTIC WIZARD (Choose your problem & get instant AI diagnosis) */}
                 {activeTab === "diagnostic" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#040B24] via-[#081030] to-[#040B24] space-y-5">
-                    <div className="bg-[#0F1735]/80 border border-[#D4A017]/30 rounded-2xl p-4 sm:p-5 shadow-lg">
-                      <div className="flex items-center gap-2 mb-2 text-[#F0C040]">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-5">
+                    <div className="glass-subtle border rounded-2xl p-4 sm:p-5">
+                      <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <Compass className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
                           اختر التحدي الذي يواجه مشروعك حالياً:
@@ -1809,7 +1971,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <button 
                           key={cat.id}
                           onClick={() => setSelectedDiagCat(cat.id)}
-                          className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col gap-1 ${ selectedDiagCat === cat.id ? "bg-gradient-to-b from-[#162252] to-[#0D1638] border-[#D4A017] shadow-lg md:shadow-[#D4A017] shadow-xl/15 ring-1 ring-[#D4A017]" : "bg-[#0A122E]/70 border-white/10 hover:border-white/25 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                          className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col gap-1 ${ selectedDiagCat === cat.id ? "glass border-white/35 shadow-lg md:shadow-black/40 shadow-xl/15 ring-1 ring-white/60" : "glass-subtle border-white/10 hover:border-white/25 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                         >
                           <span className="text-xl">{cat.icon}</span>
                           <span className="text-xs font-bold text-white line-clamp-1">{cat.title}</span>
@@ -1820,7 +1982,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     {/* Specific Options for Selected Category */}
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-[#F0C040] flex items-center gap-1">
+                        <span className="text-xs font-bold text-vz-accent flex items-center gap-1">
                           <span>{currentDiag.icon}</span>
                           <span>اختر الحالة الدقيقة لمشروعك:</span>
                         </span>
@@ -1835,11 +1997,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             key={idx}
                             onClick={() => handleSendMessage(opt.prompt, opt.defaultSuggestions, opt.topicId)}
                             disabled={isLoading}
-                            className="w-full text-right p-3.5 sm:p-4 rounded-xl bg-[#0F1735]/90 hover:bg-[#162252] border border-white/10 hover:border-[#D4A017]/60 transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between group cursor-pointer disabled:opacity-50 shadow-md min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                            className="w-full text-right p-3.5 sm:p-4 rounded-xl glass-subtle hover:bg-white/[0.06] border hover:border-white/27 transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between group cursor-pointer disabled:opacity-50 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                           >
                             <div className="space-y-1 pr-1">
-                              <h5 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#F0C040] transition-colors flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#D4A017]" />
+                              <h5 className="text-xs sm:text-sm font-bold text-white group-hover:text-vz-accent transition-colors flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-vz-blue" />
                                 <span>{opt.label}</span>
                               </h5>
                               <p className="text-[11px] sm:text-xs text-white/60">
@@ -1848,10 +2010,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             </div>
 
                             <div className="flex items-center gap-1.5 shrink-0 pr-3">
-                              <span className="text-[11px] font-bold text-[#D4A017] group-hover:underline hidden sm:inline">
+                              <span className="text-[11px] font-bold text-slate-200 group-hover:underline hidden sm:inline">
                                 تحليل فوري
                               </span>
-                              <div className="w-7 h-7 rounded-lg bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040] group-hover:scale-110 transition-transform">
+                              <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent group-hover:scale-[1.04] transition-transform">
                                 <ArrowLeft className="w-4 h-4" />
                               </div>
                             </div>
@@ -1864,9 +2026,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB 2: INSTANT SCRIPT GENERATOR (Choose objection & generate copy-paste script) */}
                 {activeTab === "script_gen" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#040B24] via-[#081030] to-[#040B24] space-y-5">
-                    <div className="bg-[#0F1735]/80 border border-[#D4A017]/30 rounded-2xl p-4 sm:p-5 shadow-lg">
-                      <div className="flex items-center gap-2 mb-2 text-[#F0C040]">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-5">
+                    <div className="glass-subtle border rounded-2xl p-4 sm:p-5">
+                      <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <FileText className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
                           مولّد سكريبتات إغلاق الصفقات بالسوق العراقي 💬
@@ -1879,8 +2041,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                     {/* 1. Choose Objection */}
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
-                        <span className="w-5 h-5 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[10px] text-[#F0C040]">1</span>
+                      <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
+                        <span className="w-5 h-5 rounded-full bg-white/10 border border-white/18 flex items-center justify-center text-[10px] text-vz-accent">1</span>
                         <span>ما هو اعتراض الزبون الذي تريد تجاوزه؟</span>
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -1888,7 +2050,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           <button 
                             key={obj.id}
                             onClick={() => setSelectedObjection(obj.id)}
-                            className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2.5 ${ selectedObjection === obj.id ? "bg-[#162252] border-[#D4A017] shadow-lg md:shadow-[#D4A017] shadow-xl/20 text-white font-bold" : "bg-[#0A122E]/70 border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                            className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2.5 ${ selectedObjection === obj.id ? "glass-subtle border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "glass-subtle border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                           >
                             <span className="text-lg">{obj.icon}</span>
                             <span className="text-xs">{obj.label}</span>
@@ -1899,8 +2061,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                     {/* 2. Choose Niche */}
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-[#F0C040] flex items-center gap-1.5">
-                        <span className="w-5 h-5 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[10px] text-[#F0C040]">2</span>
+                      <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
+                        <span className="w-5 h-5 rounded-full bg-white/10 border border-white/18 flex items-center justify-center text-[10px] text-vz-accent">2</span>
                         <span>ما هو مجال أو تخصص متجرك؟</span>
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -1908,7 +2070,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           <button 
                             key={niche.id}
                             onClick={() => setSelectedNiche(niche.id)}
-                            className={`p-2.5 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col items-center gap-1 ${ selectedNiche === niche.id ? "bg-[#162252] border-[#D4A017] shadow-lg md:shadow-[#D4A017] shadow-xl/20 text-white font-bold" : "bg-[#0A122E]/70 border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                            className={`p-2.5 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col items-center gap-1 ${ selectedNiche === niche.id ? "glass-subtle border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "glass-subtle border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                           >
                             <span className="text-base">{niche.icon}</span>
                             <span className="text-[11px]">{niche.label}</span>
@@ -1928,7 +2090,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         value={customProductNote}
                         onChange={(e) => setCustomProductNote(e.target.value)}
                         placeholder="اكتب اسم المنتج أو السعر إذا أردت تخصيص السكريبت بدقة..."
-                        className="w-full px-4 py-2.5 rounded-xl bg-[#040B24] border border-white/15 focus:border-[#D4A017] text-white text-xs placeholder-white/30 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="w-full px-4 py-2.5 rounded-xl bg-black/35 border border-white/15 focus:border-white/35 text-white text-xs placeholder-white/30 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       />
                     </div>
 
@@ -1936,7 +2098,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <button 
                       onClick={handleGenerateScript}
                       disabled={isLoading}
-                      className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] font-black text-sm flex items-center justify-center gap-2 shadow-xl md:shadow-[#D4A017] shadow-xl/25 hover:scale-[1.01] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer disabled:opacity-50 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="btn btn-primary w-full py-3.5 rounded-xl text-white font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <Sparkles className="w-4 h-4" />
                       <span>توليد السكريبت العراقي الآن ⚡</span>
@@ -1946,20 +2108,20 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB: SAVED RECOMMENDATIONS & 7-DAY ACTION PLAN */}
                 {activeTab === "saved_plan" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#040B24] via-[#081030] to-[#040B24] space-y-6">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-6">
                     {/* Top Stat Banner */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="p-4 rounded-2xl bg-[#0F1735]/90 border border-[#D4A017]/30 flex items-center justify-between">
+                      <div className="p-4 rounded-2xl glass-subtle border flex items-center justify-between">
                         <div className="space-y-1">
                           <span className="text-xs text-white/60">التوصيات والسكريبتات المحفوظة</span>
-                          <h4 className="text-xl font-black text-[#F0C040]">{savedRecommendations.length} توصية</h4>
+                          <h4 className="text-xl font-black text-vz-accent">{savedRecommendations.length} توصية</h4>
                         </div>
-                        <div className="w-10 h-10 rounded-xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+                        <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent">
                           <Bookmark className="w-5 h-5" />
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-2xl bg-[#0F1735]/90 border border-[#D4A017]/30 flex items-center justify-between">
+                      <div className="p-4 rounded-2xl glass-subtle border flex items-center justify-between">
                         <div className="space-y-1">
                           <span className="text-xs text-white/60">مهام خطة الـ 7 أيام المنجزة</span>
                           <h4 className="text-xl font-black text-emerald-400">
@@ -1976,7 +2138,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-5 h-5 text-[#F0C040]" />
+                          <Calendar className="w-5 h-5 text-vz-accent" />
                           <h3 className="text-sm sm:text-base font-black text-white">
                             📅 خطة الـ 7 أيام التنفيذية
                           </h3>
@@ -1987,11 +2149,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
 
                       {planTasks.length === 0 ? (
-                        <div className="p-6 rounded-2xl bg-[#0A122E]/60 border border-white/10 text-center space-y-2">
+                        <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Calendar className="w-8 h-8 text-white/60 mx-auto" />
                           <p className="text-xs text-white/70 font-semibold">لم تضف أي توصيات لخطة الـ 7 أيام بعد</p>
                           <p className="text-[11px] text-white/60">
-                            عند استشارة مستشار فيزيون، اضغط على زر <strong className="text-[#F0C040]">"إضافة للخطة 7 أيام"</strong> في بطاقة الإجراءات لتنظيم خطواتك هنا.
+                            عند استشارة مستشار فيزيون، اضغط على زر <strong className="text-vz-accent">"إضافة للخطة 7 أيام"</strong> في بطاقة الإجراءات لتنظيم خطواتك هنا.
                           </p>
                         </div>
                       ) : (
@@ -2001,21 +2163,21 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               key={task.id}
                               className={`p-3.5 sm:p-4 rounded-xl border transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-start justify-between gap-3 ${
                                 task.completed
-                                  ? "bg-[#0A122E]/40 border-emerald-500/30 opacity-70"
-                                  : "bg-[#0F1735]/90 border-white/10 hover:border-[#D4A017]/40"
+                                  ? "glass-subtle border-emerald-500/30 opacity-70"
+                                  : "glass-subtle border-white/10 hover:border-white/18"
                               }`}
                             >
                               <div className="flex items-start gap-3 flex-1">
                                 <button 
                                   onClick={() => handleToggleTaskCompleted(task.id)}
-                                  className={`mt-0.5 rounded-lg border flex items-center justify-center transition-colors cursor-pointer shrink-0 ${ task.completed ? "bg-emerald-500 border-emerald-400 text-[#040B24]" : "border-white/30 hover:border-[#D4A017] bg-black/20" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                                  className={`mt-0.5 rounded-lg border flex items-center justify-center transition-colors cursor-pointer shrink-0 ${ task.completed ? "bg-emerald-500 border-emerald-400 text-white" : "border-white/30 hover:border-white/35 bg-black/20" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                                 >
                                   {task.completed && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                                 </button>
 
                                 <div className="space-y-1 flex-1">
                                   <div className="flex items-center gap-2 flex-wrap">
-                                    <span className="px-2 py-0.5 rounded-md bg-[#D4A017]/20 border border-[#D4A017]/40 text-[#F0C040] text-[10px] font-black">
+                                    <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/18 text-vz-accent text-[10px] font-black">
                                       {task.day}
                                     </span>
                                     <h4 className={`text-xs sm:text-sm font-bold ${task.completed ? "line-through text-white/70" : "text-white"}`}>
@@ -2033,7 +2195,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                     {task.toolId && (
                                       <button 
                                         onClick={() => onNavigateTool?.(task.toolId)}
-                                        className="px-2.5 py-1 rounded-lg bg-[#D4A017]/15 hover:bg-[#D4A017] text-[#F0C040] hover:text-[#040B24] border border-[#D4A017]/30 text-[10px] font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                        className="px-2.5 py-1 rounded-lg bg-white/8 hover:bg-vz-blue text-vz-accent hover:text-white border border-white/14 text-[10px] font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                       >
                                         <Wrench className="w-3 h-3" />
                                         <span>فتح الأداة المرتبطة</span>
@@ -2042,7 +2204,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                     {task.chapterId && (
                                       <button 
                                         onClick={() => onNavigateToSection?.(task.chapterId)}
-                                        className="px-2.5 py-1 rounded-lg bg-blue-500/15 hover:bg-blue-500 text-blue-300 hover:text-white border border-blue-500/30 text-[10px] font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                        className="px-2.5 py-1 rounded-lg bg-white/8 hover:bg-vz-blue text-slate-200 hover:text-white border border-white/14 text-[10px] font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                       >
                                         <BookOpen className="w-3 h-3" />
                                         <span>مراجعة الفصل</span>
@@ -2055,7 +2217,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               <button 
                                 onClick={() => handleDeleteTask(task.id)}
                                 title="حذف المهمة"
-                                className="p-1.5 rounded-lg text-white/60 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                className="p-1.5 rounded-lg text-white/60 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -2069,7 +2231,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <div className="space-y-3 pt-4 border-t border-white/10">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Bookmark className="w-5 h-5 text-[#F0C040]" />
+                          <Bookmark className="w-5 h-5 text-vz-accent" />
                           <h3 className="text-sm sm:text-base font-black text-white">
                             📌 التوصيات والسكريبتات المحفوظة
                           </h3>
@@ -2080,11 +2242,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
 
                       {savedRecommendations.length === 0 ? (
-                        <div className="p-6 rounded-2xl bg-[#0A122E]/60 border border-white/10 text-center space-y-2">
+                        <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Bookmark className="w-8 h-8 text-white/60 mx-auto" />
                           <p className="text-xs text-white/70 font-semibold">ماكو توصيات محفوظة حتى الآن</p>
                           <p className="text-[11px] text-white/60">
-                            اضغط على زر <strong className="text-[#F0C040]">"حفظ التوصية"</strong> في أي رد أو سكريبت لتجده محفوظاً هنا للرجوع إليه دائماً.
+                            اضغط على زر <strong className="text-vz-accent">"حفظ التوصية"</strong> في أي رد أو سكريبت لتجده محفوظاً هنا للرجوع إليه دائماً.
                           </p>
                         </div>
                       ) : (
@@ -2092,16 +2254,16 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           {savedRecommendations.map((rec) => (
                             <div
                               key={rec.id}
-                              className="p-4 rounded-xl bg-[#0F1735]/90 border border-white/10 hover:border-[#D4A017]/30 transition-all motion-reduce:transition-none motion-reduce:transform-none space-y-3"
+                              className="p-4 rounded-xl glass-subtle border hover:border-white/14 transition-all motion-reduce:transition-none motion-reduce:transform-none space-y-3"
                             >
                               <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-1">
                                   <h4 className="text-xs sm:text-sm font-black text-white flex items-center gap-1.5">
-                                    <Sparkles className="w-3.5 h-3.5 text-[#F0C040]" />
+                                    <Sparkles className="w-3.5 h-3.5 text-vz-accent" />
                                     <span>{rec.title}</span>
                                   </h4>
                                   {rec.relevanceReason && (
-                                    <p className="text-[11px] text-[#F0C040]/90 font-medium">
+                                    <p className="text-[11px] text-vz-accent/90 font-medium">
                                       💡 {rec.relevanceReason}
                                     </p>
                                   )}
@@ -2113,7 +2275,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 <button 
                                   onClick={() => handleDeleteRecommendation(rec.id)}
                                   title="حذف التوصية"
-                                  className="p-1.5 rounded-lg text-white/60 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                  className="p-1.5 rounded-lg text-white/60 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>
@@ -2121,15 +2283,15 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                               {/* Script Preview if available */}
                               {rec.scriptText && (
-                                <div className="p-3 rounded-lg bg-[#040B24] border border-[#D4A017]/30 text-white/90 text-xs space-y-2">
-                                  <div className="flex items-center justify-between text-[10px] text-[#F0C040] font-bold">
+                                <div className="p-3 rounded-lg bg-black/30 border border-white/14 text-white/90 text-xs space-y-2">
+                                  <div className="flex items-center justify-between text-[10px] text-vz-accent font-bold">
                                     <span>💬 نص السكريبت الجاهز للزبون:</span>
                                     <button 
                                       onClick={() => {
                                         navigator.clipboard.writeText(rec.scriptText || "");
                                         showToast("copy", "تم نسخ السكريبت بنجاح 📋", "تكدر لصقه مباشرة في محادثة الواتساب");
                                       }}
-                                      className="px-2 py-0.5 rounded bg-[#D4A017]/20 hover:bg-[#D4A017] text-[#F0C040] hover:text-[#040B24] transition-colors flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                      className="px-2 py-0.5 rounded bg-white/10 hover:bg-vz-blue text-vz-accent hover:text-white transition-colors flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                     >
                                       <Copy className="w-3 h-3" />
                                       <span>نسخ السكريبت</span>
@@ -2146,7 +2308,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 {rec.toolId && (
                                   <button 
                                     onClick={() => onNavigateTool?.(rec.toolId)}
-                                    className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#D4A017] to-amber-600 hover:from-amber-400 hover:to-[#D4A017] text-[#040B24] text-xs font-black transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                    className="btn btn-primary px-3 py-1.5 rounded-lg text-white text-xs font-black flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                   >
                                     <Wrench className="w-3.5 h-3.5" />
                                     <span>فتح الأداة المرتبطة</span>
@@ -2155,7 +2317,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 {rec.chapterId && (
                                   <button 
                                     onClick={() => onNavigateToSection?.(rec.chapterId)}
-                                    className="px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/40 text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1.5 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                    className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-slate-200 text-slate-200 hover:text-white border border-white/18 text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1.5 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                   >
                                     <BookOpen className="w-3.5 h-3.5" />
                                     <span>مراجعة الفصل</span>
@@ -2179,14 +2341,14 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       aria-atomic="false"
                       ref={chatScrollRef}
                       onScroll={handleChatScroll}
-                      className="vizion-advisor-chat min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 bg-[#040B24] relative"
+                      className="vizion-advisor-chat min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 relative"
                     >
                       {!hasUserMessages ? (
                         /* Focused Empty-State Layout */
                         <div className="min-h-full flex flex-col justify-center py-4 my-auto w-full max-w-xl mx-auto">
                           {/* 1. Short Welcome Heading & Icon */}
                           <div className="text-center mb-4 sm:mb-5">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-[#D4A017]/20 to-amber-500/10 border border-[#D4A017]/30 text-[#F0C040] mb-2.5 shadow-sm">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/14 text-vz-accent mb-2.5 shadow-sm">
                               <Bot className="w-6 h-6" />
                             </div>
                             <h3 className="text-lg sm:text-xl font-black text-white tracking-wide mb-1.5">
@@ -2197,10 +2359,36 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             </p>
                           </div>
 
+                          {/* What makes this advisor different: it knows your shop and reads screenshots */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                            <button
+                              type="button"
+                              onClick={() => setActiveTab("profile")}
+                              className="text-right p-3 rounded-2xl border border-vz-blue/30 bg-vz-blue/10 hover:bg-vz-blue/15 transition-colors flex items-start gap-2.5"
+                            >
+                              <Brain className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
+                              <span>
+                                <span className="block text-xs sm:text-sm font-black text-white">
+                                  {profileFilledCount(businessProfile) >= 3 ? "أعرف مشروعك ✓" : "عرّفني على مشروعك"}
+                                </span>
+                                <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">
+                                  {profileFilledCount(businessProfile) >= 3 ? "كل جواب راح يكون على منتجك وأرقامك" : "منتجك وأسعارك وكلفة رسالتك، حتى أحسبلك ربحك بالضبط"}
+                                </span>
+                              </span>
+                            </button>
+                            <div className="text-right p-3 rounded-2xl border border-white/10 bg-white/[0.03] flex items-start gap-2.5">
+                              <ImagePlus className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
+                              <span>
+                                <span className="block text-xs sm:text-sm font-black text-white">صوّرلي إعلانك</span>
+                                <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">ارفع لقطة من مدير الإعلانات أو محادثة زبون، أو احچيلي بالمايك</span>
+                              </span>
+                            </div>
+                          </div>
+
                           {/* Example Questions / Suggestions in Empty State */}
                           <div className="w-full space-y-2.5">
-                            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#F0C040] pr-1">
-                              <Lightbulb className="w-4 h-4 text-[#F0C040] shrink-0" />
+                            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-vz-accent pr-1">
+                              <Lightbulb className="w-4 h-4 text-vz-accent shrink-0" />
                               <span>أسئلة مقترحة</span>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
@@ -2210,10 +2398,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   type="button"
                                   onClick={() => handleSendMessage(ex.label, ex.suggestions, ex.topicId)}
                                   disabled={isLoading}
-                                  className="w-full min-h-[50px] p-3 rounded-xl bg-[#081030] hover:bg-[#0E1B48] active:bg-[#D4A017]/15 border border-white/10 hover:border-[#D4A017]/40 text-right text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between gap-3 group cursor-pointer shadow-sm active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] disabled:opacity-50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                  className="w-full min-h-[50px] p-3 rounded-xl glass-subtle hover:bg-white/[0.06] active:bg-white/8 border hover:border-white/18 text-right text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between gap-3 group cursor-pointer active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 disabled:opacity-50 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                 >
                                   <span className="text-right leading-snug flex-1">{ex.label}</span>
-                                  <ArrowLeft className="w-4 h-4 text-white/60 group-hover:text-[#F0C040] shrink-0 transition-transform group-hover:-translate-x-1" />
+                                  <ArrowLeft className="w-4 h-4 text-white/60 group-hover:text-vz-accent shrink-0 transition-transform group-hover:-translate-x-1" />
                                 </button>
                               ))}
                             </div>
@@ -2231,10 +2419,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   aria-live="polite"
                                   initial={{ opacity: 0, y: 6 }}
                                   animate={{ opacity: 1, y: 0 }}
-                                  className="my-3 p-3 rounded-xl bg-[#081030] border border-[#D4A017]/30 text-white flex items-center justify-between gap-2 shadow-sm"
+                                  className="my-3 p-3 rounded-xl glass-subtle border text-white flex items-center justify-between gap-2"
                                 >
-                                  <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#F0C040]">
-                                    <Sparkles className="w-4 h-4 text-[#F0C040] shrink-0" />
+                                  <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-vz-accent">
+                                    <Sparkles className="w-4 h-4 text-vz-accent shrink-0" />
                                     <span>بدأنا موضوع جديد. اكتب سؤالك هسه أو اختر من الاقتراحات.</span>
                                   </div>
                                 </motion.div>
@@ -2248,7 +2436,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 key={msg.id}
                                 initial={{ opacity: 0, y: 8 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.15 }}
+                                transition={{ duration: 0.4, ease: EASE_OUT }}
                                 className={`flex gap-2 sm:gap-2.5 ${
                                   isUser ? "max-w-[85%] sm:max-w-[75%] ms-auto flex-row-reverse" : "max-w-[92%] sm:max-w-[85%] me-auto"
                                 }`}
@@ -2256,11 +2444,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 {/* Avatar */}
                                 <div className="flex-shrink-0">
                                   {isUser ? (
-                                    <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#D4A017] text-[#040B24] font-bold text-[10px] sm:text-[11px] flex items-center justify-center shrink-0 mt-1 select-none">
+                                    <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-vz-blue text-white font-bold text-[10px] sm:text-[11px] flex items-center justify-center shrink-0 mt-1 select-none">
                                       أنت
                                     </div>
                                   ) : (
-                                    <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full ${msg.isError ? "bg-rose-950/80 border border-rose-500/40 text-rose-300" : "bg-[#0A122E] border border-white/15 text-[#F0C040]"} flex items-center justify-center shrink-0 mt-1 select-none`}>
+                                    <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full ${msg.isError ? "bg-rose-950/80 border border-rose-500/40 text-rose-300" : "glass-subtle border border-white/15 text-vz-accent"} flex items-center justify-center shrink-0 mt-1 select-none`}>
                                       <Bot className="w-3.5 h-3.5" />
                                     </div>
                                   )}
@@ -2271,10 +2459,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   <div
                                     className={`p-3.5 sm:p-4 rounded-2xl text-[15px] sm:text-[16px] leading-[1.8] break-words [overflow-wrap:anywhere] ${
                                       isUser
-                                        ? "bg-[#D4A017]/10 text-[#F0C040] font-medium rounded-tr-xs"
+                                        ? "bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-medium rounded-tr-md shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_24px_-14px_rgba(47,107,255,0.6)]"
                                         : msg.isError
                                         ? "bg-rose-950/40 border border-rose-500/40 text-rose-200 rounded-tl-xs"
-                                        : "bg-[#081030] text-slate-100 rounded-tl-xs"
+                                        : "glass-subtle text-vz-accent rounded-tl-md"
                                     }`}
                                   >
                                     {/* Error State Card */}
@@ -2301,7 +2489,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                             type="button"
                                             onClick={() => handleSendMessage(msg.failedPrompt?.text || "", msg.failedPrompt?.presetSuggestions, msg.topicId)}
                                             disabled={isLoading}
-                                            className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition min-h-[44px] shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                            className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer active:scale-[0.97] transition min-h-[44px] shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                           >
                                             <RefreshCw className="w-4 h-4" />
                                             <span>إعادة المحاولة</span>
@@ -2313,7 +2501,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                                 setRestoredText(msg.failedPrompt!.text);
                                                 showToast("copy", "تم استرجاع السؤال للتعديل ✏️");
                                               }}
-                                              className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-rose-100 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                              className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-rose-100 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.97] transition min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                               title="استرجاع السؤال للتعديل عليه"
                                             >
                                               <Edit3 className="w-3.5 h-3.5" />
@@ -2322,69 +2510,49 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           )}
                                         </div>
                                       </div>
-                                    ) : msg.role === "assistant" && (msg.text.includes("التشخيص") || msg.text.includes("أول 3 خطوات") || msg.text.includes("الأسباب المحتملة")) ? (
-                                      <StructuredDiagnosticCard
-                                        rawText={msg.text}
-                                        topicId={msg.topicId}
-                                        userCode={userCode}
-                                        onActionClick={(prompt) => handleSendMessage(prompt)}
-                                        onNavigateChapter={(chId) => onNavigateToSection?.(chId)}
-                                        onNavigateTool={(tId, cat) => onNavigateTool?.(tId, cat)}
-                                        onShowToast={showToast}
-                                        feedback={{
-                                          rating: messageFeedback[msg.id]?.rating,
-                                          reason: messageFeedback[msg.id]?.reason,
-                                          onRate: (rating) => handleFeedback(msg.id, rating),
-                                          onSelectReason: (reason) => handleFeedback(msg.id, "unhelpful", reason),
-                                        }}
-                                        onCopyFull={() => {
-                                          handleCopy(msg.id, msg.text);
-                                          showToast("copy", "تم نسخ الرد بالكامل بنجاح 📋");
-                                        }}
-                                        isFullCopied={copiedId === msg.id}
-                                      />
-                                    ) : (
+                                    ) : msg.role === "assistant" ? (
                                       <>
-                                        <div className="whitespace-pre-wrap font-sans space-y-2 break-words [overflow-wrap:anywhere]">
-                                          {msg.text.split("\n").map((line, lIdx) => {
-                                            const isScriptLine = line.includes("📞") || line.includes("💬") || line.includes("السكريبت:");
-                                            const parts = line.split(/(\*\*.*?\*\*)/g);
-
-                                            return (
-                                              <div
-                                                key={lIdx}
-                                                className={`relative ${
-                                                  line.startsWith("- ") || line.startsWith("• ")
-                                                    ? "my-1 pr-2"
-                                                    : line.startsWith("1.") || line.startsWith("2.") || line.startsWith("3.") || line.startsWith("4.")
-                                                    ? `my-1.5 font-bold ${isUser ? "text-[#F0C040]" : "text-white"}`
-                                                    : isScriptLine
-                                                    ? "my-2 p-3 bg-[#030614] border-r-2 border-[#D4A017] rounded-lg text-amber-200 text-[14px] sm:text-[15px] font-mono leading-[1.8] overflow-x-auto max-w-full"
-                                                    : "my-0.5"
-                                                }`}
-                                              >
-                                                <div className={isScriptLine ? "pl-8 overflow-x-auto" : ""}>
-                                                  {parts.map((part, pIdx) => {
-                                                    if (part.startsWith("**") && part.endsWith("**")) {
-                                                      return (
-                                                        <strong
-                                                          key={pIdx}
-                                                          className={isUser ? "font-bold text-[#F0C040]" : "text-white font-bold"}
-                                                        >
-                                                          {part.slice(2, -2)}
-                                                        </strong>
-                                                      );
-                                                    }
-                                                    return part;
-                                                  })}
-                                                </div>
-                                              </div>
-                                            );
-                                          })}
-                                        </div>
-
-                                        {/* Action Recommendations Card for Standard Assistant Responses */}
-                                        {msg.role === "assistant" && !msg.isError && hasUserMessages && (
+                                        <RichMessage
+                                          text={msg.text}
+                                          streaming={msg.streaming}
+                                          onChapter={(chId) => onNavigateToSection?.(chId)}
+                                          onTool={(tId, cat) => onNavigateTool?.(tId, cat)}
+                                          onAddTask={(task) => handleAddTaskToPlan(task, msg.topicId)}
+                                          onCopy={() => showToast("copy", "انتسخت الرسالة 📋", "الصقها للزبون بالواتساب")}
+                                          onSaveProfile={(p) => {
+                                            mergeBusinessProfile(p);
+                                            showToast("saved", "انحفظت الأرقام بملف مشروعك 🧠");
+                                          }}
+                                        />
+                                        {msg.profileUpdate && msg.profileUpdate.length > 0 && (
+                                          <button
+                                            type="button"
+                                            onClick={() => setActiveTab("profile")}
+                                            className="mt-3 w-full text-right rounded-2xl border border-vz-blue/30 bg-vz-blue/10 hover:bg-vz-blue/15 px-3 py-2 text-xs text-vz-accent flex items-start gap-2 transition-colors"
+                                          >
+                                            <Brain className="w-4 h-4 shrink-0 mt-0.5" />
+                                            <span className="leading-relaxed">
+                                              <span className="font-black text-white">حفظت بملف مشروعك: </span>
+                                              {msg.profileUpdate.join(" • ")}
+                                            </span>
+                                          </button>
+                                        )}
+                                        {(msg.stopped || msg.partialError) && (
+                                          <div className="mt-3 rounded-xl border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-xs font-bold text-amber-200">
+                                            {msg.partialError || "وقفت الجواب بنص الطريق."}
+                                          </div>
+                                        )}
+                                        {!msg.streaming && !isLoading && msg.id === lastAssistantId && canRegenerate && (
+                                          <button
+                                            type="button"
+                                            onClick={handleRegenerate}
+                                            className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-white/12 px-3 py-1.5 text-[12px] font-bold text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors"
+                                          >
+                                            <RotateCcw className="w-3.5 h-3.5" />
+                                            جواب جديد
+                                          </button>
+                                        )}
+                                        {!msg.streaming && hasUserMessages && (
                                           <div className="mt-3">
                                             <AdvisorActionCard
                                               topicId={msg.topicId}
@@ -2408,13 +2576,24 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           </div>
                                         )}
                                       </>
+                                    ) : (
+                                      <>
+                                        {msg.images && msg.images.length > 0 && (
+                                          <div className="flex flex-wrap gap-1.5 mb-2">
+                                            {msg.images.map((src, i) => (
+                                              <img key={i} src={src} alt="صورة مرفقة" className="h-20 w-20 object-cover rounded-xl border border-white/30" />
+                                            ))}
+                                          </div>
+                                        )}
+                                        <div className="whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{msg.text}</div>
+                                      </>
                                     )}
 
                                     {/* Message Footer Actions & Iraqi Market Feedback Bar */}
-                                    {!msg.isError && (
+                                    {!msg.isError && !msg.streaming && (
                                       isUser ? (
                                         <div className="mt-2 pt-1.5 border-t border-black/15 text-[10px] flex items-center justify-between">
-                                          <span className="font-mono text-[9px] sm:text-[10px] text-[#040B24]/60 font-semibold">{msg.timestamp}</span>
+                                          <span className="font-mono text-[9px] sm:text-[10px] text-[#040e33]/60 font-semibold">{msg.timestamp}</span>
                                         </div>
                                       ) : (
                                         <AdvisorMessageFeedbackBar
@@ -2440,7 +2619,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       )}
 
                       {/* Calm Inline Typing Loader with User Question Visible Above */}
-                      {isLoading && (
+                      {isLoading && !messages.some((m) => m.streaming) && (
                         <motion.div
                           role="status"
                           aria-live="polite"
@@ -2449,22 +2628,22 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           className="flex flex-col gap-2 max-w-[92%] sm:max-w-[85%] ml-auto mt-4"
                         >
                           <div className="flex gap-2 sm:gap-2.5">
-                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#0A122E] border border-white/15 flex items-center justify-center text-[#F0C040] shrink-0 mt-1">
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full glass-subtle border flex items-center justify-center text-vz-accent shrink-0 mt-1">
                               <Bot className="w-3.5 h-3.5" />
                             </div>
-                            <div className="p-3 sm:p-3.5 rounded-2xl bg-[#0A122E] border border-white/10 text-slate-100 rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
+                            <div className="p-3 sm:p-3.5 rounded-2xl glass-subtle border text-vz-accent rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
                               <div className="flex items-center gap-2">
-                                <span className="text-[13px] sm:text-[14px] text-[#F0C040] font-bold">دا أرتبلك الجواب...</span>
+                                <span className="text-[13px] sm:text-[14px] text-vz-accent font-bold">دا أرتبلك الجواب...</span>
                                 <div className="flex gap-1.5 items-center mr-1">
-                                  <span className="w-2 h-2 rounded-full bg-[#D4A017] animate-pulse" />
-                                  <span className="w-2 h-2 rounded-full bg-[#D4A017] animate-pulse delay-150" />
-                                  <span className="w-2 h-2 rounded-full bg-[#D4A017] animate-pulse delay-300" />
+                                  <span className="w-2 h-2 rounded-full bg-vz-blue animate-pulse" />
+                                  <span className="w-2 h-2 rounded-full bg-vz-blue animate-pulse delay-150" />
+                                  <span className="w-2 h-2 rounded-full bg-vz-blue animate-pulse delay-300" />
                                 </div>
                               </div>
                               <button 
                                 type="button"
                                 onClick={handleCancelRequest}
-                                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-rose-500/20 text-white/60 hover:text-rose-300 border border-white/10 hover:border-rose-500/30 text-[11px] font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 min-h-[44px] min-w-[44px] active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-rose-500/20 text-white/60 hover:text-rose-300 border border-white/10 hover:border-rose-500/30 text-[11px] font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 min-h-[44px] min-w-[44px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                               >
                                 <X className="w-3 h-3" />
                                 <span>إلغاء الطلب</span>
@@ -2479,10 +2658,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <button
                           type="button"
                           onClick={() => scrollToBottom("smooth")}
-                          className="sticky bottom-3 right-3 sm:right-6 ms-auto z-30 px-3.5 py-2 rounded-full bg-[#D4A017] hover:bg-amber-400 text-[#040B24] font-black text-xs shadow-xl flex items-center gap-1.5 active:scale-95 transition-all animate-in fade-in cursor-pointer border border-[#040B24]"
+                          className="btn btn-primary sticky bottom-3 right-3 sm:right-6 ms-auto z-30 px-3.5 py-2 rounded-full text-white font-black text-xs flex items-center gap-1.5 animate-in fade-in border-[#040e33]"
                         >
                           <span>النزول للأسفل</span>
-                          <ChevronDown className="w-4 h-4 text-[#040B24]" />
+                          <ChevronDown className="w-4 h-4 text-white" />
                         </button>
                       )}
 
@@ -2492,7 +2671,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     {/* Footer Input */}
                     <div 
                       ref={composerRef}
-                      className="vizion-advisor-composer p-2 sm:p-3.5 pb-[max(env(safe-area-inset-bottom,0px),0.75rem)] bg-[#060D24] border-t border-white/10 relative shrink-0 z-20"
+                      className="vizion-advisor-composer p-2 sm:p-3.5 pb-[max(env(safe-area-inset-bottom,0px),0.75rem)] bg-black/25 border-t border-white/[0.07] backdrop-blur-xl relative shrink-0 z-20"
                     >
                       <ChatInputForm 
                         onSend={(text) => handleSendMessage(text)} 
@@ -2513,6 +2692,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         }}
                         restoredText={restoredText}
                         onTextRestored={() => setRestoredText("")}
+                        onStop={handleCancelRequest}
+                        attachments={attachments}
+                        onAttach={handleAttachFiles}
+                        onRemoveAttachment={(i) => setAttachments((prev) => prev.filter((_, j) => j !== i))}
                         onInputFocus={() => {
                           const chat = chatScrollRef.current;
                           if (chat) {
@@ -2528,9 +2711,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                       <div className="mt-1.5 hidden sm:flex flex-wrap justify-between items-center px-1 text-[9px] sm:text-[10px] text-white/60 gap-1">
                         <span className="flex items-center gap-1">
-                          <ShieldCheck className="w-3 h-3 text-[#D4A017]" /> مخصص ومبرمج للتجارة الإلكترونية بالسوق العراقي
+                          <ShieldCheck className="w-3 h-3 text-slate-200" /> مخصص ومبرمج للتجارة الإلكترونية بالسوق العراقي
                         </span>
-                        <span className="flex items-center gap-1 text-emerald-400/80 bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-500/20 font-sans">
+                        <span className="flex items-center gap-1 text-emerald-300/80 bg-emerald-400/[0.06] px-2 py-0.5 rounded-full border border-emerald-400/15 font-sans">
                           <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> محفوظ على هاتفك تلقائياً
                         </span>
                       </div>
@@ -2540,7 +2723,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               </>
             )}
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
+import { Reveal } from "./ui/Motion";
 
 interface FadeInUpProps {
   key?: React.Key;
@@ -11,26 +11,19 @@ interface FadeInUpProps {
 }
 
 /**
- * Reusable FadeInUp component triggered by Intersection Observer (whileInView)
- * Smoothly floats content into view as the user scrolls down on mobile & desktop.
+ * Scroll reveal kept for existing call sites: delegates to the shared <Reveal>
+ * so every section enters with the same blur → sharp, rise and settle motion.
  */
 export function FadeInUp({
   children,
   delay = 0,
-  duration = 0.5,
   className = "",
   yOffset = 24
 }: FadeInUpProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: yOffset }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1, margin: "0px 0px -40px 0px" }}
-      transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={className}
-    >
+    <Reveal delay={delay} y={yOffset} amount={0.1} className={className}>
       {children}
-    </motion.div>
+    </Reveal>
   );
 }
 

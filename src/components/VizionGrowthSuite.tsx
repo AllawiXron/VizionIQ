@@ -5,6 +5,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { SPRING_SNAPPY, collapseMotion, viewSwapMotion } from "../lib/motion";
+import { ChipPill, WordsReveal } from "./ui/Motion";
 import {
   Sparkles,
   TrendingUp,
@@ -351,29 +353,28 @@ export default function VizionGrowthSuite() {
 
   return (
     <div className="vizion-tools-suite space-y-16 py-12 px-4 max-w-7xl mx-auto relative" id="vizion-growth-suite">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4A017]/5 rounded-full md:blur-[150px] blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#1A2B73]/10 rounded-full md:blur-[150px] blur-3xl pointer-events-none" />
       
       {/* Dynamic Main Header */}
       <div className="vizion-tools-header text-center space-y-6 max-w-4xl mx-auto relative z-10">
-        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#D4A017]/20 to-[#D4A017]/5 border border-[#D4A017]/30 text-xs md:text-sm text-[#F0C040] font-black shadow-lg backdrop-blur-md">
-          <Sparkles className="w-4 h-4 animate-pulse-slow" />
+        <div data-reveal className="vz-eyebrow text-xs md:text-sm">
+          <Sparkles className="w-4 h-4 opacity-80" />
           <span>أدوات فيزيون • لوحة متابعة مشروعك</span>
         </div>
         
-        <h2 className="text-4xl md:text-6xl font-black text-white leading-tight drop-shadow-xl">
-          افهم أرقامك وخلي قراراتك أوضح
-        </h2>
+        <WordsReveal
+          className="text-[1.75rem] sm:text-4xl md:text-6xl font-black text-white leading-tight"
+          segments={["افهم أرقامك ", { text: "وخلي قراراتك أوضح", className: "vz-silver-text" }]}
+        />
         
-        <p className="text-base md:text-lg text-white/70 leading-relaxed font-light max-w-3xl mx-auto">
-          هنا تلگى <strong className="text-[#F0C040] font-bold">13 أداة عملية</strong> تساعدك تفحص مشروعك، تحسب كلفتك، وتحسن خطوات البيع والتوصيل بدون تعقيد.
+        <p data-reveal data-reveal-delay="3" className="text-sm sm:text-base md:text-xl text-white/55 leading-relaxed font-light max-w-3xl mx-auto">
+          هنا تلگى <strong className="text-white font-bold">13 أداة عملية</strong> تساعدك تفحص مشروعك، تحسب كلفتك، وتحسن خطوات البيع والتوصيل بدون تعقيد.
         </p>
 
         {/* Free Trial Gatekeeping Banner */}
         {isFreeTrial && (
-          <div className="bg-gradient-to-r from-amber-950/80 via-[#0F1735] to-amber-950/80 border-2 border-[#D4A017] p-5 sm:p-6 rounded-3xl shadow-2xl space-y-3 text-center relative overflow-hidden my-4 z-20 animate-[fadeIn_0.3s_ease]">
-            <div className="inline-flex justify-center items-center gap-2 w-full py-1 rounded-full bg-[#D4A017]/20 border border-[#D4A017]/50 text-sm py-3.5 font-black text-[#F0C040]">
-              <Lock className="w-4 h-4 text-[#F0C040]" />
+          <div className="glass-elevated glass-edge p-5 sm:p-7 rounded-3xl sm:rounded-4xl space-y-3 text-center relative overflow-hidden my-4 z-20 animate-fade-in">
+            <div className="vz-eyebrow text-xs sm:text-sm">
+              <Lock className="w-4 h-4 text-vz-accent" />
               <span>نسخة مجانية للتجربة (Free Trial Mode)</span>
             </div>
             <h3 className="text-lg sm:text-2xl font-black text-white leading-tight">
@@ -383,9 +384,9 @@ export default function VizionGrowthSuite() {
               أدوات النظام الـ 13 مقفولة جزئياً بهذي النسخة. رقي حسابك حتى تفتح كل الأدوات وتكدر تدخل أرقامك وتحلل حملاتك وتحسب أرباحك الصافية بالضبط.
             </p>
             <button               onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-xs sm:text-sm shadow-xl md:shadow-[#D4A017] shadow-xl/25 hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Crown className="w-4 h-4 text-[#040B24]" />
+              <Crown className="w-4 h-4 text-white" />
               <span>افتح المنظومة كاملة ورقي حسابك هسة ⚡</span>
             </button>
           </div>
@@ -393,7 +394,7 @@ export default function VizionGrowthSuite() {
       </div>
 
       {/* Category Tabs Filter Bar (افهم، احسب، حسّن، نفّذ) */}
-      <div className="vizion-tool-categories flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-2 pb-2 relative z-10 px-1">
+      <div data-reveal className="vizion-tool-categories flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-2 pb-2 relative z-10 px-1">
         {toolCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           const count = cat.id === "all" ? toolTabs.length : toolTabs.filter(t => t.category === cat.id).length;
@@ -409,11 +410,14 @@ export default function VizionGrowthSuite() {
                   }
                 }
               }}
-              className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer border whitespace-nowrap ${ isActive ? "bg-gradient-to-r from-[#D4A017] to-amber-500 text-[#040B24] border-[#D4A017] font-black shadow-lg md:shadow-[#D4A017] shadow-xl/25 scale-105" : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10 hover:border-white/20" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+              data-active={isActive}
+              aria-pressed={isActive}
+              className="vz-chip shrink-0 text-xs sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
+              {isActive && <ChipPill layoutId="suite-category-pill" />}
               <span>{cat.icon}</span>
               <span>{cat.label}</span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-[#040B24]/20 text-[#040B24] font-black' : 'bg-white/10 text-white/60'}`}>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-black/10 text-white font-black' : 'bg-white/10 text-white/60'}`}>
                 {count}
               </span>
             </button>
@@ -422,33 +426,37 @@ export default function VizionGrowthSuite() {
       </div>
 
       {/* Main Grid: Tabs Sidebar + Active Tab Content */}
-      <div className="vizion-tool-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
+      <div data-reveal className="vizion-tool-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
         {/* MOBILE SELECTOR & LAUNCHPAD (Visible only on mobile/tablet) */}
         <div className="vizion-tool-picker lg:hidden w-full mb-6 relative z-30">
-          <div className="bg-gradient-to-b from-[#0F1735]/90 to-[#040B24] border border-[#D4A017]/40 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
-            <button               onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
-              className="w-full flex items-center justify-between p-5 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent hover:bg-white/[0.06] transition-colors cursor-pointer min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+          <div className="glass-elevated rounded-3xl overflow-hidden">
+            <button
+              onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
+              aria-expanded={isLaunchpadOpen}
+              className="w-full flex items-center justify-between p-5 hover:bg-white/[0.04] transition-colors duration-300 cursor-pointer min-h-[44px] active:bg-white/[0.06] motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <div className="text-right">
-                <span className="text-[11px] text-[#F0C040]/70 block font-bold mb-1.5">اختار أداة من القائمة ({filteredToolTabs.length})</span>
+                <span className="text-[11px] text-white/50 block font-bold mb-1.5">اختار أداة من القائمة ({filteredToolTabs.length})</span>
                 <span className="text-base font-black text-white flex items-center gap-2 drop-shadow-md">
                   {toolTabs.find(t => t.id === activeTab)?.label}
                 </span>
               </div>
-              <div className={`w-12 h-12 shrink-0 rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center transition-transform duration-500 shadow-inner ${isLaunchpadOpen ? 'rotate-180 bg-[#D4A017] border-[#D4A017]' : ''}`}>
-                <ChevronDown className={`w-6 h-6 transition-colors duration-500 ${isLaunchpadOpen ? 'text-[#040B24]' : 'text-[#F0C040]'}`} />
-              </div>
+              <motion.div
+                animate={{ rotate: isLaunchpadOpen ? 180 : 0 }}
+                transition={SPRING_SNAPPY}
+                className={`w-11 h-11 shrink-0 rounded-full flex items-center justify-center transition-colors duration-300 ${isLaunchpadOpen ? 'bg-vz-blue text-white' : 'bg-white/[0.07] border border-white/10 text-white/80'}`}
+              >
+                <ChevronDown className="w-5 h-5" />
+              </motion.div>
             </button>
             
             {/* Expandable Menu */}
             <AnimatePresence>
               {isLaunchpadOpen && (
                 <motion.div 
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="border-t border-[#D4A017]/20 max-h-[60vh] overflow-y-auto no-scrollbar bg-black/80 backdrop-blur-2xl"
+                  {...collapseMotion}
+                  className="border-t border-white/[0.07] max-h-[60vh] overflow-y-auto no-scrollbar"
                 >
                   <div className="p-4 space-y-2.5">
                     {filteredToolTabs.map((tab) => {
@@ -464,18 +472,18 @@ export default function VizionGrowthSuite() {
                             setT4ShowReport(false);
                             setT8ShowScore(false);
                           }}
-                          className={`w-full flex items-center justify-between p-4.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer border ${ isActive ? "bg-gradient-to-r from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] md:shadow-[0_5px_15px_rgba(212,160,23,0.15)] shadow-xl" : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                          className={`w-full flex items-center justify-between p-4 rounded-2xl transition-colors duration-300 cursor-pointer border min-h-[44px] active:scale-[0.98] ${ isActive ? "bg-white/[0.08] border-white/[0.14] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" : "bg-white/[0.02] border-white/[0.05] text-white/70 hover:bg-white/[0.05]" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60`}
                         >
                           <div className="text-right flex-1">
-                            <div className={`text-sm font-black mb-1.5 flex items-center justify-between ${isActive ? "text-[#F0C040]" : "text-white"}`}>
+                            <div className={`text-sm font-black mb-1.5 flex items-center justify-between ${isActive ? "text-vz-accent" : "text-white"}`}>
                               <span>{tab.label}</span>
-                              {isFreeTrial && <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />}
+                              {isFreeTrial && <Lock className="w-3.5 h-3.5 text-vz-accent shrink-0" />}
                             </div>
                             <div className="text-[11px] text-white/70 leading-relaxed font-light">{tab.desc}</div>
                           </div>
                           {isActive && (
-                            <div className="w-8 h-8 rounded-full bg-[#D4A017] flex items-center justify-center shrink-0 ml-3 md:shadow-[0_0_15px_#D4A017] shadow-xl">
-                              <CheckCircle2 className="w-5 h-5 text-[#040B24]" />
+                            <div className="w-8 h-8 rounded-full bg-vz-blue flex items-center justify-center shrink-0 ml-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
+                              <CheckCircle2 className="w-5 h-5 text-white" />
                             </div>
                           )}
                         </button>
@@ -489,15 +497,14 @@ export default function VizionGrowthSuite() {
         </div>
 
         {/* SIDE BAR / SELECTOR RAIL (4 Columns, hidden on mobile/tablet) */}
-        <div className="hidden lg:flex lg:col-span-4 bg-gradient-to-b from-[#0F1735]/80 to-[#040B24]/90 backdrop-blur-xl border border-[#D4A017]/20 rounded-[2.5rem] p-5 md:p-6 flex-col space-y-4 md:shadow-[0_0_50px_rgba(212,160,23,0.05)] shadow-xl h-[750px] overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-1.5 h-full bg-gradient-to-b from-[#F0C040] to-transparent opacity-50" />
-          <div className="flex items-center justify-between border-b border-white/10 pb-4 mr-3">
-            <span className="text-[12px] font-black text-[#F0C040] uppercase tracking-widest">
+        <div className="hidden lg:flex lg:col-span-4 glass glass-edge rounded-4xl p-5 md:p-6 flex-col space-y-4 h-[750px] overflow-hidden relative">
+                    <div className="flex items-center justify-between border-b border-white/[0.07] pb-4 px-1">
+            <span className="text-[12px] font-bold text-white/55 uppercase tracking-widest">
               ⚙️ حقيبة الأدوات ({filteredToolTabs.length}):
             </span>
             {selectedCategory !== "all" && (
               <button                 onClick={() => setSelectedCategory("all")}
-                className="text-[10px] text-white/60 hover:text-[#F0C040] transition-colors cursor-pointer min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                className="text-[10px] text-white/60 hover:text-vz-accent transition-colors cursor-pointer min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 عرض الكل
               </button>
@@ -518,20 +525,27 @@ export default function VizionGrowthSuite() {
                     setT4ShowReport(false);
                     setT8ShowScore(false);
                   }}
-                  className={`w-full p-4 rounded-2xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none duration-400 relative cursor-pointer flex items-center justify-between group overflow-hidden ${ isActive ? "bg-gradient-to-l from-[#D4A017]/20 to-[#040B24] border-[#D4A017]/60 text-[#F0C040] md:shadow-[0_10px_20px_rgba(212,160,23,0.15)] shadow-xl scale-[1.02] z-10" : "bg-white/[0.02] border-white/5 text-white/70 hover:bg-white/[0.06] hover:border-white/20 hover:-translate-y-0.5" } min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                  className={`w-full p-4 rounded-2xl text-right transition-colors duration-300 relative cursor-pointer flex items-center justify-between group min-h-[44px] active:scale-[0.98] ${ isActive ? "text-white" : "text-white/70 hover:bg-white/[0.04]" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60`}
                 >
-                  <div className="flex items-center gap-4">
+                  {isActive && (
+                    <motion.span
+                      layoutId="suite-rail-active"
+                      transition={SPRING_SNAPPY}
+                      className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.1] to-white/[0.04] border border-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_10px_30px_-16px_rgba(0,0,0,0.8)]"
+                    />
+                  )}
+                  <div className="relative flex items-center gap-4">
                     <div className="space-y-1.5 text-right">
-                      <h4 className={`font-black text-sm transition-colors duration-300 flex items-center gap-2 ${isActive ? "text-[#F0C040]" : "text-white group-hover:text-[#F0C040]"}`}>
+                      <h4 className={`font-black text-sm transition-colors duration-300 flex items-center gap-2 ${isActive ? "text-white" : "text-white/85 group-hover:text-white"}`}>
                         <span>{tab.label}</span>
-                        {isFreeTrial && <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />}
+                        {isFreeTrial && <Lock className="w-3.5 h-3.5 text-vz-accent shrink-0" />}
                       </h4>
                       <p className={`text-[10px] transition-colors duration-300 font-light ${isActive ? "text-white/80" : "text-white/60 group-hover:text-white/60"}`}>
                         {tab.desc}
                       </p>
                     </div>
                   </div>
-                  <span className={`text-sm transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500 ${isActive ? "text-[#F0C040] translate-x-1 opacity-100" : "text-white/20 group-hover:text-white/60 opacity-0 group-hover:opacity-100"}`}>
+                  <span className={`relative text-sm transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500 ${isActive ? "text-white -translate-x-1 opacity-100" : "text-white/20 group-hover:text-white/60 opacity-0 group-hover:opacity-100"}`}>
                     ◀
                   </span>
                 </button>
@@ -541,31 +555,27 @@ export default function VizionGrowthSuite() {
         </div>
 
         {/* CONTENT VIEWPORT (8 Columns) */}
-        <div className="vizion-tool-viewport lg:col-span-8 bg-gradient-to-b from-[#0F1735]/60 to-[#040B24]/90 backdrop-blur-2xl border border-[#D4A017]/30 rounded-[2.5rem] p-8 md:p-12 md:shadow-[0_0_60px_rgba(212,160,23,0.1)] shadow-xl relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
-          <div className="absolute -top-32 -left-32 w-64 h-64 bg-[#D4A017]/10 rounded-full md:blur-[80px] blur-3xl pointer-events-none group-hover:bg-[#D4A017]/20 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-1000" />
+        <div className="vizion-tool-viewport lg:col-span-8 glass glass-edge rounded-4xl p-6 sm:p-8 md:p-12 relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
           
           <AnimatePresence mode="wait">
             <motion.div 
               key={activeTab}
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-              transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
+              {...viewSwapMotion}
               className="space-y-8 w-full relative z-10"
             >
               
             {isFreeTrial ? (
               <div className="flex flex-col items-center justify-center text-center p-6 sm:p-10 space-y-6 min-h-[550px] my-auto relative z-20">
-                <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#D4A017]/30 via-amber-600/20 to-[#040B24] border-2 border-[#D4A017] flex items-center justify-center md:shadow-[0_0_50px_rgba(212,160,23,0.35)] shadow-xl relative group animate-bounce">
-                  <Lock className="w-10 h-10 text-[#F0C040]" />
-                  <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-600 to-amber-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full border border-white/20 shadow-md">
+                <div className="w-20 h-20 rounded-[26px] glass-elevated glass-edge flex items-center justify-center relative group">
+                  <Lock className="w-10 h-10 text-vz-accent" />
+                  <div className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-[0_4px_12px_-4px_rgba(239,68,68,0.6)]">
                     مقفول
                   </div>
                 </div>
 
                 <div className="space-y-3 max-w-xl">
-                  <div className="inline-flex justify-center items-center gap-2 w-full py-1.5 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/40 text-sm py-3.5 font-black text-[#F0C040]">
-                    <Crown className="w-4 h-4 text-[#F0C040]" />
+                  <div className="vz-eyebrow text-xs sm:text-sm">
+                    <Crown className="w-4 h-4 text-vz-accent" />
                     <span>الأدوات مقفولة لحساب المعاينة المجانية (free#1)</span>
                   </div>
                   
@@ -578,42 +588,42 @@ export default function VizionGrowthSuite() {
                   </p>
                 </div>
 
-                <div className="w-full max-w-md bg-white/[0.03] border border-[#D4A017]/30 rounded-2xl p-5 space-y-3 text-right">
-                  <span className="text-xs font-black text-[#F0C040] block border-b border-white/10 pb-2">
+                <div className="w-full max-w-md glass-subtle rounded-3xl p-5 space-y-3 text-right">
+                  <span className="text-xs font-black text-vz-accent block border-b border-white/10 pb-2">
                     مميزات الأدوات الكاملة:
                   </span>
                   <div className="grid grid-cols-1 gap-y-5 gap-2.5 text-xs text-white/80">
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
                       <span>مقييم سلامة البزنس مالتك</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
                       <span>مستشار الحملات الإعلانية</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
                       <span>حاسبة التسعير والربح الصافي</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
                       <span>متوقع أرباح الإعلان قبل ما تشغله</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
                       <span>مخطط الميزانية والوصول</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#D4A017] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
                       <span>كاشف تسرب الفلوس المرتجعة</span>
                     </div>
                   </div>
                 </div>
 
                 <button                   onClick={triggerUpgradeModal}
-                  className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm md:text-base md:shadow-[0_10px_30px_rgba(212,160,23,0.35)] shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-3 group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="btn btn-primary px-8 py-4 rounded-2xl text-white font-black text-sm md:text-base inline-flex items-center gap-3 group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
-                  <Crown className="w-5 h-5 text-[#040B24] group-hover:rotate-12 transition-transform" />
+                  <Crown className="w-5 h-5 text-white transition-transform" />
                   <span>افتح الـ 13 أداة ورقي حسابك هسة ⚡</span>
                 </button>
               </div>
@@ -626,7 +636,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">🩺</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">فحص سلامة وربحية مشروعك</span>
+                    <span className="text-[10px] text-vz-accent font-bold">فحص سلامة وربحية مشروعك</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مقيِّم البزنس المتكامل</h3>
                   </div>
                 </div>
@@ -642,7 +652,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1MonthlyOrders}
                       onChange={(e) => setT1MonthlyOrders(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -653,7 +663,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1SellingPrice}
                       onChange={(e) => setT1SellingPrice(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -664,7 +674,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1ProductCost}
                       onChange={(e) => setT1ProductCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -675,7 +685,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t1MessageCost}
                       onChange={(e) => setT1MessageCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -689,11 +699,11 @@ export default function VizionGrowthSuite() {
                         max="80"
                         value={t1ReturnRate}
                         onChange={(e) => setT1ReturnRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
-                      <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t1ReturnRate}%</span>
+                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t1ReturnRate}%</span>
                     </div>
                   </div>
                   <div className="space-y-1.5">
@@ -705,18 +715,18 @@ export default function VizionGrowthSuite() {
                         max="50"
                         value={t1ConversionRate}
                         onChange={(e) => setT1ConversionRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
-                      <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t1ConversionRate}%</span>
+                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t1ConversionRate}%</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-4 w-full">
                   <button                     onClick={() => setT1ShowReport(true)}
-                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <span>افحص مشروعي وشوفني التقرير</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -731,9 +741,9 @@ export default function VizionGrowthSuite() {
 الإيرادات: ${diagResult.totalRevenue.toLocaleString()} د.ع
 الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`);
           alert('تم النسخ!');
-        }} className="text-xs text-[#F0C040] hover:text-white border border-[#D4A017]/30 px-3 py-1 rounded-lg min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">نسخ النتيجة 📋</button>
+        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة 📋</button>
       </div>
-                    <h4 className="text-sm font-black text-[#F0C040] flex items-center gap-2 border-b border-white/5 pb-2">
+                    <h4 className="text-sm font-black text-vz-accent flex items-center gap-2 border-b border-white/5 pb-2">
                       <span>📊</span>
                       <span>تقرير فحص الأداء والربح:</span>
                     </h4>
@@ -749,7 +759,7 @@ export default function VizionGrowthSuite() {
                       </div>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                         <span className="text-[10px] text-white/60 block">ميزانية الإعلان المطلوبة</span>
-                        <span className="text-xs sm:text-sm font-black text-[#F0C040] font-mono">{(diagResult.totalAdSpend).toLocaleString()} دينار</span>
+                        <span className="text-xs sm:text-sm font-black text-vz-accent font-mono">{(diagResult.totalAdSpend).toLocaleString()} دينار</span>
                       </div>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                         <span className="text-[10px] text-white/60 block">صافي الربح الفعلي</span>
@@ -760,7 +770,7 @@ export default function VizionGrowthSuite() {
                     </div>
 
                     {/* Verdict Box */}
-                    <div className="p-4 rounded-xl bg-white/[0.01] border-r-4 border-[#D4A017] space-y-2">
+                    <div className="p-4 rounded-xl bg-white/[0.01] border-r-2 border-white/35 space-y-2">
                       <span className="text-xs font-bold text-white block">التشخيص الفوري:</span>
                       <ul className="space-y-1.5 text-[11px] text-white/70 leading-relaxed">
                         {t1ReturnRate > 20 && (
@@ -805,7 +815,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">🤖</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">بدل ما تخمن وتخسر فلوسك</span>
+                    <span className="text-[10px] text-vz-accent font-bold">بدل ما تخمن وتخسر فلوسك</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مستشار الإعلانات الذكي</h3>
                   </div>
                 </div>
@@ -821,7 +831,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Spend}
                       onChange={(e) => setT2Spend(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -831,7 +841,7 @@ export default function VizionGrowthSuite() {
                     <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Messages}
                       onChange={(e) => setT2Messages(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -840,7 +850,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Confirmed}
                       onChange={(e) => setT2Confirmed(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -851,7 +861,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t2Delivered}
                       onChange={(e) => setT2Delivered(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">رسالة</span>
 </div>
@@ -860,7 +870,7 @@ export default function VizionGrowthSuite() {
 
                 <div className="pt-4 w-full">
                   <button                     onClick={() => setT2ShowAnalysis(true)}
-                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <span>حلل نتائج الإعلان هسة</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -870,12 +880,12 @@ export default function VizionGrowthSuite() {
                 {t2ShowAnalysis && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                      <h4 className="text-sm font-black text-[#F0C040]">🔍 النتيجة والتحليل الفني:</h4>
+                      <h4 className="text-sm font-black text-vz-accent">🔍 النتيجة والتحليل الفني:</h4>
                       <span className="text-xs text-white/60 font-mono">سعر الرسالة عندك: {getAdAnalysis().costPerMsg.toLocaleString()} دينار</span>
                     </div>
 
                     <p className="text-xs font-bold text-white leading-relaxed">
-                      النتيجة: <span className="text-amber-300">{getAdAnalysis().verdict}</span>
+                      النتيجة: <span className="text-vz-accent">{getAdAnalysis().verdict}</span>
                     </p>
 
                     {getAdAnalysis().warning && (
@@ -885,11 +895,11 @@ export default function VizionGrowthSuite() {
                     )}
 
                     <div className="space-y-2">
-                      <span className="text-xs font-bold text-[#F0C040] block">🛠️ الخطوات والتعديلات المطلوبة فوراً:</span>
+                      <span className="text-xs font-bold text-vz-accent block">🛠️ الخطوات والتعديلات المطلوبة فوراً:</span>
                       <ul className="space-y-2 text-xs text-white/80">
                         {getAdAnalysis().recommendations.map((rec, i) => (
                           <li key={i} className="flex items-start gap-2">
-                            <span className="text-[#F0C040] shrink-0 mt-0.5">✔</span>
+                            <span className="text-vz-accent shrink-0 mt-0.5">✔</span>
                             <span>{rec}</span>
                           </li>
                         ))}
@@ -906,7 +916,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">🔍</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">افهم السوك وحلل اللي ينافسوك</span>
+                    <span className="text-[10px] text-vz-accent font-bold">افهم السوك وحلل اللي ينافسوك</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">محلل استراتيجية المنافسين</h3>
                   </div>
                 </div>
@@ -922,14 +932,14 @@ export default function VizionGrowthSuite() {
                       placeholder="مثال: بيج الهدايا الفخمة"
                       value={t3Name}
                       onChange={(e) => setT3Name(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-right focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-right focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">مجال أو فئة بضاعته:</label>
                     <select                       value={t3Niche}
                       onChange={(e) => setT3Niche(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <option value="clothing">الملابس والأزياء العصرية</option>
                       <option value="perfumes">العطور ومستحضرات التجميل</option>
@@ -941,7 +951,7 @@ export default function VizionGrowthSuite() {
 
                 <div className="pt-4 w-full">
                   <button                     onClick={() => setT3ShowAnalysis(true)}
-                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <span>حلل شغله واعرضلي الفرص</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -950,7 +960,7 @@ export default function VizionGrowthSuite() {
 
                 {t3ShowAnalysis && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
-                    <h4 className="text-sm font-black text-[#F0C040] border-b border-white/5 pb-2">
+                    <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">
                       📋 خطة التغلب على {t3Name || "هذا البيج"}:
                     </h4>
 
@@ -966,7 +976,7 @@ export default function VizionGrowthSuite() {
                       </div>
 
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                        <strong className="text-[#F0C040]">🎯 البداية (الخطاف) المقترحة لإعلانك الجاي:</strong>
+                        <strong className="text-vz-accent">🎯 البداية (الخطاف) المقترحة لإعلانك الجاي:</strong>
                         <p className="mt-1 text-white/90 italic leading-relaxed font-bold">"{getCompetitorTactics().hook}"</p>
                       </div>
                     </div>
@@ -981,7 +991,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">💬</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">تجيك رسايل هواي وماكو طلبات؟</span>
+                    <span className="text-[10px] text-vz-accent font-bold">تجيك رسايل هواي وماكو طلبات؟</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">محلل جودة ونسبة الرسايل</h3>
                   </div>
                 </div>
@@ -996,7 +1006,7 @@ export default function VizionGrowthSuite() {
                     <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t4Messages}
                       onChange={(e) => setT4Messages(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -1005,7 +1015,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t4Orders}
                       onChange={(e) => setT4Orders(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -1014,7 +1024,7 @@ export default function VizionGrowthSuite() {
 
                 <div className="pt-4 w-full">
                   <button                     onClick={() => setT4ShowReport(true)}
-                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <span>حلل الرسايل واكشف الخلل</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -1029,11 +1039,11 @@ export default function VizionGrowthSuite() {
 معدل الإغلاق: ${((t4Orders / t4Messages) * 100).toFixed(1)}%
 `);
           alert('تم النسخ!');
-        }} className="text-xs text-[#F0C040] hover:text-white border border-[#D4A017]/30 px-3 py-1 rounded-lg min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">نسخ النتيجة 📋</button>
+        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة 📋</button>
       </div>
                     {/* Diagnostic Score Card */}
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                      <h4 className="text-sm font-black text-[#F0C040]">📝 نتيجة غلق الصفقات:</h4>
+                      <h4 className="text-sm font-black text-vz-accent">📝 نتيجة غلق الصفقات:</h4>
                       <span className="text-xs text-white/70 font-mono">نسبة التحويل: {((t4Orders / t4Messages) * 100).toFixed(1)}%</span>
                     </div>
 
@@ -1055,7 +1065,7 @@ export default function VizionGrowthSuite() {
                       </div>
                     ) : ((t4Orders / t4Messages) * 100) < 12 ? (
                       <div className="space-y-3">
-                        <div className="p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/10 text-xs text-amber-300">
+                        <div className="p-3.5 rounded-xl bg-white/3 border border-white/5 text-xs text-vz-accent">
                           ⚠️ <strong>أداءك متوسط:</strong> اكو ناس مهتمة صدك، بس دتطير نص البيعات لأن ما دتتابع الزبون عدل لو تتردد بالعرض.
                         </div>
                         <ul className="space-y-2 text-xs text-white/80">
@@ -1081,7 +1091,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">💰</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">احسب فلوسك صح قبل لا تشغل الإعلان</span>
+                    <span className="text-[10px] text-vz-accent font-bold">احسب فلوسك صح قبل لا تشغل الإعلان</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">حاسبة التسعير والربح الصافي</h3>
                   </div>
                 </div>
@@ -1096,7 +1106,7 @@ export default function VizionGrowthSuite() {
                     <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5Cost}
                       onChange={(e) => setT5Cost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -1105,7 +1115,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5Price}
                       onChange={(e) => setT5Price(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1116,7 +1126,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5Shipping}
                       onChange={(e) => setT5Shipping(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1127,7 +1137,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t5AdCost}
                       onChange={(e) => setT5AdCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1141,17 +1151,17 @@ export default function VizionGrowthSuite() {
                         max="80"
                         value={t5ReturnRate}
                         onChange={(e) => setT5ReturnRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
-                      <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t5ReturnRate}%</span>
+                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t5ReturnRate}%</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                  <h4 className="text-xs font-black text-[#F0C040] border-b border-white/5 pb-2">📊 حساب الأرباح والخسائر للقطعة:</h4>
+                  <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">📊 حساب الأرباح والخسائر للقطعة:</h4>
 
                   {/* Math calculation */}
                   {(() => {
@@ -1177,7 +1187,7 @@ export default function VizionGrowthSuite() {
                           </div>
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                             <span className="text-[10px] text-white/70 block">أقل سعر تبيع بي حتى ما تخسر</span>
-                            <span className="text-base font-black text-amber-400 font-mono">{minSafePrice.toLocaleString()} دينار</span>
+                            <span className="text-base font-black text-vz-accent font-mono">{minSafePrice.toLocaleString()} دينار</span>
                           </div>
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                             <span className="text-[10px] text-white/70 block">طلبات تحتاجها لتربح (١.٥ مليون)</span>
@@ -1209,7 +1219,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">👥</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">ردود جاهزة تضمنلك البيعة</span>
+                    <span className="text-[10px] text-vz-accent font-bold">ردود جاهزة تضمنلك البيعة</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">أنواع الزبائن وشلون ترد عليهم</h3>
                   </div>
                 </div>
@@ -1221,27 +1231,27 @@ export default function VizionGrowthSuite() {
                 {/* Grid of customers */}
                 <div className="grid grid-cols-1 gap-y-5 sm:grid-cols-5 gap-2">
                   <button                     onClick={() => setActiveCustomer("ghoster")}
-                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "ghoster" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "ghoster" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     👻 يسأل (ببيش؟) ويختفي
                   </button>
                   <button                     onClick={() => setActiveCustomer("bargainer")}
-                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "bargainer" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "bargainer" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     💵 (أريد خصم)
                   </button>
                   <button                     onClick={() => setActiveCustomer("hesitant")}
-                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "hesitant" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "hesitant" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     🧐 الزبون المتردد
                   </button>
                   <button                     onClick={() => setActiveCustomer("delayed")}
-                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "delayed" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "delayed" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     ⏳ (أرجعلك بعدين)
                   </button>
                   <button                     onClick={() => setActiveCustomer("comparer")}
-                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "comparer" ? "bg-[#D4A017]/20 border-[#D4A017] text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                    className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "comparer" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     ⚖️ يقارن ويا البقية
                   </button>
@@ -1256,7 +1266,7 @@ export default function VizionGrowthSuite() {
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحس ردك آلي ومجرد فضول ديدور.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-[#F0C040]">شلون تحلها:</strong> لا تنطي السعر وتسكت. اشرح قيمة العرض، وكوله تكدر تفحص المنتج عند الباب حتى يرتاح ويطمئن.
+                        <strong className="text-vz-accent">شلون تحلها:</strong> لا تنطي السعر وتسكت. اشرح قيمة العرض، وكوله تكدر تفحص المنتج عند الباب حتى يرتاح ويطمئن.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
@@ -1274,7 +1284,7 @@ export default function VizionGrowthSuite() {
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحب يحس نفسه حصل شغلة زينة وبسعر أرخص.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-[#F0C040]">شلون تحلها:</strong> لا تكوله "لا" قبل. انطيه عرض ثاني أو هدية (مثل توصيل مجاني للقطعتين) بدل ما تنزل سعر المنتج.
+                        <strong className="text-vz-accent">شلون تحلها:</strong> لا تكوله "لا" قبل. انطيه عرض ثاني أو هدية (مثل توصيل مجاني للقطعتين) بدل ما تنزل سعر المنتج.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
@@ -1292,7 +1302,7 @@ export default function VizionGrowthSuite() {
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ مضروب بوري قبل من بيجات وهمية وميأمن.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-[#F0C040]">شلون تحلها:</strong> شيل الخوف منه من تنطيه كفالة وتخليه يفحص كدام المندوب قبل ما يستلم.
+                        <strong className="text-vz-accent">شلون تحلها:</strong> شيل الخوف منه من تنطيه كفالة وتخليه يفحص كدام المندوب قبل ما يستلم.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
@@ -1310,7 +1320,7 @@ export default function VizionGrowthSuite() {
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحتاج حافز قوي حتى يبطل تردد ويقرر يشتري.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-[#F0C040]">شلون تحلها:</strong> حسسه إن الكمية حتخلص أو انطيه عرض إنو تدز الطلب يوم راتبه.
+                        <strong className="text-vz-accent">شلون تحلها:</strong> حسسه إن الكمية حتخلص أو انطيه عرض إنو تدز الطلب يوم راتبه.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
@@ -1328,7 +1338,7 @@ export default function VizionGrowthSuite() {
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يريد يبرر فرق السعر حتى يرتاح نفسياً.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-[#F0C040]">شلون تحلها:</strong> لا تهاجم المنافسين. بس وضحله ليش إنت أغلى (جودة خامة، ضمان، خدمات ما بعد البيع).
+                        <strong className="text-vz-accent">شلون تحلها:</strong> لا تهاجم المنافسين. بس وضحله ليش إنت أغلى (جودة خامة، ضمان، خدمات ما بعد البيع).
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
@@ -1348,7 +1358,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">📚</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">إعلانات محلية جابت مبيعات قوية</span>
+                    <span className="text-[10px] text-vz-accent font-bold">إعلانات محلية جابت مبيعات قوية</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مكتبة الإعلانات الناجحة</h3>
                   </div>
                 </div>
@@ -1358,36 +1368,36 @@ export default function VizionGrowthSuite() {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
+                  <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
                     <span className="text-2xl">🎬</span>
                     <h4 className="text-xs font-black text-white">١. إعلان ملابس (بداية قوية)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
                       فيديو يبدي بشخص يلزم قميص ويصب عليه مي حتى يثبت للناس إن القميص ما يتبكع.
                     </p>
                     <div className="text-[10px] bg-white/[0.02] p-2.5 rounded-xl border border-white/5">
-                      <strong className="text-[#F0C040] block">سر نجاحه:</strong> يخلي الزبون يوكف تصفح بأول ثانيتين بحركة غريبة، ويثبتله الجودة كدام عينه.
+                      <strong className="text-vz-accent block">سر نجاحه:</strong> يخلي الزبون يوكف تصفح بأول ثانيتين بحركة غريبة، ويثبتله الجودة كدام عينه.
                     </div>
                   </div>
 
-                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
+                  <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
                     <span className="text-2xl">🎥</span>
                     <h4 className="text-xs font-black text-white">٢. إعلان عطور (تجربة حقيقية)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
                       تصوير عادي لشخص يفوت للمكتب وأصدقائه يسألوه متفاجئين من ريحة عطره الطيبة.
                     </p>
                     <div className="text-[10px] bg-white/[0.02] p-2.5 rounded-xl border border-white/5">
-                      <strong className="text-[#F0C040] block">سر نجاحه:</strong> ما يبين إعلان ديبيعلك شي. يبين كأنه فيديو عادي ومنتشر، وهالشي يصعد الثقة حيل.
+                      <strong className="text-vz-accent block">سر نجاحه:</strong> ما يبين إعلان ديبيعلك شي. يبين كأنه فيديو عادي ومنتشر، وهالشي يصعد الثقة حيل.
                     </div>
                   </div>
 
-                  <div className="p-4 bg-white/5 border border-white/5 hover:border-[#D4A017]/30 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
+                  <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
                     <span className="text-2xl">📦</span>
                     <h4 className="text-xs font-black text-white">٣. إعلان هدايا (يلعب عالعاطفة)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
                       فيديو مرتب لإيدين تفتح علبة خشبية فخمة محفور عليها اسم بأسلوب مريح وتصوير حلو.
                     </p>
                     <div className="text-[10px] bg-white/[0.02] p-2.5 rounded-xl border border-white/5">
-                      <strong className="text-[#F0C040] block">سر نجاحه:</strong> يركز عالمشاعر وإحساس الفخر من تنطي هدية مرتبة، ويقنع الزبون يشتري بنهاية الفيديو.
+                      <strong className="text-vz-accent block">سر نجاحه:</strong> يركز عالمشاعر وإحساس الفخر من تنطي هدية مرتبة، ويقنع الزبون يشتري بنهاية الفيديو.
                     </div>
                   </div>
                 </div>
@@ -1400,7 +1410,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">📦</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">لا تروج لمنتج يفشل بعدين</span>
+                    <span className="text-[10px] text-vz-accent font-bold">لا تروج لمنتج يفشل بعدين</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مقيِّم المنتجات قبل ما تشغل إعلان</h3>
                   </div>
                 </div>
@@ -1413,47 +1423,47 @@ export default function VizionGrowthSuite() {
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">ربحك بالقطعة يعبر الـ 15,000 دينار؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Margin(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Margin ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
-                      <button onClick={() => setT8Margin(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Margin ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
+                      <button onClick={() => setT8Margin(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Margin ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
+                      <button onClick={() => setT8Margin(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Margin ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">تكدر تشرح فائدته وتلزم انتباه الزبون بأول 3 ثواني؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Benefit(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Benefit ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
-                      <button onClick={() => setT8Benefit(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Benefit ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
+                      <button onClick={() => setT8Benefit(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Benefit ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
+                      <button onClick={() => setT8Benefit(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Benefit ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">موجود بكل مكان بالسوك (مثل الشورجة أو الكرادة) ومتروس؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Problem(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Problem ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
-                      <button onClick={() => setT8Problem(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Problem ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
+                      <button onClick={() => setT8Problem(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Problem ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
+                      <button onClick={() => setT8Problem(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Problem ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">المنتج وزنه خفيف وسهل التغليف والتوصيل بدون ما ينكسر؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Ship(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Ship ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
-                      <button onClick={() => setT8Ship(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Ship ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
+                      <button onClick={() => setT8Ship(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Ship ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
+                      <button onClick={() => setT8Ship(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Ship ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
                     </div>
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
                     <span className="text-xs text-white font-bold">عندك فيديوهات إنت مصورها بيدك للمنتج (مو مسروقة)؟</span>
                     <div className="flex gap-2">
-                      <button onClick={() => setT8Video(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Video ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>إي</button>
-                      <button onClick={() => setT8Video(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Video ? "bg-[#D4A017] text-[#040B24]" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}>لا</button>
+                      <button onClick={() => setT8Video(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Video ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
+                      <button onClick={() => setT8Video(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Video ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-4 w-full">
                   <button                     onClick={() => setT8ShowScore(true)}
-                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <span>احسب نتيجة المنتج هسة</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -1475,7 +1485,7 @@ export default function VizionGrowthSuite() {
                         <div className="space-y-2 text-xs">
                           <div className="flex justify-between items-center border-b border-white/5 pb-2">
                             <span className="font-black text-white">شكد المنتج مالتك جاهز ينباع:</span>
-                            <span className="font-mono text-base font-black text-[#F0C040]">{score} / 100</span>
+                            <span className="font-mono text-base font-black text-vz-accent">{score} / 100</span>
                           </div>
 
                           {score >= 75 ? (
@@ -1483,7 +1493,7 @@ export default function VizionGrowthSuite() {
                               🎉 <strong>منتجك بطل وجاهز!</strong> بي كل الشغلات اللي تنجحه بسرعة. نصيحة ابدي صور فيديوهاتك وشغل حملتك فوراً ولا تتردد.
                             </div>
                           ) : score >= 50 ? (
-                            <div className="p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 text-amber-300 leading-relaxed font-light">
+                            <div className="p-3 bg-white/3 rounded-xl border border-white/5 text-vz-accent leading-relaxed font-light">
                               ⚠️ <strong>جاهزية نص ونص:</strong> المنتج زين بس بي شوية مشاكل (مثل ربحه قليل أو متروس بالسوك). حاول ترتب سعرك أو تسوي عرض مميز حتى تتجنب الخسارة.
                             </div>
                           ) : (
@@ -1505,7 +1515,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">📉</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">وين دتطير فلوسك؟</span>
+                    <span className="text-[10px] text-vz-accent font-bold">وين دتطير فلوسك؟</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">كاشف تسرب الأرباح</h3>
                   </div>
                 </div>
@@ -1521,7 +1531,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t9Orders}
                       onChange={(e) => setT9Orders(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -1532,7 +1542,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t9ReturnFee}
                       onChange={(e) => setT9ReturnFee(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1546,11 +1556,11 @@ export default function VizionGrowthSuite() {
                         max="80"
                         value={t9ReturnRate}
                         onChange={(e) => setT9ReturnRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
-                      <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-12 text-left">{t9ReturnRate}%</span>
+                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t9ReturnRate}%</span>
                     </div>
                   </div>
                 </div>
@@ -1577,7 +1587,7 @@ export default function VizionGrowthSuite() {
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                           <span className="text-[10px] text-white/60 block">إجمالي فلوسك اللي تطير بالهوى</span>
-                          <span className="text-sm font-black text-[#F0C040] font-mono">{(totalWastedWithAds).toLocaleString()} دينار</span>
+                          <span className="text-sm font-black text-vz-accent font-mono">{(totalWastedWithAds).toLocaleString()} دينار</span>
                         </div>
                       </div>
 
@@ -1596,7 +1606,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">🎯</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">ابني شغلك خطوة بخطوة</span>
+                    <span className="text-[10px] text-vz-accent font-bold">ابني شغلك خطوة بخطوة</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مخطط شلون توصل لأول 100 طلب</h3>
                   </div>
                 </div>
@@ -1610,7 +1620,7 @@ export default function VizionGrowthSuite() {
                   {[1, 2, 3, 4].map((wk) => (
                     <button                       key={wk}
                       onClick={() => setT10SelectedWeek(wk)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${t10SelectedWeek === wk ? "bg-[#D4A017] text-[#040B24] shadow-md" : "text-white/60 hover:text-white"} min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${t10SelectedWeek === wk ? "bg-vz-blue text-white shadow-md" : "text-white/60 hover:text-white"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       أسبوع {wk}
                     </button>
@@ -1618,7 +1628,7 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1 no-scrollbar">
-                  <span className="text-[11px] font-black text-[#F0C040] block">{currentWeekData.title}:</span>
+                  <span className="text-[11px] font-black text-vz-accent block">{currentWeekData.title}:</span>
                   
                   {currentWeekData.days.map((d) => {
                     const isChecked = t10CheckedDays.includes(d.day);
@@ -1643,7 +1653,7 @@ export default function VizionGrowthSuite() {
                 {/* Progress tracker */}
                 <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 flex justify-between items-center text-xs">
                   <span className="text-white/60 font-light">معدل التقدم بمشروعك:</span>
-                  <strong className="text-[#F0C040] font-mono">{Math.round((t10CheckedDays.length / 30) * 100)}% ({t10CheckedDays.length} / 30 يوم)</strong>
+                  <strong className="text-vz-accent font-mono">{Math.round((t10CheckedDays.length / 30) * 100)}% ({t10CheckedDays.length} / 30 يوم)</strong>
                 </div>
               </div>
             )}
@@ -1654,7 +1664,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">🧠</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">اعرف وين الخلل بـ 5 دقايق</span>
+                    <span className="text-[10px] text-vz-accent font-bold">اعرف وين الخلل بـ 5 دقايق</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">ليش ما دتجيني مبيعات زينة؟</h3>
                   </div>
                 </div>
@@ -1666,7 +1676,7 @@ export default function VizionGrowthSuite() {
                 <div className="grid grid-cols-1 gap-y-5 gap-4 text-xs text-right">
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">١. شكد نسبة النقر عالفيديو مالتك؟</label>
-                    <select value={t11CTR} onChange={(e) => setT11CTR(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
+                    <select value={t11CTR} onChange={(e) => setT11CTR(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                       <option value="low">ضعيفة (أقل من 1% - الزباين يعبرون الفيديو)</option>
                       <option value="medium">متوسطة (1% إلى 2%)</option>
                       <option value="high">قوية (أكثر من 2% - التفاعل عالي)</option>
@@ -1675,7 +1685,7 @@ export default function VizionGrowthSuite() {
 
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">٢. شلون الرسايل اللي تجيك للبيج؟</label>
-                    <select value={t11Messages} onChange={(e) => setT11Messages(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
+                    <select value={t11Messages} onChange={(e) => setT11Messages(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                       <option value="low">قليلة كلش وميتة</option>
                       <option value="high">رسايل هواية ومستمرة يومية</option>
                     </select>
@@ -1683,7 +1693,7 @@ export default function VizionGrowthSuite() {
 
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">٣. شلون سرعتك وطريقتك بالرد عالخاص؟</label>
-                    <select value={t11Speed} onChange={(e) => setT11Speed(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
+                    <select value={t11Speed} onChange={(e) => setT11Speed(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                       <option value="slow">بطيء (أكثر من ساعتين) أو أرد رد جاهز وناشف</option>
                       <option value="fast">سريع جداً (أقل من 15 دقيقة) وبأسلوب حلو وودود</option>
                     </select>
@@ -1691,7 +1701,7 @@ export default function VizionGrowthSuite() {
 
                   <div className="space-y-1.5">
                     <label className="text-white/80 font-bold block">٤. شكد نسبة استلام طلباتك من تطلع توصيل؟</label>
-                    <select value={t11Delivery} onChange={(e) => setT11Delivery(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-[#D4A017] outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]">
+                    <select value={t11Delivery} onChange={(e) => setT11Delivery(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                       <option value="low">تعبانة (أقل من 70% راجع هواية)</option>
                       <option value="high">ممتازة (أكثر من 70% الناس تستلم)</option>
                     </select>
@@ -1700,7 +1710,7 @@ export default function VizionGrowthSuite() {
 
                 <div className="pt-4 w-full">
                   <button                     onClick={() => setT11ShowResult(true)}
-                    className="w-full py-3 bg-[#D4A017] hover:bg-amber-500 text-[#040B24] font-black text-sm py-3.5 rounded-xl transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md cursor-pointer flex justify-center items-center gap-2 min-h-[44px] active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                    className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <span>اعرف المشكلة وعالجها فوراً</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -1709,7 +1719,7 @@ export default function VizionGrowthSuite() {
 
                 {t11ShowResult && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down text-xs">
-                    <h4 className="text-sm font-black text-[#F0C040] border-b border-white/5 pb-2">🩺 تقرير الخلل وين صاير بمشروعك:</h4>
+                    <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">🩺 تقرير الخلل وين صاير بمشروعك:</h4>
 
                     {t11CTR === "low" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
@@ -1719,7 +1729,7 @@ export default function VizionGrowthSuite() {
                     )}
 
                     {t11Messages === "low" && t11CTR !== "low" && (
-                      <div className="p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 space-y-1 text-amber-300">
+                      <div className="p-3 bg-white/3 rounded-xl border border-white/5 space-y-1 text-vz-accent">
                         <strong>🚨 الخلل الثاني: الاستهداف غلط أو الفلوس قليلة</strong>
                         <p className="text-white/70 leading-relaxed font-light">المشكلة مو بالفيديو، المشكلة بفلوس الإعلان قليلة أو دتستهدف غلط بمدير الإعلانات. الحل: شغل حملة رسائل مفتوحة وبدون ما تحدد اهتمامات معقدة وخلي الفيسبوك يدورلك عالزباين.</p>
                       </div>
@@ -1756,7 +1766,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">📈</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">توقع النتائج قبل لا تصرف وتخسر</span>
+                    <span className="text-[10px] text-vz-accent font-bold">توقع النتائج قبل لا تصرف وتخسر</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">متوقع المبيعات والأرباح الإعلانية</h3>
                   </div>
                 </div>
@@ -1772,7 +1782,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t12Budget}
                       onChange={(e) => setT12Budget(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1783,7 +1793,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t12MsgCost}
                       onChange={(e) => setT12MsgCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1797,11 +1807,11 @@ export default function VizionGrowthSuite() {
                         max="30"
                         value={t12ConvRate}
                         onChange={(e) => setT12ConvRate(Number(e.target.value))}
-                        className="w-full accent-[#D4A017] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
-                      <span className="text-xs font-mono font-bold text-[#F0C040] shrink-0 w-10 text-left">{t12ConvRate}%</span>
+                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-10 text-left">{t12ConvRate}%</span>
                     </div>
                   </div>
                 </div>
@@ -1813,7 +1823,7 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-[#F0C040] border-b border-white/5 pb-2">📋 نتائج توقع أرباح الحملة:</h4>
+                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">📋 نتائج توقع أرباح الحملة:</h4>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
@@ -1826,7 +1836,7 @@ export default function VizionGrowthSuite() {
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                           <span className="text-[10px] text-white/60 block">شكد كلفك الطلب من الإعلان</span>
-                          <span className="text-sm font-black text-amber-400 font-mono">{(costPerOrder).toLocaleString()} دينار / طلب</span>
+                          <span className="text-sm font-black text-vz-accent font-mono">{(costPerOrder).toLocaleString()} دينار / طلب</span>
                         </div>
                       </div>
                     </div>
@@ -1841,7 +1851,7 @@ export default function VizionGrowthSuite() {
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <span className="text-3xl">💵</span>
                   <div>
-                    <span className="text-[10px] text-[#F0C040] font-bold">لا تصرف فلوسك مخربط</span>
+                    <span className="text-[10px] text-vz-accent font-bold">لا تصرف فلوسك مخربط</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مخطط ميزانية الإعلان والفلوس</h3>
                   </div>
                 </div>
@@ -1857,7 +1867,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t13TargetProfit}
                       onChange={(e) => setT13TargetProfit(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1868,7 +1878,7 @@ export default function VizionGrowthSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                       value={t13ProfitMargin}
                       onChange={(e) => setT13ProfitMargin(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-[#D4A017] outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
 </div>
@@ -1881,7 +1891,7 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-[#F0C040] border-b border-white/5 pb-2">📋 الخطة المالية المقترحة لهدفك:</h4>
+                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">📋 الخطة المالية المقترحة لهدفك:</h4>
                       
                       <div className="grid grid-cols-1 gap-y-5 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
@@ -1892,7 +1902,7 @@ export default function VizionGrowthSuite() {
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                           <span className="text-[10px] text-white/60 block">ميزانية الإعلان التقريبية اللي تحتاجها</span>
-                          <span className="text-sm font-black text-[#F0C040] font-mono">
+                          <span className="text-sm font-black text-vz-accent font-mono">
                             {estimatedBudgetRequired > 0 && estimatedBudgetRequired < 1000000000 ? (estimatedBudgetRequired).toLocaleString() : 0} دينار
                           </span>
                         </div>

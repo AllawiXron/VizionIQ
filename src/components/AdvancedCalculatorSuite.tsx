@@ -96,12 +96,12 @@ export default function AdvancedCalculatorSuite() {
   const monthlySavingsIQD = savedReturnsCount * (returnRateInputs.returnShippingFeeIQD + returnRateInputs.itemSellingPriceIQD * 0.15); // Saved shipping + unrecoverable repackaging
 
   return (
-    <div className="vizion-calculator-suite bg-[#0A122E] border border-[#D4A017]/30 rounded-[2.5rem] p-6 md:p-10 shadow-2xl space-y-8 text-right">
+    <div className="vizion-calculator-suite glass-subtle border rounded-4xl p-6 md:p-10 space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex justify-center items-center gap-2 w-full py-1 rounded-full bg-[#D4A017]/10 border border-[#D4A017]/30 text-[#F0C040] text-sm py-3.5 font-bold mb-2">
+          <div className="inline-flex justify-center items-center gap-2 w-full py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-sm py-3.5 font-bold mb-2">
             <Calculator className="w-3.5 h-3.5" />
             <span>منظومة الحسابات المالية المتقدمة • 9 حواسب متفاعلة</span>
           </div>
@@ -129,7 +129,7 @@ export default function AdvancedCalculatorSuite() {
           return (
             <button               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ isActive ? "bg-[#D4A017] text-[#040B24] border-[#D4A017] shadow-lg md:shadow-[#D4A017] shadow-xl/20 font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]`}
+              className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ isActive ? "bg-vz-blue text-white border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
             >
               <Icon className="w-4 h-4" />
               <span>{tab.label}</span>
@@ -140,11 +140,11 @@ export default function AdvancedCalculatorSuite() {
 
       {/* TAB CONTENT: 1. ROAS & NET PROFIT CALCULATOR */}
       {activeTab === "roas" && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-[fadeIn_0.3s_ease-out]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-fade-in">
           
           {/* Controls Inputs */}
           <div className="lg:col-span-7 order-2 lg:order-1 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
-            <h4 className="text-lg font-bold text-[#F0C040] flex items-center gap-2">
+            <h4 className="text-lg font-bold text-vz-accent flex items-center gap-2">
               <Calculator className="w-5 h-5" />
               <span>مدخلات الحملة والتكاليف بالدينار والـ $</span>
             </h4>
@@ -156,7 +156,7 @@ export default function AdvancedCalculatorSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={roasInputs.budgetUSD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, budgetUSD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">$</span>
 </div>
@@ -169,7 +169,7 @@ export default function AdvancedCalculatorSuite() {
                   step="0.1"
                   value={roasInputs.ctr}
                   onChange={(e) => setRoasInputs({ ...roasInputs, ctr: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
@@ -181,7 +181,7 @@ export default function AdvancedCalculatorSuite() {
                   step="500"
                   value={roasInputs.productCostIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, productCostIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
 
@@ -191,7 +191,7 @@ export default function AdvancedCalculatorSuite() {
                   step="1000"
                   value={roasInputs.sellingPriceIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, sellingPriceIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
 
@@ -201,7 +201,7 @@ export default function AdvancedCalculatorSuite() {
                   step="500"
                   value={roasInputs.shippingCostIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, shippingCostIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
 
@@ -211,7 +211,7 @@ export default function AdvancedCalculatorSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={roasInputs.deliveryRatePct}
                   onChange={(e) => setRoasInputs({ ...roasInputs, deliveryRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
@@ -220,22 +220,22 @@ export default function AdvancedCalculatorSuite() {
           </div>
 
           {/* Dynamic Results Display */}
-          <div className="lg:col-span-5 order-1 lg:order-2 sticky top-4 bg-gradient-to-b from-[#0F1A42] to-[#040B24] border border-[#D4A017]/40 rounded-3xl p-6 space-y-6 shadow-xl">
-            <h4 className="text-[#F0C040] font-black text-sm uppercase tracking-wider border-b border-white/10 pb-3">
+          <div className="lg:col-span-5 order-1 lg:order-2 sticky top-4 glass border rounded-3xl p-6 space-y-6">
+            <h4 className="text-vz-accent font-black text-sm uppercase tracking-wider border-b border-white/10 pb-3">
               نتائج الرياضيات الصافية اليومية
             </h4>
 
             <div className="grid grid-cols-1 gap-y-5 gap-4">
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
                 <span className="text-[10px] text-white/60 block font-bold">العائد الإعلاني ROAS</span>
-                <span className={`text-3xl font-mono font-black ${Number(roasVal) >= 3 ? "text-emerald-400" : Number(roasVal) >= 2 ? "text-amber-400" : "text-red-400"}`}>
+                <span className={`text-3xl font-mono font-black ${Number(roasVal) >= 3 ? "text-emerald-400" : Number(roasVal) >= 2 ? "text-vz-accent" : "text-red-400"}`}>
                   {roasVal}x
                 </span>
               </div>
 
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
                 <span className="text-[10px] text-white/60 block font-bold">كلفة الطلب CPA</span>
-                <span className="text-3xl font-mono font-black text-[#F0C040]">
+                <span className="text-3xl font-mono font-black text-vz-accent">
                   ${cpaUSD}
                 </span>
               </div>
@@ -277,8 +277,8 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 2. LTV CALCULATOR */}
       {activeTab === "ltv" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+          <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent">
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
@@ -288,15 +288,15 @@ export default function AdvancedCalculatorSuite() {
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Crown className="w-4 h-4 text-[#040B24]" />
+              <Crown className="w-4 h-4 text-white" />
               <span>فتح حاسبة LTV وجميع الأدوات الآن ⚡</span>
             </button>
           </div>
         ) : (
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
-          <h4 className="text-xl font-bold text-[#F0C040]">حاسبة القيمة العمرية للعميل (Customer Lifetime Value - LTV)</h4>
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
+          <h4 className="text-xl font-bold text-vz-accent">حاسبة القيمة العمرية للعميل (Customer Lifetime Value - LTV)</h4>
           <p className="text-xs md:text-sm text-white/70">
             احسب كم القيمة المالية الإجمالية التي يدفعها لك الزبون العراقي على مدار علاقتهم ببراندك عند نجاح تطبيق استراتيجية إعادة الشراء.
           </p>
@@ -310,7 +310,7 @@ export default function AdvancedCalculatorSuite() {
                   step="1000"
                   value={ltvInputs.aovIQD}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, aovIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -322,7 +322,7 @@ export default function AdvancedCalculatorSuite() {
                   step="0.1"
                   value={ltvInputs.purchaseFreqPerYear}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, purchaseFreqPerYear: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
 
@@ -331,18 +331,18 @@ export default function AdvancedCalculatorSuite() {
                 <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={ltvInputs.lifespanYears}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, lifespanYears: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#0F1A42] to-[#040B24] border border-[#D4A017]/40 rounded-3xl p-6 flex flex-col justify-between text-center space-y-4">
+            <div className="glass border rounded-3xl p-6 flex flex-col justify-between text-center space-y-4">
               <span className="text-xs text-white/60 font-bold uppercase tracking-wider">القيمة العمرية الصافية LTV</span>
               <span className="text-4xl md:text-5xl font-mono font-black text-emerald-400 drop-shadow-md">
                 {ltvValueIQD.toLocaleString()} <span className="text-base text-white/70">د.ع</span>
               </span>
               <p className="text-xs text-white/70 leading-relaxed">
-                معنى هذا الرقم: تكدر صرف حتى <span className="text-[#F0C040] font-bold">{(ltvValueIQD * 0.25).toLocaleString()} د.ع</span> للاستحواذ على هذا الزبون المرة الأولى، وستظل مربحاً جداً بفضل إعادة الشراء!
+                معنى هذا الرقم: تكدر صرف حتى <span className="text-vz-accent font-bold">{(ltvValueIQD * 0.25).toLocaleString()} د.ع</span> للاستحواذ على هذا الزبون المرة الأولى، وستظل مربحاً جداً بفضل إعادة الشراء!
               </p>
             </div>
           </div>
@@ -353,8 +353,8 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 3. SCALING SIMULATOR */}
       {activeTab === "scaling" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+          <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent">
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
@@ -364,15 +364,15 @@ export default function AdvancedCalculatorSuite() {
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Crown className="w-4 h-4 text-[#040B24]" />
+              <Crown className="w-4 h-4 text-white" />
               <span>ترقية الحساب وفتح محاكي التوسع الآن ⚡</span>
             </button>
           </div>
         ) : (
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
-          <h4 className="text-xl font-bold text-[#F0C040]">محاكي ومحسّن التوسع الإعلاني (Scaling Simulator)</h4>
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
+          <h4 className="text-xl font-bold text-vz-accent">محاكي ومحسّن التوسع الإعلاني (Scaling Simulator)</h4>
           <p className="text-xs md:text-sm text-white/70">
             "ماذا يحدث لأرباحي الصافية إذا قمت بمضاعفة صرف الإعلانات بنسبة {scalePct}%؟"
           </p>
@@ -389,7 +389,7 @@ export default function AdvancedCalculatorSuite() {
               step="10"
               value={scalePct}
               onChange={(e) => setScalePct(Number(e.target.value))}
-              className="w-full accent-[#D4A017] cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="w-full accent-slate-200 cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -416,8 +416,8 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 4. BREAK-EVEN CALCULATOR */}
       {activeTab === "breakeven" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+          <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent">
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
@@ -427,15 +427,15 @@ export default function AdvancedCalculatorSuite() {
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Crown className="w-4 h-4 text-[#040B24]" />
+              <Crown className="w-4 h-4 text-white" />
               <span>ترقية الحساب وفتح الآلة الحاسبة ⚡</span>
             </button>
           </div>
         ) : (
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
-          <h4 className="text-xl font-bold text-[#F0C040]">حاسبة نقطة التعادل الشهرية (Break-Even Orders)</h4>
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
+          <h4 className="text-xl font-bold text-vz-accent">حاسبة نقطة التعادل الشهرية (Break-Even Orders)</h4>
           <p className="text-xs md:text-sm text-white/70">
             كم عدد الطلبات الواجب بيعها وتسليمها شهرياً لتغطي كافة التكاليف الثابتة (رواتب، إيجار، اشتراكات، إعلانات) وتصل لـ 0$ خسارة؟
           </p>
@@ -449,7 +449,7 @@ export default function AdvancedCalculatorSuite() {
                   step="50000"
                   value={breakEvenInputs.fixedCostsIQD}
                   onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, fixedCostsIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -461,14 +461,14 @@ export default function AdvancedCalculatorSuite() {
                   step="1000"
                   value={breakEvenInputs.unitContributionMarginIQD}
                   onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, unitContributionMarginIQD: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#0F1A42] to-[#040B24] border border-[#D4A017]/40 rounded-3xl p-6 text-center flex flex-col justify-center space-y-3">
+            <div className="glass border rounded-3xl p-6 text-center flex flex-col justify-center space-y-3">
               <span className="text-xs text-white/60 font-bold uppercase">عدد الطلبات المطلوبة لنقطة التعادل</span>
-              <span className="text-5xl font-mono font-black text-[#F0C040]">{breakEvenOrdersRequired} <span className="text-base text-white/60">طلب/شهرياً</span></span>
+              <span className="text-5xl font-mono font-black text-vz-accent">{breakEvenOrdersRequired} <span className="text-base text-white/60">طلب/شهرياً</span></span>
               <span className="text-xs text-white/70">أي بمعدل حوالي {Math.ceil(breakEvenOrdersRequired / 30)} طلبات يومياً.</span>
             </div>
           </div>
@@ -479,8 +479,8 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 5. MARGIN OPTIMIZER (50/30/20) */}
       {activeTab === "margin" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+          <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent">
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
@@ -490,15 +490,15 @@ export default function AdvancedCalculatorSuite() {
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Crown className="w-4 h-4 text-[#040B24]" />
+              <Crown className="w-4 h-4 text-white" />
               <span>ترقية الحساب والوصول الفوري ⚡</span>
             </button>
           </div>
         ) : (
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
-          <h4 className="text-xl font-bold text-[#F0C040]">مطور ومحسّن الهوامش المالية (قاعدة 50/30/20)</h4>
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
+          <h4 className="text-xl font-bold text-vz-accent">مطور ومحسّن الهوامش المالية (قاعدة 50/30/20)</h4>
           <p className="text-xs md:text-sm text-white/70">
             أدخل سعر البيع المستهدف لترى كيف يجب توزيع الميزانية بين كلفة المنتج والتوصيل والإعلانات والصافي.
           </p>
@@ -509,18 +509,18 @@ export default function AdvancedCalculatorSuite() {
               step="1000"
               value={marginSellingPrice}
               onChange={(e) => setMarginSellingPrice(Number(e.target.value))}
-              className="w-full max-w-xs bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="w-full max-w-xs bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             />
           </div>
 
           <div className="grid grid-cols-1 gap-y-5 gap-4 pt-2">
-            <div className="bg-blue-950/40 border border-blue-500/30 p-5 rounded-2xl text-center">
-              <span className="text-xs font-bold text-blue-300 block mb-1">50% كلفة الشراء والتغليف والتوصيل</span>
+            <div className="bg-slate-900/40 border border-white/14 p-5 rounded-2xl text-center">
+              <span className="text-xs font-bold text-slate-200 block mb-1">50% كلفة الشراء والتغليف والتوصيل</span>
               <span className="text-2xl font-mono font-black text-white">{targetCogs.toLocaleString()} د.ع</span>
             </div>
 
-            <div className="bg-amber-950/40 border border-amber-500/30 p-5 rounded-2xl text-center">
-              <span className="text-xs font-bold text-amber-300 block mb-1">30% حد الأقصى لكلفة الإعلان (CPA)</span>
+            <div className="bg-slate-900/40 border border-white/14 p-5 rounded-2xl text-center">
+              <span className="text-xs font-bold text-vz-accent block mb-1">30% حد الأقصى لكلفة الإعلان (CPA)</span>
               <span className="text-2xl font-mono font-black text-white">{targetAds.toLocaleString()} د.ع</span>
             </div>
 
@@ -536,8 +536,8 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 6. RETURN RATE IMPACT */}
       {activeTab === "returns" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0F1735] to-[#040B24] border border-[#D4A017]/40 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4A017]/20 border border-[#D4A017]/40 flex items-center justify-center text-[#F0C040]">
+          <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent">
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
@@ -547,15 +547,15 @@ export default function AdvancedCalculatorSuite() {
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#D4A017] via-amber-500 to-amber-600 text-[#040B24] font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+              className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Crown className="w-4 h-4 text-[#040B24]" />
+              <Crown className="w-4 h-4 text-white" />
               <span>ترقية الحساب وفتح الحسبة الآن ⚡</span>
             </button>
           </div>
         ) : (
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-[fadeIn_0.3s_ease-out]">
-          <h4 className="text-xl font-bold text-[#F0C040]">حاسبة أثر خفض المرتجع على الأرباح الصافية</h4>
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
+          <h4 className="text-xl font-bold text-vz-accent">حاسبة أثر خفض المرتجع على الأرباح الصافية</h4>
           <p className="text-xs md:text-sm text-white/70">
             اكتشف كم من الأموال المهدورة تكدر استعادتها فوراً عند تطبيق تكتيكات المكالمة الذهبية وتقليص المرتجع.
           </p>
@@ -568,7 +568,7 @@ export default function AdvancedCalculatorSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.monthlyOrders}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, monthlyOrders: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
@@ -579,7 +579,7 @@ export default function AdvancedCalculatorSuite() {
                 <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.currentReturnRatePct}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, currentReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
 
@@ -588,18 +588,18 @@ export default function AdvancedCalculatorSuite() {
                 <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.targetReturnRatePct}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, targetReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#040B24] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0C040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#040B24]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-emerald-950/60 to-[#040B24] border border-emerald-500/40 rounded-3xl p-6 text-center flex flex-col justify-center space-y-4">
+            <div className="bg-gradient-to-br from-emerald-950/60 to-[#040e33] border border-emerald-500/40 rounded-3xl p-6 text-center flex flex-col justify-center space-y-4">
               <span className="text-xs text-emerald-300 font-bold uppercase">الأرباح المكتسبة والأموال الموفرة شهرياً</span>
               <span className="text-4xl md:text-5xl font-mono font-black text-emerald-400">
                 {monthlySavingsIQD.toLocaleString()} <span className="text-base text-white/70">د.ع</span>
               </span>
               <p className="text-xs text-white/70">
-                تقليص المرتجع يمنع ضياع <span className="text-[#F0C040] font-bold">{savedReturnsCount} توصيلات</span> مهدورة شهرياً ويعيدها لأرباحك المباشرة!
+                تقليص المرتجع يمنع ضياع <span className="text-vz-accent font-bold">{savedReturnsCount} توصيلات</span> مهدورة شهرياً ويعيدها لأرباحك المباشرة!
               </p>
             </div>
           </div>
