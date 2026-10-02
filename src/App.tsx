@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUp, BookOpen, Settings, LogOut, ShieldAlert, Sparkles, Star, Smartphone, ShieldCheck, Heart, ArrowRight, Bot } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { Reveal, RevealGroup, RevealItem, Magnetic } from "./components/ui/Motion";
+import { Reveal, RevealGroup, RevealItem, Magnetic, ChipPill, WordsReveal, ScrollWords, ScrollZoom, CountUp } from "./components/ui/Motion";
 import { EASE_OUT, SPRING, SPRING_SNAPPY } from "./lib/motion";
 import { chaptersList } from "./data/chaptersData";
 
@@ -241,6 +241,15 @@ export default function App() {
     { title: "خلّيك أوضح من منافسيك", desc: "تعلم شلون ترتب عرضك ومحتواك حتى يفهم الزبون قيمة منتجك ويختارك بثقة.", icon: "🚀" }
   ];
 
+  // iOS-style depth: while a sheet is open, the page behind it recedes slightly.
+  // Desktop/tablet only (phones show most sheets full-screen anyway).
+  const isSheetOpen = isAdvisorOpen || isUpgradeModalOpen || isWelcomeModalOpen || isAdminOpen;
+  const [stageOrigin, setStageOrigin] = useState("50% 50%");
+  const [stageEnabled] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches);
+  useEffect(() => {
+    if (isSheetOpen) setStageOrigin(`50% ${Math.round(window.scrollY + window.innerHeight / 2)}px`);
+  }, [isSheetOpen]);
+
   const sectionFallback = (label: string) => (
     <div className="py-20 flex items-center justify-center">
       <div className="glass-subtle rounded-full px-5 py-2.5 text-xs text-white/55 flex items-center gap-2.5">
@@ -256,7 +265,7 @@ export default function App() {
       <div className="vz-atmosphere" aria-hidden="true" />
 
       {/* PAGE TRANSITION: lock screen ⇄ app — the old view softens away, the new one rises in */}
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait">
         {!isLoggedIn ? (
           <motion.div
             key="lock"
@@ -289,6 +298,14 @@ export default function App() {
         isMoreOpen={isMobileMoreOpen}
       />
 
+      {/* PAGE STAGE — hero, sections and footer recede together behind sheets */}
+      <motion.div
+        className="vz-stage"
+        style={{ transformOrigin: stageOrigin }}
+        animate={stageEnabled && isSheetOpen ? { scale: 0.955, opacity: 0.55 } : { scale: 1, opacity: 1 }}
+        transition={isSheetOpen ? { type: "spring", stiffness: 260, damping: 30, mass: 1 } : { type: "spring", stiffness: 300, damping: 28, mass: 0.9 }}
+      >
+
       {/* HERO SECTION */}
       <Hero 
         onOpenAdvisor={() => setIsAdvisorOpen(true)}
@@ -307,22 +324,26 @@ export default function App() {
           <div id="chapters-grid-section" className="scroll-mt-20" />
 
           {/* Header Title */}
-          <Reveal className="text-center space-y-4 sm:space-y-6 mb-12 sm:mb-20 relative z-10 px-1">
-            <div className="vz-eyebrow text-xs md:text-sm">
-              <BookOpen className="w-4 h-4 opacity-80" />
-              <span>فهرس خطوات الدليل</span>
-            </div>
+          <div className="text-center space-y-4 sm:space-y-6 mb-12 sm:mb-20 relative z-10 px-1">
+            <Reveal className="flex justify-center" y={12} scale={0.94}>
+              <div className="vz-eyebrow text-xs md:text-sm">
+                <BookOpen className="w-4 h-4 opacity-80" />
+                <span>فهرس خطوات الدليل</span>
+              </div>
+            </Reveal>
             
-            <h2 className="text-[1.65rem] sm:text-4xl md:text-6xl font-black text-white tracking-tight leading-tight">
-              مسارك المباشر <span className="vz-silver-text">لتكبير مبيعاتك وأرباحك الصافية</span>
-            </h2>
-            <p className="text-sm sm:text-base md:text-xl text-white/55 max-w-2xl mx-auto font-light leading-relaxed">
-              11 فصل عملي ومباشر، يعلمك أصول السوق والتسويق والتوصيل بالعراق خطوة بخطوة حتى تضمن نتائج ممتازة بمشروعك.
-            </p>
-          </Reveal>
+            <WordsReveal
+              className="text-[1.65rem] sm:text-4xl md:text-6xl font-black text-white tracking-tight leading-tight"
+              segments={["مسارك المباشر ", { text: "لتكبير مبيعاتك وأرباحك الصافية", className: "vz-silver-text" }]}
+            />
+            <ScrollWords
+              className="text-base sm:text-xl md:text-3xl text-white font-bold max-w-3xl mx-auto leading-relaxed"
+              text="11 فصل عملي ومباشر، يعلمك أصول السوق والتسويق والتوصيل بالعراق خطوة بخطوة حتى تضمن نتائج ممتازة بمشروعك."
+            />
+          </div>
 
           {/* Tangible Outcomes Highlight Card — elevated glass */}
-          <Reveal className="mb-12 sm:mb-24 max-w-5xl mx-auto relative z-10" y={32} scale={0.96}>
+          <ScrollZoom className="mb-12 sm:mb-24 max-w-5xl mx-auto relative z-10 origin-top" from={0.88}>
             <div className="relative glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-4 sm:p-8 md:p-14 text-right overflow-hidden">
               <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[80%] h-64 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08),transparent_70%)] pointer-events-none" />
               
@@ -352,7 +373,7 @@ export default function App() {
                 ))}
               </RevealGroup>
             </div>
-          </Reveal>
+          </ScrollZoom>
 
           {/* Chapter Category Filter Bar — segmented chips */}
           <Reveal className="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-2 pb-3 sm:pb-0 mb-10 relative z-10 px-1 -mx-2 sm:mx-0" y={12} scale={1}>
@@ -366,6 +387,7 @@ export default function App() {
                   aria-pressed={isActive}
                   className={`vz-chip shrink-0 text-xs sm:text-sm ${focusRing}`}
                 >
+                  {isActive && <ChipPill layoutId="chapter-filter-pill" />}
                   <span>{tab.icon}</span>
                   <span>{tab.label}</span>
                 </button>
@@ -443,7 +465,7 @@ export default function App() {
           </motion.div>
         </section>
 
-        <div className="vz-hairline" aria-hidden="true" />
+        <div data-reveal className="vz-hairline" aria-hidden="true" />
 
         {/* VIZION OS INTEGRATED SOFTWARE SUITE */}
         <section
@@ -453,7 +475,7 @@ export default function App() {
           <React.Suspense fallback={sectionFallback("جاري تحميل صندوق الأدوات...")}><VizionGrowthSuite /></React.Suspense>
         </section>
 
-        <div className="vz-hairline" aria-hidden="true" />
+        <div data-reveal className="vz-hairline" aria-hidden="true" />
 
         {/* ELITE SECRETS SECTION */}
         <section
@@ -492,7 +514,7 @@ export default function App() {
 
       {/* FOOTER SECTION */}
       <footer className="relative mt-16 sm:mt-28 pb-[calc(env(safe-area-inset-bottom,0px)+6rem)] lg:pb-12 safe-area-bottom overflow-hidden">
-        <div className="vz-hairline" aria-hidden="true" />
+        <div data-reveal className="vz-hairline" aria-hidden="true" />
         <div aria-hidden="true" className="absolute -top-40 left-1/2 -translate-x-1/2 w-[70%] h-80 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.05),transparent_70%)] pointer-events-none" />
         
         <Reveal className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20" y={16} scale={1}>
@@ -542,6 +564,7 @@ export default function App() {
 
         </Reveal>
       </footer>
+      </motion.div>
 
       {/* ADMIN CONTROL MODAL PANEL */}
       <React.Suspense fallback={null}><AdminPanel

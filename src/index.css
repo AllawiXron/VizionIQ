@@ -88,7 +88,10 @@
 
   /* Motion tokens */
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.28, 0.64, 1); /* gentle overshoot */
+  --ease-spring: cubic-bezier(0.34, 1.28, 0.64, 1); /* fallback: gentle overshoot */
+  --ease-spring-snappy: cubic-bezier(0.22, 1.12, 0.36, 1);
+  --dur-spring: 480ms;
+  --dur-spring-snappy: 420ms;
   --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-press: 140ms;
   --dur-fast: 220ms;
@@ -117,6 +120,18 @@
   --fluid-paragraph-margin: clamp(0.625rem, 0.45rem + 0.8vw, 1.5rem);/* Fluid paragraph margin */
   --fluid-heading-margin: clamp(0.75rem, 0.5rem + 1vw, 1.75rem);
   --fluid-section-gap: clamp(1rem, 0.75rem + 1.5vw, 2.5rem);
+}
+
+/* Real spring physics for CSS transitions where the browser supports linear():
+   the curves below are sampled from damped-spring equations (ζ≈0.42 / ζ≈0.62),
+   so hovers, presses and releases overshoot and settle like physical objects. */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-spring: linear(0, 0.0532, 0.1893, 0.3736, 0.5753, 0.7695, 0.9385, 1.0713, 1.1636, 1.2162, 1.2336, 1.2229, 1.1923, 1.1498, 1.1027, 1.057, 1.017, 0.9853, 0.963, 0.9501, 0.9455, 0.9476, 0.9544, 0.9642, 0.9752, 0.9859, 0.9954, 1.003, 1.0083, 1.0115, 1.0127, 1.0123, 1.0108, 1.0085, 1.006, 1.0035, 1.0012, 0.9994, 0.9981, 0.9973, 0.997, 0.9971, 0.9974, 0.998, 1);
+    --ease-spring-snappy: linear(0, 0.024, 0.0868, 0.1758, 0.2805, 0.3922, 0.5041, 0.6109, 0.709, 0.7961, 0.871, 0.9332, 0.983, 1.0212, 1.049, 1.0676, 1.0785, 1.0831, 1.0828, 1.0787, 1.0721, 1.0638, 1.0546, 1.0452, 1.0361, 1.0276, 1.0199, 1.0132, 1.0076, 1.003, 0.9994, 0.9968, 0.9949, 0.9937, 0.9932, 0.993, 0.9933, 0.9937, 0.9944, 0.9951, 0.9959, 0.9967, 0.9974, 0.9981, 1);
+    --dur-spring: 760ms;
+    --dur-spring-snappy: 520ms;
+  }
 }
 
 /* Fluid Typography Classes for Chapter Prose and Content */
@@ -284,12 +299,31 @@ p {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12) 20%, rgba(255, 255, 255, 0.12) 80%, transparent);
 }
 
-/* Silver text: the monochrome replacement for the old gold gradients */
+/* Silver text: the monochrome replacement for the old gold gradients.
+   Two layers — a light band (parked off to the right) over the silver
+   gradient — so .vz-shine can sweep a single glint across it. */
 .vz-silver-text {
-  background: linear-gradient(180deg, #ffffff 0%, #e4e4e9 45%, #9a9aa3 100%);
+  background-image:
+    linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%),
+    linear-gradient(180deg, #ffffff 0%, #e4e4e9 45%, #9a9aa3 100%);
+  background-size: 250% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-position: -10% 0, 0 0;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.vz-shine {
+  animation: vz-shine 1.5s var(--ease-in-out-soft) var(--shine-delay, 0.6s) 1 both;
+}
+@keyframes vz-shine {
+  from { background-position: -10% 0, 0 0; }
+  to { background-position: 110% 0, 0 0; }
+}
+
+/* Page "stage": recedes behind sheets the way iOS pushes content back. */
+.vz-stage {
+  transform-origin: 50% 50%;
 }
 
 /* ==========================================================================
@@ -377,7 +411,7 @@ p {
   .glass-interactive {
     isolation: isolate;
     transition:
-      transform var(--dur-slow) var(--ease-out-expo),
+      transform var(--dur-spring-snappy) var(--ease-spring-snappy),
       box-shadow var(--dur-slow) var(--ease-out-expo),
       border-color var(--dur-base) var(--ease-out-expo),
       background-color var(--dur-base) var(--ease-out-expo);
@@ -396,7 +430,7 @@ p {
 
   @media (hover: hover) and (pointer: fine) {
     .glass-interactive:hover {
-      transform: perspective(1100px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)) translate3d(0, -4px, 0);
+      transform: perspective(1100px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)) translate3d(0, -6px, 0);
       border-color: rgba(255, 255, 255, 0.16);
       box-shadow:
         inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
@@ -437,7 +471,7 @@ p {
     isolation: isolate;
     -webkit-tap-highlight-color: transparent;
     transition:
-      transform 480ms var(--ease-spring),
+      transform var(--dur-spring) var(--ease-spring),
       box-shadow var(--dur-base) var(--ease-out-expo),
       background-color var(--dur-base) var(--ease-out-expo),
       border-color var(--dur-base) var(--ease-out-expo),
@@ -561,7 +595,7 @@ p {
     cursor: pointer;
     white-space: nowrap;
     transition:
-      transform 420ms var(--ease-spring),
+      transform var(--dur-spring) var(--ease-spring),
       background-color var(--dur-base) var(--ease-out-expo),
       border-color var(--dur-base) var(--ease-out-expo),
       color var(--dur-fast) var(--ease-out-expo),
@@ -578,10 +612,26 @@ p {
     transform: scale(0.96);
     transition-duration: var(--dur-press);
   }
+  .vz-chip {
+    position: relative;
+    isolation: isolate;
+  }
+  .vz-chip > :not(.vz-chip-pill) {
+    position: relative;
+    z-index: 1;
+  }
+  /* The white selection is a separate pill (ChipPill) that slides between chips. */
   .vz-chip[data-active="true"] {
     color: #0a0a0b;
+    background: transparent;
+    border-color: transparent;
+  }
+  .vz-chip-pill {
+    position: absolute;
+    inset: -1px;
+    z-index: 0;
+    border-radius: inherit;
     background: linear-gradient(180deg, #ffffff, #e9e9ee);
-    border-color: rgba(255, 255, 255, 0.9);
     box-shadow: inset 0 1px 0 #fff, 0 6px 20px -8px rgba(255, 255, 255, 0.3);
   }
 
@@ -599,7 +649,7 @@ p {
     border: 1px solid rgba(255, 255, 255, 0.08);
     cursor: pointer;
     transition:
-      transform 420ms var(--ease-spring),
+      transform var(--dur-spring) var(--ease-spring),
       background-color var(--dur-base) var(--ease-out-expo),
       color var(--dur-fast) var(--ease-out-expo);
   }
@@ -676,6 +726,16 @@ p {
 [data-reveal-delay="5"] { transition-delay: 0.35s !important; }
 [data-reveal-delay="6"] { transition-delay: 0.42s !important; }
 
+/* Hairlines draw outward from the centre instead of fading. */
+.reveal-ready .vz-hairline[data-reveal]:not(.is-revealed) {
+  transform: scaleX(0);
+  filter: none;
+  opacity: 0;
+}
+.reveal-ready .vz-hairline[data-reveal] {
+  transition: transform 1.3s var(--ease-out-expo), opacity 0.6s var(--ease-out-expo);
+}
+
 @media (max-width: 767px) {
   .reveal-ready [data-reveal]:not(.is-revealed) {
     filter: none;
@@ -749,7 +809,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   background: linear-gradient(180deg, #ffffff, #e6e6eb);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(0, 0, 0, 0.2);
-  transition: transform 420ms var(--ease-spring);
+  transition: transform var(--dur-spring) var(--ease-spring);
 }
 input[type="range"]::-moz-range-thumb {
   width: 20px;

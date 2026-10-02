@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { X, Crown, Lock, Sparkles, CheckCircle2, Zap, KeyRound, ShieldAlert, Check } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { collapseMotion, overlayMotion, sheetMotion } from "../lib/motion";
+import { CountUp } from "./ui/Motion";
 import { getAllValidCodes, normalizeCode, isFreeTrialUser } from "./LockScreen";
 
 interface FreeTrialPaywallModalProps {
@@ -114,7 +115,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                       <h4 className="text-base font-black text-white">الاشتراك الاعتيادي</h4>
                     </div>
                     <div className="text-left">
-                      <span className="text-xl font-black text-white font-mono block">29,000</span>
+                      <CountUp value={29000} className="text-xl font-black text-white font-mono block" />
                       <span className="text-[10px] text-zinc-100 font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>
@@ -159,7 +160,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                       <h4 className="text-base font-black text-zinc-100">اشتراك VIP</h4>
                     </div>
                     <div className="text-left">
-                      <span className="text-2xl font-black text-zinc-100 font-mono block">49,000</span>
+                      <CountUp value={49000} className="text-2xl font-black text-white font-mono block" />
                       <span className="text-[10px] text-zinc-100 font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>

@@ -19,7 +19,7 @@ import {
   Compass,
   ArrowDown
 } from "lucide-react";
-import { Magnetic, Reveal, RevealGroup, RevealItem } from "./ui/Motion";
+import { CountUp, Magnetic, Reveal, RevealGroup, RevealItem, WordsReveal } from "./ui/Motion";
 import { EASE_OUT, SPRING, SPRING_SNAPPY, allowBlur, collapseMotion } from "../lib/motion";
 
 interface HeroProps {
@@ -206,19 +206,29 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
 
           {/* Primary Clear Hero Value Proposition */}
           <div className="space-y-4 sm:space-y-6 max-w-4xl relative z-10 px-2 flex flex-col items-center">
-            <motion.h1 {...rise(0.2)} className="text-[1.7rem] sm:text-5xl md:text-6xl lg:text-[4.1rem] font-black text-white tracking-tight leading-[1.3] sm:leading-[1.15]">
-              نظام عملي للتاجر العراقي <br className="hidden sm:block" />
-              <span className="vz-silver-text">
-                حتى يبيع أكثر ويعرف وين تروح فلوسه
-              </span>
-            </motion.h1>
+            <WordsReveal
+              as="h1"
+              trigger="mount"
+              delay={0.18}
+              stagger={0.055}
+              className="text-[1.7rem] sm:text-5xl md:text-6xl lg:text-[4.1rem] font-black text-white tracking-tight leading-[1.3] sm:leading-[1.15]"
+              segments={[
+                "نظام عملي للتاجر العراقي ",
+                { br: "hidden sm:block" },
+                { text: "حتى يبيع أكثر ويعرف وين تروح فلوسه", className: "vz-silver-text" },
+              ]}
+            />
 
-            <motion.p {...rise(0.3)} className="text-sm sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-normal leading-relaxed">
+            <motion.p {...rise(0.55)} className="text-sm sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-normal leading-relaxed">
               شخّص مشكلتك، احسب ربحك الصافي، وخذ خطوة واضحة اليوم — من خلال كورس عملي، 13 أداة وحاسبة بالدينار، ومستشار ذكي للسوق العراقي.
             </motion.p>
 
             {/* Focused Primary & Secondary CTAs (Easy to tap, >= 44px) */}
-            <motion.div {...rise(0.4, { scale: 0.97 })} className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 22, scale: 0.92, filter: blur ? "blur(10px)" : "blur(0px)" }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              transition={{ type: "spring", stiffness: 260, damping: 18, mass: 0.9, delay: 0.65, opacity: { duration: 0.5, delay: 0.65, ease: EASE_OUT }, filter: { duration: 0.5, delay: 0.65, ease: EASE_OUT } }}
+              className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto w-full">
               {/* Primary Action */}
               <Magnetic className="w-full sm:w-auto sm:flex-1" strength={0.2} max={7}>
                 <button
@@ -243,15 +253,17 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
             </motion.div>
 
             {/* First Screen Value Communication Grid (Above the fold - no long scroll required) */}
-            <motion.div {...rise(0.5)} className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-2xl pt-1 sm:pt-2">
+            <motion.div {...rise(0.78)} className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-2xl pt-1 sm:pt-2">
               {[
-                { icon: "📚", title: "11 فصلاً عملياً", sub: "من الفكرة للتسليم", tone: "text-white" },
-                { icon: "🧮", title: "13 أداة وحاسبة", sub: "أرباح بالدينار", tone: "text-white" },
-                { icon: "⚡", title: "تشخيص بـ 3 دقائق", sub: "مستشار ذكي فوري", tone: "text-emerald-300" },
+                { icon: "📚", before: "", num: 11, after: " فصلاً عملياً", sub: "من الفكرة للتسليم", tone: "text-white" },
+                { icon: "🧮", before: "", num: 13, after: " أداة وحاسبة", sub: "أرباح بالدينار", tone: "text-white" },
+                { icon: "⚡", before: "تشخيص بـ ", num: 3, after: " دقائق", sub: "مستشار ذكي فوري", tone: "text-emerald-300" },
               ].map((stat) => (
-                <div key={stat.title} className="p-2.5 sm:p-3.5 rounded-2xl glass-subtle flex flex-col items-center justify-center text-center">
+                <div key={stat.sub} className="p-2.5 sm:p-3.5 rounded-2xl glass-subtle flex flex-col items-center justify-center text-center">
                   <span className="text-sm sm:text-base">{stat.icon}</span>
-                  <span className={`text-xs sm:text-sm font-black mt-0.5 ${stat.tone}`}>{stat.title}</span>
+                  <span className={`text-xs sm:text-sm font-black mt-0.5 ${stat.tone}`}>
+                    {stat.before}<CountUp value={stat.num} />{stat.after}
+                  </span>
                   <span className="text-[10px] text-white/50 hidden xs:inline">{stat.sub}</span>
                 </div>
               ))}
@@ -261,7 +273,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
 
         {/* 3 PRIMARY ENTRY CHOICES (FAST-TRACK 60-SECOND PILLARS) */}
         <div className="w-full pt-2 sm:pt-4 relative z-10">
-          <motion.div {...rise(0.55)} className="text-center mb-4 sm:mb-6">
+          <motion.div {...rise(0.85)} className="text-center mb-4 sm:mb-6">
             <span className="text-xs sm:text-sm font-bold text-white/50 block">
               حدد هدفك الآن للبدء مباشرة:
             </span>
@@ -270,7 +282,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
           <motion.div
             initial="hidden"
             animate="visible"
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.6 } } }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.09, delayChildren: 0.9 } } }}
             className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 text-right"
           >
             {entryChoices.map((choice) => {
@@ -279,10 +291,11 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
                 <motion.div
                   key={choice.id}
                   variants={{
-                    hidden: { opacity: 0, y: 24, scale: 0.96 },
-                    visible: { opacity: 1, y: 0, scale: 1, transition: { ...SPRING, opacity: { duration: 0.5, ease: EASE_OUT } } },
+                    hidden: { opacity: 0, y: 40, scale: 0.92, rotateX: 8 },
+                    visible: { opacity: 1, y: 0, scale: 1, rotateX: 0, transition: { type: "spring", stiffness: 220, damping: 19, mass: 0.9, opacity: { duration: 0.5, ease: EASE_OUT } } },
                   }}
                   className="h-full"
+                  style={{ transformPerspective: 1200 }}
                 >
                   <div
                     onClick={() => handleEntryChoice(choice.id)}

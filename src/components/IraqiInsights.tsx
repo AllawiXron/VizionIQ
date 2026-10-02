@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { overlayMotion, sheetMotion } from "../lib/motion";
+import { ChipPill, CountUp, ScrollZoom, WordsReveal } from "./ui/Motion";
 import FadeInUp from "./FadeInUp";
 import { 
   Search, 
@@ -115,7 +116,8 @@ export default function IraqiInsights() {
   return (
     <div className="space-y-12 md:space-y-16 relative">
       
-      {/* SECTION HEADER BANNER - Sleek Dark Aesthetic with Gold Accents */}
+      {/* SECTION HEADER BANNER — zooms into place as it scrolls in */}
+      <ScrollZoom from={0.9}>
       <div className="relative rounded-3xl sm:rounded-4xl p-5 sm:p-8 md:p-14 glass-elevated glass-edge overflow-hidden group">
         <div className="absolute top-0 right-0 w-[2px] h-full bg-gradient-to-b from-white/45 via-white/10 to-transparent" />
         
@@ -126,9 +128,11 @@ export default function IraqiInsights() {
               <span>حقائق يكتشفها أغلب التجار بعد ما يخسرون</span>
             </span>
             <div>
-              <h3 className="text-xl sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight">
-                دروس وعبَر واقعية <br className="hidden md:block"/> من قلب السوق العراقي اليومي
-              </h3>
+              <WordsReveal
+                as="h3"
+                className="text-xl sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight"
+                segments={["دروس وعبَر واقعية ", { br: "hidden md:block" }, { text: "من قلب السوق العراقي اليومي", className: "vz-silver-text" }]}
+              />
             </div>
             <p className="text-xs sm:text-base text-white/70 font-light leading-relaxed">
               هذه الدروس ليست نظريات كتب تسويقية مترجمة من الغرب، بل هي عصارة مشاهدات وتجارب عملية لملايين الدنانير التي تم صرفها وخسارتها في محافظات العراق لانتزاع أعلى نسب استلام وحماية هوامش الربح الصافية.
@@ -145,6 +149,7 @@ export default function IraqiInsights() {
           </div>
         </div>
       </div>
+      </ScrollZoom>
 
       {/* FILTER & SEARCH BAR */}
       <div className="glass rounded-3xl sm:rounded-4xl p-4 sm:p-6 space-y-4 sm:space-y-6 relative z-10">
@@ -170,7 +175,7 @@ export default function IraqiInsights() {
 
           {/* Quick Counter Display */}
           <span className="text-xs sm:text-sm text-white/55 font-bold glass-subtle px-4 py-2 sm:px-5 sm:py-2.5 rounded-full w-full md:w-auto text-center">
-            حقائق: <span className="text-zinc-100 font-mono font-black text-sm sm:text-lg mx-1">{filteredInsights.length}</span> من أصل <span className="font-mono text-white mx-1">{insightsList.length}</span>
+            حقائق: <CountUp value={filteredInsights.length} className="text-white font-mono font-black text-sm sm:text-lg mx-1 inline-block" /> من أصل <span className="font-mono text-white mx-1">{insightsList.length}</span>
           </span>
         </div>
 
@@ -189,6 +194,7 @@ export default function IraqiInsights() {
                 aria-pressed={isActive}
                 className="vz-chip shrink-0 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
+                {isActive && <ChipPill layoutId="insight-category-pill" />}
                 <span>{cat.label}</span>
                 <span className={`text-[10px] px-1.5 rounded-full font-mono font-black ${isActive ? "bg-black/10 text-[#050506]" : "bg-white/10 text-white/70"}`}>
                   {count}

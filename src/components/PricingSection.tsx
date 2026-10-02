@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Magnetic } from "./ui/Motion";
+import { CountUp, Magnetic, WordsReveal } from "./ui/Motion";
 import { 
   Crown, 
   Sparkles, 
@@ -71,15 +71,11 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             <span>اشتراك مرة وحدة مدى الحياة • وبدون أي اشتراك شهري</span>
           </motion.div>
 
-          <motion.h2 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+          <WordsReveal
+            delay={0.1}
             className="text-xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight px-2"
-          >
-            اختار الباقة اللي تناسب شغلك وانضم للـ <span className="vz-silver-text">1% الأوائل بالسوق</span>
-          </motion.h2>
+            segments={["اختار الباقة اللي تناسب شغلك وانضم للـ ", { text: "1% الأوائل بالسوق", className: "vz-silver-text" }]}
+          />
 
           <motion.p 
             initial={{ opacity: 0, y: 15 }}
@@ -156,7 +152,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </div>
                 
                 <div className="text-left shrink-0">
-                  <div className="text-2xl sm:text-4xl font-black text-white font-mono tracking-tight">29,000</div>
+                  <div className="text-2xl sm:text-4xl font-black text-white font-mono tracking-tight"><CountUp value={29000} /></div>
                   <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full inline-block mt-0.5">مدى الحياة</span>
                 </div>
@@ -249,7 +245,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </div>
 
                 <div className="text-left shrink-0">
-                  <div className="text-2xl sm:text-5xl font-black text-white font-mono tracking-tight">49,000</div>
+                  <div className="text-2xl sm:text-5xl font-black text-white font-mono tracking-tight"><CountUp value={49000} /></div>
                   <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-black bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-full inline-block mt-0.5 shadow-sm">مدى الحياة</span>
                 </div>

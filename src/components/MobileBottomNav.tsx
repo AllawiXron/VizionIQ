@@ -348,10 +348,16 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                     className="absolute inset-0 rounded-[20px] bg-gradient-to-b from-white/[0.14] to-white/[0.05] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]"
                   />
                 )}
-                <span className="relative">
+                <motion.span
+                  className="relative flex"
+                  initial={false}
+                  animate={item.active ? { scale: [1, 1.24, 0.94, 1], y: [0, -3, 0, 0] } : { scale: 1, y: 0 }}
+                  transition={{ duration: 0.55, times: [0, 0.35, 0.7, 1], ease: EASE_OUT }}
+                  whileTap={{ scale: 0.82 }}
+                >
                   <Icon className="w-5 h-5" strokeWidth={item.active ? 2.4 : 2} />
                   {item.accent && <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#1c1c1f]" />}
-                </span>
+                </motion.span>
                 <span className={`relative text-[10px] sm:text-[11px] mt-1 leading-none tracking-tight ${item.active || item.accent ? "font-black" : "font-bold"}`}>
                   {item.label}
                 </span>

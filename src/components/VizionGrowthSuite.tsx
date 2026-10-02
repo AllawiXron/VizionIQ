@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SPRING_SNAPPY, collapseMotion, viewSwapMotion } from "../lib/motion";
+import { ChipPill, WordsReveal } from "./ui/Motion";
 import {
   Sparkles,
   TrendingUp,
@@ -354,17 +355,18 @@ export default function VizionGrowthSuite() {
     <div className="vizion-tools-suite space-y-16 py-12 px-4 max-w-7xl mx-auto relative" id="vizion-growth-suite">
       
       {/* Dynamic Main Header */}
-      <div data-reveal className="vizion-tools-header text-center space-y-6 max-w-4xl mx-auto relative z-10">
-        <div className="vz-eyebrow text-xs md:text-sm">
+      <div className="vizion-tools-header text-center space-y-6 max-w-4xl mx-auto relative z-10">
+        <div data-reveal className="vz-eyebrow text-xs md:text-sm">
           <Sparkles className="w-4 h-4 opacity-80" />
           <span>أدوات فيزيون • لوحة متابعة مشروعك</span>
         </div>
         
-        <h2 className="text-[1.75rem] sm:text-4xl md:text-6xl font-black text-white leading-tight">
-          افهم أرقامك <span className="vz-silver-text">وخلي قراراتك أوضح</span>
-        </h2>
+        <WordsReveal
+          className="text-[1.75rem] sm:text-4xl md:text-6xl font-black text-white leading-tight"
+          segments={["افهم أرقامك ", { text: "وخلي قراراتك أوضح", className: "vz-silver-text" }]}
+        />
         
-        <p className="text-sm sm:text-base md:text-xl text-white/55 leading-relaxed font-light max-w-3xl mx-auto">
+        <p data-reveal data-reveal-delay="3" className="text-sm sm:text-base md:text-xl text-white/55 leading-relaxed font-light max-w-3xl mx-auto">
           هنا تلگى <strong className="text-white font-bold">13 أداة عملية</strong> تساعدك تفحص مشروعك، تحسب كلفتك، وتحسن خطوات البيع والتوصيل بدون تعقيد.
         </p>
 
@@ -412,6 +414,7 @@ export default function VizionGrowthSuite() {
               aria-pressed={isActive}
               className="vz-chip shrink-0 text-xs sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
+              {isActive && <ChipPill layoutId="suite-category-pill" />}
               <span>{cat.icon}</span>
               <span>{cat.label}</span>
               <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-black/10 text-[#050506] font-black' : 'bg-white/10 text-white/60'}`}>
