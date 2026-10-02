@@ -2,10 +2,33 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { parseHash, routeForSection, routeToHash } from "./route";
 import { nextChapterId, stageOf, type CourseProgress } from "./progress";
 import { requestTool, takePendingTool } from "./toolRequest";
+import { chapterPlaybook, playbooksList } from "../data/playbooksData";
+import { chaptersList } from "../data/chaptersData";
+
+describe("playbooks data", () => {
+  it("every playbook is complete and links to real chapters", () => {
+    const chapterIds = new Set(chaptersList.map((c) => c.id));
+    const ids = new Set<string>();
+    for (const pb of playbooksList) {
+      expect(ids.has(pb.id)).toBe(false);
+      ids.add(pb.id);
+      expect(pb.causes.length).toBeGreaterThanOrEqual(4);
+      expect(pb.steps.length).toBeGreaterThanOrEqual(5);
+      expect(pb.scripts.length).toBeGreaterThanOrEqual(2);
+      expect(pb.plan).toHaveLength(7);
+      for (const ch of pb.relatedChapters) expect(chapterIds.has(ch)).toBe(true);
+    }
+  });
+
+  it("every chapter points to an existing playbook", () => {
+    const ids = new Set(playbooksList.map((p) => p.id));
+    for (const ch of chaptersList) expect(ids.has(chapterPlaybook[ch.id])).toBe(true);
+  });
+});
 
 describe("route", () => {
   it("round-trips every screen through the hash", () => {
-    for (const hash of ["#/", "#/chapters", "#/chapter/chapter3", "#/tools", "#/market"]) {
+    for (const hash of ["#/", "#/chapters", "#/chapter/chapter3", "#/solutions", "#/solution/ghosting", "#/tools", "#/market"]) {
       expect(routeToHash(parseHash(hash))).toBe(hash);
     }
   });
@@ -14,6 +37,7 @@ describe("route", () => {
     expect(parseHash("")).toEqual({ view: "home" });
     expect(parseHash("#/nope")).toEqual({ view: "home" });
     expect(parseHash("#/chapter/chapter99")).toEqual({ view: "chapters" });
+    expect(parseHash("#/solution/nope")).toEqual({ view: "solutions" });
   });
 
   it("maps the old single-page section ids to screens", () => {
@@ -22,6 +46,7 @@ describe("route", () => {
     expect(routeForSection("vizion-growth-suite")).toEqual({ view: "tools" });
     expect(routeForSection("elite-secrets-section")).toEqual({ view: "market" });
     expect(routeForSection("contents-section")).toEqual({ view: "chapters" });
+    expect(routeForSection("solution:returns")).toEqual({ view: "solution", id: "returns" });
     expect(routeForSection("something-else")).toBeNull();
   });
 });

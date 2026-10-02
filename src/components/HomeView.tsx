@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { ArrowLeft, BookOpen, Bot, Calculator, CheckCircle2, Crown, Lightbulb } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
+import { playbooksList } from "../data/playbooksData";
 import { EASE_OUT } from "../lib/motion";
 import { nextChapterId, stageOf, useCourseProgress } from "../lib/progress";
 import type { Route } from "../lib/route";
@@ -156,8 +157,42 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
         </div>
       </motion.section>
 
+      {/* Problem → playbook shortcuts */}
+      <motion.section {...rise(0.22)} aria-labelledby="home-solutions" className="space-y-4 sm:space-y-5">
+        <div className="flex items-end justify-between gap-3">
+          <div className="space-y-1">
+            <h2 id="home-solutions" className="text-lg sm:text-2xl font-black text-white">عندك مشكلة هسه؟</h2>
+            <p className="text-xs sm:text-sm text-white/55">حلول كاملة خطوة بخطوة، ويا رسائل جاهزة تنسخها.</p>
+          </div>
+          <button onClick={() => onNavigate({ view: "solutions" })} className={`btn btn-ghost px-3 rounded-full text-xs sm:text-sm gap-1 shrink-0 ${focusRing}`}>
+            كل الحلول
+            <ArrowLeft className="w-3.5 h-3.5" />
+          </button>
+        </div>
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+          {playbooksList.filter((pb) => ["message-cost", "ghosting", "more-sales"].includes(pb.id)).map((pb) => (
+            <li key={pb.id}>
+              <button
+                onClick={() => onNavigate({ view: "solution", id: pb.id })}
+                className={`group w-full h-full text-right glass glass-interactive rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex md:flex-col items-start gap-3.5 cursor-pointer ${focusRing}`}
+              >
+                <span className="text-2xl sm:text-3xl leading-none shrink-0" aria-hidden="true">{pb.icon}</span>
+                <span className="flex-1 min-w-0 space-y-1">
+                  <span className="block text-sm sm:text-base font-black text-white leading-snug">«{pb.problem}»</span>
+                  <span className="hidden md:inline-flex items-center gap-1 pt-2 text-xs font-bold text-white/70 group-hover:text-white transition-colors">
+                    شوف الحل
+                    <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
+                  </span>
+                </span>
+                <ArrowLeft className="md:hidden w-4 h-4 text-white/45 shrink-0 self-center" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </motion.section>
+
       {/* How it works */}
-      <motion.section {...rise(0.25)} aria-labelledby="how-it-works" className="space-y-4 sm:space-y-5">
+      <motion.section {...rise(0.28)} aria-labelledby="how-it-works" className="space-y-4 sm:space-y-5">
         <h2 id="how-it-works" className="text-lg sm:text-2xl font-black text-white">شلون تستفاد من الموقع؟</h2>
         <ol className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           {steps.map((step) => {
@@ -188,7 +223,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
       </motion.section>
 
       {/* Secondary: market lessons + (trial) upgrade */}
-      <motion.div {...rise(0.32)} className={`grid grid-cols-1 gap-3 sm:gap-4 ${isFreeTrialUser(userCode) ? "md:grid-cols-2" : ""}`}>
+      <motion.div {...rise(0.34)} className={`grid grid-cols-1 gap-3 sm:gap-4 ${isFreeTrialUser(userCode) ? "md:grid-cols-2" : ""}`}>
         <button
           onClick={() => onNavigate({ view: "market" })}
           className={`group text-right glass-subtle glass-interactive rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex items-center gap-4 cursor-pointer ${focusRing}`}

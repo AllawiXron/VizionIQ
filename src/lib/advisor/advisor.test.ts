@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { knowledgeSize, retrieveKnowledge, tokenize, normalizeArabic, chapterCatalog } from "./knowledge";
+import { knowledgeSize, retrieveKnowledge, tokenize, normalizeArabic, chapterCatalog, solutionCatalog } from "./knowledge";
+import { buildSystemInstruction } from "./prompt";
+import { playbooksList } from "../../data/playbooksData";
 import { parseNumber, parseProfileTags, parseSuggestionTags, sanitizeProfile, stripAdvisorTags, describeProfileUpdate } from "./profile";
 import { computeUnitEconomics, parseCalcBlock } from "./calc";
 import { parseRichBlocks } from "./blocks";
@@ -24,6 +26,24 @@ describe("course knowledge retrieval", () => {
   it("finds pricing content for a pricing question", () => {
     const hits = retrieveKnowledge("شلون أسعر منتجي وأحسب الربح الصافي؟");
     expect(hits.map((h) => h.source + h.text).join(" ")).toMatch(/سعر|تسعير|ربح|هامش/);
+  });
+
+  it("brings up the ghosting playbook when customers ask the price and vanish", () => {
+    const hits = retrieveKnowledge("الزباين يسألون بيش السعر وبعدين يختفون وما يردون");
+    expect(hits.some((h) => h.linkId === "solution:ghosting")).toBe(true);
+  });
+
+  it("brings up the message-cost playbook for an expensive-message question", () => {
+    const hits = retrieveKnowledge("تكلفة الرسالة صارت غالية بالإعلان شلون أنزلها؟");
+    expect(hits.some((h) => h.linkId === "solution:message-cost")).toBe(true);
+  });
+
+  it("lists every playbook as a link in the prompt", () => {
+    const prompt = buildSystemInstruction({});
+    for (const pb of playbooksList) {
+      expect(solutionCatalog()).toContain(`[[solution:${pb.id}]]`);
+      expect(prompt).toContain(`[[solution:${pb.id}]]`);
+    }
   });
 
   it("lists every real chapter as a link", () => {

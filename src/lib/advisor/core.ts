@@ -104,7 +104,12 @@ export function buildRequestInstruction(messages: ChatMessagePayload[], options:
   // The last question plus the one before it, so follow-ups ("وضحلي أكثر") still find the topic.
   const query = [userTexts[userTexts.length - 1], userTexts[userTexts.length - 2], options.topicContext].filter(Boolean).join("\n");
   const chunks = retrieveKnowledge(query);
-  const knowledge = chunks.map((c, i) => `【${i + 1}】 ${c.source}${c.chapterId ? ` [[${c.chapterId}]]` : ""}\n${c.text}`).join("\n\n");
+  const knowledge = chunks
+    .map((c, i) => {
+      const link = c.chapterId ?? c.linkId;
+      return `【${i + 1}】 ${c.source}${link ? ` [[${link}]]` : ""}\n${c.text}`;
+    })
+    .join("\n\n");
   let extra = "";
   if (options.diagnosticProfile) extra += `نتائج فحص المشروع: ${JSON.stringify(options.diagnosticProfile).slice(0, 2000)}\n`;
   if (options.userContext) extra += `سياق المستخدم: ${JSON.stringify(options.userContext).slice(0, 500)}`;

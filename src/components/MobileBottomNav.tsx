@@ -12,6 +12,7 @@ import {
   Menu,
   X,
   Lightbulb,
+  LifeBuoy,
   Crown,
   Sparkles,
   LogOut,
@@ -86,8 +87,8 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         onOpenAdvisor();
       }
     },
-    { key: "tools", label: "الأدوات", aria: "الأدوات والحاسبات", icon: Wrench, active: !isMoreSheetOpen && activeView === "tools", onClick: () => go({ view: "tools" }) },
-    { key: "more", label: "المزيد", aria: "المزيد", icon: Menu, active: isMoreSheetOpen || (!isMoreSheetOpen && activeView === "market"), expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
+    { key: "solutions", label: "الحلول", aria: "حلول المشاكل خطوة بخطوة", icon: LifeBuoy, active: !isMoreSheetOpen && (activeView === "solutions" || activeView === "solution"), onClick: () => go({ view: "solutions" }) },
+    { key: "more", label: "المزيد", aria: "المزيد", icon: Menu, active: isMoreSheetOpen || activeView === "tools" || activeView === "market", expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
   ];
 
   // The More sheet grows out of the dock button (or top menu button) like a liquid-glass panel.
@@ -138,6 +139,17 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               </div>
 
               <div className="px-4 pb-2 overflow-y-auto space-y-2 text-right">
+                <button
+                  onClick={() => go({ view: "tools" })}
+                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-right cursor-pointer min-h-[56px] active:scale-[0.98] transition-[transform,background-color] motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                >
+                  <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Wrench className="w-4 h-4 text-white/85" /></span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-sm font-black text-white">الأدوات والحاسبات</span>
+                    <span className="block text-[11px] text-white/55 truncate">13 أداة تحسب أرقامك بالدينار</span>
+                  </span>
+                  <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
+                </button>
                 <button
                   onClick={() => go({ view: "market" })}
                   className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-right cursor-pointer min-h-[56px] active:scale-[0.98] transition-[transform,background-color] motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"

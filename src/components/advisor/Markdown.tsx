@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { BookOpen, Check, Plus, Wrench } from "lucide-react";
+import { BookOpen, Check, LifeBuoy, Plus, Wrench } from "lucide-react";
 import { chaptersList } from "../../data/chaptersData";
+import { playbooksList } from "../../data/playbooksData";
 
 /**
  * Small markdown renderer for advisor answers. Handles exactly what the
  * advisor is told to write: headings, lists, "- [ ]" action items, tables,
- * quotes, bold/italic/code, and [[chapterN]] / [[tool:id]] course links.
+ * quotes, bold/italic/code, and [[chapterN]] / [[tool:id]] / [[solution:id]] course links.
  * No HTML is ever injected — everything renders as React nodes.
  */
 
@@ -62,6 +63,17 @@ function CourseChip({ token, actions }: { key?: React.Key; token: string; action
       <button type="button" onClick={() => actions.onTool?.(toolId, TOOL_CATEGORY[toolId])} className="vz-md-chip">
         <Wrench className="w-3.5 h-3.5" />
         {label}
+      </button>
+    );
+  }
+  if (id.startsWith("solution:")) {
+    const pb = playbooksList.find((p) => p.id === id.slice(9));
+    if (!pb) return null;
+    // Section navigation understands "solution:<id>" and opens the playbook.
+    return (
+      <button type="button" onClick={() => actions.onChapter?.(id)} className="vz-md-chip" title={pb.problem}>
+        <LifeBuoy className="w-3.5 h-3.5" />
+        الحل: {pb.title}
       </button>
     );
   }

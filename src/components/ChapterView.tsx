@@ -15,6 +15,7 @@ import { isFreeTrialUser } from "./LockScreen";
 import { chaptersList, chaptersDetailedMap } from "../data/chaptersData";
 import { caseStudiesList } from "../data/caseStudiesData";
 import { swipeFilesList } from "../data/swipeFilesData";
+import { chapterPlaybook, playbooksList } from "../data/playbooksData";
 import { setChapterDone, setLastChapter, stageOf, useCourseProgress } from "../lib/progress";
 import type { Route } from "../lib/route";
 
@@ -62,6 +63,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   const isFreeTrial = isFreeTrialUser(userCode);
   const progress = useCourseProgress(userCode);
   const isDone = progress.done.includes(id);
+  const playbook = playbooksList.find((p) => p.id === chapterPlaybook[id]);
 
   // Remember where the member stopped so Home can offer "continue".
   useEffect(() => {
@@ -480,8 +482,24 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         </div>
       )}
 
+      {/* Practice: the matching playbook */}
+      {playbook && (
+        <button
+          onClick={() => onNavigate({ view: "solution", id: playbook.id })}
+          className={`group mt-10 sm:mt-14 w-full text-right glass-elevated glass-edge rounded-3xl p-5 sm:p-7 flex items-center gap-4 cursor-pointer ${focusRing}`}
+        >
+          <span className="text-3xl sm:text-4xl leading-none shrink-0" aria-hidden="true">{playbook.icon}</span>
+          <span className="flex-1 min-w-0 space-y-1">
+            <span className="block text-xs sm:text-sm font-bold text-vz-accent">طبّق هذا الفصل على مشروعك</span>
+            <span className="block text-base sm:text-xl font-black text-white leading-snug">{playbook.title}</span>
+            <span className="block text-xs sm:text-sm text-white/55">{playbook.steps.length} خطوات، {playbook.scripts.length} رسائل جاهزة، وخطة 7 أيام</span>
+          </span>
+          <ArrowLeft className="w-5 h-5 text-white/60 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
+        </button>
+      )}
+
       {/* Finish + move on */}
-      <div className="mt-10 sm:mt-14 glass rounded-3xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+      <div className="mt-4 sm:mt-5 glass rounded-3xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
         <div className="flex-1 min-w-0 text-right">
           <p className="text-base sm:text-lg font-black text-white">{isDone ? "خلصت هذا الفصل ✓" : "خلصت الفصل؟"}</p>
           <p className="text-xs sm:text-sm text-white/55 mt-1">

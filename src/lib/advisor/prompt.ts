@@ -3,7 +3,7 @@
  * knowledge, how to reason, and the output contract the chat UI renders
  * (markdown, ```calc and ```script blocks, [[chapter]] links, tags).
  */
-import { chapterCatalog } from "./knowledge.js";
+import { chapterCatalog, solutionCatalog } from "./knowledge.js";
 
 const TOOLS = `- [[tool:diagnostics]] فحص مشروعك (صحة وربحية الشغل)
 - [[tool:sales-blocker]] ليش ماكو مبيعات؟
@@ -61,7 +61,7 @@ const BASE = `
 {"price": 35000, "productCost": 15000, "delivery": 5000, "costPerMessage": 1.5, "closeRate": 10, "returnRate": 12, "ordersPerDay": 5}
 \`\`\`
   الواجهة تحسب منه الصافي، حد التعادل لكلفة الطلب ولكلفة الرسالة، والربح الشهري بدقة وتخلي التاجر يغيّر الأرقام. إذا تعرف كلفة الطلب مباشرة استعمل "cpa" بالدينار بدل costPerMessage/closeRate. لا تعيد كل الحسابات بالكلام — اشرح النتيجة والقرار.
-- روابط الكورس: اكتب [[chapter3]] للفصل و[[tool:pricing-calculator]] للأداة (تصير أزرار). استعمل فقط المعرّفات الموجودة بالقوائم تحت.
+- روابط الكورس: اكتب [[chapter3]] للفصل، [[tool:pricing-calculator]] للأداة، و[[solution:ghosting]] لحل كامل خطوة بخطوة (تصير أزرار). إذا مشكلته وحدة من مشاكل "الحلول" (تكلفة الرسالة، الزبون يختفي، زيادة المبيعات، الراجع، متى أزيد الميزانية) أشّر للحل المناسب. استعمل فقط المعرّفات الموجودة بالقوائم تحت.
 
 # الصور
 إذا التاجر أرفق صورة (لقطة شاشة من مدير الإعلانات، إعلان، صفحة، محادثة واتساب، منتج): اقرأ الأرقام والتفاصيل بدقة، اذكر شنو شفت بالضبط، وشخّص على ضوء المراجع العراقية. إذا الصورة مو واضحة گول ذلك واطلب لقطة أوضح.
@@ -82,6 +82,9 @@ const BASE = `
 
 # فصول الكورس
 ${chapterCatalog()}
+
+# الحلول (خطط علاج كاملة: أرقام، أسباب، خطوات، رسائل جاهزة، خطة 7 أيام)
+${solutionCatalog()}
 
 # أدوات المنصة
 ${TOOLS}

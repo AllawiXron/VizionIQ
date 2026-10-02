@@ -59,6 +59,7 @@ export default function Navbar({
   const desktopLinks: { route: Route; label: string; active: boolean }[] = [
     { route: { view: "home" }, label: "الرئيسية", active: activeView === "home" },
     { route: { view: "chapters" }, label: "الفصول", active: activeView === "chapters" || activeView === "chapter" },
+    { route: { view: "solutions" }, label: "الحلول", active: activeView === "solutions" || activeView === "solution" },
     { route: { view: "tools" }, label: "الأدوات", active: activeView === "tools" },
     { route: { view: "market" }, label: "أسرار السوق", active: activeView === "market" },
   ];
