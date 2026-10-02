@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { BookOpen, Check, Plus, Wrench } from "lucide-react";
+import React, { memo, useState } from "react";
+import { BookOpen, Check, Compass, LifeBuoy, Plus, Wrench } from "lucide-react";
 import { chaptersList } from "../../data/chaptersData";
+import { playbooksList } from "../../data/playbooksData";
+import { guideModules } from "../../data/iraqGuideData";
 
 /**
  * Small markdown renderer for advisor answers. Handles exactly what the
  * advisor is told to write: headings, lists, "- [ ]" action items, tables,
- * quotes, bold/italic/code, and [[chapterN]] / [[tool:id]] course links.
+ * quotes, bold/italic/code, and [[chapterN]] / [[tool:id]] / [[solution:id]] / [[guide:id]] course links.
  * No HTML is ever injected — everything renders as React nodes.
  */
 
@@ -62,6 +64,27 @@ function CourseChip({ token, actions }: { key?: React.Key; token: string; action
       <button type="button" onClick={() => actions.onTool?.(toolId, TOOL_CATEGORY[toolId])} className="vz-md-chip">
         <Wrench className="w-3.5 h-3.5" />
         {label}
+      </button>
+    );
+  }
+  if (id.startsWith("solution:")) {
+    const pb = playbooksList.find((p) => p.id === id.slice(9));
+    if (!pb) return null;
+    // Section navigation understands "solution:<id>" and opens the playbook.
+    return (
+      <button type="button" onClick={() => actions.onChapter?.(id)} className="vz-md-chip" title={pb.problem}>
+        <LifeBuoy className="w-3.5 h-3.5" />
+        الحل: {pb.title}
+      </button>
+    );
+  }
+  if (id.startsWith("guide:")) {
+    const gm = guideModules.find((g) => g.id === id.slice(6));
+    if (!gm) return null;
+    return (
+      <button type="button" onClick={() => actions.onChapter?.(id)} className="vz-md-chip" title={gm.subtitle}>
+        <Compass className="w-3.5 h-3.5" />
+        الدليل العراقي: {gm.title.split(":")[0]}
       </button>
     );
   }
@@ -194,100 +217,120 @@ function TaskItem({ text, done, actions }: { key?: React.Key; text: string; done
   );
 }
 
-export function Markdown({ text, actions = {} }: { text: string; actions?: MarkdownActions }) {
+const NO_ACTIONS: MarkdownActions = {};
+
+/**
+ * One markdown block. Memoised on its content, so while an answer streams
+ * only the block that is still growing re-renders.
+ */
+const BlockView = memo(
+  function BlockView({ block, actions }: { block: MdBlock; sig: string; actions: MarkdownActions }) {
+    return renderBlock(block, actions);
+  },
+  (a, b) => a.sig === b.sig && a.actions === b.actions
+);
+
+function MarkdownImpl({ text, actions = NO_ACTIONS }: { text: string; actions?: MarkdownActions }) {
   const blocks = parseMarkdown(text);
   return (
     <div className="vz-md space-y-2.5">
-      {blocks.map((b, i) => {
-        switch (b.kind) {
-          case "h":
-            return b.level <= 2 ? (
-              <h3 key={i} className="pt-1.5 text-[16px] sm:text-[17px] font-black text-white flex items-center gap-2">
-                <span className="w-1 h-4 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue shrink-0" />
-                <Inline text={b.text} actions={actions} />
-              </h3>
-            ) : (
-              <h4 key={i} className="pt-1 text-[15px] font-extrabold text-white/95">
-                <Inline text={b.text} actions={actions} />
-              </h4>
-            );
-          case "p":
-            return (
-              <p key={i} className="whitespace-pre-line">
-                <Inline text={b.text} actions={actions} />
-              </p>
-            );
-          case "ul":
-            return (
-              <ul key={i} className="space-y-1.5">
-                {b.items.map((it, j) => (
-                  <li key={j} className="flex gap-2.5">
-                    <span className="mt-[0.7em] w-1.5 h-1.5 rounded-full bg-vz-blue-light shrink-0" />
-                    <span className="flex-1 min-w-0">
-                      <Inline text={it} actions={actions} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            );
-          case "ol":
-            return (
-              <ol key={i} className="space-y-2">
-                {b.items.map((it, j) => (
-                  <li key={j} className="flex gap-2.5">
-                    <span className="mt-0.5 w-6 h-6 rounded-lg bg-vz-blue/20 border border-vz-blue/40 text-vz-accent text-xs font-black flex items-center justify-center shrink-0">{b.start + j}</span>
-                    <span className="flex-1 min-w-0">
-                      <Inline text={it} actions={actions} />
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            );
-          case "tasks":
-            return (
-              <ul key={i} className="rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-1.5 divide-y divide-white/[0.06]">
-                {b.items.map((it, j) => (
-                  <TaskItem key={j} text={it.text} done={it.done} actions={actions} />
-                ))}
-              </ul>
-            );
-          case "quote":
-            return (
-              <blockquote key={i} className="rounded-2xl border-r-[3px] border-vz-blue-light bg-vz-blue/10 px-4 py-3 text-white font-bold">
-                <Inline text={b.text} actions={actions} />
-              </blockquote>
-            );
-          case "table":
-            return (
-              <div key={i} className="overflow-x-auto rounded-2xl border border-white/10 bg-black/20">
-                <table className="w-full text-[13px] sm:text-sm">
-                  <thead>
-                    <tr className="bg-white/[0.06]">
-                      {b.head.map((h, j) => (
-                        <th key={j} className="px-3 py-2 text-right font-black text-white whitespace-nowrap">
-                          <Inline text={h} actions={actions} />
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {b.rows.map((r, j) => (
-                      <tr key={j} className="border-t border-white/[0.06]">
-                        {r.map((c, k) => (
-                          <td key={k} className="px-3 py-2 align-top">
-                            <Inline text={c} actions={actions} />
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            );
-          case "hr":
-            return <hr key={i} className="border-white/10" />;
-        }
-      })}
+      {blocks.map((b, i) => (
+        <BlockView key={i} block={b} sig={JSON.stringify(b)} actions={actions} />
+      ))}
     </div>
   );
+}
+
+export const Markdown = memo(MarkdownImpl);
+
+/** Renders one parsed block (no wrapper; the caller keys it). */
+function renderBlock(b: MdBlock, actions: MarkdownActions): React.ReactElement {
+  switch (b.kind) {
+    case "h":
+      return b.level <= 2 ? (
+        <h3 className="pt-1.5 text-[16px] sm:text-[17px] font-black text-white flex items-center gap-2">
+          <span className="w-1 h-4 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue shrink-0" />
+          <Inline text={b.text} actions={actions} />
+        </h3>
+      ) : (
+        <h4 className="pt-1 text-[15px] font-extrabold text-white/95">
+          <Inline text={b.text} actions={actions} />
+        </h4>
+      );
+    case "p":
+      return (
+        <p className="whitespace-pre-line">
+          <Inline text={b.text} actions={actions} />
+        </p>
+      );
+    case "ul":
+      return (
+        <ul className="space-y-1.5">
+          {b.items.map((it, j) => (
+            <li key={j} className="flex gap-2.5">
+              <span className="mt-[0.7em] w-1.5 h-1.5 rounded-full bg-vz-blue-light shrink-0" />
+              <span className="flex-1 min-w-0">
+                <Inline text={it} actions={actions} />
+              </span>
+            </li>
+          ))}
+        </ul>
+      );
+    case "ol":
+      return (
+        <ol className="space-y-2">
+          {b.items.map((it, j) => (
+            <li key={j} className="flex gap-2.5">
+              <span className="mt-0.5 w-6 h-6 rounded-lg bg-vz-blue/20 border border-vz-blue/40 text-vz-accent text-xs font-black flex items-center justify-center shrink-0">{b.start + j}</span>
+              <span className="flex-1 min-w-0">
+                <Inline text={it} actions={actions} />
+              </span>
+            </li>
+          ))}
+        </ol>
+      );
+    case "tasks":
+      return (
+        <ul className="rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-1.5 divide-y divide-white/[0.06]">
+          {b.items.map((it, j) => (
+            <TaskItem key={j} text={it.text} done={it.done} actions={actions} />
+          ))}
+        </ul>
+      );
+    case "quote":
+      return (
+        <blockquote className="rounded-2xl border-r-[3px] border-vz-blue-light bg-vz-blue/10 px-4 py-3 text-white font-bold">
+          <Inline text={b.text} actions={actions} />
+        </blockquote>
+      );
+    case "table":
+      return (
+        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-black/20">
+          <table className="w-full text-[13px] sm:text-sm">
+            <thead>
+              <tr className="bg-white/[0.06]">
+                {b.head.map((h, j) => (
+                  <th key={j} className="px-3 py-2 text-right font-black text-white whitespace-nowrap">
+                    <Inline text={h} actions={actions} />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {b.rows.map((r, j) => (
+                <tr key={j} className="border-t border-white/[0.06]">
+                  {r.map((c, k) => (
+                    <td key={k} className="px-3 py-2 align-top">
+                      <Inline text={c} actions={actions} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    case "hr":
+      return <hr className="border-white/10" />;
+  }
 }

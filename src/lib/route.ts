@@ -1,19 +1,27 @@
 /**
  * Tiny hash router for the member area. Each destination is its own screen
- * (home, chapter list, one chapter, tools, market insights) instead of one
+ * (home, chapters, solutions, the Iraq guide, tools, market insights) instead of one
  * endless page, and the browser/phone back button moves between them.
  */
 import { useCallback, useEffect, useState } from "react";
 import { chaptersList } from "../data/chaptersData";
+import { playbooksList } from "../data/playbooksData";
+import { guideModules } from "../data/iraqGuideData";
 
 export type Route =
   | { view: "home" }
   | { view: "chapters" }
   | { view: "chapter"; id: string }
+  | { view: "solutions" }
+  | { view: "solution"; id: string }
+  | { view: "guide" }
+  | { view: "guideModule"; id: string }
   | { view: "tools" }
   | { view: "market" };
 
 const CHAPTER_IDS = new Set(chaptersList.map((c) => c.id));
+const PLAYBOOK_IDS = new Set(playbooksList.map((p) => p.id));
+const GUIDE_IDS = new Set(guideModules.map((m) => m.id));
 
 export function parseHash(hash: string): Route {
   const parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
@@ -22,6 +30,12 @@ export function parseHash(hash: string): Route {
       return { view: "chapters" };
     case "chapter":
       return parts[1] && CHAPTER_IDS.has(parts[1]) ? { view: "chapter", id: parts[1] } : { view: "chapters" };
+    case "solutions":
+      return { view: "solutions" };
+    case "solution":
+      return parts[1] && PLAYBOOK_IDS.has(parts[1]) ? { view: "solution", id: parts[1] } : { view: "solutions" };
+    case "guide":
+      return parts[1] && GUIDE_IDS.has(parts[1]) ? { view: "guideModule", id: parts[1] } : { view: "guide" };
     case "tools":
       return { view: "tools" };
     case "market":
@@ -37,6 +51,14 @@ export function routeToHash(route: Route): string {
       return "#/chapters";
     case "chapter":
       return `#/chapter/${route.id}`;
+    case "solutions":
+      return "#/solutions";
+    case "solution":
+      return `#/solution/${route.id}`;
+    case "guide":
+      return "#/guide";
+    case "guideModule":
+      return `#/guide/${route.id}`;
     case "tools":
       return "#/tools";
     case "market":
@@ -52,6 +74,16 @@ export function routeToHash(route: Route): string {
  */
 export function routeForSection(id: string): Route | null {
   if (CHAPTER_IDS.has(id)) return { view: "chapter", id };
+  // Advisor links to a playbook: "solution:ghosting".
+  if (id.startsWith("solution:")) {
+    const playbookId = id.slice("solution:".length);
+    return PLAYBOOK_IDS.has(playbookId) ? { view: "solution", id: playbookId } : { view: "solutions" };
+  }
+  // Advisor links to an Iraq Guide module: "guide:delivery".
+  if (id.startsWith("guide:")) {
+    const moduleId = id.slice("guide:".length);
+    return GUIDE_IDS.has(moduleId) ? { view: "guideModule", id: moduleId } : { view: "guide" };
+  }
   const legacy = /^ch(\d+)$/.exec(id);
   if (legacy && CHAPTER_IDS.has(`chapter${legacy[1]}`)) return { view: "chapter", id: `chapter${legacy[1]}` };
   switch (id) {

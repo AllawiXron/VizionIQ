@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { Check, Copy, MessageCircle } from "lucide-react";
 import { parseRichBlocks } from "../../lib/advisor/blocks";
 import { parseCalcBlock } from "../../lib/advisor/calc";
@@ -71,7 +71,9 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
   );
 }
 
-function RichMessageImpl({ text, streaming, onCopy, onSaveProfile, ...actions }: RichMessageProps) {
+function RichMessageImpl({ text, streaming, onCopy, onSaveProfile, onChapter, onTool, onAddTask }: RichMessageProps) {
+  // One stable object, so memoised markdown blocks don't re-render for nothing.
+  const actions = useMemo<MarkdownActions>(() => ({ onChapter, onTool, onAddTask }), [onChapter, onTool, onAddTask]);
   const blocks = parseRichBlocks(stripAdvisorTags(text, streaming), streaming);
   const lastIndex = blocks.length - 1;
   return (

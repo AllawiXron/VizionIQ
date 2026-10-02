@@ -53,12 +53,14 @@ import { AdvisorActionCard } from "./AdvisorActionCard";
 import { AdvisorMessageFeedbackBar, MessageFeedbackData } from "./AdvisorMessageFeedbackBar";
 import { AdvisorToast, ToastMessage } from "./AdvisorToast";
 import { RichMessage, ThinkingDots } from "./advisor/RichMessage";
+import { StreamingAnswer } from "./advisor/StreamingAnswer";
+import { clearStreamText, revealUpTo, setStreamText } from "../lib/advisor/streamStore";
 import { BusinessProfilePanel } from "./advisor/BusinessProfilePanel";
 import { useBusinessProfile } from "./advisor/useBusinessProfile";
 import { useDictation } from "./advisor/useDictation";
 import { AdvisorHttpError, streamAdvisor, type StreamOutcome } from "../lib/advisor/client";
 import { prepareImage, type PreparedImage } from "../lib/advisor/images";
-import { describeProfileUpdate, parseProfileTags, parseSuggestionTags, profileFilledCount, stripAdvisorTags } from "../lib/advisor/profile";
+import { describeProfileUpdate, parseProfileTags, parseSuggestionTags, profileFilledCount, stripAdvisorTags, type BusinessProfile } from "../lib/advisor/profile";
 import {
   SavedRecommendation,
   PlanTaskItem,
@@ -717,6 +719,29 @@ function ChatInputForm({
     </div>
   );
 }
+
+interface AnswerHandlers {
+  onChapter: (chapterId: string) => void;
+  onTool: (toolId: string, category?: string) => void;
+  onCopy: () => void;
+  onSaveProfile: (p: BusinessProfile) => void;
+  addTask: (task: string, topicId?: string) => boolean | void;
+}
+
+/** A finished answer. Memoised: it only re-renders when its own text changes. */
+const FinishedAnswer = React.memo(function FinishedAnswer({ text, topicId, handlers }: { text: string; topicId?: string; handlers: AnswerHandlers }) {
+  const onAddTask = React.useCallback((task: string) => handlers.addTask(task, topicId), [handlers, topicId]);
+  return (
+    <RichMessage
+      text={text}
+      onChapter={handlers.onChapter}
+      onTool={handlers.onTool}
+      onAddTask={onAddTask}
+      onCopy={handlers.onCopy}
+      onSaveProfile={handlers.onSaveProfile}
+    />
+  );
+});
 
 export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   isOpen,
@@ -1392,22 +1417,46 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     abortControllerRef.current = controller;
     const timeoutId = setTimeout(() => controller.abort(), 170000);
 
-    // Streamed text is buffered and painted ~16 times a second, not per token.
+    // Streamed text goes to the stream store (only the streaming bubble
+    // re-renders) and is revealed a phrase at a time, not word by word.
     let streamed = "";
-    let flushTimer: ReturnType<typeof setTimeout> | null = null;
+    let shownLen = 0;
+    let lastShownAt = Date.now();
+    let frame: number | null = null;
+    let waitTimer: ReturnType<typeof setTimeout> | null = null;
+    const stopPainting = () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      if (waitTimer) clearTimeout(waitTimer);
+      frame = null;
+      waitTimer = null;
+    };
     const paint = () => {
-      flushTimer = null;
-      const snapshot = streamed;
-      setMessages((prev) => prev.map((m) => (m.id === botId ? { ...m, text: snapshot } : m)));
+      frame = null;
+      const next = revealUpTo(streamed, shownLen, Date.now() - lastShownAt);
+      if (next > shownLen) {
+        shownLen = next;
+        lastShownAt = Date.now();
+        setStreamText(botId, streamed.slice(0, next));
+      }
+      // Something is still held back mid-phrase: check again shortly.
+      if (shownLen < streamed.length && !waitTimer) {
+        waitTimer = setTimeout(() => {
+          waitTimer = null;
+          schedulePaint();
+        }, 90);
+      }
+    };
+    const schedulePaint = () => {
+      if (frame === null) frame = requestAnimationFrame(paint);
     };
     const onDelta = (t: string) => {
       streamed += t;
-      if (!flushTimer) flushTimer = setTimeout(paint, 60);
+      schedulePaint();
     };
     const finalize = (patch: Partial<Message>) => {
-      if (flushTimer) clearTimeout(flushTimer);
-      flushTimer = null;
+      stopPainting();
       setMessages((prev) => prev.map((m) => (m.id === botId ? { ...m, ...patch, streaming: false } : m)));
+      clearStreamText(botId);
     };
 
     try {
@@ -1506,7 +1555,8 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       setMessages((prev) => prev.map((m) => (m.id === botId ? errorMessage : m)));
       setLastFailedPrompt({ text, presetSuggestions, errorText });
     } finally {
-      if (flushTimer) clearTimeout(flushTimer);
+      stopPainting();
+      clearStreamText(botId);
       isLoadingRef.current = false;
       setIsLoading(false);
       abortControllerRef.current = null;
@@ -1515,6 +1565,30 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
   const handleSendMessageRef = useRef(handleSendMessage);
   handleSendMessageRef.current = handleSendMessage;
+
+  // Stable callbacks for answer bubbles, so finished answers don't re-render
+  // (and re-parse) every time something else in the advisor changes.
+  const answerDepsRef = useRef({ onNavigateToSection, onNavigateTool, showToast, mergeBusinessProfile, addTask: (_t: string, _topic?: string): boolean | void => undefined });
+  answerDepsRef.current = { onNavigateToSection, onNavigateTool, showToast, mergeBusinessProfile, addTask: (t: string, topic?: string) => handleAddTaskToPlan(t, topic) };
+  const answerHandlers = React.useMemo(
+    () => ({
+      onChapter: (chId: string) => answerDepsRef.current.onNavigateToSection?.(chId),
+      onTool: (tId: string, cat?: string) => answerDepsRef.current.onNavigateTool?.(tId, cat),
+      onCopy: () => answerDepsRef.current.showToast("copy", "انتسخت الرسالة 📋", "الصقها للزبون بالواتساب"),
+      onSaveProfile: (p: BusinessProfile) => {
+        answerDepsRef.current.mergeBusinessProfile(p);
+        answerDepsRef.current.showToast("saved", "انحفظت الأرقام بملف مشروعك 🧠");
+      },
+      addTask: (task: string, topicId?: string) => answerDepsRef.current.addTask(task, topicId),
+    }),
+    []
+  );
+  // While an answer streams, keep the chat pinned to the bottom if the merchant is already there.
+  const keepPinnedToBottom = React.useCallback(() => {
+    const chat = chatScrollRef.current;
+    if (!chat) return;
+    if (chat.scrollHeight - chat.scrollTop - chat.clientHeight < 320) chat.scrollTop = chat.scrollHeight;
+  }, []);
 
   /** Re-asks the last question for a fresh answer. */
   const handleRegenerate = () => {
@@ -2409,7 +2483,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         </div>
                       ) : (
                         <div className="space-y-4 sm:space-y-6">
-                          {messages.map((msg) => {
+                          {messages.map((msg, msgIndex) => {
+                            // Older messages skip layout/paint while off-screen, so a long
+                            // chat stays smooth while a new answer streams in.
+                            const settledClass = msgIndex < messages.length - 3 ? " vz-msg-settled" : "";
                             // 1. Clean New Topic Notice (No duplicate suggestions)
                             if (msg.isDivider) {
                               return (
@@ -2439,7 +2516,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 transition={{ duration: 0.4, ease: EASE_OUT }}
                                 className={`flex gap-2 sm:gap-2.5 ${
                                   isUser ? "max-w-[85%] sm:max-w-[75%] ms-auto flex-row-reverse" : "max-w-[92%] sm:max-w-[85%] me-auto"
-                                }`}
+                                }${settledClass}`}
                               >
                                 {/* Avatar */}
                                 <div className="flex-shrink-0">
@@ -2512,18 +2589,18 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                       </div>
                                     ) : msg.role === "assistant" ? (
                                       <>
-                                        <RichMessage
-                                          text={msg.text}
-                                          streaming={msg.streaming}
-                                          onChapter={(chId) => onNavigateToSection?.(chId)}
-                                          onTool={(tId, cat) => onNavigateTool?.(tId, cat)}
-                                          onAddTask={(task) => handleAddTaskToPlan(task, msg.topicId)}
-                                          onCopy={() => showToast("copy", "انتسخت الرسالة 📋", "الصقها للزبون بالواتساب")}
-                                          onSaveProfile={(p) => {
-                                            mergeBusinessProfile(p);
-                                            showToast("saved", "انحفظت الأرقام بملف مشروعك 🧠");
-                                          }}
-                                        />
+                                        {msg.streaming ? (
+                                          <StreamingAnswer
+                                            id={msg.id}
+                                            onChapter={answerHandlers.onChapter}
+                                            onTool={answerHandlers.onTool}
+                                            onCopy={answerHandlers.onCopy}
+                                            onSaveProfile={answerHandlers.onSaveProfile}
+                                            onGrow={keepPinnedToBottom}
+                                          />
+                                        ) : (
+                                          <FinishedAnswer text={msg.text} topicId={msg.topicId} handlers={answerHandlers} />
+                                        )}
                                         {msg.profileUpdate && msg.profileUpdate.length > 0 && (
                                           <button
                                             type="button"

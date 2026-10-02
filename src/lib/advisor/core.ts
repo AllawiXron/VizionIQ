@@ -104,7 +104,12 @@ export function buildRequestInstruction(messages: ChatMessagePayload[], options:
   // The last question plus the one before it, so follow-ups ("وضحلي أكثر") still find the topic.
   const query = [userTexts[userTexts.length - 1], userTexts[userTexts.length - 2], options.topicContext].filter(Boolean).join("\n");
   const chunks = retrieveKnowledge(query);
-  const knowledge = chunks.map((c, i) => `【${i + 1}】 ${c.source}${c.chapterId ? ` [[${c.chapterId}]]` : ""}\n${c.text}`).join("\n\n");
+  const knowledge = chunks
+    .map((c, i) => {
+      const link = c.chapterId ?? c.linkId;
+      return `【${i + 1}】 ${c.source}${link ? ` [[${link}]]` : ""}\n${c.text}`;
+    })
+    .join("\n\n");
   let extra = "";
   if (options.diagnosticProfile) extra += `نتائج فحص المشروع: ${JSON.stringify(options.diagnosticProfile).slice(0, 2000)}\n`;
   if (options.userContext) extra += `سياق المستخدم: ${JSON.stringify(options.userContext).slice(0, 500)}`;
@@ -149,11 +154,29 @@ export interface RunResult {
 /** Vercel kills the function at 60 s (vercel.json); finish cleanly before that. */
 export const DEADLINE_MS = 50_000;
 /** If a model hasn't written a word by then, move on to the next model. */
-export const FIRST_TOKEN_MS = 20_000;
+export const FIRST_TOKEN_MS = 10_000;
 const MAX_CONTINUATIONS = 2;
 
 /** Models that rejected thinkingConfig once are called without it from then on. */
 const NO_THINKING_CONFIG = new Set<string>();
+/** Models that rejected the MINIMAL thinking level: they get LOW instead. */
+const NO_MINIMAL_THINKING = new Set<string>();
+
+type ThinkingLevel = "MINIMAL" | "LOW";
+
+/**
+ * Light questions get minimal thinking (first words in about a second);
+ * screenshots, long questions and diagnostics get a little more.
+ */
+export function thinkingLevelFor(messages: ChatMessagePayload[], options: ChatOptions): ThinkingLevel {
+  const last = [...messages].reverse().find((m) => m?.role === "user");
+  const heavy =
+    Boolean(last?.images?.length) ||
+    (last?.text?.length ?? 0) > 400 ||
+    Boolean(options.diagnosticProfile) ||
+    /احسب|حسبة|شخص|شخّص|خطة|حلل|حلّل|قارن|ميزانية/.test(last?.text ?? "");
+  return heavy ? "LOW" : "MINIMAL";
+}
 
 /** Turns that make the model resume a broken answer exactly where it stopped. */
 export function continuationContents(contents: Content[], partial: string): Content[] {
@@ -199,6 +222,7 @@ export async function runAdvisor(
   if (base.length === 0) throw new Error("ماكو رسائل صالحة للإرسال للمستشار.");
   const { instruction } = buildRequestInstruction(messages, options);
   const ai = client ?? getGeminiClient();
+  const wantedLevel = thinkingLevelFor(messages, options);
 
   // Text already shown to the merchant (from an earlier, interrupted request).
   const prior = typeof options.continueFrom === "string" ? options.continueFrom.slice(-20_000) : "";
@@ -222,7 +246,8 @@ export async function runAdvisor(
       }
     }, Math.max(Math.min(3000, remaining / 2), Math.min(firstTokenMs, remaining - reserve)));
     const deadlineTimer = setTimeout(() => controller.abort(), Math.max(1000, remaining));
-    const thinking = NO_THINKING_CONFIG.has(model) ? {} : { thinkingConfig: { thinkingLevel: "LOW" as never } };
+    const level: ThinkingLevel = wantedLevel === "MINIMAL" && NO_MINIMAL_THINKING.has(model) ? "LOW" : wantedLevel;
+    const thinking = NO_THINKING_CONFIG.has(model) ? {} : { thinkingConfig: { thinkingLevel: level as never } };
     try {
       const stream = await ai.models.generateContentStream({
         model,
@@ -243,10 +268,11 @@ export async function runAdvisor(
       if (isAborted()) return "aborted";
       if (gotText && Date.now() >= deadline - Math.min(500, reserve)) return "truncated";
       if (timedOut) throw Object.assign(new Error(`timeout: no first token from ${model}`), { timeout: true });
-      // A model that doesn't know thinkingConfig: remember and let the caller retry it plainly.
+      // A model that doesn't accept this thinking level: step down (MINIMAL → LOW → none) and retry it.
       if (!NO_THINKING_CONFIG.has(model) && /thinking/i.test(errText(err)) && /400|INVALID_ARGUMENT|not supported|Unknown name/i.test(errText(err))) {
-        NO_THINKING_CONFIG.add(model);
-        throw Object.assign(new Error("retry without thinking"), { retryPlain: true });
+        if (level === "MINIMAL") NO_MINIMAL_THINKING.add(model);
+        else NO_THINKING_CONFIG.add(model);
+        throw Object.assign(new Error("retry with lighter thinking config"), { retryPlain: true });
       }
       throw err;
     } finally {

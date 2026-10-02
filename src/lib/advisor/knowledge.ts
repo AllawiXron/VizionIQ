@@ -1,6 +1,6 @@
 /**
- * Course knowledge for the advisor: every chapter section, case study,
- * insight, swipe file and phone script is split into small chunks and
+ * Course knowledge for the advisor: every chapter section, playbook,
+ * case study, insight, swipe file and phone script is split into small chunks and
  * ranked against the merchant's question, so answers are grounded in what
  * the course actually teaches (and can point to the right chapter).
  */
@@ -8,12 +8,16 @@ import { chaptersDetailedMap, chaptersList, phoneScripts } from "../../data/chap
 import { caseStudiesList } from "../../data/caseStudiesData.js";
 import { insightsList } from "../../data/insightsData.js";
 import { swipeFilesList } from "../../data/swipeFilesData.js";
+import { playbooksList } from "../../data/playbooksData.js";
+import { guideModules, GUIDE_RESEARCHED } from "../../data/iraqGuideData.js";
 
 export interface KnowledgeChunk {
   id: string;
   /** Human label shown to the model, e.g. "الفصل الثالث — سلم الأسعار". */
   source: string;
   chapterId?: string;
+  /** Link token for non-chapter sources, e.g. "solution:ghosting". */
+  linkId?: string;
   text: string;
 }
 
@@ -183,6 +187,82 @@ function buildChunks(): KnowledgeChunk[] {
   for (const s of swipeFilesList) {
     chunks.push({ id: `swipe-${s.id}`, chapterId: s.chapterId, source: `قالب جاهز: ${s.title}`, text: clip(`${s.description}\n${s.content}`) });
   }
+  for (const pb of playbooksList) {
+    const linkId = `solution:${pb.id}`;
+    const label = `حل: ${pb.title}`;
+    chunks.push({
+      id: `pb-${pb.id}-overview`,
+      linkId,
+      source: label,
+      text: clip(
+        [
+          `المشكلة: «${pb.problem}»`,
+          pb.promise,
+          "شلون تعرف إنها مشكلتك (زين / انتبه / مشكلة):",
+          ...pb.metrics.rows.map((r) => `• ${r.label}: ${r.good} / ${r.warning} / ${r.bad}`),
+          pb.metrics.note,
+        ].join("\n")
+      ),
+    });
+    chunks.push({
+      id: `pb-${pb.id}-causes`,
+      linkId,
+      source: `${label} — الأسباب`,
+      text: clip(pb.causes.map((c) => `✗ ${c.cause} — العلامة: ${c.signs} — الحل: ${c.fix}`).join("\n")),
+    });
+    pb.steps.forEach((s, i) =>
+      chunks.push({
+        id: `pb-${pb.id}-step-${i}`,
+        linkId,
+        source: `${label} — خطوة ${i + 1}: ${s.title}`,
+        text: clip([s.why, ...s.how.map((h) => `• ${h}`), s.example && `مثال: ${s.example}`].filter(Boolean).join("\n")),
+      })
+    );
+    pb.scripts.forEach((s, i) =>
+      chunks.push({ id: `pb-${pb.id}-script-${i}`, linkId, source: `${label} — رسالة جاهزة: ${s.title}`, text: clip(`${s.when}\n${s.text}`) })
+    );
+    chunks.push({
+      id: `pb-${pb.id}-example`,
+      linkId,
+      source: `${label} — مثال وأغلاط`,
+      text: clip(
+        [
+          `مثال توضيحي (مو قصة حقيقية) — ${pb.example.title}: ${pb.example.story}`,
+          ...pb.example.rows.map((r) => `${r.label}: ${r.before} ← ${r.after}`),
+          `الدرس: ${pb.example.lesson}`,
+          ...pb.mistakes.map((m) => `✗ ${m.mistake} — ✓ ${m.fix}`),
+        ].join("\n")
+      ),
+    });
+  }
+  for (const g of guideModules) {
+    const linkId = `guide:${g.id}`;
+    const label = `الدليل العراقي (بحث ${GUIDE_RESEARCHED}): ${g.title}`;
+    chunks.push({
+      id: `guide-${g.id}-stats`,
+      linkId,
+      source: label,
+      text: clip([g.subtitle, ...g.stats.map((s) => `• ${s.value}: ${s.label}`)].join("\n")),
+    });
+    g.sections.forEach((s, i) =>
+      chunks.push({
+        id: `guide-${g.id}-${i}`,
+        linkId,
+        source: `${label} — ${s.heading}`,
+        text: clip(
+          [
+            ...s.body,
+            ...(s.table ? [s.table.head.join(" | "), ...s.table.rows.map((r) => r.join(" | "))] : []),
+            ...(s.bullets ?? []).map((b) => `• ${b}`),
+            s.tip && `نصيحة: ${s.tip}`,
+            s.warning && `انتبه: ${s.warning}`,
+          ]
+            .filter(Boolean)
+            .join("\n")
+        ),
+      })
+    );
+  }
   phoneScripts.forEach((p, i) =>
     chunks.push({
       id: `phone-${i}`,
@@ -256,7 +336,7 @@ export function retrieveKnowledge(query: string, { k = 4, budgetChars = 5000 }: 
   let used = 0;
   for (const { d } of scored) {
     if (picked.length >= k) break;
-    const ch = d.chunk.chapterId ?? d.chunk.source;
+    const ch = d.chunk.chapterId ?? d.chunk.linkId ?? d.chunk.source;
     if ((perChapter.get(ch) ?? 0) >= 2) continue;
     if (used + d.chunk.text.length > budgetChars && picked.length > 0) continue;
     picked.push(d.chunk);
@@ -264,6 +344,16 @@ export function retrieveKnowledge(query: string, { k = 4, budgetChars = 5000 }: 
     perChapter.set(ch, (perChapter.get(ch) ?? 0) + 1);
   }
   return picked;
+}
+
+/** Iraq Guide module list for the prompt. */
+export function guideCatalog(): string {
+  return guideModules.map((g) => `- [[guide:${g.id}]] ${g.title}`).join("\n");
+}
+
+/** Playbook list for the prompt. */
+export function solutionCatalog(): string {
+  return playbooksList.map((p) => `- [[solution:${p.id}]] ${p.title} — «${p.problem}»`).join("\n");
 }
 
 /** Chapter list for the prompt, generated from the real course data. */

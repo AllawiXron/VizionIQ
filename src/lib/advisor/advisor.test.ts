@@ -1,5 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { knowledgeSize, retrieveKnowledge, tokenize, normalizeArabic, chapterCatalog } from "./knowledge";
+import { knowledgeSize, retrieveKnowledge, tokenize, normalizeArabic, chapterCatalog, solutionCatalog, guideCatalog } from "./knowledge";
+import { guideModules } from "../../data/iraqGuideData";
+import { buildSystemInstruction } from "./prompt";
+import { playbooksList } from "../../data/playbooksData";
 import { parseNumber, parseProfileTags, parseSuggestionTags, sanitizeProfile, stripAdvisorTags, describeProfileUpdate } from "./profile";
 import { computeUnitEconomics, parseCalcBlock } from "./calc";
 import { parseRichBlocks } from "./blocks";
@@ -24,6 +27,42 @@ describe("course knowledge retrieval", () => {
   it("finds pricing content for a pricing question", () => {
     const hits = retrieveKnowledge("شلون أسعر منتجي وأحسب الربح الصافي؟");
     expect(hits.map((h) => h.source + h.text).join(" ")).toMatch(/سعر|تسعير|ربح|هامش/);
+  });
+
+  it("brings up the ghosting playbook when customers ask the price and vanish", () => {
+    const hits = retrieveKnowledge("الزباين يسألون بيش السعر وبعدين يختفون وما يردون");
+    expect(hits.some((h) => h.linkId === "solution:ghosting")).toBe(true);
+  });
+
+  it("brings up the message-cost playbook for an expensive-message question", () => {
+    const hits = retrieveKnowledge("تكلفة الرسالة صارت غالية بالإعلان شلون أنزلها؟");
+    expect(hits.some((h) => h.linkId === "solution:message-cost")).toBe(true);
+  });
+
+  it("brings up the Iraq Guide for customs and importing questions", () => {
+    const hits = retrieveKnowledge("شكد الكمرك على الملابس إذا استوردت من الصين؟ التعرفة الجديدة");
+    expect(hits.some((h) => h.linkId === "guide:importing")).toBe(true);
+  });
+
+  it("brings up the e-commerce law module for a licensing question", () => {
+    const hits = retrieveKnowledge("لازم إجازة تاجر إلكتروني لصفحتي بالانستغرام؟ نظام التجارة الإلكترونية");
+    expect(hits.some((h) => h.linkId === "guide:law")).toBe(true);
+  });
+
+  it("lists every guide module as a link in the prompt", () => {
+    const prompt = buildSystemInstruction({});
+    for (const g of guideModules) {
+      expect(guideCatalog()).toContain(`[[guide:${g.id}]]`);
+      expect(prompt).toContain(`[[guide:${g.id}]]`);
+    }
+  });
+
+  it("lists every playbook as a link in the prompt", () => {
+    const prompt = buildSystemInstruction({});
+    for (const pb of playbooksList) {
+      expect(solutionCatalog()).toContain(`[[solution:${pb.id}]]`);
+      expect(prompt).toContain(`[[solution:${pb.id}]]`);
+    }
   });
 
   it("lists every real chapter as a link", () => {
@@ -95,5 +134,20 @@ describe("rich answer blocks", () => {
   it("treats an unclosed fence while streaming as still open", () => {
     const blocks = parseRichBlocks("مقدمة\n```script\nهلا", true);
     expect(blocks[1]).toMatchObject({ type: "script", content: "هلا", open: true });
+  });
+});
+
+describe("streaming reveal", () => {
+  it("reveals a phrase at a time, not word by word", async () => {
+    const { revealUpTo } = await import("./streamStore");
+    const text = "هلا بيك عيني. خلي نحسبها ورقة وقلم";
+    // Mid-phrase after the first sentence: show up to the sentence end only.
+    expect(text.slice(0, revealUpTo(text, 0, 0))).toBe("هلا بيك عيني. ");
+    // Nothing new to break on yet: hold.
+    expect(revealUpTo(text, 14, 50)).toBe(14);
+    // Waited long enough: show up to the last whole word.
+    expect(text.slice(0, revealUpTo(text, 14, 400))).toBe("هلا بيك عيني. خلي نحسبها ورقة ");
+    // Line breaks count as phrase ends.
+    expect(revealUpTo("سطر أول\nسطر ث", 0, 0)).toBe("سطر أول\n".length);
   });
 });

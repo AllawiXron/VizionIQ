@@ -17,6 +17,10 @@ import Navbar from "./components/Navbar";
 import HomeView from "./components/HomeView";
 import ChaptersIndex from "./components/ChaptersIndex";
 import ChapterView from "./components/ChapterView";
+import SolutionsIndex from "./components/SolutionsIndex";
+import PlaybookView from "./components/PlaybookView";
+import GuideIndex from "./components/GuideIndex";
+import GuideModuleView from "./components/GuideModuleView";
 const AdminPanel = React.lazy(() => import("./components/AdminPanel"));
 const IraqiInsights = React.lazy(() => import("./components/IraqiInsights"));
 const VizionGrowthSuite = React.lazy(() => import("./components/VizionGrowthSuite"));
@@ -190,6 +194,27 @@ export default function App() {
         break;
       case "chapter":
         screen = <ChapterView key={route.id} id={route.id} userCode={userCode} onNavigate={navigate} />;
+        break;
+      case "solutions":
+        screen = <SolutionsIndex userCode={userCode} onNavigate={navigate} />;
+        break;
+      case "solution":
+        screen = (
+          <PlaybookView
+            key={route.id}
+            id={route.id}
+            userCode={userCode}
+            onNavigate={navigate}
+            onOpenAdvisor={() => setIsAdvisorOpen(true)}
+            onOpenTool={(toolId) => openTool(toolId)}
+          />
+        );
+        break;
+      case "guide":
+        screen = <GuideIndex userCode={userCode} onNavigate={navigate} />;
+        break;
+      case "guideModule":
+        screen = <GuideModuleView key={route.id} id={route.id} userCode={userCode} onNavigate={navigate} />;
         break;
       case "tools":
         screen = (

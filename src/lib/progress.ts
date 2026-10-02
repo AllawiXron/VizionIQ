@@ -90,3 +90,48 @@ export function stageOf(chapterId: string) {
   const index = CHAPTER_STAGES.findIndex((s) => (s.chapters as readonly string[]).includes(chapterId));
   return index >= 0 ? { index, stage: CHAPTER_STAGES[index] } : null;
 }
+
+/* ------------------------------------------------------------------ */
+/* Playbook 7-day plans: which days are ticked, per member             */
+/* ------------------------------------------------------------------ */
+
+type PlanState = Record<string, number[]>;
+const EMPTY_PLANS: PlanState = {};
+const planCache = new Map<string, PlanState>();
+const plansKey = (userCode: string) => `vz_plans_${userCode || "guest"}`;
+
+function readPlans(userCode: string): PlanState {
+  const cached = planCache.get(userCode);
+  if (cached) return cached;
+  let value = EMPTY_PLANS;
+  try {
+    const raw = localStorage.getItem(plansKey(userCode));
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (parsed && typeof parsed === "object") {
+      value = Object.fromEntries(
+        Object.entries(parsed).map(([id, days]) => [id, Array.isArray(days) ? days.filter((d): d is number => Number.isInteger(d)) : []])
+      );
+    }
+  } catch {
+    value = EMPTY_PLANS;
+  }
+  planCache.set(userCode, value);
+  return value;
+}
+
+export function togglePlanDay(userCode: string, playbookId: string, day: number) {
+  const current = readPlans(userCode);
+  const days = current[playbookId] ?? [];
+  const next = { ...current, [playbookId]: days.includes(day) ? days.filter((d) => d !== day) : [...days, day] };
+  planCache.set(userCode, next);
+  try {
+    localStorage.setItem(plansKey(userCode), JSON.stringify(next));
+  } catch {
+    // Storage unavailable: ticks last for this visit only.
+  }
+  listeners.forEach((l) => l());
+}
+
+export function usePlaybookPlans(userCode: string): PlanState {
+  return useSyncExternalStore(subscribe, () => readPlans(userCode), () => EMPTY_PLANS);
+}
