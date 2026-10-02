@@ -8,7 +8,7 @@ halo ring on the last slide, so it reads as one line while swiping.
 | Slide | Layout | Photo frames (size in the PSD, 1080×1350 canvas) |
 |---|---|---|
 | 01 | Cover | — |
-| 02 | Featured | Photo 1: 640×800 (4:5) |
+| 02 | Featured — the Al-Waseet ad (`works/02-1.jpg`, from `../alwaseet-ad`) | Photo 1: 640×800 (4:5) |
 | 03 | Series | Photo 1 (right) and Photo 2 (left): 440×550 (4:5) |
 | 04 | Case study | Photo 1: 560×700 (4:5) · Photo 2: 348×348 (1:1, a close-up detail) |
 | 05 | Selected 2×2 | Photos 1–4: 352×440 (4:5); 1 top-right, 2 top-left, 3 bottom-right, 4 bottom-left |
@@ -24,8 +24,10 @@ right above that layer, press Alt+Ctrl+G (Option+Cmd+G on Mac) to clip it into t
 Your posts are 1080×1350, so they just need scaling down. The paper grain sits under the photos, so your work stays
 clean. Export with File → Export → Export As… → PNG/JPG.
 
-**Or in the HTML.** Save each photo as `works/<slide>-<n>.jpg` (for example `works/02-1.jpg`, `works/06-9.jpg`) and run
-`node render.cjs`. The images fill their frames (cropped to fit) and `out/slide-0N.png` is rewritten.
+**Or let the scripts place them.** Save each photo as `works/<slide>-<n>.jpg` (for example `works/02-1.jpg`,
+`works/06-9.jpg`) and run `node render.cjs --layers` then `python build_psd.py`. The images fill their frames
+(cropped to fit, like Photoshop's "fill"): `out/slide-0N.png` is rewritten, and each PSD gets the photo as a layer
+already clipped to its `PHOTO` frame.
 
 ## Text to replace
 
