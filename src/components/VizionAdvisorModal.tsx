@@ -40,7 +40,8 @@ import {
   Edit3
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { EASE_OUT, SPRING_SNAPPY, overlayMotion, sheetMotion } from "../lib/motion";
+import { EASE_OUT, SPRING_SNAPPY, overlayMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
 import { getAllValidCodes, normalizeCode } from "./LockScreen";
 import { BusinessDiagnosticStepper } from "./BusinessDiagnosticStepper";
 import { StructuredDiagnosticCard } from "./StructuredDiagnosticCard";
@@ -1465,13 +1466,16 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
   const currentDiag = DIAGNOSTIC_CATEGORIES.find((c) => c.id === selectedDiagCat) || DIAGNOSTIC_CATEGORIES[0];
 
+  // Opens out of the button/card that summoned it (full-screen on phones).
+  const originSheet = useOriginSheet(isOpen, { width: 896, height: 760 });
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div key="advisor-overlay" {...overlayMotion} className="fixed inset-0 z-[100] flex h-[100dvh] items-center justify-center overflow-hidden overscroll-none p-0 sm:p-4 vz-backdrop">
           <motion.div
             ref={modalRef}
-            {...sheetMotion}
+            {...originSheet}
             role="dialog"
             aria-modal="true"
             aria-labelledby="advisor-modal-title"

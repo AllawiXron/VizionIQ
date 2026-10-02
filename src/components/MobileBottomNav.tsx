@@ -21,7 +21,8 @@ import {
   ChevronLeft
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { EASE_OUT, SPRING, SPRING_SNAPPY, bottomSheetMotion, overlayMotion } from "../lib/motion";
+import { EASE_OUT, SPRING, SPRING_SNAPPY, bottomSheetMotion, overlayMotion, sheetMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
 import { isFreeTrialUser, isVipUser } from "./LockScreen";
 import { SoundToggleButton } from "./SoundToggleButton";
 
@@ -125,6 +126,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     { key: "more", label: "المزيد", aria: "فتح قائمة المزيد والخدمات الثانوية", icon: SlidersHorizontal, active: isMoreSheetOpen, expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
   ];
 
+  // The More sheet grows out of the dock button (or top menu button) like a liquid-glass panel.
+  const originSheet = useOriginSheet(isMoreSheetOpen, { width: 480, anchor: "bottom", height: 560 });
+  const moreSheetMotion = originSheet === sheetMotion ? bottomSheetMotion : originSheet;
+
   return (
     <>
       {/* 1. SLIDE-UP BOTTOM SHEET FOR "المزيد" (SECONDARY ACTIONS) */}
@@ -141,7 +146,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
             {/* Bottom Sheet — anchored to thumb reach, drag down to dismiss */}
             <motion.div
-              {...bottomSheetMotion}
+              {...moreSheetMotion}
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={{ top: 0.04, bottom: 0.6 }}

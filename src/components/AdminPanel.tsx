@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { SPRING_SNAPPY, overlayMotion, sheetMotion } from "../lib/motion";
+import { SPRING_SNAPPY, overlayMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
 import {
   X,
   Shield,
@@ -94,8 +95,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
     }, 400);
   };
 
-  if (!isOpen) return null;
-
+  // (No early return: AnimatePresence below needs to see the close to animate it.)
   const saveCodes = (updatedCodes: AccessCode[]) => {
     setCodes(updatedCodes);
     localStorage.setItem("sales_guide_codes", JSON.stringify(updatedCodes));
@@ -169,6 +169,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
   const revokedCodes = codes.filter(c => c.isRevoked).length;
   const activeCodes = totalCodes - revokedCodes;
 
+  const originSheet = useOriginSheet(isOpen, { width: 672 });
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -183,7 +185,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 onClose();
               }
             }}
-            {...sheetMotion}
+            {...originSheet}
             role="dialog"
             aria-modal="true"
             className="relative w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl overflow-hidden max-h-[94dvh] sm:max-h-[90vh] flex flex-col dir-rtl touch-pan-y my-auto"

@@ -74,11 +74,47 @@ export const toastMotion = {
   exit: { opacity: 0, y: -10, scale: 0.97, transition: { duration: 0.2, ease: EASE_OUT } },
 };
 
+/**
+ * Dynamic-Island bloom: a compact pill swells wider-then-taller like a droplet
+ * (two springs with different stiffness), and its contents sharpen inside.
+ */
+export const islandMotion = {
+  initial: { opacity: 0, scaleX: 0.32, scaleY: 0.55, y: -10, ...blurOf(8) },
+  animate: {
+    opacity: 1,
+    scaleX: 1,
+    scaleY: 1,
+    y: 0,
+    ...blurOf(0),
+    transition: {
+      scaleX: { type: "spring", stiffness: 360, damping: 19, mass: 0.8 },
+      scaleY: { type: "spring", stiffness: 520, damping: 26, mass: 0.8 },
+      y: { type: "spring", stiffness: 420, damping: 28 },
+      opacity: { duration: 0.16, ease: EASE_OUT },
+      filter: { duration: 0.3, ease: EASE_OUT },
+    },
+  },
+  exit: {
+    opacity: 0,
+    scaleX: 0.36,
+    scaleY: 0.5,
+    y: -8,
+    ...blurOf(6),
+    transition: { duration: 0.26, ease: EASE_OUT, opacity: { duration: 0.18, delay: 0.06 } },
+  },
+};
+/** Contents of an island: arrive a beat after the shape, out of a soft blur. */
+export const islandContentMotion = {
+  initial: { opacity: 0, scale: 0.94, ...blurOf(6) },
+  animate: { opacity: 1, scale: 1, ...blurOf(0), transition: { delay: 0.09, duration: 0.32, ease: EASE_OUT } },
+  exit: { opacity: 0, transition: { duration: 0.1 } },
+};
+
 /** Collapsible content (accordions). */
 export const collapseMotion = {
-  initial: { opacity: 0, height: 0 },
-  animate: { opacity: 1, height: "auto", transition: { height: { ...SPRING, stiffness: 360 }, opacity: { duration: 0.24, delay: 0.04 } } },
-  exit: { opacity: 0, height: 0, transition: { height: { duration: 0.26, ease: EASE_OUT }, opacity: { duration: 0.14 } } },
+  initial: { opacity: 0, height: 0, ...blurOf(6) },
+  animate: { opacity: 1, height: "auto", ...blurOf(0), transition: { height: { ...SPRING, stiffness: 360 }, opacity: { duration: 0.24, delay: 0.04 }, filter: { duration: 0.34, ease: EASE_OUT } } },
+  exit: { opacity: 0, height: 0, ...blurOf(4), transition: { height: { duration: 0.26, ease: EASE_OUT }, opacity: { duration: 0.14 }, filter: { duration: 0.2 } } },
 };
 
 /** Swapping views in place (tabs, steps, tool panels): the "page" transition. */

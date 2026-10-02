@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { X, Crown, Lock, Sparkles, CheckCircle2, Zap, KeyRound, ShieldAlert, Check } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { collapseMotion, overlayMotion, sheetMotion } from "../lib/motion";
+import { collapseMotion, overlayMotion } from "../lib/motion";
 import { CountUp } from "./ui/Motion";
+import { useOriginSheet } from "../lib/origin";
 import { getAllValidCodes, normalizeCode, isFreeTrialUser } from "./LockScreen";
 
 interface FreeTrialPaywallModalProps {
@@ -54,12 +55,15 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
     }
   };
 
+  // Grows out of whichever upgrade button was pressed, and returns into it.
+  const originSheet = useOriginSheet(isOpen, { width: 672 });
+
   return (
     <AnimatePresence>
       {isOpen && (
       <motion.div key="paywall-overlay" {...overlayMotion} className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 vz-backdrop safe-area-top safe-area-bottom">
         <motion.div
-          {...sheetMotion}
+          {...originSheet}
           role="dialog"
           aria-modal="true"
           className="w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[90vh] my-auto"

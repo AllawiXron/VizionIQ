@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { EASE_OUT, SPRING_SNAPPY, allowBlur, overlayMotion, sheetMotion } from "../lib/motion";
+import { EASE_OUT, SPRING_SNAPPY, allowBlur, overlayMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
 
 // Step transitions blur through on desktop; phones use the same slide without filters.
 const STEP_BLUR = allowBlur();
@@ -84,6 +85,8 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
     }
   };
 
+  const originSheet = useOriginSheet(isOpen, { width: 576 });
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -98,7 +101,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
         {/* MAIN DIALOG CONTAINER */}
         <motion.div
-          {...sheetMotion}
+          {...originSheet}
           role="dialog" aria-modal="true" className="relative z-[202] w-full max-w-xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl overflow-hidden text-white flex flex-col max-h-[92dvh] sm:max-h-[88vh] my-auto"
         >
           

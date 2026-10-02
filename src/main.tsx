@@ -5,12 +5,15 @@ import {SPRING} from './lib/motion';
 import App from './App.tsx';
 import {initGlassLight} from './lib/glassLight';
 import {initScrollReveal} from './lib/scrollReveal';
+import {initOriginTracker} from './lib/origin';
 import './index.css';
 
 // Cursor-reactive lighting for glass cards and buttons (desktop only).
 initGlassLight();
 // Attribute-driven scroll reveals ([data-reveal]) for blocks across the site.
 initScrollReveal();
+// Remembers the last pressed control so sheets can grow out of it (iOS-style spatial continuity).
+initOriginTracker();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

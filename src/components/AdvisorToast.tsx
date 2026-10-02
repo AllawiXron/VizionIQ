@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Check, Copy, Bookmark, Calendar, ArrowLeft, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { toastMotion } from "../lib/motion";
+import { islandContentMotion, islandMotion } from "../lib/motion";
 
 export interface ToastMessage {
   id: string;
@@ -44,11 +44,12 @@ export const AdvisorToast: React.FC<AdvisorToastProps> = ({ toast, onDismiss }) 
       {toast && (
       <motion.div
         key={toast.id}
-        {...toastMotion}
-        className="fixed top-5 inset-x-0 mx-auto z-[200] max-w-md w-[92%] sm:w-fit min-w-[280px] p-2.5 sm:p-3 rounded-full glass-floating glass-edge text-white dir-rtl flex items-center justify-between gap-3 pointer-events-auto"
+        {...islandMotion}
+        className="fixed top-5 inset-x-0 mx-auto z-[200] max-w-md w-[92%] sm:w-fit min-w-[280px] p-2.5 sm:p-3 rounded-full glass-floating glass-edge text-white dir-rtl pointer-events-auto origin-top"
         role="alert"
         aria-live="polite"
       >
+        <motion.div {...islandContentMotion} className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-full bg-white/[0.07] border border-white/10 flex items-center justify-center shrink-0">
             {getIcon()}
@@ -71,6 +72,7 @@ export const AdvisorToast: React.FC<AdvisorToastProps> = ({ toast, onDismiss }) 
         >
           <X className="w-3.5 h-3.5" />
         </button>
+        </motion.div>
       </motion.div>
       )}
     </AnimatePresence>

@@ -8,6 +8,7 @@ import { ArrowUp, BookOpen, Settings, LogOut, ShieldAlert, Sparkles, Star, Smart
 import { motion, AnimatePresence } from "motion/react";
 import { Reveal, RevealGroup, RevealItem, Magnetic, ChipPill, WordsReveal, ScrollWords, ScrollZoom, CountUp } from "./components/ui/Motion";
 import { EASE_OUT, SPRING, SPRING_SNAPPY } from "./lib/motion";
+import { takeOrigin } from "./lib/origin";
 import { chaptersList } from "./data/chaptersData";
 
 // Import modular components
@@ -231,10 +232,21 @@ export default function App() {
   // iOS-style depth: while a sheet is open, the page behind it recedes slightly.
   // Desktop/tablet only (phones show most sheets full-screen anyway).
   const isSheetOpen = isAdvisorOpen || isUpgradeModalOpen || isWelcomeModalOpen || isAdminOpen;
-  const [stageOrigin, setStageOrigin] = useState("50% 50%");
   const [stageEnabled] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches);
-  useEffect(() => {
-    if (isSheetOpen) setStageOrigin(`50% ${Math.round(window.scrollY + window.innerHeight / 2)}px`);
+  // Rack focus, like an app launching on iOS: the page pushes in toward the
+  // control that opened the sheet (and settles back from the same point).
+  // Default: the centre of the visible viewport (not of the whole, very tall page).
+  const stageOriginRef = useRef(
+    typeof window !== "undefined" ? `50% ${Math.round(window.scrollY + window.innerHeight / 2)}px` : "50% 0px"
+  );
+  const stageOrigin = useMemo(() => {
+    if (isSheetOpen && typeof window !== "undefined") {
+      const o = takeOrigin();
+      stageOriginRef.current = o
+        ? `${Math.round(o.x)}px ${Math.round(window.scrollY + o.y)}px`
+        : `50% ${Math.round(window.scrollY + window.innerHeight / 2)}px`;
+    }
+    return stageOriginRef.current;
   }, [isSheetOpen]);
 
   const sectionFallback = (label: string) => (
@@ -593,7 +605,8 @@ export default function App() {
             className="relative z-[1]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } }}
-            exit={{ opacity: 0, scale: 0.985, ...(stageEnabled ? { filter: "blur(8px)" } : {}), transition: { duration: 0.28, ease: EASE_OUT } }}
+            // Unlock: the lock screen zooms toward you and dissolves into blur.
+            exit={{ opacity: 0, scale: 1.08, filter: "blur(14px)", transition: { duration: 0.34, ease: EASE_OUT } }}
           >
             <LockScreen onSuccess={handleLoginSuccess} />
           </motion.div>
@@ -623,9 +636,9 @@ export default function App() {
       <motion.div
         className="vz-stage"
         style={{ transformOrigin: stageOrigin }}
-        initial={stageEnabled ? { y: 14 } : false}
-        animate={stageEnabled && isSheetOpen ? { y: 0, scale: 0.955, opacity: 0.55 } : { y: 0, scale: 1, opacity: 1 }}
-        transition={isSheetOpen ? { type: "spring", stiffness: 260, damping: 30, mass: 1 } : { type: "spring", stiffness: 300, damping: 28, mass: 0.9 }}
+        initial={stageEnabled ? { y: 0, scale: 0.97 } : false}
+        animate={stageEnabled && isSheetOpen ? { y: 0, scale: 1.035, opacity: 0.5 } : { y: 0, scale: 1, opacity: 1 }}
+        transition={isSheetOpen ? { type: "spring", stiffness: 240, damping: 30, mass: 1 } : { type: "spring", stiffness: 300, damping: 30, mass: 0.9 }}
       >
 
       {stageContent}

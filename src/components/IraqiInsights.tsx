@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { overlayMotion, sheetMotion } from "../lib/motion";
+import { collapseMotion, overlayMotion } from "../lib/motion";
+import { useOriginSheet } from "../lib/origin";
 import { ChipPill, CountUp, ScrollZoom, WordsReveal } from "./ui/Motion";
 import FadeInUp from "./FadeInUp";
 import { 
@@ -112,6 +113,9 @@ export default function IraqiInsights() {
       setExpandedInsightId(id);
     }
   };
+
+  // The random-insight sheet grows out of the shuffle button.
+  const originSheet = useOriginSheet(showRandomModal, { width: 672 });
 
   return (
     <div className="space-y-12 md:space-y-16 relative">
@@ -258,7 +262,10 @@ export default function IraqiInsights() {
                 </div>
 
                 {/* EXPANDABLE CORNER (DIAGNOSTIC DETAILED LESSON) */}
+                <AnimatePresence initial={false}>
                 {isExpanded && (
+                  <motion.div key="lesson" {...collapseMotion} className="overflow-hidden">
+                  {
                   isFreeTrial && index >= 3 ? (
                     <div className="pt-4 border-t space-y-3 text-center glass p-4 rounded-2xl border">
                       <p className="text-xs text-white/70 blur-[2px] select-none">
@@ -293,8 +300,10 @@ export default function IraqiInsights() {
                         </p>
                       </div>
                     </div>
-                  )
+                  )}
+                  </motion.div>
                 )}
+                </AnimatePresence>
 
               </div>
 
@@ -355,7 +364,7 @@ export default function IraqiInsights() {
                   setShowRandomModal(false);
                 }
               }}
-              {...sheetMotion}
+              {...originSheet}
               role="dialog"
               aria-modal="true"
               className="relative w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-5 sm:p-8 md:p-12 text-right space-y-6 sm:space-y-8 max-h-[90vh] overflow-y-auto touch-pan-y"
