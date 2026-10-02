@@ -226,7 +226,7 @@ function buildChunks(): KnowledgeChunk[] {
       source: `${label} — مثال وأغلاط`,
       text: clip(
         [
-          `${pb.example.title}: ${pb.example.story}`,
+          `مثال توضيحي (مو قصة حقيقية) — ${pb.example.title}: ${pb.example.story}`,
           ...pb.example.rows.map((r) => `${r.label}: ${r.before} ← ${r.after}`),
           `الدرس: ${pb.example.lesson}`,
           ...pb.mistakes.map((m) => `✗ ${m.mistake} — ✓ ${m.fix}`),

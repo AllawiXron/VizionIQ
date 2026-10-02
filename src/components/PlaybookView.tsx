@@ -219,7 +219,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
 
         {/* Example */}
         <section>
-          <SectionTitle id="pb-example" icon={TrendingUp} sub={pb.example.story}>{`مثال: ${pb.example.title}`}</SectionTitle>
+          <SectionTitle id="pb-example" icon={TrendingUp} sub={pb.example.story}>{`مثال توضيحي: ${pb.example.title}`}</SectionTitle>
           <div className="glass rounded-2xl sm:rounded-3xl overflow-hidden">
             <div className="grid grid-cols-3 gap-3 px-4 sm:px-5 py-3 text-xs font-bold text-white/50 border-b border-white/[0.07]">
               <span>الرقم</span>
