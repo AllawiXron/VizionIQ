@@ -88,7 +88,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       }
     },
     { key: "solutions", label: "الحلول", aria: "حلول المشاكل خطوة بخطوة", icon: LifeBuoy, active: !isMoreSheetOpen && (activeView === "solutions" || activeView === "solution"), onClick: () => go({ view: "solutions" }) },
-    { key: "more", label: "المزيد", aria: "المزيد", icon: Menu, active: isMoreSheetOpen || activeView === "tools" || activeView === "market", expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
+    { key: "more", label: "المزيد", aria: "المزيد", icon: Menu, active: isMoreSheetOpen || activeView === "tools" || activeView === "market" || activeView === "guide" || activeView === "guideModule", expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
   ];
 
   // The More sheet grows out of the dock button (or top menu button) like a liquid-glass panel.
@@ -151,13 +151,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>
                 <button
-                  onClick={() => go({ view: "market" })}
+                  onClick={() => go({ view: "guide" })}
                   className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-right cursor-pointer min-h-[56px] active:scale-[0.98] transition-[transform,background-color] motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Lightbulb className="w-4 h-4 text-amber-200" /></span>
                   <span className="flex-1 min-w-0">
-                    <span className="block text-sm font-black text-white">أسرار السوق العراقي</span>
-                    <span className="block text-[11px] text-white/55 truncate">دروس قصيرة من تجارب التجار</span>
+                    <span className="block text-sm font-black text-white">الدليل العراقي</span>
+                    <span className="block text-[11px] text-white/55 truncate">السوق، الدفع، التوصيل، الكمرك، المواسم والقانون</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { BookOpen, Check, LifeBuoy, Plus, Wrench } from "lucide-react";
+import { BookOpen, Check, Compass, LifeBuoy, Plus, Wrench } from "lucide-react";
 import { chaptersList } from "../../data/chaptersData";
 import { playbooksList } from "../../data/playbooksData";
+import { guideModules } from "../../data/iraqGuideData";
 
 /**
  * Small markdown renderer for advisor answers. Handles exactly what the
  * advisor is told to write: headings, lists, "- [ ]" action items, tables,
- * quotes, bold/italic/code, and [[chapterN]] / [[tool:id]] / [[solution:id]] course links.
+ * quotes, bold/italic/code, and [[chapterN]] / [[tool:id]] / [[solution:id]] / [[guide:id]] course links.
  * No HTML is ever injected — everything renders as React nodes.
  */
 
@@ -74,6 +75,16 @@ function CourseChip({ token, actions }: { key?: React.Key; token: string; action
       <button type="button" onClick={() => actions.onChapter?.(id)} className="vz-md-chip" title={pb.problem}>
         <LifeBuoy className="w-3.5 h-3.5" />
         الحل: {pb.title}
+      </button>
+    );
+  }
+  if (id.startsWith("guide:")) {
+    const gm = guideModules.find((g) => g.id === id.slice(6));
+    if (!gm) return null;
+    return (
+      <button type="button" onClick={() => actions.onChapter?.(id)} className="vz-md-chip" title={gm.subtitle}>
+        <Compass className="w-3.5 h-3.5" />
+        الدليل العراقي: {gm.title.split(":")[0]}
       </button>
     );
   }

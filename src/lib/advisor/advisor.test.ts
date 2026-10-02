@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { knowledgeSize, retrieveKnowledge, tokenize, normalizeArabic, chapterCatalog, solutionCatalog } from "./knowledge";
+import { knowledgeSize, retrieveKnowledge, tokenize, normalizeArabic, chapterCatalog, solutionCatalog, guideCatalog } from "./knowledge";
+import { guideModules } from "../../data/iraqGuideData";
 import { buildSystemInstruction } from "./prompt";
 import { playbooksList } from "../../data/playbooksData";
 import { parseNumber, parseProfileTags, parseSuggestionTags, sanitizeProfile, stripAdvisorTags, describeProfileUpdate } from "./profile";
@@ -36,6 +37,24 @@ describe("course knowledge retrieval", () => {
   it("brings up the message-cost playbook for an expensive-message question", () => {
     const hits = retrieveKnowledge("تكلفة الرسالة صارت غالية بالإعلان شلون أنزلها؟");
     expect(hits.some((h) => h.linkId === "solution:message-cost")).toBe(true);
+  });
+
+  it("brings up the Iraq Guide for customs and importing questions", () => {
+    const hits = retrieveKnowledge("شكد الكمرك على الملابس إذا استوردت من الصين؟ التعرفة الجديدة");
+    expect(hits.some((h) => h.linkId === "guide:importing")).toBe(true);
+  });
+
+  it("brings up the e-commerce law module for a licensing question", () => {
+    const hits = retrieveKnowledge("لازم إجازة تاجر إلكتروني لصفحتي بالانستغرام؟ نظام التجارة الإلكترونية");
+    expect(hits.some((h) => h.linkId === "guide:law")).toBe(true);
+  });
+
+  it("lists every guide module as a link in the prompt", () => {
+    const prompt = buildSystemInstruction({});
+    for (const g of guideModules) {
+      expect(guideCatalog()).toContain(`[[guide:${g.id}]]`);
+      expect(prompt).toContain(`[[guide:${g.id}]]`);
+    }
   });
 
   it("lists every playbook as a link in the prompt", () => {

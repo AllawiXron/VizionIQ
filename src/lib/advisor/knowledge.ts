@@ -9,6 +9,7 @@ import { caseStudiesList } from "../../data/caseStudiesData.js";
 import { insightsList } from "../../data/insightsData.js";
 import { swipeFilesList } from "../../data/swipeFilesData.js";
 import { playbooksList } from "../../data/playbooksData.js";
+import { guideModules, GUIDE_RESEARCHED } from "../../data/iraqGuideData.js";
 
 export interface KnowledgeChunk {
   id: string;
@@ -234,6 +235,34 @@ function buildChunks(): KnowledgeChunk[] {
       ),
     });
   }
+  for (const g of guideModules) {
+    const linkId = `guide:${g.id}`;
+    const label = `الدليل العراقي (بحث ${GUIDE_RESEARCHED}): ${g.title}`;
+    chunks.push({
+      id: `guide-${g.id}-stats`,
+      linkId,
+      source: label,
+      text: clip([g.subtitle, ...g.stats.map((s) => `• ${s.value}: ${s.label}`)].join("\n")),
+    });
+    g.sections.forEach((s, i) =>
+      chunks.push({
+        id: `guide-${g.id}-${i}`,
+        linkId,
+        source: `${label} — ${s.heading}`,
+        text: clip(
+          [
+            ...s.body,
+            ...(s.table ? [s.table.head.join(" | "), ...s.table.rows.map((r) => r.join(" | "))] : []),
+            ...(s.bullets ?? []).map((b) => `• ${b}`),
+            s.tip && `نصيحة: ${s.tip}`,
+            s.warning && `انتبه: ${s.warning}`,
+          ]
+            .filter(Boolean)
+            .join("\n")
+        ),
+      })
+    );
+  }
   phoneScripts.forEach((p, i) =>
     chunks.push({
       id: `phone-${i}`,
@@ -315,6 +344,11 @@ export function retrieveKnowledge(query: string, { k = 4, budgetChars = 5000 }: 
     perChapter.set(ch, (perChapter.get(ch) ?? 0) + 1);
   }
   return picked;
+}
+
+/** Iraq Guide module list for the prompt. */
+export function guideCatalog(): string {
+  return guideModules.map((g) => `- [[guide:${g.id}]] ${g.title}`).join("\n");
 }
 
 /** Playbook list for the prompt. */

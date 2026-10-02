@@ -60,8 +60,8 @@ export default function Navbar({
     { route: { view: "home" }, label: "الرئيسية", active: activeView === "home" },
     { route: { view: "chapters" }, label: "الفصول", active: activeView === "chapters" || activeView === "chapter" },
     { route: { view: "solutions" }, label: "الحلول", active: activeView === "solutions" || activeView === "solution" },
+    { route: { view: "guide" }, label: "الدليل العراقي", active: activeView === "guide" || activeView === "guideModule" || activeView === "market" },
     { route: { view: "tools" }, label: "الأدوات", active: activeView === "tools" },
-    { route: { view: "market" }, label: "أسرار السوق", active: activeView === "market" },
   ];
 
   const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";

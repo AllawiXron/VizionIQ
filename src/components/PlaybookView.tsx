@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
 import { playbooksList } from "../data/playbooksData";
+import { guideModules, playbookGuide } from "../data/iraqGuideData";
 import { EASE_OUT } from "../lib/motion";
 import { togglePlanDay, usePlaybookPlans } from "../lib/progress";
 import type { Route } from "../lib/route";
@@ -307,6 +308,16 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
                 {t.label}
               </button>
             ))}
+            {(playbookGuide[pb.id] ?? []).map((gid) => {
+              const gm = guideModules.find((g) => g.id === gid);
+              if (!gm) return null;
+              return (
+                <button key={gid} onClick={() => onNavigate({ view: "guideModule", id: gid })} className={`btn btn-glass px-3.5 min-h-[40px] rounded-full text-xs gap-1.5 ${focusRing}`}>
+                  <span aria-hidden="true">{gm.icon}</span>
+                  الدليل العراقي: {gm.title.split(":")[0]}
+                </button>
+              );
+            })}
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-4 border-t border-white/[0.07]">
             <p className="flex-1 text-sm text-white/65">عندك حالة خاصة؟ اكتب أرقامك للمستشار ويطبق هذا الحل على مشروعك.</p>

@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "motion/react";
-import { ArrowLeft, BookOpen, Bot, Calculator, CheckCircle2, Crown, Lightbulb } from "lucide-react";
+import { ArrowLeft, BookOpen, Bot, Calculator, CheckCircle2, Compass, Crown } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
 import { playbooksList } from "../data/playbooksData";
+import { upcomingSeasons } from "./guide/GuideTools";
 import { EASE_OUT } from "../lib/motion";
 import { nextChapterId, stageOf, useCourseProgress } from "../lib/progress";
 import type { Route } from "../lib/route";
@@ -38,6 +39,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
   const started = doneCount > 0 || progress.last !== null;
   const finished = doneCount >= total;
   const percent = Math.round((doneCount / total) * 100);
+  const nextSeason = upcomingSeasons(new Date(), 1)[0];
 
   const steps = [
     {
@@ -222,18 +224,20 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
         </ol>
       </motion.section>
 
-      {/* Secondary: market lessons + (trial) upgrade */}
+      {/* Secondary: the Iraq Guide (with the next season) + (trial) upgrade */}
       <motion.div {...rise(0.34)} className={`grid grid-cols-1 gap-3 sm:gap-4 ${isFreeTrialUser(userCode) ? "md:grid-cols-2" : ""}`}>
         <button
-          onClick={() => onNavigate({ view: "market" })}
+          onClick={() => onNavigate({ view: "guide" })}
           className={`group text-right glass-subtle glass-interactive rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex items-center gap-4 cursor-pointer ${focusRing}`}
         >
           <span className="w-10 h-10 shrink-0 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-amber-200">
-            <Lightbulb className="w-5 h-5" />
+            <Compass className="w-5 h-5" />
           </span>
           <span className="flex-1 min-w-0">
-            <span className="block text-sm sm:text-base font-black text-white">أسرار السوق العراقي</span>
-            <span className="block text-xs text-white/55 mt-0.5">دروس قصيرة من تجارب التجار، تقراها بدقيقة.</span>
+            <span className="block text-sm sm:text-base font-black text-white">الدليل العراقي: السوق، الدفع، التوصيل، الكمرك والقانون</span>
+            <span className="block text-xs text-white/55 mt-0.5">
+              {nextSeason ? <>الموسم الجاي: {nextSeason.title} بعد {nextSeason.days} يوم. شوف شنو تجهز.</> : "معلومات مبنية على بحث ومصادر عن البيع بالعراق."}
+            </span>
           </span>
           <ArrowLeft className="w-4 h-4 text-white/50 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
         </button>
