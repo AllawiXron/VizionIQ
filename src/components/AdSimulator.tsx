@@ -15,9 +15,8 @@ export default function AdSimulator() {
   const [cta, setCta] = useState("اطلب الآن - توصيل سريع");
 
   return (
-    <div className="w-full glass-panel rounded-2xl border border-white/5 p-3.5 sm:p-6 md:p-8 shadow-2xl relative" id="ad-simulator">
+    <div className="w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-3.5 sm:p-6 md:p-8 relative" id="ad-simulator">
       {/* Glow */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-white/3 rounded-full blur-2xl pointer-events-none" />
 
       {/* Header */}
       <div className="border-b border-white/10 pb-4 mb-6">

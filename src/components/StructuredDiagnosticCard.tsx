@@ -68,7 +68,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 1. Diagnosis Overview */}
       {data.diagnosis && (
-        <div className="p-3 sm:p-4 rounded-xl glass-subtle border border-white/11 sm:border-white/14">
+        <div className="p-3 sm:p-4 rounded-xl glass-subtle border sm:border-white/14">
           <div className="flex items-center gap-1.5 mb-1.5 text-zinc-100 font-bold text-xs sm:text-sm">
             <Sparkles className="w-4 h-4 text-zinc-100 shrink-0" />
             <span>1. التشخيص الشامل لواقع المشروع:</span>
@@ -81,7 +81,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 2. Key Metrics Analysis */}
       {data.keyMetrics && (
-        <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border border-white/10">
+        <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center gap-1.5 mb-1.5 text-zinc-300 font-bold text-xs sm:text-sm">
             <TrendingUp className="w-4 h-4 text-zinc-300 shrink-0" />
             <span>2. قراءة الأرقام والمؤشرات الحيوية:</span>
@@ -94,7 +94,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 3. Probable Causes */}
       {data.probableCauses.length > 0 && (
-        <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border border-white/10">
+        <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center gap-1.5 mb-1.5 text-rose-400 font-bold text-xs sm:text-sm">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
             <span>3. الأسباب الجذرية المحتملة:</span>
@@ -135,7 +135,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
 
       {/* 5. Ready-to-use Script / SOP */}
       {data.readyScriptOrSOP && (
-        <div className="p-3.5 rounded-xl glass-subtle border border-white/11">
+        <div className="p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 text-zinc-100 font-bold text-xs sm:text-sm">
               <MessageSquare className="w-4 h-4 text-zinc-100" />
@@ -167,7 +167,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
       {/* 6. Metric to Track & 7. Recommended Chapter */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {data.metricToTrack && (
-          <div className="p-3 rounded-xl glass-subtle border border-white/10">
+          <div className="p-3 rounded-xl glass-subtle border">
             <div className="flex items-center gap-1.5 text-zinc-200 font-bold text-xs mb-1">
               <BarChart3 className="w-4 h-4 text-zinc-300" />
               <span>6. المقياس الواجب متابعته:</span>
@@ -179,7 +179,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         )}
 
         {data.recommendedChapterOrTool && data.recommendedChapterOrTool.chapterTitle && (
-          <div className="p-3 rounded-xl glass-subtle border border-white/10">
+          <div className="p-3 rounded-xl glass-subtle border">
             <div className="flex items-center gap-1.5 text-zinc-100 font-bold text-xs mb-1">
               <BookOpen className="w-4 h-4" />
               <span>7. الفصل المقترح:</span>

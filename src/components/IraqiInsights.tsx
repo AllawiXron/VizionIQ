@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { overlayMotion, sheetMotion } from "../lib/motion";
 import FadeInUp from "./FadeInUp";
 import { 
   Search, 
@@ -115,19 +116,17 @@ export default function IraqiInsights() {
     <div className="space-y-12 md:space-y-16 relative">
       
       {/* SECTION HEADER BANNER - Sleek Dark Aesthetic with Gold Accents */}
-      <div className="relative rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-14 border border-white/14 glass backdrop-blur-2xl overflow-hidden md:shadow-[0_0_50px_rgba(0,0,0,0.33)] shadow-xl group">
-        <div className="absolute top-0 right-0 w-1.5 sm:w-2 h-full bg-gradient-to-b from-white to-[#F5F5F7]" />
-        <div className="absolute -top-32 -left-32 w-72 h-72 bg-white/5 rounded-full md:blur-[80px] blur-3xl pointer-events-none group-hover:bg-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500" />
-        <div className="absolute -bottom-32 -right-32 w-72 h-72 bg-[#343436]/20 rounded-full md:blur-[80px] blur-3xl pointer-events-none" />
+      <div className="relative rounded-3xl sm:rounded-4xl p-5 sm:p-8 md:p-14 glass-elevated glass-edge overflow-hidden group">
+        <div className="absolute top-0 right-0 w-[2px] h-full bg-gradient-to-b from-white/45 via-white/10 to-transparent" />
         
         <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-10 justify-between relative z-10">
           <div className="space-y-3 sm:space-y-5 text-right max-w-4xl">
-            <span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-white/10 to-white/3 border border-white/18 text-[11px] sm:text-sm text-zinc-100 font-black tracking-wide shadow-lg">
-              <Flame className="w-3.5 h-3.5 text-zinc-100 fill-zinc-200/50" />
+            <span className="vz-eyebrow text-[11px] sm:text-sm">
+              <Flame className="w-3.5 h-3.5 opacity-80" />
               <span>حقائق يكتشفها أغلب التجار بعد ما يخسرون</span>
             </span>
-            <div className="border-r-2 border-white/18 pr-3 sm:pr-5">
-              <h3 className="text-xl sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight drop-shadow-lg">
+            <div>
+              <h3 className="text-xl sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight">
                 دروس وعبَر واقعية <br className="hidden md:block"/> من قلب السوق العراقي اليومي
               </h3>
             </div>
@@ -135,10 +134,10 @@ export default function IraqiInsights() {
               هذه الدروس ليست نظريات كتب تسويقية مترجمة من الغرب، بل هي عصارة مشاهدات وتجارب عملية لملايين الدنانير التي تم صرفها وخسارتها في محافظات العراق لانتزاع أعلى نسب استلام وحماية هوامش الربح الصافية.
             </p>
           </div>
-          <div className="flex flex-row md:flex-col gap-3 sm:gap-5 shrink-0 items-center justify-between w-full md:w-auto p-3 sm:p-6 bg-white/[0.02] border border-white/5 rounded-2xl sm:rounded-3xl backdrop-blur-md shadow-inner">
-            <span className="text-3xl sm:text-6xl md:text-7xl filter drop-md:shadow-[0_0_20px_rgba(0,0,0,0.6)] shadow-xl">💡</span>
+          <div className="flex flex-row md:flex-col gap-3 sm:gap-5 shrink-0 items-center justify-between w-full md:w-auto p-4 sm:p-6 glass-subtle rounded-3xl">
+            <span className="text-3xl sm:text-6xl md:text-7xl">💡</span>
             <button               onClick={handleRandomize}
-              className="px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#F5F5F7] via-white to-[#F5F5F7] bg-[length:200%_100%] text-[#050506] font-black text-xs sm:text-sm transition-all motion-reduce:transition-none motion-reduce:transform-none md:shadow-[0_0_20px_rgba(0,0,0,0.6)] shadow-xl flex items-center gap-1.5 cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="btn btn-primary px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl text-[#050506] font-black text-xs sm:text-sm flex items-center gap-1.5 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               <Shuffle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>حقيقة عشوائية 🎲</span>
@@ -148,7 +147,7 @@ export default function IraqiInsights() {
       </div>
 
       {/* FILTER & SEARCH BAR */}
-      <div className="glass backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-4xl p-3.5 sm:p-6 shadow-2xl space-y-4 sm:space-y-6 relative z-10">
+      <div className="glass rounded-3xl sm:rounded-4xl p-4 sm:p-6 space-y-4 sm:space-y-6 relative z-10">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-5 items-center justify-between">
           
           {/* Search Input */}
@@ -158,7 +157,7 @@ export default function IraqiInsights() {
               placeholder="ابحث عن حقيقة، خطأ شائع، أو كلمة تسويقية..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-4 pr-10 py-2.5 sm:py-3.5 bg-black/50 border border-white/10 rounded-xl sm:rounded-2xl text-xs sm:text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/27 focus:bg-white/[0.03] transition-all motion-reduce:transition-none motion-reduce:transform-none text-right shadow-inner min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="vz-field w-full pl-4 pr-10 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm text-white transition-all motion-reduce:transition-none motion-reduce:transform-none text-right shadow-inner min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             />
             {searchTerm && (
               <button                 onClick={() => setSearchTerm("")}
@@ -170,7 +169,7 @@ export default function IraqiInsights() {
           </div>
 
           {/* Quick Counter Display */}
-          <span className="text-xs sm:text-sm text-white/60 font-bold bg-white/[0.03] px-3.5 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border border-white/5 w-full md:w-auto text-center">
+          <span className="text-xs sm:text-sm text-white/55 font-bold glass-subtle px-4 py-2 sm:px-5 sm:py-2.5 rounded-full w-full md:w-auto text-center">
             حقائق: <span className="text-zinc-100 font-mono font-black text-sm sm:text-lg mx-1">{filteredInsights.length}</span> من أصل <span className="font-mono text-white mx-1">{insightsList.length}</span>
           </span>
         </div>
@@ -186,10 +185,12 @@ export default function IraqiInsights() {
             return (
               <button                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3 py-2 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1.5 cursor-pointer border shadow-sm shrink-0 whitespace-nowrap ${ isActive ? "bg-gradient-to-br from-white/10 to-white/3 border-white/22 text-zinc-100 md:shadow-[0_5px_15px_rgba(0,0,0,0.33)] shadow-xl" : "bg-gradient-to-b from-white/[0.04] to-transparent border-white/10 text-white/60 hover:bg-white/[0.08] hover:text-white" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                data-active={isActive}
+                aria-pressed={isActive}
+                className="vz-chip shrink-0 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
                 <span>{cat.label}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-black ${isActive ? "bg-[#F5F5F7] text-[#050506]" : "bg-white/10 text-white/70"}`}>
+                <span className={`text-[10px] px-1.5 rounded-full font-mono font-black ${isActive ? "bg-black/10 text-[#050506]" : "bg-white/10 text-white/70"}`}>
                   {count}
                 </span>
               </button>
@@ -208,17 +209,17 @@ export default function IraqiInsights() {
             <FadeInUp key={insight.id} delay={Math.min(index * 0.05, 0.3)}>
               <div
                 onClick={() => toggleExpand(insight.id)}
-                className={`group rounded-2xl sm:rounded-4xl border transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 overflow-hidden cursor-pointer flex flex-col justify-between shadow-xl h-full ${
+                className={`group rounded-3xl sm:rounded-4xl overflow-hidden cursor-pointer flex flex-col justify-between h-full glass-interactive ${
                   isExpanded
-                    ? "glass border-white/22 md:shadow-[0_15px_40px_rgba(0,0,0,0.33)] shadow-xl"
-                    : "glass border-white/10 hover:border-white/14 backdrop-blur-md"
+                    ? "glass-elevated"
+                    : "glass"
                 }`}
               >
               <div className="p-4 sm:p-7 space-y-3 sm:space-y-5">
                 
                 {/* Card Top Information */}
                 <div className="flex justify-between items-center flex-wrap gap-2">
-                  <span className={`text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-xl border uppercase tracking-wider shadow-inner ${
+                  <span className={`text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full border uppercase tracking-wider ${
                     insight.category === "ads" ? "bg-white/5 text-zinc-100 border-white/14" :
                     insight.category === "sales" ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30" :
                     insight.category === "pricing" ? "bg-white/5 text-zinc-200 border-white/14" :
@@ -231,7 +232,7 @@ export default function IraqiInsights() {
                     {insight.categoryLabel}
                   </span>
 
-                  <div className="flex items-center gap-1.5 bg-white/[0.02] px-2.5 py-1 rounded-xl border border-white/5">
+                  <div className="flex items-center gap-1.5 bg-white/[0.03] px-2.5 py-1 rounded-full border border-white/[0.06]">
                     <span className="text-[10px] sm:text-[11px] text-white/60 font-mono">الصعوبة:</span>
                     <span className={`text-[10px] sm:text-[11px] font-black ${
                       insight.difficulty === "بسيط" ? "text-emerald-400" :
@@ -253,7 +254,7 @@ export default function IraqiInsights() {
                 {/* EXPANDABLE CORNER (DIAGNOSTIC DETAILED LESSON) */}
                 {isExpanded && (
                   isFreeTrial && index >= 3 ? (
-                    <div className="pt-4 border-t border-white/10 space-y-3 text-center glass p-4 rounded-2xl border border-white/14">
+                    <div className="pt-4 border-t space-y-3 text-center glass p-4 rounded-2xl border">
                       <p className="text-xs text-white/70 blur-[2px] select-none">
                         {insight.lesson}
                       </p>
@@ -263,7 +264,7 @@ export default function IraqiInsights() {
                             e.stopPropagation();
                             triggerUpgradeModal();
                           }}
-                          className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs shadow-md hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                          className="btn btn-primary px-4 py-2 rounded-xl text-[#050506] font-black text-xs inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                         >
                           <Crown className="w-3.5 h-3.5" />
                           <span>ترقية الحساب وكشف الحل الفوري ⚡</span>
@@ -271,7 +272,7 @@ export default function IraqiInsights() {
                       </div>
                     </div>
                   ) : (
-                    <div className="pt-4 border-t border-white/10 space-y-4 text-right animate-[fadeIn_0.3s_ease]">
+                    <div className="pt-4 border-t border-white/10 space-y-4 text-right animate-fade-in">
                       <div className="space-y-1.5">
                         <span className="text-[11px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-zinc-100"/> تحليل الخلل:</span>
                         <p className="fluid-prose text-white/80 font-light pr-3 border-r border-white/10">
@@ -279,7 +280,7 @@ export default function IraqiInsights() {
                         </p>
                       </div>
 
-                      <div className="space-y-1.5 bg-gradient-to-br from-white/5 to-transparent border border-white/14 p-4 sm:p-5 rounded-2xl shadow-inner">
+                      <div className="space-y-1.5 bg-emerald-400/[0.05] border border-emerald-400/15 p-4 sm:p-5 rounded-2xl">
                         <span className="text-[11px] font-black text-zinc-100 block flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400"/> الحل والخطوة العملية:</span>
                         <p className="fluid-prose text-white/95 font-bold">
                           {insight.practicalAction}
@@ -292,7 +293,7 @@ export default function IraqiInsights() {
               </div>
 
               {/* Card Footer controls */}
-              <div className="px-4 sm:px-7 py-3.5 sm:py-4 bg-gradient-to-t from-black/60 to-transparent border-t border-white/5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-white/60 mt-auto">
+              <div className="px-4 sm:px-7 py-3.5 sm:py-4 border-t border-white/[0.06] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-white/60 mt-auto">
                 
                 {/* Interactive VOTE button - 'والله هاي صارت وياي' */}
                 <button                   onClick={(e) => handleVote(insight.id, e)}
@@ -320,7 +321,7 @@ export default function IraqiInsights() {
 
       {/* Empty Search Result feedback */}
       {filteredInsights.length === 0 && (
-        <div className="text-center py-20 glass to-black/40 border border-white/10 rounded-4xl space-y-4 backdrop-blur-sm shadow-xl">
+        <div className="text-center py-20 glass to-black/40 border rounded-4xl space-y-4">
           <span className="text-6xl block drop-shadow-lg">🔍🏜️</span>
           <h4 className="text-lg font-black text-white">لم نجد أي حقيقة تطابق بحثك</h4>
           <p className="text-sm text-white/70 max-w-sm mx-auto leading-relaxed">
@@ -338,7 +339,7 @@ export default function IraqiInsights() {
       {/* RANDOM INSIGHT FEATURE MODAL */}
       <AnimatePresence>
         {showRandomModal && randomInsight && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md">
+          <motion.div key="insight-overlay" {...overlayMotion} className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 vz-backdrop">
             <motion.div
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
@@ -348,22 +349,21 @@ export default function IraqiInsights() {
                   setShowRandomModal(false);
                 }
               }}
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.2 }}
-              className="relative w-full max-w-2xl glass border border-white/22 rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 md:shadow-[0_0_80px_rgba(0,0,0,0.33)] shadow-xl text-right space-y-6 sm:space-y-8 max-h-[90vh] overflow-y-auto touch-pan-y"
+              {...sheetMotion}
+              role="dialog"
+              aria-modal="true"
+              className="relative w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-5 sm:p-8 md:p-12 text-right space-y-6 sm:space-y-8 max-h-[90vh] overflow-y-auto touch-pan-y"
             >
               {/* Mobile Drag Down Bar Indicator */}
-              <div className="w-12 h-1 bg-white/30 rounded-full mx-auto my-1 sm:hidden shrink-0 cursor-grab active:cursor-grabbing" />
+              <div className="w-10 h-[5px] bg-white/25 rounded-full mx-auto my-1 sm:hidden shrink-0 cursor-grab active:cursor-grabbing" />
 
-              <div className="absolute top-0 right-0 w-2 h-full bg-gradient-to-b from-white to-[#F5F5F7]" />
-              <div className="absolute -top-32 -left-32 w-64 h-64 bg-white/10 rounded-full md:blur-[80px] blur-3xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-[2px] h-full bg-gradient-to-b from-white/45 via-white/10 to-transparent" />
               
               {/* Modal top decor */}
             <div className="flex justify-between items-center border-b border-white/10 pb-6 relative z-10">
               <button                 onClick={() => setShowRandomModal(false)}
-                className="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border border-white/5 shadow-inner hover:-translate-y-0.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                aria-label="إغلاق"
+                className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -378,7 +378,7 @@ export default function IraqiInsights() {
                 📁 {randomInsight.categoryLabel}
               </span>
 
-              <p className="text-xl md:text-3xl font-black text-white leading-relaxed drop-shadow-lg pr-4 border-r-4 border-white/27">
+              <p className="text-xl md:text-3xl font-black text-white leading-relaxed drop-shadow-lg pr-4 border-r-2 border-white/27">
                 "{randomInsight.text}"
               </p>
 
@@ -422,7 +422,7 @@ export default function IraqiInsights() {
             </div>
 
           </motion.div>
-        </div>
+        </motion.div>
         )}
       </AnimatePresence>
 

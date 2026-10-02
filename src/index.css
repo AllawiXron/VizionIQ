@@ -652,6 +652,44 @@ p {
   }
 }
 
+/* ==========================================================================
+   SCROLL REVEAL — [data-reveal] (driven by lib/scrollReveal.ts)
+   ========================================================================== */
+.reveal-ready [data-reveal]:not(.is-revealed) {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0) scale(0.975);
+  filter: blur(8px);
+}
+.reveal-ready [data-reveal] {
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo),
+    filter 0.8s var(--ease-out-expo);
+}
+.reveal-ready [data-reveal].is-revealed {
+  transition-delay: 0s;
+}
+[data-reveal-delay="1"] { transition-delay: 0.07s !important; }
+[data-reveal-delay="2"] { transition-delay: 0.14s !important; }
+[data-reveal-delay="3"] { transition-delay: 0.21s !important; }
+[data-reveal-delay="4"] { transition-delay: 0.28s !important; }
+[data-reveal-delay="5"] { transition-delay: 0.35s !important; }
+[data-reveal-delay="6"] { transition-delay: 0.42s !important; }
+
+@media (max-width: 767px) {
+  .reveal-ready [data-reveal]:not(.is-revealed) {
+    filter: none;
+    transform: translate3d(0, 18px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready [data-reveal]:not(.is-revealed) {
+    transform: none;
+    filter: none;
+  }
+}
+
 /* All native form controls ease between states instead of snapping. */
 input, select, textarea {
   transition:
@@ -1235,10 +1273,6 @@ pre, code, kbd, samp, .no-word-break {
   }
 
   .vizion-tools-suite .vizion-tool-viewport > div:first-child {
-    display: none;
-  }
-
-  .vizion-tools-suite .vizion-tool-viewport > div:nth-child(2) {
     gap: 1.15rem;
   }
 

@@ -305,7 +305,7 @@ export default function Navbar({
                     closeMenu();
                     onOpenUpgrade?.();
                   }}
-                  className="px-2.5 py-1.5 bg-[#F5F5F7] text-[#050506] rounded-lg text-[10px] font-black hover:bg-[#F5F5F7] transition-colors shadow-sm min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="btn btn-primary px-2.5 py-1.5 text-[#050506] rounded-lg text-[10px] font-black min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 >
                   ترقية
                 </button>

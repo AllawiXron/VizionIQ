@@ -76,9 +76,8 @@ export default function ThirtyDayPlan() {
   const filteredTasks = tasks.filter(t => getWeekForDay(t.day) === activeWeek);
 
   return (
-    <div className="w-full glass-panel rounded-2xl border border-white/5 p-3.5 sm:p-6 md:p-8 shadow-2xl relative" id="thirty-day-plan">
+    <div className="w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-3.5 sm:p-6 md:p-8 relative" id="thirty-day-plan">
       {/* Background glow */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/3 rounded-full blur-2xl pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/10 pb-5 mb-6">
@@ -217,7 +216,6 @@ export default function ThirtyDayPlan() {
         <div className="lg:col-span-5">
           {selectedTask ? (
             <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 space-y-4 h-full flex flex-col justify-between relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-16 h-16 bg-white/3 rounded-full blur-xl pointer-events-none" />
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center border-b border-white/5 pb-3">

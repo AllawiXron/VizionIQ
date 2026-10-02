@@ -267,7 +267,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 </div>
                 <a                   href="/all_website_texts.json"
                   download="all_website_texts.json"
-                  className="px-4 py-2 bg-[#F5F5F7] hover:bg-[#F5F5F7] text-[#050506] font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shrink-0 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:scale-[1.02] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="btn btn-primary px-4 py-2 text-[#050506] font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shrink-0 min-h-[44px] flex items-center justify-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 >
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   <span>تحميل ملف JSON كامل ⚡</span>

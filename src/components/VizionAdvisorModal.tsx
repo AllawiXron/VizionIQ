@@ -40,6 +40,7 @@ import {
   Edit3
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { EASE_OUT, SPRING_SNAPPY, overlayMotion, sheetMotion } from "../lib/motion";
 import { getAllValidCodes, normalizeCode } from "./LockScreen";
 import { BusinessDiagnosticStepper } from "./BusinessDiagnosticStepper";
 import { StructuredDiagnosticCard } from "./StructuredDiagnosticCard";
@@ -525,7 +526,7 @@ function ChatInputForm({
         <div 
           role="region"
           aria-label="أسئلة مقترحة"
-          className="p-3 sm:p-3.5 rounded-2xl glass-subtle border border-white/18 shadow-xl text-white animate-in fade-in slide-in-from-bottom-2 duration-150"
+          className="p-3 sm:p-3.5 rounded-2xl glass-subtle border text-white animate-in fade-in slide-in-from-bottom-2 duration-150"
         >
           <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-white/10">
             <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-zinc-100">
@@ -552,7 +553,7 @@ function ChatInputForm({
                   onSendSuggestion(item.prompt, item.suggestions, item.topicId);
                 }}
                 disabled={isLoading}
-                className="text-right p-2.5 sm:p-3 rounded-xl bg-black/30 hover:glass-subtle active:bg-white/10 border border-white/10 hover:border-white/22 text-xs sm:text-sm font-medium text-white/90 hover:text-white transition flex items-center justify-between gap-2.5 min-h-[44px] cursor-pointer group disabled:opacity-50 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="text-right p-2.5 sm:p-3 rounded-xl bg-black/30 hover:bg-white/[0.06] active:bg-white/10 border border-white/10 hover:border-white/22 text-xs sm:text-sm font-medium text-white/90 hover:text-white transition flex items-center justify-between gap-2.5 min-h-[44px] cursor-pointer group disabled:opacity-50 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <span className="leading-snug">{item.label}</span>
                 <ArrowLeft className="w-3.5 h-3.5 text-zinc-100/70 group-hover:text-zinc-100 shrink-0 transition-transform group-hover:-translate-x-0.5" />
@@ -595,7 +596,7 @@ function ChatInputForm({
             aria-label="اكتب سؤالك هنا..."
             disabled={isLoading}
             dir="rtl"
-            className="w-full px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-black/35 border border-white/15 focus:border-white/35 text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="w-full px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-black/35 border border-white/10 focus:border-white/30 text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
           />
         </div>
 
@@ -605,7 +606,7 @@ function ChatInputForm({
           disabled={isSendDisabled}
           aria-label="إرسال"
           title="إرسال"
-          className="px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-[#F5F5F7] hover:bg-[#F5F5F7] active:bg-[#F5F5F7] text-[#050506] font-black text-xs sm:text-sm flex items-center gap-1.5 transition-all motion-reduce:transition-none motion-reduce:transform-none active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 min-h-[42px] justify-center shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506] min-w-[42px]"
+          className="btn btn-primary px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[#050506] font-black text-xs sm:text-sm flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 min-h-[42px] justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506] min-w-[42px]"
         >
           {isLoading ? (
             <RefreshCw className="w-4 h-4 animate-spin text-[#050506]" />
@@ -1453,20 +1454,15 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
     }
   };
 
-  if (!isOpen) return null;
-
   const currentDiag = DIAGNOSTIC_CATEGORIES.find((c) => c.id === selectedDiagCat) || DIAGNOSTIC_CATEGORIES[0];
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex h-[100dvh] items-center justify-center overflow-hidden overscroll-none p-0 sm:p-4 bg-black/85 backdrop-blur-md">
+        <motion.div key="advisor-overlay" {...overlayMotion} className="fixed inset-0 z-[100] flex h-[100dvh] items-center justify-center overflow-hidden overscroll-none p-0 sm:p-4 vz-backdrop">
           <motion.div
             ref={modalRef}
-            initial={{ opacity: 0, scale: 0.98, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: 20 }}
-            transition={{ duration: 0.2 }}
+            {...sheetMotion}
             role="dialog"
             aria-modal="true"
             aria-labelledby="advisor-modal-title"
@@ -1475,23 +1471,23 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 ? { height: `${viewportHeight}px`, maxHeight: `${viewportHeight}px` }
                 : undefined
             }
-            className={`vizion-advisor-modal ${isCompactLayout ? "vizion-advisor-compact" : ""} relative w-full max-w-4xl h-[100dvh] sm:h-[88vh] min-h-0 bg-black/30 border-0 sm:border border-white/14 rounded-none sm:rounded-3xl shadow-xl flex flex-col overflow-hidden overscroll-none text-white dir-rtl motion-reduce:transition-none motion-reduce:transform-none`}
+            className={`vizion-advisor-modal ${isCompactLayout ? "vizion-advisor-compact" : ""} relative w-full max-w-4xl h-[100dvh] sm:h-[88vh] min-h-0 glass-elevated glass-edge border-0 sm:border rounded-none sm:rounded-4xl flex flex-col overflow-hidden overscroll-none text-white dir-rtl motion-reduce:transition-none motion-reduce:transform-none`}
           >
             {/* Mobile Pull Indicator */}
-            <div className="w-10 h-1 bg-white/20 rounded-full mx-auto my-1 sm:hidden shrink-0" />
+            <div className="w-10 h-[5px] bg-white/20 rounded-full mx-auto mt-1.5 mb-1 sm:hidden shrink-0" />
 
             {/* In-Modal Toast Alerts */}
             <AdvisorToast toast={toast} onDismiss={() => setToast(null)} />
 
             {/* Calm Header */}
-            <div className="px-3 sm:px-6 py-2 sm:py-2.5 bg-white/[0.02] border-b border-white/10 flex items-center justify-between relative shrink-0">
+            <div className="px-3 sm:px-6 py-2 sm:py-3 vz-sheet-header flex items-center justify-between relative shrink-0">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="relative shrink-0">
-                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/14 flex items-center justify-center text-zinc-100">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-b from-white to-zinc-300 flex items-center justify-center text-[#050506] shadow-[inset_0_1px_0_#fff]">
                     <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                   {isVip && (
-                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-emerald-500 border-2 border-[#050506] rounded-full" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-emerald-400 border-2 border-[#1c1c1f] rounded-full" />
                   )}
                 </div>
 
@@ -1523,7 +1519,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       onClick={handleStartNewTopic}
                       title="بدء موضوع استشارة جديد"
                       aria-label="موضوع جديد"
-                      className="px-2 sm:px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-100 border border-white/14 text-xs sm:text-sm font-bold flex items-center gap-1 cursor-pointer active:scale-[0.97] shrink-0 min-h-[38px] justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                      className="btn btn-glass px-3 sm:px-3.5 rounded-full text-xs sm:text-sm font-bold gap-1.5 shrink-0 !min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                     >
                       <Sparkles className="w-3.5 h-3.5 text-zinc-100" />
                       <span className="hidden sm:inline">موضوع جديد</span>
@@ -1533,7 +1529,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       onClick={handleClearHistory}
                       title="مسح سجل المحادثة"
                       aria-label="مسح السجل"
-                      className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-rose-500/10 text-white/60 hover:text-rose-400 transition-colors border border-white/5 cursor-pointer shrink-0 min-h-[38px] min-w-[38px] flex items-center justify-center active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+                      className="vz-close !w-10 !h-10 hover:!text-rose-300 hover:!bg-rose-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -1544,9 +1540,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   onClick={onClose}
                   aria-label="إغلاق"
                   title="إغلاق"
-                  className="p-1.5 sm:px-3 sm:py-2 rounded-xl bg-transparent sm:bg-white/5 hover:bg-white/10 text-white/80 hover:text-white transition-colors sm:border border-white/10 cursor-pointer shrink-0 min-h-[38px] min-w-[38px] flex items-center justify-center gap-1 active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  className="vz-close !w-auto sm:px-3.5 gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
-                  <X className="w-5 h-5 sm:w-4 sm:h-4" />
+                  <X className="w-4 h-4" />
                   <span className="hidden sm:inline text-xs font-bold">إغلاق</span>
                 </button>
               </div>
@@ -1576,7 +1572,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* Price Breakdown & Value Pitch Box */}
-                <div className="max-w-xl mx-auto glass border-2 border-white/35 rounded-3xl p-5 sm:p-7 shadow-2xl space-y-5 relative overflow-hidden">
+                <div className="max-w-xl mx-auto glass border-2 rounded-3xl p-5 sm:p-7 space-y-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 bg-gradient-to-r from-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
                     <Flame className="w-3.5 h-3.5 fill-[#050506]" />
                     <span>عرض الاشتراك الشهري الفوري</span>
@@ -1656,7 +1652,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* Existing Subscriber Code Entry */}
-                <div className="max-w-xl mx-auto glass-subtle p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3 text-right">
+                <div className="max-w-xl mx-auto glass-subtle p-4 sm:p-5 rounded-2xl border space-y-3 text-right">
                   <div className="space-y-1">
                     <label htmlFor="vip-code-input" className="text-xs font-bold text-zinc-100 flex items-center gap-1.5">
                       <KeyRound className="w-4 h-4 text-zinc-100" />
@@ -1678,7 +1674,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                     <button 
                       type="submit"
-                      className="px-5 py-2.5 rounded-xl bg-[#F5F5F7] hover:bg-[#F5F5F7] text-[#050506] font-black text-xs sm:text-sm shadow-md active:scale-[0.97] transition cursor-pointer whitespace-nowrap min-h-[44px] flex items-center justify-center gap-1.5"
+                      className="btn btn-primary px-5 py-2.5 rounded-xl text-[#050506] font-black text-xs sm:text-sm whitespace-nowrap min-h-[44px] flex items-center justify-center gap-1.5"
                     >
                       <span>تفعيل الرمز</span>
                       <ArrowLeft className="w-4 h-4" />
@@ -1703,73 +1699,68 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
             ) : (
               <>
                 {/* Mode Selector - Universal Responsive Horizontal Pill Tab Bar */}
-                <div className="px-2 sm:px-6 py-2 bg-white/[0.02] border-b border-white/10 shrink-0 w-full overflow-hidden">
+                <div className="px-2 sm:px-6 py-2 border-b border-white/[0.06] shrink-0 w-full overflow-hidden">
                   <div className="vizion-advisor-tab-strip flex flex-row flex-nowrap items-center gap-1.5 sm:gap-2 overflow-x-auto w-full no-scrollbar py-0.5">
                     <button
                       type="button"
                       onClick={() => setActiveTab("chat")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "chat"
-                          ? "bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black shadow-md scale-[1.02]"
-                          : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "chat" ? "text-[#050506]" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <MessageSquare className="w-4 h-4 shrink-0" />
-                      <span>المحادثة الحرة</span>
+                      {activeTab === "chat" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-white to-zinc-200 shadow-[inset_0_1px_0_#fff,0_6px_18px_-8px_rgba(255,255,255,0.35)]" />}
+                      <MessageSquare className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">المحادثة الحرة</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("business_diagnostic")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "business_diagnostic"
-                          ? "bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black shadow-md scale-[1.02]"
-                          : "bg-white/5 hover:bg-white/10 text-zinc-100 border border-white/14"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "business_diagnostic" ? "text-[#050506]" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <Sparkles className="w-4 h-4 text-zinc-100 shrink-0" />
-                      <span>تشخيص مشروعي</span>
+                      {activeTab === "business_diagnostic" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-white to-zinc-200 shadow-[inset_0_1px_0_#fff,0_6px_18px_-8px_rgba(255,255,255,0.35)]" />}
+                      <Sparkles className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">تشخيص مشروعي</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("diagnostic")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "diagnostic"
-                          ? "bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black shadow-md scale-[1.02]"
-                          : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "diagnostic" ? "text-[#050506]" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <Compass className="w-4 h-4 shrink-0" />
-                      <span>مشخّص المشاكل</span>
+                      {activeTab === "diagnostic" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-white to-zinc-200 shadow-[inset_0_1px_0_#fff,0_6px_18px_-8px_rgba(255,255,255,0.35)]" />}
+                      <Compass className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">مشخّص المشاكل</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("script_gen")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "script_gen"
-                          ? "bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black shadow-md scale-[1.02]"
-                          : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "script_gen" ? "text-[#050506]" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <FileText className="w-4 h-4 shrink-0" />
-                      <span>مولّد السكريبتات</span>
+                      {activeTab === "script_gen" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-white to-zinc-200 shadow-[inset_0_1px_0_#fff,0_6px_18px_-8px_rgba(255,255,255,0.35)]" />}
+                      <FileText className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">مولّد السكريبتات</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setActiveTab("saved_plan")}
-                      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
-                        activeTab === "saved_plan"
-                          ? "bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black shadow-md scale-[1.02]"
-                          : "glass-subtle hover:bg-white/5 text-white/80 border border-white/10"
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "saved_plan" ? "text-[#050506]" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
                       }`}
                     >
-                      <Bookmark className="w-4 h-4 text-zinc-100 shrink-0" />
-                      <span>التوصيات والخطة</span>
+                      {activeTab === "saved_plan" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-white to-zinc-200 shadow-[inset_0_1px_0_#fff,0_6px_18px_-8px_rgba(255,255,255,0.35)]" />}
+                      <Bookmark className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">التوصيات والخطة</span>
                       {(savedRecommendations.length > 0 || planTasks.length > 0) && (
-                        <span className="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-[#F5F5F7] text-[#050506] shadow-sm ms-1">
+                        <span className="relative px-1.5 rounded-full text-[10px] font-black bg-[#050506]/10 border border-current/20 ms-1">
                           {savedRecommendations.length + planTasks.filter((t) => !t.completed).length}
                         </span>
                       )}
@@ -1779,7 +1770,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB: GUIDED BUSINESS DIAGNOSTIC STEPPER */}
                 {activeTab === "business_diagnostic" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 ">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 ">
                     <BusinessDiagnosticStepper
                       storageKey={getProfileStorageKey(userCode)}
                       onCancel={() => setActiveTab("chat")}
@@ -1790,8 +1781,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB 1: DIAGNOSTIC WIZARD (Choose your problem & get instant AI diagnosis) */}
                 {activeTab === "diagnostic" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
-                    <div className="glass-subtle border border-white/14 rounded-2xl p-4 sm:p-5 shadow-lg">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-5">
+                    <div className="glass-subtle border rounded-2xl p-4 sm:p-5">
                       <div className="flex items-center gap-2 mb-2 text-zinc-100">
                         <Compass className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
@@ -1835,7 +1826,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             key={idx}
                             onClick={() => handleSendMessage(opt.prompt, opt.defaultSuggestions, opt.topicId)}
                             disabled={isLoading}
-                            className="w-full text-right p-3.5 sm:p-4 rounded-xl glass-subtle hover:glass-subtle border border-white/10 hover:border-white/27 transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between group cursor-pointer disabled:opacity-50 shadow-md min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                            className="w-full text-right p-3.5 sm:p-4 rounded-xl glass-subtle hover:bg-white/[0.06] border hover:border-white/27 transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between group cursor-pointer disabled:opacity-50 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                           >
                             <div className="space-y-1 pr-1">
                               <h5 className="text-xs sm:text-sm font-bold text-white group-hover:text-zinc-100 transition-colors flex items-center gap-2">
@@ -1864,8 +1855,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB 2: INSTANT SCRIPT GENERATOR (Choose objection & generate copy-paste script) */}
                 {activeTab === "script_gen" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
-                    <div className="glass-subtle border border-white/14 rounded-2xl p-4 sm:p-5 shadow-lg">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-5">
+                    <div className="glass-subtle border rounded-2xl p-4 sm:p-5">
                       <div className="flex items-center gap-2 mb-2 text-zinc-100">
                         <FileText className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
@@ -1936,7 +1927,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <button 
                       onClick={handleGenerateScript}
                       disabled={isLoading}
-                      className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 hover:from-[#F5F5F7] hover:to-[#F5F5F7] text-[#050506] font-black text-sm flex items-center justify-center gap-2 shadow-xl md:shadow-black/40 shadow-xl/25 hover:scale-[1.01] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer disabled:opacity-50 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                      className="btn btn-primary w-full py-3.5 rounded-xl text-[#050506] font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                     >
                       <Sparkles className="w-4 h-4" />
                       <span>توليد السكريبت العراقي الآن ⚡</span>
@@ -1946,10 +1937,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB: SAVED RECOMMENDATIONS & 7-DAY ACTION PLAN */}
                 {activeTab === "saved_plan" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+                  <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-6">
                     {/* Top Stat Banner */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="p-4 rounded-2xl glass-subtle border border-white/14 flex items-center justify-between">
+                      <div className="p-4 rounded-2xl glass-subtle border flex items-center justify-between">
                         <div className="space-y-1">
                           <span className="text-xs text-white/60">التوصيات والسكريبتات المحفوظة</span>
                           <h4 className="text-xl font-black text-zinc-100">{savedRecommendations.length} توصية</h4>
@@ -1959,7 +1950,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-2xl glass-subtle border border-white/14 flex items-center justify-between">
+                      <div className="p-4 rounded-2xl glass-subtle border flex items-center justify-between">
                         <div className="space-y-1">
                           <span className="text-xs text-white/60">مهام خطة الـ 7 أيام المنجزة</span>
                           <h4 className="text-xl font-black text-emerald-400">
@@ -1987,7 +1978,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
 
                       {planTasks.length === 0 ? (
-                        <div className="p-6 rounded-2xl glass-subtle border border-white/10 text-center space-y-2">
+                        <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Calendar className="w-8 h-8 text-white/60 mx-auto" />
                           <p className="text-xs text-white/70 font-semibold">لم تضف أي توصيات لخطة الـ 7 أيام بعد</p>
                           <p className="text-[11px] text-white/60">
@@ -2080,7 +2071,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
 
                       {savedRecommendations.length === 0 ? (
-                        <div className="p-6 rounded-2xl glass-subtle border border-white/10 text-center space-y-2">
+                        <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Bookmark className="w-8 h-8 text-white/60 mx-auto" />
                           <p className="text-xs text-white/70 font-semibold">ماكو توصيات محفوظة حتى الآن</p>
                           <p className="text-[11px] text-white/60">
@@ -2092,7 +2083,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           {savedRecommendations.map((rec) => (
                             <div
                               key={rec.id}
-                              className="p-4 rounded-xl glass-subtle border border-white/10 hover:border-white/14 transition-all motion-reduce:transition-none motion-reduce:transform-none space-y-3"
+                              className="p-4 rounded-xl glass-subtle border hover:border-white/14 transition-all motion-reduce:transition-none motion-reduce:transform-none space-y-3"
                             >
                               <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-1">
@@ -2146,7 +2137,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 {rec.toolId && (
                                   <button 
                                     onClick={() => onNavigateTool?.(rec.toolId)}
-                                    className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#F5F5F7] to-zinc-200 hover:from-[#F5F5F7] hover:to-[#F5F5F7] text-[#050506] text-xs font-black transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.97] min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                                    className="btn btn-primary px-3 py-1.5 rounded-lg text-[#050506] text-xs font-black flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                                   >
                                     <Wrench className="w-3.5 h-3.5" />
                                     <span>فتح الأداة المرتبطة</span>
@@ -2210,7 +2201,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   type="button"
                                   onClick={() => handleSendMessage(ex.label, ex.suggestions, ex.topicId)}
                                   disabled={isLoading}
-                                  className="w-full min-h-[50px] p-3 rounded-xl glass-subtle hover:glass-subtle active:bg-white/8 border border-white/10 hover:border-white/18 text-right text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between gap-3 group cursor-pointer shadow-sm active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 disabled:opacity-50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                                  className="w-full min-h-[50px] p-3 rounded-xl glass-subtle hover:bg-white/[0.06] active:bg-white/8 border hover:border-white/18 text-right text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between gap-3 group cursor-pointer active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 disabled:opacity-50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                                 >
                                   <span className="text-right leading-snug flex-1">{ex.label}</span>
                                   <ArrowLeft className="w-4 h-4 text-white/60 group-hover:text-zinc-100 shrink-0 transition-transform group-hover:-translate-x-1" />
@@ -2231,7 +2222,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   aria-live="polite"
                                   initial={{ opacity: 0, y: 6 }}
                                   animate={{ opacity: 1, y: 0 }}
-                                  className="my-3 p-3 rounded-xl glass-subtle border border-white/14 text-white flex items-center justify-between gap-2 shadow-sm"
+                                  className="my-3 p-3 rounded-xl glass-subtle border text-white flex items-center justify-between gap-2"
                                 >
                                   <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-zinc-100">
                                     <Sparkles className="w-4 h-4 text-zinc-100 shrink-0" />
@@ -2248,7 +2239,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 key={msg.id}
                                 initial={{ opacity: 0, y: 8 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.15 }}
+                                transition={{ duration: 0.4, ease: EASE_OUT }}
                                 className={`flex gap-2 sm:gap-2.5 ${
                                   isUser ? "max-w-[85%] sm:max-w-[75%] ms-auto flex-row-reverse" : "max-w-[92%] sm:max-w-[85%] me-auto"
                                 }`}
@@ -2271,10 +2262,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   <div
                                     className={`p-3.5 sm:p-4 rounded-2xl text-[15px] sm:text-[16px] leading-[1.8] break-words [overflow-wrap:anywhere] ${
                                       isUser
-                                        ? "bg-white/5 text-zinc-100 font-medium rounded-tr-xs"
+                                        ? "bg-gradient-to-b from-white to-zinc-200 text-[#0a0a0b] font-medium rounded-tr-md shadow-[inset_0_1px_0_#fff,0_8px_24px_-14px_rgba(255,255,255,0.35)]"
                                         : msg.isError
                                         ? "bg-rose-950/40 border border-rose-500/40 text-rose-200 rounded-tl-xs"
-                                        : "glass-subtle text-zinc-100 rounded-tl-xs"
+                                        : "glass-subtle text-zinc-100 rounded-tl-md"
                                     }`}
                                   >
                                     {/* Error State Card */}
@@ -2449,10 +2440,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           className="flex flex-col gap-2 max-w-[92%] sm:max-w-[85%] ml-auto mt-4"
                         >
                           <div className="flex gap-2 sm:gap-2.5">
-                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full glass-subtle border border-white/15 flex items-center justify-center text-zinc-100 shrink-0 mt-1">
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full glass-subtle border flex items-center justify-center text-zinc-100 shrink-0 mt-1">
                               <Bot className="w-3.5 h-3.5" />
                             </div>
-                            <div className="p-3 sm:p-3.5 rounded-2xl glass-subtle border border-white/10 text-zinc-100 rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
+                            <div className="p-3 sm:p-3.5 rounded-2xl glass-subtle border text-zinc-100 rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
                               <div className="flex items-center gap-2">
                                 <span className="text-[13px] sm:text-[14px] text-zinc-100 font-bold">دا أرتبلك الجواب...</span>
                                 <div className="flex gap-1.5 items-center mr-1">
@@ -2479,7 +2470,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <button
                           type="button"
                           onClick={() => scrollToBottom("smooth")}
-                          className="sticky bottom-3 right-3 sm:right-6 ms-auto z-30 px-3.5 py-2 rounded-full bg-[#F5F5F7] hover:bg-[#F5F5F7] text-[#050506] font-black text-xs shadow-xl flex items-center gap-1.5 active:scale-[0.97] transition-all animate-in fade-in cursor-pointer border border-[#050506]"
+                          className="btn btn-primary sticky bottom-3 right-3 sm:right-6 ms-auto z-30 px-3.5 py-2 rounded-full text-[#050506] font-black text-xs flex items-center gap-1.5 animate-in fade-in border-[#050506]"
                         >
                           <span>النزول للأسفل</span>
                           <ChevronDown className="w-4 h-4 text-[#050506]" />
@@ -2492,7 +2483,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     {/* Footer Input */}
                     <div 
                       ref={composerRef}
-                      className="vizion-advisor-composer p-2 sm:p-3.5 pb-[max(env(safe-area-inset-bottom,0px),0.75rem)] bg-white/[0.02] border-t border-white/10 relative shrink-0 z-20"
+                      className="vizion-advisor-composer p-2 sm:p-3.5 pb-[max(env(safe-area-inset-bottom,0px),0.75rem)] bg-black/25 border-t border-white/[0.07] backdrop-blur-xl relative shrink-0 z-20"
                     >
                       <ChatInputForm 
                         onSend={(text) => handleSendMessage(text)} 
@@ -2530,7 +2521,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <span className="flex items-center gap-1">
                           <ShieldCheck className="w-3 h-3 text-zinc-200" /> مخصص ومبرمج للتجارة الإلكترونية بالسوق العراقي
                         </span>
-                        <span className="flex items-center gap-1 text-emerald-400/80 bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-500/20 font-sans">
+                        <span className="flex items-center gap-1 text-emerald-300/80 bg-emerald-400/[0.06] px-2 py-0.5 rounded-full border border-emerald-400/15 font-sans">
                           <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> محفوظ على هاتفك تلقائياً
                         </span>
                       </div>
@@ -2540,7 +2531,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               </>
             )}
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

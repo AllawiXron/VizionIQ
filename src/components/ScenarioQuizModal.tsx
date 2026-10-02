@@ -39,7 +39,7 @@ export default function ScenarioQuizModal() {
   };
 
   return (
-    <div className="glass-subtle border border-white/14 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
+    <div className="glass-subtle border rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -65,10 +65,10 @@ export default function ScenarioQuizModal() {
       </div>
 
       {/* SCENARIO CARD */}
-      <div className="space-y-6 animate-[fadeIn_0.3s_ease-out]">
+      <div className="space-y-6 animate-fade-in">
         
         {/* Scenario Background */}
-        <div className="glass border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
+        <div className="glass border rounded-3xl p-6 md:p-8 space-y-4">
           <div className="flex items-center justify-between gap-2">
             <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/18 text-zinc-100 text-xs font-bold">
               المستوى: {currentScenario.difficulty}
@@ -133,7 +133,7 @@ export default function ScenarioQuizModal() {
         {/* Next Scenario Button */}
         {hasAnswered && currentIndex < scenarioChallengesList.length - 1 && (
           <button             onClick={handleNext}
-            className="w-full py-3.5 bg-[#F5F5F7] hover:bg-[#F5F5F7] text-[#050506] font-black rounded-2xl text-xs md:text-sm flex items-center justify-center gap-2 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-xl min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="btn btn-primary w-full py-3.5 text-[#050506] font-black rounded-2xl text-xs md:text-sm flex items-center justify-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
           >
             <span>التحدي التالي</span>
             <ArrowRight className="w-4 h-4 rotate-180" />

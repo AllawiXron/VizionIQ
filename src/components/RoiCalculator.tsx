@@ -114,9 +114,8 @@ export default function RoiCalculator() {
   }, [inputs]);
 
   return (
-    <div className="vizion-roi-calculator w-full glass-panel rounded-2xl border border-white/5 p-3.5 sm:p-6 md:p-8 shadow-2xl relative overflow-hidden" id="roi-calculator">
+    <div className="vizion-roi-calculator w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-3.5 sm:p-6 md:p-8 relative overflow-hidden" id="roi-calculator">
       {/* Glow */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/3 rounded-full blur-2xl pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-white/10 pb-5">

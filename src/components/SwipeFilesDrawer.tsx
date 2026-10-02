@@ -53,7 +53,7 @@ export default function SwipeFilesDrawer() {
   };
 
   return (
-    <div className="glass-subtle border border-white/14 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
+    <div className="glass-subtle border rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -98,7 +98,7 @@ export default function SwipeFilesDrawer() {
           return (
             <div
               key={sf.id}
-              className="glass border border-white/10 hover:border-white/18 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 relative overflow-hidden"
+              className="glass border rounded-3xl p-6 flex flex-col justify-between space-y-4 relative overflow-hidden glass-interactive"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -126,14 +126,14 @@ export default function SwipeFilesDrawer() {
                     {sf.content}
                   </div>
                 ) : (
-                  <div className="p-4 rounded-2xl glass border border-white/18 text-center space-y-2">
+                  <div className="p-4 rounded-2xl glass border text-center space-y-2">
                     <p className="text-xs text-white/60 blur-[3px] select-none line-clamp-2">
                       {sf.content}
                     </p>
                     <div className="pt-1">
                       <span className="text-xs font-black text-zinc-100 block mb-2">🔒 سكريبت سوايب مدفوع ومحمي بالكامل</span>
                       <button                         onClick={triggerUpgradeModal}
-                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                        className="btn btn-primary px-4 py-2 rounded-xl text-[#050506] font-black text-xs inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                       >
                         <Crown className="w-3.5 h-3.5" />
                         <span>ترقية الحساب ونسخ السكريبت ⚡</span>
@@ -147,7 +147,7 @@ export default function SwipeFilesDrawer() {
               {!isLocked && (
                 <div className="flex items-center gap-3 pt-2 border-t border-white/10">
                   <button                     onClick={() => handleCopy(sf.content, sf.id)}
-                    className="flex-1 py-2.5 bg-[#F5F5F7] hover:bg-[#F5F5F7] text-[#050506] font-black rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-md min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                    className="btn btn-primary flex-1 py-2.5 text-[#050506] font-black rounded-xl text-xs flex items-center justify-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                   >
                     {copiedId === sf.id ? (
                       <>

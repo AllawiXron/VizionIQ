@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from "react";
+import { EASE_OUT, SPRING_SNAPPY, allowBlur } from "../lib/motion";
 import { motion } from "motion/react";
 import { 
   CheckCircle2, AlertTriangle, Lightbulb, Star, ShieldCheck, 
@@ -107,20 +108,19 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
     >
       
       {/* Background Graphic Effect */}
-      <div className="absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-bl from-white/5 to-transparent rounded-full md:blur-[100px] blur-3xl sm:md:blur-[140px] blur-3xl pointer-events-none transition-opacity duration-500 opacity-60" />
 
       {/* Hero Chapter Banner */}
       <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6 }}
-        className="relative glass rounded-2xl sm:rounded-4xl p-3.5 sm:p-8 md:p-12 mb-6 sm:mb-10 overflow-hidden shadow-2xl border border-white/14 max-w-5xl mx-auto"
+        initial={{ opacity: 0, y: 32, scale: 0.97, filter: allowBlur() ? "blur(8px)" : "blur(0px)" }}
+        whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+        transition={{ duration: 0.8, ease: EASE_OUT }}
+        className="relative glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-4 sm:p-8 md:p-12 mb-6 sm:mb-10 overflow-hidden max-w-5xl mx-auto"
       >
-        <div className="absolute top-0 right-0 w-1.5 sm:w-2.5 h-full bg-gradient-to-b from-white via-[#F5F5F7] to-zinc-300" />
+        <div className="absolute top-0 right-0 w-[2px] h-full bg-gradient-to-b from-white/45 via-white/10 to-transparent" />
         
         {/* Mobile Swipe Hint Badge */}
-        <div className="sm:hidden flex items-center justify-between bg-white/5 border border-white/11 px-2.5 py-1.5 rounded-xl text-[10px] text-zinc-100 mb-3">
+        <div className="sm:hidden flex items-center justify-between glass-subtle px-3 py-1.5 rounded-full text-[10px] text-white/70 mb-3">
           <span className="flex items-center gap-1 font-semibold">
             <span>👆</span> اسحب يمنة ويسرة حتى تكلب بين الفصول
           </span>
@@ -128,36 +128,36 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
         </div>
         
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 mb-3.5 sm:mb-6 relative z-10">
-          <div className="flex flex-row sm:flex-col items-center justify-between sm:justify-center p-2.5 sm:p-5 bg-gradient-to-br from-white/10 to-white/3 rounded-xl sm:rounded-2xl border border-white/18 shadow-inner backdrop-blur-md shrink-0 w-full sm:w-auto">
-             <span className="text-[10px] sm:text-xs font-black text-zinc-100 uppercase tracking-widest block">الفصل {number}</span>
-             <span className="text-xl sm:text-5xl inline-block animate-pulse">{icon}</span>
+          <div className="flex flex-row sm:flex-col items-center justify-between sm:justify-center p-3 sm:p-5 glass-subtle rounded-2xl sm:rounded-3xl shrink-0 w-full sm:w-auto">
+             <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-widest block">الفصل {number}</span>
+             <span className="text-xl sm:text-5xl inline-block">{icon}</span>
           </div>
 
-          <div className="space-y-1 sm:space-y-3 border-r-2 sm:border-r-4 border-white/18 pr-2.5 sm:pr-5">
+          <div className="space-y-1 sm:space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="px-2.5 py-0.5 rounded-full bg-white/8 border border-white/14 text-zinc-100 text-[10px] sm:text-xs font-bold">
+              <span className="px-2.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/75 text-[10px] sm:text-xs font-bold">
                 {detailedData.chapterNumber ? `الفصل ${detailedData.chapterNumber}` : number}
               </span>
-              <span className="text-[10px] sm:text-xs text-white/70 font-mono">25-35 دقيقة قراءة وتطبيق عملي</span>
+              <span className="text-[10px] sm:text-xs text-white/45 font-mono">25-35 دقيقة قراءة وتطبيق عملي</span>
             </div>
 
             <h2 className="text-lg sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight tracking-tight">
               {title}
             </h2>
-            <p className="text-xs sm:text-lg md:text-xl text-zinc-100 font-extrabold leading-snug">
+            <p className="text-xs sm:text-lg md:text-xl text-white/55 font-bold leading-snug">
               {subtitle}
             </p>
           </div>
         </div>
 
-        <p className="fluid-lead-text text-white/85 font-normal bg-white/[0.03] p-3 sm:p-6 rounded-xl sm:rounded-2xl border border-white/5 backdrop-blur-sm">
+        <p className="fluid-lead-text text-white/75 font-normal glass-subtle p-4 sm:p-6 rounded-2xl sm:rounded-3xl">
           {description}
         </p>
 
         {/* Chapter Internal Navigation Tabs */}
-        <div className="space-y-2 pt-4 sm:pt-6 border-t border-white/10 mt-4 sm:mt-6">
+        <div className="space-y-2 pt-4 sm:pt-6 border-t border-white/[0.07] mt-4 sm:mt-6">
           <div className="sm:hidden flex items-center justify-between text-[10px] text-white/60 font-mono px-1">
-            <span className="font-bold text-zinc-100">تصفح أقسام الفصل:</span>
+            <span className="font-bold text-white/70">تصفح أقسام الفصل:</span>
             <span className="text-white/60">اسحب يمنة ويسرة 👈</span>
           </div>
           
@@ -174,10 +174,11 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
               return (
                 <button                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-3.5 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl text-[11px] sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer border shrink-0 snap-start active:scale-[0.97] ${ isActive ? "bg-gradient-to-r from-white via-[#F5F5F7] to-zinc-200 text-[#050506] border-white/35 font-black md:shadow-[0_0_20px_rgba(0,0,0,0.6)] shadow-xl scale-102" : "bg-black/30 text-white/70 hover:text-white border-white/10 hover:border-white/18 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                  className={`relative px-4 py-2.5 sm:px-5 sm:py-3 rounded-full text-[11px] sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-colors duration-300 cursor-pointer shrink-0 snap-start active:scale-[0.96] min-h-[44px] ${ isActive ? "text-[#050506]" : "text-white/65 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07]" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60`}
                 >
-                  <Icon className={`w-4 h-4 sm:w-4.5 sm:h-4.5 ${isActive ? "text-[#050506]" : "text-zinc-100"}`} />
-                  <span>{tab.label}</span>
+                  {isActive && <motion.span layoutId={`chapter-tab-${id}`} transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-white to-zinc-200 shadow-[inset_0_1px_0_#fff,0_6px_18px_-8px_rgba(255,255,255,0.35)]" />}
+                  <Icon className="relative w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                  <span className="relative">{tab.label}</span>
                 </button>
               );
             })}
@@ -187,14 +188,14 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
       {/* TAB CONTENT 1: CORE FRAMEWORK */}
       {activeTab === "framework" && (
-        <div className="space-y-6 sm:space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
-          <div className="glass-subtle border border-white/10 rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 shadow-xl space-y-6 sm:space-y-8">
-            <h3 className="text-xl sm:text-3xl font-black text-zinc-100 flex items-center gap-2.5 pb-2 border-b border-white/10">
+        <div className="space-y-6 sm:space-y-8 max-w-5xl mx-auto animate-fade-in">
+          <div className="glass-subtle border rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
+            <h3 className="text-xl sm:text-3xl font-black text-white flex items-center gap-2.5 pb-3 border-b border-white/[0.07]">
               <BookOpen className="w-5 h-5 sm:w-7 sm:h-7 text-zinc-200 shrink-0" />
               <span>{detailedData.coreFramework?.title || "الفكرة الأساسية لهذا الفصل"}</span>
             </h3>
 
-            <p className="fluid-prose text-white/90 font-normal bg-white/5 p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border border-white/5 max-readable-prose">
+            <p className="fluid-prose text-white/80 font-normal glass-subtle p-4 sm:p-6 rounded-2xl max-readable-prose">
               {detailedData.coreFramework?.summary}
             </p>
 
@@ -203,8 +204,8 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                 const isLockedSection = isFreeTrial ? (id !== "chapter1" && id !== "chapter2" ? true : idx >= 1) : false;
                 return (
                   <FadeInUp key={idx} delay={idx * 0.08}>
-                    <div className="glass border border-white/10 rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 space-y-3.5 sm:space-y-4 shadow-md relative overflow-hidden">
-                      <h4 className="text-base sm:text-xl font-black text-white border-r-4 border-white/35 pr-2.5 sm:pr-3 flex items-center justify-between">
+                    <div className="glass border rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 space-y-3.5 sm:space-y-4 relative overflow-hidden">
+                      <h4 className="text-base sm:text-xl font-black text-white border-r-2 border-white/25 pr-3 flex items-center justify-between">
                         <span>{sec.heading}</span>
                         {isLockedSection && (
                           <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-zinc-100 border border-white/18 text-[10px] sm:text-xs font-black flex items-center gap-1">
@@ -219,7 +220,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                           <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
 
                           {sec.keyTakeaway && (
-                            <div className="bg-white/5 border border-white/14 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl text-xs sm:text-sm text-zinc-100 font-bold flex items-start gap-2.5 sm:gap-3">
+                            <div className="bg-gradient-to-b from-white/[0.07] to-white/[0.02] border border-white/[0.1] p-4 sm:p-5 rounded-2xl text-xs sm:text-sm text-white font-bold flex items-start gap-2.5 sm:gap-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                               <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5 text-zinc-100" />
                               <span className="leading-relaxed">{sec.keyTakeaway}</span>
                             </div>
@@ -242,7 +243,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                           <p className="text-xs sm:text-sm text-white/60 blur-[3px] select-none leading-relaxed line-clamp-2">
                             {sec.content}
                           </p>
-                          <div className="mt-3 p-4 sm:p-6 rounded-2xl glass border border-white/18 text-center space-y-3 shadow-2xl">
+                          <div className="mt-3 p-4 sm:p-6 rounded-2xl glass border text-center space-y-3">
                             <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 border border-white/22 text-zinc-100">
                               <Lock className="w-5 h-5" />
                             </div>
@@ -255,7 +256,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                               </p>
                             </div>
                             <button                               onClick={triggerUpgradeModal}
-                              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs sm:text-sm shadow-lg md:shadow-black/40 shadow-xl/20 hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                              className="btn btn-primary px-5 py-2.5 rounded-xl text-[#050506] font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                             >
                               <Crown className="w-4 h-4 text-[#050506]" />
                               <span>افتح هذا القسم وكمل الكورس هسة ⚡</span>
@@ -275,7 +276,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
             
             {/* Action Steps Box */}
             <FadeInUp delay={0.1}>
-              <div className="glass-subtle border border-emerald-500/30 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-8 space-y-4 shadow-xl h-full">
+              <div className="glass-subtle border border-emerald-500/30 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-8 space-y-4 h-full">
                 <h4 className="text-sm sm:text-base font-bold text-emerald-400 flex items-center gap-2">
                   <CheckSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>خطوات الشغل (شلون تطبق):</span>
@@ -285,7 +286,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                     <div key={st.step} className="bg-white/5 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-white/5 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-white">خطوة {st.step}: {st.title}</span>
-                        <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950 px-2 py-0.5 rounded-md">{st.timeframe}</span>
+                        <span className="text-[10px] text-emerald-300 font-mono bg-emerald-400/10 px-2 py-0.5 rounded-full">{st.timeframe}</span>
                       </div>
                       <p className="text-xs text-white/60">{st.description}</p>
                     </div>
@@ -296,7 +297,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
             {/* Common Mistakes Box */}
             <FadeInUp delay={0.2}>
-              <div className="glass-subtle border border-red-500/30 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-8 space-y-4 shadow-xl h-full">
+              <div className="glass-subtle border border-red-500/30 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-8 space-y-4 h-full">
                 <h4 className="text-sm sm:text-base font-bold text-red-400 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>أغلاط دير بالك توكع بيها:</span>
@@ -321,7 +322,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
       {/* TAB CONTENT 2: DEEP DIVE */}
       {activeTab === "deepdive" && (
-        <div className="glass-subtle border border-white/10 rounded-4xl p-6 md:p-12 shadow-xl space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out] relative overflow-hidden">
+        <div className="glass-subtle border rounded-4xl p-6 md:p-12 space-y-8 max-w-5xl mx-auto animate-fade-in relative overflow-hidden">
           <h3 className="text-2xl sm:text-3xl font-black text-zinc-100 flex items-center justify-between pb-2 border-b border-white/10 flex-wrap gap-2">
             <div className="flex items-center gap-3">
               <Layers className="w-7 h-7 text-zinc-200 shrink-0" />
@@ -341,7 +342,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
               return (
                 <FadeInUp key={idx} delay={idx * 0.1}>
                   <div className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-4 relative">
-                    <h4 className="text-base sm:text-xl font-bold text-white border-r-4 border-white/35 pr-3">{sec.heading}</h4>
+                    <h4 className="text-base sm:text-xl font-bold text-white border-r-2 border-white/35 pr-3">{sec.heading}</h4>
                     {!isLockedDeep ? (
                       <>
                         <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
@@ -357,7 +358,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                         )}
                       </>
                     ) : (
-                      <div className="mt-2 p-5 rounded-2xl glass border border-white/18 text-center space-y-3 shadow-xl">
+                      <div className="mt-2 p-5 rounded-2xl glass border text-center space-y-3">
                         <p className="text-xs text-white/60 blur-[3px] select-none line-clamp-1">{sec.content}</p>
                         <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/10 text-zinc-100">
                           <Crown className="w-5 h-5" />
@@ -367,7 +368,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                           اشترك بالحساب المدفوع حتى تفتح كل الأمثلة العملية وخطط الشغل.
                         </p>
                         <button                           onClick={triggerUpgradeModal}
-                          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                          className="btn btn-primary px-5 py-2.5 rounded-xl text-[#050506] font-black text-xs inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                         >
                           <KeyRound className="w-4 h-4 text-[#050506]" />
                           <span>رقي حسابك وافتح كل التفاصيل ⚡</span>
@@ -384,10 +385,10 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
       {/* TAB CONTENT 3: CASE STUDY */}
       {activeTab === "casestudy" && (
-        <div className="max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
+        <div className="max-w-5xl mx-auto animate-fade-in">
           {relatedCaseStudy ? (
             <FadeInUp>
-              <div className="glass-subtle border border-white/14 rounded-4xl p-6 md:p-12 shadow-xl space-y-8 relative overflow-hidden">
+              <div className="glass-subtle border rounded-4xl p-6 md:p-12 space-y-8 relative overflow-hidden">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/18 text-zinc-100 text-xs sm:text-sm font-bold">
                     مثال حقيقي: {relatedCaseStudy.businessName}
@@ -420,7 +421,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                     </div>
                   </>
                 ) : (
-                  <div className="p-6 rounded-2xl glass border border-white/18 text-center space-y-4 shadow-2xl">
+                  <div className="p-6 rounded-2xl glass border text-center space-y-4">
                     <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 text-zinc-100">
                       <Lock className="w-5 h-5" />
                     </div>
@@ -431,7 +432,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                       </p>
                     </div>
                     <button                       onClick={triggerUpgradeModal}
-                      className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs sm:text-sm shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                      className="btn btn-primary px-6 py-3 rounded-xl text-[#050506] font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                     >
                       <Crown className="w-4 h-4 text-[#050506]" />
                       <span>افتح القصة والأرقام كاملة هسة ⚡</span>
@@ -448,7 +449,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
       {/* TAB CONTENT 5: SWIPE FILES */}
       {activeTab === "swipe" && (
-        <div className="glass-subtle border border-white/10 rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 shadow-xl space-y-6 sm:space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
+        <div className="glass-subtle border rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 space-y-6 sm:space-y-8 max-w-5xl mx-auto animate-fade-in">
           <h3 className="text-xl sm:text-2xl font-black text-zinc-100 flex items-center justify-between">
             <span>رسائل جاهزة للنسخ تفيدك بهذا الفصل:</span>
             {isFreeTrial && <span className="text-xs text-zinc-100 font-normal">بعض الرسائل مقفولة</span>}
@@ -466,11 +467,11 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                         {sf.content}
                       </pre>
                     ) : (
-                      <div className="p-4 rounded-xl glass border border-white/14 text-center space-y-2">
+                      <div className="p-4 rounded-xl glass border text-center space-y-2">
                         <Lock className="w-5 h-5 text-zinc-100 mx-auto" />
                         <p className="text-xs text-white/80 font-bold">الرسائل الاحترافية مقفولة هسة</p>
                         <button                           onClick={triggerUpgradeModal}
-                          className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-xs shadow hover:scale-[1.02] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                          className="btn btn-primary px-4 py-2 rounded-lg text-[#050506] font-black text-xs min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                         >
                           افتح وانسخ كل الرسائل ⚡
                         </button>
@@ -486,9 +487,9 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
 
       {/* TAB CONTENT 6: INTERACTIVE TOOLS */}
       {activeTab === "tools" && (
-        <div className="space-y-8 max-w-5xl mx-auto animate-[fadeIn_0.3s_ease-out]">
+        <div className="space-y-8 max-w-5xl mx-auto animate-fade-in">
           {isFreeTrial && !["chapter1", "chapter2"].includes(id) ? (
-            <div className="p-8 sm:p-12 rounded-4xl glass border border-white/18 text-center space-y-5 shadow-2xl">
+            <div className="p-8 sm:p-12 rounded-4xl glass border text-center space-y-5">
               <div className="w-16 h-16 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
                 <Crown className="w-8 h-8" />
               </div>
@@ -499,7 +500,7 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
                 </p>
               </div>
               <button                 onClick={triggerUpgradeModal}
-                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 text-[#050506] font-black text-sm shadow-xl md:shadow-black/40 shadow-xl/25 hover:scale-[1.02] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="btn btn-primary px-8 py-3.5 rounded-2xl text-[#050506] font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <KeyRound className="w-5 h-5 text-[#050506]" />
                 <span>افتح كل الأدوات والحاسبات هسة ⚡</span>

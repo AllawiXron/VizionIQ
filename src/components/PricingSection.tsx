@@ -5,6 +5,7 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
+import { Magnetic } from "./ui/Motion";
 import { 
   Crown, 
   Sparkles, 
@@ -64,9 +65,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-white/10 via-white/8 to-white/10 border border-white/22 text-xs sm:text-sm font-black text-zinc-100 md:shadow-[0_0_20px_rgba(0,0,0,0.33)] shadow-xl"
+            className="vz-eyebrow text-xs sm:text-sm"
           >
-            <Sparkles className="w-4 h-4 text-zinc-100 animate-pulse" />
+            <Sparkles className="w-4 h-4 opacity-80" />
             <span>اشتراك مرة وحدة مدى الحياة • وبدون أي اشتراك شهري</span>
           </motion.div>
 
@@ -77,7 +78,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             transition={{ delay: 0.1 }}
             className="text-xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight px-2"
           >
-            اختار الباقة اللي تناسب شغلك وانضم للـ <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#F5F5F7] drop-md:shadow-[0_2px_10px_rgba(0,0,0,0.6)] shadow-xl">1% الأوائل بالسوق</span>
+            اختار الباقة اللي تناسب شغلك وانضم للـ <span className="vz-silver-text">1% الأوائل بالسوق</span>
           </motion.h2>
 
           <motion.p 
@@ -85,7 +86,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xs sm:text-base text-white/75 leading-relaxed font-light px-2"
+            className="text-xs sm:text-base text-white/55 leading-relaxed font-light px-2 mx-auto"
           >
             عدنا باقتين للاشتراك، وكل وحدة مصممة لهدف معين. تدفع مرة وحدة بس وتضمن وصولك الكامل ومدى الحياة لكل تحديثات وخطط الكورس والمنصة.
           </motion.p>
@@ -96,14 +97,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="glass border border-white/18 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:shadow-[0_10px_40px_rgba(0,0,0,0.5)] shadow-xl backdrop-blur-md relative overflow-hidden group"
+          className="glass rounded-3xl p-4 sm:p-6 relative overflow-hidden group"
         >
-          <div className="absolute -right-10 -bottom-10 w-36 sm:w-48 h-36 sm:h-48 bg-white/5 rounded-full blur-xl group-hover:bg-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500" />
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 relative z-10">
             <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
-              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#F5F5F7] via-[#F5F5F7] to-zinc-300 p-0.5 shrink-0 shadow-lg md:shadow-black/40 shadow-xl/25">
-                <div className="w-full h-full bg-black/30 rounded-[10px] sm:rounded-[14px] flex items-center justify-center text-zinc-100">
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-b from-white to-zinc-300 shrink-0 shadow-[inset_0_1px_0_#fff,0_10px_26px_-12px_rgba(255,255,255,0.35)]">
+                <div className="w-full h-full rounded-2xl flex items-center justify-center text-[#050506]">
                   <TrendingUp className="w-5 h-5 sm:w-7 sm:h-7" />
                 </div>
               </div>
@@ -136,10 +136,11 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className={`rounded-2xl sm:rounded-3xl border transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex flex-col justify-between p-5 sm:p-8 relative glass backdrop-blur-md hover:-translate-y-1 ${
+            whileHover={{ y: -4 }}
+            className={`rounded-3xl sm:rounded-4xl flex flex-col justify-between p-5 sm:p-8 relative glass glass-interactive ${
               selectedPlan === "standard" 
-                ? "border-white/35 md:shadow-[0_0_35px_rgba(0,0,0,0.44)] shadow-xl" 
-                : "border-white/15 hover:border-white/30 shadow-xl"
+                ? "!border-white/30" 
+                : ""
             }`}
           >
             <div>
@@ -157,7 +158,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 <div className="text-left shrink-0">
                   <div className="text-2xl sm:text-4xl font-black text-white font-mono tracking-tight">29,000</div>
                   <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
-                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-md inline-block mt-0.5">مدى الحياة</span>
+                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full inline-block mt-0.5">مدى الحياة</span>
                 </div>
               </div>
 
@@ -208,7 +209,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
             {/* CTA Button */}
             <button               onClick={() => handleChoose("standard")}
-              className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/25 text-white font-bold text-xs sm:text-base transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-2 group min-h-[48px] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="btn btn-glass w-full py-3.5 sm:py-4 rounded-2xl text-white font-bold text-xs sm:text-base gap-2 group min-h-[48px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
               <span>اشترك هسة بالباقة العادية (29,000 دينار)</span>
               <ArrowRight className="w-4 h-4 transform rotate-180 group-hover:-translate-x-1 transition-transform" />
@@ -221,13 +222,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="rounded-2xl sm:rounded-3xl border-2 border-white/35 md:shadow-[0_0_50px_rgba(0,0,0,0.6)] shadow-xl flex flex-col justify-between p-5 sm:p-8 relative glass backdrop-blur-md hover:-translate-y-1 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 overflow-hidden"
+            whileHover={{ y: -4 }}
+            className="rounded-3xl sm:rounded-4xl flex flex-col justify-between p-5 sm:p-8 relative glass-elevated glass-edge glass-interactive overflow-hidden"
           >
             {/* Ambient Inner Crown Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
 
             {/* TOP POPULAR BADGE */}
-            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black text-[11px] sm:text-xs py-1.5 sm:py-2 text-center tracking-wider shadow-lg flex items-center justify-center gap-1.5 border-b border-white/18">
+            <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-white to-zinc-200 text-[#050506] font-black text-[11px] sm:text-xs py-1.5 sm:py-2 text-center tracking-wider flex items-center justify-center gap-1.5 z-[2]">
               <Flame className="w-3.5 h-3.5 fill-[#050506]" />
               <span>الباقة الكاملة • VIP</span>
             </div>
@@ -236,27 +237,27 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {/* Card Header */}
               <div className="flex items-start justify-between border-b border-white/16 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
                 <div>
-                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-[#050506] bg-gradient-to-r from-white to-[#F5F5F7] px-2.5 py-0.5 rounded-full mb-2 shadow-md md:shadow-black/40 shadow-xl/20">
+                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-[#050506] bg-white px-2.5 py-0.5 rounded-full mb-2">
                     <Crown className="w-3 h-3 fill-[#050506]" />
                     <span>اشتراك الـ VIP</span>
                   </div>
                   <h3 className="text-lg sm:text-3xl font-black text-white flex items-center gap-2">
                     <span>اشتراك VIP</span>
-                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100 animate-pulse" />
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white/70" />
                   </h3>
                   <p className="text-[11px] sm:text-xs text-zinc-100/90 font-bold mt-0.5 leading-relaxed">إذا تريد نتيجة سريعة وبدون أخطاء وتوجيه خطوة بخطوة</p>
                 </div>
 
                 <div className="text-left shrink-0">
-                  <div className="text-2xl sm:text-5xl font-black text-zinc-100 font-mono tracking-tight drop-md:shadow-[0_2px_10px_rgba(0,0,0,0.6)] shadow-xl">49,000</div>
+                  <div className="text-2xl sm:text-5xl font-black text-white font-mono tracking-tight">49,000</div>
                   <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
-                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-black bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-md inline-block mt-0.5 shadow-sm">مدى الحياة</span>
+                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-black bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-full inline-block mt-0.5 shadow-sm">مدى الحياة</span>
                 </div>
               </div>
 
               {/* VIP Perks */}
               <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                <div className="bg-gradient-to-r from-white/10 to-white/5 border border-white/18 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl flex items-center gap-2 text-[11px] sm:text-xs text-zinc-100 font-bold shadow-inner">
+                <div className="glass-subtle p-2.5 sm:p-3 rounded-2xl flex items-center gap-2 text-[11px] sm:text-xs text-white/85 font-bold">
                   <BadgeCheck className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100 shrink-0" />
                   <span>يشمل كل ميزات الباقة العادية بالكامل + المميزات الجوا:</span>
                 </div>
@@ -315,12 +316,15 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             </div>
 
             {/* VIP CTA Button */}
-            <button               onClick={() => handleChoose("vip")}
-              className="w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black text-xs sm:text-base md:shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-xl hover:shadow-[0_15px_50px_rgba(0,0,0,0.6)] shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 cursor-pointer flex items-center justify-center gap-2 group relative overflow-hidden min-h-[50px] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            <Magnetic className="w-full" strength={0.12} max={5} reach={10}>
+            <button
+              onClick={() => handleChoose("vip")}
+              className="btn btn-primary w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl text-[#050506] font-black text-xs sm:text-base flex items-center justify-center gap-2 group relative overflow-hidden min-h-[50px] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
               <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-[#050506] transition-transform" />
               <span>انضم لاشتراك الـ VIP هسة واضمن نتائجك (49,000 دينار)</span>
             </button>
+            </Magnetic>
           </motion.div>
 
         </div>
@@ -330,7 +334,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-5xl mx-auto glass border-2 border-white/35 rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden text-right"
+          className="max-w-5xl mx-auto glass border-2 rounded-3xl p-5 sm:p-8 relative overflow-hidden text-right"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
             <div className="space-y-3 flex-1">

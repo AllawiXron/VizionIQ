@@ -18,7 +18,7 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
   if (!activeLesson) return null;
 
   return (
-    <div className="glass-subtle border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right dir-rtl">
+    <div className="glass-subtle border rounded-4xl p-6 md:p-10 space-y-8 text-right dir-rtl">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">

@@ -200,7 +200,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                         setMoreSheetOpen(false);
                         onOpenUpgrade();
                       }}
-                      className="px-3 py-1.5 bg-gradient-to-r from-[#F5F5F7] to-[#F5F5F7] hover:from-[#F5F5F7] hover:to-[#F5F5F7] text-[#050506] rounded-xl text-xs font-black shadow-md md:shadow-black/40 shadow-xl/20 flex items-center gap-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none shrink-0 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                      className="btn btn-primary px-3 py-1.5 text-[#050506] rounded-xl text-xs font-black flex items-center gap-1 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                     >
                       <Crown className="w-3 h-3" />
                       <span>ترقية ⚡</span>

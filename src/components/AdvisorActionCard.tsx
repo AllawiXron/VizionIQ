@@ -292,7 +292,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         {primaryType === "tool" && (
           <button             type="button"
             onClick={handleOpenTool}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#F5F5F7] hover:bg-[#F5F5F7] active:bg-[#F5F5F7] text-[#050506] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-[#050506] text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             title={`افتح الأداة: ${effectiveToolTitle}`}
           >
             <span className="flex items-center gap-2 text-right">
@@ -306,7 +306,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         {primaryType === "chapter" && (
           <button             type="button"
             onClick={handleOpenChapter}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#F5F5F7] hover:bg-[#F5F5F7] active:bg-[#F5F5F7] text-[#050506] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-[#050506] text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             title={`راجع الفصل: ${effectiveChapterTitle}`}
           >
             <span className="flex items-center gap-2 text-right">
@@ -320,7 +320,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         {primaryType === "script" && (
           <button             type="button"
             onClick={handleCopyScript}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#F5F5F7] hover:bg-[#F5F5F7] active:bg-[#F5F5F7] text-[#050506] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-[#050506] text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             title="انسخ السكريبت الجاهز للتطبيق"
           >
             <span className="flex items-center gap-2 text-right">
@@ -334,7 +334,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         {primaryType === "plan" && (
           <button             type="button"
             onClick={handleAddToPlan}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl bg-[#F5F5F7] hover:bg-[#F5F5F7] active:bg-[#F5F5F7] text-[#050506] text-xs sm:text-sm font-bold shadow-md transition-colors cursor-pointer min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-[#050506] text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             title="أضفها لخطة 7 أيام"
           >
             <span className="flex items-center gap-2 text-right">
