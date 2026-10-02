@@ -211,7 +211,7 @@ export default function App() {
     }
   };
 
-  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]";
+  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
   const chapterFilters = [
     { id: "all", label: "جميع الفصول (١١)", icon: "📚" },
@@ -290,10 +290,10 @@ export default function App() {
           {/* Tangible Outcomes Highlight Card — elevated glass */}
           <ScrollZoom className="mb-12 sm:mb-24 max-w-5xl mx-auto relative z-10 origin-top" from={0.88}>
             <div className="relative glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-4 sm:p-8 md:p-14 text-right overflow-hidden">
-              <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[80%] h-64 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08),transparent_70%)] pointer-events-none" />
+              <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[80%] h-64 bg-[radial-gradient(ellipse_at_center,rgba(72,128,255,0.208),transparent_70%)] pointer-events-none" />
               
               <div className="flex flex-col items-center text-center space-y-3 sm:space-y-5 mb-7 sm:mb-14 relative z-10">
-                <div className="p-3 sm:p-4 bg-gradient-to-b from-white to-zinc-300 text-[#050506] rounded-2xl shadow-[inset_0_1px_0_#fff,0_10px_30px_-10px_rgba(255,255,255,0.35)]">
+                <div className="p-3 sm:p-4 bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white rounded-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_30px_-10px_rgba(47,107,255,0.6)]">
                   <Sparkles className="w-5 h-5 sm:w-8 sm:h-8" />
                 </div>
                 <h3 className="text-lg sm:text-2xl md:text-4xl font-black text-white leading-tight">
@@ -363,7 +363,7 @@ export default function App() {
                   {/* Top Layer & Icon Header */}
                   <div className="glass-depth">
                     <div className="flex justify-between items-start mb-5 sm:mb-6 relative z-10">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] flex items-center justify-center border border-white/10 font-mono font-black text-white/90 text-base sm:text-lg transition-colors duration-500 group-hover:bg-white group-hover:text-[#050506] group-hover:border-white">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] flex items-center justify-center border border-white/10 font-mono font-black text-white/90 text-base sm:text-lg transition-colors duration-500 group-hover:bg-vz-blue group-hover:text-white group-hover:border-vz-blue-light">
                         {originalIndex + 1}
                       </div>
                       <span className="text-3xl sm:text-4xl transform transition-transform duration-500 group-hover:scale-[1.06]">{chap.icon}</span>
@@ -460,7 +460,7 @@ export default function App() {
       {/* FOOTER SECTION */}
       <footer className="relative mt-16 sm:mt-28 pb-[calc(env(safe-area-inset-bottom,0px)+6rem)] lg:pb-12 safe-area-bottom overflow-hidden">
         <div data-reveal className="vz-hairline" aria-hidden="true" />
-        <div aria-hidden="true" className="absolute -top-40 left-1/2 -translate-x-1/2 w-[70%] h-80 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.05),transparent_70%)] pointer-events-none" />
+        <div aria-hidden="true" className="absolute -top-40 left-1/2 -translate-x-1/2 w-[70%] h-80 bg-[radial-gradient(ellipse_at_center,rgba(72,128,255,0.13),transparent_70%)] pointer-events-none" />
         
         <Reveal className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20" y={16} scale={1}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 sm:gap-10 text-center md:text-right">
@@ -468,7 +468,7 @@ export default function App() {
             {/* Logo and info */}
             <div className="space-y-3 sm:space-y-4 max-w-sm relative z-10">
               <span className="text-xl sm:text-2xl md:text-3xl font-black text-white flex items-center justify-center md:justify-start gap-3">
-                <span className="w-9 h-9 rounded-[11px] bg-gradient-to-b from-white to-zinc-300 text-[#050506] flex items-center justify-center shadow-[inset_0_1px_0_#fff]">
+                <span className="w-9 h-9 rounded-[11px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
                   <Sparkles className="w-[18px] h-[18px]" strokeWidth={2.4} />
                 </span>
                 <span className="tracking-tight">فيزيون • Vizion</span>
@@ -604,7 +604,7 @@ export default function App() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { duration: 0.5, ease: EASE_OUT } }}
         exit={{ opacity: 0, transition: { duration: 0.26, ease: EASE_OUT } }}
-        className="relative z-[1] min-h-screen text-[#F5F5F7] overflow-x-hidden"
+        className="relative z-[1] min-h-screen text-white overflow-x-hidden"
       >
 
       {/* FIXED HEADER NAVIGATION */}
@@ -647,11 +647,11 @@ export default function App() {
           className={`btn glass-floating glass-edge group pl-5 pr-2.5 py-2.5 rounded-full text-white font-black text-xs gap-3 ${focusRing}`}
         >
           <div className="relative">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-b from-white to-zinc-300 flex items-center justify-center text-[#050506] shadow-[inset_0_1px_0_#fff]">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
               <Bot className="w-[18px] h-[18px]" />
             </div>
             {isAiUser(userCode) ? (
-              <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#1c1c1f]" />
+              <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#0c1a4a]" />
             ) : (
               <span className="absolute -top-1.5 -right-1 text-[10px]">👑</span>
             )}

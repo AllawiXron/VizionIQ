@@ -141,7 +141,7 @@ export default function IraqiInsights() {
           <div className="flex flex-row md:flex-col gap-3 sm:gap-5 shrink-0 items-center justify-between w-full md:w-auto p-4 sm:p-6 glass-subtle rounded-3xl">
             <span className="text-3xl sm:text-6xl md:text-7xl">💡</span>
             <button               onClick={handleRandomize}
-              className="btn btn-primary px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl text-[#050506] font-black text-xs sm:text-sm flex items-center gap-1.5 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="btn btn-primary px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Shuffle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>حقيقة عشوائية 🎲</span>
@@ -162,11 +162,11 @@ export default function IraqiInsights() {
               placeholder="ابحث عن حقيقة، خطأ شائع، أو كلمة تسويقية..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="vz-field w-full pl-4 pr-10 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm text-white transition-all motion-reduce:transition-none motion-reduce:transform-none text-right shadow-inner min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="vz-field w-full pl-4 pr-10 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm text-white transition-all motion-reduce:transition-none motion-reduce:transform-none text-right shadow-inner min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             />
             {searchTerm && (
               <button                 onClick={() => setSearchTerm("")}
-                className="absolute left-3 top-3 text-white/60 hover:text-white transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="absolute left-3 top-3 text-white/60 hover:text-white transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -196,7 +196,7 @@ export default function IraqiInsights() {
               >
                 {isActive && <ChipPill layoutId="insight-category-pill" />}
                 <span>{cat.label}</span>
-                <span className={`text-[10px] px-1.5 rounded-full font-mono font-black ${isActive ? "bg-black/10 text-[#050506]" : "bg-white/10 text-white/70"}`}>
+                <span className={`text-[10px] px-1.5 rounded-full font-mono font-black ${isActive ? "bg-black/10 text-white" : "bg-white/10 text-white/70"}`}>
                   {count}
                 </span>
               </button>
@@ -226,14 +226,14 @@ export default function IraqiInsights() {
                 {/* Card Top Information */}
                 <div className="flex justify-between items-center flex-wrap gap-2">
                   <span className={`text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full border uppercase tracking-wider ${
-                    insight.category === "ads" ? "bg-white/5 text-zinc-100 border-white/14" :
+                    insight.category === "ads" ? "bg-white/5 text-vz-accent border-white/14" :
                     insight.category === "sales" ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30" :
-                    insight.category === "pricing" ? "bg-white/5 text-zinc-200 border-white/14" :
-                    insight.category === "content" ? "bg-white/5 text-zinc-200 border-white/14" :
-                    insight.category === "customers" ? "bg-white/5 text-zinc-200 border-white/14" :
-                    insight.category === "profits" ? "bg-white/5 text-zinc-200 border-white/14" :
+                    insight.category === "pricing" ? "bg-white/5 text-slate-200 border-white/14" :
+                    insight.category === "content" ? "bg-white/5 text-slate-200 border-white/14" :
+                    insight.category === "customers" ? "bg-white/5 text-slate-200 border-white/14" :
+                    insight.category === "profits" ? "bg-white/5 text-slate-200 border-white/14" :
                     insight.category === "mistakes" ? "bg-red-500/10 text-red-300 border-red-500/30" :
-                    "bg-white/5 text-zinc-200 border-white/14"
+                    "bg-white/5 text-slate-200 border-white/14"
                   }`}>
                     {insight.categoryLabel}
                   </span>
@@ -242,7 +242,7 @@ export default function IraqiInsights() {
                     <span className="text-[10px] sm:text-[11px] text-white/60 font-mono">الصعوبة:</span>
                     <span className={`text-[10px] sm:text-[11px] font-black ${
                       insight.difficulty === "بسيط" ? "text-emerald-400" :
-                      insight.difficulty === "متوسط" ? "text-zinc-100" :
+                      insight.difficulty === "متوسط" ? "text-vz-accent" :
                       "text-red-400"
                     }`}>
                       {insight.difficulty}
@@ -252,7 +252,7 @@ export default function IraqiInsights() {
 
                 {/* Insight Quote Text */}
                 <div className="text-right border-r-2 border-white/18 pr-3 sm:pr-4 group-hover:border-white/35 transition-colors duration-300">
-                  <p className="fluid-prose font-black text-white leading-relaxed group-hover:text-zinc-100 transition-colors duration-300">
+                  <p className="fluid-prose font-black text-white leading-relaxed group-hover:text-vz-accent transition-colors duration-300">
                     "{insight.text}"
                   </p>
                 </div>
@@ -265,12 +265,12 @@ export default function IraqiInsights() {
                         {insight.lesson}
                       </p>
                       <div className="pt-1">
-                        <span className="text-xs font-black text-zinc-100 block mb-2">🔒 الحل والخطوات العملية المحمية لهذا الموقف</span>
+                        <span className="text-xs font-black text-vz-accent block mb-2">🔒 الحل والخطوات العملية المحمية لهذا الموقف</span>
                         <button                           onClick={(e) => {
                             e.stopPropagation();
                             triggerUpgradeModal();
                           }}
-                          className="btn btn-primary px-4 py-2 rounded-xl text-[#050506] font-black text-xs inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                          className="btn btn-primary px-4 py-2 rounded-xl text-white font-black text-xs inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                         >
                           <Crown className="w-3.5 h-3.5" />
                           <span>ترقية الحساب وكشف الحل الفوري ⚡</span>
@@ -280,14 +280,14 @@ export default function IraqiInsights() {
                   ) : (
                     <div className="pt-4 border-t border-white/10 space-y-4 text-right animate-fade-in">
                       <div className="space-y-1.5">
-                        <span className="text-[11px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-zinc-100"/> تحليل الخلل:</span>
+                        <span className="text-[11px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-vz-accent"/> تحليل الخلل:</span>
                         <p className="fluid-prose text-white/80 font-light pr-3 border-r border-white/10">
                           {insight.lesson}
                         </p>
                       </div>
 
                       <div className="space-y-1.5 bg-emerald-400/[0.05] border border-emerald-400/15 p-4 sm:p-5 rounded-2xl">
-                        <span className="text-[11px] font-black text-zinc-100 block flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400"/> الحل والخطوة العملية:</span>
+                        <span className="text-[11px] font-black text-vz-accent block flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400"/> الحل والخطوة العملية:</span>
                         <p className="fluid-prose text-white/95 font-bold">
                           {insight.practicalAction}
                         </p>
@@ -303,17 +303,17 @@ export default function IraqiInsights() {
                 
                 {/* Interactive VOTE button - 'والله هاي صارت وياي' */}
                 <button                   onClick={(e) => handleVote(insight.id, e)}
-                  className="px-3.5 py-2.5 rounded-xl bg-gradient-to-b from-white/10 to-white/5 hover:from-white/10 hover:to-white/5 hover:text-zinc-100 border border-white/10 hover:border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex items-center justify-center sm:justify-start gap-2 font-bold cursor-pointer active:scale-[0.97] shadow-lg w-full sm:w-auto min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="px-3.5 py-2.5 rounded-xl bg-gradient-to-b from-white/10 to-white/5 hover:from-white/10 hover:to-white/5 hover:text-vz-accent border border-white/10 hover:border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex items-center justify-center sm:justify-start gap-2 font-bold cursor-pointer active:scale-[0.97] shadow-lg w-full sm:w-auto min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   title="نعم، لقد واجهت هذا الموقف في مشروعي سابقاً"
                 >
-                  <ThumbsUp className="w-3.5 h-3.5 text-zinc-100" />
+                  <ThumbsUp className="w-3.5 h-3.5 text-vz-accent" />
                   <span className="text-xs">والله هاي صارت وياي! 🙋‍♂️</span>
                   <span className="font-mono text-[11px] text-emerald-400 font-black bg-black/40 px-2 py-0.5 rounded-full border border-white/5">
                     {voteCount}
                   </span>
                 </button>
 
-                <span className="text-[11px] font-bold text-zinc-100/80 group-hover:text-zinc-100 transition-colors flex items-center justify-center sm:justify-end gap-1.5 py-1">
+                <span className="text-[11px] font-bold text-vz-accent/80 group-hover:text-vz-accent transition-colors flex items-center justify-center sm:justify-end gap-1.5 py-1">
                   <span className="drop-shadow-sm">{isExpanded ? "اضغط للإغلاق" : "كشف الحل العملي"}</span>
                   <span className={`transform transition-transform duration-300 text-[10px] ${isExpanded ? "rotate-180" : ""}`}>▼</span>
                 </span>
@@ -334,7 +334,7 @@ export default function IraqiInsights() {
             جرب كتابة كلمات مختلفة مثل 'إعلان'، 'سعر'، 'مرتجع'، أو اختر تبويب تصنيف آخر أعلاه.
           </p>
           <button             onClick={() => { setSearchTerm(""); setSelectedCategory("all"); }}
-            className="text-sm text-zinc-100 font-black hover:text-white transition-colors cursor-pointer mt-4 inline-flex items-center gap-2 border-b border-white/14 hover:border-white pb-1 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="text-sm text-vz-accent font-black hover:text-white transition-colors cursor-pointer mt-4 inline-flex items-center gap-2 border-b border-white/14 hover:border-vz-blue-light pb-1 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           >
             <Shuffle className="w-4 h-4" />
             إعادة تعيين البحث والتصنيف
@@ -373,14 +373,14 @@ export default function IraqiInsights() {
               >
                 <X className="w-5 h-5" />
               </button>
-              <div className="flex items-center gap-3 text-zinc-100">
+              <div className="flex items-center gap-3 text-vz-accent">
                 <Sparkles className="w-6 h-6 animate-pulse-slow" />
                 <span className="text-base font-black tracking-wide drop-shadow-md">حقيقة عشوائية مميزة من واقع السوق</span>
               </div>
             </div>
 
             <div className="space-y-6 pt-2 relative z-10">
-              <span className="inline-block px-4 py-1.5 text-xs font-black bg-gradient-to-r from-white/10 to-white/3 text-zinc-100 border border-white/18 rounded-xl shadow-lg">
+              <span className="inline-block px-4 py-1.5 text-xs font-black bg-gradient-to-r from-white/10 to-white/3 text-vz-accent border border-white/18 rounded-xl shadow-lg">
                 📁 {randomInsight.categoryLabel}
               </span>
 
@@ -410,7 +410,7 @@ export default function IraqiInsights() {
             {/* Modal action footer */}
             <div className="flex justify-between items-center pt-6 border-t border-white/10 relative z-10">
               <button                 onClick={(e) => handleVote(randomInsight.id, e)}
-                className="px-5 py-3 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-white/15 text-zinc-100 border border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none font-bold text-sm flex items-center gap-2 cursor-pointer shadow-lg hover:-translate-y-0.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="px-5 py-3 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-white/15 text-vz-accent border border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none font-bold text-sm flex items-center gap-2 cursor-pointer shadow-lg hover:-translate-y-0.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <ThumbsUp className="w-4 h-4" />
                 <span>والله هاي صارت وياي!</span>
@@ -420,7 +420,7 @@ export default function IraqiInsights() {
               </button>
 
               <button                 onClick={handleRandomize}
-                className="px-5 py-3 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-white/20 text-white font-bold text-sm transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2 shadow-lg hover:-translate-y-0.5 border border-white/10 hover:border-white/30 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="px-5 py-3 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-white/20 text-white font-bold text-sm transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2 shadow-lg hover:-translate-y-0.5 border border-white/10 hover:border-white/30 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <Shuffle className="w-4 h-4 text-white/80" />
                 <span>عشوائي آخر</span>

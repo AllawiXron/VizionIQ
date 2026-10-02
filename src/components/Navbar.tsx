@@ -123,7 +123,7 @@ export default function Navbar({
     { id: "elite-secrets-section", label: "أسرار السوق", active: activeSection === "elite-secrets-section" }
   ];
 
-  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]";
+  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
   return (
     <>
@@ -163,7 +163,7 @@ export default function Navbar({
             className={`flex items-center gap-2.5 group cursor-pointer select-none text-right shrink-0 min-h-[44px] min-w-[44px] rounded-full origin-right active:opacity-70 transition-opacity ${focusRing}`}
             aria-label="فيزيون - الصفحة الرئيسية"
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[11px] bg-gradient-to-b from-white to-zinc-300 flex items-center justify-center text-[#050506] shadow-[inset_0_1px_0_#fff,0_4px_14px_-4px_rgba(255,255,255,0.25)] shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[11px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_14px_-4px_rgba(47,107,255,0.6)] shrink-0">
               <Sparkles className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.4} />
             </div>
             <div className="flex flex-col text-right leading-none">
@@ -305,7 +305,7 @@ export default function Navbar({
           {/* User Account & Subscription Status Header Card */}
           <div className="p-3.5 rounded-2xl bg-gradient-to-r from-white/[0.04] to-white/[0.01] border border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-zinc-100">
+              <div className="w-8 h-8 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-vz-accent">
                 {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4" />}
               </div>
               <div className="text-right">
@@ -324,13 +324,13 @@ export default function Navbar({
                     closeMenu();
                     onOpenUpgrade?.();
                   }}
-                  className="btn btn-primary px-2.5 py-1.5 text-[#050506] rounded-lg text-[10px] font-black min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="btn btn-primary px-2.5 py-1.5 text-white rounded-lg text-[10px] font-black min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   ترقية
                 </button>
               )}
               <button                 onClick={onLogout}
-                className="px-2.5 py-1.5 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-400 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="px-2.5 py-1.5 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-400 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="تسجيل الخروج"
               >
                 <LogOut className="w-3.5 h-3.5" />
@@ -347,24 +347,24 @@ export default function Navbar({
                   closeMenu();
                   onOpenAdvisor();
                 }}
-                className="p-3 rounded-2xl bg-gradient-to-br from-white/10 via-white/5 to-[#050506] border border-white/18 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="p-3 rounded-2xl bg-gradient-to-br from-white/10 via-white/5 to-[#040e33] border border-white/18 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <div className="flex items-center justify-between">
-                  <Bot className="w-5 h-5 text-zinc-100" />
+                  <Bot className="w-5 h-5 text-vz-accent" />
                   <span className="text-[9px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-mono">متاح</span>
                 </div>
-                <div className="text-xs font-black text-zinc-100">مستشار فيزيون</div>
+                <div className="text-xs font-black text-vz-accent">مستشار فيزيون</div>
                 <div className="text-[10px] text-white/60 font-light">المستشار المباشر</div>
               </button>
             )}
 
             {/* Growth Tools Button */}
             <button               onClick={() => handleScrollTo("vizion-growth-suite")}
-              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <div className="flex items-center justify-between">
                 <span className="text-base">⚡</span>
-                <span className="text-[9px] bg-white/10 text-zinc-100 px-1.5 py-0.5 rounded font-mono">١٣ أداة</span>
+                <span className="text-[9px] bg-white/10 text-vz-accent px-1.5 py-0.5 rounded font-mono">١٣ أداة</span>
               </div>
               <div className="text-xs font-black text-white">منظومة الأدوات</div>
               <div className="text-[10px] text-white/60 font-light">الحسابات والتحليل</div>
@@ -373,26 +373,26 @@ export default function Navbar({
             {/* Subscriptions Pricing Button (for Free Trial) */}
             {isFreeTrialUser(userCode) && (
               <button                 onClick={() => handleScrollTo("pricing-section")}
-                className="p-3 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/18 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="p-3 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/18 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs font-black text-zinc-100">
-                    <Crown className="w-4 h-4 text-zinc-100" />
+                  <span className="flex items-center gap-1.5 text-xs font-black text-vz-accent">
+                    <Crown className="w-4 h-4 text-vz-accent" />
                     <span>باقات واسعار الاشتراك المتاحة</span>
                   </span>
-                  <span className="text-[10px] font-mono font-bold bg-[#F5F5F7] text-[#050506] px-2 py-0.5 rounded-full">29,000 - 49,000 د.ع</span>
+                  <span className="text-[10px] font-mono font-bold bg-vz-blue text-white px-2 py-0.5 rounded-full">29,000 - 49,000 د.ع</span>
                 </div>
-                <div className="text-[10px] text-zinc-100/80 font-light">اشتراك مدى الحياة بدون تجديد شهري</div>
+                <div className="text-[10px] text-vz-accent/80 font-light">اشتراك مدى الحياة بدون تجديد شهري</div>
               </button>
             )}
 
             {/* Elite Secrets Button */}
             <button               onClick={() => handleScrollTo("elite-secrets-section")}
-              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1.5 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none group cursor-pointer col-span-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-white flex items-center gap-1.5">
-                  <Flame className="w-4 h-4 text-zinc-100" />
+                  <Flame className="w-4 h-4 text-vz-accent" />
                   <span>حقائق وأسرار التجار</span>
                 </span>
                 <span className="text-[9px] bg-white/10 text-white/80 px-1.5 py-0.5 rounded">سيناريوهات حقيقية</span>
@@ -404,7 +404,7 @@ export default function Navbar({
           <div className="pt-2">
             <div className="text-[11px] text-white/70 font-bold mb-2 flex items-center justify-between px-1">
               <span>فهرس فصول الدليل (١١ فصل):</span>
-              <span className="text-[10px] text-zinc-100">اضغط للتنقل السريع</span>
+              <span className="text-[10px] text-vz-accent">اضغط للتنقل السريع</span>
             </div>
 
             {/* Grid of Chapter Pills */}
@@ -414,10 +414,10 @@ export default function Navbar({
                 return (
                   <button                     key={item.id}
                     onClick={() => handleScrollTo(item.id)}
-                    className={`p-2.5 rounded-xl text-right text-xs font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between cursor-pointer active:scale-[0.97] ${ isActive ? "bg-white/10 border-white/35 text-zinc-100 shadow-md md:shadow-black/40 shadow-xl/10" : "bg-white/[0.02] hover:bg-white/[0.05] border-white/10 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                    className={`p-2.5 rounded-xl text-right text-xs font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between cursor-pointer active:scale-[0.97] ${ isActive ? "bg-white/10 border-white/35 text-vz-accent shadow-md md:shadow-black/40 shadow-xl/10" : "bg-white/[0.02] hover:bg-white/[0.05] border-white/10 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     <span>{item.label}</span>
-                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white animate-breathe" />}
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-vz-blue animate-breathe" />}
                   </button>
                 );
               })}
@@ -427,7 +427,7 @@ export default function Navbar({
           {/* Logout Section */}
           <div className="pt-4 pb-28">
             <button               onClick={onLogout}
-              className="w-full py-3 px-4 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 rounded-xl text-red-400 hover:text-red-300 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-center gap-2 text-xs font-bold active:scale-[0.97] shadow-md min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="w-full py-3 px-4 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 rounded-xl text-red-400 hover:text-red-300 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-center gap-2 text-xs font-bold active:scale-[0.97] shadow-md min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <LogOut className="w-4 h-4" />
               <span>تسجيل الخروج وقفل التطبيق</span>

@@ -128,14 +128,14 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             aria-label="نسخ الرد"
             className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
               isCopied
-                ? "bg-white/10 border-white/35 text-zinc-100"
+                ? "bg-white/10 border-white/35 text-vz-accent"
                 : "bg-white/5 hover:bg-white/10 border-white/10 text-white/70 hover:text-white"
             }`}
           >
             {isCopied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-zinc-100" />
-                <span className="text-zinc-100 font-bold">تم النسخ</span>
+                <Check className="w-3.5 h-3.5 text-vz-accent" />
+                <span className="text-vz-accent font-bold">تم النسخ</span>
               </>
             ) : (
               <>
@@ -179,7 +179,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
 
       {/* Unhelpful Reasons Picker (Tailored to Iraqi Market) */}
       {currentRating === "unhelpful" && isPickerExpanded && (
-        <div className="mt-2.5 p-3 rounded-xl bg-[#070708] border border-rose-500/30 text-zinc-200 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="mt-2.5 p-3 rounded-xl bg-[#040c2a] border border-rose-500/30 text-slate-200 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="flex items-center justify-between text-rose-300 font-bold text-[11px] sm:text-xs">
             <div className="flex items-center gap-1.5">
               <MessageSquareHeart className="w-4 h-4 text-rose-400 shrink-0" />
@@ -207,7 +207,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
                   className={`px-2.5 py-1.5 rounded-lg text-right text-[11px] sm:text-xs font-medium border transition-all flex items-center gap-2 cursor-pointer min-h-[36px] active:scale-[0.97] ${
                     isSelected
                       ? "bg-rose-500/30 border-rose-400 text-white font-bold shadow-sm"
-                      : "bg-white/5 hover:bg-white/10 border-white/10 text-zinc-300 hover:text-white"
+                      : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-300 hover:text-white"
                   }`}
                 >
                   <span className="text-sm shrink-0">{r.icon}</span>
@@ -223,7 +223,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
               <button
                 type="button"
                 onClick={() => setShowCustomInput(true)}
-                className="text-[11px] text-zinc-100 hover:text-zinc-100 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-[11px] text-vz-accent hover:text-vz-accent hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>+ إضافة ملاحظة أو تفاصيل أخرى</span>
               </button>

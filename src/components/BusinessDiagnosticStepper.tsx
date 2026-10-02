@@ -255,26 +255,26 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
   const progressPercentage = (currentStep / 4) * 100;
 
   return (
-    <div className="vizion-diagnostic-stepper flex flex-col h-full max-h-[85vh] bg-[#141416] text-zinc-100 rounded-2xl overflow-hidden border border-white/9 shadow-2xl">
+    <div className="vizion-diagnostic-stepper flex flex-col h-full max-h-[85vh] bg-[#0a163c] text-vz-accent rounded-2xl overflow-hidden border border-white/9 shadow-2xl">
       {/* Header Bar */}
       <div className="p-4 sm:p-5 border-b border-white/9">
         <div className="flex items-center justify-between gap-3 mb-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5F5F7] to-zinc-200 flex items-center justify-center text-zinc-950 shadow-md shadow-black/40">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-slate-950 shadow-md shadow-black/40">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-zinc-100">
+              <h2 className="text-base sm:text-lg font-bold text-vz-accent">
                 شخّص مشروعك مع مستشار فيزيون
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-slate-400">
                 تشخيص ذكي مبني على أرقام وسيكولوجية السوق العراقي
               </p>
             </div>
           </div>
           {onCancel && (
             <button               onClick={onCancel}
-              className="text-xs text-zinc-400 hover:text-zinc-200 px-2.5 py-1.5 rounded-lg bg-zinc-800/60 hover:bg-zinc-800 transition min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="text-xs text-slate-400 hover:text-slate-200 px-2.5 py-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               إلغاء والعودة للمحادثة
             </button>
@@ -283,7 +283,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
         {/* Progress Bar & Stepper Indicators */}
         <div className="space-y-1.5">
-          <div className="flex justify-between text-xs text-zinc-400 font-medium">
+          <div className="flex justify-between text-xs text-slate-400 font-medium">
             <span>الخطوة {currentStep} من 4</span>
             <span>
               {currentStep === 1 && "هوية المشروع وقناة البيع"}
@@ -291,11 +291,11 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               {currentStep === 3 && "الرسائل والطلبات والتوصيل"}
               {currentStep === 4 && "التحدي الأساسي للتشخيص"}
             </span>
-            <span className="text-zinc-100 font-bold">{progressPercentage}%</span>
+            <span className="text-vz-accent font-bold">{progressPercentage}%</span>
           </div>
-          <div className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+          <div className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
             <div
-              className="bg-gradient-to-r from-[#F5F5F7] to-white h-1.5 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 rounded-full"
+              className="bg-gradient-to-r from-vz-blue-light to-white h-1.5 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 rounded-full"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
@@ -308,7 +308,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
         {currentStep === 1 && (
           <div className="space-y-4 animate-fadeIn">
             <div>
-              <label className="block text-sm font-semibold text-zinc-200 mb-2">
+              <label className="block text-sm font-semibold text-slate-200 mb-2">
                 1. ما هو مجال ونوع مشروعك التجاري؟
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -320,10 +320,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                       type="button"
                       aria-pressed={isSelected}
                       onClick={() => setBusinessType(type.label)}
-                      className={`p-3 rounded-xl border text-right transition flex flex-col items-start gap-1.5 relative ${ isSelected ? "bg-white/8 border-white/35 text-zinc-100 shadow-sm" : "bg-zinc-900/60 border-zinc-800 text-zinc-300 hover:border-zinc-700" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                      className={`p-3 rounded-xl border text-right transition flex flex-col items-start gap-1.5 relative ${ isSelected ? "bg-white/8 border-white/35 text-vz-accent shadow-sm" : "bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       {isSelected && (
-                        <CheckCircle2 className="w-4 h-4 text-zinc-100 absolute top-2 right-2" />
+                        <CheckCircle2 className="w-4 h-4 text-vz-accent absolute top-2 right-2" />
                       )}
                       <span className="text-xl">{type.icon}</span>
                       <span className="text-xs font-semibold">{type.label}</span>
@@ -334,8 +334,8 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             </div>
 
             <div>
-              <label htmlFor="diag-product-service" className="block text-sm font-semibold text-zinc-200 mb-1.5">
-                2. ما هو المنتج أو الخدمة التي تبيعها حالياً؟ <span className="text-zinc-100">*</span>
+              <label htmlFor="diag-product-service" className="block text-sm font-semibold text-slate-200 mb-1.5">
+                2. ما هو المنتج أو الخدمة التي تبيعها حالياً؟ <span className="text-vz-accent">*</span>
               </label>
               <input                 
                 id="diag-product-service"
@@ -345,7 +345,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                 placeholder="مثال: فساتين نسائية تركية، ساعات يد ضد الماء، كوزمتك عناية بالبشرة..."
                 aria-describedby={validationErrors.productOrService ? "diag-error-product" : undefined}
                 aria-invalid={!!validationErrors.productOrService}
-                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               />
               {validationErrors.productOrService && (
                 <p id="diag-error-product" role="alert" aria-live="polite" className="text-xs text-rose-400 mt-1 flex items-center gap-1">
@@ -356,7 +356,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-200 mb-2">
+              <label className="block text-sm font-semibold text-slate-200 mb-2">
                 3. ما هي قناة البيع واستقبال الزبائن الأساسية؟
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -368,13 +368,13 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                       type="button"
                       aria-pressed={isSelected}
                       onClick={() => setSalesChannel(ch.label)}
-                      className={`p-3 rounded-xl border text-right transition flex items-center gap-2.5 ${ isSelected ? "bg-white/8 border-white/35 text-zinc-100" : "bg-zinc-900/60 border-zinc-800 text-zinc-300 hover:border-zinc-700" } min-h-[44px] min-w-[44px] flex items-center justify-between active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                      className={`p-3 rounded-xl border text-right transition flex items-center gap-2.5 ${ isSelected ? "bg-white/8 border-white/35 text-vz-accent" : "bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700" } min-h-[44px] min-w-[44px] flex items-center justify-between active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       <div className="flex items-center gap-2.5">
                         <span className="text-lg">{ch.icon}</span>
                         <span className="text-xs font-medium">{ch.label}</span>
                       </div>
-                      {isSelected && <CheckCircle2 className="w-4 h-4 text-zinc-100 shrink-0" />}
+                      {isSelected && <CheckCircle2 className="w-4 h-4 text-vz-accent shrink-0" />}
                     </button>
                   );
                 })}
@@ -386,8 +386,8 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
         {/* Step 2: Pricing & Costs in IQD */}
         {currentStep === 2 && (
           <div className="space-y-4 animate-fadeIn">
-            <div className="p-3 bg-zinc-900/80 rounded-xl border border-zinc-800 text-xs text-zinc-300 space-y-1">
-              <span className="font-bold text-zinc-100 flex items-center gap-1">
+            <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+              <span className="font-bold text-vz-accent flex items-center gap-1">
                 <DollarSign className="w-4 h-4" /> التسعير بالدينار العراقي:
               </span>
               <p>
@@ -397,8 +397,8 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="diag-selling-price" className="block text-sm font-semibold text-zinc-200 mb-1.5">
-                  متوسط سعر البيع للزبون (د.ع) <span className="text-zinc-100">*</span>
+                <label htmlFor="diag-selling-price" className="block text-sm font-semibold text-slate-200 mb-1.5">
+                  متوسط سعر البيع للزبون (د.ع) <span className="text-vz-accent">*</span>
                 </label>
                 <input                   
                   id="diag-selling-price"
@@ -408,10 +408,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                   placeholder="مثال: 35000 د.ع أو 35 ألف"
                   aria-describedby={validationErrors.sellingPrice ? "diag-error-selling-price" : undefined}
                   aria-invalid={!!validationErrors.sellingPrice}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
                 {parsedSellingPrice !== null && (
-                  <p className="text-xs text-zinc-100/90 mt-1">
+                  <p className="text-xs text-vz-accent/90 mt-1">
                     القيمة المحسوبة: {formatIQD(parsedSellingPrice)}
                   </p>
                 )}
@@ -424,8 +424,8 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               </div>
 
               <div>
-                <label htmlFor="diag-product-cost" className="block text-sm font-semibold text-zinc-200 mb-1.5">
-                  كلفة شراء أو تجهيز القطعة (د.ع) <span className="text-zinc-100">*</span>
+                <label htmlFor="diag-product-cost" className="block text-sm font-semibold text-slate-200 mb-1.5">
+                  كلفة شراء أو تجهيز القطعة (د.ع) <span className="text-vz-accent">*</span>
                 </label>
                 <input                   
                   id="diag-product-cost"
@@ -435,10 +435,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                   placeholder="مثال: 12000 د.ع أو 12 ألف"
                   aria-describedby={validationErrors.productCost ? "diag-error-product-cost" : undefined}
                   aria-invalid={!!validationErrors.productCost}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
                 {parsedProductCost !== null && (
-                  <p className="text-xs text-zinc-100/90 mt-1">
+                  <p className="text-xs text-vz-accent/90 mt-1">
                     القيمة المحسوبة: {formatIQD(parsedProductCost)}
                   </p>
                 )}
@@ -453,17 +453,17 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             {/* Live Gross Margin Card */}
             {currentMetrics.grossMargin !== null && (
-              <div className="p-4 rounded-xl bg-gradient-to-br from-zinc-900 via-zinc-900/20 to-zinc-900 border border-white/14 space-y-2">
+              <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900 via-slate-900/20 to-slate-900 border border-white/14 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-                    <TrendingUp className="w-4 h-4 text-zinc-100" />
+                  <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                    <TrendingUp className="w-4 h-4 text-vz-accent" />
                     الهامش الإجمالي الأولي للقطعة (Gross Profit):
                   </span>
-                  <span className="text-base font-bold text-zinc-100">
+                  <span className="text-base font-bold text-vz-accent">
                     {formatIQD(currentMetrics.grossMargin)} ({currentMetrics.grossMarginPercent}%)
                   </span>
                 </div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed">
+                <p className="text-[11px] text-slate-400 leading-relaxed">
                   💡 <strong>ملاحظة وفرضيات الحساب:</strong> هذا الهامش الإجمالي قبل خصم أجور التوصيل (5K-7K د.ع)، كلفة الإعلانات (CPA)، ونسبة المرتجعات.
                 </p>
               </div>
@@ -476,7 +476,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           <div className="space-y-4 animate-fadeIn">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="diag-daily-messages" className="block text-sm font-semibold text-zinc-200 mb-1.5">
+                <label htmlFor="diag-daily-messages" className="block text-sm font-semibold text-slate-200 mb-1.5">
                   كم رسالة أو استفسار يوصلك يومياً؟
                 </label>
                 <input                   
@@ -487,7 +487,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                   placeholder="مثال: 30 رسالة/يوم"
                   aria-describedby={validationErrors.dailyMessages ? "diag-error-daily-messages" : undefined}
                   aria-invalid={!!validationErrors.dailyMessages}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
                 {validationErrors.dailyMessages && (
                   <p id="diag-error-daily-messages" role="alert" aria-live="polite" className="text-xs text-rose-400 mt-1">{validationErrors.dailyMessages}</p>
@@ -495,7 +495,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               </div>
 
               <div>
-                <label htmlFor="diag-daily-orders" className="block text-sm font-semibold text-zinc-200 mb-1.5">
+                <label htmlFor="diag-daily-orders" className="block text-sm font-semibold text-slate-200 mb-1.5">
                   كم طلب مؤكد ومغلق يومياً تقريباً؟
                 </label>
                 <input                   
@@ -506,7 +506,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                   placeholder="مثال: 3 طلبات/يوم"
                   aria-describedby={validationErrors.dailyOrders ? "diag-error-daily-orders" : undefined}
                   aria-invalid={!!validationErrors.dailyOrders}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
                 {validationErrors.dailyOrders && (
                   <p id="diag-error-daily-orders" role="alert" aria-live="polite" className="text-xs text-rose-400 mt-1">{validationErrors.dailyOrders}</p>
@@ -516,12 +516,12 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             {/* Live Conversion Rate Preview */}
             {currentMetrics.conversionRate !== null && (
-              <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-zinc-400 block">معدل تحويل الرسائل إلى طلبات:</span>
-                  <span className="text-xs text-zinc-100 font-semibold">{currentMetrics.conversionRateLabel}</span>
+                  <span className="text-xs text-slate-400 block">معدل تحويل الرسائل إلى طلبات:</span>
+                  <span className="text-xs text-vz-accent font-semibold">{currentMetrics.conversionRateLabel}</span>
                 </div>
-                <span className="text-lg font-bold text-zinc-100">
+                <span className="text-lg font-bold text-vz-accent">
                   {currentMetrics.conversionRate}%
                 </span>
               </div>
@@ -530,10 +530,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>
                 <div className="flex justify-between items-center mb-1.5">
-                  <label htmlFor="diag-return-rate" className="text-sm font-semibold text-zinc-200">
+                  <label htmlFor="diag-return-rate" className="text-sm font-semibold text-slate-200">
                     نسبة المرتجعات (إن كنت تعرفها)
                   </label>
-                  <span className="text-[11px] text-zinc-500">اختياري</span>
+                  <span className="text-[11px] text-slate-500">اختياري</span>
                 </div>
                 <input                   
                   id="diag-return-rate"
@@ -543,7 +543,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                   placeholder="مثال: 15%"
                   aria-describedby={validationErrors.returnRate ? "diag-error-return-rate" : undefined}
                   aria-invalid={!!validationErrors.returnRate}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
                 {validationErrors.returnRate && (
                   <p id="diag-error-return-rate" role="alert" aria-live="polite" className="text-xs text-rose-400 mt-1">{validationErrors.returnRate}</p>
@@ -551,15 +551,15 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-zinc-200 mb-1.5">
+                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
                   نطاق التوصيل الجغرافي
                 </label>
                 <select                   value={deliveryAreas}
                   onChange={(e) => setDeliveryAreas(e.target.value)}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   {DELIVERY_AREAS.map((a) => (
-                    <option key={a.id} value={a.label} className="bg-zinc-900 text-zinc-100">
+                    <option key={a.id} value={a.label} className="bg-slate-900 text-vz-accent">
                       {a.label}
                     </option>
                   ))}
@@ -573,7 +573,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
         {currentStep === 4 && (
           <div className="space-y-4 animate-fadeIn">
             <div>
-              <label className="block text-sm font-semibold text-zinc-200 mb-2">
+              <label className="block text-sm font-semibold text-slate-200 mb-2">
                 ما هو التحدي الأكبر والمشكلة التي تريد حلها فوراً؟
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -581,12 +581,12 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                   <button                     key={prob.id}
                     type="button"
                     onClick={() => setMainProblem(prob.title)}
-                    className={`p-3 rounded-xl border text-right transition flex items-start gap-2.5 ${ mainProblem === prob.title ? "bg-white/8 border-white/35 text-zinc-100" : "bg-zinc-900/60 border-zinc-800 text-zinc-300 hover:border-zinc-700" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                    className={`p-3 rounded-xl border text-right transition flex items-start gap-2.5 ${ mainProblem === prob.title ? "bg-white/8 border-white/35 text-vz-accent" : "bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     <span className="text-xl mt-0.5">{prob.icon}</span>
                     <div>
                       <div className="text-xs font-bold">{prob.title}</div>
-                      <div className="text-[11px] text-zinc-400 mt-0.5">{prob.desc}</div>
+                      <div className="text-[11px] text-slate-400 mt-0.5">{prob.desc}</div>
                     </div>
                   </button>
                 ))}
@@ -595,37 +595,37 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="text-sm font-semibold text-zinc-200">
+                <label className="text-sm font-semibold text-slate-200">
                   أي تفاصيل أو ملاحظات إضافية تود إخبار المستشار بها؟
                 </label>
-                <span className="text-[11px] text-zinc-500">اختياري</span>
+                <span className="text-[11px] text-slate-500">اختياري</span>
               </div>
               <textarea                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
                 placeholder="مثال: أصرف 15$ يومياً إعلانات فيسبوك، والتوصيل مع شركة الأمانة، والزبائن أكثرهم من البصرة والنجف..."
-                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-zinc-900/80 border border-zinc-700 focus:border-white/35 rounded-xl p-3 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition resize-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl p-3 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition resize-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               />
             </div>
 
             {/* Diagnostic Summary Badge */}
-            <div className="p-3.5 bg-gradient-to-r from-white/5 via-zinc-900 to-white/5 border border-white/9 rounded-xl flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-zinc-300">
+            <div className="p-3.5 bg-gradient-to-r from-white/5 via-slate-900 to-white/5 border border-white/9 rounded-xl flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 text-slate-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>جاهز لإرسال الملف واستخراج خطة الـ 48 ساعة وسكريبت الإغلاق العراقي.</span>
               </div>
-                        <span className="text-zinc-100 font-bold hidden sm:inline">مستشار فيزيون جاهز</span>
+                        <span className="text-vz-accent font-bold hidden sm:inline">مستشار فيزيون جاهز</span>
             </div>
           </div>
         )}
       </div>
 
       {/* Footer Navigation Bar */}
-      <div className="vizion-diagnostic-footer p-4 bg-white/[0.02] border-t border-zinc-800/80 flex items-center justify-between gap-3">
+      <div className="vizion-diagnostic-footer p-4 bg-white/[0.02] border-t border-slate-800/80 flex items-center justify-between gap-3">
         {currentStep > 1 ? (
           <button             type="button"
             onClick={handleBack}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold transition min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           >
             <ArrowRight className="w-4 h-4" />
             السابق
@@ -638,7 +638,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           {currentStep < 4 ? (
             <button               type="button"
               onClick={handleNext}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#F5F5F7] to-zinc-200 hover:from-[#F5F5F7] hover:to-[#F5F5F7] text-zinc-950 text-xs font-bold shadow-md shadow-black/40 transition min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-vz-blue-light to-vz-blue-deep hover:from-vz-blue-light hover:to-vz-blue text-slate-950 text-xs font-bold shadow-md shadow-black/40 transition min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               التالي
               <ArrowLeft className="w-4 h-4" />
@@ -646,9 +646,9 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           ) : (
             <button               type="button"
               onClick={handleFinalSubmit}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#F5F5F7] via-[#F5F5F7] to-zinc-200 hover:from-white hover:to-[#F5F5F7] text-zinc-950 text-xs font-bold shadow-lg shadow-black/40 transition transform hover:scale-[1.02] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-vz-blue-light via-vz-blue to-vz-blue-deep hover:from-vz-blue-light hover:to-vz-blue text-slate-950 text-xs font-bold shadow-lg shadow-black/40 transition transform hover:scale-[1.02] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Zap className="w-4 h-4 text-zinc-950 fill-current" />
+              <Zap className="w-4 h-4 text-slate-950 fill-current" />
               ابدأ تشخيص مشروعي الآن
             </button>
           )}

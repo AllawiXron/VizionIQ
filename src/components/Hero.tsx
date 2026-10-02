@@ -28,7 +28,7 @@ interface HeroProps {
   onScrollToSection?: (id: string) => void;
 }
 
-const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]";
+const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
 export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }: HeroProps) {
   const [activePainPoint, setActivePainPoint] = useState<number | null>(() => {
@@ -185,12 +185,12 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: EASE_OUT }}
-        className="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[140vw] sm:w-[90vw] max-w-[1400px] h-[90vh] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.11)_0%,rgba(255,255,255,0.035)_35%,transparent_68%)] [will-change:transform,opacity]"
+        className="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[140vw] sm:w-[90vw] max-w-[1400px] h-[90vh] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(72,128,255,0.286)_0%,rgba(72,128,255,0.091)_35%,transparent_68%)] [will-change:transform,opacity]"
       />
       <motion.div
         aria-hidden="true"
         style={{ x: sideLightX }}
-        className="absolute top-[18%] -right-[10%] w-[55vw] h-[55vh] pointer-events-none bg-[radial-gradient(circle_at_center,rgba(175,182,205,0.07)_0%,transparent_65%)]"
+        className="absolute top-[18%] -right-[10%] w-[55vw] h-[55vh] pointer-events-none bg-[radial-gradient(circle_at_center,rgba(95,168,255,0.16)_0%,transparent_65%)]"
       />
 
       <div className="max-w-5xl z-10 space-y-8 sm:space-y-12 flex flex-col items-center w-full relative">
@@ -320,7 +320,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
                         <div
                           className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-colors duration-500 ${
                             choice.featured
-                              ? "bg-gradient-to-b from-white to-zinc-300 text-[#050506] shadow-[inset_0_1px_0_#fff,0_8px_20px_-8px_rgba(255,255,255,0.35)]"
+                              ? "bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_20px_-8px_rgba(47,107,255,0.6)]"
                               : "bg-white/[0.06] border border-white/10 text-white/80 group-hover:text-white group-hover:bg-white/10"
                           }`}
                         >
@@ -414,7 +414,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
                   >
                     <div className="flex items-start gap-3 justify-between">
                       <div className="flex items-start gap-3">
-                        <div className={`w-6 h-6 sm:w-7 sm:h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-black transition-colors duration-500 ${isActive ? 'bg-white text-[#050506]' : 'bg-white/[0.06] text-white/60'}`}>
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-black transition-colors duration-500 ${isActive ? 'bg-vz-blue text-white' : 'bg-white/[0.06] text-white/60'}`}>
                           {p.id}
                         </div>
                         <h4 className={`text-xs sm:text-sm font-bold leading-relaxed pr-0.5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/75'}`}>{p.title}</h4>

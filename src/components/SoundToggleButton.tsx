@@ -46,7 +46,7 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
         onMouseEnter={() => soundEngine.playHover()}
         className={`px-3.5 min-h-[40px] rounded-full border flex items-center gap-2 text-xs font-bold transition-colors duration-300 cursor-pointer ${
           !muted
-            ? "bg-white text-[#050506] border-white shadow-[inset_0_1px_0_#fff,0_6px_18px_-8px_rgba(255,255,255,0.35)]"
+            ? "bg-vz-blue text-white border-vz-blue-light shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]"
             : "bg-white/[0.05] border-white/10 text-white/60 hover:text-white"
         } ${className}`}
         title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}

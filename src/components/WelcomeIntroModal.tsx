@@ -103,14 +103,14 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
         >
           
           {/* Celestial Ray & Top Ambient Light - High Performance Radial Gradient */}
-          <div className="absolute top-0 inset-x-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.087)_0%,rgba(255,255,255,0.017)_50%,transparent_100%)] pointer-events-none" />
+          <div className="absolute top-0 inset-x-0 h-36 bg-[radial-gradient(ellipse_at_top,rgba(72,128,255,0.226)_0%,rgba(72,128,255,0.044)_50%,transparent_100%)] pointer-events-none" />
 
           {/* Header Bar */}
           <div className="relative px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between vz-sheet-header shrink-0 z-20">
             {/* VIP / Code Badge */}
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-full bg-gradient-to-b from-white to-zinc-200 text-[#050506] text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-[inset_0_1px_0_#fff]">
-                {isVip ? <Crown className="w-3.5 h-3.5 fill-[#050506]" /> : <Lock className="w-3.5 h-3.5 fill-[#050506]" />}
+              <span className="px-2.5 py-1 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
+                {isVip ? <Crown className="w-3.5 h-3.5 fill-white" /> : <Lock className="w-3.5 h-3.5 fill-white" />}
                 <span>{isVip ? "عضوية VIP النخبة" : isFree ? "النسخة التجريبية المحدودة" : "الاشتراك الذهبي الكامل"}</span>
               </span>
               <span className="text-[10px] sm:text-xs text-white/60 font-mono font-bold bg-white/[0.05] border border-white/[0.08] px-2 py-0.5 rounded-full">
@@ -120,7 +120,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
 
             {/* Skip / Close Button */}
             <button               onClick={onClose}
-              className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               title="إغلاق النافذة"
             >
               <X className="w-4 h-4" />
@@ -132,7 +132,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="btn btn-glass w-full rounded-full px-3 py-2 text-xs font-bold text-white/75 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="btn btn-glass w-full rounded-full px-3 py-2 text-xs font-bold text-white/75 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               aria-label="تخطي المقدمة والانتقال إلى المحتوى"
             >
               تخطي المقدمة والانتقال إلى المحتوى
@@ -155,9 +155,9 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
               >
                 {/* Crown Icon Emblem with Crisp Heavenly Glow */}
                 <div className="relative mx-auto w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.14)_0%,transparent_70%)]" />
+                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(72,128,255,0.364)_0%,transparent_70%)]" />
 
-                  <div className="relative w-full h-full rounded-[28px] bg-gradient-to-b from-white to-zinc-300 flex items-center justify-center text-[#050506] shadow-[inset_0_1px_0_#fff,0_18px_40px_-14px_rgba(255,255,255,0.35)]">
+                  <div className="relative w-full h-full rounded-[28px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_18px_40px_-14px_rgba(47,107,255,0.6)]">
                     <Crown className="w-10 h-10 sm:w-12 sm:h-12" />
                   </div>
 
@@ -221,11 +221,11 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                     transition={SPRING_SNAPPY}
                     className="p-3.5 sm:p-4 rounded-2xl glass-subtle hover:bg-white/[0.05] flex items-start gap-4 transition-colors duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-zinc-100 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-vz-accent shrink-0 mt-0.5 shadow-sm">
                       <BookOpen className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-zinc-100">1. الدليل الذهبي للبيع (11 فصل تكتيكي)</h4>
+                      <h4 className="text-sm font-black text-vz-accent">1. الدليل الذهبي للبيع (11 فصل تكتيكي)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         مو مجرد تنظير.. هاي خطوات ميدانية حتى تقلل تكلفة الرسالة، تستهدف المحافظات بذكاء، وتقنع الزبون المتردد يشتري فوراً.
                       </p>
@@ -238,11 +238,11 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                     transition={SPRING_SNAPPY}
                     className="p-3.5 sm:p-4 rounded-2xl glass-subtle hover:bg-white/[0.05] flex items-start gap-4 transition-colors duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-zinc-300 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-slate-300 shrink-0 mt-0.5 shadow-sm">
                       <Bot className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-zinc-200">2. مستشارك الخاص (Vizion AI 24/7)</h4>
+                      <h4 className="text-sm font-black text-slate-200">2. مستشارك الخاص (Vizion AI 24/7)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         انسى الحيرة. هذا الذكاء الاصطناعي مدرب خصيصاً على عقلية الزبون العراقي، يكتبلك إعلاناتك ويحل مشاكلك التسويقية بثواني.
                       </p>
@@ -272,11 +272,11 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                     transition={SPRING_SNAPPY}
                     className="p-3.5 sm:p-4 rounded-2xl glass-subtle hover:bg-white/[0.05] flex items-start gap-4 transition-colors duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-zinc-200 shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-slate-200 shrink-0 mt-0.5 shadow-sm">
                       <FileText className="w-5 h-5" />
                     </div>
                     <div className="text-right space-y-1">
-                      <h4 className="text-sm font-black text-zinc-200">4. مكتبة النسخ واللصق (النصوص السحرية)</h4>
+                      <h4 className="text-sm font-black text-slate-200">4. مكتبة النسخ واللصق (النصوص السحرية)</h4>
                       <p className="text-xs text-white/80 leading-relaxed font-light">
                         قوالب جاهزة للرد على الزبائن، نصوص إعلانية مجربة وناجحة، وسيناريوهات تفاوض بس تنسخها وتلصقها حتى تقفل البيعة.
                       </p>
@@ -320,21 +320,21 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                 {/* 3 Step Quick Action List - Actionable and psychological */}
                 <div className="space-y-3 text-right mt-4">
                   <div className="p-3.5 rounded-2xl glass-subtle flex items-center gap-4 hover:bg-white/[0.06] transition-colors duration-300">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-b from-white to-zinc-300 text-[#050506] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">1</div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black flex items-center justify-center text-sm shrink-0 shadow-lg">1</div>
                     <p className="text-white/90 text-sm leading-relaxed">
-                      راح تتصفح <strong className="text-zinc-100">الفصل 1 و 2</strong> فوراً حتى تكتشف الثغرة اللي دتسرق أرباحك وشلون تسدها.
+                      راح تتصفح <strong className="text-vz-accent">الفصل 1 و 2</strong> فوراً حتى تكتشف الثغرة اللي دتسرق أرباحك وشلون تسدها.
                     </p>
                   </div>
 
                   <div className="p-3.5 rounded-2xl glass-subtle flex items-center gap-4 hover:bg-white/[0.06] transition-colors duration-300">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-b from-white to-zinc-300 text-[#050506] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">2</div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black flex items-center justify-center text-sm shrink-0 shadow-lg">2</div>
                     <p className="text-white/90 text-sm leading-relaxed">
-                      تفتح <strong className="text-zinc-200">المستشار الذكي (Vizion)</strong> وتطلب منه يكتبلك إعلان منتجك الجاي بلهجة عراقية تقنع الزبون.
+                      تفتح <strong className="text-slate-200">المستشار الذكي (Vizion)</strong> وتطلب منه يكتبلك إعلان منتجك الجاي بلهجة عراقية تقنع الزبون.
                     </p>
                   </div>
 
                   <div className="p-3.5 rounded-2xl glass-subtle flex items-center gap-4 hover:bg-white/[0.06] transition-colors duration-300">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-[#050506] font-black flex items-center justify-center text-sm shrink-0 shadow-lg">3</div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white font-black flex items-center justify-center text-sm shrink-0 shadow-lg">3</div>
                     <p className="text-white/90 text-sm leading-relaxed">
                       تستخدم <strong className="text-emerald-300">حاسبة تسعير المنتجات</strong> حتى تضمن كل طلبية تطلع بيها ربح حقيقي يفوت لجيبك.
                     </p>
@@ -363,7 +363,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
                   <motion.span
                     animate={{ width: currentStep === idx ? 22 : 7, opacity: currentStep === idx ? 1 : 0.3 }}
                     transition={SPRING_SNAPPY}
-                    className="block h-[7px] rounded-full bg-white"
+                    className="block h-[7px] rounded-full bg-vz-blue"
                   />
                 </button>
               ))}
@@ -373,14 +373,14 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             <div className="flex items-center gap-1.5 sm:gap-3">
               {currentStep > 0 && (
                 <button                   onClick={() => setCurrentStep(prev => prev - 1)}
-                  className="btn btn-glass px-4 sm:px-5 rounded-full text-xs sm:text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="btn btn-glass px-4 sm:px-5 rounded-full text-xs sm:text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   رجوع
                 </button>
               )}
 
               <button                 onClick={handleNext}
-                className="btn btn-primary px-4 sm:px-8 rounded-full text-xs sm:text-base gap-1 sm:gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="btn btn-primary px-4 sm:px-8 rounded-full text-xs sm:text-base gap-1 sm:gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <span>{currentStep === steps.length - 1 ? "🚀 استكشف المنظومة" : "التالي"}</span>
                 {currentStep !== steps.length - 1 && <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />}

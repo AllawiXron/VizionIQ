@@ -23,8 +23,8 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-zinc-100 text-xs font-bold mb-2">
-            <BookOpen className="w-3.5 h-3.5 text-zinc-100" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
+            <BookOpen className="w-3.5 h-3.5 text-vz-accent" />
             <span>موجز الشرح والأدلة التنفيذية • Executive Lesson Guides</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
@@ -48,17 +48,17 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
             
             <div className="relative z-10 p-6 sm:p-8 h-full flex flex-col justify-between">
               <div className="flex justify-between items-center">
-                <span className="px-3.5 py-1 rounded-full bg-[#F5F5F7] text-[#050506] font-black text-xs shadow-md">
+                <span className="px-3.5 py-1 rounded-full bg-vz-blue text-white font-black text-xs shadow-md">
                   الفصل {activeLesson.chapterNumber}
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-white/90 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 font-mono">
-                  <Clock className="w-3.5 h-3.5 text-zinc-100" />
+                  <Clock className="w-3.5 h-3.5 text-vz-accent" />
                   مدة القراءة والتطبيق: {activeLesson.duration}
                 </span>
               </div>
 
               <div className="space-y-2">
-                <div className="inline-flex items-center gap-1.5 text-xs text-zinc-100 font-bold">
+                <div className="inline-flex items-center gap-1.5 text-xs text-vz-accent font-bold">
                   <Sparkles className="w-4 h-4" />
                   <span>دليل الدرس والتسلسل التشغيلي</span>
                 </div>
@@ -74,8 +74,8 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
             
             {/* Executive Summary */}
             <div className="space-y-2">
-              <h5 className="text-base font-extrabold text-zinc-100 flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-zinc-200" />
+              <h5 className="text-base font-extrabold text-vz-accent flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-slate-200" />
                 <span>ملخص الفكرة الجوهرية للدرس:</span>
               </h5>
               <p className="text-sm text-white/85 leading-relaxed bg-white/5 p-4 rounded-2xl border border-white/5">
@@ -86,7 +86,7 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
             {/* Timestamps / Topic Roadmap */}
             <div className="space-y-3 pt-2 border-t border-white/10">
               <span className="text-xs font-extrabold text-white/90 flex items-center gap-2">
-                <ListOrdered className="w-4 h-4 text-zinc-100" />
+                <ListOrdered className="w-4 h-4 text-vz-accent" />
                 <span>محاور الدرس والتسلسل التنفيذي للفكرة:</span>
               </span>
               <div className="grid grid-cols-1 gap-2.5">
@@ -96,7 +96,7 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
                     className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/14 transition-colors"
                   >
                     <span className="text-xs text-white/90 font-medium">{ts.label}</span>
-                    <span className="text-[11px] font-mono text-zinc-100 bg-white/5 px-2 py-0.5 rounded-md border border-white/9 shrink-0">
+                    <span className="text-[11px] font-mono text-vz-accent bg-white/5 px-2 py-0.5 rounded-md border border-white/9 shrink-0">
                       {ts.time}
                     </span>
                   </div>
@@ -122,8 +122,8 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
 
             {/* Action Item Box */}
             <div className="bg-gradient-to-r from-white/8 to-white/3 border border-white/18 p-4 sm:p-5 rounded-2xl space-y-1.5 shadow-lg">
-              <span className="text-xs font-black text-zinc-100 flex items-center gap-1.5">
-                <Zap className="w-4 h-4 text-zinc-100 animate-pulse" />
+              <span className="text-xs font-black text-vz-accent flex items-center gap-1.5">
+                <Zap className="w-4 h-4 text-vz-accent animate-pulse" />
                 <span>الخطوة العملية والواجب الفوري:</span>
               </span>
               <p className="text-xs sm:text-sm text-white/95 leading-relaxed">{activeLesson.actionItem}</p>
@@ -135,7 +135,7 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
         {/* Lesson List Selector Sidebar */}
         <div className="lg:col-span-4 space-y-4">
           <h4 className="text-xs font-extrabold text-white/70 uppercase tracking-wider flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-zinc-200" />
+            <BookOpen className="w-4 h-4 text-slate-200" />
             <span>دروس وموجزات باقي الفصول:</span>
           </h4>
           
@@ -145,7 +145,7 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
               return (
                 <button                   key={v.id}
                   onClick={() => setActiveLesson(v)}
-                  className={`w-full p-4 rounded-2xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between gap-3 ${ isActive ? "bg-white/8 border-white/35 text-zinc-100 shadow-md scale-[1.02]" : "bg-white/[0.03] border-white/5 text-white/80 hover:bg-white/5 hover:border-white/20" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                  className={`w-full p-4 rounded-2xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between gap-3 ${ isActive ? "bg-white/8 border-white/35 text-vz-accent shadow-md scale-[1.02]" : "bg-white/[0.03] border-white/5 text-white/80 hover:bg-white/5 hover:border-white/20" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                 >
                   <div className="space-y-1">
                     <span className="text-[10px] text-white/70 block font-mono">الفصل {v.chapterNumber}</span>

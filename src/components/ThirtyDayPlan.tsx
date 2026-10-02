@@ -82,7 +82,7 @@ export default function ThirtyDayPlan() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/10 pb-5 mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#F5F5F7] to-white flex items-center justify-center text-[#050506] shadow-md md:shadow-black/40 shadow-xl/25">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-vz-blue-light to-white flex items-center justify-center text-white shadow-md md:shadow-black/40 shadow-xl/25">
             <Calendar className="w-5 h-5" />
           </div>
           <div>
@@ -93,7 +93,7 @@ export default function ThirtyDayPlan() {
 
         {/* Reset button */}
         <button           onClick={handleReset}
-          className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white/70 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+          className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white/70 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>إعادة تصفير الخطة</span>
@@ -102,11 +102,11 @@ export default function ThirtyDayPlan() {
 
       {/* Progress Card */}
       <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-2 h-full bg-[#F5F5F7]" />
+        <div className="absolute top-0 left-0 w-2 h-full bg-vz-blue" />
         
         <div className="space-y-1.5 w-full md:max-w-[65%]">
           <div className="flex justify-between items-center text-xs font-bold text-white">
-            <span className="flex items-center gap-1.5 text-zinc-100">
+            <span className="flex items-center gap-1.5 text-vz-accent">
               <Award className="w-4 h-4" />
               معدل الإنجاز الإجمالي: {progressPercent}%
             </span>
@@ -128,7 +128,7 @@ export default function ThirtyDayPlan() {
           </div>
           <div>
             <span className="text-xs font-bold text-white block">مستوى الإمبراطورية الحالي:</span>
-            <span className="text-[11px] text-zinc-100 font-medium block">
+            <span className="text-[11px] text-vz-accent font-medium block">
               {progressPercent === 100
                 ? "خبير مبيعات معتمد - جاهز للانطلاق والتحليق!"
                 : progressPercent >= 70
@@ -146,7 +146,7 @@ export default function ThirtyDayPlan() {
         {[1, 2, 3, 4].map(w => (
           <button             key={w}
             onClick={() => setActiveWeek(w)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none whitespace-nowrap cursor-pointer ${ activeWeek === w ? "bg-[#F5F5F7] text-[#050506] shadow-md md:shadow-black/40 shadow-xl/25" : "bg-white/5 border border-white/5 hover:bg-white/10 text-white/80" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none whitespace-nowrap cursor-pointer ${ activeWeek === w ? "bg-vz-blue text-white shadow-md md:shadow-black/40 shadow-xl/25" : "bg-white/5 border border-white/5 hover:bg-white/10 text-white/80" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {w === 1 && "الأسبوع الأول: التأسيس والدراسة"}
             {w === 2 && "الأسبوع الثاني: الإعلانات والتأكيد"}
@@ -185,11 +185,11 @@ export default function ThirtyDayPlan() {
                     </span>
                   )}
 
-                  <span className={`text-[10px] uppercase font-bold tracking-wider ${isSelected ? "text-zinc-100" : "text-white/60"}`}>
+                  <span className={`text-[10px] uppercase font-bold tracking-wider ${isSelected ? "text-vz-accent" : "text-white/60"}`}>
                     اليوم {t.day}
                   </span>
 
-                  <p className={`text-xs font-bold mt-1 line-clamp-2 leading-relaxed ${isSelected ? "text-zinc-100" : t.completed ? "text-emerald-300" : "text-white/90"}`}>
+                  <p className={`text-xs font-bold mt-1 line-clamp-2 leading-relaxed ${isSelected ? "text-vz-accent" : t.completed ? "text-emerald-300" : "text-white/90"}`}>
                     {t.title}
                   </p>
 
@@ -198,7 +198,7 @@ export default function ThirtyDayPlan() {
                       e.stopPropagation();
                       handleToggleComplete(t.day);
                     }}
-                    className="mt-2 text-white/60 hover:text-zinc-100 transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                    className="mt-2 text-white/60 hover:text-vz-accent transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     {t.completed ? (
                       <CheckSquare className="w-4 h-4 text-emerald-400" />
@@ -219,12 +219,12 @@ export default function ThirtyDayPlan() {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center border-b border-white/5 pb-3">
-                  <span className="text-xs bg-white/5 text-zinc-100 border border-white/14 px-2.5 py-1 rounded-full font-bold">
+                  <span className="text-xs bg-white/5 text-vz-accent border border-white/14 px-2.5 py-1 rounded-full font-bold">
                     جدول أعمال اليوم {selectedTask.day}
                   </span>
 
                   <button                     onClick={() => handleToggleComplete(selectedTask.day)}
-                    className={`px-3 py-1 text-xs rounded-lg font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 ${ selectedTask.completed ? "bg-emerald-500/10 border-emerald-500 text-emerald-400" : "bg-white/5 border-white/10 hover:bg-white/10 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                    className={`px-3 py-1 text-xs rounded-lg font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 ${ selectedTask.completed ? "bg-emerald-500/10 border-emerald-500 text-emerald-400" : "bg-white/5 border-white/10 hover:bg-white/10 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
                     {selectedTask.completed ? "مكتمل" : "تعليم كمنجز"}
                   </button>
@@ -236,7 +236,7 @@ export default function ThirtyDayPlan() {
 
                 <div className="space-y-2.5 text-xs text-white/80 leading-relaxed">
                   <div className="p-3 bg-black/40 rounded-xl border border-white/5">
-                    <span className="text-zinc-100 font-bold block mb-1">🎯 المهمة المطلوبة:</span>
+                    <span className="text-vz-accent font-bold block mb-1">🎯 المهمة المطلوبة:</span>
                     <p className="font-medium text-white/90">{selectedTask.task}</p>
                   </div>
 
@@ -249,7 +249,7 @@ export default function ThirtyDayPlan() {
 
               {/* Progress tips footer */}
               <div className="border-t border-white/5 pt-3 flex items-center gap-2 text-[11px] text-white/60 mt-4">
-                <Zap className="w-4 h-4 text-zinc-100 shrink-0" />
+                <Zap className="w-4 h-4 text-vz-accent shrink-0" />
                 <span>نفّذ المهام يوماً بيوم والتزام الصبر للوصول للهدف.</span>
               </div>
             </div>

@@ -159,7 +159,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               {/* Sheet Header */}
               <div className="px-4 py-2.5 border-b border-white/[0.07] flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2 text-right min-w-0">
-                  <div className="w-8 h-8 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-zinc-100 shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-vz-accent shrink-0">
                     <SlidersHorizontal className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
@@ -170,7 +170,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
                 <button                   onClick={() => setMoreSheetOpen(false)}
                   aria-label="إغلاق قائمة المزيد"
-                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -182,8 +182,8 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 {/* User Status / Upgrade Card */}
                 <div className="p-3 rounded-2xl bg-gradient-to-r from-white/[0.04] to-white/[0.01] border border-white/10 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-9 h-9 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-zinc-100 shrink-0">
-                      {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4 text-zinc-100" />}
+                    <div className="w-9 h-9 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-vz-accent shrink-0">
+                      {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4 text-vz-accent" />}
                     </div>
                     <div className="min-w-0">
                       <div className="text-xs font-black text-white truncate">
@@ -200,7 +200,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                         setMoreSheetOpen(false);
                         onOpenUpgrade();
                       }}
-                      className="btn btn-primary px-3 py-1.5 text-[#050506] rounded-xl text-xs font-black flex items-center gap-1 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                      className="btn btn-primary px-3 py-1.5 text-white rounded-xl text-xs font-black flex items-center gap-1 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <Crown className="w-3 h-3" />
                       <span>ترقية ⚡</span>
@@ -214,11 +214,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <div className="grid grid-cols-2 gap-2">
                     {/* Elite Secrets */}
                     <button                       onClick={() => scrollToSection("elite-secrets-section")}
-                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <div className="flex items-center justify-between">
-                        <Flame className="w-4 h-4 text-zinc-100 group-hover:scale-[1.04] transition-transform" />
-                        <span className="text-[9px] bg-white/10 text-zinc-100 px-1.5 py-0.5 rounded font-mono">نخبة</span>
+                        <Flame className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
+                        <span className="text-[9px] bg-white/10 text-vz-accent px-1.5 py-0.5 rounded font-mono">نخبة</span>
                       </div>
                       <div className="text-xs font-black text-white">أسرار السوق</div>
                       <div className="text-[10px] text-white/70 font-light truncate">حقائق التجار وأخطاء الإعلانات</div>
@@ -234,19 +234,19 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                             scrollToSection("pricing-section");
                           }
                         }}
-                        className="p-3 rounded-2xl bg-gradient-to-br from-white/8 via-white/5 to-transparent border border-white/18 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                        className="p-3 rounded-2xl bg-gradient-to-br from-white/8 via-white/5 to-transparent border border-white/18 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <div className="flex items-center justify-between">
-                          <Crown className="w-4 h-4 text-zinc-100 group-hover:scale-[1.04] transition-transform" />
-                          <span className="text-[9px] bg-white/15 text-zinc-100 px-1.5 py-0.5 rounded font-mono">خصم</span>
+                          <Crown className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
+                          <span className="text-[9px] bg-white/15 text-vz-accent px-1.5 py-0.5 rounded font-mono">خصم</span>
                         </div>
-                        <div className="text-xs font-black text-zinc-100">باقات الاشتراك</div>
-                        <div className="text-[10px] text-zinc-100/60 font-light truncate">مدى الحياة بدون رسوم شهرية</div>
+                        <div className="text-xs font-black text-vz-accent">باقات الاشتراك</div>
+                        <div className="text-[10px] text-vz-accent/60 font-light truncate">مدى الحياة بدون رسوم شهرية</div>
                       </button>
                     ) : (
                       /* Quick ROI calculator */
                       <button                         onClick={() => scrollToSection("roi-calculator")}
-                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <div className="flex items-center justify-between">
                           <TrendingUp className="w-4 h-4 text-emerald-400 group-hover:scale-[1.04] transition-transform" />
@@ -259,11 +259,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
                     {/* Ad simulator */}
                     <button                       onClick={() => scrollToSection("ad-simulator")}
-                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <div className="flex items-center justify-between">
-                        <Tv className="w-4 h-4 text-zinc-300 group-hover:scale-[1.04] transition-transform" />
-                        <span className="text-[9px] bg-white/10 text-zinc-200 px-1.5 py-0.5 rounded font-mono">محاكي</span>
+                        <Tv className="w-4 h-4 text-slate-300 group-hover:scale-[1.04] transition-transform" />
+                        <span className="text-[9px] bg-white/10 text-slate-200 px-1.5 py-0.5 rounded font-mono">محاكي</span>
                       </div>
                       <div className="text-xs font-black text-white">محاكي الإعلانات</div>
                       <div className="text-[10px] text-white/70 font-light truncate">تجربة سيناريوهات الحملات</div>
@@ -275,10 +275,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                           setMoreSheetOpen(false);
                           onOpenIntro();
                         }}
-                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <div className="flex items-center justify-between">
-                          <Sparkles className="w-4 h-4 text-zinc-100 group-hover:scale-[1.04] transition-transform" />
+                          <Sparkles className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
                           <span className="text-[9px] bg-white/10 text-white/80 px-1.5 py-0.5 rounded font-mono">دليل</span>
                         </div>
                         <div className="text-xs font-black text-white">جولة المنظومة</div>
@@ -305,7 +305,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                       setMoreSheetOpen(false);
                       onLogout();
                     }}
-                    className="w-full py-3 px-4 rounded-2xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 text-xs font-bold flex items-center justify-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer active:scale-[0.97] shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                    className="w-full py-3 px-4 rounded-2xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 text-xs font-bold flex items-center justify-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer active:scale-[0.97] shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>تسجيل الخروج وقفل المنظومة</span>
@@ -356,7 +356,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   whileTap={{ scale: 0.82 }}
                 >
                   <Icon className="w-5 h-5" strokeWidth={item.active ? 2.4 : 2} />
-                  {item.accent && <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#1c1c1f]" />}
+                  {item.accent && <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#0c1a4a]" />}
                 </motion.span>
                 <span className={`relative text-[10px] sm:text-[11px] mt-1 leading-none tracking-tight ${item.active || item.accent ? "font-black" : "font-bold"}`}>
                   {item.label}

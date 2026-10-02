@@ -67,7 +67,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
           {/* Header */}
           <div className="px-4 sm:px-6 py-3 sm:py-4 vz-sheet-header flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-b from-white to-zinc-300 flex items-center justify-center text-[#050506] shadow-[inset_0_1px_0_#fff] shrink-0">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] shrink-0">
                 <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
@@ -80,7 +80,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
 
             <button               onClick={onClose}
               aria-label="إغلاق"
-              className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <X className="w-4 h-4" />
             </button>
@@ -91,7 +91,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             {/* Title & Badge */}
             <div className="text-center space-y-2">
               <div className="vz-eyebrow text-[10px] sm:text-xs">
-                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-zinc-100" />
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-vz-accent" />
                 <span>اشتراك لمرة واحدة مدى الحياة • بدون رسوم شهرية</span>
               </div>
               <h3 className="text-base sm:text-2xl font-black text-white leading-tight">
@@ -116,7 +116,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                     </div>
                     <div className="text-left">
                       <CountUp value={29000} className="text-xl font-black text-white font-mono block" />
-                      <span className="text-[10px] text-zinc-100 font-bold block">د.ع • مدى الحياة</span>
+                      <span className="text-[10px] text-vz-accent font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>
 
@@ -147,43 +147,43 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
 
               {/* VIP Tier */}
               <div className="bg-gradient-to-b from-white/[0.1] to-white/[0.025] border border-white/20 rounded-3xl p-4 sm:p-5 space-y-3 flex flex-col justify-between shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_20px_50px_-24px_rgba(0,0,0,0.9)] relative overflow-hidden">
-                <div className="absolute top-3 left-3 bg-white text-[#050506] font-black text-[9px] px-2.5 py-0.5 rounded-full">
+                <div className="absolute top-3 left-3 bg-vz-blue text-white font-black text-[9px] px-2.5 py-0.5 rounded-full">
                   👑 الموصى به - أسرع نتيجة
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between border-b border-white/14 pb-2.5 pt-2">
                     <div>
-                      <span className="text-[10px] bg-white/10 text-zinc-100 font-bold px-2 py-0.5 rounded-full block w-fit mb-1 border border-white/18">
+                      <span className="text-[10px] bg-white/10 text-vz-accent font-bold px-2 py-0.5 rounded-full block w-fit mb-1 border border-white/18">
                         الاشتراك الكامل VIP
                       </span>
-                      <h4 className="text-base font-black text-zinc-100">اشتراك VIP</h4>
+                      <h4 className="text-base font-black text-vz-accent">اشتراك VIP</h4>
                     </div>
                     <div className="text-left">
                       <CountUp value={49000} className="text-2xl font-black text-white font-mono block" />
-                      <span className="text-[10px] text-zinc-100 font-bold block">د.ع • مدى الحياة</span>
+                      <span className="text-[10px] text-vz-accent font-bold block">د.ع • مدى الحياة</span>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-zinc-100/90 font-bold mt-2 mb-3 leading-relaxed">
+                  <p className="text-[11px] text-vz-accent/90 font-bold mt-2 mb-3 leading-relaxed">
                     إذا تريد أسرع نتيجة وأقل أخطاء وتوجيه مباشر خطوة بخطوة.
                   </p>
 
                   <ul className="space-y-2 text-[11px] text-white">
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span><strong>كل مميزات الاعتيادي</strong> + المتابعة المباشرة وياي.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span>مراجعة إعلاناتك وإعطاء ملاحظات فورية عليها.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span>مساعدتك باختيار المنتج، الاستهداف والعروض.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-zinc-100 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-vz-accent shrink-0 mt-0.5" />
                       <span>توجيه مخصص لمشروعك + مستشار مستشار ذكي (Vizion AI).</span>
                     </li>
                   </ul>
@@ -194,8 +194,8 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             {/* Upgrade Password Input Form */}
             <form onSubmit={handleUpgrade} className="glass-subtle p-4 sm:p-5 rounded-3xl space-y-4">
               <div className="space-y-1 text-right">
-                <label className="text-xs font-bold text-zinc-100 flex items-center gap-1.5">
-                  <KeyRound className="w-4 h-4 text-zinc-100" />
+                <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
+                  <KeyRound className="w-4 h-4 text-vz-accent" />
                   <span>تمتلك رمز وصول مدفوع؟ أدخله هنا للترقية الفورية:</span>
                 </label>
                 <p className="text-[11px] text-white/70">سيتم فتح جميع الاستراتيجيات فوراً ودون الحاجة لإعادة التسجيل.</p>
@@ -210,7 +210,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                 />
 
                 <button                   type="submit"
-                  className="btn btn-primary px-6 py-3 rounded-2xl text-xs sm:text-sm whitespace-nowrap min-h-[48px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="btn btn-primary px-6 py-3 rounded-2xl text-xs sm:text-sm whitespace-nowrap min-h-[48px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   ترقية الحساب الآن ⚡
                 </button>

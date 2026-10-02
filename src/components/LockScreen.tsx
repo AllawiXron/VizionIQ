@@ -244,7 +244,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     setError(null);
   };
 
-  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]";
+  const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
   const blur = allowBlur();
   const rise = (delay: number) => ({
     initial: { opacity: 0, y: 14, filter: blur ? "blur(8px)" : "blur(0px)" },
@@ -260,7 +260,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.4, ease: EASE_OUT }}
-        className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120vw] sm:w-[70vw] max-w-[1000px] h-[80vh] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0.03)_40%,transparent_70%)] pointer-events-none"
+        className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120vw] sm:w-[70vw] max-w-[1000px] h-[80vh] bg-[radial-gradient(ellipse_at_center,rgba(72,128,255,0.26)_0%,rgba(72,128,255,0.078)_40%,transparent_70%)] pointer-events-none"
       />
       <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern pointer-events-none" />
 
@@ -280,16 +280,16 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
           <div className="flex flex-col items-center mb-7 sm:mb-9 text-center">
             <motion.div
               {...rise(0.25)}
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-[20px] bg-gradient-to-b from-white to-zinc-300 flex items-center justify-center shadow-[inset_0_1px_0_#fff,0_14px_34px_-12px_rgba(255,255,255,0.4)] mb-4 sm:mb-5"
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-[20px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_14px_34px_-12px_rgba(47,107,255,0.6)] mb-4 sm:mb-5"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {isSuccess ? (
                   <motion.span key="ok" initial={{ scale: 0.4, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={SPRING} className="flex">
-                    <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-[#050506] stroke-[2.5]" />
+                    <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-white stroke-[2.5]" />
                   </motion.span>
                 ) : (
                   <motion.span key="lock" exit={{ scale: 0.6, opacity: 0, transition: { duration: 0.15 } }} className="flex">
-                    <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-[#050506] stroke-[2.5]" />
+                    <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-white stroke-[2.5]" />
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -362,17 +362,17 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               <AnimatePresence mode="wait" initial={false}>
               {isLoading ? (
                 <motion.div key="loading" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-[#050506] border-t-transparent rounded-full animate-spin" />
+                  <span className="w-4 h-4 border-2 border-[#040e33] border-t-transparent rounded-full animate-spin" />
                   <span>جاري التحقق من الصلاحية...</span>
                 </motion.div>
               ) : isSuccess ? (
                 <motion.div key="success" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-[#050506]" />
+                  <CheckCircle className="w-5 h-5 text-white" />
                   <span>تم التوثيق! جاري فتح الدليل...</span>
                 </motion.div>
               ) : (
                 <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#050506]" />
+                  <Sparkles className="w-4 h-4 text-white" />
                   دخول للدليل المالي
                 </motion.span>
               )}

@@ -53,8 +53,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
   return (
     <section id="pricing-section" className="py-8 sm:py-16 md:py-20 relative overflow-hidden text-right">
       {/* Background Glow Highlights - Optimized Radial Gradients */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.052)_0%,rgba(255,255,255,0.017)_40%,transparent_70%)] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.036)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[radial-gradient(circle_at_center,rgba(72,128,255,0.135)_0%,rgba(72,128,255,0.044)_40%,transparent_70%)] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(72,128,255,0.094)_0%,transparent_70%)] pointer-events-none" />
       <div className="absolute top-10 left-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.12)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 space-y-8 sm:space-y-12">
@@ -98,8 +98,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 relative z-10">
             <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
-              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-b from-white to-zinc-300 shrink-0 shadow-[inset_0_1px_0_#fff,0_10px_26px_-12px_rgba(255,255,255,0.35)]">
-                <div className="w-full h-full rounded-2xl flex items-center justify-center text-[#050506]">
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_26px_-12px_rgba(47,107,255,0.6)]">
+                <div className="w-full h-full rounded-2xl flex items-center justify-center text-white">
                   <TrendingUp className="w-5 h-5 sm:w-7 sm:h-7" />
                 </div>
               </div>
@@ -116,7 +116,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               </div>
             </div>
 
-            <div className="w-full md:w-auto shrink-0 flex items-center justify-center gap-2 sm:gap-3 bg-white/5 hover:bg-white/10 px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/15 text-[11px] sm:text-xs text-zinc-100 font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-inner">
+            <div className="w-full md:w-auto shrink-0 flex items-center justify-center gap-2 sm:gap-3 bg-white/5 hover:bg-white/10 px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/15 text-[11px] sm:text-xs text-vz-accent font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-inner">
               <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0" />
               <span>تدفع مرة وحدة • وينفتحلك الحساب مدى الحياة</span>
             </div>
@@ -143,8 +143,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {/* Card Header */}
               <div className="flex items-start justify-between border-b border-white/10 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
                 <div>
-                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-zinc-100 bg-white/5 px-2.5 py-0.5 sm:py-1 rounded-full mb-2 border border-white/14 shadow-sm">
-                    <CheckCircle2 className="w-3 h-3 text-zinc-100" />
+                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-vz-accent bg-white/5 px-2.5 py-0.5 sm:py-1 rounded-full mb-2 border border-white/14 shadow-sm">
+                    <CheckCircle2 className="w-3 h-3 text-vz-accent" />
                     <span>الأساس المضبوط لأصحاب المشاريع</span>
                   </div>
                   <h3 className="text-lg sm:text-2xl font-black text-white">الاشتراك العادي</h3>
@@ -153,7 +153,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 
                 <div className="text-left shrink-0">
                   <div className="text-2xl sm:text-4xl font-black text-white font-mono tracking-tight"><CountUp value={29000} /></div>
-                  <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
+                  <div className="text-[11px] sm:text-xs font-bold text-vz-accent">دينار</div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full inline-block mt-0.5">مدى الحياة</span>
                 </div>
               </div>
@@ -224,8 +224,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             {/* Ambient Inner Crown Glow */}
 
             {/* TOP POPULAR BADGE */}
-            <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-white to-zinc-200 text-[#050506] font-black text-[11px] sm:text-xs py-1.5 sm:py-2 text-center tracking-wider flex items-center justify-center gap-1.5 z-[2]">
-              <Flame className="w-3.5 h-3.5 fill-[#050506]" />
+            <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black text-[11px] sm:text-xs py-1.5 sm:py-2 text-center tracking-wider flex items-center justify-center gap-1.5 z-[2]">
+              <Flame className="w-3.5 h-3.5 fill-white" />
               <span>الباقة الكاملة • VIP</span>
             </div>
 
@@ -233,20 +233,20 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {/* Card Header */}
               <div className="flex items-start justify-between border-b border-white/16 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
                 <div>
-                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-[#050506] bg-white px-2.5 py-0.5 rounded-full mb-2">
-                    <Crown className="w-3 h-3 fill-[#050506]" />
+                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-white bg-vz-blue px-2.5 py-0.5 rounded-full mb-2">
+                    <Crown className="w-3 h-3 fill-white" />
                     <span>اشتراك الـ VIP</span>
                   </div>
                   <h3 className="text-lg sm:text-3xl font-black text-white flex items-center gap-2">
                     <span>اشتراك VIP</span>
                     <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white/70" />
                   </h3>
-                  <p className="text-[11px] sm:text-xs text-zinc-100/90 font-bold mt-0.5 leading-relaxed">إذا تريد نتيجة سريعة وبدون أخطاء وتوجيه خطوة بخطوة</p>
+                  <p className="text-[11px] sm:text-xs text-vz-accent/90 font-bold mt-0.5 leading-relaxed">إذا تريد نتيجة سريعة وبدون أخطاء وتوجيه خطوة بخطوة</p>
                 </div>
 
                 <div className="text-left shrink-0">
                   <div className="text-2xl sm:text-5xl font-black text-white font-mono tracking-tight"><CountUp value={49000} /></div>
-                  <div className="text-[11px] sm:text-xs font-bold text-zinc-100">دينار</div>
+                  <div className="text-[11px] sm:text-xs font-bold text-vz-accent">دينار</div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-black bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-full inline-block mt-0.5 shadow-sm">مدى الحياة</span>
                 </div>
               </div>
@@ -254,52 +254,52 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               {/* VIP Perks */}
               <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                 <div className="glass-subtle p-2.5 sm:p-3 rounded-2xl flex items-center gap-2 text-[11px] sm:text-xs text-white/85 font-bold">
-                  <BadgeCheck className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100 shrink-0" />
+                  <BadgeCheck className="w-4 h-4 sm:w-5 sm:h-5 text-vz-accent shrink-0" />
                   <span>يشمل كل ميزات الباقة العادية بالكامل + المميزات الجوا:</span>
                 </div>
 
                 <ul className="space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm text-white">
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
                       <Crown className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-zinc-100 font-bold">متابعة مباشرة وياي من تطبق:</strong> أتابعك خطوة بخطوة حتى ما تغلط وتضمن أحسن نتيجة لشغلك.</span>
+                    <span><strong className="text-vz-accent font-bold">متابعة مباشرة وياي من تطبق:</strong> أتابعك خطوة بخطوة حتى ما تغلط وتضمن أحسن نتيجة لشغلك.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
                       <Target className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-zinc-100 font-bold">مراجعة إعلاناتك:</strong> أشيك إعلاناتك وطريقة شغلك وأنطيك التعديلات المضبوطة حتى تربح.</span>
+                    <span><strong className="text-vz-accent font-bold">مراجعة إعلاناتك:</strong> أشيك إعلاناتك وطريقة شغلك وأنطيك التعديلات المضبوطة حتى تربح.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
                       <PhoneCall className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-zinc-100 font-bold">أجاوب كل أسئلتك أول بأول:</strong> أجاوب على كل استفساراتك بشكل مباشر وبدون أي تأخير.</span>
+                    <span><strong className="text-vz-accent font-bold">أجاوب كل أسئلتك أول بأول:</strong> أجاوب على كل استفساراتك بشكل مباشر وبدون أي تأخير.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
                       <Zap className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-zinc-100 font-bold">أوكف وياك قبل لا تصرف:</strong> أساعدك تختار المنتج، وترتب الزبائن والعروض قبل لا تصرف أي فلس.</span>
+                    <span><strong className="text-vz-accent font-bold">أوكف وياك قبل لا تصرف:</strong> أساعدك تختار المنتج، وترتب الزبائن والعروض قبل لا تصرف أي فلس.</span>
                   </li>
 
                   <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-zinc-100 shadow-sm">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                     </div>
-                    <span><strong className="text-zinc-100 font-bold">خطة مخصصة لشغلك:</strong> أرتبلك خطة تمشي عليها تناسب مشروعك إنت بالذات، مو مجرد حجي عام.</span>
+                    <span><strong className="text-vz-accent font-bold">خطة مخصصة لشغلك:</strong> أرتبلك خطة تمشي عليها تناسب مشروعك إنت بالذات، مو مجرد حجي عام.</span>
                   </li>
 
-                  <li className="flex items-start gap-2.5 sm:gap-3.5 bg-gradient-to-r from-white/12 via-white/8 to-[#050506] p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-white/32 md:shadow-[0_4px_20px_rgba(0,0,0,0.33)] shadow-xl relative overflow-hidden">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gradient-to-br from-[#F5F5F7] to-[#F5F5F7] flex items-center justify-center shrink-0 mt-0.5 text-[#050506] font-black shadow-md">
+                  <li className="flex items-start gap-2.5 sm:gap-3.5 bg-gradient-to-r from-white/12 via-white/8 to-[#040e33] p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-white/32 md:shadow-[0_4px_20px_rgba(0,0,0,0.33)] shadow-xl relative overflow-hidden">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gradient-to-br from-vz-blue-light to-vz-blue flex items-center justify-center shrink-0 mt-0.5 text-white font-black shadow-md">
                       <Bot className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-zinc-100 font-black block text-xs sm:text-sm flex items-center gap-1.5">
+                      <span className="text-vz-accent font-black block text-xs sm:text-sm flex items-center gap-1.5">
                         مستشار فيزيون
                       </span>
                       <span className="text-white/90 text-[11px] sm:text-xs font-light leading-relaxed block mt-0.5">
@@ -315,9 +315,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             <Magnetic className="w-full" strength={0.12} max={5} reach={10}>
             <button
               onClick={() => handleChoose("vip")}
-              className="btn btn-primary w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl text-[#050506] font-black text-xs sm:text-base flex items-center justify-center gap-2 group relative overflow-hidden min-h-[50px] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="btn btn-primary w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl text-white font-black text-xs sm:text-base flex items-center justify-center gap-2 group relative overflow-hidden min-h-[50px] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-[#050506] transition-transform" />
+              <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-white transition-transform" />
               <span>انضم لاشتراك الـ VIP هسة واضمن نتائجك (49,000 دينار)</span>
             </button>
             </Magnetic>
@@ -334,12 +334,12 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
             <div className="space-y-3 flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/18 text-xs font-black text-zinc-100">
-                <Bot className="w-4 h-4 text-zinc-100" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/18 text-xs font-black text-vz-accent">
+                <Bot className="w-4 h-4 text-vz-accent" />
                 <span>اشتراك خاص بالمستشار الذكي (Vizion AI)</span>
               </div>
               <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
-                تريد المستشار الذكي فقط؟ اشترك بـ <span className="text-zinc-100">14,000 دينار عراقي / شهرياً</span>
+                تريد المستشار الذكي فقط؟ اشترك بـ <span className="text-vz-accent">14,000 دينار عراقي / شهرياً</span>
               </h3>
               <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed">
                 احصل على خبير إعلانات ومبيعات يعمل بذكاء اصطناعي 24/7 في هاتفك لتشخيص هدر الإعلانات، توليد سكريبتات الواتساب، وحساب أرباحك بالدينار العراقي (فقط 466 د.ع باليوم!).
@@ -348,8 +348,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
             <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-3">
               <div className="text-center">
-                <span className="text-3xl sm:text-4xl font-black text-zinc-100 font-mono block">14,000</span>
-                <span className="text-xs font-bold text-zinc-100">د.ع / شهرياً</span>
+                <span className="text-3xl sm:text-4xl font-black text-vz-accent font-mono block">14,000</span>
+                <span className="text-xs font-bold text-vz-accent">د.ع / شهرياً</span>
               </div>
               <a 
                 href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
@@ -357,7 +357,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl hover:scale-[1.02] active:scale-[0.97] transition cursor-pointer"
               >
-                <Sparkles className="w-4 h-4 text-zinc-100" />
+                <Sparkles className="w-4 h-4 text-vz-accent" />
                 <span>اشترك الآن عبر الواتساب (07757851379) 💬</span>
               </a>
             </div>
@@ -372,11 +372,11 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               <span>حساب يتفعل فوراً</span>
             </span>
             <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-              <Clock className="w-4 h-4 text-zinc-100" />
+              <Clock className="w-4 h-4 text-vz-accent" />
               <span>حساب يبقى الك طول العمر</span>
             </span>
             <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-              <Star className="w-4 h-4 text-zinc-100 fill-zinc-100" />
+              <Star className="w-4 h-4 text-vz-accent fill-vz-accent" />
               <span>تقييم 4.7/5 من أكثر من 73 مشترك</span>
             </span>
           </div>

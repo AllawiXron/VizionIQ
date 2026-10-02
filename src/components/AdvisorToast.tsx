@@ -27,13 +27,13 @@ export const AdvisorToast: React.FC<AdvisorToastProps> = ({ toast, onDismiss }) 
   const getIcon = () => {
     switch (toast?.type) {
       case "copy":
-        return <Copy className="w-4 h-4 text-zinc-300" />;
+        return <Copy className="w-4 h-4 text-slate-300" />;
       case "saved":
-        return <Bookmark className="w-4 h-4 text-zinc-100" />;
+        return <Bookmark className="w-4 h-4 text-vz-accent" />;
       case "plan":
         return <Calendar className="w-4 h-4 text-emerald-400" />;
       case "navigate":
-        return <ArrowLeft className="w-4 h-4 text-zinc-300" />;
+        return <ArrowLeft className="w-4 h-4 text-slate-300" />;
       default:
         return <Check className="w-4 h-4 text-emerald-400" />;
     }
@@ -54,7 +54,7 @@ export const AdvisorToast: React.FC<AdvisorToastProps> = ({ toast, onDismiss }) 
             {getIcon()}
           </div>
           <div>
-            <h5 className="text-xs sm:text-sm font-bold text-zinc-100 leading-snug">
+            <h5 className="text-xs sm:text-sm font-bold text-vz-accent leading-snug">
               {toast.title}
             </h5>
             {toast.description && (
@@ -66,7 +66,7 @@ export const AdvisorToast: React.FC<AdvisorToastProps> = ({ toast, onDismiss }) 
         </div>
 
         <button           onClick={onDismiss}
-          className="p-1 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+          className="p-1 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           aria-label="إغلاق التنبيه"
         >
           <X className="w-3.5 h-3.5" />

@@ -30,18 +30,18 @@ export default function AdSimulator() {
         
         {/* Left Side: Customization Controls (5 Columns) */}
         <div className="lg:col-span-5 space-y-4">
-          <span className="text-xs font-semibold text-zinc-100 block">⚙️ خيارات الإعلان والتعديل</span>
+          <span className="text-xs font-semibold text-vz-accent block">⚙️ خيارات الإعلان والتعديل</span>
 
           {/* Preset Formulas */}
           <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/5">
-            <span className="text-[10px] text-zinc-100 font-bold block">💡 صيغ كتابة إعلانية عراقية ناجحة (اضغط للتجربة):</span>
+            <span className="text-[10px] text-vz-accent font-bold block">💡 صيغ كتابة إعلانية عراقية ناجحة (اضغط للتجربة):</span>
             <div className="grid grid-cols-3 gap-1.5">
               <button                 onClick={() => {
                   setHeadline("مقاوم لتراب وعواصف بغداد والجنوب! 🚗🌪️");
                   setAdText("تعبت من غسيل سيارتك كل يوم والتراب يغطيها الصبح؟ 🚗🌪️ عواصف تراب العراق ما ترحم، والحل صار بيدك! غلاف السيارة النانو عازل للغبار والمطر بنسبة 100%.\n\n✅ يحمي الصبغ من الخدوش وأشعة الشمس الحارقة.\n✅ تفصال خاص لكل موديل سيارة (صالون، جيب، بيك اب).\n\n👇 اطلب الحين وافحص خامته وجودته بنفسك قبل ما تدفع للمندوب!");
                   setCta("اطلب الآن - توصيل سريع");
                 }}
-                className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="صيغة حل مشكلة الغبار العراقي"
               >
                 🌪️ مشكلة الغبار
@@ -51,7 +51,7 @@ export default function AdSimulator() {
                   setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ 🤦‍♂️ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\n✅ حجمها صغير ومثالية لكشنات وزوايا السيارة.\n✅ تعبئة USB يدوم لأسابيع.\n✅ التوصيل لباب بيتك مجاني هذا الأسبوع!\n\n👇 اضغط على 'اطلب الآن' واحصل عليها بخصم خاص اليوم!");
                   setCta("تسوق الآن");
                 }}
-                className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="صيغة الكشخة وتفادي الغبار"
               >
                 ✨ كشخة الملابس
@@ -61,7 +61,7 @@ export default function AdSimulator() {
                   setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة! 🏡☀️\n\n✅ يشتغل من شمس الصيف الحارة ويشتغل تلقائياً بالليل.\n✅ خامة قوية ومقاومة للأمطار وعواصف الغبار.\n✅ توصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف فقط!\n\n👇 العرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
                   setCta("اشتري قطعتين والتوصيل مجاني");
                 }}
-                className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="صيغة عرض الكرم العراقي"
               >
                 🎁 الكرم العائلي
@@ -72,19 +72,19 @@ export default function AdSimulator() {
           {/* Platform Selector Buttons */}
           <div className="grid grid-cols-3 gap-2">
             <button               onClick={() => setPlatform("facebook")}
-              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "facebook" ? "bg-[#1877F2]/10 border-[#1877F2] text-[#1877F2]" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "facebook" ? "bg-[#1877F2]/10 border-[#1877F2] text-[#1877F2]" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
             >
               <Facebook className="w-4 h-4" />
               <span>فيسبوك</span>
             </button>
             <button               onClick={() => setPlatform("instagram")}
-              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "instagram" ? "bg-[#E1306C]/10 border-[#E1306C] text-[#E1306C]" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "instagram" ? "bg-[#E1306C]/10 border-[#E1306C] text-[#E1306C]" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
             >
               <Instagram className="w-4 h-4" />
               <span>إنستغرام</span>
             </button>
             <button               onClick={() => setPlatform("tiktok")}
-              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "tiktok" ? "bg-black/40 border-cyan-400 text-cyan-300 md:shadow-[0_0_10px_rgba(0,0,0,0.44)] shadow-xl" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+              className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "tiktok" ? "bg-black/40 border-cyan-400 text-cyan-300 md:shadow-[0_0_10px_rgba(0,0,0,0.44)] shadow-xl" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
             >
               <span className="font-bold">🎵</span>
               <span>تيك توك</span>
@@ -97,7 +97,7 @@ export default function AdSimulator() {
             <textarea               value={adText}
               onChange={(e) => setAdText(e.target.value)}
               rows={4}
-              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/35 leading-relaxed resize-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/35 leading-relaxed resize-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             />
           </div>
 
@@ -107,7 +107,7 @@ export default function AdSimulator() {
             <input               type="text"
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
-              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/35 min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/35 min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             />
           </div>
 
@@ -116,7 +116,7 @@ export default function AdSimulator() {
             <label className="text-xs text-white/60 block">نص زر الإجراء (Call To Action):</label>
             <select               value={cta}
               onChange={(e) => setCta(e.target.value)}
-              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/35 appearance-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/35 appearance-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <option value="اطلب الآن - توصيل سريع">اطلب الآن - توصيل سريع</option>
               <option value="تسوق الآن">تسوق الآن</option>
@@ -135,7 +135,7 @@ export default function AdSimulator() {
               {/* Profile Bar */}
               <div className="p-3 flex justify-between items-center border-b border-white/5">
                 <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#F5F5F7] to-white flex items-center justify-center font-bold text-[#050506] text-xs">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-vz-blue-light to-vz-blue-deep flex items-center justify-center font-bold text-white text-xs">
                     عراق
                   </div>
                   <div>
@@ -146,7 +146,7 @@ export default function AdSimulator() {
                     <span className="text-[10px] text-white/70">الآن · 🌐</span>
                   </div>
                 </div>
-                <button className="text-white/60 hover:text-white min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]">
+                <button className="text-white/60 hover:text-white min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
               </div>
@@ -161,7 +161,7 @@ export default function AdSimulator() {
                 <div className="absolute inset-0 bg-gradient-to-b from-[#343436]/20 via-[#222224]/50 to-black z-0" />
                 {/* Simulated product visual overlay */}
                 <div className="z-10 text-center p-4">
-                  <span className="text-[10px] bg-white/10 text-zinc-100 border border-white/18 px-2 py-0.5 rounded-full font-bold">خصم ٢٥٪ - الدفع عند الاستلام</span>
+                  <span className="text-[10px] bg-white/10 text-vz-accent border border-white/18 px-2 py-0.5 rounded-full font-bold">خصم ٢٥٪ - الدفع عند الاستلام</span>
                   <div className="text-4xl my-2">🚗🛡️☀️</div>
                   <h6 className="text-sm font-bold text-white tracking-wide">مظلة الزجاج الذكية للسيارات</h6>
                   <p className="text-[10px] text-white/60 mt-1">المظهر الأصلي المضمون في العراق</p>
@@ -174,22 +174,22 @@ export default function AdSimulator() {
                   <span className="text-[10px] text-white/70 uppercase block">WWW.ALRAFIDAIN.SHOP</span>
                   <span className="font-bold text-white text-[12px] truncate block">{headline}</span>
                 </div>
-                <button className="px-3.5 py-1.5 bg-[#3a3b3c] hover:bg-[#4e4f50] font-semibold rounded text-white text-[11px] transition-all motion-reduce:transition-none motion-reduce:transform-none whitespace-nowrap min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]">
+                <button className="px-3.5 py-1.5 bg-[#3a3b3c] hover:bg-[#4e4f50] font-semibold rounded text-white text-[11px] transition-all motion-reduce:transition-none motion-reduce:transform-none whitespace-nowrap min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   {cta}
                 </button>
               </div>
 
               {/* Social actions */}
               <div className="p-3 flex justify-around items-center border-t border-white/5 text-white/60">
-                <button className="flex items-center gap-1.5 hover:text-[#1877F2] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]">
+                <button className="flex items-center gap-1.5 hover:text-[#1877F2] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   <span>👍</span>
                   <span>أعجبني</span>
                 </button>
-                <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]">
+                <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   <MessageCircle className="w-4 h-4" />
                   <span>تعليق</span>
                 </button>
-                <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]">
+                <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   <Share2 className="w-4 h-4" />
                   <span>مشاركة</span>
                 </button>
@@ -213,7 +213,7 @@ export default function AdSimulator() {
                     <span className="text-[9px] text-white/60 block -mt-0.5">Sponsored</span>
                   </div>
                 </div>
-                <button className="text-white/60 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]">
+                <button className="text-white/60 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
               </div>
@@ -226,7 +226,7 @@ export default function AdSimulator() {
                 <div className="z-10 text-center p-6 space-y-3">
                   <div className="text-5xl">📦✨🚙</div>
                   <h6 className="text-base font-black text-white">{headline}</h6>
-                  <p className="text-xs text-zinc-100 font-bold">التوصيل متوفر لكافة المحافظات العراقية 🇮🇶</p>
+                  <p className="text-xs text-vz-accent font-bold">التوصيل متوفر لكافة المحافظات العراقية 🇮🇶</p>
                 </div>
 
                 {/* Simulated Shop CTA Overlay at the bottom */}
@@ -239,18 +239,18 @@ export default function AdSimulator() {
               {/* Action Icons */}
               <div className="p-3 flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <button className="hover:text-red-500 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"><Heart className="w-5 h-5" /></button>
-                  <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506] min-h-[44px] active:scale-[0.97] transition-all"><MessageCircle className="w-5 h-5" /></button>
-                  <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506] min-h-[44px] active:scale-[0.97] transition-all"><Send className="w-5 h-5" /></button>
+                  <button className="hover:text-red-500 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"><Heart className="w-5 h-5" /></button>
+                  <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy min-h-[44px] active:scale-[0.97] transition-all"><MessageCircle className="w-5 h-5" /></button>
+                  <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy min-h-[44px] active:scale-[0.97] transition-all"><Send className="w-5 h-5" /></button>
                 </div>
-                <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506] min-h-[44px] active:scale-[0.97] transition-all"><Bookmark className="w-5 h-5" /></button>
+                <button  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy min-h-[44px] active:scale-[0.97] transition-all"><Bookmark className="w-5 h-5" /></button>
               </div>
 
               {/* Likes & Captions */}
               <div className="px-3 pb-3 space-y-1.5">
                 <span className="font-bold block text-[11px]">843 likes</span>
                 <p className="leading-relaxed">
-                  <span className="font-bold mr-1 block text-zinc-100">alrafidain.shop</span>
+                  <span className="font-bold mr-1 block text-vz-accent">alrafidain.shop</span>
                   <span className="text-white/90 whitespace-pre-line">{adText}</span>
                 </p>
                 <span className="text-[9px] text-white/60 uppercase block mt-1">View all 14 comments</span>

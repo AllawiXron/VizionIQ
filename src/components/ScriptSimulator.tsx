@@ -38,27 +38,27 @@ export default function ScriptSimulator() {
         
         {/* Left Side: Selectors (4 Columns) */}
         <div className="lg:col-span-4 space-y-3">
-          <span className="text-xs font-semibold text-zinc-100 block">👤 حدد نمط زبونك بالاتصال:</span>
+          <span className="text-xs font-semibold text-vz-accent block">👤 حدد نمط زبونك بالاتصال:</span>
           {phoneScripts.map((script, idx) => (
             <button               key={idx}
               onClick={() => {
                 setActiveIndex(idx);
                 setCopied(false);
               }}
-              className={`w-full p-4 rounded-xl text-right border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between ${ activeIndex === idx ? "bg-white/5 border-white/35 text-zinc-100 shadow-md" : "bg-white/5 border-white/10 text-white/80 hover:bg-white/10" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+              className={`w-full p-4 rounded-xl text-right border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center justify-between ${ activeIndex === idx ? "bg-white/5 border-white/35 text-vz-accent shadow-md" : "bg-white/5 border-white/10 text-white/80 hover:bg-white/10" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
             >
               <div>
                 <h4 className="font-bold text-sm">{script.title}</h4>
                 <p className="text-[11px] text-white/70 mt-1 line-clamp-1">{script.customerType}</p>
               </div>
-              <PhoneCall className={`w-4 h-4 shrink-0 mr-2 ${activeIndex === idx ? "text-zinc-100" : "text-white/60"}`} />
+              <PhoneCall className={`w-4 h-4 shrink-0 mr-2 ${activeIndex === idx ? "text-vz-accent" : "text-white/60"}`} />
             </button>
           ))}
 
           {/* Golden Standard COD notice */}
           <div className="p-4 bg-white/3 border border-white/9 rounded-xl mt-4">
-            <span className="text-xs font-bold text-zinc-100 flex items-center gap-1.5 mb-1">
-              <Star className="w-3.5 h-3.5 fill-zinc-200" />
+            <span className="text-xs font-bold text-vz-accent flex items-center gap-1.5 mb-1">
+              <Star className="w-3.5 h-3.5 fill-slate-200" />
               القاعدة المليونية للـ COD:
             </span>
             <p className="text-[11px] text-white/70 leading-relaxed">
@@ -73,12 +73,12 @@ export default function ScriptSimulator() {
           {/* Header Title of selected character */}
           <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
-              <span className="text-[10px] bg-white/10 text-zinc-100 px-2 py-0.5 rounded font-bold">{activeScript.title}</span>
+              <span className="text-[10px] bg-white/10 text-vz-accent px-2 py-0.5 rounded font-bold">{activeScript.title}</span>
               <p className="text-xs text-white/70 mt-1.5 font-medium">{activeScript.description || activeScript.psychologyNote}</p>
             </div>
             
             <button               onClick={handleCopy}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-white/80 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-white/80 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               {copied ? (
                 <>
@@ -109,8 +109,8 @@ export default function ScriptSimulator() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 font-bold text-xs shadow ${
                       isAgent
-                        ? "bg-gradient-to-tr from-[#F5F5F7] to-white text-[#050506]"
-                        : "bg-zinc-700 text-white"
+                        ? "bg-gradient-to-tr from-vz-blue-light to-white text-white"
+                        : "bg-slate-700 text-white"
                     }`}
                   >
                     {isAgent ? "🎧" : "👤"}
@@ -124,8 +124,8 @@ export default function ScriptSimulator() {
                     <div
                       className={`p-3 rounded-2xl text-xs leading-relaxed ${
                         isAgent
-                          ? "bg-gradient-to-br from-[#343436] to-[#222224] text-white rounded-tr-none border border-white/9"
-                          : "bg-zinc-800 text-white/90 rounded-tl-none border border-white/5"
+                          ? "bg-gradient-to-br from-[#1a2c6b] to-[#0f1f55] text-white rounded-tr-none border border-white/9"
+                          : "bg-slate-800 text-white/90 rounded-tl-none border border-white/5"
                       }`}
                     >
                       {d.text}
@@ -138,8 +138,8 @@ export default function ScriptSimulator() {
 
           {/* Expert Tip Notice */}
           <div className="p-4 bg-white/3 border border-white/9 rounded-xl">
-            <h5 className="text-xs font-bold text-zinc-100 flex items-center gap-1.5 mb-1">
-              <Star className="w-3.5 h-3.5 text-zinc-100" />
+            <h5 className="text-xs font-bold text-vz-accent flex items-center gap-1.5 mb-1">
+              <Star className="w-3.5 h-3.5 text-vz-accent" />
               💡 نصيحة الخبير الذهبية:
             </h5>
             <p className="text-xs text-white/70 leading-relaxed font-light">
