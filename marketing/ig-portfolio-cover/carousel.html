@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>allawi.psd — أعمالي سوشيال ميديا (carousel)</title>
+<link rel="stylesheet" href="fonts/src.css" />
+<style>
+  :root {
+    --paper: #ece3d4;
+    --paper-2: #e3d6c2;
+    --ink: #1f1510;
+    --ink-soft: rgba(31, 21, 16, 0.62);
+    --orange: #e2541b;
+    --orange-2: #f07a2e;
+    --cream: #fbf3e6;
+    --slot: #ddd1be;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+
+  .slide {
+    position: relative;
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    color: var(--ink);
+    font-family: "Readex Pro", sans-serif;
+    background: radial-gradient(120% 90% at 50% 0%, #f1e9dc 0%, var(--paper) 55%, var(--paper-2) 100%);
+  }
+  .slide.glow {
+    background:
+      radial-gradient(60% 42% at 50% 64%, rgba(240, 122, 46, 0.22) 0%, rgba(240, 122, 46, 0) 70%),
+      radial-gradient(120% 90% at 50% 0%, #f1e9dc 0%, var(--paper) 55%, var(--paper-2) 100%);
+  }
+  /* paper grain */
+  .grain {
+    position: absolute; inset: 0; z-index: 30; pointer-events: none; opacity: 0.32; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.18  0 0 0 0.55 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+  }
+  /* on inner slides the grain sits under the photos so your work stays clean */
+  .slide.inner .grain { z-index: 2; }
+
+  /* orbit rings — a nod to the orange loops in the reference */
+  .rings { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  /* one continuous loop drawn across slides 2–8, each slide shows its own window */
+  .loop { position: absolute; top: 0; height: 1350px; width: 7560px; z-index: 1; pointer-events: none; }
+
+  /* top meta strip */
+  .meta {
+    position: absolute; top: 52px; left: 64px; right: 64px; z-index: 20;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: "IBM Plex Mono", monospace; font-size: 17px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .meta .ar { font-family: "Readex Pro"; letter-spacing: 0; font-size: 20px; font-weight: 500; text-transform: none; }
+  .meta .dot { width: 9px; height: 9px; border-radius: 99px; background: var(--orange); display: inline-block; margin-inline-end: 10px; vertical-align: 1px; }
+
+  /* cover headline */
+  .title {
+    position: absolute; top: 88px; left: 0; right: 0; z-index: 3;
+    text-align: center; direction: rtl;
+    font-family: "Aref Ruqaa", serif; font-weight: 700; font-size: 256px; line-height: 1.32;
+    color: var(--ink);
+  }
+  .sub {
+    position: absolute; top: 432px; left: 64px; right: 64px; z-index: 20;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .sub .ar { direction: rtl; font-size: 40px; font-weight: 500; letter-spacing: 0; }
+  .sub .en { font-family: "Instrument Serif", serif; font-style: italic; font-size: 46px; line-height: 1; }
+  .sub .rule { flex: 1; height: 2px; background: var(--ink); margin: 0 26px; transform: translateY(-11px); opacity: 0.85; }
+
+  /* inner-slide header: italic label — rule — Ruqaa numeral */
+  .hd {
+    position: absolute; top: 96px; left: 64px; right: 64px; z-index: 20; height: 150px;
+    display: flex; align-items: center;
+  }
+  .hd .en { font-family: "Instrument Serif", serif; font-style: italic; font-size: 50px; line-height: 1; white-space: nowrap; }
+  .hd .rule { flex: 1; height: 2px; background: var(--ink); margin: 0 28px; opacity: 0.85; }
+  .hd .num { font-family: "Aref Ruqaa", serif; font-weight: 700; font-size: 150px; line-height: 1; direction: rtl; transform: translateY(-6px); }
+
+  /* statue */
+  .head {
+    position: absolute; z-index: 5;
+    width: 660px; left: 210px; top: 478px;
+    filter: drop-shadow(18px 26px 30px rgba(70, 30, 10, 0.28));
+  }
+  .head img { width: 100%; display: block; }
+
+  /* the blindfold = a selected Photoshop layer */
+  .bar {
+    position: absolute; z-index: 10;
+    left: 540px; top: 0; /* positioned via --y */
+    width: 610px; height: 104px;
+    transform: translate(-50%, -50%) rotate(var(--rot, 6deg));
+    background: linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%);
+    border-radius: 18px;
+    box-shadow: 0 18px 34px rgba(150, 50, 10, 0.32), inset 0 2px 0 rgba(255,255,255,0.28);
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+    color: var(--cream);
+  }
+  .bar .name { font-family: "Readex Pro"; font-weight: 600; font-size: 50px; letter-spacing: 0.01em; direction: ltr; }
+  .bar .eye { width: 44px; height: 44px; opacity: 0.95; }
+  .ghost { position: absolute; z-index: 9; left: 540px; width: 610px; height: 104px; border-radius: 18px; border: 2.5px dashed var(--orange); transform: translate(-50%, -50%) rotate(4.6deg); }
+
+  /* transform box with handles (used on the bar and on selected photo frames) */
+  .frame { position: absolute; inset: -14px; border: 2px solid var(--ink); pointer-events: none; }
+  .frame i { position: absolute; width: 14px; height: 14px; background: var(--cream); border: 2px solid var(--ink); }
+  .frame .tl { left: -8px; top: -8px; } .frame .tr { right: -8px; top: -8px; }
+  .frame .bl { left: -8px; bottom: -8px; } .frame .br { right: -8px; bottom: -8px; }
+  .frame .tm { left: calc(50% - 7px); top: -8px; } .frame .bm { left: calc(50% - 7px); bottom: -8px; }
+  .frame .ml { left: -8px; top: calc(50% - 7px); } .frame .mr { right: -8px; top: calc(50% - 7px); }
+  .cursor { position: absolute; z-index: 11; width: 50px; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3)); }
+
+  /* Photoshop-style size tooltip */
+  .tip {
+    position: absolute; z-index: 12; padding: 8px 12px; border-radius: 6px;
+    background: rgba(31, 21, 16, 0.92); color: var(--cream);
+    font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 500; line-height: 1.45; letter-spacing: 0.04em;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25); white-space: nowrap;
+  }
+  /* orange layer tag */
+  .tag {
+    position: absolute; z-index: 12; height: 44px; padding: 0 18px 0 14px; border-radius: 12px;
+    background: linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%); color: var(--cream);
+    display: flex; align-items: center; gap: 10px;
+    font-family: "Readex Pro"; font-weight: 600; font-size: 22px; direction: ltr;
+    box-shadow: 0 10px 20px rgba(150, 50, 10, 0.28), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .tag svg { width: 22px; height: 22px; }
+
+  /* ---------- photo slots ---------- */
+  .slot {
+    position: absolute; z-index: 5; overflow: hidden;
+    background:
+      repeating-linear-gradient(135deg, rgba(31,21,16,0.045) 0 2px, transparent 2px 16px),
+      var(--slot);
+  }
+  /* HTML route: drop a file at the slot's path in works/ and it fills the frame */
+  .slot::after { content: ""; position: absolute; inset: 0; background: var(--img, none) center / cover no-repeat; }
+  .ph {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    color: rgba(31, 21, 16, 0.5); text-align: center;
+  }
+  .ph svg { width: 46px; height: 46px; margin-bottom: 4px; }
+  .ph b { font-weight: 500; font-size: 26px; direction: rtl; color: rgba(31, 21, 16, 0.62); }
+  .ph small { font-family: "IBM Plex Mono", monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+  .ph.sm svg { width: 30px; height: 30px; } .ph.sm b { font-size: 17px; } .ph.sm small { font-size: 11px; letter-spacing: 0.08em; }
+  .ph.xs { gap: 6px; } .ph.xs svg { width: 24px; height: 24px; margin: 0; } .ph.xs b { font-size: 14px; } .ph.xs small { font-size: 10px; letter-spacing: 0.06em; }
+  /* soft shadow under each photo (background layer) */
+  .shadow { position: absolute; z-index: 4; box-shadow: 14px 22px 34px rgba(70, 30, 10, 0.2), 0 2px 6px rgba(70, 30, 10, 0.12); background: var(--slot); }
+  .shadow.card { background: #f5efe5; }
+  /* thin ink edge on top of the photo */
+  .edge { position: absolute; z-index: 8; border: 2px solid var(--ink); pointer-events: none; }
+  .sel { position: absolute; z-index: 8; pointer-events: none; }
+  .sel .frame { inset: -12px; }
+
+  /* captions */
+  .cap { position: absolute; z-index: 20; display: flex; flex-direction: column; gap: 8px; }
+  .cap.r { align-items: flex-end; text-align: right; }
+  .cap .name { direction: rtl; font-size: 34px; font-weight: 500; line-height: 1.2; }
+  .cap .mono { font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .caprow { position: absolute; z-index: 20; display: flex; align-items: baseline; }
+  .caprow .name { direction: rtl; font-size: 34px; font-weight: 500; line-height: 1.2; }
+  .caprow .mono { font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .caprow .rule { flex: 1; height: 2px; background: var(--ink); margin: 0 24px; opacity: 0.85; transform: translateY(-8px); }
+
+  /* museum-label annotation */
+  .label {
+    position: absolute; left: 64px; top: 566px; z-index: 20; width: 150px;
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px; font-weight: 500; line-height: 1.55; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .label b { display: block; color: var(--ink); font-weight: 500; margin-bottom: 6px; }
+  .label::after { content: ""; position: absolute; left: 0; top: -14px; width: 28px; height: 2px; background: var(--orange); }
+
+  /* bottom details */
+  .foot { position: absolute; bottom: 56px; z-index: 20; display: flex; flex-direction: column; gap: 8px; }
+  .foot.r { right: 64px; align-items: flex-end; direction: rtl; text-align: right; }
+  .foot.l { left: 64px; align-items: flex-start; }
+  .foot .big { font-size: 30px; font-weight: 500; }
+  .foot .en { font-family: "Instrument Serif"; font-style: italic; font-size: 30px; line-height: 1.1; }
+  .foot .mono { font-family: "IBM Plex Mono", monospace; font-size: 16px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .foot .handle { font-family: "IBM Plex Mono", monospace; font-size: 24px; font-weight: 500; letter-spacing: 0.02em; }
+
+  /* inner-slide footer: handle — page — swipe */
+  .ft {
+    position: absolute; left: 64px; right: 64px; bottom: 52px; z-index: 20;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: "IBM Plex Mono", monospace; font-size: 17px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .ft .pg { color: var(--ink-soft); }
+  .ft .sw { display: flex; align-items: center; gap: 12px; }
+  .ft .sw svg { width: 34px; height: 14px; }
+
+  /* spec annotations with leader lines */
+  .spec { position: absolute; z-index: 20; font-family: "IBM Plex Mono", monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); line-height: 1.6; }
+  .spec b { color: var(--ink); font-weight: 500; display: block; }
+  .lead { position: absolute; z-index: 20; height: 2px; background: var(--ink); opacity: 0.8; }
+  .lead::after { content: ""; position: absolute; right: -5px; top: -4px; width: 10px; height: 10px; border-radius: 99px; background: var(--orange); }
+  .lead.rev::after { right: auto; left: -5px; }
+
+  /* case-study text column */
+  .case { position: absolute; z-index: 20; direction: rtl; text-align: right; }
+  .case h2 { font-size: 44px; font-weight: 600; line-height: 1.25; }
+  .case p { font-size: 25px; font-weight: 300; line-height: 1.75; margin-top: 18px; color: rgba(31, 21, 16, 0.82); }
+  .specs { margin-top: 30px; border-top: 2px solid var(--ink); }
+  .specs div { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0; border-bottom: 1px solid rgba(31, 21, 16, 0.25); }
+  .specs dt { font-family: "IBM Plex Mono", monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.14em; color: var(--ink-soft); direction: ltr; }
+  .specs dd { font-size: 22px; font-weight: 500; }
+
+  /* phone mockup */
+  .phone {
+    position: absolute; z-index: 4; border-radius: 66px; padding: 13px;
+    background: linear-gradient(160deg, #3a2a21 0%, #1f1510 45%, #2a1d16 100%);
+    box-shadow: 24px 34px 60px rgba(60, 25, 8, 0.32), inset 0 0 0 2px rgba(255,255,255,0.08);
+  }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 54px; overflow: hidden; background: #fbf8f2; color: #14100d; font-family: "Readex Pro"; }
+  .screen .status { height: 52px; display: flex; justify-content: space-between; align-items: center; padding: 6px 34px 0; font-size: 17px; font-weight: 600; direction: ltr; }
+  .screen .island { position: absolute; top: 12px; left: 50%; width: 118px; height: 32px; margin-left: -59px; border-radius: 20px; background: #0d0907; }
+  .screen .ighead { height: 58px; display: flex; align-items: center; gap: 11px; padding: 0 16px; direction: ltr; }
+  .screen .av { width: 36px; height: 36px; border-radius: 99px; padding: 2px; background: linear-gradient(45deg, var(--orange), #f6b04a); }
+  .screen .av span { display: block; width: 100%; height: 100%; border-radius: 99px; border: 2px solid #fbf8f2; background: #e9e0d2 url(img/head.webp) 50% 22% / 150% auto no-repeat; }
+  .screen .who { font-size: 17px; font-weight: 600; flex: 1; }
+  .screen .dots { font-size: 22px; letter-spacing: 1px; font-weight: 700; }
+  .screen .acts { display: flex; align-items: center; gap: 16px; padding: 12px 16px 6px; direction: ltr; }
+  .screen .acts svg { width: 28px; height: 28px; }
+  .screen .acts .sp { flex: 1; }
+  .screen .pager { position: absolute; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; }
+  .screen .pager i { width: 6px; height: 6px; border-radius: 99px; background: #cfc6b9; } .screen .pager i.on { background: var(--orange); }
+  .screen .likes { padding: 2px 16px; font-size: 16px; font-weight: 600; direction: ltr; }
+  .screen .nav { position: absolute; left: 0; right: 0; bottom: 0; height: 74px; border-top: 1px solid #e7e0d5; display: flex; justify-content: space-around; align-items: center; padding-bottom: 12px; direction: ltr; }
+  .screen .nav svg { width: 27px; height: 27px; }
+  .igcap { position: absolute; z-index: 20; direction: rtl; text-align: right; font-size: 16px; line-height: 1.5; color: #14100d; }
+  .igcap b { font-weight: 600; direction: ltr; unicode-bidi: isolate; }
+
+  /* ---------- layer export modes (render one layer at a time for the PSDs) ---------- */
+  body.export { background: transparent; padding: 0; gap: 0; }
+  body.export .slide { display: none; }
+  body.export .slide.on { display: block; }
+  body.m-bg .slide .slot, body.m-bg .slide .L-ui, body.m-bg .slide .L-txt { visibility: hidden !important; }
+  body.m-ui .slide, body.m-txt .slide, body.m-slot .slide { background: none !important; }
+  body.m-ui .slide *, body.m-txt .slide *, body.m-slot .slide * { visibility: hidden; }
+  body.m-ui .slide .L-ui, body.m-ui .slide .L-ui * { visibility: visible; }
+  body.m-txt .slide .L-txt, body.m-txt .slide .L-txt * { visibility: visible; }
+  body.m-slot .slide .slot.on, body.m-slot .slide .slot.on * { visibility: visible; }
+  body.m-slot .slide .slot.on::after { display: none; }
+</style>
+</head>
+<body>
+
+<!-- shared SVG symbols -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M21 16l-5-5-9 9" /></symbol>
+    <symbol id="i-arrow" viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h31M26 1l6 6-6 6" /></symbol>
+    <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.6-4.3 2.9 6.6 3-1.3-2.9-6.5 6.3-.3z" fill="#1f1510" stroke="#fbf3e6" stroke-width="1.4" stroke-linejoin="round" /></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></symbol>
+    <symbol id="i-layer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z" /><path d="M3 13l9 5 9-5" /></symbol>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2" /></filter>
+  </defs>
+</svg>
+
+<!-- ============ 01 · COVER ============ -->
+<section class="slide glow" id="s1" style="--y: 924px; --rot: 4.6deg">
+  <svg class="rings" viewBox="0 0 1080 1350">
+    <g fill="none" stroke="#e2541b" filter="url(#soft)">
+      <circle cx="540" cy="840" r="392" stroke-width="22" />
+    </g>
+  </svg>
+
+  <div class="meta L-txt">
+    <span><span class="dot"></span>Portfolio — Vol.01</span>
+    <span class="ar">ملف الأعمال ٢٠٢٦</span>
+  </div>
+
+  <h1 class="title L-txt">أَعْمَالِي</h1>
+
+  <div class="sub L-txt">
+    <span class="en">Social Media Designs</span>
+    <span class="rule"></span>
+    <span class="ar">سوشيال ميديا</span>
+  </div>
+
+  <div class="head">
+    <img src="img/head.webp" alt="" />
+  </div>
+
+  <div class="bar L-ui" style="top: var(--y)">
+    <svg class="eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /><path d="M3 3l18 18" />
+    </svg>
+    <span class="name">allawi.psd</span>
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+  </div>
+
+  <svg class="cursor L-ui" style="left: 856px; top: 992px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+
+  <div class="label L-txt"><b>Fig. 01</b>Marble head<br>of an athlete<br>Roman<br>138–192 CE<br>Met · CC0</div>
+
+  <div class="foot r L-txt">
+    <span class="mono">Layer by layer</span>
+    <span class="big">طبقة فوق طبقة</span>
+  </div>
+  <div class="foot l L-txt">
+    <span class="mono">Follow</span>
+    <span class="handle">@allawi.psd</span>
+  </div>
+
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 02 · FEATURED (1 photo, 4:5) ============ -->
+<section class="slide inner" id="s2">
+  <svg class="loop" style="left: 0px"><use href="#loop" /></svg>
+  <div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>
+  <div class="hd L-txt"><span class="en">Featured</span><span class="rule"></span><span class="num">١</span></div>
+
+  <div class="shadow" style="left:220px; top:292px; width:640px; height:800px"></div>
+  <div class="slot" data-i="1" style="left:220px; top:292px; width:640px; height:800px; --img:url(works/02-1.jpg)">
+    <div class="ph"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 1 · 4:5</small></div>
+  </div>
+  <div class="sel L-ui" style="left:220px; top:292px; width:640px; height:800px">
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+  </div>
+  <div class="tag L-ui" style="left:244px; top:270px"><svg><use href="#i-layer" /></svg>work_01.psd</div>
+  <svg class="cursor L-ui" style="left: 866px; top: 1098px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+  <div class="tip L-ui" style="left: 906px; top: 1150px">W: 1080 px<br>H: 1350 px</div>
+
+  <div class="caprow L-txt" style="left:220px; right:220px; top:1124px">
+    <span class="mono">Client · 2026</span>
+    <span class="rule"></span>
+    <span class="name">اسم المشروع</span>
+  </div>
+
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">02 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 03 · SERIES (2 photos, 4:5) ============ -->
+<section class="slide inner" id="s3">
+  <svg class="loop" style="left: -1080px"><use href="#loop" /></svg>
+  <div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>
+  <div class="hd L-txt"><span class="en">Series</span><span class="rule"></span><span class="num">٢</span></div>
+
+  <div class="shadow" style="left:576px; top:300px; width:440px; height:550px"></div>
+  <div class="slot" data-i="1" style="left:576px; top:300px; width:440px; height:550px; --img:url(works/03-1.jpg)">
+    <div class="ph"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 1 · 4:5</small></div>
+  </div>
+  <div class="sel L-ui" style="left:576px; top:300px; width:440px; height:550px">
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+  </div>
+  <svg class="cursor L-ui" style="left: 1010px; top: 854px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+  <div class="cap r L-txt" style="right:64px; top:886px"><span class="name">اسم المشروع</span><span class="mono">Category · 2026</span></div>
+
+  <div class="shadow" style="left:64px; top:430px; width:440px; height:550px"></div>
+  <div class="slot" data-i="2" style="left:64px; top:430px; width:440px; height:550px; --img:url(works/03-2.jpg)">
+    <div class="ph"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 2 · 4:5</small></div>
+  </div>
+  <div class="edge L-ui" style="left:64px; top:430px; width:440px; height:550px"></div>
+  <div class="cap r L-txt" style="right:576px; top:1016px"><span class="name">اسم المشروع</span><span class="mono">Category · 2026</span></div>
+
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">03 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 04 · CASE (1 photo 4:5 + 1 detail 1:1 + text) ============ -->
+<section class="slide inner" id="s4">
+  <svg class="loop" style="left: -2160px"><use href="#loop" /></svg>
+  <div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>
+  <div class="hd L-txt"><span class="en">Case study</span><span class="rule"></span><span class="num">٣</span></div>
+
+  <div class="shadow" style="left:64px; top:296px; width:560px; height:700px"></div>
+  <div class="slot" data-i="1" style="left:64px; top:296px; width:560px; height:700px; --img:url(works/04-1.jpg)">
+    <div class="ph"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 1 · 4:5</small></div>
+  </div>
+  <div class="edge L-ui" style="left:64px; top:296px; width:560px; height:700px"></div>
+  <div class="tag L-ui" style="left:88px; top:274px"><svg><use href="#i-layer" /></svg>full_post.psd</div>
+
+  <div class="case L-txt" style="left:668px; right:64px; top:282px">
+    <h2>اسم المشروع</h2>
+    <p>وصف قصير للمشروع: الفكرة، الهدف، وشنو كانت النتيجة.</p>
+    <dl class="specs">
+      <div><dt>CLIENT</dt><dd>اسم العميل</dd></div>
+      <div><dt>TYPE</dt><dd>سوشيال ميديا</dd></div>
+      <div><dt>YEAR</dt><dd>٢٠٢٦</dd></div>
+    </dl>
+  </div>
+
+  <div class="shadow" style="left:668px; top:820px; width:348px; height:348px"></div>
+  <div class="slot" data-i="2" style="left:668px; top:820px; width:348px; height:348px; --img:url(works/04-2.jpg)">
+    <div class="ph sm"><svg><use href="#i-img" /></svg><b>تفصيل من التصميم</b><small>Photo 2 · 1:1</small></div>
+  </div>
+  <div class="sel L-ui" style="left:668px; top:820px; width:348px; height:348px">
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+  </div>
+  <svg class="cursor L-ui" style="left: 1010px; top: 1172px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+  <div class="spec L-txt" style="left:64px; top:1030px"><b>Fig. 03</b>Full post · Detail</div>
+
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">04 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 05 · SELECTED (2×2, 4:5) ============ -->
+<section class="slide inner" id="s5">
+  <svg class="loop" style="left: -3240px"><use href="#loop" /></svg>
+  <div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>
+  <div class="hd L-txt"><span class="en">Selected</span><span class="rule"></span><span class="num">٤</span></div>
+
+  <div class="shadow card" style="left:158px; top:270px; width:764px; height:940px"></div>
+  <div class="slot" data-i="1" style="left:550px; top:290px; width:352px; height:440px; --img:url(works/05-1.jpg)"><div class="ph sm"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 1 · 4:5</small></div></div>
+  <div class="slot" data-i="2" style="left:178px; top:290px; width:352px; height:440px; --img:url(works/05-2.jpg)"><div class="ph sm"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 2 · 4:5</small></div></div>
+  <div class="slot" data-i="3" style="left:550px; top:750px; width:352px; height:440px; --img:url(works/05-3.jpg)"><div class="ph sm"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 3 · 4:5</small></div></div>
+  <div class="slot" data-i="4" style="left:178px; top:750px; width:352px; height:440px; --img:url(works/05-4.jpg)"><div class="ph sm"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 4 · 4:5</small></div></div>
+  <div class="edge L-ui" style="left:178px; top:290px; width:352px; height:440px"></div>
+  <div class="edge L-ui" style="left:550px; top:750px; width:352px; height:440px"></div>
+  <div class="edge L-ui" style="left:178px; top:750px; width:352px; height:440px"></div>
+  <div class="sel L-ui" style="left:550px; top:290px; width:352px; height:440px">
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+  </div>
+  <svg class="cursor L-ui" style="left: 908px; top: 736px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+
+
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">05 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 06 · THE FEED (3×3, 4:5) ============ -->
+<section class="slide inner" id="s6">
+  <svg class="loop" style="left: -4320px"><use href="#loop" /></svg>
+  <div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>
+  <div class="hd L-txt"><span class="en">The feed</span><span class="rule"></span><span class="num">٥</span></div>
+
+  <div class="shadow card" style="left:180px; top:290px; width:720px; height:897px"></div>
+  <div class="grid9">
+    <!-- 3×3 tiles, 236×295 with 6px gutters, numbered like the Instagram grid (left→right) -->
+  </div>
+
+  <div class="spec L-txt" style="left:64px; top:296px; width:100px"><b>3×3</b>Grid</div>
+  <div class="spec L-txt" style="right:64px; top:296px; text-align:right"><b>9</b>Posts</div>
+
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">06 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 07 · ON SCREEN (phone, 4:5) ============ -->
+<section class="slide inner" id="s7">
+  <svg class="loop" style="left: -5400px"><use href="#loop" /></svg>
+  <div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>
+  <div class="hd L-txt"><span class="en">On screen</span><span class="rule"></span><span class="num">٦</span></div>
+
+  <div class="phone" style="left:307px; top:268px; width:466px; height:962px">
+    <div class="screen">
+      <div class="island"></div>
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="ighead"><div class="av"><span></span></div><span class="who">allawi.psd</span><span class="dots">···</span></div>
+      <div style="height: 550px"></div>
+      <div class="pager" style="top: 673px"><i class="on"></i><i></i><i></i><i></i></div>
+      <div class="acts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2.1 0 3.6 1.1 5 3 1.4-1.9 2.9-3 5-3 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.2-4.2A8.5 8.5 0 1 1 20.5 12z" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M21.5 3.5L10.6 13.4M21.5 3.5l-6.9 17-4-7.1-7.1-4 18-5.9z" /></svg>
+        <span class="sp"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M5.5 3.5h13v17l-6.5-5-6.5 5z" /></svg>
+      </div>
+      <div class="nav">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 7.5V21h-6v-6H9v6H3V10.5z" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M20.5 20.5L16 16" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><path d="M12 8v8M8 12h8" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><path d="M10 9l5 3-5 3z" /></svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#e9e0d2" stroke="#14100d" stroke-width="2" /></svg>
+      </div>
+    </div>
+  </div>
+  <div class="slot" data-i="1" style="left:320px; top:391px; width:440px; height:550px; --img:url(works/07-1.jpg)">
+    <div class="ph sm"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 1 · 4:5</small></div>
+  </div>
+  <div class="igcap L-txt" style="left:336px; width:408px; top:1022px"><b>allawi.psd</b> اسم المشروع — سطر قصير عن التصميم ✦</div>
+
+  <div class="lead L-ui" style="left:160px; width:147px; top:560px"></div>
+  <div class="spec L-txt" style="left:64px; top:500px"><b>4:5</b>1080×1350</div>
+  <div class="lead rev L-ui" style="left:773px; width:153px; top:362px"></div>
+  <div class="spec L-txt" style="right:64px; top:302px; text-align:right"><b>Feed</b>Preview</div>
+
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">07 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 08 · CLOSING ============ -->
+<section class="slide glow" id="s8" style="--y: 700px; --rot: -5deg">
+  <svg class="loop" style="left: -6480px"><use href="#loop" /></svg>
+  <svg class="rings" viewBox="0 0 1080 1350">
+    <g fill="none" stroke="#e2541b" filter="url(#soft)">
+      <circle cx="540" cy="840" r="392" stroke-width="22" />
+    </g>
+  </svg>
+
+  <div class="meta L-txt">
+    <span><span class="dot"></span>Portfolio — Vol.01</span>
+    <span class="ar">ملف الأعمال ٢٠٢٦</span>
+  </div>
+
+  <h1 class="title L-txt" style="font-size: 196px; top: 128px">لِنَعْمَلْ مَعاً</h1>
+
+  <div class="sub L-txt">
+    <span class="en">Let’s work together</span>
+    <span class="rule"></span>
+    <span class="ar">للطلبات والتعاون</span>
+  </div>
+
+  <div class="head">
+    <img src="img/head.webp" alt="" />
+  </div>
+
+  <!-- where the layer used to be -->
+  <div class="ghost L-ui" style="top: 924px"></div>
+
+  <div class="bar L-ui" style="top: var(--y)">
+    <svg class="eye"><use href="#i-eye" /></svg>
+    <span class="name">allawi.psd</span>
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+  </div>
+
+  <svg class="cursor L-ui" style="left: 838px; top: 640px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+
+  <div class="label L-txt" style="top: 528px"><b>Fig. 02</b>Layer:<br>visible<br>Opacity<br>100%</div>
+
+  <div class="foot r L-txt">
+    <span class="mono">DM me</span>
+    <span class="big">راسلني بالخاص</span>
+  </div>
+  <div class="foot l L-txt">
+    <span class="mono">Follow</span>
+    <span class="handle">@allawi.psd</span>
+  </div>
+
+  <div class="grain"></div>
+</section>
+
+<!-- the loop that runs across slides 2–8 (drawn once, 7 slides wide) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="loop" fill="none" stroke="#e2541b" stroke-width="22" stroke-linecap="round" filter="url(#soft)">
+      <path id="loop-path" d="" />
+    </g>
+  </defs>
+</svg>
+
+<script>
+
+  // the orange loop: one smooth stroke through these points (slide number, local x, local y).
+  // It runs mostly through margins and gaps, and on slide 8 lands tangent on the halo ring (left side, heading down).
+  (function () {
+    const P = [
+      [2, -80, 1080], [2, 110, 1010], [2, 540, 760], [2, 975, 560],
+      [3, 300, 370], [3, 540, 640], [3, 820, 1100],
+      [4, 300, 1180], [4, 840, 990],
+      [5, 90, 760], [5, 540, 640], [5, 990, 480],
+      [6, 90, 560], [6, 540, 800], [6, 990, 1010],
+      [7, 150, 1080], [7, 540, 820], [7, 930, 600],
+      [8, 60, 730], [8, 148, 850], [8, 148, 960],
+    ].map(([k, x, y]) => [(k - 2) * 1080 + x, y]);
+    let d = `M${P[0][0]},${P[0][1]}`;
+    for (let i = 0; i < P.length - 2; i++) {
+      const p0 = P[Math.max(i - 1, 0)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(i + 2, P.length - 1)];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0]},${p2[1]}`;
+    }
+    document.getElementById('loop-path').setAttribute('d', d);
+  })();
+  // build the 3×3 feed grid on slide 6
+  (function () {
+    const host = document.querySelector('#s6 .grid9');
+    const W = 236, H = 295, G = 6, X0 = 180, Y0 = 290;
+    let html = '';
+    for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) {
+      const i = r * 3 + c + 1, x = X0 + c * (W + G), y = Y0 + r * (H + G), n = String(i).padStart(2, '0');
+      html += `<div class="slot" data-i="${i}" style="left:${x}px; top:${y}px; width:${W}px; height:${H}px; --img:url(works/06-${i}.jpg)"><div class="ph xs"><svg><use href="#i-img" /></svg><b>صورة ${i}</b><small>Photo ${i}</small></div></div>`;
+    }
+    html += `<div class="sel L-ui" style="left:${X0 + 2 * (W + G)}px; top:${Y0}px; width:${W}px; height:${H}px"><div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div></div>`;
+    html += `<svg class="cursor L-ui" style="left:${X0 + 3 * W + 2 * G + 6}px; top:${Y0 + H + 4}px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>`;
+    host.outerHTML = html;
+  })();
+</script>
+</body>
+</html>
