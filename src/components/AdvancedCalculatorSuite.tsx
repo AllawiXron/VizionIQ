@@ -96,7 +96,7 @@ export default function AdvancedCalculatorSuite() {
   const monthlySavingsIQD = savedReturnsCount * (returnRateInputs.returnShippingFeeIQD + returnRateInputs.itemSellingPriceIQD * 0.15); // Saved shipping + unrecoverable repackaging
 
   return (
-    <div className="vizion-calculator-suite bg-[#171719] border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right">
+    <div className="vizion-calculator-suite glass-subtle border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -156,7 +156,7 @@ export default function AdvancedCalculatorSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={roasInputs.budgetUSD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, budgetUSD: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">$</span>
 </div>
@@ -169,7 +169,7 @@ export default function AdvancedCalculatorSuite() {
                   step="0.1"
                   value={roasInputs.ctr}
                   onChange={(e) => setRoasInputs({ ...roasInputs, ctr: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
@@ -181,7 +181,7 @@ export default function AdvancedCalculatorSuite() {
                   step="500"
                   value={roasInputs.productCostIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, productCostIQD: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
 
@@ -191,7 +191,7 @@ export default function AdvancedCalculatorSuite() {
                   step="1000"
                   value={roasInputs.sellingPriceIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, sellingPriceIQD: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
 
@@ -201,7 +201,7 @@ export default function AdvancedCalculatorSuite() {
                   step="500"
                   value={roasInputs.shippingCostIQD}
                   onChange={(e) => setRoasInputs({ ...roasInputs, shippingCostIQD: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
 
@@ -211,7 +211,7 @@ export default function AdvancedCalculatorSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={roasInputs.deliveryRatePct}
                   onChange={(e) => setRoasInputs({ ...roasInputs, deliveryRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
@@ -220,7 +220,7 @@ export default function AdvancedCalculatorSuite() {
           </div>
 
           {/* Dynamic Results Display */}
-          <div className="lg:col-span-5 order-1 lg:order-2 sticky top-4 bg-gradient-to-b from-[#202022] to-[#050506] border border-white/18 rounded-3xl p-6 space-y-6 shadow-xl">
+          <div className="lg:col-span-5 order-1 lg:order-2 sticky top-4 glass border border-white/18 rounded-3xl p-6 space-y-6 shadow-xl">
             <h4 className="text-zinc-100 font-black text-sm uppercase tracking-wider border-b border-white/10 pb-3">
               نتائج الرياضيات الصافية اليومية
             </h4>
@@ -277,7 +277,7 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 2. LTV CALCULATOR */}
       {activeTab === "ltv" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+          <div className="p-8 rounded-3xl glass border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
               <Lock className="w-7 h-7" />
             </div>
@@ -310,7 +310,7 @@ export default function AdvancedCalculatorSuite() {
                   step="1000"
                   value={ltvInputs.aovIQD}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, aovIQD: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -322,7 +322,7 @@ export default function AdvancedCalculatorSuite() {
                   step="0.1"
                   value={ltvInputs.purchaseFreqPerYear}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, purchaseFreqPerYear: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
 
@@ -331,12 +331,12 @@ export default function AdvancedCalculatorSuite() {
                 <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={ltvInputs.lifespanYears}
                   onChange={(e) => setLtvInputs({ ...ltvInputs, lifespanYears: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#202022] to-[#050506] border border-white/18 rounded-3xl p-6 flex flex-col justify-between text-center space-y-4">
+            <div className="glass border border-white/18 rounded-3xl p-6 flex flex-col justify-between text-center space-y-4">
               <span className="text-xs text-white/60 font-bold uppercase tracking-wider">القيمة العمرية الصافية LTV</span>
               <span className="text-4xl md:text-5xl font-mono font-black text-emerald-400 drop-shadow-md">
                 {ltvValueIQD.toLocaleString()} <span className="text-base text-white/70">د.ع</span>
@@ -353,7 +353,7 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 3. SCALING SIMULATOR */}
       {activeTab === "scaling" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+          <div className="p-8 rounded-3xl glass border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
               <Lock className="w-7 h-7" />
             </div>
@@ -416,7 +416,7 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 4. BREAK-EVEN CALCULATOR */}
       {activeTab === "breakeven" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+          <div className="p-8 rounded-3xl glass border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
               <Lock className="w-7 h-7" />
             </div>
@@ -449,7 +449,7 @@ export default function AdvancedCalculatorSuite() {
                   step="50000"
                   value={breakEvenInputs.fixedCostsIQD}
                   onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, fixedCostsIQD: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
 </div>
@@ -461,12 +461,12 @@ export default function AdvancedCalculatorSuite() {
                   step="1000"
                   value={breakEvenInputs.unitContributionMarginIQD}
                   onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, unitContributionMarginIQD: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#202022] to-[#050506] border border-white/18 rounded-3xl p-6 text-center flex flex-col justify-center space-y-3">
+            <div className="glass border border-white/18 rounded-3xl p-6 text-center flex flex-col justify-center space-y-3">
               <span className="text-xs text-white/60 font-bold uppercase">عدد الطلبات المطلوبة لنقطة التعادل</span>
               <span className="text-5xl font-mono font-black text-zinc-100">{breakEvenOrdersRequired} <span className="text-base text-white/60">طلب/شهرياً</span></span>
               <span className="text-xs text-white/70">أي بمعدل حوالي {Math.ceil(breakEvenOrdersRequired / 30)} طلبات يومياً.</span>
@@ -479,7 +479,7 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 5. MARGIN OPTIMIZER (50/30/20) */}
       {activeTab === "margin" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+          <div className="p-8 rounded-3xl glass border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
               <Lock className="w-7 h-7" />
             </div>
@@ -509,7 +509,7 @@ export default function AdvancedCalculatorSuite() {
               step="1000"
               value={marginSellingPrice}
               onChange={(e) => setMarginSellingPrice(Number(e.target.value))}
-              className="w-full max-w-xs bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+              className="w-full max-w-xs bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             />
           </div>
 
@@ -536,7 +536,7 @@ export default function AdvancedCalculatorSuite() {
       {/* TAB CONTENT: 6. RETURN RATE IMPACT */}
       {activeTab === "returns" && (
         isFreeTrial ? (
-          <div className="p-8 rounded-3xl bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
+          <div className="p-8 rounded-3xl glass border border-white/18 text-center space-y-4 shadow-2xl animate-[fadeIn_0.3s_ease]">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
               <Lock className="w-7 h-7" />
             </div>
@@ -568,7 +568,7 @@ export default function AdvancedCalculatorSuite() {
   <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.monthlyOrders}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, monthlyOrders: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
   <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
 </div>
@@ -579,7 +579,7 @@ export default function AdvancedCalculatorSuite() {
                 <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.currentReturnRatePct}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, currentReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
 
@@ -588,7 +588,7 @@ export default function AdvancedCalculatorSuite() {
                 <input type="number" inputMode="numeric" pattern="[0-9]*"
                   value={returnRateInputs.targetReturnRatePct}
                   onChange={(e) => setReturnRateInputs({ ...returnRateInputs, targetReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-[#050506] border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                 />
               </div>
             </div>

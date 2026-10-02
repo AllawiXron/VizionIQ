@@ -96,14 +96,14 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-[#1d1d1f]/95 via-[#2a2a2c]/95 to-[#1d1d1f]/95 border border-white/18 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:shadow-[0_10px_40px_rgba(0,0,0,0.5)] shadow-xl backdrop-blur-md relative overflow-hidden group"
+          className="glass border border-white/18 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:shadow-[0_10px_40px_rgba(0,0,0,0.5)] shadow-xl backdrop-blur-md relative overflow-hidden group"
         >
           <div className="absolute -right-10 -bottom-10 w-36 sm:w-48 h-36 sm:h-48 bg-white/5 rounded-full blur-xl group-hover:bg-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500" />
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 relative z-10">
             <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
               <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#F5F5F7] via-[#F5F5F7] to-zinc-300 p-0.5 shrink-0 shadow-lg md:shadow-black/40 shadow-xl/25">
-                <div className="w-full h-full bg-[#050506] rounded-[10px] sm:rounded-[14px] flex items-center justify-center text-zinc-100">
+                <div className="w-full h-full bg-black/30 rounded-[10px] sm:rounded-[14px] flex items-center justify-center text-zinc-100">
                   <TrendingUp className="w-5 h-5 sm:w-7 sm:h-7" />
                 </div>
               </div>
@@ -136,7 +136,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className={`rounded-2xl sm:rounded-3xl border transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex flex-col justify-between p-5 sm:p-8 relative bg-gradient-to-b from-[#171719]/95 via-[#161618]/90 to-[#050506] backdrop-blur-md hover:-translate-y-1 ${
+            className={`rounded-2xl sm:rounded-3xl border transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex flex-col justify-between p-5 sm:p-8 relative glass backdrop-blur-md hover:-translate-y-1 ${
               selectedPlan === "standard" 
                 ? "border-white/35 md:shadow-[0_0_35px_rgba(0,0,0,0.44)] shadow-xl" 
                 : "border-white/15 hover:border-white/30 shadow-xl"
@@ -221,7 +221,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="rounded-2xl sm:rounded-3xl border-2 border-white/35 md:shadow-[0_0_50px_rgba(0,0,0,0.6)] shadow-xl flex flex-col justify-between p-5 sm:p-8 relative bg-gradient-to-b from-[#29292b] via-[#1d1d1f] to-[#101012] backdrop-blur-md hover:-translate-y-1 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 overflow-hidden"
+            className="rounded-2xl sm:rounded-3xl border-2 border-white/35 md:shadow-[0_0_50px_rgba(0,0,0,0.6)] shadow-xl flex flex-col justify-between p-5 sm:p-8 relative glass backdrop-blur-md hover:-translate-y-1 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 overflow-hidden"
           >
             {/* Ambient Inner Crown Glow */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
@@ -330,7 +330,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-5xl mx-auto bg-gradient-to-r from-[#1e1e20] via-[#2a2a2c] to-[#1e1e20] border-2 border-white/35 rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden text-right"
+          className="max-w-5xl mx-auto glass border-2 border-white/35 rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden text-right"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
             <div className="space-y-3 flex-1">

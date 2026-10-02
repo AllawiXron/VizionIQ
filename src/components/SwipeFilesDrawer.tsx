@@ -53,7 +53,7 @@ export default function SwipeFilesDrawer() {
   };
 
   return (
-    <div className="bg-[#171719] border border-white/14 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
+    <div className="glass-subtle border border-white/14 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -98,7 +98,7 @@ export default function SwipeFilesDrawer() {
           return (
             <div
               key={sf.id}
-              className="bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/10 hover:border-white/18 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 relative overflow-hidden"
+              className="glass border border-white/10 hover:border-white/18 rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-lg transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 relative overflow-hidden"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -126,7 +126,7 @@ export default function SwipeFilesDrawer() {
                     {sf.content}
                   </div>
                 ) : (
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/18 text-center space-y-2">
+                  <div className="p-4 rounded-2xl glass border border-white/18 text-center space-y-2">
                     <p className="text-xs text-white/60 blur-[3px] select-none line-clamp-2">
                       {sf.content}
                     </p>

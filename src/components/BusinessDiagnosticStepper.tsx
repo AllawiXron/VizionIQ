@@ -257,7 +257,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
   return (
     <div className="vizion-diagnostic-stepper flex flex-col h-full max-h-[85vh] bg-[#141416] text-zinc-100 rounded-2xl overflow-hidden border border-white/9 shadow-2xl">
       {/* Header Bar */}
-      <div className="p-4 sm:p-5 bg-gradient-to-r from-[#1c1c1e] via-[#2f2f31] to-[#1c1c1e] border-b border-white/9">
+      <div className="p-4 sm:p-5 border-b border-white/9">
         <div className="flex items-center justify-between gap-3 mb-3">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F5F5F7] to-zinc-200 flex items-center justify-center text-zinc-950 shadow-md shadow-black/40">
@@ -621,7 +621,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
       </div>
 
       {/* Footer Navigation Bar */}
-      <div className="vizion-diagnostic-footer p-4 bg-[#1c1c1e] border-t border-zinc-800/80 flex items-center justify-between gap-3">
+      <div className="vizion-diagnostic-footer p-4 bg-white/[0.02] border-t border-zinc-800/80 flex items-center justify-between gap-3">
         {currentStep > 1 ? (
           <button             type="button"
             onClick={handleBack}

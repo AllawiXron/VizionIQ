@@ -585,6 +585,41 @@ p {
     box-shadow: inset 0 1px 0 #fff, 0 6px 20px -8px rgba(255, 255, 255, 0.3);
   }
 
+  /* Round glass close control used by every sheet and modal. */
+  .vz-close {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: rgba(245, 245, 247, 0.7);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition:
+      transform 420ms var(--ease-spring),
+      background-color var(--dur-base) var(--ease-out-expo),
+      color var(--dur-fast) var(--ease-out-expo);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .vz-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+  }
+  .vz-close:active {
+    transform: scale(0.9);
+    transition-duration: var(--dur-press);
+  }
+
+  /* Sheet header strip (inside elevated glass). */
+  .vz-sheet-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0));
+  }
+
   /* Eyebrow pill above section titles. */
   .vz-eyebrow {
     display: inline-flex;

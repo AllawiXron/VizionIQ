@@ -115,7 +115,7 @@ export default function IraqiInsights() {
     <div className="space-y-12 md:space-y-16 relative">
       
       {/* SECTION HEADER BANNER - Sleek Dark Aesthetic with Gold Accents */}
-      <div className="relative rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-14 border border-white/14 bg-gradient-to-br from-[#1d1d1f]/90 via-[#050506] to-[#222224]/90 backdrop-blur-2xl overflow-hidden md:shadow-[0_0_50px_rgba(0,0,0,0.33)] shadow-xl group">
+      <div className="relative rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-14 border border-white/14 glass backdrop-blur-2xl overflow-hidden md:shadow-[0_0_50px_rgba(0,0,0,0.33)] shadow-xl group">
         <div className="absolute top-0 right-0 w-1.5 sm:w-2 h-full bg-gradient-to-b from-white to-[#F5F5F7]" />
         <div className="absolute -top-32 -left-32 w-72 h-72 bg-white/5 rounded-full md:blur-[80px] blur-3xl pointer-events-none group-hover:bg-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500" />
         <div className="absolute -bottom-32 -right-32 w-72 h-72 bg-[#343436]/20 rounded-full md:blur-[80px] blur-3xl pointer-events-none" />
@@ -148,7 +148,7 @@ export default function IraqiInsights() {
       </div>
 
       {/* FILTER & SEARCH BAR */}
-      <div className="bg-gradient-to-b from-[#1d1d1f]/60 to-[#050506]/90 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-4xl p-3.5 sm:p-6 shadow-2xl space-y-4 sm:space-y-6 relative z-10">
+      <div className="glass backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-4xl p-3.5 sm:p-6 shadow-2xl space-y-4 sm:space-y-6 relative z-10">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-5 items-center justify-between">
           
           {/* Search Input */}
@@ -210,8 +210,8 @@ export default function IraqiInsights() {
                 onClick={() => toggleExpand(insight.id)}
                 className={`group rounded-2xl sm:rounded-4xl border transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 overflow-hidden cursor-pointer flex flex-col justify-between shadow-xl h-full ${
                   isExpanded
-                    ? "bg-gradient-to-b from-[#1d1d1f]/95 to-[#050506] border-white/22 md:shadow-[0_15px_40px_rgba(0,0,0,0.33)] shadow-xl"
-                    : "bg-gradient-to-b from-[#1d1d1f]/60 to-[#050506]/90 border-white/10 hover:border-white/14 backdrop-blur-md"
+                    ? "glass border-white/22 md:shadow-[0_15px_40px_rgba(0,0,0,0.33)] shadow-xl"
+                    : "glass border-white/10 hover:border-white/14 backdrop-blur-md"
                 }`}
               >
               <div className="p-4 sm:p-7 space-y-3 sm:space-y-5">
@@ -253,7 +253,7 @@ export default function IraqiInsights() {
                 {/* EXPANDABLE CORNER (DIAGNOSTIC DETAILED LESSON) */}
                 {isExpanded && (
                   isFreeTrial && index >= 3 ? (
-                    <div className="pt-4 border-t border-white/10 space-y-3 text-center bg-gradient-to-br from-[#1d1d1f] to-[#050506] p-4 rounded-2xl border border-white/14">
+                    <div className="pt-4 border-t border-white/10 space-y-3 text-center glass p-4 rounded-2xl border border-white/14">
                       <p className="text-xs text-white/70 blur-[2px] select-none">
                         {insight.lesson}
                       </p>
@@ -320,7 +320,7 @@ export default function IraqiInsights() {
 
       {/* Empty Search Result feedback */}
       {filteredInsights.length === 0 && (
-        <div className="text-center py-20 bg-gradient-to-b from-[#1d1d1f]/40 to-black/40 border border-white/10 rounded-4xl space-y-4 backdrop-blur-sm shadow-xl">
+        <div className="text-center py-20 glass to-black/40 border border-white/10 rounded-4xl space-y-4 backdrop-blur-sm shadow-xl">
           <span className="text-6xl block drop-shadow-lg">🔍🏜️</span>
           <h4 className="text-lg font-black text-white">لم نجد أي حقيقة تطابق بحثك</h4>
           <p className="text-sm text-white/70 max-w-sm mx-auto leading-relaxed">
@@ -352,7 +352,7 @@ export default function IraqiInsights() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="relative w-full max-w-2xl bg-gradient-to-br from-[#1d1d1f] via-[#050506] to-[#222224] border border-white/22 rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 md:shadow-[0_0_80px_rgba(0,0,0,0.33)] shadow-xl text-right space-y-6 sm:space-y-8 max-h-[90vh] overflow-y-auto touch-pan-y"
+              className="relative w-full max-w-2xl glass border border-white/22 rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 md:shadow-[0_0_80px_rgba(0,0,0,0.33)] shadow-xl text-right space-y-6 sm:space-y-8 max-h-[90vh] overflow-y-auto touch-pan-y"
             >
               {/* Mobile Drag Down Bar Indicator */}
               <div className="w-12 h-1 bg-white/30 rounded-full mx-auto my-1 sm:hidden shrink-0 cursor-grab active:cursor-grabbing" />

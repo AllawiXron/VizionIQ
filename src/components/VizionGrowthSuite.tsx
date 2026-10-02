@@ -413,7 +413,7 @@ export default function VizionGrowthSuite() {
             >
               <span>{cat.icon}</span>
               <span>{cat.label}</span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-[#050506]/20 text-[#050506] font-black' : 'bg-white/10 text-white/60'}`}>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-black/20 text-[#050506] font-black' : 'bg-white/10 text-white/60'}`}>
                 {count}
               </span>
             </button>
@@ -426,7 +426,7 @@ export default function VizionGrowthSuite() {
         
         {/* MOBILE SELECTOR & LAUNCHPAD (Visible only on mobile/tablet) */}
         <div className="vizion-tool-picker lg:hidden w-full mb-6 relative z-30">
-          <div className="bg-gradient-to-b from-[#1d1d1f]/90 to-[#050506] border border-white/18 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+          <div className="glass border border-white/18 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
             <button               onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
               className="w-full flex items-center justify-between p-5 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent hover:bg-white/[0.06] transition-colors cursor-pointer min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
             >
@@ -489,7 +489,7 @@ export default function VizionGrowthSuite() {
         </div>
 
         {/* SIDE BAR / SELECTOR RAIL (4 Columns, hidden on mobile/tablet) */}
-        <div className="hidden lg:flex lg:col-span-4 bg-gradient-to-b from-[#1d1d1f]/80 to-[#050506]/90 backdrop-blur-xl border border-white/9 rounded-4xl p-5 md:p-6 flex-col space-y-4 md:shadow-[0_0_50px_rgba(0,0,0,0.25)] shadow-xl h-[750px] overflow-hidden relative">
+        <div className="hidden lg:flex lg:col-span-4 glass backdrop-blur-xl border border-white/9 rounded-4xl p-5 md:p-6 flex-col space-y-4 md:shadow-[0_0_50px_rgba(0,0,0,0.25)] shadow-xl h-[750px] overflow-hidden relative">
           <div className="absolute top-0 right-0 w-1.5 h-full bg-gradient-to-b from-white to-transparent opacity-50" />
           <div className="flex items-center justify-between border-b border-white/10 pb-4 mr-3">
             <span className="text-[12px] font-black text-zinc-100 uppercase tracking-widest">
@@ -541,7 +541,7 @@ export default function VizionGrowthSuite() {
         </div>
 
         {/* CONTENT VIEWPORT (8 Columns) */}
-        <div className="vizion-tool-viewport lg:col-span-8 bg-gradient-to-b from-[#1d1d1f]/60 to-[#050506]/90 backdrop-blur-2xl border border-white/14 rounded-4xl p-8 md:p-12 md:shadow-[0_0_60px_rgba(0,0,0,0.25)] shadow-xl relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
+        <div className="vizion-tool-viewport lg:col-span-8 glass backdrop-blur-2xl border border-white/14 rounded-4xl p-8 md:p-12 md:shadow-[0_0_60px_rgba(0,0,0,0.25)] shadow-xl relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
           <div className="absolute -top-32 -left-32 w-64 h-64 bg-white/5 rounded-full md:blur-[80px] blur-3xl pointer-events-none group-hover:bg-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500" />
           
           <AnimatePresence mode="wait">

@@ -525,7 +525,7 @@ function ChatInputForm({
         <div 
           role="region"
           aria-label="أسئلة مقترحة"
-          className="p-3 sm:p-3.5 rounded-2xl bg-[#151517] border border-white/18 shadow-xl text-white animate-in fade-in slide-in-from-bottom-2 duration-150"
+          className="p-3 sm:p-3.5 rounded-2xl glass-subtle border border-white/18 shadow-xl text-white animate-in fade-in slide-in-from-bottom-2 duration-150"
         >
           <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-white/10">
             <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-zinc-100">
@@ -552,7 +552,7 @@ function ChatInputForm({
                   onSendSuggestion(item.prompt, item.suggestions, item.topicId);
                 }}
                 disabled={isLoading}
-                className="text-right p-2.5 sm:p-3 rounded-xl bg-[#050506] hover:bg-[#212123] active:bg-white/10 border border-white/10 hover:border-white/22 text-xs sm:text-sm font-medium text-white/90 hover:text-white transition flex items-center justify-between gap-2.5 min-h-[44px] cursor-pointer group disabled:opacity-50 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="text-right p-2.5 sm:p-3 rounded-xl bg-black/30 hover:glass-subtle active:bg-white/10 border border-white/10 hover:border-white/22 text-xs sm:text-sm font-medium text-white/90 hover:text-white transition flex items-center justify-between gap-2.5 min-h-[44px] cursor-pointer group disabled:opacity-50 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <span className="leading-snug">{item.label}</span>
                 <ArrowLeft className="w-3.5 h-3.5 text-zinc-100/70 group-hover:text-zinc-100 shrink-0 transition-transform group-hover:-translate-x-0.5" />
@@ -595,7 +595,7 @@ function ChatInputForm({
             aria-label="اكتب سؤالك هنا..."
             disabled={isLoading}
             dir="rtl"
-            className="w-full px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-[#050506] border border-white/15 focus:border-white/35 text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+            className="w-full px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-black/35 border border-white/15 focus:border-white/35 text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
           />
         </div>
 
@@ -1475,7 +1475,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 ? { height: `${viewportHeight}px`, maxHeight: `${viewportHeight}px` }
                 : undefined
             }
-            className={`vizion-advisor-modal ${isCompactLayout ? "vizion-advisor-compact" : ""} relative w-full max-w-4xl h-[100dvh] sm:h-[88vh] min-h-0 bg-[#050506] border-0 sm:border border-white/14 rounded-none sm:rounded-3xl shadow-xl flex flex-col overflow-hidden overscroll-none text-white dir-rtl motion-reduce:transition-none motion-reduce:transform-none`}
+            className={`vizion-advisor-modal ${isCompactLayout ? "vizion-advisor-compact" : ""} relative w-full max-w-4xl h-[100dvh] sm:h-[88vh] min-h-0 bg-black/30 border-0 sm:border border-white/14 rounded-none sm:rounded-3xl shadow-xl flex flex-col overflow-hidden overscroll-none text-white dir-rtl motion-reduce:transition-none motion-reduce:transform-none`}
           >
             {/* Mobile Pull Indicator */}
             <div className="w-10 h-1 bg-white/20 rounded-full mx-auto my-1 sm:hidden shrink-0" />
@@ -1484,7 +1484,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
             <AdvisorToast toast={toast} onDismiss={() => setToast(null)} />
 
             {/* Calm Header */}
-            <div className="px-3 sm:px-6 py-2 sm:py-2.5 bg-[#151517] border-b border-white/10 flex items-center justify-between relative shrink-0">
+            <div className="px-3 sm:px-6 py-2 sm:py-2.5 bg-white/[0.02] border-b border-white/10 flex items-center justify-between relative shrink-0">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="relative shrink-0">
                   <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/14 flex items-center justify-center text-zinc-100">
@@ -1557,7 +1557,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               <div 
                 role="region"
                 aria-label="اشتراك المستشار الذكي"
-                className="flex-1 overflow-y-auto p-4 sm:p-8 bg-gradient-to-b from-[#050506] via-[#151517] to-[#050506] space-y-6 text-right"
+                className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 text-right"
               >
                 {/* Top Header Card */}
                 <div className="max-w-xl mx-auto text-center space-y-3">
@@ -1576,7 +1576,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* Price Breakdown & Value Pitch Box */}
-                <div className="max-w-xl mx-auto bg-gradient-to-br from-[#1d1d1f] via-[#29292b] to-[#1c1c1e] border-2 border-white/35 rounded-3xl p-5 sm:p-7 shadow-2xl space-y-5 relative overflow-hidden">
+                <div className="max-w-xl mx-auto glass border-2 border-white/35 rounded-3xl p-5 sm:p-7 shadow-2xl space-y-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 bg-gradient-to-r from-[#F5F5F7] to-[#F5F5F7] text-[#050506] font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
                     <Flame className="w-3.5 h-3.5 fill-[#050506]" />
                     <span>عرض الاشتراك الشهري الفوري</span>
@@ -1599,7 +1599,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
 
                   {/* Why it's worth every dinar (Value Comparison) */}
-                  <div className="bg-[#050506]/80 border border-white/14 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
+                  <div className="bg-black/30 border border-white/14 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
                     <div className="flex items-center gap-2 text-zinc-100 font-bold text-xs sm:text-sm">
                       <TrendingDown className="w-4 h-4 text-emerald-400" />
                       <span>حسبة بسيطة: ليش هذا الاشتراك يوفر عليك ثروة؟</span>
@@ -1656,7 +1656,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* Existing Subscriber Code Entry */}
-                <div className="max-w-xl mx-auto bg-[#151517] p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3 text-right">
+                <div className="max-w-xl mx-auto glass-subtle p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3 text-right">
                   <div className="space-y-1">
                     <label htmlFor="vip-code-input" className="text-xs font-bold text-zinc-100 flex items-center gap-1.5">
                       <KeyRound className="w-4 h-4 text-zinc-100" />
@@ -1672,7 +1672,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       value={vipUpgradeInput}
                       onChange={(e) => setVipUpgradeInput(e.target.value)}
                       placeholder="VIZION-VIP-XXXX#vip"
-                      className="flex-1 px-3.5 py-2.5 bg-[#050506] border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-white/35 outline-none text-center sm:text-right min-h-[44px]"
+                      className="flex-1 px-3.5 py-2.5 bg-black/35 border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-white/35 outline-none text-center sm:text-right min-h-[44px]"
                       aria-label="رمز تفعيل VIP"
                     />
 
@@ -1703,7 +1703,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
             ) : (
               <>
                 {/* Mode Selector - Universal Responsive Horizontal Pill Tab Bar */}
-                <div className="px-2 sm:px-6 py-2 bg-[#151517] border-b border-white/10 shrink-0 w-full overflow-hidden">
+                <div className="px-2 sm:px-6 py-2 bg-white/[0.02] border-b border-white/10 shrink-0 w-full overflow-hidden">
                   <div className="vizion-advisor-tab-strip flex flex-row flex-nowrap items-center gap-1.5 sm:gap-2 overflow-x-auto w-full no-scrollbar py-0.5">
                     <button
                       type="button"
@@ -1763,7 +1763,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] ${
                         activeTab === "saved_plan"
                           ? "bg-gradient-to-r from-[#F5F5F7] to-zinc-200 text-[#050506] font-black shadow-md scale-[1.02]"
-                          : "bg-[#171719]/80 hover:bg-white/5 text-white/80 border border-white/10"
+                          : "glass-subtle hover:bg-white/5 text-white/80 border border-white/10"
                       }`}
                     >
                       <Bookmark className="w-4 h-4 text-zinc-100 shrink-0" />
@@ -1779,7 +1779,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB: GUIDED BUSINESS DIAGNOSTIC STEPPER */}
                 {activeTab === "business_diagnostic" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#050506] via-[#151517] to-[#050506]">
+                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 ">
                     <BusinessDiagnosticStepper
                       storageKey={getProfileStorageKey(userCode)}
                       onCancel={() => setActiveTab("chat")}
@@ -1790,8 +1790,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB 1: DIAGNOSTIC WIZARD (Choose your problem & get instant AI diagnosis) */}
                 {activeTab === "diagnostic" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#050506] via-[#151517] to-[#050506] space-y-5">
-                    <div className="bg-[#1d1d1f]/80 border border-white/14 rounded-2xl p-4 sm:p-5 shadow-lg">
+                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
+                    <div className="glass-subtle border border-white/14 rounded-2xl p-4 sm:p-5 shadow-lg">
                       <div className="flex items-center gap-2 mb-2 text-zinc-100">
                         <Compass className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
@@ -1809,7 +1809,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <button 
                           key={cat.id}
                           onClick={() => setSelectedDiagCat(cat.id)}
-                          className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col gap-1 ${ selectedDiagCat === cat.id ? "bg-gradient-to-b from-[#29292b] to-[#1c1c1e] border-white/35 shadow-lg md:shadow-black/40 shadow-xl/15 ring-1 ring-white/60" : "bg-[#171719]/70 border-white/10 hover:border-white/25 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                          className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col gap-1 ${ selectedDiagCat === cat.id ? "glass border-white/35 shadow-lg md:shadow-black/40 shadow-xl/15 ring-1 ring-white/60" : "glass-subtle border-white/10 hover:border-white/25 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
                         >
                           <span className="text-xl">{cat.icon}</span>
                           <span className="text-xs font-bold text-white line-clamp-1">{cat.title}</span>
@@ -1835,7 +1835,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             key={idx}
                             onClick={() => handleSendMessage(opt.prompt, opt.defaultSuggestions, opt.topicId)}
                             disabled={isLoading}
-                            className="w-full text-right p-3.5 sm:p-4 rounded-xl bg-[#1d1d1f]/90 hover:bg-[#29292b] border border-white/10 hover:border-white/27 transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between group cursor-pointer disabled:opacity-50 shadow-md min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                            className="w-full text-right p-3.5 sm:p-4 rounded-xl glass-subtle hover:glass-subtle border border-white/10 hover:border-white/27 transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between group cursor-pointer disabled:opacity-50 shadow-md min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                           >
                             <div className="space-y-1 pr-1">
                               <h5 className="text-xs sm:text-sm font-bold text-white group-hover:text-zinc-100 transition-colors flex items-center gap-2">
@@ -1864,8 +1864,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB 2: INSTANT SCRIPT GENERATOR (Choose objection & generate copy-paste script) */}
                 {activeTab === "script_gen" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#050506] via-[#151517] to-[#050506] space-y-5">
-                    <div className="bg-[#1d1d1f]/80 border border-white/14 rounded-2xl p-4 sm:p-5 shadow-lg">
+                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
+                    <div className="glass-subtle border border-white/14 rounded-2xl p-4 sm:p-5 shadow-lg">
                       <div className="flex items-center gap-2 mb-2 text-zinc-100">
                         <FileText className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
@@ -1888,7 +1888,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           <button 
                             key={obj.id}
                             onClick={() => setSelectedObjection(obj.id)}
-                            className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2.5 ${ selectedObjection === obj.id ? "bg-[#29292b] border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "bg-[#171719]/70 border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                            className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2.5 ${ selectedObjection === obj.id ? "glass-subtle border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "glass-subtle border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
                           >
                             <span className="text-lg">{obj.icon}</span>
                             <span className="text-xs">{obj.label}</span>
@@ -1908,7 +1908,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           <button 
                             key={niche.id}
                             onClick={() => setSelectedNiche(niche.id)}
-                            className={`p-2.5 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col items-center gap-1 ${ selectedNiche === niche.id ? "bg-[#29292b] border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "bg-[#171719]/70 border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
+                            className={`p-2.5 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col items-center gap-1 ${ selectedNiche === niche.id ? "glass-subtle border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "glass-subtle border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]`}
                           >
                             <span className="text-base">{niche.icon}</span>
                             <span className="text-[11px]">{niche.label}</span>
@@ -1928,7 +1928,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         value={customProductNote}
                         onChange={(e) => setCustomProductNote(e.target.value)}
                         placeholder="اكتب اسم المنتج أو السعر إذا أردت تخصيص السكريبت بدقة..."
-                        className="w-full px-4 py-2.5 rounded-xl bg-[#050506] border border-white/15 focus:border-white/35 text-white text-xs placeholder-white/30 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                        className="w-full px-4 py-2.5 rounded-xl bg-black/35 border border-white/15 focus:border-white/35 text-white text-xs placeholder-white/30 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                       />
                     </div>
 
@@ -1946,10 +1946,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                 {/* TAB: SAVED RECOMMENDATIONS & 7-DAY ACTION PLAN */}
                 {activeTab === "saved_plan" && (
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-[#050506] via-[#151517] to-[#050506] space-y-6">
+                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
                     {/* Top Stat Banner */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="p-4 rounded-2xl bg-[#1d1d1f]/90 border border-white/14 flex items-center justify-between">
+                      <div className="p-4 rounded-2xl glass-subtle border border-white/14 flex items-center justify-between">
                         <div className="space-y-1">
                           <span className="text-xs text-white/60">التوصيات والسكريبتات المحفوظة</span>
                           <h4 className="text-xl font-black text-zinc-100">{savedRecommendations.length} توصية</h4>
@@ -1959,7 +1959,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-2xl bg-[#1d1d1f]/90 border border-white/14 flex items-center justify-between">
+                      <div className="p-4 rounded-2xl glass-subtle border border-white/14 flex items-center justify-between">
                         <div className="space-y-1">
                           <span className="text-xs text-white/60">مهام خطة الـ 7 أيام المنجزة</span>
                           <h4 className="text-xl font-black text-emerald-400">
@@ -1987,7 +1987,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
 
                       {planTasks.length === 0 ? (
-                        <div className="p-6 rounded-2xl bg-[#171719]/60 border border-white/10 text-center space-y-2">
+                        <div className="p-6 rounded-2xl glass-subtle border border-white/10 text-center space-y-2">
                           <Calendar className="w-8 h-8 text-white/60 mx-auto" />
                           <p className="text-xs text-white/70 font-semibold">لم تضف أي توصيات لخطة الـ 7 أيام بعد</p>
                           <p className="text-[11px] text-white/60">
@@ -2001,8 +2001,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               key={task.id}
                               className={`p-3.5 sm:p-4 rounded-xl border transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-start justify-between gap-3 ${
                                 task.completed
-                                  ? "bg-[#171719]/40 border-emerald-500/30 opacity-70"
-                                  : "bg-[#1d1d1f]/90 border-white/10 hover:border-white/18"
+                                  ? "glass-subtle border-emerald-500/30 opacity-70"
+                                  : "glass-subtle border-white/10 hover:border-white/18"
                               }`}
                             >
                               <div className="flex items-start gap-3 flex-1">
@@ -2080,7 +2080,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
 
                       {savedRecommendations.length === 0 ? (
-                        <div className="p-6 rounded-2xl bg-[#171719]/60 border border-white/10 text-center space-y-2">
+                        <div className="p-6 rounded-2xl glass-subtle border border-white/10 text-center space-y-2">
                           <Bookmark className="w-8 h-8 text-white/60 mx-auto" />
                           <p className="text-xs text-white/70 font-semibold">ماكو توصيات محفوظة حتى الآن</p>
                           <p className="text-[11px] text-white/60">
@@ -2092,7 +2092,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           {savedRecommendations.map((rec) => (
                             <div
                               key={rec.id}
-                              className="p-4 rounded-xl bg-[#1d1d1f]/90 border border-white/10 hover:border-white/14 transition-all motion-reduce:transition-none motion-reduce:transform-none space-y-3"
+                              className="p-4 rounded-xl glass-subtle border border-white/10 hover:border-white/14 transition-all motion-reduce:transition-none motion-reduce:transform-none space-y-3"
                             >
                               <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-1">
@@ -2121,7 +2121,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                               {/* Script Preview if available */}
                               {rec.scriptText && (
-                                <div className="p-3 rounded-lg bg-[#050506] border border-white/14 text-white/90 text-xs space-y-2">
+                                <div className="p-3 rounded-lg bg-black/30 border border-white/14 text-white/90 text-xs space-y-2">
                                   <div className="flex items-center justify-between text-[10px] text-zinc-100 font-bold">
                                     <span>💬 نص السكريبت الجاهز للزبون:</span>
                                     <button 
@@ -2179,7 +2179,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       aria-atomic="false"
                       ref={chatScrollRef}
                       onScroll={handleChatScroll}
-                      className="vizion-advisor-chat min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 bg-[#050506] relative"
+                      className="vizion-advisor-chat min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 relative"
                     >
                       {!hasUserMessages ? (
                         /* Focused Empty-State Layout */
@@ -2210,7 +2210,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   type="button"
                                   onClick={() => handleSendMessage(ex.label, ex.suggestions, ex.topicId)}
                                   disabled={isLoading}
-                                  className="w-full min-h-[50px] p-3 rounded-xl bg-[#151517] hover:bg-[#212123] active:bg-white/8 border border-white/10 hover:border-white/18 text-right text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between gap-3 group cursor-pointer shadow-sm active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 disabled:opacity-50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                                  className="w-full min-h-[50px] p-3 rounded-xl glass-subtle hover:glass-subtle active:bg-white/8 border border-white/10 hover:border-white/18 text-right text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none flex items-center justify-between gap-3 group cursor-pointer shadow-sm active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 disabled:opacity-50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
                                 >
                                   <span className="text-right leading-snug flex-1">{ex.label}</span>
                                   <ArrowLeft className="w-4 h-4 text-white/60 group-hover:text-zinc-100 shrink-0 transition-transform group-hover:-translate-x-1" />
@@ -2231,7 +2231,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   aria-live="polite"
                                   initial={{ opacity: 0, y: 6 }}
                                   animate={{ opacity: 1, y: 0 }}
-                                  className="my-3 p-3 rounded-xl bg-[#151517] border border-white/14 text-white flex items-center justify-between gap-2 shadow-sm"
+                                  className="my-3 p-3 rounded-xl glass-subtle border border-white/14 text-white flex items-center justify-between gap-2 shadow-sm"
                                 >
                                   <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-zinc-100">
                                     <Sparkles className="w-4 h-4 text-zinc-100 shrink-0" />
@@ -2260,7 +2260,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                       أنت
                                     </div>
                                   ) : (
-                                    <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full ${msg.isError ? "bg-rose-950/80 border border-rose-500/40 text-rose-300" : "bg-[#171719] border border-white/15 text-zinc-100"} flex items-center justify-center shrink-0 mt-1 select-none`}>
+                                    <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full ${msg.isError ? "bg-rose-950/80 border border-rose-500/40 text-rose-300" : "glass-subtle border border-white/15 text-zinc-100"} flex items-center justify-center shrink-0 mt-1 select-none`}>
                                       <Bot className="w-3.5 h-3.5" />
                                     </div>
                                   )}
@@ -2274,7 +2274,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                         ? "bg-white/5 text-zinc-100 font-medium rounded-tr-xs"
                                         : msg.isError
                                         ? "bg-rose-950/40 border border-rose-500/40 text-rose-200 rounded-tl-xs"
-                                        : "bg-[#151517] text-zinc-100 rounded-tl-xs"
+                                        : "glass-subtle text-zinc-100 rounded-tl-xs"
                                     }`}
                                   >
                                     {/* Error State Card */}
@@ -2449,10 +2449,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           className="flex flex-col gap-2 max-w-[92%] sm:max-w-[85%] ml-auto mt-4"
                         >
                           <div className="flex gap-2 sm:gap-2.5">
-                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#171719] border border-white/15 flex items-center justify-center text-zinc-100 shrink-0 mt-1">
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full glass-subtle border border-white/15 flex items-center justify-center text-zinc-100 shrink-0 mt-1">
                               <Bot className="w-3.5 h-3.5" />
                             </div>
-                            <div className="p-3 sm:p-3.5 rounded-2xl bg-[#171719] border border-white/10 text-zinc-100 rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
+                            <div className="p-3 sm:p-3.5 rounded-2xl glass-subtle border border-white/10 text-zinc-100 rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
                               <div className="flex items-center gap-2">
                                 <span className="text-[13px] sm:text-[14px] text-zinc-100 font-bold">دا أرتبلك الجواب...</span>
                                 <div className="flex gap-1.5 items-center mr-1">
@@ -2492,7 +2492,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     {/* Footer Input */}
                     <div 
                       ref={composerRef}
-                      className="vizion-advisor-composer p-2 sm:p-3.5 pb-[max(env(safe-area-inset-bottom,0px),0.75rem)] bg-[#111113] border-t border-white/10 relative shrink-0 z-20"
+                      className="vizion-advisor-composer p-2 sm:p-3.5 pb-[max(env(safe-area-inset-bottom,0px),0.75rem)] bg-white/[0.02] border-t border-white/10 relative shrink-0 z-20"
                     >
                       <ChatInputForm 
                         onSend={(text) => handleSendMessage(text)} 

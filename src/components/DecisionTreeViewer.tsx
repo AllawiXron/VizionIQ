@@ -23,7 +23,7 @@ export default function DecisionTreeViewer() {
   };
 
   return (
-    <div className="bg-[#171719] border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right">
+    <div className="glass-subtle border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -63,7 +63,7 @@ export default function DecisionTreeViewer() {
             {currentTree.options.map((opt, idx) => (
               <button                 key={idx}
                 onClick={() => handleSelectOption(opt)}
-                className="bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/10 hover:border-white/27 p-6 rounded-3xl text-right transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 hover:shadow-xl cursor-pointer space-y-3 group min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
+                className="glass border border-white/10 hover:border-white/27 p-6 rounded-3xl text-right transition-all motion-reduce:transition-none motion-reduce:transform-none hover:-translate-y-1 hover:shadow-xl cursor-pointer space-y-3 group min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050506]"
               >
                 <div className="flex items-center justify-between">
                   <span className="w-7 h-7 rounded-full bg-white/5 border border-white/14 text-zinc-100 text-xs font-bold flex items-center justify-center">

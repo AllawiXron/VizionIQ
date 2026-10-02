@@ -61,7 +61,7 @@ export default function Navbar({
   const smoothProgress = useSpring(rawProgress, { stiffness: 320, damping: 38, mass: 0.6 });
   const progress = reduceMotion ? rawProgress : smoothProgress;
 
-  const barMaxWidth = useTransform(progress, (v) => `min(${Math.round(1280 - 200 * v)}px, calc(100% - ${Math.round(20 * v)}px))`);
+  const barMaxWidth = useTransform(progress, (v) => `min(${Math.round(1280 - 110 * v)}px, calc(100% - ${Math.round(20 * v)}px))`);
   const barOffset = useTransform(progress, [0, 1], [0, 10]);
   const barHeight = useTransform(progress, [0, 1], [64, 56]);
   const barRadius = useTransform(progress, [0, 1], [0, 22]);
@@ -165,7 +165,7 @@ export default function Navbar({
                 key={link.id}
                 onClick={() => handleScrollTo(link.id)}
                 aria-current={link.active ? "true" : undefined}
-                className={`relative px-3.5 xl:px-4 min-h-[38px] rounded-full text-xs font-bold cursor-pointer transition-colors duration-300 ${
+                className={`relative px-3 xl:px-4 min-h-[38px] rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-colors duration-300 ${
                   link.active ? "text-white" : "text-white/55 hover:text-white"
                 } ${focusRing}`}
               >
@@ -189,7 +189,7 @@ export default function Navbar({
             {/* Secrets trigger button */}
             <button
               onClick={() => handleScrollTo("vizion-growth-suite")}
-              className={`btn btn-ghost px-3 text-xs ${focusRing}`}
+              className={`btn btn-ghost px-3 text-xs whitespace-nowrap hidden xl:inline-flex ${focusRing}`}
               title="أدوات فيزيون"
             >
               <span>أدوات Vizion</span>
@@ -199,7 +199,7 @@ export default function Navbar({
             {isFreeTrialUser(userCode) && (
               <button
                 onClick={() => handleScrollTo("pricing-section")}
-                className={`btn btn-ghost px-3 text-xs ${focusRing}`}
+                className={`btn btn-ghost px-3 text-xs whitespace-nowrap ${focusRing}`}
                 title="باقات واسعار الاشتراك"
               >
                 <span>👑</span>
@@ -210,25 +210,25 @@ export default function Navbar({
             {/* Logout */}
             <button
               onClick={onLogout}
-              className={`btn btn-ghost px-3 text-xs text-white/55 hover:!text-red-300 ${focusRing}`}
+              className={`btn btn-ghost px-2.5 xl:px-3 text-xs whitespace-nowrap text-white/55 hover:!text-red-300 ${focusRing}`}
               title="خروج وقفل الدليل"
             >
               <LogOut className="w-4 h-4" />
-              <span>خروج</span>
+              <span className="hidden xl:inline">خروج</span>
             </button>
 
             {/* Free Trial Upgrade Button or User Tag */}
             {isFreeTrialUser(userCode) ? (
               <button
                 onClick={onOpenUpgrade}
-                className={`btn btn-glass px-3.5 text-xs rounded-full ${focusRing}`}
+                className={`btn btn-glass px-3.5 text-xs rounded-full whitespace-nowrap ${focusRing}`}
                 title="اضغط للترقية إلى الحساب الكامل"
               >
                 <Crown className="w-3.5 h-3.5" />
                 <span>ترقية الكورس</span>
               </button>
             ) : (
-              <span className="px-3 py-1.5 text-[10px] rounded-full font-mono font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] flex items-center gap-1.5">
+              <span className="px-3 py-1.5 text-[10px] rounded-full font-mono font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] hidden xl:flex items-center gap-1.5 whitespace-nowrap max-w-[11rem] truncate">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 عضو: {userCode}
               </span>
@@ -239,7 +239,7 @@ export default function Navbar({
               <Magnetic strength={0.18} max={5} reach={10}>
                 <button
                   onClick={onOpenAdvisor}
-                  className={`btn btn-primary px-4 text-xs rounded-full ${focusRing}`}
+                  className={`btn btn-primary px-4 text-xs rounded-full whitespace-nowrap ${focusRing}`}
                   title="المستشار الرقمي المباشر الذكي"
                 >
                   <Bot className="w-4 h-4" />

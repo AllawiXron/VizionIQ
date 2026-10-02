@@ -241,7 +241,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
                   value={customText}
                   onChange={(e) => setCustomText(e.target.value)}
                   placeholder="اكتب ملاحظتك لتحسين الإجابة للسوق العراقي..."
-                  className="flex-1 px-3 py-1.5 bg-[#151517] border border-white/20 rounded-lg text-white text-xs placeholder-white/40 focus:border-white/35 outline-none"
+                  className="flex-1 px-3 py-1.5 bg-black/35 border border-white/20 rounded-lg text-white text-xs placeholder-white/40 focus:border-white/35 outline-none"
                   autoFocus
                 />
                 <button

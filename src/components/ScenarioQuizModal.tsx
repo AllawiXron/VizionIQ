@@ -39,7 +39,7 @@ export default function ScenarioQuizModal() {
   };
 
   return (
-    <div className="bg-[#171719] border border-white/14 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
+    <div className="glass-subtle border border-white/14 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 shadow-2xl space-y-6 sm:space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -68,7 +68,7 @@ export default function ScenarioQuizModal() {
       <div className="space-y-6 animate-[fadeIn_0.3s_ease-out]">
         
         {/* Scenario Background */}
-        <div className="bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
+        <div className="glass border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
           <div className="flex items-center justify-between gap-2">
             <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/18 text-zinc-100 text-xs font-bold">
               المستوى: {currentScenario.difficulty}

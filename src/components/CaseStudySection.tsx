@@ -35,7 +35,7 @@ export default function CaseStudySection() {
   };
 
   return (
-    <div className="bg-[#171719] border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right">
+    <div className="glass-subtle border border-white/14 rounded-4xl p-6 md:p-10 shadow-2xl space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -69,7 +69,7 @@ export default function CaseStudySection() {
           return (
             <FadeInUp key={cs.id} delay={idx * 0.08}>
               <div
-                className="bg-gradient-to-br from-[#1d1d1f] to-[#050506] border border-white/10 hover:border-white/18 rounded-3xl overflow-hidden transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-lg"
+                className="glass border border-white/10 hover:border-white/18 rounded-3xl overflow-hidden transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-lg"
               >
               {/* Card Title Banner (Toggle Header) */}
               <button                 onClick={() => setExpandedId(isExpanded ? null : cs.id)}
@@ -106,7 +106,7 @@ export default function CaseStudySection() {
               {isExpanded && (
                 <div className="p-6 md:p-8 border-t border-white/10 space-y-6 bg-black/20 animate-[fadeIn_0.3s_ease-out]">
                   {isFreeTrial && idx >= 1 ? (
-                    <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1d1d1f] via-[#212123] to-[#050506] border border-white/18 text-center space-y-4 shadow-2xl">
+                    <div className="p-6 sm:p-8 rounded-3xl glass border border-white/18 text-center space-y-4 shadow-2xl">
                       <div className="w-12 h-12 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-zinc-100">
                         <Crown className="w-6 h-6" />
                       </div>
