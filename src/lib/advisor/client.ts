@@ -19,6 +19,8 @@ export interface AdvisorRequest {
   diagnosticProfile?: unknown;
   userContext?: unknown;
   profile?: BusinessProfile;
+  /** Answer text already on screen; the server continues after it. */
+  continueFrom?: string;
 }
 
 export interface StreamHandlers {
@@ -32,6 +34,10 @@ export interface StreamOutcome {
   fallback?: boolean;
   /** Set when the stream failed after some text had already arrived. */
   error?: string;
+  /** The server stopped near its time limit; ask for a continuation. */
+  truncated?: boolean;
+  /** The connection ended without a "done" event (e.g. the platform cut it). */
+  cut?: boolean;
 }
 
 export class AdvisorHttpError extends Error {
@@ -67,11 +73,12 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
   const decoder = new TextDecoder();
   let buffer = "";
   let text = "";
+  let sawEnd = false;
   const outcome: StreamOutcome = { text: "" };
 
   const handle = (line: string) => {
     if (!line.trim()) return;
-    let ev: { t: string; v?: string; requestId?: string; fallback?: boolean };
+    let ev: { t: string; v?: string; requestId?: string; fallback?: boolean; truncated?: boolean };
     try {
       ev = JSON.parse(line);
     } catch {
@@ -83,8 +90,13 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
     } else if (ev.t === "start" || ev.t === "done") {
       outcome.requestId = ev.requestId ?? outcome.requestId;
       if (ev.fallback) outcome.fallback = true;
+      if (ev.t === "done") {
+        sawEnd = true;
+        if (ev.truncated) outcome.truncated = true;
+      }
     } else if (ev.t === "error") {
-      if (!text) throw new AdvisorHttpError(ev.v || "صار خلل بالمستشار.", 500);
+      sawEnd = true;
+      if (!text && !body.continueFrom) throw new AdvisorHttpError(ev.v || "صار خلل بالمستشار.", 500);
       outcome.error = ev.v || "انقطع الرد.";
     }
   };
@@ -101,6 +113,9 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
   }
   handle(buffer + decoder.decode());
   outcome.text = text;
-  if (!text && !outcome.error) throw new AdvisorHttpError("وصل رد فارغ من المستشار. جرّب مرة ثانية.", 500);
+  if (!sawEnd) outcome.cut = true;
+  if (!text && !outcome.error && !body.continueFrom) {
+    throw new AdvisorHttpError(sawEnd ? "وصل رد فارغ من المستشار. جرّب مرة ثانية." : "انقطع الاتصال قبل لا يوصل الجواب. جرّب مرة ثانية.", 500);
+  }
   return outcome;
 }

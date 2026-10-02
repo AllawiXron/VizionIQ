@@ -142,3 +142,87 @@ describe("Advisor streaming", () => {
     expect(JSON.parse(body).reply).toBe("جواب");
   });
 });
+
+/** Scriptable fake: each call gets the request and returns an async iterable (or throws). */
+function scriptedClient(steps: Array<(req: any) => AsyncIterable<{ text: string }> | Promise<never>>) {
+  const calls: any[] = [];
+  return {
+    calls,
+    client: {
+      models: {
+        generateContentStream: async (req: any) => {
+          calls.push(req);
+          const step = steps[Math.min(calls.length - 1, steps.length - 1)];
+          return step(req);
+        },
+      },
+    } as never,
+  };
+}
+const chunks = (...parts: string[]) => async function* () { for (const p of parts) yield { text: p }; };
+const breaksAfter = (...parts: string[]) => async function* () {
+  for (const p of parts) yield { text: p };
+  throw new Error("Incomplete JSON segment at the end");
+};
+/** Never yields until the request's abort signal fires. */
+const hangs = () => (req: any) =>
+  (async function* () {
+    await new Promise((_, reject) => req.config.abortSignal.addEventListener("abort", () => reject(new Error("aborted"))));
+    yield { text: "" };
+  })();
+
+describe("Advisor resilience", () => {
+  it("resumes an answer that breaks mid-stream instead of failing", async () => {
+    const { client, calls } = scriptedClient([() => breaksAfter("أول ", "جزء")(), () => chunks(" وبعدين", " الباقي")()]);
+    const deltas: string[] = [];
+    const r = await runAdvisor([{ role: "user", text: "سؤال" }], {}, (t) => deltas.push(t), undefined, client);
+    expect(r.text).toBe("أول جزء وبعدين الباقي");
+    expect(deltas.join("")).toBe(r.text);
+    const resumed = calls[1].contents;
+    expect(resumed[resumed.length - 2]).toMatchObject({ role: "model" });
+    expect(JSON.stringify(resumed[resumed.length - 1])).toContain("كمّل من آخر كلمة");
+  });
+
+  it("moves to the next model when the first one is too slow to start", async () => {
+    const { client, calls } = scriptedClient([hangs(), () => chunks("جواب سريع")()]);
+    const r = await runAdvisor([{ role: "user", text: "سؤال" }], {}, () => {}, undefined, client, { firstTokenMs: 3000 });
+    expect(r.text).toBe("جواب سريع");
+    expect(calls[1].model).not.toBe(calls[0].model);
+  }, 10000);
+
+  it("retries without thinkingConfig when a model rejects it", async () => {
+    const { client, calls } = scriptedClient([
+      async () => {
+        throw new Error('400 INVALID_ARGUMENT: Thinking level is not supported for this model.');
+      },
+      () => chunks("تمام")(),
+    ]);
+    const r = await runAdvisor([{ role: "user", text: "سؤال" }], {}, () => {}, undefined, client);
+    expect(r.text).toBe("تمام");
+    expect(calls[0].config.thinkingConfig).toBeDefined();
+    expect(calls[1].config.thinkingConfig).toBeUndefined();
+    expect(calls[1].model).toBe(calls[0].model);
+  });
+
+  it("stops cleanly before the server deadline and flags the answer as truncated", async () => {
+    const slow = (req: any) =>
+      (async function* () {
+        for (let i = 0; ; i++) {
+          if (req.config.abortSignal.aborted) throw new Error("aborted");
+          await new Promise((r) => setTimeout(r, 20));
+          yield { text: `${i} ` };
+        }
+      })();
+    const { client } = scriptedClient([slow]);
+    const r = await runAdvisor([{ role: "user", text: "سؤال" }], {}, () => {}, undefined, client, { deadlineMs: 1200, firstTokenMs: 1000 });
+    expect(r.truncated).toBe(true);
+    expect(r.text.length).toBeGreaterThan(5);
+  });
+
+  it("continues from text the browser already has", async () => {
+    const { client, calls } = scriptedClient([() => chunks(" والباقي")()]);
+    const r = await runAdvisor([{ role: "user", text: "سؤال" }], { continueFrom: "النص الأول" }, () => {}, undefined, client);
+    expect(r.text).toBe(" والباقي");
+    expect(JSON.stringify(calls[0].contents)).toContain("النص الأول");
+  });
+});

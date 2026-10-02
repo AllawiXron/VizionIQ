@@ -44,6 +44,8 @@ export interface ChatOptions {
   isNewTopic?: boolean;
   diagnosticProfile?: unknown;
   profile?: unknown;
+  /** Text already shown from an interrupted answer: resume after it. */
+  continueFrom?: string;
 }
 
 type Part = { text: string } | { inlineData: { mimeType: string; data: string } };
@@ -122,14 +124,17 @@ export function getGeminiClient() {
   return new GoogleGenAI({ apiKey, httpOptions: { headers: { "User-Agent": "aistudio-build" } } });
 }
 
-const isTransient = (err: unknown) => /503|UNAVAILABLE|high demand|429|RESOURCE_EXHAUSTED|overloaded|deadline/i.test(JSON.stringify((err as Error)?.message || err || ""));
+const errText = (err: unknown) => JSON.stringify((err as Error)?.message || err || "");
+const isTransient = (err: unknown) =>
+  /503|UNAVAILABLE|high demand|429|RESOURCE_EXHAUSTED|overloaded|deadline|Incomplete JSON|terminated|ECONNRESET|socket|fetch failed|network|aborted|timeout/i.test(errText(err));
 
 export function friendlyError(err: unknown): string {
-  const s = JSON.stringify((err as Error)?.message || err || "");
+  const s = errText(err);
   if (/503|UNAVAILABLE|high demand|overloaded/i.test(s)) return "خوادم الذكاء الاصطناعي عليها ضغط مؤقت. اضغط 'إعادة المحاولة' بعد ثواني.";
   if (/429|RESOURCE_EXHAUSTED|Quota/i.test(s)) return "وصلنا الحد المؤقت للطلبات. انتظر شوية وأعد المحاولة.";
   if (/GEMINI_API_KEY/.test(s)) return (err as Error).message;
-  return (err as Error)?.message ? `خطأ أثناء الاتصال بالمستشار: ${(err as Error).message}` : "تعذر الحصول على رد حالياً.";
+  if (/Incomplete JSON|terminated|ECONNRESET|socket|fetch failed|network|aborted|timeout/i.test(s)) return "انقطع الاتصال بالمستشار بنص الجواب. اضغط 'جواب جديد' أو أعد المحاولة.";
+  return "تعذر الحصول على رد حالياً. جرّب مرة ثانية.";
 }
 
 export interface RunResult {
@@ -137,53 +142,149 @@ export interface RunResult {
   model?: string;
   fallback?: boolean;
   aborted?: boolean;
+  /** Ran out of server time mid-answer: the client should ask for a continuation. */
+  truncated?: boolean;
+}
+
+/** Vercel kills the function at 60 s (vercel.json); finish cleanly before that. */
+export const DEADLINE_MS = 50_000;
+/** If a model hasn't written a word by then, move on to the next model. */
+export const FIRST_TOKEN_MS = 20_000;
+const MAX_CONTINUATIONS = 2;
+
+/** Models that rejected thinkingConfig once are called without it from then on. */
+const NO_THINKING_CONFIG = new Set<string>();
+
+/** Turns that make the model resume a broken answer exactly where it stopped. */
+export function continuationContents(contents: Content[], partial: string): Content[] {
+  const tail = partial.slice(-160);
+  return [
+    ...contents,
+    { role: "model", parts: [{ text: partial }] },
+    {
+      role: "user",
+      parts: [
+        {
+          text: `انقطع جوابك هنا: «…${tail}». كمّل من آخر كلمة بالضبط، بدون أي مقدمة وبدون ما تعيد شي كتبته، وبنفس التنسيق (إذا كنت بنص بلوك \`\`\` كمّله وسكّره).`,
+        },
+      ],
+    },
+  ];
 }
 
 /**
- * Runs the advisor. `onDelta` receives text as it streams. Throws only when
- * nothing at all could be produced (no model, no fallback).
+ * Runs the advisor. `onDelta` receives text as it streams.
+ * - Before the first word: transient failures and slow starts fall through
+ *   to the next model, then to the offline Iraqi fallback.
+ * - After words have streamed: a broken connection is resumed with a
+ *   continuation request, so the merchant sees one uninterrupted answer.
+ * - Near the server deadline it stops cleanly with `truncated` so the
+ *   browser can request the rest.
  */
 export async function runAdvisor(
   messages: ChatMessagePayload[],
   options: ChatOptions,
   onDelta: (text: string) => void,
   isAborted: () => boolean = () => false,
-  client?: Pick<GoogleGenAI, "models">
+  client?: Pick<GoogleGenAI, "models">,
+  timing: { deadlineMs?: number; firstTokenMs?: number } = {}
 ): Promise<RunResult> {
-  const contents = prepareCleanContents(messages, options);
-  if (contents.length === 0) throw new Error("ماكو رسائل صالحة للإرسال للمستشار.");
+  const startedAt = Date.now();
+  const budget = timing.deadlineMs ?? DEADLINE_MS;
+  const deadline = startedAt + budget;
+  // Time kept in hand to start another call / finish cleanly (6 s of the 50 s budget).
+  const reserve = Math.min(6000, budget / 8);
+  const firstTokenMs = timing.firstTokenMs ?? FIRST_TOKEN_MS;
+  const base = prepareCleanContents(messages, options);
+  if (base.length === 0) throw new Error("ماكو رسائل صالحة للإرسال للمستشار.");
   const { instruction } = buildRequestInstruction(messages, options);
   const ai = client ?? getGeminiClient();
 
+  // Text already shown to the merchant (from an earlier, interrupted request).
+  const prior = typeof options.continueFrom === "string" ? options.continueFrom.slice(-20_000) : "";
+  let produced = "";
+  let continuations = 0;
   let lastError: unknown = null;
-  for (const model of ADVISOR_MODELS) {
-    for (let attempt = 0; attempt < 2; attempt++) {
-      let produced = "";
-      try {
-        if (attempt > 0) await new Promise((r) => setTimeout(r, 600 + Math.random() * 300));
-        const stream = await ai.models.generateContentStream({
-          model,
-          contents,
-          config: { systemInstruction: instruction, temperature: 0.6, maxOutputTokens: 4096 },
-        });
-        for await (const chunk of stream) {
-          if (isAborted()) return { text: produced, model, aborted: true };
-          const t = chunk?.text;
-          if (t) {
-            produced += t;
-            onDelta(t);
-          }
+  let lastModel: string | undefined;
+
+  const contentsNow = () => (prior || produced ? continuationContents(base, prior + produced) : base);
+
+  /** One streaming call. Resolves "done" | "truncated" | "aborted"; throws on failure. */
+  const streamOnce = async (model: string): Promise<"done" | "truncated" | "aborted"> => {
+    const controller = new AbortController();
+    let gotText = false;
+    let timedOut = false;
+    const remaining = deadline - Date.now();
+    const firstTimer = setTimeout(() => {
+      if (!gotText) {
+        timedOut = true;
+        controller.abort();
+      }
+    }, Math.max(Math.min(3000, remaining / 2), Math.min(firstTokenMs, remaining - reserve)));
+    const deadlineTimer = setTimeout(() => controller.abort(), Math.max(1000, remaining));
+    const thinking = NO_THINKING_CONFIG.has(model) ? {} : { thinkingConfig: { thinkingLevel: "LOW" as never } };
+    try {
+      const stream = await ai.models.generateContentStream({
+        model,
+        contents: contentsNow(),
+        config: { systemInstruction: instruction, temperature: 0.6, maxOutputTokens: 4096, abortSignal: controller.signal, ...thinking },
+      });
+      for await (const chunk of stream) {
+        if (isAborted()) return "aborted";
+        const t = chunk?.text;
+        if (t) {
+          gotText = true;
+          produced += t;
+          onDelta(t);
         }
-        if (produced) return { text: produced, model };
+      }
+      return "done";
+    } catch (err) {
+      if (isAborted()) return "aborted";
+      if (gotText && Date.now() >= deadline - Math.min(500, reserve)) return "truncated";
+      if (timedOut) throw Object.assign(new Error(`timeout: no first token from ${model}`), { timeout: true });
+      // A model that doesn't know thinkingConfig: remember and let the caller retry it plainly.
+      if (!NO_THINKING_CONFIG.has(model) && /thinking/i.test(errText(err)) && /400|INVALID_ARGUMENT|not supported|Unknown name/i.test(errText(err))) {
+        NO_THINKING_CONFIG.add(model);
+        throw Object.assign(new Error("retry without thinking"), { retryPlain: true });
+      }
+      throw err;
+    } finally {
+      clearTimeout(firstTimer);
+      clearTimeout(deadlineTimer);
+    }
+  };
+
+  for (const model of ADVISOR_MODELS) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (Date.now() > deadline - reserve) break;
+      lastModel = model;
+      try {
+        if (attempt > 0) await new Promise((r) => setTimeout(r, 400 + Math.random() * 300));
+        const outcome = await streamOnce(model);
+        if (outcome === "aborted") return { text: produced, model, aborted: true };
+        if (outcome === "truncated") return { text: produced, model, truncated: true };
+        if (produced || prior) return { text: produced, model };
       } catch (err) {
         lastError = err;
-        console.warn(`[Advisor] ${model} attempt ${attempt + 1} failed:`, (err as Error)?.message || err);
-        // Once words reached the merchant we can't silently switch models mid-answer.
-        if (produced) throw Object.assign(new Error(friendlyError(err)), { partial: produced });
-        if (!isTransient(err)) break;
+        const e = err as { retryPlain?: boolean; timeout?: boolean; message?: string };
+        console.warn(`[Advisor] ${model} attempt ${attempt + 1} failed:`, e?.message || err);
+        if (e.retryPlain) continue;
+        // Words already reached the merchant: resume instead of starting over.
+        if (produced.length > 0) {
+          if (continuations >= MAX_CONTINUATIONS) throw Object.assign(new Error(friendlyError(err)), { partial: produced });
+          if (Date.now() > deadline - reserve * 1.3) return { text: produced, model, truncated: true };
+          continuations++;
+          continue;
+        }
+        if (e.timeout || !isTransient(err)) break;
       }
     }
+    if (Date.now() > deadline - reserve) break;
   }
+
+  if (produced) return { text: produced, model: lastModel, truncated: true };
+  if (prior) throw new Error(friendlyError(lastError));
 
   const lastUser = [...messages].reverse().find((m) => m?.role === "user")?.text || "";
   try {
@@ -273,6 +374,7 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
     isNewTopic: Boolean(b.isNewTopic),
     diagnosticProfile: b.diagnosticProfile,
     profile: b.profile,
+    continueFrom: typeof b.continueFrom === "string" ? b.continueFrom : undefined,
     requestId,
   };
 
@@ -310,7 +412,7 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
   emit({ t: "start", requestId });
   try {
     const result = await runAdvisor(messages, options, (text) => emit({ t: "delta", v: text }), () => aborted, ai);
-    emit({ t: "done", requestId, fallback: result.fallback || undefined, model: result.model });
+    emit({ t: "done", requestId, fallback: result.fallback || undefined, truncated: result.truncated || undefined, model: result.model });
   } catch (e) {
     emit({ t: "error", v: (e as Error).message, partial: Boolean((e as { partial?: string }).partial), requestId });
   }

@@ -56,7 +56,7 @@ import { RichMessage, ThinkingDots } from "./advisor/RichMessage";
 import { BusinessProfilePanel } from "./advisor/BusinessProfilePanel";
 import { useBusinessProfile } from "./advisor/useBusinessProfile";
 import { useDictation } from "./advisor/useDictation";
-import { AdvisorHttpError, streamAdvisor } from "../lib/advisor/client";
+import { AdvisorHttpError, streamAdvisor, type StreamOutcome } from "../lib/advisor/client";
 import { prepareImage, type PreparedImage } from "../lib/advisor/images";
 import { describeProfileUpdate, parseProfileTags, parseSuggestionTags, profileFilledCount, stripAdvisorTags } from "../lib/advisor/profile";
 import {
@@ -1390,7 +1390,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
-    const timeoutId = setTimeout(() => controller.abort(), 120000);
+    const timeoutId = setTimeout(() => controller.abort(), 170000);
 
     // Streamed text is buffered and painted ~16 times a second, not per token.
     let streamed = "";
@@ -1423,21 +1423,38 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         images: pendingImages.length ? pendingImages.map(({ mimeType, data }) => ({ mimeType, data })) : undefined,
       });
 
-      const outcome = await streamAdvisor(
-        {
-          messages: history,
-          requestId: clientRequestId,
-          topicContext: options.topicContext || topicId,
-          isNewTopic: options.isNewTopic,
-          diagnosticProfile: options.diagnosticProfile,
-          profile: businessProfile,
-          userContext: { isVip, platform: "Vizion Iraq E-Commerce Suite" },
-        },
-        { onDelta, signal: controller.signal }
-      );
+      const payload = {
+        messages: history,
+        requestId: clientRequestId,
+        topicContext: options.topicContext || topicId,
+        isNewTopic: options.isNewTopic,
+        diagnosticProfile: options.diagnosticProfile,
+        profile: businessProfile,
+        userContext: { isVip, platform: "Vizion Iraq E-Commerce Suite" },
+      };
+      // If the answer comes back cut (server time limit, dropped connection),
+      // quietly ask for the rest — up to twice — into the same bubble.
+      let outcome: StreamOutcome;
+      try {
+        outcome = await streamAdvisor(payload, { onDelta, signal: controller.signal });
+      } catch (e) {
+        // A dropped connection after some text: continue below instead of failing.
+        if (controller.signal.aborted || !streamed.trim()) throw e;
+        outcome = { text: "", cut: true };
+      }
+      for (let round = 0; round < 2 && !controller.signal.aborted && streamed.trim() && (outcome.truncated || outcome.cut || outcome.error); round++) {
+        try {
+          const more = await streamAdvisor({ ...payload, continueFrom: streamed }, { onDelta, signal: controller.signal });
+          outcome = { ...more, requestId: outcome.requestId };
+        } catch (e) {
+          if (controller.signal.aborted) throw e;
+          outcome = { ...outcome, error: "انقطع الرد بالنص. اضغط 'جواب جديد' حتى أعيده كامل." };
+          break;
+        }
+      }
       clearTimeout(timeoutId);
 
-      const raw = outcome.text;
+      const raw = streamed;
       const learned = parseProfileTags(raw);
       const changed = mergeBusinessProfile(learned);
       const learnedSummary = changed.length ? describeProfileUpdate(Object.fromEntries(changed.map((k) => [k, learned[k]]))) : [];
@@ -1447,7 +1464,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         requestId: outcome.requestId || clientRequestId,
         suggestions: presetSuggestions || (suggestions.length > 0 ? suggestions : undefined),
         profileUpdate: learnedSummary.length ? learnedSummary : undefined,
-        partialError: outcome.error,
+        partialError: outcome.error || (outcome.truncated || outcome.cut ? "الجواب طويل وانقطع بالنص. اضغط 'جواب جديد' أو اسألني 'كمّل'." : undefined),
       });
       if (learnedSummary.length) showToast("saved", "حدّثت ملف مشروعك 🧠", learnedSummary.join(" • "));
       setLastFailedPrompt(null);

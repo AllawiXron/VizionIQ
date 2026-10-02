@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Check, Copy, MessageCircle } from "lucide-react";
 import { parseRichBlocks } from "../../lib/advisor/blocks";
 import { parseCalcBlock } from "../../lib/advisor/calc";
@@ -103,15 +103,31 @@ function RichMessageImpl({ text, streaming, onCopy, onSaveProfile, ...actions }:
 
 export const RichMessage = memo(RichMessageImpl);
 
-export function ThinkingDots({ label = "دا أفكر بمشروعك…" }: { label?: string }) {
+/** What the advisor is doing while the first words are on their way. */
+const THINKING_STAGES: [number, string][] = [
+  [0, "دا أقرا سؤالك…"],
+  [2500, "دا أراجع ملف مشروعك ومحتوى الكورس…"],
+  [7000, "دا أحسب الأرقام وأرتب الجواب…"],
+  [14000, "جواب دسم، ثواني ويبدي…"],
+  [26000, "الخوادم عليها ضغط، دا أجرب طريق أسرع…"],
+];
+
+export function ThinkingDots({ label }: { label?: string }) {
+  const [elapsed, setElapsed] = useState(0);
+  useEffect(() => {
+    const started = Date.now();
+    const id = setInterval(() => setElapsed(Date.now() - started), 500);
+    return () => clearInterval(id);
+  }, []);
+  const stage = label ?? [...THINKING_STAGES].reverse().find(([t]) => elapsed >= t)![1];
   return (
-    <div className="flex items-center gap-2.5 text-[13px] font-bold text-vz-accent py-1" role="status">
+    <div className="flex items-center gap-2.5 text-[13px] font-bold text-vz-accent py-1" role="status" aria-live="polite">
       <span className="flex gap-1">
         {[0, 1, 2].map((i) => (
           <span key={i} className="vz-think-dot" style={{ animationDelay: `${i * 0.16}s` }} />
         ))}
       </span>
-      {label}
+      {stage}
     </div>
   );
 }

@@ -229,7 +229,7 @@ export function knowledgeSize() {
  * Most relevant course chunks for a question, within a character budget and
  * with at most two chunks from the same chapter (so answers stay broad).
  */
-export function retrieveKnowledge(query: string, { k = 5, budgetChars = 6500 }: { k?: number; budgetChars?: number } = {}): KnowledgeChunk[] {
+export function retrieveKnowledge(query: string, { k = 4, budgetChars = 5000 }: { k?: number; budgetChars?: number } = {}): KnowledgeChunk[] {
   const { docs, df, avgLen } = getIndex();
   const q = [...new Set(tokenize(query))];
   if (q.length === 0) return [];
