@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { sanitizeMessageForHistory, prepareCleanContents, handleAdvisorRequest } from "./gemini";
-import { buildRequestInstruction, HISTORY_WINDOW, runAdvisor } from "./advisor/core";
+import { buildRequestInstruction, HISTORY_WINDOW, runAdvisor, thinkingLevelFor } from "./advisor/core";
 
 const textOf = (parts: Array<{ text?: string }>) => parts.map((p) => p.text ?? "").join(" ");
 
@@ -190,18 +190,23 @@ describe("Advisor resilience", () => {
     expect(calls[1].model).not.toBe(calls[0].model);
   }, 10000);
 
-  it("retries without thinkingConfig when a model rejects it", async () => {
-    const { client, calls } = scriptedClient([
-      async () => {
-        throw new Error('400 INVALID_ARGUMENT: Thinking level is not supported for this model.');
-      },
-      () => chunks("تمام")(),
-    ]);
+  it("steps the thinking level down (minimal, then low, then none) when a model rejects it", async () => {
+    const reject = async () => {
+      throw new Error("400 INVALID_ARGUMENT: Thinking level is not supported for this model.");
+    };
+    const { client, calls } = scriptedClient([reject, reject, () => chunks("تمام")()]);
     const r = await runAdvisor([{ role: "user", text: "سؤال" }], {}, () => {}, undefined, client);
     expect(r.text).toBe("تمام");
-    expect(calls[0].config.thinkingConfig).toBeDefined();
-    expect(calls[1].config.thinkingConfig).toBeUndefined();
-    expect(calls[1].model).toBe(calls[0].model);
+    expect(calls[0].config.thinkingConfig.thinkingLevel).toBe("MINIMAL");
+    expect(calls[1].config.thinkingConfig.thinkingLevel).toBe("LOW");
+    expect(calls[2].config.thinkingConfig).toBeUndefined();
+    expect(new Set(calls.map((c: any) => c.model)).size).toBe(1);
+  });
+
+  it("uses minimal thinking for quick questions and low thinking for heavier ones", () => {
+    expect(thinkingLevelFor([{ role: "user", text: "شنو أحسن وقت للنشر؟" }], {})).toBe("MINIMAL");
+    expect(thinkingLevelFor([{ role: "user", text: "احسبلي الربح إذا السعر 35 ألف" }], {})).toBe("LOW");
+    expect(thinkingLevelFor([{ role: "user", text: "شوف", images: [{ mimeType: "image/png", data: "x" }] }], {})).toBe("LOW");
   });
 
   it("stops cleanly before the server deadline and flags the answer as truncated", async () => {

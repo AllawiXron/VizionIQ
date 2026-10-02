@@ -136,3 +136,18 @@ describe("rich answer blocks", () => {
     expect(blocks[1]).toMatchObject({ type: "script", content: "هلا", open: true });
   });
 });
+
+describe("streaming reveal", () => {
+  it("reveals a phrase at a time, not word by word", async () => {
+    const { revealUpTo } = await import("./streamStore");
+    const text = "هلا بيك عيني. خلي نحسبها ورقة وقلم";
+    // Mid-phrase after the first sentence: show up to the sentence end only.
+    expect(text.slice(0, revealUpTo(text, 0, 0))).toBe("هلا بيك عيني. ");
+    // Nothing new to break on yet: hold.
+    expect(revealUpTo(text, 14, 50)).toBe(14);
+    // Waited long enough: show up to the last whole word.
+    expect(text.slice(0, revealUpTo(text, 14, 400))).toBe("هلا بيك عيني. خلي نحسبها ورقة ");
+    // Line breaks count as phrase ends.
+    expect(revealUpTo("سطر أول\nسطر ث", 0, 0)).toBe("سطر أول\n".length);
+  });
+});

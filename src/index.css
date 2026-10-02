@@ -1731,6 +1731,12 @@ body,
   }
 }
 
+/* Advisor: messages above the newest few skip layout and paint while off-screen. */
+.vz-msg-settled {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 360px;
+}
+
 .vz-think-dot {
   width: 7px;
   height: 7px;
