@@ -6,30 +6,28 @@
 import React, { useState, useEffect } from "react";
 import {
   Home,
-  Compass,
+  BookOpen,
   Wrench,
   Bot,
-  SlidersHorizontal,
+  Menu,
   X,
-  Flame,
+  Lightbulb,
   Crown,
   Sparkles,
-  Shield,
   LogOut,
-  TrendingUp,
-  Tv,
   ChevronLeft
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { EASE_OUT, SPRING, SPRING_SNAPPY, bottomSheetMotion, overlayMotion, sheetMotion } from "../lib/motion";
 import { useOriginSheet } from "../lib/origin";
-import { isFreeTrialUser, isVipUser } from "./LockScreen";
+import { isFreeTrialUser } from "./LockScreen";
+import type { Route } from "../lib/route";
 import { SoundToggleButton } from "./SoundToggleButton";
 
 export interface MobileBottomNavProps {
-  activeSection: string;
+  activeView: Route["view"];
+  onNavigate: (route: Route) => void;
   onOpenAdvisor: () => void;
-  onOpenAdmin?: () => void;
   onOpenUpgrade?: () => void;
   onOpenIntro?: () => void;
   onLogout?: () => void;
@@ -39,9 +37,9 @@ export interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
-  activeSection,
+  activeView,
+  onNavigate,
   onOpenAdvisor,
-  onOpenAdmin,
   onOpenUpgrade,
   onOpenIntro,
   onLogout,
@@ -68,53 +66,18 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMoreSheetOpen]);
 
-  const scrollToSection = (id: string) => {
+  const go = (route: Route) => {
     setMoreSheetOpen(false);
-    const el = document.getElementById(id);
-    if (el) {
-      const offset = 75;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = el.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: Math.max(0, offsetPosition),
-        behavior: "smooth",
-      });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    onNavigate(route);
   };
 
-  // Active states
-  const isHomeActive =
-    !isMoreSheetOpen &&
-    (activeSection === "hero-section" || !activeSection || activeSection === "hero");
-
-  const isPathActive =
-    !isMoreSheetOpen &&
-    (activeSection === "contents-section" ||
-      activeSection === "chapters-grid-section" ||
-      activeSection.startsWith("chapter") ||
-      activeSection.startsWith("ch"));
-
-  const isToolsActive =
-    !isMoreSheetOpen &&
-    (activeSection === "vizion-growth-suite" ||
-      activeSection === "roi-calculator" ||
-      activeSection === "ad-simulator" ||
-      activeSection === "script-simulator" ||
-      activeSection === "thirty-day-plan");
-
   const dockItems = [
-    { key: "home", label: "الرئيسية", aria: "الانتقال إلى الرئيسية", icon: Home, active: isHomeActive, current: isHomeActive, onClick: () => scrollToSection("hero-section") },
-    { key: "path", label: "مساري", aria: "الانتقال إلى مساري وفصول الدليل", icon: Compass, active: isPathActive, current: isPathActive, onClick: () => scrollToSection("contents-section") },
-    { key: "tools", label: "الأدوات", aria: "الانتقال إلى حقيبة الأدوات الذكية", icon: Wrench, active: isToolsActive, current: isToolsActive, onClick: () => scrollToSection("vizion-growth-suite") },
+    { key: "home", label: "الرئيسية", aria: "الرئيسية", icon: Home, active: !isMoreSheetOpen && activeView === "home", onClick: () => go({ view: "home" }) },
+    { key: "chapters", label: "الفصول", aria: "فصول الكورس", icon: BookOpen, active: !isMoreSheetOpen && (activeView === "chapters" || activeView === "chapter"), onClick: () => go({ view: "chapters" }) },
     {
       key: "advisor",
       label: "المستشار",
-      aria: "فتح مستشار فيزيون للذكاء الاصطناعي",
+      aria: "فتح مستشار فيزيون الذكي",
       icon: Bot,
       active: false,
       accent: true,
@@ -123,11 +86,12 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         onOpenAdvisor();
       }
     },
-    { key: "more", label: "المزيد", aria: "فتح قائمة المزيد والخدمات الثانوية", icon: SlidersHorizontal, active: isMoreSheetOpen, expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
+    { key: "tools", label: "الأدوات", aria: "الأدوات والحاسبات", icon: Wrench, active: !isMoreSheetOpen && activeView === "tools", onClick: () => go({ view: "tools" }) },
+    { key: "more", label: "المزيد", aria: "المزيد", icon: Menu, active: isMoreSheetOpen || (!isMoreSheetOpen && activeView === "market"), expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
   ];
 
   // The More sheet grows out of the dock button (or top menu button) like a liquid-glass panel.
-  const originSheet = useOriginSheet(isMoreSheetOpen, { width: 480, anchor: "bottom", height: 560 });
+  const originSheet = useOriginSheet(isMoreSheetOpen, { width: 480, anchor: "bottom", height: 420 });
   const moreSheetMotion = originSheet === sheetMotion ? bottomSheetMotion : originSheet;
 
   return (
@@ -155,168 +119,80 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               }}
               role="dialog"
               aria-modal="true"
-              aria-label="المزيد من الوجهات والخدمات"
+              aria-label="المزيد"
               className="absolute inset-x-0 bottom-0 max-h-[85vh] glass-elevated glass-edge rounded-t-4xl overflow-hidden flex flex-col pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] touch-pan-y"
             >
               {/* Drag bar indicator */}
               <div className="w-10 h-[5px] bg-white/25 rounded-full mx-auto mt-2.5 mb-1.5 shrink-0 cursor-grab active:cursor-grabbing" />
 
               {/* Sheet Header */}
-              <div className="px-4 py-2.5 border-b border-white/[0.07] flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-2 text-right min-w-0">
-                  <div className="w-8 h-8 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-vz-accent shrink-0">
-                    <SlidersHorizontal className="w-4 h-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="text-sm font-black text-white truncate">المزيد من الوجهات والخدمات</h3>
-                    <p className="text-[10px] text-white/60 font-light truncate">إجراءات وإعدادات سريعة بيد واحدة</p>
-                  </div>
-                </div>
-
-                <button                   onClick={() => setMoreSheetOpen(false)}
-                  aria-label="إغلاق قائمة المزيد"
-                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 transition-colors cursor-pointer shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
+              <div className="px-4 pb-2.5 flex items-center justify-between shrink-0">
+                <h3 className="text-base font-black text-white">المزيد</h3>
+                <button
+                  onClick={() => setMoreSheetOpen(false)}
+                  aria-label="إغلاق"
+                  className="vz-close focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Scrollable Sheet Body */}
-              <div className="p-3.5 sm:p-5 overflow-y-auto space-y-4 text-right">
-                
-                {/* User Status / Upgrade Card */}
-                <div className="p-3 rounded-2xl bg-gradient-to-r from-white/[0.04] to-white/[0.01] border border-white/10 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-9 h-9 rounded-xl bg-white/8 border border-white/14 flex items-center justify-center text-vz-accent shrink-0">
-                      {isFreeTrialUser(userCode) ? <Sparkles className="w-4 h-4" /> : <Crown className="w-4 h-4 text-vz-accent" />}
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-xs font-black text-white truncate">
-                        {isFreeTrialUser(userCode) ? "حساب تجريبي مجاني" : `عضوية VIP : ${userCode}`}
-                      </div>
-                      <div className="text-[10px] text-white/70 font-light truncate">
-                        {isFreeTrialUser(userCode) ? "كود محدود: free#1" : "مفتوح كافة الميزات والأدوات"}
-                      </div>
-                    </div>
-                  </div>
+              <div className="px-4 pb-2 overflow-y-auto space-y-2 text-right">
+                <button
+                  onClick={() => go({ view: "market" })}
+                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-right cursor-pointer min-h-[56px] active:scale-[0.98] transition-[transform,background-color] motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                >
+                  <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Lightbulb className="w-4 h-4 text-amber-200" /></span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-sm font-black text-white">أسرار السوق العراقي</span>
+                    <span className="block text-[11px] text-white/55 truncate">دروس قصيرة من تجارب التجار</span>
+                  </span>
+                  <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
+                </button>
+                {isFreeTrialUser(userCode) && onOpenUpgrade && (
+                <button
+                  onClick={() => { setMoreSheetOpen(false); onOpenUpgrade(); }}
+                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-right cursor-pointer min-h-[56px] active:scale-[0.98] transition-[transform,background-color] motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                >
+                  <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Crown className="w-4 h-4 text-white" /></span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-sm font-black text-white">افتح الكورس كامل</span>
+                    <span className="block text-[11px] text-white/55 truncate">إنت بالنسخة التجريبية</span>
+                  </span>
+                  <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
+                </button>
+                )}
+                {onOpenIntro && (
+                <button
+                  onClick={() => { setMoreSheetOpen(false); onOpenIntro(); }}
+                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-right cursor-pointer min-h-[56px] active:scale-[0.98] transition-[transform,background-color] motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                >
+                  <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Sparkles className="w-4 h-4 text-vz-accent" /></span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-sm font-black text-white">شلون أستخدم الموقع؟</span>
+                    <span className="block text-[11px] text-white/55 truncate">شرح سريع بثلاث خطوات</span>
+                  </span>
+                  <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
+                </button>
+                )}
 
-                  {isFreeTrialUser(userCode) && onOpenUpgrade && (
-                    <button                       onClick={() => {
-                        setMoreSheetOpen(false);
-                        onOpenUpgrade();
-                      }}
-                      className="btn btn-primary px-3 py-1.5 text-white rounded-xl text-xs font-black flex items-center gap-1 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    >
-                      <Crown className="w-3 h-3" />
-                      <span>ترقية ⚡</span>
-                    </button>
-                  )}
+                <div className="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+                  <span className="text-sm font-black text-white">أصوات الأزرار</span>
+                  <SoundToggleButton variant="pill" />
                 </div>
 
-                {/* Secondary Destinations Grid */}
-                <div className="space-y-2">
-                  <span className="text-[11px] font-bold text-white/70 block px-1">وجهات إضافية متميزة</span>
-                  <div className="grid grid-cols-2 gap-2">
-                    {/* Elite Secrets */}
-                    <button                       onClick={() => scrollToSection("elite-secrets-section")}
-                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    >
-                      <div className="flex items-center justify-between">
-                        <Flame className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
-                        <span className="text-[9px] bg-white/10 text-vz-accent px-1.5 py-0.5 rounded font-mono">نخبة</span>
-                      </div>
-                      <div className="text-xs font-black text-white">أسرار السوق</div>
-                      <div className="text-[10px] text-white/70 font-light truncate">حقائق التجار وأخطاء الإعلانات</div>
-                    </button>
-
-                    {/* Pricing Section (Free trial) */}
-                    {isFreeTrialUser(userCode) ? (
-                      <button                         onClick={() => {
-                          setMoreSheetOpen(false);
-                          if (onOpenUpgrade) {
-                            onOpenUpgrade();
-                          } else {
-                            scrollToSection("pricing-section");
-                          }
-                        }}
-                        className="p-3 rounded-2xl bg-gradient-to-br from-white/8 via-white/5 to-transparent border border-white/18 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      >
-                        <div className="flex items-center justify-between">
-                          <Crown className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
-                          <span className="text-[9px] bg-white/15 text-vz-accent px-1.5 py-0.5 rounded font-mono">خصم</span>
-                        </div>
-                        <div className="text-xs font-black text-vz-accent">باقات الاشتراك</div>
-                        <div className="text-[10px] text-vz-accent/60 font-light truncate">مدى الحياة بدون رسوم شهرية</div>
-                      </button>
-                    ) : (
-                      /* Quick ROI calculator */
-                      <button                         onClick={() => scrollToSection("roi-calculator")}
-                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      >
-                        <div className="flex items-center justify-between">
-                          <TrendingUp className="w-4 h-4 text-emerald-400 group-hover:scale-[1.04] transition-transform" />
-                          <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono">حاسبة</span>
-                        </div>
-                        <div className="text-xs font-black text-white">حاسبة الأرباح ROI</div>
-                        <div className="text-[10px] text-white/70 font-light truncate">حساب العائد وصافي الربح</div>
-                      </button>
-                    )}
-
-                    {/* Ad simulator */}
-                    <button                       onClick={() => scrollToSection("ad-simulator")}
-                      className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    >
-                      <div className="flex items-center justify-between">
-                        <Tv className="w-4 h-4 text-slate-300 group-hover:scale-[1.04] transition-transform" />
-                        <span className="text-[9px] bg-white/10 text-slate-200 px-1.5 py-0.5 rounded font-mono">محاكي</span>
-                      </div>
-                      <div className="text-xs font-black text-white">محاكي الإعلانات</div>
-                      <div className="text-[10px] text-white/70 font-light truncate">تجربة سيناريوهات الحملات</div>
-                    </button>
-
-                    {/* Welcome Intro Modal Tour */}
-                    {onOpenIntro && (
-                      <button                         onClick={() => {
-                          setMoreSheetOpen(false);
-                          onOpenIntro();
-                        }}
-                        className="p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-right space-y-1 active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      >
-                        <div className="flex items-center justify-between">
-                          <Sparkles className="w-4 h-4 text-vz-accent group-hover:scale-[1.04] transition-transform" />
-                          <span className="text-[9px] bg-white/10 text-white/80 px-1.5 py-0.5 rounded font-mono">دليل</span>
-                        </div>
-                        <div className="text-xs font-black text-white">جولة المنظومة</div>
-                        <div className="text-[10px] text-white/70 font-light truncate">استكشاف الميزات الأساسية</div>
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Sound & Experience Controls */}
-                <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-xs font-black text-white block">المؤثرات الصوتية</span>
-                      <span className="text-[10px] text-white/70 font-light block">أصوات خفيفة للتفاعل مع الأزرار</span>
-                    </div>
-                    <SoundToggleButton variant="pill" />
-                  </div>
-                </div>
-
-                {/* Logout Action Button */}
                 {onLogout && (
-                  <button                     onClick={() => {
+                  <button
+                    onClick={() => {
                       setMoreSheetOpen(false);
                       onLogout();
                     }}
-                    className="w-full py-3 px-4 rounded-2xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 hover:text-red-300 text-xs font-bold flex items-center justify-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer active:scale-[0.97] shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
+                    className="w-full py-3 px-4 rounded-2xl text-red-300/90 hover:text-red-300 hover:bg-red-500/10 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer min-h-[48px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>تسجيل الخروج وقفل المنظومة</span>
+                    <span>تسجيل الخروج</span>
                   </button>
                 )}
-
               </div>
             </motion.div>
           </div>
@@ -340,7 +216,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 key={item.key}
                 onClick={item.onClick}
                 aria-label={item.aria}
-                aria-current={item.current ? "page" : undefined}
+                aria-current={item.active && !item.expanded ? "page" : undefined}
                 aria-expanded={item.expanded}
                 className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-[20px] cursor-pointer min-h-[52px] relative transition-[color,scale] duration-300 active:scale-[0.94] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
                   item.active ? "text-white" : item.accent ? "text-white/90" : "text-white/50"

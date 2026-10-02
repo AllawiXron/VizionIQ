@@ -3,20 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { EASE_OUT, SPRING_SNAPPY, allowBlur } from "../lib/motion";
+import React, { useEffect, useState } from "react";
+import { EASE_OUT, SPRING_SNAPPY } from "../lib/motion";
 import { motion } from "motion/react";
 import { 
-  CheckCircle2, AlertTriangle, Lightbulb, Star, ShieldCheck, 
-  MapPin, BookOpen, Layers, Zap, Play, FileText, Compass, 
-  ChevronLeft, ArrowRight, Sparkles, HelpCircle, CheckSquare, Wrench,
-  Lock, Crown, KeyRound
+  CheckCircle2, AlertTriangle, Layers, FileText,
+  ArrowRight, ArrowLeft, Sparkles, CheckSquare, Wrench,
+  Lock, Crown, KeyRound, BookOpen, Check, Clock
 } from "lucide-react";
-import { isVipUser, isFreeTrialUser } from "./LockScreen";
+import { isFreeTrialUser } from "./LockScreen";
 import { chaptersList, chaptersDetailedMap } from "../data/chaptersData";
 import { caseStudiesList } from "../data/caseStudiesData";
 import { swipeFilesList } from "../data/swipeFilesData";
-import { videoLessonsList } from "../data/videoLessonsData";
+import { setChapterDone, setLastChapter, stageOf, useCourseProgress } from "../lib/progress";
+import type { Route } from "../lib/route";
 
 import FadeInUp from "./FadeInUp";
 
@@ -30,161 +30,116 @@ const AdvancedCalculatorSuite = React.lazy(() => import("./AdvancedCalculatorSui
 interface ChapterViewProps {
   key?: string;
   id: string;
-  number: string;
-  title: string;
-  subtitle: string;
-  icon: string;
-  description: string;
+  userCode: string;
+  onNavigate: (route: Route) => void;
 }
 
-export default function ChapterView({ id, number, title, subtitle, icon, description }: ChapterViewProps) {
-  const [activeTab, setActiveTab] = useState<"framework" | "deepdive" | "casestudy" | "swipe" | "tools">("framework");
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
+const CHAPTER_TABS = [
+  { id: "framework", label: "الدرس", icon: BookOpen },
+  { id: "deepdive", label: "أمثلة أكثر", icon: Layers },
+  { id: "casestudy", label: "قصة مشروع", icon: Sparkles },
+  { id: "swipe", label: "رسائل جاهزة", icon: FileText },
+  { id: "tools", label: "الأداة", icon: Wrench },
+] as const;
+type ChapterTab = (typeof CHAPTER_TABS)[number]["id"];
+
+export default function ChapterView({ id, userCode, onNavigate }: ChapterViewProps) {
+  const [activeTab, setActiveTab] = useState<ChapterTab>("framework");
+
+  const chapter = chaptersList.find((c) => c.id === id) || chaptersList[0];
   const detailedData = chaptersDetailedMap[id] || chaptersDetailedMap["chapter1"];
   const relatedCaseStudy = caseStudiesList.find((cs) => cs.chapterId === id) || caseStudiesList[0];
-  const relatedVideo = videoLessonsList.find((v) => v.chapterId === id) || videoLessonsList[0];
   const relatedSwipeFiles = swipeFilesList.filter((s) => s.chapterId === id || s.category === "ad_copy").slice(0, 2);
 
   const chapterIndex = chaptersList.findIndex((c) => c.id === id);
   const prevChapter = chapterIndex > 0 ? chaptersList[chapterIndex - 1] : null;
   const nextChapter = chapterIndex < chaptersList.length - 1 ? chaptersList[chapterIndex + 1] : null;
+  const stage = stageOf(id);
+  const readTime = chapter.readTime?.match(/\d+\s*دقيقة/)?.[0];
 
-  const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
   const isFreeTrial = isFreeTrialUser(userCode);
+  const progress = useCourseProgress(userCode);
+  const isDone = progress.done.includes(id);
+
+  // Remember where the member stopped so Home can offer "continue".
+  useEffect(() => {
+    setLastChapter(userCode, id);
+  }, [userCode, id]);
 
   const triggerUpgradeModal = () => {
     window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
   };
 
-  const scrollToChapter = (chapterId: string) => {
-    const element = document.getElementById(chapterId);
-    if (element) {
-      const offset = 70;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-    setTouchStartY(e.touches[0].clientY);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX === null || touchStartY === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
-      if (deltaX < 0 && nextChapter) {
-        scrollToChapter(nextChapter.id);
-      } else if (deltaX > 0 && prevChapter) {
-        scrollToChapter(prevChapter.id);
-      }
-    }
-
-    setTouchStartX(null);
-    setTouchStartY(null);
+  const finishAndContinue = () => {
+    setChapterDone(userCode, id, true);
+    onNavigate(nextChapter ? { view: "chapter", id: nextChapter.id } : { view: "chapters" });
   };
 
   return (
-    <section 
-      id={id} 
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      className="py-8 sm:py-14 md:py-20 px-2 sm:px-4 md:px-0 border-b border-white/5 relative scroll-mt-20 sm:scroll-mt-24 overflow-hidden group touch-pan-y"
+    <section
+      id={id}
+      className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 relative"
     >
-      
-      {/* Background Graphic Effect */}
+      {/* Back to the list + position */}
+      <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
+        <button
+          onClick={() => onNavigate({ view: "chapters" })}
+          className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}
+        >
+          <ArrowRight className="w-4 h-4" />
+          <span>كل الفصول</span>
+        </button>
+        <span className="text-xs text-white/50 font-mono">{chapterIndex + 1} / {chaptersList.length}</span>
+      </div>
 
-      {/* Hero Chapter Banner */}
-      <motion.div 
-        initial={{ opacity: 0, y: 32, scale: 0.97, filter: allowBlur() ? "blur(8px)" : "blur(0px)" }}
-        whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-        transition={{ duration: 0.8, ease: EASE_OUT }}
-        className="relative glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-4 sm:p-8 md:p-12 mb-6 sm:mb-10 overflow-hidden max-w-5xl mx-auto"
+      {/* Chapter title */}
+      <motion.header
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: EASE_OUT }}
+        className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 text-right"
       >
-        <div className="absolute top-0 right-0 w-[2px] h-full bg-gradient-to-b from-white/45 via-white/10 to-transparent" />
-        
-        {/* Mobile Swipe Hint Badge */}
-        <div className="sm:hidden flex items-center justify-between glass-subtle px-3 py-1.5 rounded-full text-[10px] text-white/70 mb-3">
-          <span className="flex items-center gap-1 font-semibold">
-            <span>👆</span> اسحب يمنة ويسرة حتى تكلب بين الفصول
-          </span>
-          <span className="font-mono text-[9px] text-white/70">{chapterIndex + 1} / {chaptersList.length}</span>
+        <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm font-bold text-white/55">
+          <span className="text-vz-accent">{chapter.number}</span>
+          {stage && <><span aria-hidden="true">·</span><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
+          {readTime && <><span aria-hidden="true">·</span><span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{readTime}</span></>}
+          {isDone && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-[11px]">
+              <Check className="w-3 h-3" strokeWidth={3} /> مكتمل
+            </span>
+          )}
         </div>
-        
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 mb-3.5 sm:mb-6 relative z-10">
-          <div className="flex flex-row sm:flex-col items-center justify-between sm:justify-center p-3 sm:p-5 glass-subtle rounded-2xl sm:rounded-3xl shrink-0 w-full sm:w-auto">
-             <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-widest block">الفصل {number}</span>
-             <span className="text-xl sm:text-5xl inline-block">{icon}</span>
-          </div>
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight flex items-start gap-3">
+          <span aria-hidden="true" className="shrink-0">{chapter.icon}</span>
+          <span>{chapter.title}</span>
+        </h1>
+        <p className="text-sm sm:text-lg text-white/60 leading-relaxed max-w-3xl">{chapter.description}</p>
+      </motion.header>
 
-          <div className="space-y-1 sm:space-y-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="px-2.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white/75 text-[10px] sm:text-xs font-bold">
-                {detailedData.chapterNumber ? `الفصل ${detailedData.chapterNumber}` : number}
-              </span>
-              <span className="text-[10px] sm:text-xs text-white/45 font-mono">25-35 دقيقة قراءة وتطبيق عملي</span>
-            </div>
-
-            <h2 className="text-lg sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight tracking-tight">
-              {title}
-            </h2>
-            <p className="text-xs sm:text-lg md:text-xl text-white/55 font-bold leading-snug">
-              {subtitle}
-            </p>
-          </div>
+      {/* Chapter sections */}
+      <div className="sticky top-[4.5rem] sm:top-[4.75rem] z-20 -mx-4 px-4 sm:mx-0 sm:px-0 mb-6 sm:mb-8">
+        <div role="tablist" aria-label="أقسام الفصل" className="flex items-center gap-1 p-1 rounded-full glass-floating overflow-x-auto no-scrollbar w-full sm:w-fit">
+          {CHAPTER_TABS.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActiveTab(tab.id)}
+                className={`relative flex-1 sm:flex-none px-3.5 sm:px-5 min-h-[40px] rounded-full text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 whitespace-nowrap transition-colors duration-300 cursor-pointer ${isActive ? "text-white" : "text-white/60 hover:text-white"} focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60`}
+              >
+                {isActive && <motion.span layoutId="chapter-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]" />}
+                <Icon className="relative w-4 h-4 hidden sm:block" />
+                <span className="relative">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
-
-        <p className="fluid-lead-text text-white/75 font-normal glass-subtle p-4 sm:p-6 rounded-2xl sm:rounded-3xl">
-          {description}
-        </p>
-
-        {/* Chapter Internal Navigation Tabs */}
-        <div className="space-y-2 pt-4 sm:pt-6 border-t border-white/[0.07] mt-4 sm:mt-6">
-          <div className="sm:hidden flex items-center justify-between text-[10px] text-white/60 font-mono px-1">
-            <span className="font-bold text-white/70">تصفح أقسام الفصل:</span>
-            <span className="text-white/60">اسحب يمنة ويسرة 👈</span>
-          </div>
-          
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar snap-x touch-pan-x">
-            {[
-              { id: "framework", label: "📘 الفكرة الأساسية وشلون تطبقها", icon: BookOpen },
-              { id: "deepdive", label: "🔬 تفاصيل أكثر وأمثلة حقيقية", icon: Layers },
-              { id: "casestudy", label: "💼 أمثلة من مشاريع حقيقية", icon: Sparkles },
-              { id: "swipe", label: "📝 رسائل جاهزة للنسخ", icon: FileText },
-              { id: "tools", label: "🧰 حاسبات وأدوات عملية", icon: Wrench }
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`relative px-4 py-2.5 sm:px-5 sm:py-3 rounded-full text-[11px] sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-colors duration-300 cursor-pointer shrink-0 snap-start active:scale-[0.96] min-h-[44px] ${ isActive ? "text-white" : "text-white/65 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07]" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60`}
-                >
-                  {isActive && <motion.span layoutId={`chapter-tab-${id}`} transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
-                  <Icon className="relative w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-                  <span className="relative">{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </motion.div>
+      </div>
 
       {/* TAB CONTENT 1: CORE FRAMEWORK */}
       {activeTab === "framework" && (
@@ -525,35 +480,33 @@ export default function ChapterView({ id, number, title, subtitle, icon, descrip
         </div>
       )}
 
-      {/* CHAPTER BOTTOM QUICK NAV TOOLBAR */}
-      <div className="max-w-5xl mx-auto mt-8 sm:mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 dir-rtl px-2">
-        {prevChapter ? (
-          <button             onClick={() => scrollToChapter(prevChapter.id)}
-            className="w-full sm:w-auto px-4 py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/18 text-white font-bold text-xs sm:text-sm flex items-center justify-between sm:justify-start gap-3 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-          >
-            <ArrowRight className="w-4 h-4 text-vz-accent group-hover:translate-x-1 transition-transform shrink-0" />
-            <div className="text-right">
-              <span className="text-[10px] text-white/70 block font-normal">الفصل القبله</span>
-              <span className="text-xs sm:text-sm text-vz-accent line-clamp-1">{prevChapter.number}: {prevChapter.title}</span>
-            </div>
-          </button>
-        ) : <div className="hidden sm:block" />}
-
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/11 text-[11px] text-vz-accent">
-          <span>👈 اسحب يمنة ويسرة حتى تكلب بين الفصول 👉</span>
+      {/* Finish + move on */}
+      <div className="mt-10 sm:mt-14 glass rounded-3xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+        <div className="flex-1 min-w-0 text-right">
+          <p className="text-base sm:text-lg font-black text-white">{isDone ? "خلصت هذا الفصل ✓" : "خلصت الفصل؟"}</p>
+          <p className="text-xs sm:text-sm text-white/55 mt-1">
+            {nextChapter ? <>الجاي: {nextChapter.title}</> : "هذا آخر فصل بالكورس."}
+          </p>
         </div>
-
-        {nextChapter ? (
-          <button             onClick={() => scrollToChapter(nextChapter.id)}
-            className="w-full sm:w-auto px-4 py-3 rounded-2xl bg-gradient-to-r from-white/10 to-white/5 hover:from-white/15 hover:to-white/10 border border-white/18 text-white font-bold text-xs sm:text-sm flex items-center justify-between sm:justify-end gap-3 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer group min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
+        <div className="flex flex-col-reverse sm:flex-row gap-2.5 shrink-0">
+          {prevChapter && (
+            <button
+              onClick={() => onNavigate({ view: "chapter", id: prevChapter.id })}
+              className={`btn btn-ghost min-h-[48px] px-5 rounded-full text-sm gap-1.5 ${focusRing}`}
+            >
+              <ArrowRight className="w-4 h-4" />
+              <span>الفصل السابق</span>
+            </button>
+          )}
+          <button
+            onClick={finishAndContinue}
+            className={`btn btn-primary min-h-[48px] px-6 rounded-full text-sm gap-2 ${focusRing}`}
           >
-            <div className="text-right">
-              <span className="text-[10px] text-vz-accent/80 block font-normal">الفصل الجاي</span>
-              <span className="text-xs sm:text-sm text-vz-accent line-clamp-1">{nextChapter.number}: {nextChapter.title}</span>
-            </div>
-            <ChevronLeft className="w-4 h-4 text-vz-accent group-hover:-translate-x-1 transition-transform shrink-0" />
+            {!isDone && <Check className="w-4 h-4" strokeWidth={3} />}
+            <span>{nextChapter ? (isDone ? "الفصل الجاي" : "خلصت، الفصل الجاي") : "خلصت الكورس"}</span>
+            {nextChapter && <ArrowLeft className="w-4 h-4" />}
           </button>
-        ) : <div className="hidden sm:block" />}
+        </div>
       </div>
 
     </section>
