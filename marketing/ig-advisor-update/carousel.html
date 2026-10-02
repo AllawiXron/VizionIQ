@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>viZion — تحديث المستشار الذكي</title>
+<link rel="stylesheet" href="fonts/src.css" />
+<style>
+  :root {
+    --mint: #d9efe6;
+    --cyan: #62c6e9;
+    --pill: #1769f5;
+    --white: #ffffff;
+    --soft: rgba(255, 255, 255, 0.86);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; font-family: "Readex Pro", sans-serif; }
+
+  .slide {
+    position: relative;
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    color: var(--white);
+    background:
+      radial-gradient(120% 85% at 100% 0%, #0c43a6 0%, #072a74 30%, #04184a 58%, #020d2e 100%);
+  }
+  .slide.stripes::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,0.028) 0 2px, transparent 2px 10px);
+    pointer-events: none;
+  }
+  .lineart { position: absolute; inset: 0; pointer-events: none; }
+
+  /* Brand chrome */
+  .logo { position: absolute; left: 96px; top: 70px; width: 56px; z-index: 10; }
+  .corner { position: absolute; z-index: 10; width: 38px; height: 38px; border-radius: 6px; background: var(--mint); display: grid; place-items: center; }
+  .corner.top { right: 108px; top: 78px; }
+  .corner.bottom { right: 108px; bottom: 89px; }
+  .footer { position: absolute; left: 97px; bottom: 82px; display: flex; gap: 0; direction: ltr; z-index: 10; text-shadow: 0 1px 8px rgba(2,12,40,0.6); }
+  .footer div { display: flex; flex-direction: column; gap: 6px; }
+  .footer .lbl { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 17px; color: #d4e2ee; }
+  .footer .val { font-weight: 300; font-size: 16px; color: #b9c9da; letter-spacing: 0.01em; }
+  .footer .val.mono { font-family: "IBM Plex Mono", monospace; font-weight: 400; letter-spacing: 0.04em; }
+  .footer .c1 { width: 145px; } .footer .c2 { width: 252px; }
+
+  /* Text */
+  .copy { position: absolute; right: 118px; left: 120px; top: 312px; direction: rtl; text-align: right; font-size: 35px; line-height: 1.9; font-weight: 400; }
+  .copy p + p { margin-top: 44px; }
+  .cyan { color: var(--cyan); }
+  .bright { color: #19d2ff; font-weight: 500; }
+  .item { margin-top: 42px; }
+  .item:first-child { margin-top: 0; }
+  .item .head { display: flex; gap: 22px; align-items: baseline; }
+  .item .tag { color: var(--cyan); direction: ltr; font-weight: 400; font-size: 35px; white-space: nowrap; }
+  .item .title { font-weight: 500; }
+  .item .desc { color: var(--soft); font-weight: 300; font-size: 30px; line-height: 1.7; margin-top: 2px; }
+  .kicker { font-size: 26px; font-weight: 500; color: var(--cyan); letter-spacing: 0.02em; margin-bottom: 40px; display: flex; align-items: center; gap: 12px; }
+  .kicker::before { content: ""; width: 10px; height: 10px; border-radius: 99px; background: var(--cyan); box-shadow: 0 0 14px var(--cyan); }
+
+  .pills { position: absolute; right: 118px; top: 308px; display: flex; flex-direction: column; align-items: flex-end; gap: 22px; direction: rtl; }
+  .pill { background: var(--pill); border-radius: 18px; height: 62px; padding: 0 22px 0 26px; font-size: 32px; line-height: 62px; white-space: nowrap; min-width: 620px; text-align: right; }
+
+  .cta {
+    position: absolute; left: 188px; right: 188px; height: 82px; border-radius: 28px;
+    background: linear-gradient(180deg, #7fdcf2 0%, #5cc7e6 100%);
+    border: 2px solid rgba(255,255,255,0.5);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.55), 0 18px 40px rgba(20,120,180,0.35);
+    color: #071a45; font-size: 38px; font-weight: 500; direction: rtl;
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+  }
+
+  /* Selection box with handles (cover) */
+  .select { position: absolute; left: 50%; transform: translateX(-50%); border: 2.5px solid #fff; padding: 6px 34px 14px; white-space: nowrap; direction: rtl; font-size: 62px; font-weight: 300; line-height: 1.3; }
+  .select .h { position: absolute; width: 14px; height: 14px; background: #0b2a6e; border: 2.5px solid #fff; }
+  .select .tl { left: -8px; top: -8px; } .select .tr { right: -8px; top: -8px; }
+  .select .bl { left: -8px; bottom: -8px; } .select .br { right: -8px; bottom: -8px; }
+  .select .ml { left: -8px; top: calc(50% - 7px); } .select .mr { right: -8px; top: calc(50% - 7px); }
+  .cursor { position: absolute; width: 68px; image-rendering: pixelated; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35)); }
+
+  .glass { position: absolute; border-radius: 26px; background: linear-gradient(180deg, rgba(150,170,210,0.30), rgba(120,140,190,0.16)); border: 1.5px solid rgba(255,255,255,0.14); }
+
+  /* Phone mockup with a real screenshot of the advisor */
+  .phone { position: absolute; padding: 11px; border-radius: 54px; background: linear-gradient(150deg, #2a3553 0%, #0b1020 45%, #04060c 100%);
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.12), 0 50px 100px rgba(0,0,0,0.55), 0 0 140px rgba(47,107,255,0.45); }
+  .phone img { display: block; width: 100%; border-radius: 44px; }
+  .phone::after { content: ""; position: absolute; inset: 11px; border-radius: 44px; background: linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 28%); pointer-events: none; }
+
+  .center-title { position: absolute; left: 0; right: 0; text-align: center; direction: rtl; font-size: 62px; font-weight: 300; }
+  .badge { position: absolute; direction: rtl; display: inline-flex; align-items: center; gap: 12px; padding: 12px 22px; border-radius: 16px; background: rgba(8, 20, 60, 0.82); border: 1.5px solid rgba(98, 198, 233, 0.45); font-size: 24px; font-weight: 500; box-shadow: 0 18px 40px rgba(0,0,0,0.35); }
+  .badge b { color: var(--cyan); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Shared SVG symbols -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="vz" viewBox="40 80 680 610">
+      <path fill="#d9efe6" d="M66 214 Q60 188 92 188 L158 188 Q170 188 176 200 L292 410 Q372 392 432 318 L452 334 Q368 452 248 524 Q232 532 222 516 Z" />
+      <path fill="#d9efe6" d="M236 100 L606 100 Q636 102 628 132 L548 290 L470 238 L488 190 L292 190 Q276 190 268 176 Z" />
+      <path fill="#d9efe6" d="M540 326 L616 400 Q624 410 618 420 L532 580 L676 580 Q700 582 690 606 L664 656 Q656 668 640 668 L300 668 Q272 666 282 640 Z" />
+      <path fill="#0b1d58" d="M420 300 L484 280 L480 344 L462 326 L440 348 L424 332 L446 312 Z" />
+    </symbol>
+    <symbol id="arrow-ur" viewBox="0 0 24 24"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="#0b1d58" stroke-width="3" stroke-linecap="square" /></symbol>
+    <symbol id="arrow-dr" viewBox="0 0 24 24"><path d="M7 7 L17 17 M17 9 V17 H9" fill="none" stroke="#0b1d58" stroke-width="3" stroke-linecap="square" /></symbol>
+    <linearGradient id="tube" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f9fd9" />
+      <stop offset="0.55" stop-color="#4fcbed" />
+      <stop offset="1" stop-color="#2a8fcc" />
+    </linearGradient>
+  </defs>
+</svg>
+
+<template id="chrome">
+  <svg class="lineart" viewBox="0 0 1080 1350">
+    <g fill="none" stroke="rgba(130,170,240,0.16)" stroke-width="2">
+      <path d="M612 -10 L770 276 Q778 288 792 282 L1080 120" />
+      <path d="M752 -10 L838 140" />
+      <path d="M842 140 Q930 120 1012 50" />
+      <path d="M968 22 L1040 -4 L1036 66" />
+      <path d="M1080 448 L842 448 Q812 446 820 414 L888 290 Q898 270 920 270 L1080 270" />
+    </g>
+  </svg>
+  <svg class="logo" viewBox="40 80 680 610"><use href="#vz" /></svg>
+  <div class="corner top"><svg width="24" height="24"><use href="#arrow-ur" /></svg></div>
+  <div class="corner bottom"><svg width="24" height="24"><use href="#arrow-dr" /></svg></div>
+  <div class="footer">
+    <div class="c1"><span class="lbl">instgram</span><span class="val mono">vizion.iq</span></div>
+    <div class="c2"><span class="lbl">gmail</span><span class="val">vizioniraq@gmail.com</span></div>
+    <div><span class="lbl">phone</span><span class="val">07757851379</span></div>
+  </div>
+</template>
+
+<template id="loop">
+  <svg style="position:absolute;left:0;top:0;pointer-events:none" width="1080" height="1350" viewBox="0 0 1080 1350">
+    <g style="filter: drop-shadow(0 18px 24px rgba(0,0,0,0.35))">
+      <g transform="translate(0 52)">
+      <path d="M -60 1203 C 60 1222 205 1160 236 1068 C 262 990 186 958 118 1012 C 46 1070 12 1220 118 1380" fill="none" stroke="#1d7fbe" stroke-width="50" stroke-linecap="round" />
+      <path d="M -60 1203 C 60 1222 205 1160 236 1068 C 262 990 186 958 118 1012 C 46 1070 12 1220 118 1380" fill="none" stroke="url(#tube)" stroke-width="37" stroke-linecap="round" />
+      <path d="M -60 1196 C 60 1215 198 1152 228 1062 C 252 990 186 964 122 1014 C 56 1066 22 1210 120 1370" fill="none" stroke="rgba(255,255,255,0.32)" stroke-width="8" stroke-linecap="round" transform="translate(-4 -7)" />
+      </g>
+    </g>
+  </svg>
+</template>
+
+<!-- 1 · Cover -->
+<section class="slide stripes" id="s1">
+  <div class="kicker" style="position:absolute;top:296px;left:0;right:0;justify-content:center;direction:rtl">تحديث جديد • viZion AI</div>
+  <div class="select" style="top:362px">
+    <span class="h tl"></span><span class="h tr"></span><span class="h bl"></span><span class="h br"></span><span class="h ml"></span><span class="h mr"></span>
+    شنو الجديـــد بالمستشار؟
+    <svg class="cursor" style="right:-58px;bottom:-60px" viewBox="0 0 17 17"></svg>
+  </div>
+  <div class="glass" style="left:220px;right:220px;top:560px;height:560px"></div>
+  <div class="phone" style="left:352px;top:520px;width:376px;transform:perspective(1800px) rotateY(-10deg) rotateX(6deg) rotateZ(1.5deg);-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent 96%);mask-image:linear-gradient(180deg,#000 72%,transparent 96%)">
+    <img src="shots/answer_top.png" alt="" />
+  </div>
+  <div class="badge" style="left:120px;top:760px"><b>01</b> يعرف مشروعك</div>
+  <div class="badge" style="right:110px;top:880px"><b>02</b> يقرا صور إعلانك</div>
+  <div class="badge" style="left:96px;top:1010px"><b>03</b> يحسبلك بالدينار</div>
+</section>
+
+<!-- 2 · Intro -->
+<section class="slide" id="s2">
+  <div class="copy">
+    <p>سمعنا ملاحظاتكم، وطورنا المستشار الذكي من الأساس.</p>
+    <p>مستشار <span class="bright">viZion</span> هسة مو بس يجاوب على سؤالك…<br />صار يعرف مشروعك، يحسبلك أرقامك بالدينار، ويقرا صور إعلاناتك ومحادثاتك ويا الزبائن.</p>
+    <p class="cyan" style="font-size:32px">وكل جواب مبني على فصول الكورس نفسها.</p>
+  </div>
+</section>
+
+<!-- 3 · What's new 01–03 -->
+<section class="slide" id="s3">
+  <div class="copy" style="top:270px">
+    <div class="kicker">شنو الجديد؟</div>
+    <div class="item">
+      <div class="head"><span class="tag">Profile - 01</span><span class="title">ملف مشروعك</span></div>
+      <div class="desc">يحفظ منتجك، أسعارك وكلفة رسالتك، ويجاوبك على أرقامك إنت مو حجي عام.</div>
+    </div>
+    <div class="item">
+      <div class="head"><span class="tag">Vision - 02</span><span class="title">صوّرله إعلانك</span></div>
+      <div class="desc">ارفع لقطة من مدير الإعلانات أو محادثة زبون، ويگلك وين الخلل بالضبط.</div>
+    </div>
+    <div class="item">
+      <div class="head"><span class="tag">Calculate - 03</span><span class="title">حسبة بالدينار</span></div>
+      <div class="desc">يحسبلك ربحك الصافي لكل طلب، وأعلى كلفة رسالة تكدر تتحملها قبل لا تخسر.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · What's new 04–06 -->
+<section class="slide" id="s4">
+  <div class="copy" style="top:270px">
+    <div class="kicker">وبعد…</div>
+    <div class="item">
+      <div class="head"><span class="tag">Course - 04</span><span class="title">يعرف الكورس</span></div>
+      <div class="desc">كل جواب مبني على فصول viZion، ويوديك للفصل والأداة المناسبة بضغطة.</div>
+    </div>
+    <div class="item">
+      <div class="head"><span class="tag">Scripts - 05</span><span class="title">رد جاهز</span></div>
+      <div class="desc">يكتبلك الرد اللي يبيع، تنسخه أو تفتحه بالواتساب مباشرة.</div>
+    </div>
+    <div class="item">
+      <div class="head"><span class="tag">Live - 06</span><span class="title">يكتب قدامك</span></div>
+      <div class="desc">الجواب يطلع كلمة كلمة، وتگدر تحچيله بالمايك بدل الكتابة.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · Ask it anything about your real shop -->
+<section class="slide" id="s5">
+  <div class="pills">
+    <div class="pill">كلفة رسالتي 1.8$… أربح لو أخسر؟</div>
+    <div class="pill">شوف هاي لقطة إعلاني، وين الخلل؟</div>
+    <div class="pill">شلون أرد على "غالي، لكيت أرخص"؟</div>
+    <div class="pill">شكد أعلى كلفة رسالة أتحملها؟ والخ…</div>
+  </div>
+  <div class="copy" style="top:690px">
+    <p>اسأله عن مشروعك الحقيقي.</p>
+    <p style="margin-top:6px;color:var(--soft);font-weight:300;font-size:32px">وأي خطوة تعجبك، تضيفها لخطتك بضغطة.</p>
+  </div>
+</section>
+
+<!-- 6 · Product shot -->
+<section class="slide stripes" id="s6">
+  <div class="center-title" style="top:262px">الحسبـــة تطلع قدامك</div>
+  <div class="phone" style="left:330px;top:420px;width:420px;transform:perspective(1800px) rotateY(12deg) rotateX(5deg) rotateZ(-2deg);-webkit-mask-image:linear-gradient(180deg,#000 76%,transparent 97%);mask-image:linear-gradient(180deg,#000 76%,transparent 97%)">
+    <img src="shots/answer_calc.png" alt="" />
+  </div>
+  <div class="badge" style="left:96px;top:600px">أعلى كلفة رسالة تتحملها <b>$0.42</b></div>
+  <div class="badge" style="right:96px;top:900px">رد واتساب جاهز <b>بضغطة</b></div>
+</section>
+
+<!-- 7 · CTA -->
+<section class="slide" id="s7">
+  <div class="copy">
+    <p>التحديث متوفر هسة لكل مشتركين المستشار الذكي.</p>
+    <p>ادخل للمنصة، عبّي «ملف مشروعي»،<br />واسأل أول سؤال عن مشروعك.</p>
+  </div>
+  <div class="cta" style="top:600px">تسأل » يحسب » يشخّص » تبيـــع</div>
+</section>
+
+<script>
+  // Brand chrome on every slide; the cyan loop on the text slides (as in the series).
+  const chromeTpl = document.getElementById("chrome");
+  const loopTpl = document.getElementById("loop");
+  document.querySelectorAll(".slide").forEach((s) => {
+    s.prepend(chromeTpl.content.cloneNode(true));
+    if (["s2", "s3", "s4", "s5", "s7"].includes(s.id)) s.append(loopTpl.content.cloneNode(true));
+  });
+  // Pixel-art pointer cursor.
+  const HAND = [
+    "......XX.........", ".....XooX........", ".....XooX........", ".....XooX........",
+    ".....XooXXX......", ".....XooXooXXX...", ".....XooXooXooXX.", "..XX.XooXooXooXoX",
+    ".XooXXooooooooXoX", ".XoooXooooooooooX", "..XoooooooooooooX", "...XooooooooooooX",
+    "...XoooooooooooX.", "....XooooooooooX.", "....XoooooooooX..", ".....XooooooooX..", ".....XXXXXXXXXX..",
+  ];
+  document.querySelectorAll(".cursor").forEach((svg) => {
+    let html = "";
+    HAND.forEach((row, y) => [...row].forEach((c, x) => {
+      if (c !== ".") html += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${c === "X" ? "#000" : "#fff"}"/>`;
+    }));
+    svg.innerHTML = html;
+    svg.setAttribute("shape-rendering", "crispEdges");
+  });
+</script>
+</body>
+</html>
