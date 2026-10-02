@@ -228,7 +228,7 @@ export default function Navbar({
                 <span>ترقية الكورس</span>
               </button>
             ) : (
-              <span className="px-3 py-1.5 text-[10px] rounded-full font-mono font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] hidden xl:flex items-center gap-1.5 whitespace-nowrap max-w-[11rem] truncate">
+              <span className="px-3 py-1.5 text-[10px] rounded-full font-mono font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] hidden 2xl:flex items-center gap-1.5 whitespace-nowrap max-w-[11rem] truncate">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 عضو: {userCode}
               </span>

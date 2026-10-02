@@ -1540,7 +1540,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   onClick={onClose}
                   aria-label="إغلاق"
                   title="إغلاق"
-                  className="vz-close !w-auto sm:px-3.5 gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  className="vz-close sm:!w-auto sm:px-3.5 gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
                   <X className="w-4 h-4" />
                   <span className="hidden sm:inline text-xs font-bold">إغلاق</span>

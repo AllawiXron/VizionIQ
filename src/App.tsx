@@ -26,10 +26,30 @@ const WelcomeIntroModal = React.lazy(() => import("./components/WelcomeIntroModa
 import { SensoryProvider } from "./components/SensoryProvider";
 import { useMobileKeyboard } from "./hooks/useMobileKeyboard";
 
+const SIGNOUT_VERSION = "signout_2026_09_08_v1";
+
+/** Returns the stored member code when a valid session exists, otherwise null. */
+function readStoredSession(): string | null {
+  try {
+    if (localStorage.getItem("sales_guide_signout_flag") !== SIGNOUT_VERSION) return null;
+    const token = localStorage.getItem("sales_guide_user_token");
+    const code = localStorage.getItem("sales_guide_user_code");
+    return token === "true" && code ? code : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function App() {
   useMobileKeyboard();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userCode, setUserCode] = useState("");
+  // Read the stored session synchronously so returning members land straight in
+  // the app (no lock-screen flash). The mount effect below still runs the
+  // sign-out migration and remains the source of truth.
+  const [isLoggedIn, setIsLoggedIn] = useState(() => readStoredSession() !== null);
+  const [userCode, setUserCode] = useState(() => readStoredSession() ?? "");
+  // The app subtree mounts after the lock screen's exit transition; observers
+  // that need its sections wait for this element instead of `isLoggedIn`.
+  const [appRoot, setAppRoot] = useState<HTMLDivElement | null>(null);
   const [activeSection, setActiveSection] = useState("hero-section");
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
@@ -59,7 +79,7 @@ export default function App() {
     window.addEventListener("open-welcome-intro", handleOpenWelcome);
 
     // Execute immediate sign-out request
-    const signoutVersion = "signout_2026_09_08_v1";
+    const signoutVersion = SIGNOUT_VERSION;
     if (localStorage.getItem("sales_guide_signout_flag") !== signoutVersion) {
       localStorage.removeItem("sales_guide_user_token");
       localStorage.removeItem("sales_guide_user_code");
@@ -107,7 +127,7 @@ export default function App() {
 
   // Intersection Observer for Active Navigation Highlighting
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn || !appRoot) return;
 
     const sections = [
       "hero-section",
@@ -150,7 +170,7 @@ export default function App() {
     });
 
     return () => observer.disconnect();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, appRoot]);
 
   const handleLoginSuccess = (validCode: string) => {
     localStorage.setItem("sales_guide_user_token", "true");
@@ -250,6 +270,7 @@ export default function App() {
         ) : (
       <motion.div
         key="app"
+        ref={setAppRoot}
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } }}
         exit={{ opacity: 0, filter: "blur(8px)", transition: { duration: 0.26, ease: EASE_OUT } }}
