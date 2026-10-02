@@ -4,10 +4,11 @@
  */
 
 import React, { useState, useEffect } from "react";
+import { PageHeader } from "./ui/PageHeader";
 import { motion, AnimatePresence } from "motion/react";
 import { collapseMotion, overlayMotion } from "../lib/motion";
 import { useOriginSheet } from "../lib/origin";
-import { ChipPill, CountUp, ScrollZoom, WordsReveal } from "./ui/Motion";
+import { ChipPill, CountUp } from "./ui/Motion";
 import FadeInUp from "./FadeInUp";
 import { 
   Search, 
@@ -31,6 +32,9 @@ import { Insight, insightsList } from "../data/insightsData";
 import { isFreeTrialUser } from "./LockScreen";
 import { Lock, Crown } from "lucide-react";
 
+/** Cards shown at first; the rest load on demand so the screen stays short. */
+const PAGE_SIZE = 12;
+
 export default function IraqiInsights() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -38,6 +42,8 @@ export default function IraqiInsights() {
   const [randomInsight, setRandomInsight] = useState<Insight | null>(null);
   const [showRandomModal, setShowRandomModal] = useState(false);
   const [expandedInsightId, setExpandedInsightId] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  useEffect(() => setVisibleCount(PAGE_SIZE), [searchTerm, selectedCategory]);
 
   const userCode = typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") || "" : "";
   const isFreeTrial = isFreeTrialUser(userCode);
@@ -118,42 +124,21 @@ export default function IraqiInsights() {
   const originSheet = useOriginSheet(showRandomModal, { width: 672 });
 
   return (
-    <div className="space-y-12 md:space-y-16 relative">
+    <div className="space-y-6 sm:space-y-8 relative">
       
-      {/* SECTION HEADER BANNER — zooms into place as it scrolls in */}
-      <ScrollZoom from={0.9}>
-      <div className="relative rounded-3xl sm:rounded-4xl p-5 sm:p-8 md:p-14 glass-elevated glass-edge overflow-hidden group">
-        <div className="absolute top-0 right-0 w-[2px] h-full bg-gradient-to-b from-white/45 via-white/10 to-transparent" />
-        
-        <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-10 justify-between relative z-10">
-          <div className="space-y-3 sm:space-y-5 text-right max-w-4xl">
-            <span className="vz-eyebrow text-[11px] sm:text-sm">
-              <Flame className="w-3.5 h-3.5 opacity-80" />
-              <span>حقائق يكتشفها أغلب التجار بعد ما يخسرون</span>
-            </span>
-            <div>
-              <WordsReveal
-                as="h3"
-                className="text-xl sm:text-3xl md:text-5xl font-black text-white leading-snug sm:leading-tight"
-                segments={["دروس وعبَر واقعية ", { br: "hidden md:block" }, { text: "من قلب السوق العراقي اليومي", className: "vz-silver-text" }]}
-              />
-            </div>
-            <p className="text-xs sm:text-base text-white/70 font-light leading-relaxed">
-              هذه الدروس ليست نظريات كتب تسويقية مترجمة من الغرب، بل هي عصارة مشاهدات وتجارب عملية لملايين الدنانير التي تم صرفها وخسارتها في محافظات العراق لانتزاع أعلى نسب استلام وحماية هوامش الربح الصافية.
-            </p>
-          </div>
-          <div className="flex flex-row md:flex-col gap-3 sm:gap-5 shrink-0 items-center justify-between w-full md:w-auto p-4 sm:p-6 glass-subtle rounded-3xl">
-            <span className="text-3xl sm:text-6xl md:text-7xl">💡</span>
-            <button               onClick={handleRandomize}
-              className="btn btn-primary px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            >
-              <Shuffle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>حقيقة عشوائية 🎲</span>
-            </button>
-          </div>
-        </div>
-      </div>
-      </ScrollZoom>
+      <PageHeader
+        eyebrow={<><Lightbulb className="w-4 h-4" /> أسرار السوق</>}
+        title="دروس من تجارب التجار بالعراق"
+        subtitle="كل بطاقة درس قصير. اضغط عليها حتى تشوف الحل العملي، أو ابحث عن موضوع يهمك."
+      >
+        <button
+          onClick={handleRandomize}
+          className="btn btn-glass px-5 min-h-[44px] rounded-full text-sm gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
+        >
+          <Shuffle className="w-4 h-4" />
+          <span>درس عشوائي</span>
+        </button>
+      </PageHeader>
 
       {/* FILTER & SEARCH BAR */}
       <div className="glass rounded-3xl sm:rounded-4xl p-4 sm:p-6 space-y-4 sm:space-y-6 relative z-10">
@@ -211,12 +196,12 @@ export default function IraqiInsights() {
 
       {/* INSIGHTS GRID LAYOUT - 2 Column Layout with Stunning Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 relative z-10">
-        {filteredInsights.map((insight, index) => {
+        {filteredInsights.slice(0, visibleCount).map((insight, index) => {
           const isExpanded = expandedInsightId === insight.id;
           const voteCount = votes[insight.id] || 0;
           
           return (
-            <FadeInUp key={insight.id} delay={Math.min(index * 0.05, 0.3)}>
+            <FadeInUp key={insight.id} delay={Math.min((index % PAGE_SIZE) * 0.04, 0.3)}>
               <div
                 onClick={() => toggleExpand(insight.id)}
                 className={`group rounded-3xl sm:rounded-4xl overflow-hidden cursor-pointer flex flex-col justify-between h-full glass-interactive ${
@@ -335,6 +320,17 @@ export default function IraqiInsights() {
       </div>
 
       {/* Empty Search Result feedback */}
+      {filteredInsights.length > visibleCount && (
+        <div className="flex justify-center">
+          <button
+            onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
+            className="btn btn-glass px-6 min-h-[48px] rounded-full text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
+          >
+            عرض المزيد ({filteredInsights.length - visibleCount})
+          </button>
+        </div>
+      )}
+
       {filteredInsights.length === 0 && (
         <div className="text-center py-20 glass to-black/40 border rounded-4xl space-y-4">
           <span className="text-6xl block drop-shadow-lg">🔍🏜️</span>

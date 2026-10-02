@@ -6,7 +6,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SPRING_SNAPPY, collapseMotion, viewSwapMotion } from "../lib/motion";
-import { ChipPill, WordsReveal } from "./ui/Motion";
+import { ChipPill } from "./ui/Motion";
+import { PageHeader } from "./ui/PageHeader";
 import {
   Sparkles,
   TrendingUp,
@@ -32,6 +33,7 @@ import {
   Crown
 } from "lucide-react";
 import { isFreeTrialUser } from "./LockScreen";
+import { takePendingTool, type ToolRequest } from "../lib/toolRequest";
 
 export default function VizionGrowthSuite() {
   const [activeTab, setActiveTab] = useState<string>("diagnostics");
@@ -118,25 +120,31 @@ export default function VizionGrowthSuite() {
   const [selectedCategory, setSelectedCategory] = useState<"all" | "understand" | "calculate" | "optimize" | "execute">("all");
 
   useEffect(() => {
-    const handleCategoryEvent = (e: Event) => {
-      const custom = e as CustomEvent<{ category?: "all" | "understand" | "calculate" | "optimize" | "execute"; toolId?: string }>;
-      if (custom.detail?.category) {
-        setSelectedCategory(custom.detail.category);
-        if (custom.detail.category === "calculate") {
+    const applyRequest = (detail: ToolRequest | null | undefined) => {
+      if (!detail) return;
+      if (detail.category) {
+        setSelectedCategory(detail.category);
+        if (detail.category === "calculate") {
           setActiveTab("pricing-calculator");
-        } else if (custom.detail.category === "understand") {
+        } else if (detail.category === "understand") {
           setActiveTab("diagnostics");
-        } else if (custom.detail.category === "optimize") {
+        } else if (detail.category === "optimize") {
           setActiveTab("campaign-advisor");
-        } else if (custom.detail.category === "execute") {
+        } else if (detail.category === "execute") {
           setActiveTab("roadmap");
         }
       }
-      if (custom.detail?.toolId) {
-        setActiveTab(custom.detail.toolId);
+      if (detail.toolId) {
+        setActiveTab(detail.toolId);
       }
     };
+    const handleCategoryEvent = (e: Event) => {
+      takePendingTool();
+      applyRequest((e as CustomEvent<ToolRequest>).detail);
+    };
 
+    // A request made before this screen mounted (e.g. from an advisor link).
+    applyRequest(takePendingTool());
     window.addEventListener("open-tool-category", handleCategoryEvent);
     return () => {
       window.removeEventListener("open-tool-category", handleCategoryEvent);
@@ -352,23 +360,14 @@ export default function VizionGrowthSuite() {
   const currentWeekData = roadmapData.find(w => w.week === t10SelectedWeek) || roadmapData[0];
 
   return (
-    <div className="vizion-tools-suite space-y-16 py-12 px-4 max-w-7xl mx-auto relative" id="vizion-growth-suite">
+    <div className="vizion-tools-suite space-y-8 sm:space-y-10 pt-8 sm:pt-12 pb-6 px-4 sm:px-6 max-w-7xl mx-auto relative" id="vizion-growth-suite">
       
-      {/* Dynamic Main Header */}
-      <div className="vizion-tools-header text-center space-y-6 max-w-4xl mx-auto relative z-10">
-        <div data-reveal className="vz-eyebrow text-xs md:text-sm">
-          <Sparkles className="w-4 h-4 opacity-80" />
-          <span>أدوات فيزيون • لوحة متابعة مشروعك</span>
-        </div>
-        
-        <WordsReveal
-          className="text-[1.75rem] sm:text-4xl md:text-6xl font-black text-white leading-tight"
-          segments={["افهم أرقامك ", { text: "وخلي قراراتك أوضح", className: "vz-silver-text" }]}
+      <div className="vizion-tools-header space-y-6 relative z-10">
+        <PageHeader
+          eyebrow={<><Sparkles className="w-4 h-4" /> الأدوات</>}
+          title="احسب أرقامك قبل لا تصرف"
+          subtitle="13 أداة بالدينار العراقي. اختار الأداة من القائمة، دخّل أرقامك، وتطلعلك النتيجة فوراً."
         />
-        
-        <p data-reveal data-reveal-delay="3" className="text-sm sm:text-base md:text-xl text-white/55 leading-relaxed font-light max-w-3xl mx-auto">
-          هنا تلگى <strong className="text-white font-bold">13 أداة عملية</strong> تساعدك تفحص مشروعك، تحسب كلفتك، وتحسن خطوات البيع والتوصيل بدون تعقيد.
-        </p>
 
         {/* Free Trial Gatekeeping Banner */}
         {isFreeTrial && (
@@ -394,7 +393,7 @@ export default function VizionGrowthSuite() {
       </div>
 
       {/* Category Tabs Filter Bar (افهم، احسب، حسّن، نفّذ) */}
-      <div data-reveal className="vizion-tool-categories flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-2 pb-2 relative z-10 px-1">
+      <div className="vizion-tool-categories flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
         {toolCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           const count = cat.id === "all" ? toolTabs.length : toolTabs.filter(t => t.category === cat.id).length;
@@ -426,7 +425,7 @@ export default function VizionGrowthSuite() {
       </div>
 
       {/* Main Grid: Tabs Sidebar + Active Tab Content */}
-      <div data-reveal className="vizion-tool-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
+      <div className="vizion-tool-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
         {/* MOBILE SELECTOR & LAUNCHPAD (Visible only on mobile/tablet) */}
         <div className="vizion-tool-picker lg:hidden w-full mb-6 relative z-30">
