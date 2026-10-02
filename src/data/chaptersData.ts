@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ChapterItem, ChapterDetailContent, DayTask, PhoneScriptItem } from "../types";
+import type { ChapterItem, ChapterDetailContent, DayTask, PhoneScriptItem } from "../types";
 
 export const chaptersList: ChapterItem[] = [
   {

@@ -37,24 +37,36 @@ import {
   ThumbsUp,
   ThumbsDown,
   AlertCircle,
-  Edit3
+  Edit3,
+  Brain,
+  ImagePlus,
+  Mic,
+  Square,
+  RotateCcw
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { EASE_OUT, SPRING_SNAPPY, overlayMotion } from "../lib/motion";
 import { useOriginSheet } from "../lib/origin";
 import { getAllValidCodes, normalizeCode } from "./LockScreen";
 import { BusinessDiagnosticStepper } from "./BusinessDiagnosticStepper";
-import { StructuredDiagnosticCard } from "./StructuredDiagnosticCard";
 import { AdvisorActionCard } from "./AdvisorActionCard";
 import { AdvisorMessageFeedbackBar, MessageFeedbackData } from "./AdvisorMessageFeedbackBar";
 import { AdvisorToast, ToastMessage } from "./AdvisorToast";
+import { RichMessage, ThinkingDots } from "./advisor/RichMessage";
+import { BusinessProfilePanel } from "./advisor/BusinessProfilePanel";
+import { useBusinessProfile } from "./advisor/useBusinessProfile";
+import { useDictation } from "./advisor/useDictation";
+import { AdvisorHttpError, streamAdvisor } from "../lib/advisor/client";
+import { prepareImage, type PreparedImage } from "../lib/advisor/images";
+import { describeProfileUpdate, parseProfileTags, parseSuggestionTags, profileFilledCount, stripAdvisorTags } from "../lib/advisor/profile";
 import {
   SavedRecommendation,
   PlanTaskItem,
   getSavedRecommendationsFromStorage,
   removeSavedRecommendationFromStorage,
   get7DayPlanStorageKey,
-  trackAdvisorAction
+  trackAdvisorAction,
+  addRecommendationTo7DayPlanStorage
 } from "../utils/advisorActionMapper";
 import { BusinessDiagnosticProfile, DiagnosticMetrics } from "../types";
 import { constructDiagnosticPrompt } from "../utils/diagnosticCalculator";
@@ -71,6 +83,16 @@ interface Message {
   isDivider?: boolean;
   isError?: boolean;
   failedPrompt?: { text: string; presetSuggestions?: string[] };
+  /** True while the answer is still streaming in. */
+  streaming?: boolean;
+  /** Small thumbnails of images the merchant attached (full images are never stored). */
+  images?: string[];
+  /** What the advisor learned and saved to the business profile. */
+  profileUpdate?: string[];
+  /** The merchant stopped the answer early. */
+  stopped?: boolean;
+  /** The stream broke after part of the answer arrived. */
+  partialError?: string;
 }
 
 interface VizionAdvisorModalProps {
@@ -390,6 +412,11 @@ interface ChatInputFormProps {
   restoredText?: string;
   onTextRestored?: () => void;
   onInputFocus?: () => void;
+  /** Stops the answer that is streaming in. */
+  onStop?: () => void;
+  attachments?: PreparedImage[];
+  onAttach?: (files: FileList | File[]) => void;
+  onRemoveAttachment?: (index: number) => void;
 }
 
 function ChatInputForm({ 
@@ -404,9 +431,19 @@ function ChatInputForm({
   onRetryLast,
   restoredText,
   onTextRestored,
-  onInputFocus
+  onInputFocus,
+  onStop,
+  attachments = [],
+  onAttach,
+  onRemoveAttachment
 }: ChatInputFormProps) {
   const [inputText, setInputText] = React.useState("");
+  const [interim, setInterim] = React.useState("");
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const dictation = useDictation(
+    (finalText) => setInputText((prev) => (prev ? `${prev} ${finalText}` : finalText)),
+    setInterim
+  );
   const lastDraftRef = React.useRef("");
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -464,25 +501,10 @@ function ChatInputForm({
     }
   };
 
-  const isSendDisabled = !inputText.trim() || isLoading;
+  const isSendDisabled = (!inputText.trim() && attachments.length === 0) || isLoading;
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {/* 1. Loading State in Iraqi Arabic */}
-      {isLoading && (
-        <div 
-          role="status" 
-          aria-live="polite"
-          className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-white/5 border border-white/14 text-vz-accent text-xs animate-in fade-in"
-        >
-          <div className="flex items-center gap-2 font-bold">
-            <RefreshCw className="w-3.5 h-3.5 animate-spin text-vz-accent" />
-            <span>دا أرتبلك الجواب...</span>
-          </div>
-          <span className="text-[10px] text-vz-accent/70 font-sans hidden xs:inline">لحظات ويجهز رد فيزيون</span>
-        </div>
-      )}
-
       {/* 2. Failure State Banner with visible Retry & Restore actions */}
       {!isLoading && lastFailedPrompt && (
         <div 
@@ -564,6 +586,39 @@ function ChatInputForm({
         </div>
       )}
 
+      {/* Attached screenshots */}
+      {attachments.length > 0 && (
+        <div className="flex items-center gap-2 px-1" aria-label="الصور المرفقة">
+          {attachments.map((im, i) => (
+            <div key={i} className="relative">
+              <img src={im.thumb} alt="صورة مرفقة" className="h-14 w-14 rounded-xl object-cover border border-white/20" />
+              <button
+                type="button"
+                onClick={() => onRemoveAttachment?.(i)}
+                className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-black/80 border border-white/30 text-white flex items-center justify-center"
+                aria-label="شيل الصورة"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+          <span className="text-[11px] text-white/55 font-bold">المستشار راح يقرا الصورة ويشخّصها</span>
+        </div>
+      )}
+      {dictation.error && <div className="px-2 text-[11px] font-bold text-rose-300">{dictation.error}</div>}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.files?.length) onAttach?.(e.target.files);
+          e.target.value = "";
+        }}
+      />
+
       {/* 3. Composer Form: [اقتراحات] [اكتب سؤالك هنا...] [إرسال] */}
       <form onSubmit={handleSubmit} dir="rtl" className="flex items-end gap-1.5 sm:gap-2 relative w-full">
         {/* Invisible live region for screen readers */}
@@ -584,6 +639,19 @@ function ChatInputForm({
           <span className="hidden sm:inline whitespace-nowrap">اقتراحات</span>
         </button>
 
+        {onAttach && (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isLoading || attachments.length >= 3}
+            title="أرفق صورة (لقطة من مدير الإعلانات، إعلان، محادثة…)"
+            aria-label="أرفق صورة"
+            className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-xl border border-white/12 bg-white/[0.04] hover:bg-white/[0.08] text-vz-accent flex items-center justify-center disabled:opacity-40 transition-colors"
+          >
+            <ImagePlus className="w-[18px] h-[18px]" />
+          </button>
+        )}
+
         {/* 2. Text Input Area: [اكتب سؤالك هنا...] */}
         <div className="flex-1 relative flex items-center min-w-0">
           <textarea 
@@ -593,31 +661,58 @@ function ChatInputForm({
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
             onFocus={onInputFocus}
-            placeholder="اكتب سؤالك هنا..."
+            onPaste={(e) => {
+              const files = Array.from<File>(e.clipboardData?.files ?? []).filter((f) => f.type.startsWith("image/"));
+              if (files.length && onAttach) {
+                e.preventDefault();
+                onAttach(files);
+              }
+            }}
+            placeholder={dictation.listening ? interim || "دا أسمعك… احچي" : attachments.length ? "اكتب شنو تريد أشوف بالصورة (اختياري)" : "اكتب سؤالك هنا..."}
             aria-label="اكتب سؤالك هنا..."
             disabled={isLoading}
             dir="rtl"
-            className="w-full px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-black/35 border border-white/10 focus:border-white/30 text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
+            className="w-full ps-4 pe-4 sm:ps-5 sm:pe-5 pl-11 sm:pl-12 py-2.5 sm:py-3 rounded-2xl bg-black/35 border border-white/10 focus:border-white/30 text-white text-xs sm:text-sm placeholder-white/50 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none dir-rtl text-right resize-none min-h-[42px] max-h-[120px] leading-relaxed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           />
+          {dictation.supported && !isLoading && (
+            <button
+              type="button"
+              onClick={() => (dictation.listening ? dictation.stop() : dictation.start())}
+              aria-label={dictation.listening ? "وقف التسجيل" : "احچي بدل الكتابة"}
+              title={dictation.listening ? "وقف التسجيل" : "احچي بدل الكتابة"}
+              className={`absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                dictation.listening ? "bg-rose-500 text-white animate-pulse" : "text-white/55 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <Mic className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
-        {/* 3. Large Send Button: [إرسال] */}
-        <button 
-          type="submit"
-          disabled={isSendDisabled}
-          aria-label="إرسال"
-          title="إرسال"
-          className="btn btn-primary px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-white font-black text-xs sm:text-sm flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 min-h-[42px] justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy min-w-[42px]"
-        >
-          {isLoading ? (
-            <RefreshCw className="w-4 h-4 animate-spin text-white" />
-          ) : (
-            <>
-              <span className="font-bold whitespace-nowrap">إرسال</span>
-              <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform rotate-180 text-white shrink-0" />
-            </>
-          )}
-        </button>
+        {/* 3. Large Send Button: [إرسال] — becomes Stop while an answer streams */}
+        {isLoading && onStop ? (
+          <button
+            type="button"
+            onClick={onStop}
+            aria-label="وقف الجواب"
+            title="وقف الجواب"
+            className="btn btn-glass px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shrink-0 min-h-[44px]"
+          >
+            <Square className="w-3.5 h-3.5 fill-current" />
+            <span className="hidden sm:inline font-bold whitespace-nowrap">وقف</span>
+          </button>
+        ) : (
+          <button
+            type="submit"
+            disabled={isSendDisabled}
+            aria-label="إرسال"
+            title="إرسال"
+            className="btn btn-primary px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full text-white font-black text-xs sm:text-sm flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 min-h-[44px]"
+          >
+            <span className="hidden sm:inline font-bold whitespace-nowrap">إرسال</span>
+            <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform rotate-180 text-white shrink-0" />
+          </button>
+        )}
       </form>
     </div>
   );
@@ -696,7 +791,11 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   }, [isOpen, onClose]);
 
   // Tabs: 'chat' | 'business_diagnostic' | 'diagnostic' | 'script_gen' | 'saved_plan'
-  const [activeTab, setActiveTab] = useState<"chat" | "business_diagnostic" | "diagnostic" | "script_gen" | "saved_plan">("chat");
+  const [activeTab, setActiveTab] = useState<"chat" | "profile" | "business_diagnostic" | "diagnostic" | "script_gen" | "saved_plan">("chat");
+  // What the advisor knows about this merchant's shop (sent with every question).
+  const { profile: businessProfile, save: saveBusinessProfile, merge: mergeBusinessProfile } = useBusinessProfile(userCode);
+  // Screenshots attached in the composer, sent with the next question.
+  const [attachments, setAttachments] = useState<PreparedImage[]>([]);
   const [selectedDiagCat, setSelectedDiagCat] = useState<string>("ads");
   
   // Toast Notification System
@@ -802,6 +901,9 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
   // Track if any user questions have been sent
   const hasUserMessages = messages.some((m) => m.role === "user");
+  const lastAssistantId = [...messages].reverse().find((m) => m.role === "assistant" && !m.isDivider && !m.isError)?.id;
+  // A regenerate resends text only, so skip it when the last question carried a screenshot.
+  const canRegenerate = !([...messages].reverse().find((m) => m.role === "user")?.images?.length);
 
   // Re-sync messages when userCode changes or modal opens
   useEffect(() => {
@@ -843,6 +945,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const [isLoading, setIsLoading] = useState(false);
   const isLoadingRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const stoppedByUserRef = useRef(false);
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
   
@@ -1203,6 +1306,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   };
 
   const handleCancelRequest = () => {
+    stoppedByUserRef.current = true;
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
@@ -1239,8 +1343,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       diagnosticProfile?: BusinessDiagnosticProfile;
     }
   ) => {
-    const text = textToSend?.trim() || "";
-    
+    // Screenshots attached in the composer ride along with this question.
+    const pendingImages = attachments;
+    const text = textToSend?.trim() || (pendingImages.length ? "حلل هذي الصورة وشخّصلي على ضوء مشروعي." : "");
+
     // Prevent duplicate submissions
     if (!text || isLoadingRef.current) return;
 
@@ -1258,166 +1364,172 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const clientRequestId = `req_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
     isLoadingRef.current = true;
+    stoppedByUserRef.current = false;
     setIsLoading(true);
     setLastFailedPrompt(null);
+    if (pendingImages.length) setAttachments([]);
 
     trackEvent("advisor_prompt_submitted", { topicId });
 
+    const now = () => new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" });
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
-      text: text,
-      timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
-      topicId: topicId,
-      requestId: clientRequestId
+      text,
+      timestamp: now(),
+      topicId,
+      requestId: clientRequestId,
+      images: pendingImages.length ? pendingImages.map((im) => im.thumb) : undefined,
     };
+    // The answer streams into this placeholder.
+    const botId = (Date.now() + 1).toString();
+    const placeholder: Message = { id: botId, role: "assistant", text: "", timestamp: now(), topicId, requestId: clientRequestId, streaming: true };
 
-    setMessages((prev) => [...prev, userMessage]);
-        setActiveTab("chat"); // Auto switch to chat to see the answer
+    setMessages((prev) => [...prev, userMessage, placeholder]);
+    setActiveTab("chat");
 
-    // Setup AbortController with 90s timeout (ample time for deep diagnostics & high load)
     const controller = new AbortController();
     abortControllerRef.current = controller;
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-    }, 90000);
+    const timeoutId = setTimeout(() => controller.abort(), 120000);
+
+    // Streamed text is buffered and painted ~16 times a second, not per token.
+    let streamed = "";
+    let flushTimer: ReturnType<typeof setTimeout> | null = null;
+    const paint = () => {
+      flushTimer = null;
+      const snapshot = streamed;
+      setMessages((prev) => prev.map((m) => (m.id === botId ? { ...m, text: snapshot } : m)));
+    };
+    const onDelta = (t: string) => {
+      streamed += t;
+      if (!flushTimer) flushTimer = setTimeout(paint, 60);
+    };
+    const finalize = (patch: Partial<Message>) => {
+      if (flushTimer) clearTimeout(flushTimer);
+      flushTimer = null;
+      setMessages((prev) => prev.map((m) => (m.id === botId ? { ...m, ...patch, streaming: false } : m)));
+    };
 
     try {
-      // Build past history strictly filtered to current topic to avoid cross-contamination
-      const topicMessages = messages
-        .filter((m) => !m.isDivider && m.topicId === topicId)
-        .slice(-6); // Sliding window of max 6 recent turns
+      // Recent history of this topic only, to avoid cross-contamination.
+      const history: { role: "user" | "assistant"; text: string; topicId?: string; hadImages?: boolean; images?: { mimeType: string; data: string }[] }[] = messages
+        .filter((m) => !m.isDivider && !m.isError && !m.streaming && m.topicId === topicId && m.text)
+        .slice(-15)
+        .map((m) => ({ role: m.role, text: stripAdvisorTags(m.text), topicId: m.topicId, hadImages: Boolean(m.images?.length) }));
+      history.push({
+        role: "user",
+        text,
+        topicId,
+        images: pendingImages.length ? pendingImages.map(({ mimeType, data }) => ({ mimeType, data })) : undefined,
+      });
 
-      const historyPayload = topicMessages.map((m) => ({
-        role: m.role,
-        text: m.text.replace(/\[SUGGESTIONS:\s*.*?\]/gi, "").trim(),
-        topicId: m.topicId
-      }));
-
-      // Append current user message
-      historyPayload.push({ role: "user", text: text, topicId });
-
-      let response: Response | null = null;
-      let responseText = "";
-      let data: any = {};
-
-      for (let clientAttempt = 0; clientAttempt < 2; clientAttempt++) {
-        try {
-          if (clientAttempt > 0) {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-
-          response = await fetch("/api/advisor/chat", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Request-ID": clientRequestId
-            },
-            signal: controller.signal,
-            body: JSON.stringify({
-              messages: historyPayload,
-              requestId: clientRequestId,
-              topicContext: options.topicContext || topicId,
-              isNewTopic: options.isNewTopic,
-              diagnosticProfile: options.diagnosticProfile,
-              userContext: {
-                isVip,
-                platform: "Vizion Iraq E-Commerce Suite"
-              }
-            })
-          });
-
-          responseText = await response.text();
-          try {
-            data = JSON.parse(responseText);
-          } catch {
-            data = {};
-          }
-
-          if (response.ok && data.reply) {
-            break;
-          }
-
-          // If it was a 503 or temporary unavailability, retry once automatically
-          if (
-            clientAttempt === 0 &&
-            (response.status === 503 ||
-              (data.error && (data.error.includes("503") || data.error.includes("ضغطاً مؤقتاً"))))
-          ) {
-            console.log("[Advisor Client] 503 detected, performing automatic fast retry...");
-            continue;
-          }
-        } catch (fetchErr: any) {
-          if (clientAttempt === 0 && !controller.signal.aborted) {
-            continue;
-          }
-          throw fetchErr;
-        }
-      }
-
+      const outcome = await streamAdvisor(
+        {
+          messages: history,
+          requestId: clientRequestId,
+          topicContext: options.topicContext || topicId,
+          isNewTopic: options.isNewTopic,
+          diagnosticProfile: options.diagnosticProfile,
+          profile: businessProfile,
+          userContext: { isVip, platform: "Vizion Iraq E-Commerce Suite" },
+        },
+        { onDelta, signal: controller.signal }
+      );
       clearTimeout(timeoutId);
 
-      if (!response) {
-        throw new Error("تعذر إرسال الطلب إلى السيرفر.");
-      }
-
-      if (!response.ok) {
-        const errorDetails = data.details ? ` (${data.details})` : "";
-        throw new Error((data.error || "Failed to fetch response") + errorDetails);
-      }
-
-      const rawReply = data.reply || "عذراً، حدث خطأ أثناء معالجة الطلب.";
-      const { cleanText, suggestions } = parseResponseSuggestions(rawReply);
-
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        text: cleanText,
-        timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
-        topicId: topicId,
-        requestId: data.requestId || clientRequestId,
-        suggestions: presetSuggestions || (suggestions.length > 0 ? suggestions : undefined)
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
-      setLastFailedPrompt(null);
-      trackEvent("advisor_answer_completed", {
-        topicId,
-        requestId: data.requestId || clientRequestId
+      const raw = outcome.text;
+      const learned = parseProfileTags(raw);
+      const changed = mergeBusinessProfile(learned);
+      const learnedSummary = changed.length ? describeProfileUpdate(Object.fromEntries(changed.map((k) => [k, learned[k]]))) : [];
+      const suggestions = parseSuggestionTags(raw);
+      finalize({
+        text: stripAdvisorTags(raw),
+        requestId: outcome.requestId || clientRequestId,
+        suggestions: presetSuggestions || (suggestions.length > 0 ? suggestions : undefined),
+        profileUpdate: learnedSummary.length ? learnedSummary : undefined,
+        partialError: outcome.error,
       });
+      if (learnedSummary.length) showToast("saved", "حدّثت ملف مشروعك 🧠", learnedSummary.join(" • "));
+      setLastFailedPrompt(null);
+      trackEvent("advisor_answer_completed", { topicId, requestId: outcome.requestId || clientRequestId });
     } catch (err: any) {
       clearTimeout(timeoutId);
-      console.error("AI Advisor error:", err);
+      const partial = stripAdvisorTags(streamed);
 
+      if (stoppedByUserRef.current) {
+        if (partial.trim()) finalize({ text: partial, stopped: true });
+        else setMessages((prev) => prev.filter((m) => m.id !== botId));
+        return;
+      }
+      if (partial.trim()) {
+        finalize({ text: partial, partialError: "انقطع الرد بالنص. اضغط 'جواب جديد' حتى أعيده كامل." });
+        return;
+      }
+
+      console.error("AI Advisor error:", err);
       let errorText = "صار خلل بسيط. جرّب مرة ثانية.";
       if (err?.name === "AbortError") {
-        errorText = "استغرقت الاستجابة وقتاً أطول من المعتاد بسبب ضغط الخوادم المؤقت. يرجى الضغط على زر 'إعادة المحاولة'.";
-      } else if (err?.message && typeof err.message === "string" && err.message.length > 3 && !err.message.includes("Failed to fetch")) {
+        errorText = "الرد طوّل أكثر من العادة بسبب ضغط الخوادم. اضغط 'إعادة المحاولة'.";
+      } else if (err instanceof AdvisorHttpError || (err?.message && typeof err.message === "string" && err.message.length > 3 && !err.message.includes("Failed to fetch"))) {
         errorText = err.message;
       } else if (err?.message?.includes("Failed to fetch")) {
-        errorText = "تعذر الاتصال بالسيرفر. يرجى التأكد من تشغيل الخادم وإضافة GEMINI_API_KEY في إعدادات البيئة ثم إعادة المحاولة.";
+        errorText = "تعذر الاتصال بالسيرفر. تأكد من الإنترنت وجرّب مرة ثانية.";
       }
 
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: botId,
         role: "assistant",
         text: errorText,
-        timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
-        topicId: topicId,
+        timestamp: now(),
+        topicId,
         isError: true,
         failedPrompt: { text, presetSuggestions },
-        suggestions: [
-          "🎯 تشخيص ضعف إعلاناتي",
-          "📦 خطة تقليل الراجع بالمحافظات",
-          "💬 سكريبت مبيعات الواتساب"
-        ]
+        suggestions: ["🎯 تشخيص ضعف إعلاناتي", "📦 خطة تقليل الراجع بالمحافظات", "💬 سكريبت مبيعات الواتساب"],
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => prev.map((m) => (m.id === botId ? errorMessage : m)));
       setLastFailedPrompt({ text, presetSuggestions, errorText });
     } finally {
+      if (flushTimer) clearTimeout(flushTimer);
       isLoadingRef.current = false;
       setIsLoading(false);
       abortControllerRef.current = null;
+    }
+  };
+
+  const handleSendMessageRef = useRef(handleSendMessage);
+  handleSendMessageRef.current = handleSendMessage;
+
+  /** Re-asks the last question for a fresh answer. */
+  const handleRegenerate = () => {
+    if (isLoadingRef.current) return;
+    const lastUserIdx = messages.map((m) => m.role === "user" && !m.isDivider).lastIndexOf(true);
+    if (lastUserIdx < 0) return;
+    const lastUser = messages[lastUserIdx];
+    setMessages((prev) => prev.slice(0, lastUserIdx));
+    // Wait a tick so the trimmed history is what gets sent.
+    setTimeout(() => handleSendMessageRef.current?.(lastUser.text, undefined, lastUser.topicId), 0);
+  };
+
+  /** Adds an action item from an answer to the 7-day plan. */
+  const handleAddTaskToPlan = (task: string, topicId?: string) => {
+    const result = addRecommendationTo7DayPlanStorage({ title: task.slice(0, 90), details: task, topicId }, userCode);
+    if (result.success) {
+      showToast("plan", "انضافت لخطتك ✅", "تلگاها بتبويب 'خطتي'");
+      refreshSavedData();
+      return true;
+    }
+    return false;
+  };
+
+  const handleAttachFiles = async (files: FileList | File[]) => {
+    const list = Array.from(files).slice(0, 3 - attachments.length);
+    for (const file of list) {
+      try {
+        const prepared = await prepareImage(file);
+        setAttachments((prev) => (prev.length >= 3 ? prev : [...prev, prepared]));
+      } catch (e: any) {
+        showToast("success", e?.message || "ما گدرت أضيف الصورة");
+      }
     }
   };
 
@@ -1728,6 +1840,21 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                     <button
                       type="button"
+                      onClick={() => setActiveTab("profile")}
+                      className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
+                        activeTab === "profile" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
+                      }`}
+                    >
+                      {activeTab === "profile" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
+                      <Brain className="relative w-4 h-4 shrink-0" />
+                      <span className="relative">ملف مشروعي</span>
+                      <span className="relative min-w-[18px] h-[18px] px-1 rounded-full bg-white/15 text-[10px] font-black flex items-center justify-center tabular-nums">
+                        {profileFilledCount(businessProfile)}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
                       onClick={() => setActiveTab("business_diagnostic")}
                       className={`relative px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-bold transition-colors duration-300 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 min-h-[40px] active:scale-[0.96] ${
                         activeTab === "business_diagnostic" ? "text-white" : "text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08]"
@@ -1782,6 +1909,20 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 </div>
 
                 {/* TAB: GUIDED BUSINESS DIAGNOSTIC STEPPER */}
+                {activeTab === "profile" && (
+                  <BusinessProfilePanel
+                    profile={businessProfile}
+                    onSave={(p) => {
+                      saveBusinessProfile(p);
+                      showToast("saved", "انحفظ ملف مشروعك 🧠", "المستشار راح يستعمله بكل جواب");
+                    }}
+                    onAskAdvisor={(prompt) => {
+                      setActiveTab("chat");
+                      handleSendMessage(prompt);
+                    }}
+                  />
+                )}
+
                 {activeTab === "business_diagnostic" && (
                   <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 ">
                     <BusinessDiagnosticStepper
@@ -2201,6 +2342,32 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             </p>
                           </div>
 
+                          {/* What makes this advisor different: it knows your shop and reads screenshots */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                            <button
+                              type="button"
+                              onClick={() => setActiveTab("profile")}
+                              className="text-right p-3 rounded-2xl border border-vz-blue/30 bg-vz-blue/10 hover:bg-vz-blue/15 transition-colors flex items-start gap-2.5"
+                            >
+                              <Brain className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
+                              <span>
+                                <span className="block text-xs sm:text-sm font-black text-white">
+                                  {profileFilledCount(businessProfile) >= 3 ? "أعرف مشروعك ✓" : "عرّفني على مشروعك"}
+                                </span>
+                                <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">
+                                  {profileFilledCount(businessProfile) >= 3 ? "كل جواب راح يكون على منتجك وأرقامك" : "منتجك وأسعارك وكلفة رسالتك، حتى أحسبلك ربحك بالضبط"}
+                                </span>
+                              </span>
+                            </button>
+                            <div className="text-right p-3 rounded-2xl border border-white/10 bg-white/[0.03] flex items-start gap-2.5">
+                              <ImagePlus className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
+                              <span>
+                                <span className="block text-xs sm:text-sm font-black text-white">صوّرلي إعلانك</span>
+                                <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">ارفع لقطة من مدير الإعلانات أو محادثة زبون، أو احچيلي بالمايك</span>
+                              </span>
+                            </div>
+                          </div>
+
                           {/* Example Questions / Suggestions in Empty State */}
                           <div className="w-full space-y-2.5">
                             <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-vz-accent pr-1">
@@ -2326,69 +2493,49 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           )}
                                         </div>
                                       </div>
-                                    ) : msg.role === "assistant" && (msg.text.includes("التشخيص") || msg.text.includes("أول 3 خطوات") || msg.text.includes("الأسباب المحتملة")) ? (
-                                      <StructuredDiagnosticCard
-                                        rawText={msg.text}
-                                        topicId={msg.topicId}
-                                        userCode={userCode}
-                                        onActionClick={(prompt) => handleSendMessage(prompt)}
-                                        onNavigateChapter={(chId) => onNavigateToSection?.(chId)}
-                                        onNavigateTool={(tId, cat) => onNavigateTool?.(tId, cat)}
-                                        onShowToast={showToast}
-                                        feedback={{
-                                          rating: messageFeedback[msg.id]?.rating,
-                                          reason: messageFeedback[msg.id]?.reason,
-                                          onRate: (rating) => handleFeedback(msg.id, rating),
-                                          onSelectReason: (reason) => handleFeedback(msg.id, "unhelpful", reason),
-                                        }}
-                                        onCopyFull={() => {
-                                          handleCopy(msg.id, msg.text);
-                                          showToast("copy", "تم نسخ الرد بالكامل بنجاح 📋");
-                                        }}
-                                        isFullCopied={copiedId === msg.id}
-                                      />
-                                    ) : (
+                                    ) : msg.role === "assistant" ? (
                                       <>
-                                        <div className="whitespace-pre-wrap font-sans space-y-2 break-words [overflow-wrap:anywhere]">
-                                          {msg.text.split("\n").map((line, lIdx) => {
-                                            const isScriptLine = line.includes("📞") || line.includes("💬") || line.includes("السكريبت:");
-                                            const parts = line.split(/(\*\*.*?\*\*)/g);
-
-                                            return (
-                                              <div
-                                                key={lIdx}
-                                                className={`relative ${
-                                                  line.startsWith("- ") || line.startsWith("• ")
-                                                    ? "my-1 pr-2"
-                                                    : line.startsWith("1.") || line.startsWith("2.") || line.startsWith("3.") || line.startsWith("4.")
-                                                    ? `my-1.5 font-bold ${isUser ? "text-vz-accent" : "text-white"}`
-                                                    : isScriptLine
-                                                    ? "my-2 p-3 bg-[#020822] border-r-2 border-white/35 rounded-lg text-vz-accent text-[14px] sm:text-[15px] font-mono leading-[1.8] overflow-x-auto max-w-full"
-                                                    : "my-0.5"
-                                                }`}
-                                              >
-                                                <div className={isScriptLine ? "pl-8 overflow-x-auto" : ""}>
-                                                  {parts.map((part, pIdx) => {
-                                                    if (part.startsWith("**") && part.endsWith("**")) {
-                                                      return (
-                                                        <strong
-                                                          key={pIdx}
-                                                          className={isUser ? "font-bold text-vz-accent" : "text-white font-bold"}
-                                                        >
-                                                          {part.slice(2, -2)}
-                                                        </strong>
-                                                      );
-                                                    }
-                                                    return part;
-                                                  })}
-                                                </div>
-                                              </div>
-                                            );
-                                          })}
-                                        </div>
-
-                                        {/* Action Recommendations Card for Standard Assistant Responses */}
-                                        {msg.role === "assistant" && !msg.isError && hasUserMessages && (
+                                        <RichMessage
+                                          text={msg.text}
+                                          streaming={msg.streaming}
+                                          onChapter={(chId) => onNavigateToSection?.(chId)}
+                                          onTool={(tId, cat) => onNavigateTool?.(tId, cat)}
+                                          onAddTask={(task) => handleAddTaskToPlan(task, msg.topicId)}
+                                          onCopy={() => showToast("copy", "انتسخت الرسالة 📋", "الصقها للزبون بالواتساب")}
+                                          onSaveProfile={(p) => {
+                                            mergeBusinessProfile(p);
+                                            showToast("saved", "انحفظت الأرقام بملف مشروعك 🧠");
+                                          }}
+                                        />
+                                        {msg.profileUpdate && msg.profileUpdate.length > 0 && (
+                                          <button
+                                            type="button"
+                                            onClick={() => setActiveTab("profile")}
+                                            className="mt-3 w-full text-right rounded-2xl border border-vz-blue/30 bg-vz-blue/10 hover:bg-vz-blue/15 px-3 py-2 text-xs text-vz-accent flex items-start gap-2 transition-colors"
+                                          >
+                                            <Brain className="w-4 h-4 shrink-0 mt-0.5" />
+                                            <span className="leading-relaxed">
+                                              <span className="font-black text-white">حفظت بملف مشروعك: </span>
+                                              {msg.profileUpdate.join(" • ")}
+                                            </span>
+                                          </button>
+                                        )}
+                                        {(msg.stopped || msg.partialError) && (
+                                          <div className="mt-3 rounded-xl border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-xs font-bold text-amber-200">
+                                            {msg.partialError || "وقفت الجواب بنص الطريق."}
+                                          </div>
+                                        )}
+                                        {!msg.streaming && !isLoading && msg.id === lastAssistantId && canRegenerate && (
+                                          <button
+                                            type="button"
+                                            onClick={handleRegenerate}
+                                            className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-white/12 px-3 py-1.5 text-[12px] font-bold text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors"
+                                          >
+                                            <RotateCcw className="w-3.5 h-3.5" />
+                                            جواب جديد
+                                          </button>
+                                        )}
+                                        {!msg.streaming && hasUserMessages && (
                                           <div className="mt-3">
                                             <AdvisorActionCard
                                               topicId={msg.topicId}
@@ -2412,10 +2559,21 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           </div>
                                         )}
                                       </>
+                                    ) : (
+                                      <>
+                                        {msg.images && msg.images.length > 0 && (
+                                          <div className="flex flex-wrap gap-1.5 mb-2">
+                                            {msg.images.map((src, i) => (
+                                              <img key={i} src={src} alt="صورة مرفقة" className="h-20 w-20 object-cover rounded-xl border border-white/30" />
+                                            ))}
+                                          </div>
+                                        )}
+                                        <div className="whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{msg.text}</div>
+                                      </>
                                     )}
 
                                     {/* Message Footer Actions & Iraqi Market Feedback Bar */}
-                                    {!msg.isError && (
+                                    {!msg.isError && !msg.streaming && (
                                       isUser ? (
                                         <div className="mt-2 pt-1.5 border-t border-black/15 text-[10px] flex items-center justify-between">
                                           <span className="font-mono text-[9px] sm:text-[10px] text-[#040e33]/60 font-semibold">{msg.timestamp}</span>
@@ -2444,7 +2602,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       )}
 
                       {/* Calm Inline Typing Loader with User Question Visible Above */}
-                      {isLoading && (
+                      {isLoading && !messages.some((m) => m.streaming) && (
                         <motion.div
                           role="status"
                           aria-live="polite"
@@ -2517,6 +2675,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         }}
                         restoredText={restoredText}
                         onTextRestored={() => setRestoredText("")}
+                        onStop={handleCancelRequest}
+                        attachments={attachments}
+                        onAttach={handleAttachFiles}
+                        onRemoveAttachment={(i) => setAttachments((prev) => prev.filter((_, j) => j !== i))}
                         onInputFocus={() => {
                           const chat = chatScrollRef.current;
                           if (chat) {

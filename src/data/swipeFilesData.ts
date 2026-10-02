@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { SwipeFile } from "../types";
+import type { SwipeFile } from "../types";
 
 export const swipeFilesList: SwipeFile[] = [
   {
