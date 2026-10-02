@@ -280,19 +280,40 @@ export function CountUp({
 /**
  * Scroll-linked zoom: the block scales up from slightly smaller and rises into
  * place as it approaches the middle of the screen — reversible, scrubbed by
- * the scroll position, smoothed by a spring.
+ * the scroll position, smoothed by a spring (desktop). On phones the same zoom
+ * plays once as a spring when the block enters the viewport, so nothing is
+ * measured or re-composited on every scroll frame.
  */
-export function ScrollZoom({ children, className, from = 0.9 }: { children: React.ReactNode; className?: string; from?: number }) {
+export function ScrollZoom(props: { children: React.ReactNode; className?: string; from?: number }) {
+  const [desktop] = useState(allowBlur);
+  return desktop ? <ScrollZoomScrubbed {...props} /> : <ScrollZoomOnce {...props} />;
+}
+
+function ScrollZoomScrubbed({ children, className, from = 0.9 }: { children: React.ReactNode; className?: string; from?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const desktop = allowBlur();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "start 0.3"] });
   const progress = useSpring(scrollYProgress, { stiffness: 160, damping: 30, mass: 0.6 });
-  const scale = useTransform(progress, [0, 1], [reduce ? 1 : desktop ? from : 0.96, 1]);
-  const y = useTransform(progress, [0, 1], [reduce ? 0 : desktop ? 70 : 24, 0]);
+  const scale = useTransform(progress, [0, 1], [reduce ? 1 : from, 1]);
+  const y = useTransform(progress, [0, 1], [reduce ? 0 : 70, 0]);
   const opacity = useTransform(progress, [0, 0.55], [reduce ? 1 : 0.25, 1]);
   return (
     <motion.div ref={ref} style={{ scale, y, opacity }} className={className}>
+      {children}
+    </motion.div>
+  );
+}
+
+function ScrollZoomOnce({ children, className }: { children: React.ReactNode; className?: string; from?: number }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 36, scale: 0.93 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ type: "spring", stiffness: 230, damping: 21, mass: 0.9, opacity: { duration: 0.45, ease: EASE_OUT } }}
+      className={className}
+    >
       {children}
     </motion.div>
   );

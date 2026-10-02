@@ -70,9 +70,14 @@ export const normalizeCode = (str: string): string => {
   return normalized;
 };
 
+// Membership checks run during render all over the app, so the parsed list is
+// memoised against the raw localStorage string (re-parsed only when it changes).
+let validCodesCache: { raw: string | null; codes: string[] } | null = null;
+
 // Retrieve all valid active codes (HARDCODED_CODES + active Admin Panel entries)
 export const getAllValidCodes = (): string[] => {
   const stored = localStorage.getItem("sales_guide_codes");
+  if (validCodesCache && validCodesCache.raw === stored) return validCodesCache.codes;
   const valid = new Set<string>(HARDCODED_CODES.map(c => normalizeCode(c)));
 
   if (stored) {
@@ -90,7 +95,9 @@ export const getAllValidCodes = (): string[] => {
     }
   }
 
-  return Array.from(valid);
+  const codes = Array.from(valid);
+  validCodesCache = { raw: stored, codes };
+  return codes;
 };
 
 export const isVipUser = (code: string): boolean => {

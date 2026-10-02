@@ -69,6 +69,14 @@ export default function Navbar({
   const hairlineOpacity = useTransform(progress, [0, 0.4], [1, 0]);
   const logoScale = useTransform(progress, [0, 1], [1, 0.94]);
 
+  // Touch-size screens get the same morph built from transform + opacity only
+  // (no per-frame layout): a pre-shaped capsule settles into place around the
+  // content while the content glides down to its centre.
+  const [gpuMorph] = useState(() => typeof window !== "undefined" && !window.matchMedia("(min-width: 1024px)").matches);
+  const capsuleScale = useTransform(progress, [0, 1], [1.045, 1]);
+  const capsuleY = useTransform(progress, [0, 1], [-6, 0]);
+  const contentY = useTransform(progress, [0, 1], [0, 4]);
+
   const handleScrollTo = (id: string) => {
     closeMenu();
     const element = document.getElementById(id);
@@ -127,15 +135,26 @@ export default function Navbar({
         className="fixed top-0 inset-x-0 z-40 pointer-events-none safe-area-top"
       >
         <motion.div
-          style={{ maxWidth: barMaxWidth, marginTop: barOffset, height: barHeight, borderRadius: barRadius }}
-          className="pointer-events-auto relative mx-auto"
+          style={gpuMorph ? undefined : { maxWidth: barMaxWidth, marginTop: barOffset, height: barHeight, borderRadius: barRadius }}
+          className={`pointer-events-auto relative mx-auto ${gpuMorph ? "h-16" : ""}`}
         >
           {/* Floating glass layer: fades in as the bar condenses (blur stays constant, only opacity animates). */}
-          <motion.div aria-hidden="true" style={{ opacity: glassOpacity }} className="absolute inset-0 rounded-[inherit] glass-floating glass-edge" />
+          {gpuMorph ? (
+            <motion.div
+              aria-hidden="true"
+              style={{ opacity: glassOpacity, scale: capsuleScale, y: capsuleY }}
+              className="absolute top-2 bottom-0 inset-x-2.5 rounded-[22px] glass-floating glass-edge"
+            />
+          ) : (
+            <motion.div aria-hidden="true" style={{ opacity: glassOpacity }} className="absolute inset-0 rounded-[inherit] glass-floating glass-edge" />
+          )}
           {/* Resting state: a single hairline under a transparent bar. */}
           <motion.div aria-hidden="true" style={{ opacity: hairlineOpacity }} className="absolute inset-x-0 bottom-0 vz-hairline" />
 
-          <div className="relative w-full h-full px-2.5 sm:px-5 flex items-center justify-between gap-3">
+          <motion.div
+            style={gpuMorph ? { y: contentY } : undefined}
+            className={`relative w-full h-full flex items-center justify-between gap-3 ${gpuMorph ? "px-5" : "px-2.5 sm:px-5"}`}
+          >
 
           {/* Logo Brand: Clear Vizion brand */}
           <motion.button
@@ -270,7 +289,7 @@ export default function Navbar({
             </button>
           </div>
 
-          </div>
+          </motion.div>
         </motion.div>
       </motion.nav>
 

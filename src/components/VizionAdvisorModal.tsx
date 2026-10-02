@@ -1047,23 +1047,32 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
   // Monitor visualViewport resize (e.g. mobile virtual keyboard)
   useEffect(() => {
-    if (typeof window === "undefined" || !window.visualViewport) return;
+    // Only track the visual viewport while the sheet is open: on phones it
+    // fires on every scroll frame, and the closed modal must stay idle.
+    if (!isOpen || typeof window === "undefined" || !window.visualViewport) return;
 
+    let frame = 0;
     const handleViewportChange = () => {
-      if (window.visualViewport) {
-        setViewportHeight(window.visualViewport.height);
-      }
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (window.visualViewport) {
+          const next = Math.round(window.visualViewport.height);
+          setViewportHeight((prev) => (prev === next ? prev : next));
+        }
+      });
     };
 
     handleViewportChange();
-    window.visualViewport.addEventListener("resize", handleViewportChange);
-    window.visualViewport.addEventListener("scroll", handleViewportChange);
+    window.visualViewport.addEventListener("resize", handleViewportChange, { passive: true });
+    window.visualViewport.addEventListener("scroll", handleViewportChange, { passive: true });
 
     return () => {
+      if (frame) cancelAnimationFrame(frame);
       window.visualViewport?.removeEventListener("resize", handleViewportChange);
       window.visualViewport?.removeEventListener("scroll", handleViewportChange);
     };
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen || !isVip || activeTab !== "chat") {

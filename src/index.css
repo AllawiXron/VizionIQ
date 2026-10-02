@@ -935,6 +935,23 @@ input[type="range"]:focus {
   100% { background-position: 200% 0; }
 }
 
+@keyframes vz-fade-in-lite {
+  from { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes vz-fade-in-down-lite {
+  from { opacity: 0; transform: translate3d(0, -6px, 0) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Touch screens: press feedback on cards waits a beat, so starting a scroll
+   gesture on a card never makes it flinch. Taps still feel instant. */
+@media (hover: none) {
+  .glass-interactive:active {
+    transition-delay: 70ms;
+  }
+}
+
 /* Undefined utility names used by older markup → real Apple-style entrances. */
 .animate-in {
   animation: vz-fade-in 0.45s var(--ease-out-expo) both;
@@ -978,12 +995,51 @@ input[type="range"]:focus {
       rgba(20, 20, 23, 0.82);
   }
 
+  /* In-flow elevated surfaces (cards, banners, sheets) skip the backdrop
+     blur — re-blurring moving content behind them every scroll frame is the
+     single most expensive thing a phone GPU can do. A denser fill and the
+     same highlight edge keep the material reading as glass. Sheets still sit
+     on the blurred .vz-backdrop, so their depth is unchanged. */
   .glass-elevated,
-  .glass-panel-gold,
-  .glass-floating,
+  .glass-panel-gold {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.02) 38%, rgba(255, 255, 255, 0) 100%),
+      rgba(28, 28, 32, 0.94);
+  }
+
+  .btn-glass,
+  .vz-eyebrow {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
   .btn-glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.05)), rgba(22, 22, 25, 0.6);
+  }
+
+  /* Fixed chrome (navbar capsule, dock, toasts) keeps real glass: it is
+     what floats over moving content. */
+  .glass-floating {
     -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     backdrop-filter: blur(16px) saturate(160%) !important;
+  }
+
+  /* The film grain uses plain opacity on phones: a full-screen fixed layer
+     with mix-blend-mode forces re-compositing of everything above it. */
+  .vz-atmosphere::after {
+    mix-blend-mode: normal;
+    opacity: 0.018;
+  }
+
+  /* Entrance keyframes without blur filters (cheap on mobile GPUs). */
+  :root {
+    --animate-fade-in: vz-fade-in-lite 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-fade-in-down: vz-fade-in-down-lite 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-in,
+  .animate-fade {
+    animation: vz-fade-in-lite 0.45s var(--ease-out-expo) both;
   }
 
   .vz-backdrop {

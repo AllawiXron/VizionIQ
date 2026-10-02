@@ -30,6 +30,11 @@ export const canHover = (): boolean =>
 export const allowBlur = (): boolean =>
   typeof window !== "undefined" && window.matchMedia?.("(min-width: 768px)").matches === true;
 
+/** Evaluated once: phones skip blur-in filters (expensive on mobile GPUs). */
+const BLUR_OK = allowBlur();
+/** Returns the blur filter on desktop, nothing on phones. */
+const blurOf = (px: number) => (BLUR_OK ? { filter: `blur(${px}px)` } : {});
+
 /* ------------------------------------------------------------------ */
 /* Overlays and sheets                                                */
 /* ------------------------------------------------------------------ */
@@ -57,9 +62,9 @@ export const bottomSheetMotion = {
 
 /** Dropdowns and popovers: fade, slight scale and drop, blur into focus. */
 export const popoverMotion = {
-  initial: { opacity: 0, y: -6, scale: 0.97, filter: "blur(6px)" },
-  animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { ...SPRING_SNAPPY, opacity: { duration: 0.2 }, filter: { duration: 0.24 } } },
-  exit: { opacity: 0, y: -4, scale: 0.98, filter: "blur(4px)", transition: { duration: 0.16, ease: EASE_OUT } },
+  initial: { opacity: 0, y: -6, scale: 0.97, ...blurOf(6) },
+  animate: { opacity: 1, y: 0, scale: 1, ...blurOf(0), transition: { ...SPRING_SNAPPY, opacity: { duration: 0.2 }, filter: { duration: 0.24 } } },
+  exit: { opacity: 0, y: -4, scale: 0.98, ...blurOf(4), transition: { duration: 0.16, ease: EASE_OUT } },
 };
 
 /** Toasts / notices dropping from the top. */
@@ -78,9 +83,9 @@ export const collapseMotion = {
 
 /** Swapping views in place (tabs, steps, tool panels): the "page" transition. */
 export const viewSwapMotion = {
-  initial: { opacity: 0, y: 14, scale: 0.985, filter: "blur(6px)" },
-  animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { ...SPRING, opacity: { duration: 0.35, ease: EASE_OUT }, filter: { duration: 0.35, ease: EASE_OUT } } },
-  exit: { opacity: 0, y: -6, scale: 0.99, filter: "blur(4px)", transition: { duration: 0.18, ease: EASE_OUT } },
+  initial: { opacity: 0, y: 14, scale: 0.985, ...blurOf(6) },
+  animate: { opacity: 1, y: 0, scale: 1, ...blurOf(0), transition: { ...SPRING, opacity: { duration: 0.35, ease: EASE_OUT }, filter: { duration: 0.35, ease: EASE_OUT } } },
+  exit: { opacity: 0, y: -6, scale: 0.99, ...blurOf(4), transition: { duration: 0.18, ease: EASE_OUT } },
 };
 
 /* ------------------------------------------------------------------ */
@@ -95,12 +100,12 @@ export const staggerParent = (stagger = 0.07, delayChildren = 0): Variants => ({
 
 /** Child of a stagger: springs up out of a soft blur and settles with a hint of overshoot. */
 export const riseItem: Variants = {
-  hidden: { opacity: 0, y: 26, scale: 0.96, filter: "blur(8px)" },
+  hidden: { opacity: 0, y: 26, scale: 0.96, ...blurOf(8) },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
+    ...blurOf(0),
     transition: { type: "spring", stiffness: 260, damping: 20, mass: 0.9, opacity: { duration: 0.5, ease: EASE_OUT }, filter: { duration: 0.5, ease: EASE_OUT } },
   },
 };

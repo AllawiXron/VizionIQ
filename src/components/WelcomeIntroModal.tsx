@@ -5,7 +5,13 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { EASE_OUT, SPRING_SNAPPY, overlayMotion, sheetMotion } from "../lib/motion";
+import { EASE_OUT, SPRING_SNAPPY, allowBlur, overlayMotion, sheetMotion } from "../lib/motion";
+
+// Step transitions blur through on desktop; phones use the same slide without filters.
+const STEP_BLUR = allowBlur();
+const STEP_BLUR_IN = STEP_BLUR ? { filter: "blur(6px)" } : {};
+const STEP_BLUR_OUT = STEP_BLUR ? { filter: "blur(0px)" } : {};
+const STEP_BLUR_EXIT = STEP_BLUR ? { filter: "blur(4px)" } : {};
 import { 
   Sparkles, 
   Crown, 
@@ -141,9 +147,9 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             {currentStep === 0 && (
               <motion.div
                 key="step0"
-                initial={{ opacity: 0, x: -18, filter: "blur(6px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: 14, filter: "blur(4px)", transition: { duration: 0.16, ease: EASE_OUT } }}
+                initial={{ opacity: 0, x: -18, ...STEP_BLUR_IN }}
+                animate={{ opacity: 1, x: 0, ...STEP_BLUR_OUT }}
+                exit={{ opacity: 0, x: 14, ...STEP_BLUR_EXIT, transition: { duration: 0.16, ease: EASE_OUT } }}
                 transition={{ duration: 0.42, ease: EASE_OUT }}
                 className="space-y-4 sm:space-y-5 text-center"
               >
@@ -188,9 +194,9 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             {currentStep === 1 && (
               <motion.div
                 key="step1"
-                initial={{ opacity: 0, x: -18, filter: "blur(6px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: 14, filter: "blur(4px)", transition: { duration: 0.16, ease: EASE_OUT } }}
+                initial={{ opacity: 0, x: -18, ...STEP_BLUR_IN }}
+                animate={{ opacity: 1, x: 0, ...STEP_BLUR_OUT }}
+                exit={{ opacity: 0, x: 14, ...STEP_BLUR_EXIT, transition: { duration: 0.16, ease: EASE_OUT } }}
                 transition={{ duration: 0.42, ease: EASE_OUT }}
                 className="space-y-4"
               >
@@ -285,9 +291,9 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({
             {currentStep === 2 && (
               <motion.div
                 key="step2"
-                initial={{ opacity: 0, x: -18, filter: "blur(6px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: 14, filter: "blur(4px)", transition: { duration: 0.16, ease: EASE_OUT } }}
+                initial={{ opacity: 0, x: -18, ...STEP_BLUR_IN }}
+                animate={{ opacity: 1, x: 0, ...STEP_BLUR_OUT }}
+                exit={{ opacity: 0, x: 14, ...STEP_BLUR_EXIT, transition: { duration: 0.16, ease: EASE_OUT } }}
                 transition={{ duration: 0.42, ease: EASE_OUT }}
                 className="space-y-5 text-center"
               >

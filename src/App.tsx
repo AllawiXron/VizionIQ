@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef, startTransition } from "react";
 import { ArrowUp, BookOpen, Settings, LogOut, ShieldAlert, Sparkles, Star, Smartphone, ShieldCheck, Heart, ArrowRight, Bot } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Reveal, RevealGroup, RevealItem, Magnetic, ChipPill, WordsReveal, ScrollWords, ScrollZoom, CountUp } from "./components/ui/Motion";
@@ -55,7 +55,6 @@ export default function App() {
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
   const [chapterFilter, setChapterFilter] = useState("all");
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
 
@@ -112,19 +111,6 @@ export default function App() {
     };
   }, []);
 
-  // Back to top scroll handler
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowBackToTop(true);
-      } else {
-        setShowBackToTop(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   // Intersection Observer for Active Navigation Highlighting
   useEffect(() => {
     if (!isLoggedIn || !appRoot) return;
@@ -157,7 +143,8 @@ export default function App() {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+          // Low priority: the nav highlight never blocks a scroll frame.
+          startTransition(() => setActiveSection(entry.target.id));
         }
       });
     };
@@ -259,53 +246,11 @@ export default function App() {
     </div>
   );
 
-  return (
-    <SensoryProvider>
-      {/* Shared atmospheric background: every glass layer floats above it */}
-      <div className="vz-atmosphere" aria-hidden="true" />
-
-      {/* PAGE TRANSITION: lock screen ⇄ app — the old view softens away, the new one rises in */}
-      <AnimatePresence mode="wait">
-        {!isLoggedIn ? (
-          <motion.div
-            key="lock"
-            className="relative z-[1]"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } }}
-            exit={{ opacity: 0, scale: 0.985, filter: "blur(8px)", transition: { duration: 0.28, ease: EASE_OUT } }}
-          >
-            <LockScreen onSuccess={handleLoginSuccess} />
-          </motion.div>
-        ) : (
-      <motion.div
-        key="app"
-        ref={setAppRoot}
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } }}
-        exit={{ opacity: 0, filter: "blur(8px)", transition: { duration: 0.26, ease: EASE_OUT } }}
-        className="relative z-[1] min-h-screen text-[#F5F5F7] overflow-x-hidden"
-      >
-
-      {/* FIXED HEADER NAVIGATION */}
-      <Navbar
-        activeSection={activeSection}
-        onLogout={handleLogout}
-        onOpenAdmin={() => setIsAdminOpen(true)}
-        onOpenAdvisor={() => setIsAdvisorOpen(true)}
-        onOpenUpgrade={() => setIsUpgradeModalOpen(true)}
-        userCode={userCode}
-        onOpenMore={() => setIsMobileMoreOpen(!isMobileMoreOpen)}
-        isMoreOpen={isMobileMoreOpen}
-      />
-
-      {/* PAGE STAGE — hero, sections and footer recede together behind sheets */}
-      <motion.div
-        className="vz-stage"
-        style={{ transformOrigin: stageOrigin }}
-        animate={stageEnabled && isSheetOpen ? { scale: 0.955, opacity: 0.55 } : { scale: 1, opacity: 1 }}
-        transition={isSheetOpen ? { type: "spring", stiffness: 260, damping: 30, mass: 1 } : { type: "spring", stiffness: 300, damping: 28, mass: 0.9 }}
-      >
-
+  // The page body (hero, chapters, tools, footer) only depends on the chapter
+  // filter and the member code. Memoising it keeps scroll-driven state changes
+  // (active section, sheets opening) from re-rendering the whole page.
+  const stageContent = useMemo(() => (
+    <>
       {/* HERO SECTION */}
       <Hero 
         onOpenAdvisor={() => setIsAdvisorOpen(true)}
@@ -564,8 +509,15 @@ export default function App() {
 
         </Reveal>
       </footer>
-      </motion.div>
+    </>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [chapterFilter, userCode]);
 
+  // Sheets only re-render when one opens/closes or the member changes — not
+  // when the active section changes while scrolling (the closed advisor alone
+  // is a large component).
+  const modalLayer = useMemo(() => (
+    <>
       {/* ADMIN CONTROL MODAL PANEL */}
       <React.Suspense fallback={null}><AdminPanel
         isOpen={isAdminOpen}
@@ -622,6 +574,64 @@ export default function App() {
           setIsAdvisorOpen(true);
         }}
       /></React.Suspense>
+    </>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [isAdminOpen, isAdvisorOpen, isUpgradeModalOpen, isWelcomeModalOpen, userCode]);
+
+  return (
+    <SensoryProvider>
+      {/* Shared atmospheric background: every glass layer floats above it */}
+      <div className="vz-atmosphere" aria-hidden="true" />
+
+      {/* PAGE TRANSITION: lock screen ⇄ app — the old view softens away, the new one rises in */}
+      {/* presenceAffectsLayout={false}: otherwise the presence context is rebuilt on
+          every App render and every motion element in the page re-renders with it. */}
+      <AnimatePresence mode="wait" presenceAffectsLayout={false}>
+        {!isLoggedIn ? (
+          <motion.div
+            key="lock"
+            className="relative z-[1]"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } }}
+            exit={{ opacity: 0, scale: 0.985, ...(stageEnabled ? { filter: "blur(8px)" } : {}), transition: { duration: 0.28, ease: EASE_OUT } }}
+          >
+            <LockScreen onSuccess={handleLoginSuccess} />
+          </motion.div>
+        ) : (
+      <motion.div
+        key="app"
+        ref={setAppRoot}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.5, ease: EASE_OUT } }}
+        exit={{ opacity: 0, transition: { duration: 0.26, ease: EASE_OUT } }}
+        className="relative z-[1] min-h-screen text-[#F5F5F7] overflow-x-hidden"
+      >
+
+      {/* FIXED HEADER NAVIGATION */}
+      <Navbar
+        activeSection={activeSection}
+        onLogout={handleLogout}
+        onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenAdvisor={() => setIsAdvisorOpen(true)}
+        onOpenUpgrade={() => setIsUpgradeModalOpen(true)}
+        userCode={userCode}
+        onOpenMore={() => setIsMobileMoreOpen(!isMobileMoreOpen)}
+        isMoreOpen={isMobileMoreOpen}
+      />
+
+      {/* PAGE STAGE — hero, sections and footer recede together behind sheets */}
+      <motion.div
+        className="vz-stage"
+        style={{ transformOrigin: stageOrigin }}
+        initial={stageEnabled ? { y: 14 } : false}
+        animate={stageEnabled && isSheetOpen ? { y: 0, scale: 0.955, opacity: 0.55 } : { y: 0, scale: 1, opacity: 1 }}
+        transition={isSheetOpen ? { type: "spring", stiffness: 260, damping: 30, mass: 1 } : { type: "spring", stiffness: 300, damping: 28, mass: 0.9 }}
+      >
+
+      {stageContent}
+      </motion.div>
+
+      {modalLayer}
 
       {/* FLOATING VIZION AI ADVISOR TRIGGER BUTTON (Desktop only, since MobileBottomNav handles mobile) */}
       <motion.div
@@ -663,23 +673,8 @@ export default function App() {
         </Magnetic>
       </motion.div>
 
-      {/* FLOATING BACK TO TOP BUTTON */}
-      <AnimatePresence>
-        {showBackToTop && (
-          <motion.button
-            key="back-to-top"
-            initial={{ opacity: 0, y: 16, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1, transition: SPRING_SNAPPY }}
-            exit={{ opacity: 0, y: 12, scale: 0.85, transition: { duration: 0.2, ease: EASE_OUT } }}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="الرجوع إلى أعلى الصفحة"
-            className={`btn glass-floating fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5.5rem)] left-3 sm:left-4 lg:bottom-6 lg:left-6 z-40 w-11 h-11 !min-h-0 rounded-full text-white/85 ${focusRing}`}
-            title="الرجوع للبداية"
-          >
-            <ArrowUp className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      {/* FLOATING BACK TO TOP BUTTON (owns its scroll listener, so scrolling never re-renders the app) */}
+      <BackToTop className={focusRing} />
 
       {/* FIXED MOBILE BOTTOM NAVIGATION BAR (Hidden during modals or intro) */}
       <AnimatePresence>
@@ -703,5 +698,47 @@ export default function App() {
         )}
       </AnimatePresence>
     </SensoryProvider>
+  );
+}
+
+/**
+ * Floating back-to-top control. Visibility comes from an IntersectionObserver
+ * on a sentinel 400px down the page, so scrolling does no per-frame work and
+ * the app never re-renders for it.
+ */
+function BackToTop({ className }: { className: string }) {
+  const [visible, setVisible] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(([entry]) => {
+      // Sentinel above the viewport → the page has scrolled past 400px.
+      setVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <>
+    <div ref={sentinelRef} aria-hidden="true" className="absolute top-[400px] right-0 w-px h-px pointer-events-none" />
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          key="back-to-top"
+          initial={{ opacity: 0, y: 16, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1, transition: SPRING_SNAPPY }}
+          exit={{ opacity: 0, y: 12, scale: 0.85, transition: { duration: 0.2, ease: EASE_OUT } }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="الرجوع إلى أعلى الصفحة"
+          className={`btn glass-floating fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5.5rem)] left-3 sm:left-4 lg:bottom-6 lg:left-6 z-40 w-11 h-11 !min-h-0 rounded-full text-white/85 ${className}`}
+          title="الرجوع للبداية"
+        >
+          <ArrowUp className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+        </motion.button>
+      )}
+    </AnimatePresence>
+    </>
   );
 }

@@ -43,7 +43,9 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
   const reduceMotion = useReducedMotion();
   const desktopDepth = !reduceMotion && allowBlur();
   const { scrollY } = useScroll();
-  const contentY = useTransform(scrollY, [0, 640], [0, reduceMotion ? 0 : desktopDepth ? 64 : 28]);
+  // Phones keep the moving light but not the content drift: no per-frame
+  // transform on the large text block while reading.
+  const contentY = useTransform(scrollY, [0, 640], [0, desktopDepth ? 64 : 0]);
   const contentOpacity = useTransform(scrollY, [0, 560], [1, desktopDepth ? 0.35 : 1]);
   const contentScale = useTransform(scrollY, [0, 640], [1, desktopDepth ? 0.975 : 1]);
   const lightY = useTransform(scrollY, [0, 900], [0, reduceMotion ? 0 : 180]);
@@ -183,7 +185,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: EASE_OUT }}
-        className="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[140vw] sm:w-[90vw] max-w-[1400px] h-[90vh] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.11)_0%,rgba(255,255,255,0.035)_35%,transparent_68%)] will-change-transform"
+        className="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[140vw] sm:w-[90vw] max-w-[1400px] h-[90vh] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.11)_0%,rgba(255,255,255,0.035)_35%,transparent_68%)] [will-change:transform,opacity]"
       />
       <motion.div
         aria-hidden="true"
@@ -196,7 +198,7 @@ export default function Hero({ onOpenAdvisor, onSelectPath, onScrollToSection }:
         {/* ABOVE THE FOLD — drifts back as the page moves forward */}
         <motion.div
           style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
-          className="flex flex-col items-center space-y-6 sm:space-y-9 w-full origin-top will-change-transform"
+          className="flex flex-col items-center space-y-6 sm:space-y-9 w-full origin-top md:will-change-transform"
         >
           {/* Top Operational OS Badge */}
           <motion.div {...rise(0.12)} className="vz-eyebrow text-xs sm:text-sm">
