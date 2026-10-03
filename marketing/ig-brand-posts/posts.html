@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>allawi.psd — brand posts (2 slides each)</title>
+<link rel="stylesheet" href="fonts/src.css" />
+<style>
+  :root {
+    --paper: #ece3d4;
+    --paper-2: #e3d6c2;
+    --ink: #1f1510;
+    --ink-soft: rgba(31, 21, 16, 0.62);
+    --orange: #e2541b;
+    --orange-2: #f07a2e;
+    --cream: #fbf3e6;
+    --slot: #ddd1be;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+
+  /* same paper, grain and Photoshop chrome as the أعمالي carousel (../ig-portfolio-cover) */
+  .slide {
+    position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--ink); font-family: "Readex Pro", sans-serif;
+    background: radial-gradient(120% 90% at 50% 0%, #f1e9dc 0%, var(--paper) 55%, var(--paper-2) 100%);
+  }
+  .grain {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0.32; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.18  0 0 0 0.55 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+  }
+  .ring { position: absolute; z-index: 1; border-radius: 50%; border: 22px solid var(--orange); filter: blur(2.2px); pointer-events: none; }
+
+  .meta {
+    position: absolute; top: 52px; left: 64px; right: 64px; z-index: 20; display: flex; justify-content: space-between; align-items: center;
+    font-family: "IBM Plex Mono", monospace; font-size: 17px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .meta .ar { font-family: "Readex Pro"; letter-spacing: 0; font-size: 20px; font-weight: 500; text-transform: none; }
+  .meta .dot { width: 9px; height: 9px; border-radius: 99px; background: var(--orange); display: inline-block; margin-inline-end: 10px; vertical-align: 1px; }
+
+  .hd { position: absolute; top: 96px; left: 64px; right: 64px; z-index: 20; height: 150px; display: flex; align-items: center; }
+  .hd .en { font-family: "Instrument Serif", serif; font-style: italic; font-size: 50px; line-height: 1; white-space: nowrap; }
+  .hd .rule { flex: 1; height: 2px; background: var(--ink); margin: 0 28px; opacity: 0.85; }
+  .hd .num { font-family: "Aref Ruqaa", serif; font-weight: 700; font-size: 150px; line-height: 1; direction: rtl; transform: translateY(-6px); }
+
+  .frame { position: absolute; inset: -14px; border: 2px solid var(--ink); pointer-events: none; }
+  .frame i { position: absolute; width: 14px; height: 14px; background: var(--cream); border: 2px solid var(--ink); }
+  .frame .tl { left: -8px; top: -8px; } .frame .tr { right: -8px; top: -8px; }
+  .frame .bl { left: -8px; bottom: -8px; } .frame .br { right: -8px; bottom: -8px; }
+  .frame .tm { left: calc(50% - 7px); top: -8px; } .frame .bm { left: calc(50% - 7px); bottom: -8px; }
+  .frame .ml { left: -8px; top: calc(50% - 7px); } .frame .mr { right: -8px; top: calc(50% - 7px); }
+  .cursor { position: absolute; z-index: 11; width: 50px; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3)); }
+  .tag {
+    position: absolute; z-index: 12; height: 44px; padding: 0 18px 0 14px; border-radius: 12px;
+    background: linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%); color: var(--cream);
+    display: flex; align-items: center; gap: 10px; font-family: "Readex Pro"; font-weight: 600; font-size: 22px; direction: ltr;
+    box-shadow: 0 10px 20px rgba(150, 50, 10, 0.28), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .tag svg { width: 22px; height: 22px; }
+
+  .slot { position: absolute; z-index: 5; overflow: hidden; background: repeating-linear-gradient(135deg, rgba(31,21,16,0.045) 0 2px, transparent 2px 16px), var(--slot); }
+  .slot::after { content: ""; position: absolute; inset: 0; background: var(--img, none) center / cover no-repeat; }
+  .shadow { position: absolute; z-index: 4; box-shadow: 14px 22px 34px rgba(70, 30, 10, 0.2), 0 2px 6px rgba(70, 30, 10, 0.12); background: var(--slot); }
+  .sel { position: absolute; z-index: 8; pointer-events: none; }
+  .sel .frame { inset: -12px; }
+
+  .caprow { position: absolute; z-index: 20; display: flex; align-items: baseline; }
+  .caprow .name { direction: rtl; font-size: 38px; font-weight: 500; line-height: 1.2; }
+  .caprow .mono { font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+  .caprow .rule { flex: 1; height: 2px; background: var(--ink); margin: 0 24px; opacity: 0.85; transform: translateY(-8px); }
+
+  .ft {
+    position: absolute; left: 64px; right: 64px; bottom: 52px; z-index: 20; display: flex; justify-content: space-between; align-items: center;
+    font-family: "IBM Plex Mono", monospace; font-size: 17px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .ft .pg { color: var(--ink-soft); }
+  .ft .sw { display: flex; align-items: center; gap: 12px; }
+  .ft .sw svg { width: 34px; height: 14px; }
+
+  /* slide 2: the ad's real PSD layers, exploded */
+  .ws { position: absolute; z-index: 4; left: 64px; top: 286px; width: 952px; height: 784px; border-radius: 22px; overflow: hidden;
+    background: radial-gradient(70% 60% at 40% 45%, #33251c 0%, #241912 60%, #1c130d 100%);
+    box-shadow: 18px 28px 50px rgba(60, 25, 8, 0.3), inset 0 0 0 1px rgba(251, 243, 230, 0.1); }
+  .ws .bar { position: absolute; left: 0; right: 0; top: 0; height: 44px; display: flex; align-items: center; gap: 22px; padding: 0 20px; direction: ltr;
+    border-bottom: 1px solid rgba(251, 243, 230, 0.12); font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; color: rgba(251, 243, 230, 0.55); }
+  .ws .bar i { width: 11px; height: 11px; border-radius: 99px; background: rgba(251, 243, 230, 0.22); }
+  .ws .bar b { color: var(--cream); font-weight: 500; }
+  .ws .bar span:last-child { margin-left: auto; }
+  .pl { position: absolute; z-index: 5; width: 380px; height: 475px; transform: rotateX(60deg) rotateZ(-40deg);
+    box-shadow: 0 0 0 1.5px rgba(251, 243, 230, 0.4), 30px 40px 50px rgba(0, 0, 0, 0.35); }
+  .pl img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .pl.on { box-shadow: 0 0 0 4px var(--orange), 30px 40px 50px rgba(0, 0, 0, 0.35); }
+  .leads { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+  .lab { position: absolute; z-index: 20; left: 776px; width: 214px; transform: translateY(-50%); display: flex; align-items: center; gap: 12px; color: var(--cream); }
+  .lab .ix { font-family: "IBM Plex Mono", monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; color: rgba(251, 243, 230, 0.5); flex: none; }
+  .lab .nm { font-size: 19px; font-weight: 500; line-height: 1.3; }
+  .lab.on { padding: 9px 14px; margin-left: -14px; width: 228px; border-radius: 12px; color: var(--cream);
+    background: linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%); box-shadow: 0 10px 20px rgba(150, 50, 10, 0.28); }
+  .lab.on .ix { color: rgba(251, 243, 230, 0.8); }
+  .idea { position: absolute; z-index: 20; right: 64px; width: 620px; top: 1096px; direction: rtl; text-align: right; font-size: 28px; font-weight: 300; line-height: 1.7; color: rgba(31, 21, 16, 0.85); }
+  .idea b { font-weight: 600; color: var(--ink); }
+  .file { position: absolute; z-index: 20; left: 64px; top: 1104px; font-family: "IBM Plex Mono", monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); line-height: 1.7; }
+  .file b { display: block; color: var(--ink); font-weight: 500; text-transform: none; letter-spacing: 0.04em; font-size: 16px; }
+  .file::before { content: ""; display: block; width: 28px; height: 2px; background: var(--orange); margin-bottom: 12px; }
+
+  /* layer export modes (one PSD layer at a time) */
+  body.export { background: transparent; padding: 0; gap: 0; }
+  body.export .slide { display: none; }
+  body.export .slide.on { display: block; }
+  body.m-bg .slide .slot, body.m-bg .slide .L-ui, body.m-bg .slide .L-txt { visibility: hidden !important; }
+  body.m-ui .slide, body.m-txt .slide, body.m-slot .slide { background: none !important; }
+  body.m-ui .slide *, body.m-txt .slide *, body.m-slot .slide * { visibility: hidden; }
+  body.m-ui .slide .L-ui, body.m-ui .slide .L-ui * { visibility: visible; }
+  body.m-txt .slide .L-txt, body.m-txt .slide .L-txt * { visibility: visible; }
+  body.m-slot .slide .slot.on, body.m-slot .slide .slot.on * { visibility: visible; }
+  body.m-slot .slide .slot.on::after { display: none; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h31M26 1l6 6-6 6" /></symbol>
+    <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.6-4.3 2.9 6.6 3-1.3-2.9-6.5 6.3-.3z" fill="#1f1510" stroke="#fbf3e6" stroke-width="1.4" stroke-linejoin="round" /></symbol>
+    <symbol id="i-layer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z" /><path d="M3 13l9 5 9-5" /></symbol>
+  </defs>
+</svg>
+
+<main id="posts"></main>
+
+<script>
+  // one entry per brand; layers are the ad's real PSD layers, bottom to top (from ../<brand>-ad/layers/manifest.json)
+  const POSTS = [
+    { k: 'sala', glass: 'rgba(200, 16, 28, 0.3)', ar: 'سلة', file: 'sala_ad.psd', tint: 'rgba(200, 16, 28, 0.9)', on: 'card',
+      layers: [['bg', 'Red + doodles'], ['food', 'Egg basket (photo)'], ['card', 'App card'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'بيبيتك تگول لا تخلي البيض كله بسلة وحدة، والإعلان يجاوبها: <b>إلا هاي.</b>' },
+    { k: 'baly', glass: 'rgba(30, 60, 190, 0.3)', ar: 'بَلي', file: 'baly_ad.psd', tint: 'rgba(16, 35, 106, 0.9)', on: 'card',
+      layers: [['bg', 'Photo (graded) + shade'], ['card', 'App card'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'تكسي بنص الليل؟ سؤال كل بغدادي، والجواب اسم التطبيق نفسه: <b>بَلي.</b>' },
+    { k: 'miswag', glass: 'rgba(120, 120, 120, 0.2)', ar: 'مسواگ', file: 'miswag_ad.psd', tint: 'rgba(36, 35, 35, 0.9)', on: 'card',
+      layers: [['bg', 'Photo (1932, graded) + shade'], ['card', 'Order card'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'صورة حقيقية من الشورجة سنة ١٩٣٢: مسواگ جدك جان مشوار، <b>ومسواگك صار بكبسة.</b>' },
+    { k: 'saj', glass: 'rgba(207, 173, 87, 0.16)', ar: 'صاج الريف', file: 'sajalreef_ad.psd', tint: 'rgba(23, 20, 18, 0.9)', on: 'card',
+      layers: [['bg', 'Photo (their quzi mix) + shade'], ['card', 'Offer card'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'سؤال كل جمعة: لحم لو دجاج؟ وعرض قوزي مكس يجاوب بكلمة وحدة: <b>ثنينهم.</b>' },
+    { k: 'waseet', glass: 'rgba(60, 80, 200, 0.24)', ar: 'الوسيط', file: 'alwaseet_ad.psd', tint: 'rgba(43, 58, 158, 0.9)', on: 'bg',
+      layers: [['bg', '3D render (Blender) + grade'], ['chev', 'Red chevrons'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'جدارية من نمرود عمرها ٢٩٠٠ سنة، <b>والمجنّح شايل كارتونة الوسيط</b> بدل سطله.' },
+    { k: 'faqma', glass: 'rgba(220, 110, 45, 0.16)', glassBy: { txt: 'rgba(220, 110, 45, 0.8)' }, ar: 'الفقمة', file: 'alfaqma_ad.psd', tint: 'rgba(200, 100, 42, 0.9)', on: 'bg',
+      layers: [['bg', '3D render (Blender) + grade'], ['mist', 'Cold mist'], ['temp', '50° sticker'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'تموز ببغداد والمبردة ما تكفي، <b>فتحناها ولگيناها مليانة ايس كريم.</b>' },
+  ];
+  const AR = '٠١٢٣٤٥٦٧٨٩';
+  const ar = (n) => String(n).replace(/\d/g, (d) => AR[d]);
+  const pad = (n) => String(n).padStart(2, '0');
+  const handles = '<div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>';
+  const meta = '<div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>';
+  const cursor = (x, y, z = 11) => `<svg class="cursor L-ui" style="left:${x}px; top:${y}px; z-index:${z}" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>`;
+
+  // slide 1: the ad on the paper, selected like a placed layer (same frame on every post, so the grid reads as one set)
+  function cover(p) {
+    const f = 'left:150px; top:140px; width:780px; height:975px';
+    return `<section class="slide inner" id="${p.k}-1">
+      ${meta}
+      <div class="shadow" style="${f}"></div>
+      <div class="slot" data-i="1" data-work="works/${p.k}.jpg" style="${f}; --img:url(works/${p.k}.jpg)"></div>
+      <div class="sel L-ui" style="${f}">${handles}</div>
+      <div class="tag L-ui" style="left:174px; top:118px"><svg><use href="#i-layer" /></svg>${p.file}</div>
+      ${cursor(936, 1121)}
+      <div class="caprow L-txt" style="left:150px; right:150px; top:1176px"><span class="mono">Social ad · 2026</span><span class="rule"></span><span class="name">${p.ar}</span></div>
+      <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">01 / 02</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+      <div class="grain"></div>
+    </section>`;
+  }
+
+  // slide 2: the same ad pulled apart into its real layers (isometric, orthographic)
+  const W = 380, H = 475, TH = -40 * Math.PI / 180, PHI = 60 * Math.PI / 180;
+  const HY = ((W / 2) * Math.abs(Math.sin(TH)) + (H / 2) * Math.cos(TH)) * Math.cos(PHI);      // half height on screen
+  const RX = (W / 2) * Math.cos(TH) - (H / 2) * Math.sin(TH);                                 // right corner, x
+  const RY = ((W / 2) * Math.sin(TH) + (H / 2) * Math.cos(TH)) * Math.cos(PHI);               // right corner, y
+  function exploded(p) {
+    const n = p.layers.length, CX = 64 + 44 + RX, TOP = 286 + 70, AREA = 680;
+    const step = Math.min(150 * Math.sin(PHI), (AREA - 2 * HY) / (n - 1));
+    const total = 2 * HY + (n - 1) * step, y0 = TOP + (AREA - total) / 2 + total - HY;
+    let planes = '', leads = '', labs = '';
+    p.layers.forEach(([key, name], i) => {
+      const cy = y0 - i * step, on = key === p.on ? ' on' : '';
+      const src = key === 'bg' ? `img/${p.k}/bg.jpg` : `img/${p.k}/${key}.png`;
+      planes += `<div class="pl${on}" style="left:${(CX - W / 2).toFixed(1)}px; top:${(cy - H / 2).toFixed(1)}px; ${key === 'bg' ? '' : `background-color:${(p.glassBy && p.glassBy[key]) || p.glass || p.tint};`}"><img src="${src}" alt="" /></div>`;
+      const ly = cy + RY, x1 = CX + RX + 10;
+      leads += `<line x1="${x1.toFixed(1)}" y1="${ly.toFixed(1)}" x2="762" y2="${ly.toFixed(1)}" stroke="#fbf3e6" stroke-opacity="0.55" stroke-width="2" /><circle cx="${x1.toFixed(1)}" cy="${ly.toFixed(1)}" r="5" fill="#e2541b" />`;
+      labs += `<div class="lab L-txt${on}" style="top:${ly.toFixed(1)}px"><span class="ix">${pad(i + 1)}</span><span class="nm">${name.replace('&', '&amp;')}</span></div>`;
+    });
+    return `<section class="slide inner" id="${p.k}-2">
+      ${meta}
+      <div class="hd L-txt"><span class="en">Layer by layer</span><span class="rule"></span><span class="num">${ar(n)}</span></div>
+      <div class="ws"><div class="bar"><i></i><i></i><i></i><b>${p.file}</b><span>3D VIEW · ${n} LAYERS</span></div></div>
+      ${planes}
+      <svg class="leads L-ui" viewBox="0 0 1080 1350">${leads}</svg>
+      ${labs}
+      <div class="file L-txt"><b>${p.file}</b>1080 × 1350 · ${n} layers</div>
+      <div class="idea L-txt">${p.idea}</div>
+      <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">02 / 02</span><span>DM for work</span></div>
+      <div class="grain"></div>
+    </section>`;
+  }
+
+  document.getElementById('posts').innerHTML = POSTS.map((p) => cover(p) + exploded(p)).join('\n');
+  document.getElementById('posts').style.cssText = 'display:flex; flex-direction:column; gap:40px';
+</script>
+</body>
+</html>
