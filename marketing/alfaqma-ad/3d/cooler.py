@@ -444,7 +444,7 @@ light("key", "SPOT", (-2.2, -2.6, 3.4), (0.0, -0.1, 0.5), 900 * K, (1.0, 0.95, 0
 light("cold", "AREA", (0.0, -1.0, 0.75), (0.0, 0.0, 0.6), 40 * K, (0.75, 0.88, 1.0), size=0.5)  # cold glow from inside
 light("rim", "AREA", (1.8, 1.4, 2.2), (0.0, 0.0, 0.6), 120 * K, (1.0, 0.85, 0.7), size=1.2)
 light("fill", "AREA", (2.6, -3.0, 1.2), (0.0, 0.0, 0.6), 60 * K, (1.0, 0.95, 0.9), size=2.5)
-light("wash", "SPOT", (0.0, -0.5, 4.5), (0.0, 2.4, 2.4), 330 * K, (1.0, 0.9, 0.8), size=1.0, spot=70, blend=1.0)
+light("wash", "SPOT", (0.0, -0.5, 4.5), (0.0, 2.4, 2.4), float(os.environ.get("WASH", "330")) * K, (1.0, 0.9, 0.8), size=1.0, spot=70, blend=1.0)
 
 world = bpy.data.worlds.new("w")
 sc.world = world

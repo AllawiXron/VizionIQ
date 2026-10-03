@@ -29,30 +29,30 @@
   }
 
   /* logo slot: Al-Faqma's real logo goes in img/logo.png */
-  .logo { position: absolute; z-index: 10; top: 46px; left: 50%; transform: translateX(-50%); height: 84px; display: flex; align-items: center; }
-  .logo img { height: 84px; }
+  .logo { position: absolute; z-index: 10; top: 34px; left: 50%; transform: translateX(-50%); height: 118px; display: flex; align-items: center; filter: drop-shadow(0 10px 18px rgba(70, 18, 0, 0.35)); }
+  .logo img { height: 118px; }
   .logo .stand-in { font-family: "Alexandria"; font-weight: 800; font-size: 40px; letter-spacing: 0.02em; display: flex; gap: 14px; align-items: baseline; }
   .logo .stand-in small { font-family: "IBM Plex Mono"; font-size: 15px; font-weight: 600; letter-spacing: 0.3em; opacity: 0.85; }
 
   /* headline: Ruqaa, two lines, Iraqi dialect */
   .h1 {
-    position: absolute; z-index: 10; top: 160px; left: 0; right: 0; text-align: center; direction: rtl;
+    position: absolute; z-index: 10; top: 172px; left: 0; right: 0; text-align: center; direction: rtl;
     font-family: "Aref Ruqaa", serif; font-weight: 700; font-size: 92px; line-height: 1.24; word-spacing: 0.1em;
     text-shadow: 0 8px 30px rgba(70, 18, 0, 0.45);
   }
-  .h1 .b { color: #fff4d6; }
+  .h1 .b { color: #1c1b17; text-shadow: 0 6px 22px rgba(255, 200, 150, 0.25); }
   /* Aref Ruqaa writes initial ت and لل above the line; bring them down onto the shared baseline */
   .h1 .dn { position: relative; }
 
   /* temperature sticker: Baghdad in summer */
   .temp {
     position: absolute; z-index: 10; left: 70px; top: 196px; width: 112px; height: 112px; border-radius: 50%;
-    background: #fff4d6; color: #b4230f; transform: rotate(-12deg);
+    background: #ffffff; color: #1c1b17; transform: rotate(-12deg);
     display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
     box-shadow: 0 10px 24px rgba(70, 18, 0, 0.35);
   }
   .temp b { font-family: "Alexandria"; font-weight: 800; font-size: 44px; direction: ltr; }
-  .temp span { font-family: "Alexandria"; font-weight: 600; font-size: 15px; margin-top: 6px; }
+  .temp span { font-family: "Alexandria"; font-weight: 600; font-size: 15px; margin-top: 6px; color: #eb6424; }
 
   .foot { position: absolute; z-index: 10; bottom: 34px; left: 0; right: 0; text-align: center; font-family: "Alexandria"; font-weight: 500; font-size: 13px; letter-spacing: 0.14em; line-height: 1.55; color: rgba(255, 255, 255, 0.88); }
   .foot b { font-weight: 600; letter-spacing: 0.06em; }
@@ -88,13 +88,13 @@
   </svg>
   <div class="grain" data-l="bg"></div>
 
-  <div class="logo" data-l="logo"><span class="stand-in">الفقمة <small>AL-FAQMA</small></span></div>
+  <div class="logo" data-l="logo"><img src="img/logo.svg" alt="الفقمة" /></div>
 
   <h1 class="h1" data-l="txt">المبردة ما <span class="dn" style="top: .30em">تكفي</span><br><span class="b">تعال <span class="dn" style="top: .16em">للفقمة</span></span></h1>
 
   <div class="temp" data-l="temp"><b>50°</b><span>بغداد، تموز</span></div>
 
-  <div class="foot" data-l="txt"><b>مثلجات الفقمة</b> · KARRADA, BAGHDAD · @ALFAQMA.IQ</div>
+  <div class="foot" data-l="txt"><b>ايس كريم وحلويات · منذ 1983</b><br>ORDER NOW 0770 299 9339 · TOTERS · TALABAT · بلي</div>
 </section>
 </body>
 </html>
