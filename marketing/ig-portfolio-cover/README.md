@@ -42,6 +42,7 @@ Type tool using the same fonts (below).
 - `psd/slide-01.psd` … `slide-06.psd`: layered files; each work sits as a layer clipped to its `PHOTO` frame.
 - `caption.txt`: the post caption.
 - `carousel.html`: the source for all slides.
+- `img/avatar.jpg`: the @allawi.psd profile picture, used as the avatar in the slide 5 phones.
 - `img/sala-layers/`: the layer thumbnails in the slide 2 panel, made from `../sala-ad/layers/` (Logo and App card use
   Photoshop's Layer Bounds thumbnails, on the medium transparency grid).
 - `render.cjs`: `node render.cjs` renders `out/`; `node render.cjs --layers` also renders every layer into `layers/`
