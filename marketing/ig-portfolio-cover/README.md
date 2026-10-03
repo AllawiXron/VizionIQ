@@ -1,20 +1,22 @@
 # Instagram carousel — allawi.psd portfolio ("أعمالي · سوشيال ميديا")
 
-Eight 4:5 slides for @allawi.psd. Slide 1 is the cover: a CC0 marble head whose blindfold is a selected
-Photoshop layer named `allawi.psd`. Slides 2–7 are photo layouts for your work, and slide 8 closes the set with the
-same statue after the layer has been dragged off its eyes. One orange loop runs through slides 2–8 and ends in the
-halo ring on the last slide, so it reads as one line while swiping.
+Seven 4:5 slides for @allawi.psd. Slide 1 is the cover: a CC0 marble head whose blindfold is a selected
+Photoshop layer named `allawi.psd`. Slides 2–6 show five social ads (each in its own folder under `../`), and slide 7
+closes the set with the same statue after the layer has been dragged off its eyes. One orange loop runs through slides
+2–7 and ends in the halo ring on the last slide, so it reads as one line while swiping.
 
-| Slide | Layout | Photo frames (size in the PSD, 1080×1350 canvas) |
-|---|---|---|
-| 01 | Cover | — |
-| 02 | Featured — the Al-Waseet ad (`works/02-1.jpg`, from `../alwaseet-ad`) | Photo 1: 640×800 (4:5) |
-| 03 | Series | Photo 1 (right) and Photo 2 (left): 440×550 (4:5) |
-| 04 | Case study | Photo 1: 560×700 (4:5) · Photo 2: 348×348 (1:1, a close-up detail) |
-| 05 | Selected 2×2 | Photos 1–4: 352×440 (4:5); 1 top-right, 2 top-left, 3 bottom-right, 4 bottom-left |
-| 06 | The feed 3×3 | Photos 1–9: 236×295 (4:5), Instagram grid order (left→right, top→bottom) |
-| 07 | On screen (phone) | Photo 1: 440×550 (4:5) |
-| 08 | Closing | — |
+| Slide | Layout | What's in it (`works/`) | Frames (in the 1080×1350 PSD) |
+|---|---|---|---|
+| 01 | Cover | — | — |
+| 02 | Featured | Baly ad (`02-1`, from `../baly-ad`) | 640×800 (4:5) |
+| 03 | Series | Miswag (`03-1`, right) and Saj Al-Reef (`03-2`, left) | 440×550 each (4:5) |
+| 04 | Case study | Al-Waseet ad (`04-1`) + a 1:1 close-up of the genie's parcel (`04-2`) | 560×700 · 348×348 |
+| 05 | Details 2×2 | Close-ups: Baly card (`05-1`, top-right), Miswag card (`05-2`, top-left), Saj Al-Reef offer (`05-3`, bottom-right), Al-Faqma cooler plate (`05-4`, bottom-left) | 352×440 each (4:5) |
+| 06 | On screen (phone) | Al-Faqma ad in the Instagram feed (`06-1`) | 440×550 (4:5) |
+| 07 | Closing | — | — |
+
+The ads are spec/concept work for real Iraqi brands; `caption.txt` says so, and credits the Baly photo
+(ainudil, CC BY-SA 2.0) as its licence requires.
 
 ## Adding your photos
 
@@ -25,21 +27,20 @@ Your posts are 1080×1350, so they just need scaling down. The paper grain sits 
 clean. Export with File → Export → Export As… → PNG/JPG.
 
 **Or let the scripts place them.** Save each photo as `works/<slide>-<n>.jpg` (for example `works/02-1.jpg`,
-`works/06-9.jpg`) and run `node render.cjs --layers` then `python build_psd.py`. The images fill their frames
+`works/05-4.jpg`) and run `node render.cjs --layers` then `python build_psd.py`. The images fill their frames
 (cropped to fit, like Photoshop's "fill"): `out/slide-0N.png` is rewritten, and each PSD gets the photo as a layer
 already clipped to its `PHOTO` frame.
 
-## Text to replace
+## Changing the text
 
-The placeholders are `اسم المشروع`, `Client · 2026`, `Category · 2026`, the case-study description and its
-CLIENT / TYPE / YEAR rows, and the caption line under the phone. In the PSDs the `Text` layer is pixels, not live type,
-so hide or erase a placeholder and retype it with the Type tool using the same fonts (below). Alternatively, edit
-the text in `carousel.html` and re-render.
+The captions, case-study text and phone caption are set in `carousel.html`; edit them there and re-render. In the
+PSDs the `Text` layer is pixels, not live type, so to change text in Photoshop hide or erase it and retype it with the
+Type tool using the same fonts (below).
 
 ## Files
 
-- `out/slide-01.png` … `slide-08.png`: 1620×2025 previews (slides 1 and 8 are ready to post).
-- `psd/slide-01.psd` … `slide-08.psd`: layered files for adding photos.
+- `out/slide-01.png` … `slide-07.png`: 1620×2025 slides, ready to post in order.
+- `psd/slide-01.psd` … `slide-07.psd`: layered files; each work sits as a layer clipped to its `PHOTO` frame.
 - `caption.txt`: the post caption.
 - `carousel.html`: the source for all slides.
 - `render.cjs`: `node render.cjs` renders `out/`; `node render.cjs --layers` also renders every layer into `layers/`
