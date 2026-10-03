@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const url = 'file://' + path.join(__dirname, 'ad.html');
-const LAYERS = [['bg', 'Gold + stripes'], ['bar', 'Black bar'], ['food', 'Saj (photo cut-out)'], ['txt', 'Headline & footer'], ['logo', 'Logo']];
+const LAYERS = [['bg', 'Photo (their quzi mix) + shade'], ['card', 'Offer card'], ['txt', 'Headline & footer'], ['logo', 'Logo']];
 
 (async () => {
   const browser = await chromium.launch();
