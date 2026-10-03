@@ -6,8 +6,8 @@ literally reads «اضافة الى السلة».
 
 **Idea.** Twist the proverb everybody grew up with:
 
-> جدتك تگول:
-> لا تحط كل بيضك بسلة وحدة
+> بيبيتك تگول:
+> لا تخلي البيض كله بسلة وحدة
 > **إلا هاي.**
 >
 > "Grandma says: don't put all your eggs in one basket. Except this one."
