@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../fonts/src.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; font-family: "Alexandria"; }
+  .face { position: relative; overflow: hidden; background: #f3f2ee; margin-bottom: 20px; }
+  .face::before { content: ""; position: absolute; inset: 0; opacity: .5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.53  0 0 0 0 0.5  0 0 0 0.16 0'/></filter><rect width='400' height='400' filter='url(%23n)'/></svg>"); }
+  .face::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 60px rgba(90, 80, 60, 0.10); }
+  .tape { position: absolute; background: linear-gradient(90deg, #1f3ca6, #2747b8 40%, #2849bc 60%, #1f3ca6); overflow: hidden; }
+  .tape .print { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-around; color: rgba(255,255,255,0.9); }
+  .tape .print span { font-size: 26px; font-weight: 700; transform: rotate(-90deg); white-space: nowrap; letter-spacing: .04em; }
+  .tape .print img { width: 46px; filter: brightness(0) invert(1); opacity: .9; }
+  .logo { position: absolute; display: flex; align-items: center; gap: 22px; }
+  .label { position: absolute; background: #fff; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,.18); padding: 18px 22px; color: #1d1f4a; }
+  .label .hd { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 22px; border-bottom: 3px solid #1d1f4a; padding-bottom: 8px; }
+  .label .hd small { font-family: monospace; font-size: 18px; font-weight: 700; }
+  .label .rows { direction: rtl; font-size: 30px; font-weight: 700; line-height: 1.45; margin-top: 8px; }
+  .label .rows b { color: #cc1f2c; font-weight: 800; }
+  .label .bars { height: 62px; margin-top: 10px; background: repeating-linear-gradient(90deg, #111 0 3px, transparent 3px 6px, #111 6px 7px, transparent 7px 11px, #111 11px 15px, transparent 15px 17px, #111 17px 18px, transparent 18px 23px); }
+  .icons { position: absolute; display: flex; gap: 18px; color: #1d1f4a; }
+  .icons svg { width: 70px; height: 70px; }
+</style></head><body>
+
+<!-- FRONT 0.46 × 0.40 m at 2400 px/m -->
+<div class="face" id="front" style="width:1104px;height:960px">
+  <div class="tape" style="left:467px;width:170px;top:0;height:300px;clip-path:polygon(0 0,100% 0,100% 96%,92% 100%,80% 96%,66% 100%,52% 96%,38% 100%,24% 96%,10% 100%,0 96%)">
+    <div class="print"><img src="../img/mark.png"><span>الوسيط</span></div>
+  </div>
+  <div class="logo" style="left:250px;top:390px"><img src="../img/wordmark.png" style="width:470px"><img src="../img/mark.png" style="height:150px"></div>
+  <div class="label" style="left:660px;top:640px;width:380px;transform:rotate(-2.5deg)">
+    <div class="hd"><small>WS-0883-BCE</small><span>WASEET EXPRESS</span></div>
+    <div class="rows">من: <b>نمرود</b><br>إلى: <b>بغداد</b></div>
+    <div class="bars"></div>
+  </div>
+  <div class="icons" style="left:70px;top:820px">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V5M4.5 8.5 8 5l3.5 3.5M16 20V5M12.5 8.5 16 5l3.5 3.5M3 21h18"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10l-1 7a4 4 0 0 1-8 0zM12 14v6M8.5 21h7"/><path d="M11 3l1.5 3-2 2"/></svg>
+  </div>
+</div>
+
+<!-- LEFT SIDE 0.36 × 0.40 -->
+<div class="face" id="side" style="width:864px;height:960px">
+  <div class="logo" style="left:50%;top:330px;transform:translateX(-50%);flex-direction:column;gap:30px"><img src="../img/mark.png" style="height:230px"><img src="../img/wordmark.png" style="width:560px"></div>
+</div>
+
+<!-- TOP 0.46 × 0.36 : tape seam front→back, two handle tabs at x = ±0.127 m -->
+<div class="face" id="top" style="width:1104px;height:864px">
+  <div class="tape" style="left:467px;width:170px;top:0;height:864px"><div class="print"><img src="../img/mark.png"><span>الوسيط</span><img src="../img/mark.png"><span>الوسيط</span></div></div>
+  <div class="tape" style="left:222px;width:140px;top:337px;height:190px;border-radius:6px"></div>
+  <div class="tape" style="left:742px;width:140px;top:337px;height:190px;border-radius:6px"></div>
+</div>
+
+<!-- BACK (seam tape) and PLAIN -->
+<div class="face" id="back" style="width:1104px;height:960px">
+  <div class="tape" style="left:467px;width:170px;top:0;height:300px"></div>
+</div>
+<div class="face" id="plain" style="width:864px;height:960px"></div>
+</body></html>

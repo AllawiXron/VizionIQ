@@ -1,26 +1,44 @@
 # Social media ad — Al-Waseet (شركة الوسيط)
 
-A 4:5 post for [@alwaseetcompany1](https://www.instagram.com/alwaseetcompany1/), the Baghdad express-delivery company,
-made for the allawi.psd portfolio (it is slide 2 of `../ig-portfolio-cover`).
+A 4:5 post for [@alwaseetcompany1](https://www.instagram.com/alwaseetcompany1/), the Baghdad express-delivery
+company, made for the allawi.psd portfolio (slide 2 of `../ig-portfolio-cover`).
 
-**Idea.** الوسيط literally means "the middleman", so the headline reads *بينك وبين زبونك… الوسيط*
-("between you and your customer: Al-Waseet"). The van sits under a delivery route that runs from a "إنتَ" pin
-to a "زبونك" pin, through a Baghdad hub, over a faint map of Iraq with every governorate capital wired to Baghdad.
+**Idea.** The winged genies on the Nimrud palace reliefs (Iraq, 883–859 BCE) all carry a small handled bucket,
+the famous "ancient handbag". Here it is a Waseet parcel: the genie holds a real 3D box by a blue strap,
+on a royal-blue museum wall.
 
-**Copy** (Iraqi dialect) only claims what the company states on al-waseet.com: delivery to all governorates and
-"to the farthest point in Iraq", daily pickup from merchants, goods secured in transit, and a merchant app for
-iPhone and Android.
+> أجدادنا شالوا الأمانة
+> وإحنا كمّلنا الطريق
+>
+> "Our ancestors carried the parcel, and we carried on the road."
+
+It follows Al-Waseet's own post system: royal-blue stage, one sculptural object, a white logo on top, a two-line
+dialect headline, red chevrons from their arrow mark, and the small caps footer. The allawi.psd signatures are
+the Ruqaa headline, the museum wall label ("Fig. 883 — winged genie + parcel"), the parcel's shipping label
+(من: نمرود ← إلى: بغداد) and the grain.
 
 - `out/alwaseet-ad.png`: the ad, 1620×2025.
-- `psd/alwaseet-ad.psd`: layered, 1080×1350 (Background + map, Route/hub/pins, Van, Text & CTA, Logo).
-- `ad.html`: the source. `node render.cjs` re-renders the PNG; `node render.cjs --layers` then `python build_psd.py`
-  rebuilds the PSD (Playwright, psd-tools, pillow).
+- `psd/alwaseet-ad.psd`: layered, 1080×1350 (3D render + grade, red chevrons, museum label, headline & footer, logo).
+- `ad.html`: the typography layer over `img/hero.png`. `node render.cjs` re-renders the PNG;
+  `node render.cjs --layers` then `python build_psd.py` rebuilds the PSD.
+
+## The 3D render (`3d/`)
+
+`img/hero.png` is rendered in Blender 4.2 (Cycles, run as the `bpy` Python module), not taken from a website.
+
+1. `prep_relief.py DP355702.jpg` cuts the relief photo out of its grey backdrop into `relief_tex.png`.
+2. `box.html` holds the parcel's face textures (tape, logo, label); screenshot `#front #side #top #back #plain`
+   to PNGs next to `scene.py`.
+3. `python scene.py <prefix> 100 160` builds the scene (relief slab with stone thickness on a blue wall, key
+   spotlight, the parcel with bevelled edges and a strap modelled to follow the carved bucket handle into the
+   fist) and renders two passes, with and without the parcel.
+4. `python build_hero.py <prefix>` lays the carved fingers from the second pass over the strap, so the genie
+   grips it, and writes `img/hero.png`.
 
 ## Assets
 
-- Logo mark, van render and wordmark: Al-Waseet's own brand assets, from al-waseet.com and their App Store icon
-  (the wordmark is cut from the icon with a colour-to-alpha pass). Brand colours are sampled from the logo:
-  navy `#2d2f64`, red `#cc1f2c`. These are Al-Waseet's trademarks; this is a portfolio piece, so label it as a
-  concept if they did not commission it.
-- Map of Iraq: Natural Earth 1:10m country outline (public domain), via the `world-atlas` package.
-- Fonts (Google Fonts, SIL OFL): Alexandria, IBM Plex Mono.
+- Relief: *Relief panel*, Assyrian, Nimrud, ca. 883–859 BCE, The Metropolitan Museum of Art 17.190.2077,
+  Gift of J. Pierpont Morgan 1917, Open Access / CC0: https://www.metmuseum.org/art/collection/search/322486
+- Al-Waseet logo mark and wordmark: their own trademarks (mark from al-waseet.com, wordmark cut from their App
+  Store icon). This is a portfolio piece; label it a concept if they did not commission it.
+- Fonts (Google Fonts, SIL OFL): Aref Ruqaa, Alexandria, IBM Plex Mono.
