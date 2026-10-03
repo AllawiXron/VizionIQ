@@ -1,37 +1,37 @@
-# Social media ad — OPTES 1.0 Flash (spec post)
+# Social media post — OPTES 1.0 Flash (spec launch post)
 
 A 4:5 launch post for OPTES (optes.code on TikTok, optes3.com), the Arabic-first AI platform, made by allawi.psd as a
-sample to pitch post design to them. Not commissioned.
+sample to pitch post design to them. Not commissioned. (v1, a lightning photo with one headline, is in git history.)
 
-**Idea.** Their launch post lists three promises for the new model: سرعة فائقة، جودة عالية، استهلاك أقل. Said in
-Iraqi dialect, those three promises become a question, and the model's name is the one-word answer:
+**Idea.** Their mascot is the AI. The glowing ring on her headphones is OPTES' "O", so it becomes the centre of the
+scene: signal rings spread from it across the poster, small electric arcs crackle on it, and gold and cyan light
+trails streak past (Flash). Beside her eyes, an Iraqi line about speed:
 
 > إطلاق النموذج الجديد
-> سريع، ذكي، وخفيف على رصيدك؟
-> **فلاش.**
+> قبل لا ترمش،
+> **يجاوبك.**
 >
-> "Fast, smart, and light on your balance? Flash."
+> "Before you blink, it answers."
 
-The hero is a real lightning strike (Flash), graded into OPTES' black and electric blue, with their gold for the
-answer and the CTA. A model card is pinned to the bolt in their own wording: «متاح لجميع المشتركين · OPTES 1.0 Flash ·
-سرعة فائقة، جودة عالية، استهلاك أقل», with their mascot app icon and a «جديد» badge. Footer: the OPTES wordmark set
-as on their site (Manrope 600, 0.06em tracking), «AI FOR EVERYONE · optes3.com» and «جرّبه هسة».
-
-Same allawi.psd system as the other ads: real photography, an Alexandria headline in Iraqi dialect built as
-question → one-word answer, the brand's app card pinned into the photo, logo and CTA in the footer, grain.
+Below: the name in chrome and gold, "OPTES 1.0 Flash⚡", their tagline «سرعة فائقة • جودة عالية • استهلاك أقل», their
+four promises as glass cards (استجابات أسرع، ذكاء متقدم، استهلاك أرخص، لجميع المشتركين), their "four models" claim
+(Claude Opus 5.5, Claude Sonnet 5.5, DeepSeek, Qwen) as a strip, and the footer: OPTES wordmark as on their site
+(Manrope 600, 0.06em), AI FOR EVERYONE · optes3.com, «جرّبه هسة».
 
 - `out/optes-flash.png`: the post, 1620×2025.
-- `psd/optes-flash.psd`: layered, 1080×1350 (graded photo + shade, model card, headline & footer, logo).
-- `ad.html`: the layout over `img/hero.png`. `node render.cjs` re-renders the PNG; `node render.cjs --layers` then
-  `python build_psd.py` rebuilds the PSD.
-- `photo/grade.py`: crop to 4:5 and the black/blue grade with a glow on the bolt
-  (`python grade.py source-lightning.jpg ../img/hero.png`).
+- `psd/optes-flash.psd`: layered, 1080×1350: scene, mascot, shade, headphone bloom + light sweep (Screen), feature
+  cards + models, headline & text, title + wordmark, grain (Overlay).
+- `ad.html`: the layout. `node render.cjs` re-renders the PNG; `node render.cjs --layers` then `python build_psd.py`
+  rebuilds the PSD.
+- `photo/bg.py`: the scene (`python bg.py ../img/bg.png`): navy glow, signal rings centred on the headphone,
+  procedural electric arcs, tapered light trails, dust, vignette.
+- `photo/mascot.py`: the mascot (`python mascot.py mascot_cut.png ../img/mascot.png`). `source-mascot.png` is cropped
+  from their own Flash post, upscaled 4× with Real-ESRGAN (ONNX, not committed) and cut out with rembg `isnet-anime`
+  (`mascot_cut.png`); the script removes the leftovers of their old layout with a keep-polygon traced along her
+  hair, dissolves the lower-left into the dark and adds a cyan rim light from the headphone side.
 
 ## Credits
 
-- **Photo:** "Lightning Ground Storm" by Brandon Morgan (Unsplash), CC0, via Wikimedia Commons:
-  https://commons.wikimedia.org/wiki/File:Lightning_Ground_Storm_(Unsplash).jpg (1920 px rendition). No credit
-  required.
-- **OPTES wordmark, colours, mascot icon (`img/app-icon.png`) and wording:** from optes3.com and their launch post.
-  OPTES' trademarks; this is a concept.
+- **Mascot, wordmark, colours and wording:** OPTES' own (their Flash launch post, app icon and optes3.com). Their
+  trademarks and art; this is a concept to pitch to them.
 - **Fonts (Google Fonts, SIL OFL):** Alexandria, Manrope.

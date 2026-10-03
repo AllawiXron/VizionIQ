@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const url = 'file://' + path.join(__dirname, 'ad.html');
-const LAYERS = [['bg', 'Photo (CC0 lightning, graded) + shade'], ['card', 'Model card'], ['txt', 'Headline & footer'], ['logo', 'Logo']];
+const LAYERS = [['bg', 'Scene (glow, rings, streaks)'], ['mascot', 'Mascot (their art, upscaled + rim light)'], ['shade', 'Shade'], ['glow', 'Headphone bloom + light sweep (Screen)'], ['cards', 'Feature cards + models'], ['txt', 'Headline & text'], ['logo', 'OPTES 1.0 Flash title + wordmark'], ['grain', 'Grain (Overlay)']];
 
 (async () => {
   const browser = await chromium.launch();
