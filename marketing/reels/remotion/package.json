@@ -1,0 +1,20 @@
+{
+  "name": "allawi-reels",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "studio": "remotion studio",
+    "render:sala": "remotion render SalaReel out/sala-reel.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.532",
+    "@remotion/media-utils": "^4.0.532",
+    "@remotion/motion-blur": "^4.0.532",
+    "@remotion/paths": "^4.0.532",
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.532",
+    "typescript": "^5.9.3"
+  }
+}
