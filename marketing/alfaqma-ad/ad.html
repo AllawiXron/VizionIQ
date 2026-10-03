@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>Al-Faqma — المبردة ما تكفي</title>
+<link rel="stylesheet" href="fonts/src.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; display: flex; justify-content: center; padding: 40px 0; }
+
+  .ad { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: #fff; background: #b4440f; }
+  /* the 3D render (Blender/Cycles) */
+  .hero { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* grade: heat in the corners, a little lift where the headline sits */
+  .grade {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background:
+      radial-gradient(70% 40% at 50% 16%, rgba(255, 170, 90, 0.22) 0%, rgba(255, 170, 90, 0) 70%),
+      radial-gradient(90% 75% at 50% 50%, rgba(60, 14, 0, 0) 55%, rgba(60, 14, 0, 0.55) 100%);
+    mix-blend-mode: normal;
+  }
+  /* cold mist rolling out of the open cooler and spilling over the floor */
+  .mist { position: absolute; z-index: 3; pointer-events: none; border-radius: 50%; filter: blur(26px); mix-blend-mode: screen;
+    background: radial-gradient(closest-side, rgba(235, 246, 255, 0.85), rgba(235, 246, 255, 0)); }
+  .wisps { position: absolute; z-index: 3; pointer-events: none; mix-blend-mode: screen; opacity: 0.9; }
+  .grain {
+    position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0.26; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+  }
+
+  /* logo slot: Al-Faqma's real logo goes in img/logo.png */
+  .logo { position: absolute; z-index: 10; top: 46px; left: 50%; transform: translateX(-50%); height: 84px; display: flex; align-items: center; }
+  .logo img { height: 84px; }
+  .logo .stand-in { font-family: "Alexandria"; font-weight: 800; font-size: 40px; letter-spacing: 0.02em; display: flex; gap: 14px; align-items: baseline; }
+  .logo .stand-in small { font-family: "IBM Plex Mono"; font-size: 15px; font-weight: 600; letter-spacing: 0.3em; opacity: 0.85; }
+
+  /* headline: Ruqaa, two lines, Iraqi dialect */
+  .h1 {
+    position: absolute; z-index: 10; top: 160px; left: 0; right: 0; text-align: center; direction: rtl;
+    font-family: "Aref Ruqaa", serif; font-weight: 700; font-size: 92px; line-height: 1.24; word-spacing: 0.1em;
+    text-shadow: 0 8px 30px rgba(70, 18, 0, 0.45);
+  }
+  .h1 .b { color: #fff4d6; }
+  /* Aref Ruqaa writes initial ت and لل above the line; bring them down onto the shared baseline */
+  .h1 .dn { position: relative; }
+
+  /* temperature sticker: Baghdad in summer */
+  .temp {
+    position: absolute; z-index: 10; left: 70px; top: 196px; width: 112px; height: 112px; border-radius: 50%;
+    background: #fff4d6; color: #b4230f; transform: rotate(-12deg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+    box-shadow: 0 10px 24px rgba(70, 18, 0, 0.35);
+  }
+  .temp b { font-family: "Alexandria"; font-weight: 800; font-size: 44px; direction: ltr; }
+  .temp span { font-family: "Alexandria"; font-weight: 600; font-size: 15px; margin-top: 6px; }
+
+  .foot { position: absolute; z-index: 10; bottom: 34px; left: 0; right: 0; text-align: center; font-family: "Alexandria"; font-weight: 500; font-size: 13px; letter-spacing: 0.14em; line-height: 1.55; color: rgba(255, 255, 255, 0.88); }
+  .foot b { font-weight: 600; letter-spacing: 0.06em; }
+
+  /* layer export (one PSD layer at a time) */
+  body.export { background: transparent; padding: 0; display: block; }
+  body.export .ad > [data-l] { visibility: hidden; }
+  body.export:not(.m-bg) .ad { background: none; }
+  body.m-bg .ad > [data-l="bg"], body.m-logo .ad > [data-l="logo"], body.m-txt .ad > [data-l="txt"],
+  body.m-mist .ad > [data-l="mist"], body.m-temp .ad > [data-l="temp"] { visibility: visible; }
+</style>
+</head>
+<body>
+<section class="ad" id="ad">
+  <img class="hero" data-l="bg" src="img/hero.png" alt="" />
+  <div class="grade" data-l="bg"></div>
+
+  <!-- mist: soft clouds at the opening and pooling on the floor -->
+  <div class="mist" data-l="mist" style="left: 330px; top: 860px; width: 470px; height: 170px; opacity: .55"></div>
+  <div class="mist" data-l="mist" style="left: 240px; top: 960px; width: 640px; height: 200px; opacity: .6"></div>
+  <div class="mist" data-l="mist" style="left: 120px; top: 1070px; width: 860px; height: 210px; opacity: .55"></div>
+  <svg class="wisps" data-l="mist" style="left: 180px; top: 860px; width: 760px; height: 420px" viewBox="0 0 700 480">
+    <defs>
+      <filter id="wisp" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="4" seed="8" />
+        <feColorMatrix values="0 0 0 0 0.95  0 0 0 0 0.98  0 0 0 0 1  0 0 0 2.2 -0.9" />
+        <feGaussianBlur stdDeviation="3" />
+        <feComposite in2="SourceGraphic" operator="in" />
+      </filter>
+      <radialGradient id="wm" cx="50%" cy="55%" r="55%"><stop offset="0" stop-color="#fff" /><stop offset="1" stop-color="#fff" stop-opacity="0" /></radialGradient>
+    </defs>
+    <rect width="700" height="480" fill="url(#wm)" filter="url(#wisp)" />
+  </svg>
+  <div class="grain" data-l="bg"></div>
+
+  <div class="logo" data-l="logo"><span class="stand-in">الفقمة <small>AL-FAQMA</small></span></div>
+
+  <h1 class="h1" data-l="txt">المبردة ما <span class="dn" style="top: .30em">تكفي</span><br><span class="b">تعال <span class="dn" style="top: .16em">للفقمة</span></span></h1>
+
+  <div class="temp" data-l="temp"><b>50°</b><span>بغداد، تموز</span></div>
+
+  <div class="foot" data-l="txt"><b>مثلجات الفقمة</b> · KARRADA, BAGHDAD · @ALFAQMA.IQ</div>
+</section>
+</body>
+</html>
