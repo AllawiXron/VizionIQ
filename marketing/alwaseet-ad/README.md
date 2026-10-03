@@ -8,17 +8,16 @@ the famous "ancient handbag". Here it is a Waseet parcel: the genie holds a real
 on a royal-blue museum wall.
 
 > أجدادنا شالوا الأمانة
-> وإحنا كمّلنا الطريق
+> وإحنا كملنا الطريق
 >
 > "Our ancestors carried the parcel, and we carried on the road."
 
 It follows Al-Waseet's own post system: royal-blue stage, one sculptural object, a white logo on top, a two-line
 dialect headline, red chevrons from their arrow mark, and the small caps footer. The allawi.psd signatures are
-the Ruqaa headline, the museum wall label ("Fig. 883 — winged genie + parcel"), the parcel's shipping label
-(من: نمرود ← إلى: بغداد) and the grain.
+the Ruqaa headline, the parcel's shipping label (من: نمرود ← إلى: بغداد) and the grain.
 
 - `out/alwaseet-ad.png`: the ad, 1620×2025.
-- `psd/alwaseet-ad.psd`: layered, 1080×1350 (3D render + grade, red chevrons, museum label, headline & footer, logo).
+- `psd/alwaseet-ad.psd`: layered, 1080×1350 (3D render + grade, red chevrons, headline & footer, logo).
 - `ad.html`: the typography layer over `img/hero.png`. `node render.cjs` re-renders the PNG;
   `node render.cjs --layers` then `python build_psd.py` rebuilds the PSD.
 
