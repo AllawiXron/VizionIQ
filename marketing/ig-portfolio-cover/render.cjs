@@ -1,5 +1,5 @@
 // Renders carousel.html.
-//   node render.cjs            -> out/slide-01.png … slide-08.png (1620×2025, placeholders or your works/ photos)
+//   node render.cjs            -> out/slide-01.png … slide-06.png (1620×2025, placeholders or your works/ photos)
 //   node render.cjs --layers   -> also renders every slide layer by layer (1080×1350, transparent) into layers/,
 //                                which build_psd.py turns into psd/slide-0N.psd
 // Needs Playwright (`npm i -D playwright`) and its Chromium.
