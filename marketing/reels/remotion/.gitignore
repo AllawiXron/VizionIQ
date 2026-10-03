@@ -1,3 +1,5 @@
 node_modules/
 out/*
 !out/*.mp4
+.sfx-cache/
+public/sfx/

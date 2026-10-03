@@ -4,6 +4,7 @@ import {CameraMotionBlur} from '@remotion/motion-blur';
 import {Fonts} from './Fonts';
 import {clamp, prog, shake, sp, track} from './anim';
 import {B_END, S, SalaAd} from './SalaAd';
+import {Sound} from './Sound';
 
 export const DURATION = 450;              // 15 s at 30 fps; cuts sit on a 120 BPM grid (15 frames a beat)
 const BUILD0 = 66;                        // frame where the build starts
@@ -165,15 +166,15 @@ const Workspace: React.FC<{f: number; b: number}> = ({f, b}) => {
   );
 };
 
-// ---------------- captions (first person, Iraqi dialect) ----------------
+// ---------------- captions: the hook, then one numbered step per layer ----------------
 const CAPS: [number, number, string[], number[]][] = [
   [3, 34, ['شلون', 'سويت', 'هذا', 'الإعلان؟'], [3]],
   [52, 78, ['نبدي', 'من', 'الصفر'], [2]],
-  [81, 122, ['أول', 'شي:', 'أحمر', 'سلة', 'ورسوماتهم'], [2, 3]],
-  [126, 167, ['صورة', 'حقيقية…', 'مو', 'AI'], [2, 3]],
-  [171, 212, ['كارت', 'من', 'تطبيقهم', 'نفسه'], [2]],
-  [216, 296, ['ومثل', 'بيبيتي…', 'بس', 'بالمقلوب'], [3]],
-  [301, 324, ['وآخر', 'شي:', 'اللوگو'], [2]],
+  [81, 122, ['١', 'لون', 'البراند'], [0]],
+  [126, 167, ['٢', 'صورة', 'المنتج'], [0]],
+  [171, 212, ['٣', 'كارت', 'من', 'تطبيقهم'], [0]],
+  [216, 296, ['٤', 'العنوان', 'والسهم'], [0]],
+  [301, 324, ['٥', 'اللوگو'], [0]],
 ];
 const Captions: React.FC<{f: number}> = ({f}) => {
   const c = CAPS.find(([a, e]) => f >= a && f < e);
@@ -273,5 +274,6 @@ export const SalaReel: React.FC = () => (
     <CameraMotionBlur shutterAngle={200} samples={6}>
       <Scene />
     </CameraMotionBlur>
+    <Sound />
   </AbsoluteFill>
 );

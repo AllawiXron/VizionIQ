@@ -1,7 +1,8 @@
 # Reels in Remotion: "شلون سويت هذا الإعلان؟" (Sala)
 
-`out/sala-reel.mp4`: 1080×1920, 30 fps, 15 s, H.264, silent. Add a trending sound in Instagram or TikTok; the cuts sit on
-a 120 BPM grid (one beat every 15 frames), so most trending tracks line up.
+`out/sala-reel.mp4`: 1080×1920, 30 fps, 15 s, H.264 + AAC, with UI sound design (clicks, sweeps, pops, a confirmation
+chime, impacts). `out/sala-reel-silent.mp4`: the same without audio, for adding your own track. The cuts sit on a
+120 BPM grid (one beat every 15 frames), so most trending tracks line up.
 
 Made in [Remotion](https://www.remotion.dev) (React video). The Sala ad is rebuilt live as components
 (`src/SalaAd.tsx`, from `../../sala-ad/ad.html`), so each part has its own motion instead of flat layer images.
@@ -11,11 +12,11 @@ Made in [Remotion](https://www.remotion.dev) (React video). The Sala ad is rebui
 | 0–36 | **Cold open:** the finished ad in a Photoshop window, zoomed in. Caption «شلون سويت هذا الإعلان؟» |
 | 36–50 | **Rewind:** the build plays backwards fast (RGB split, scanlines, ◀◀) to an empty canvas |
 | 50–80 | Camera eases out to the whole window. «نبدي من الصفر» |
-| 80 | Cursor clicks the eye of *Red + doodles*: Sala's red floods out from the centre, their doodles settle. «أول شي: أحمر سلة ورسوماتهم» |
-| 125 | *Egg basket*: the camera punches in, the basket drops and bounces, and the camera shakes on impact. «صورة حقيقية… مو AI» |
-| 170–196 | *App card* slides in; the cursor taps its button: «إضافة إلى السلة» → «✓ أضيفت للسلة». «كارت من تطبيقهم نفسه» |
-| 215–281 | Grandma's line types in word by word, «إلا هاي.» stamps down (with shake), and the arrow draws itself onto the basket while the camera follows. «ومثل بيبيتي… بس بالمقلوب» |
-| 300 | Footer and logo. «وآخر شي: اللوگو» |
+| 80 | Cursor clicks the eye of *Red + doodles*: Sala's red floods out from the centre, their doodles settle. «١ لون البراند» |
+| 125 | *Egg basket*: the camera punches in, the basket drops and bounces, and the camera shakes on impact. «٢ صورة المنتج» |
+| 170–196 | *App card* slides in; the cursor taps its button: «إضافة إلى السلة» → «✓ أضيفت للسلة». «٣ كارت من تطبيقهم» |
+| 215–281 | The headline types in word by word, «إلا هاي.» stamps down (with shake), and the arrow draws itself onto the basket while the camera follows. «٤ العنوان والسهم» |
+| 300 | Footer and logo. «٥ اللوگو» |
 | 316–330 | Whip zoom into the canvas (motion blur) |
 | 330–450 | **End card** on the allawi.psd paper: «طبقة فوق طبقة · @allawi.psd», the ad springs into place in the orange ring, «تحب إعلان مثله لمشروعك؟ راسلني» |
 
@@ -25,14 +26,27 @@ Made to feel hand-edited:
 - a History panel that fills in as you work
 - handheld camera drift, punch-ins and impact shakes
 - real camera motion blur (`@remotion/motion-blur`, 6 samples, 200° shutter)
-- first-person captions in Iraqi dialect
+- captions: the hook, then one numbered step per layer
+- UI sound design synced to the frame
 
 Captions and the end card stay inside the Reels safe zone.
+
+## Sound
+
+`src/Sound.tsx` is the cue sheet (frame, sound, volume). `python sfx_prep.py` downloads and prepares the sounds into
+`public/sfx/` (trim, fades, level):
+- **Kenney** "Interface Sounds", "UI Audio" and "Impact Sounds" (kenney.nl), CC0: mouse click, ticks, pluck, glass
+  shimmer, soft and punch impacts.
+- **Mixkit** (mixkit.co), Mixkit Free Sound Effects License: free in commercial and personal projects, no attribution.
+  The raw files can't be redistributed, so they're fetched by the script and not committed. Used: explainer pop, air
+  sweep, small sweep, short sweep, confirmation tone, quick zoom impact, explainer pencil writing, fast tape rewind,
+  fast whoosh transition.
 
 ## Run
 
 ```
 npm install
+python sfx_prep.py                                    # sounds (needs ffmpeg + numpy)
 npx remotion studio                                   # preview and scrub in the browser
 npx remotion render src/index.ts SalaReel out/sala-reel.mp4 --concurrency=4
 ```
