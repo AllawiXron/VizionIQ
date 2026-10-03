@@ -1,5 +1,7 @@
 # Reels — "layer by layer" (allawi.psd)
 
+> **Current version: `remotion/`** (Remotion, `remotion/out/sala-reel.mp4`). The HTML-frame version below was the first draft.
+
 9:16 Reels (1080×1920, 30 fps, H.264 + AAC) that build an ad from its real PSD layers, for Instagram Reels and TikTok.
 
 **Sala (`out/sala-reel.mp4`, 13.5 s):**
