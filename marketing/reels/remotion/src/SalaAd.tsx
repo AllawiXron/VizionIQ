@@ -1,7 +1,10 @@
 import React from 'react';
 import {Img, staticFile} from 'remotion';
 import {evolvePath} from '@remotion/paths';
+import {Easing} from 'remotion';
 import {clamp, prog, sp} from './anim';
+
+const EXPO = Easing.bezier(0.16, 1, 0.3, 1);
 
 // The Sala ad (../../sala-ad/ad.html) rebuilt live, 1080x1350, so every part can move on its own.
 // `b` is build time in frames: each layer enters at its own moment (S.*). b >= B_END is the finished ad.
@@ -57,8 +60,8 @@ export const SalaAd: React.FC<{b: number}> = ({b}) => {
         <div style={{fontWeight: 600, fontSize: 24, letterSpacing: '0.02em', color: 'rgba(255,255,255,0.75)', marginBottom: 4, opacity: lead, transform: `translateY(${(1 - lead) * 10}px)`}}>بيبيتك تگول:</div>
         <div style={{display: 'flex', justifyContent: 'center', gap: '0.27em', whiteSpace: 'nowrap'}}>
           {WORDS.map((w, i) => {
-            const s = sp(b, S.txt + 3 + i * 3, {damping: 13, stiffness: 180});
-            return <span key={w} style={{display: 'inline-block', opacity: clamp(s * 1.6), transform: `translateY(${(1 - s) * 34}px) scale(${0.85 + 0.15 * s})`}}>{w}</span>;
+            const p = EXPO(clamp((b - S.txt - 3 - i * 3) / 12));
+            return <span key={w} style={{display: 'inline-block', opacity: p, filter: `blur(${(1 - p) * 12}px)`, transform: `translateY(${(1 - p) * 30}px)`}}>{w}</span>;
           })}
         </div>
       </div>

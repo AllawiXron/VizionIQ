@@ -1,24 +1,23 @@
 import React from 'react';
 import {Html5Audio, Sequence, staticFile} from 'remotion';
 
-// Sound cues [frame, sound, volume]. Sounds are prepared by sfx_prep.py (Kenney CC0 + Mixkit free license).
-// Kept outside the motion blur, which renders its children several times.
+// Sound cues [frame, sound, volume]. Sounds are prepared by sfx_prep.py (Elements SFX, CC0, + one Mixkit UI zoom).
+// Kept outside the motion blur, which renders its children several times. Captions have no sound of their own:
+// only actions do (clicks, layers landing, the stamp, the cut).
 const CUES: [number, string, number][] = [
-  [3, 'pop', 1],                                        // hook caption
-  [29, 'rewind', 1],                                    // tape rewind, peaks as the canvas empties (f50)
-  [52, 'pop', 0.9],                                     // «نبدي من الصفر»
-  [79, 'click', 1], [82, 'release', 1], [80, 'air', 1], [81, 'pop', 0.8],                  // ١ brand colour: red floods
-  [124, 'click', 1], [127, 'release', 1], [125, 'sweep', 1], [132, 'thud', 1], [126, 'pop', 0.8],   // ٢ basket drops, lands
-  [169, 'click', 1], [172, 'release', 1], [168, 'bright', 1], [171, 'pop', 0.8],           // ٣ card slides in
-  [195, 'click', 1], [198, 'release', 1], [197, 'chime', 1],                                // tap: «✓ أضيفت للسلة»
-  [214, 'click', 1], [217, 'release', 1], [216, 'pop', 0.8],                               // ٤ headline
-  [218, 'tick', 1], [221, 'tick', 1], [224, 'tick', 1], [227, 'tick', 1], [230, 'tick', 1], [233, 'tick', 1],
-  [239, 'zoomhit', 1], [251, 'punch', 1],               // «إلا هاي.» stamps down
-  [255, 'pencil', 1],                                   // the arrow draws itself
-  [299, 'click', 1], [302, 'release', 1], [301, 'pop', 0.8], [303, 'pop2', 1], [307, 'pop2', 0.8],  // ٥ logo, CTA
-  [309, 'whoosh', 1],                                   // whip zoom, peaks on the cut (f330)
-  [330, 'land', 1], [332, 'shimmer', 1],                // end card lands
-  [340, 'tick', 1.4], [344, 'tick', 1.4], [348, 'tick', 1.4], [354, 'pop', 1],   // «طبقة فوق طبقة», CTA
+  [2, 'whoosh', 0.55],                                  // the hook's words breathe in
+  [30, 'rewind', 1],                                    // reverse whoosh, peaks as the canvas empties (f50)
+  [79, 'click', 1], [80, 'flood', 0.9],                 // ١ brand colour: red floods out
+  [124, 'click', 1], [125, 'whoosh', 0.8], [131, 'thump', 1],          // ٢ the basket drops and lands
+  [169, 'click', 1], [168, 'swoosh', 0.75],             // ٣ the card slides in
+  [195, 'click', 1], [197, 'success', 0.9],             // tap: «✓ أضيفت للسلة»
+  [214, 'click', 1], [218, 'keys', 1],                  // ٤ the headline types in
+  [244, 'boom', 0.85],                                  // «إلا هاي.» lands (bass peaks at f251)
+  [255, 'zoomin', 0.8],                                 // the arrow draws itself
+  [299, 'click', 1], [301, 'pop', 0.9],                 // ٥ logo
+  [305, 'riser', 0.8], [319, 'whoosh2', 1],             // build into the whip zoom; both peak on the cut (f330)
+  [323, 'boom', 0.55], [330, 'reveal', 0.85],           // the end card lands
+  [356, 'pop', 0.7],                                    // «راسلني»
 ];
 
 export const Sound: React.FC = () => (

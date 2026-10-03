@@ -176,23 +176,31 @@ const CAPS: [number, number, string[], number[]][] = [
   [216, 296, ['٤', 'العنوان', 'والسهم'], [0]],
   [301, 324, ['٥', 'اللوگو'], [0]],
 ];
+// Apple-style word reveal: each word rises out of a soft blur, one after another, no bounce
+const expo = Easing.bezier(0.16, 1, 0.3, 1);
+const Words: React.FC<{f: number; start: number; words: string[]; stagger?: number; color?: (i: number) => string; gap?: number}> = ({f, start, words, stagger = 4, color = () => '#fff', gap = 16}) => (
+  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap, direction: 'rtl', whiteSpace: 'nowrap'}}>
+    {words.map((w, i) => {
+      const p = expo(clamp((f - start - i * stagger) / 14));
+      return <span key={i} style={{display: 'inline-block', color: color(i), opacity: p, filter: `blur(${(1 - p) * 14}px)`, transform: `translateY(${(1 - p) * 26}px) scale(${0.96 + 0.04 * p})`}}>{w}</span>;
+    })}
+  </div>
+);
+
 const Captions: React.FC<{f: number}> = ({f}) => {
   const c = CAPS.find(([a, e]) => f >= a && f < e);
   if (!c) return null;
   const [a, e, words, hi] = c;
-  const out = prog(f, e - 5, e);
+  const pin = expo(clamp((f - a + 2) / 12));
+  const out = Easing.in(Easing.cubic)(clamp((f - (e - 7)) / 7));
   return (
-    <div style={{position: 'absolute', left: 50, right: 50, top: 1290, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '0 18px', direction: 'rtl',
-      fontFamily: 'Alexandria', fontWeight: 800, fontSize: 66, lineHeight: 1.3, opacity: 1 - out, transform: `translateY(${out * 14}px)`}}>
-      {words.map((w, i) => {
-        const s = sp(f, a + i * 2.5, {damping: 12, stiffness: 210});
-        const h = hi.includes(i);
-        return (
-          <span key={i} style={{display: 'inline-block', color: h ? '#fff' : '#fff', opacity: clamp(s * 1.8), transform: `translateY(${(1 - s) * 26}px) scale(${0.7 + 0.3 * s})`,
-            padding: h ? '0 14px' : 0, borderRadius: 14, background: h ? `linear-gradient(180deg, ${C.orange2}, ${C.orange})` : 'transparent',
-            textShadow: h ? 'none' : '3px 0 0 #111, -3px 0 0 #111, 0 3px 0 #111, 0 -3px 0 #111, 2px 2px 0 #111, -2px 2px 0 #111, 2px -2px 0 #111, -2px -2px 0 #111, 0 6px 14px rgba(0,0,0,0.5)', boxShadow: h ? '0 8px 18px rgba(0,0,0,0.3)' : 'none'}}>{w}</span>
-        );
-      })}
+    <div style={{position: 'absolute', left: 0, right: 0, top: 1300, display: 'flex', justifyContent: 'center',
+      opacity: 1 - out, filter: `blur(${out * 10}px)`, transform: `translateY(${-out * 10}px)`}}>
+      <div style={{padding: '18px 38px 22px', borderRadius: 999, background: 'rgba(24, 22, 22, 0.58)', backdropFilter: 'blur(26px) saturate(1.5)',
+        boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.14), 0 18px 40px rgba(0,0,0,0.35)', opacity: pin, transform: `scale(${0.94 + 0.06 * pin})`,
+        fontFamily: 'Alexandria', fontWeight: 700, fontSize: 58, lineHeight: 1.25}}>
+        <Words f={f} start={a} words={words} color={(i) => (hi.includes(i) ? '#ff8a3d' : '#fff')} />
+      </div>
     </div>
   );
 };
@@ -216,35 +224,33 @@ const GRAIN = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/s
 const EndCard: React.FC<{f: number}> = ({f}) => {
   const t = f - CUT;
   const s = sp(t, 0, {damping: 17, stiffness: 120});
-  const W = 780, sc = W / 1080, x = 150, y = 400;
+  const W = 740, sc = W / 1080, x = 170, y = 392, H = 1350 * sc;
   const float = 5 * Math.sin(t / 18);
   const ring = sp(t, 4, {damping: 18, stiffness: 90});
-  const words = ['طبقة', 'فوق', 'طبقة'];
-  const cta = sp(t, 24, {damping: 13, stiffness: 160});
+  const chip = expo(clamp((t - 46) / 14));
+  const tag = expo(clamp((t - 6) / 14));
   return (
     <AbsoluteFill style={{background: 'radial-gradient(120% 80% at 50% 10%, #f1e9dc 0%, #ece3d4 55%, #e3d6c2 100%)', fontFamily: 'Alexandria', color: '#1f1510', direction: 'rtl'}}>
-      <div style={{position: 'absolute', left: 540 - 560, top: 887 - 560, width: 1120, height: 1120, borderRadius: '50%', border: '22px solid #e2541b', filter: 'blur(2.2px)',
+      <div style={{position: 'absolute', left: 540 - 540, top: y + H / 2 - 540, width: 1080, height: 1080, borderRadius: '50%', border: '22px solid #e2541b', filter: 'blur(2.2px)',
         transform: `scale(${0.6 + 0.4 * ring})`, opacity: ring}} />
-      <div style={{position: 'absolute', left: 0, right: 0, top: 226, textAlign: 'center'}}>
-        <div style={{fontFamily: '"IBM Plex Mono"', fontWeight: 500, fontSize: 24, letterSpacing: '0.16em', direction: 'ltr', color: 'rgba(31,21,16,0.62)', opacity: prog(t, 8, 16)}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 222, textAlign: 'center'}}>
+        <div style={{fontFamily: '"IBM Plex Mono"', fontWeight: 500, fontSize: 24, letterSpacing: '0.16em', direction: 'ltr', color: 'rgba(31,21,16,0.62)',
+          opacity: tag, filter: `blur(${(1 - tag) * 8}px)`}}>
           <span style={{display: 'inline-block', width: 12, height: 12, borderRadius: '50%', background: '#e2541b', marginRight: 14, verticalAlign: 2}} />@ALLAWI.PSD
         </div>
-        <div style={{display: 'flex', justifyContent: 'center', gap: 22, marginTop: 6, fontWeight: 800, fontSize: 80, lineHeight: 1.3}}>
-          {words.map((w, i) => {
-            const k = sp(t, 10 + i * 4, {damping: 12, stiffness: 200});
-            return <span key={i} style={{display: 'inline-block', color: i === 2 ? '#e2541b' : '#1f1510', opacity: clamp(k * 1.8), transform: `translateY(${(1 - k) * 30}px) scale(${0.75 + 0.25 * k})`}}>{w}</span>;
-          })}
+        <div style={{marginTop: 4, fontWeight: 800, fontSize: 80, lineHeight: 1.3}}>
+          <Words f={t} start={10} stagger={5} gap={22} words={['طبقة', 'فوق', 'طبقة']} color={(i) => (i === 2 ? '#e2541b' : '#1f1510')} />
         </div>
       </div>
-      <div style={{position: 'absolute', left: x, top: y + float, width: W, height: 1350 * sc, transformOrigin: '50% 50%',
+      <div style={{position: 'absolute', left: x, top: y + float, width: W, height: H, transformOrigin: '50% 50%',
         transform: `scale(${1 + 0.9 * (1 - s)}) rotate(${(1 - s) * -3}deg)`, boxShadow: '18px 30px 60px rgba(70,30,10,0.3), 0 3px 8px rgba(70,30,10,0.15)'}}>
         <div style={{transform: `scale(${sc})`, transformOrigin: '0 0'}}><SalaAd b={B_END + 40} /></div>
       </div>
-      <div style={{position: 'absolute', left: 50, right: 50, top: 1410, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 20,
-        opacity: clamp(cta * 1.6), transform: `translateY(${(1 - cta) * 30}px)`}}>
-        <b style={{fontWeight: 800, fontSize: 46}}>تحب إعلان مثله لمشروعك؟</b>
-        <span style={{height: 66, padding: '0 28px', borderRadius: 18, display: 'flex', alignItems: 'center', color: '#fbf3e6', fontWeight: 700, fontSize: 30,
-          background: 'linear-gradient(180deg, #f07a2e, #e2541b)', boxShadow: '0 12px 24px rgba(150,50,10,0.3)'}}>راسلني</span>
+      <div style={{position: 'absolute', left: 40, right: 40, top: 1420, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 22, direction: 'rtl'}}>
+        <div style={{fontWeight: 800, fontSize: 46}}><Words f={t} start={26} stagger={4} gap={13} words={['تحب', 'إعلان', 'مثله', 'لمشروعك؟']} color={() => '#1f1510'} /></div>
+        <span style={{height: 68, padding: '0 30px', borderRadius: 999, display: 'flex', alignItems: 'center', color: '#fbf3e6', fontWeight: 700, fontSize: 30,
+          background: 'linear-gradient(180deg, #f07a2e, #e2541b)', boxShadow: '0 12px 24px rgba(150,50,10,0.3)',
+          opacity: chip, filter: `blur(${(1 - chip) * 10}px)`, transform: `translateY(${(1 - chip) * 22}px) scale(${0.92 + 0.08 * chip})`}}>راسلني</span>
       </div>
       <AbsoluteFill style={{opacity: 0.3, mixBlendMode: 'multiply', backgroundImage: GRAIN}} />
       <AbsoluteFill style={{background: '#fff', opacity: 0.6 * (1 - prog(t, 0, 6))}} />

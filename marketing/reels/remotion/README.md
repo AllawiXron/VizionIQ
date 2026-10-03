@@ -1,7 +1,7 @@
 # Reels in Remotion: "شلون سويت هذا الإعلان؟" (Sala)
 
-`out/sala-reel.mp4`: 1080×1920, 30 fps, 15 s, H.264 + AAC, with UI sound design (clicks, sweeps, pops, a confirmation
-chime, impacts). `out/sala-reel-silent.mp4`: the same without audio, for adding your own track. The cuts sit on a
+`out/sala-reel.mp4`: 1080×1920, 30 fps, 15 s, H.264 + AAC, with motion-graphics sound design (clicks, whooshes, a
+success chime, keyboard, bass hits, a riser and a reveal). `out/sala-reel-silent.mp4`: the same without audio, for adding your own track. The cuts sit on a
 120 BPM grid (one beat every 15 frames), so most trending tracks line up.
 
 Made in [Remotion](https://www.remotion.dev) (React video). The Sala ad is rebuilt live as components
@@ -26,21 +26,21 @@ Made to feel hand-edited:
 - a History panel that fills in as you work
 - handheld camera drift, punch-ins and impact shakes
 - real camera motion blur (`@remotion/motion-blur`, 6 samples, 200° shutter)
-- captions: the hook, then one numbered step per layer
+- Apple-style captions: each word rises out of a soft blur, one after another, on a frosted-glass pill; the hook, then one numbered step per layer
 - UI sound design synced to the frame
 
 Captions and the end card stay inside the Reels safe zone.
 
 ## Sound
 
-`src/Sound.tsx` is the cue sheet (frame, sound, volume). `python sfx_prep.py` downloads and prepares the sounds into
-`public/sfx/` (trim, fades, level):
-- **Kenney** "Interface Sounds", "UI Audio" and "Impact Sounds" (kenney.nl), CC0: mouse click, ticks, pluck, glass
-  shimmer, soft and punch impacts.
-- **Mixkit** (mixkit.co), Mixkit Free Sound Effects License: free in commercial and personal projects, no attribution.
-  The raw files can't be redistributed, so they're fetched by the script and not committed. Used: explainer pop, air
-  sweep, small sweep, short sweep, confirmation tone, quick zoom impact, explainer pencil writing, fast tape rewind,
-  fast whoosh transition.
+`src/Sound.tsx` is the cue sheet (frame, sound, volume). Only actions make sound (clicks, layers landing, the stamp,
+the cut); captions are silent. `python sfx_prep.py` downloads and prepares the sounds into `public/sfx/` (trim, fades,
+level; the clicks and pops get a gentle low-pass and a small dark room so they sound glassy rather than dry):
+- **Elements SFX** by Crafter Station (github.com/crafter-station/elements), CC0, made for motion graphics: click,
+  pop, whoosh, whoosh-alt1/alt2, swoosh, reverse-whoosh, riser, boom, success, keyboard, magic-reveal.
+- **Mixkit** (mixkit.co), Mixkit Free Sound Effects License (free in commercial and personal projects, no
+  attribution): "User interface zoom in". The raw files can't be redistributed, so they're fetched by the script and
+  not committed.
 
 ## Run
 
