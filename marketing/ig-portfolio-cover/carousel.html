@@ -42,8 +42,8 @@
 
   /* orbit rings — a nod to the orange loops in the reference */
   .rings { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-  /* one continuous loop drawn across slides 2–7, each slide shows its own window */
-  .loop { position: absolute; top: 0; height: 1350px; width: 6480px; z-index: 1; pointer-events: none; }
+  /* one continuous loop drawn across slides 2–8, each slide shows its own window */
+  .loop { position: absolute; top: 0; height: 1350px; width: 7560px; z-index: 1; pointer-events: none; }
 
   /* top meta strip */
   .meta {
@@ -233,6 +233,26 @@
   .igcap { position: absolute; z-index: 20; direction: rtl; text-align: right; font-size: 16px; line-height: 1.5; color: #14100d; }
   .igcap b { font-weight: 600; direction: ltr; unicode-bidi: isolate; }
 
+  /* Photoshop-style Layers panel (slide 7) */
+  .lpanel { position: absolute; z-index: 12; width: 440px; border-radius: 14px; overflow: hidden; direction: ltr; color: var(--cream);
+    background: #241912; box-shadow: 18px 28px 50px rgba(60, 25, 8, 0.34), inset 0 0 0 1px rgba(251, 243, 230, 0.1); }
+  .lpanel .tabs { height: 46px; display: flex; align-items: flex-end; gap: 22px; padding: 0 18px; border-bottom: 1px solid rgba(251, 243, 230, 0.14);
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; }
+  .lpanel .tabs span { padding-bottom: 12px; opacity: 0.45; }
+  .lpanel .tabs .on { opacity: 1; border-bottom: 2px solid var(--orange); }
+  .lpanel .tabs .file { margin-left: auto; opacity: 0.6; letter-spacing: 0.04em; text-transform: none; }
+  .lpanel .mode { height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 18px; border-bottom: 1px solid rgba(251, 243, 230, 0.14);
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; opacity: 0.7; }
+  .lrow { height: 64px; display: flex; align-items: center; gap: 14px; padding: 0 16px; border-bottom: 1px solid rgba(251, 243, 230, 0.08);
+    font-family: "Readex Pro"; font-size: 18px; font-weight: 500; white-space: nowrap; }
+  .lrow .eye { width: 20px; height: 20px; flex: none; opacity: 0.85; }
+  .lrow img { width: 40px; height: 50px; flex: none; display: block; outline: 1.5px solid rgba(251, 243, 230, 0.3); }
+  .lrow.on { background: linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%); }
+  .lrow.on img { outline-color: var(--cream); }
+  .lpanel .tools { height: 42px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; padding: 0 18px; opacity: 0.6; }
+  .lpanel .tools svg { width: 18px; height: 18px; }
+  .lpanel .tools .fx { font-family: "Instrument Serif", serif; font-style: italic; font-size: 20px; line-height: 1; }
+
   /* ---------- layer export modes (render one layer at a time for the PSDs) ---------- */
   body.export { background: transparent; padding: 0; gap: 0; }
   body.export .slide { display: none; }
@@ -332,7 +352,7 @@
     <span class="name">بَلي</span>
   </div>
 
-  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">02 / 07</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">02 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
   <div class="grain"></div>
 </section>
 
@@ -359,7 +379,7 @@
   <div class="edge L-ui" style="left:64px; top:430px; width:440px; height:550px"></div>
   <div class="cap r L-txt" style="right:576px; top:1016px"><span class="name">صاج الريف</span><span class="mono">Offer post · 2026</span></div>
 
-  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">03 / 07</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">03 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
   <div class="grain"></div>
 </section>
 
@@ -396,7 +416,7 @@
   <svg class="cursor L-ui" style="left: 1010px; top: 1172px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
   <div class="spec L-txt" style="left:64px; top:1030px"><b>Fig. 03</b>Full post · Detail</div>
 
-  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">04 / 07</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">04 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
   <div class="grain"></div>
 </section>
 
@@ -420,7 +440,7 @@
   <svg class="cursor L-ui" style="left: 908px; top: 736px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
 
 
-  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">05 / 07</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">05 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
   <div class="grain"></div>
 </section>
 
@@ -463,13 +483,60 @@
   <div class="lead rev L-ui" style="left:773px; width:153px; top:362px"></div>
   <div class="spec L-txt" style="right:64px; top:302px; text-align:right"><b>Feed</b>Preview</div>
 
-  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">06 / 07</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">06 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
   <div class="grain"></div>
 </section>
 
-<!-- ============ 07 · CLOSING ============ -->
-<section class="slide glow" id="s7" style="--y: 700px; --rot: -5deg">
+<!-- ============ 07 · LAYERS (1 photo 4:5 + the file's real Layers panel) ============ -->
+<section class="slide inner" id="s7">
   <svg class="loop" style="left: -5400px"><use href="#loop" /></svg>
+  <div class="meta L-txt"><span><span class="dot"></span>Portfolio — Vol.01</span><span class="ar">ملف الأعمال ٢٠٢٦</span></div>
+  <div class="hd L-txt"><span class="en">Layers</span><span class="rule"></span><span class="num">٦</span></div>
+
+  <div class="shadow" style="left:456px; top:296px; width:560px; height:700px"></div>
+  <div class="slot" data-i="1" style="left:456px; top:296px; width:560px; height:700px; --img:url(works/07-1.jpg)">
+    <div class="ph"><svg><use href="#i-img" /></svg><b>ضع صورتك هنا</b><small>Photo 1 · 4:5</small></div>
+  </div>
+  <div class="edge L-ui" style="left:456px; top:296px; width:560px; height:700px"></div>
+  <!-- the selected layer's bounds (the app card inside the ad) -->
+  <div class="sel L-ui" style="left:690px; top:615px; width:282px; height:47px">
+    <div class="frame" style="inset:-8px"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+  </div>
+
+
+  <div class="lpanel L-ui" style="left:64px; top:296px">
+    <div class="tabs"><span class="on">LAYERS</span><span>CHANNELS</span><span class="file">sala_ad.psd</span></div>
+    <div class="mode"><span>NORMAL ▾</span><span>OPACITY 100%</span></div>
+    <div class="lrow"><svg class="eye"><use href="#i-eye" /></svg><img src="img/sala-layers/logo.png" alt="" /><span>Logo</span></div>
+    <div class="lrow"><svg class="eye"><use href="#i-eye" /></svg><img src="img/sala-layers/txt.png" alt="" /><span>Headline &amp; footer</span></div>
+    <div class="lrow on"><svg class="eye"><use href="#i-eye" /></svg><img src="img/sala-layers/card.png" alt="" /><span>App card</span></div>
+    <div class="lrow"><svg class="eye"><use href="#i-eye" /></svg><img src="img/sala-layers/food.png" alt="" /><span>Egg basket (photo)</span></div>
+    <div class="lrow"><svg class="eye"><use href="#i-eye" /></svg><img src="img/sala-layers/bg.png" alt="" /><span>Red + doodles</span></div>
+    <div class="tools">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></svg>
+      <span class="fx">fx</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="5" width="17" height="14" rx="1.5" /><circle cx="12" cy="12" r="3.6" /></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3.5 6.5h6l2 2h9v10h-17z" /></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2" /><path d="M12 8v8M8 12h8" /></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 6.5h15M9.5 6.5V4h5v2.5M6.5 6.5l1 13.5h9l1-13.5" /></svg>
+    </div>
+  </div>
+  <svg class="cursor L-ui" style="left: 300px; top: 544px; z-index: 13" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+
+  <div class="case L-txt" style="left:64px; width:352px; top:790px">
+    <h2>سلة</h2>
+    <p>بيبيتك تگول لا تخلي البيض كله بسلة وحدة، والإعلان يجاوبها: <b style="font-weight:600; color:var(--orange); white-space:nowrap">إلا هاي.</b></p>
+  </div>
+
+  <div class="spec L-txt" style="left:456px; top:1030px"><b>Fig. 04</b>Full post · 5 layers</div>
+
+  <div class="ft L-txt"><span>@allawi.psd</span><span class="pg">07 / 08</span><span class="sw">Swipe <svg><use href="#i-arrow" /></svg></span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ============ 08 · CLOSING ============ -->
+<section class="slide glow" id="s8" style="--y: 700px; --rot: -5deg">
+  <svg class="loop" style="left: -6480px"><use href="#loop" /></svg>
   <svg class="rings" viewBox="0 0 1080 1350">
     <g fill="none" stroke="#e2541b" filter="url(#soft)">
       <circle cx="540" cy="840" r="392" stroke-width="22" />
@@ -518,7 +585,7 @@
   <div class="grain"></div>
 </section>
 
-<!-- the loop that runs across slides 2–7 (drawn once, 6 slides wide) -->
+<!-- the loop that runs across slides 2–8 (drawn once, 7 slides wide) -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <g id="loop" fill="none" stroke="#e2541b" stroke-width="22" stroke-linecap="round" filter="url(#soft)">
@@ -530,7 +597,7 @@
 <script>
 
   // the orange loop: one smooth stroke through these points (slide number, local x, local y).
-  // It runs mostly through margins and gaps, and on slide 7 lands tangent on the halo ring (left side, heading down).
+  // It runs mostly through margins and gaps, and on slide 8 lands tangent on the halo ring (left side, heading down).
   (function () {
     const P = [
       [2, -80, 1080], [2, 110, 1010], [2, 540, 760], [2, 975, 560],
@@ -538,7 +605,8 @@
       [4, 300, 1180], [4, 840, 990],
       [5, 90, 760], [5, 540, 640], [5, 990, 480],
       [6, 150, 1080], [6, 540, 820], [6, 930, 600],
-      [7, 60, 730], [7, 148, 850], [7, 148, 960],
+      [7, 30, 820], [7, 250, 1170], [7, 700, 1150], [7, 1050, 960],
+      [8, 60, 730], [8, 148, 850], [8, 148, 960],
     ].map(([k, x, y]) => [(k - 2) * 1080 + x, y]);
     let d = `M${P[0][0]},${P[0][1]}`;
     for (let i = 0; i < P.length - 2; i++) {

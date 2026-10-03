@@ -1,9 +1,9 @@
 # Instagram carousel — allawi.psd portfolio ("أعمالي · سوشيال ميديا")
 
-Seven 4:5 slides for @allawi.psd. Slide 1 is the cover: a CC0 marble head whose blindfold is a selected
-Photoshop layer named `allawi.psd`. Slides 2–6 show five social ads (each in its own folder under `../`), and slide 7
+Eight 4:5 slides for @allawi.psd. Slide 1 is the cover: a CC0 marble head whose blindfold is a selected
+Photoshop layer named `allawi.psd`. Slides 2–7 show six social ads (each in its own folder under `../`), and slide 8
 closes the set with the same statue after the layer has been dragged off its eyes. One orange loop runs through slides
-2–7 and ends in the halo ring on the last slide, so it reads as one line while swiping.
+2–8 and ends in the halo ring on the last slide, so it reads as one line while swiping.
 
 | Slide | Layout | What's in it (`works/`) | Frames (in the 1080×1350 PSD) |
 |---|---|---|---|
@@ -13,7 +13,8 @@ closes the set with the same statue after the layer has been dragged off its eye
 | 04 | Case study | Al-Waseet ad (`04-1`) + a 1:1 close-up of the genie's parcel (`04-2`) | 560×700 · 348×348 |
 | 05 | Details 2×2 | Close-ups: Baly card (`05-1`, top-right), Miswag card (`05-2`, top-left), Saj Al-Reef offer (`05-3`, bottom-right), Al-Faqma cooler plate (`05-4`, bottom-left) | 352×440 each (4:5) |
 | 06 | On screen (phone) | Al-Faqma ad in the Instagram feed (`06-1`) | 440×550 (4:5) |
-| 07 | Closing | — | — |
+| 07 | Layers | Sala ad (`07-1`, from `../sala-ad`) next to its real Photoshop Layers panel, with the App card layer selected | 560×700 (4:5) |
+| 08 | Closing | — | — |
 
 The ads are spec/concept work for real Iraqi brands; `caption.txt` says so, and credits the Baly photo
 (ainudil, CC BY-SA 2.0) as its licence requires.
@@ -39,10 +40,12 @@ Type tool using the same fonts (below).
 
 ## Files
 
-- `out/slide-01.png` … `slide-07.png`: 1620×2025 slides, ready to post in order.
-- `psd/slide-01.psd` … `slide-07.psd`: layered files; each work sits as a layer clipped to its `PHOTO` frame.
+- `out/slide-01.png` … `slide-08.png`: 1620×2025 slides, ready to post in order.
+- `psd/slide-01.psd` … `slide-08.psd`: layered files; each work sits as a layer clipped to its `PHOTO` frame.
 - `caption.txt`: the post caption.
 - `carousel.html`: the source for all slides.
+- `img/sala-layers/`: the layer thumbnails in the slide 7 panel, made from `../sala-ad/layers/` (Logo and App card use
+  Photoshop's Layer Bounds thumbnails, on the medium transparency grid).
 - `render.cjs`: `node render.cjs` renders `out/`; `node render.cjs --layers` also renders every layer into `layers/`
   (needs Playwright: `npm i -D playwright`).
 - `build_psd.py`: turns `layers/` into `psd/` (`pip install psd-tools pillow`, then `python build_psd.py`).
