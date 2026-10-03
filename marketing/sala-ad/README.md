@@ -6,14 +6,16 @@ literally reads «اضافة الى السلة».
 
 **Idea.** Twist the proverb everybody grew up with:
 
+> جدتك تگول:
 > لا تحط كل بيضك بسلة وحدة
 > **إلا هاي.**
 >
-> "Don't put all your eggs in one basket. Except this one."
+> "Grandma says: don't put all your eggs in one basket. Except this one."
 
-A real basket of eggs sits in the middle of their own hand-drawn grocery doodles, a white hand-drawn arrow runs from
-«هاي» to it, and an app card in their UI language is pinned on the basket: «طبقة بيض، ٣٠ حبة · توصيل للرمادي والفلوجة ·
-✓ أضيفت للسلة». Footer: their logo, their line «تسوّق بذكاء من بيتك» and «حمّل التطبيق».
+A real basket of eggs, tilted and lit (a soft glow behind, a contact shadow under it), sits in the middle of their own
+hand-drawn grocery doodles. A white hand-drawn stroke underlines «هاي» and swings into an arrow onto the basket, and an
+app card in their UI language, with a thumbnail cropped from the same eggs, is pinned on it: «طبقة بيض، ٣٠ حبة ·
+توصيل للرمادي والفلوجة · ✓ أضيفت للسلة». Footer: their logo, their line «تسوّق بذكاء من بيتك» and «حمّل التطبيق».
 
 Same allawi.psd system as the Baly, Miswag and Saj Al-Reef posts (real photography, Alexandria dialect headline
 built as a line and a short punch, a pinned app card, logo + CTA footer), in Sala's red and white.
