@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>Miswag — مسواگ جدك بالشورجة</title>
+<link rel="stylesheet" href="fonts/src.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; display: flex; justify-content: center; padding: 40px 0; }
+
+  .ad { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: #fff; background: #0b0b0c; font-family: "Alexandria", sans-serif; }
+  /* real photo: Inside the Shorjah market, Baghdad, 1932 (LOC, public domain), graded in photo/grade.py */
+  .hero { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .shade {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(8, 8, 9, 0.55) 0%, rgba(8, 8, 9, 0) 14%),
+      linear-gradient(0deg, rgba(8, 8, 9, 0.92) 0%, rgba(8, 8, 9, 0.75) 22%, rgba(8, 8, 9, 0) 40%);
+  }
+  .grain {
+    position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0.2; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+  }
+
+  /* when + where */
+  .stamp { position: absolute; z-index: 10; top: 48px; right: 56px; direction: rtl; font-weight: 600; font-size: 20px; letter-spacing: 0.02em; color: rgba(255, 255, 255, 0.85); display: flex; align-items: center; gap: 12px; }
+  .stamp i { width: 10px; height: 10px; border-radius: 50%; background: #de1c24; }
+
+  /* headline on the floor */
+  .q { position: absolute; z-index: 10; top: 990px; left: 0; right: 0; text-align: center; direction: rtl; font-weight: 800; font-size: 56px; line-height: 1.35; color: rgba(255, 255, 255, 0.94); white-space: nowrap; }
+  .a { position: absolute; z-index: 10; top: 1072px; left: 0; right: 0; text-align: center; direction: rtl; font-weight: 900; font-size: 100px; line-height: 1.3; color: #f0222b; white-space: nowrap; letter-spacing: -0.01em; text-shadow: 0 14px 40px rgba(0, 0, 0, 0.5); }
+
+  /* the order card, pinned above the waiting man */
+  .pin { position: absolute; z-index: 10; left: 541px; top: 404px; transform: translateX(-50%); direction: rtl; }
+  .card { display: flex; align-items: center; gap: 16px; background: #fff; color: #1a1b22; border-radius: 22px; padding: 14px 18px 14px 22px; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5); white-space: nowrap; }
+  .card img { width: 58px; height: 58px; border-radius: 16px; flex: none; }
+  .card .t b { display: block; font-weight: 800; font-size: 25px; line-height: 1.3; }
+  .card .t span { display: block; font-weight: 500; font-size: 18px; color: #5a5d6b; line-height: 1.4; }
+  .card .badge { flex: none; background: #de1c24; color: #fff; border-radius: 14px; padding: 8px 12px; text-align: center; line-height: 1.1; }
+  .card .badge b { display: block; font-weight: 900; font-size: 22px; }
+  .card .badge small { font-weight: 600; font-size: 13px; opacity: .9; }
+  .pin .tail { position: absolute; left: 50%; bottom: -12px; width: 26px; height: 26px; background: #fff; transform: translateX(-50%) rotate(45deg); border-radius: 4px; }
+
+  /* footer */
+  .foot { position: absolute; z-index: 10; left: 56px; right: 56px; bottom: 46px; display: flex; justify-content: space-between; align-items: center; direction: rtl; }
+  .foot .brand { display: flex; align-items: center; gap: 22px; }
+  .foot .brand img { height: 50px; }
+  .foot .brand span { font-weight: 600; font-size: 21px; color: rgba(255, 255, 255, 0.9); padding-right: 22px; border-right: 2px solid rgba(255, 255, 255, 0.3); line-height: 1.5; }
+  .foot .cta { background: #de1c24; color: #fff; font-weight: 800; font-size: 22px; padding: 14px 26px; border-radius: 16px; }
+
+  /* layer export (one PSD layer at a time) */
+  body.export { background: transparent; padding: 0; display: block; }
+  body.export .ad [data-l] { visibility: hidden; }
+  body.export:not(.m-bg) .ad { background: none; }
+  body.m-bg .ad [data-l="bg"], body.m-logo .ad [data-l="logo"], body.m-txt .ad [data-l="txt"],
+  body.m-card .ad [data-l="card"] { visibility: visible; }
+</style>
+</head>
+<body>
+<section class="ad" id="ad">
+  <img class="hero" data-l="bg" src="img/hero.png" alt="" />
+  <div class="shade" data-l="bg"></div>
+  <div class="grain" data-l="bg"></div>
+
+  <div class="stamp" data-l="txt"><i></i>الشورجة، بغداد، سنة ١٩٣٢</div>
+
+  <div class="pin" data-l="card">
+    <div class="card">
+      <img src="img/app-icon.png" alt="" />
+      <div class="t"><b>طلبك بالطريق</b><span>توصيل لكل العراق · الدفع عند الاستلام</span></div>
+      <div class="badge"><b>مجاني</b><small>أول توصيل</small></div>
+    </div>
+    <i class="tail"></i>
+  </div>
+
+  <div class="q" data-l="txt">مسواگ جدك بالشورجة</div>
+  <div class="a" data-l="txt">ومسواگك بكبسة.</div>
+
+  <div class="foot">
+    <div class="brand"><img data-l="logo" src="img/logo-white.png" alt="miswag" /><span data-l="txt">أكثر من ١٧٠ ألف منتج أصلي</span></div>
+    <div class="cta" data-l="txt">حمّل التطبيق</div>
+  </div>
+</section>
+</body>
+</html>
