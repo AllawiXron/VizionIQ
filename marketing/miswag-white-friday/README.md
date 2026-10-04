@@ -5,13 +5,14 @@ Shorja ad). Both play on the word "white" in an Iraqi saying.
 
 **The look (v5):** the same language as big regional campaigns (valU, Injaz, Bunzy). Each post has one product in
 a seamless red studio, big white display lettering (Lalezar, with Marhey for the lead line), a small logo top right,
-the campaign tag top left, and one CTA. The two studio shots were made with ChatGPT image generation by allawi.psd
-(`photo/chatgpt-pricetag.png`, `photo/chatgpt-gift.png`); the gift shot is upscaled with Real-ESRGAN.
+the campaign tag top left, and one CTA. The gift studio shot was made with ChatGPT image generation by allawi.psd
+(`photo/chatgpt-gift.png`, upscaled with Real-ESRGAN); the price-tag post uses real stock photos.
 
-**1 · «بالجمعة البيضاء… الأسعار انگصّت»** «انگصّت» is Iraqi for "got cut": a blank price tag snipped in half by
-scissors, with the Miswag mark printed on the tag (multiplied into the card, at its angle). The white pill says it
-plainly: «كلشي من مسواگ بأسعار أقل». (This replaced the piggy-bank post; its files, `photo/chatgpt-piggy.png` and
-the 1932 riyal cut-out `img/riyal.png`, are kept.)
+**1 · «بالجمعة البيضاء… الأسعار انگصّت»** «انگصّت» is Iraqi for "got cut". A flat lay on red paper, made with real
+photos only (no AI). A white price tag, printed with «السعر» and the Miswag mark, is slashed diagonally right
+through the word; the cut-off piece slides away, and open scissors come in from the right edge with the blades in
+the cut. The white pill says it plainly: «كلشي من مسواگ بأسعار أقل». The tag is split in `ads.html` (two clipped
+copies with their own shadows), so the cut and the print line up exactly.
 
 **2 · «هدية لأمك، لخطيبتك، لأهلك… بيّض وجهك»** «بيّض وجهك» is what you say to someone who did right by you; here it
 is the gift you bring home. To make it plainly Miswag's, the gift has a Miswag tag tied to the bow. The line under
@@ -23,12 +24,17 @@ the headline says what the post is: «هداياك من مسواگ بأسعار 
   `python build_psd.py` rebuilds the PSDs.
 - `photo/prep_sets.py`: prepares the studio shots at 1620×2025 (`--x4 DIR` uses Real-ESRGAN upscales); it moves the
   gift up so it clears the CTA row (and, for the retired piggy shot, paints out the generated US quarter).
+- `photo/prep_pricetag.py`: cuts out the tag (white on black, by brightness) and the scissors (on orange-red paper,
+  by colour), turns the scissors' teal handles white and neutralises the red cast on the blades.
 - `photo/prep.py`: the coin cut-out (`img/riyal.png`), plus earlier cut-outs from stock photos (piggy, gift box)
   used in v4.
 
 ## Photos
 
-- Studio shots: generated with ChatGPT by allawi.psd.
+- Price tag: Pexels 7966577 (Pexels License): https://www.pexels.com/photo/7966577/
+- Scissors: Pexels 5994301 (Pexels License): https://www.pexels.com/photo/5994301/
+- Gift studio shot: generated with ChatGPT by allawi.psd. (The price-tag and piggy shots from ChatGPT are kept in
+  `photo/` but no longer used.)
 - 1932 Iraqi 1 riyal (Faisal I), by Windrain, CC0, on Wikimedia Commons:
   https://commons.wikimedia.org/w/index.php?curid=155062265
 - v4 stock photos (kept in `photo/`): piggy bank by Jay Castor, Unsplash (https://unsplash.com/photos/jZnvn5x08BE);
