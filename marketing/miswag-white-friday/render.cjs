@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const url = 'file://' + path.join(__dirname, 'ads.html');
 const DESIGNS = [['c1', 'miswag-white-friday-1'], ['c2', 'miswag-white-friday-2']];
-const LAYERS = [['bg', 'Background'], ['photo', '3D render'], ['shade', 'Shade over the coins'], ['card', 'Order card'], ['txt', 'Headline & footer'], ['logo', 'Logo'], ['grain', 'Grain']];
+const LAYERS = [['bg', '3D render'], ['txt', 'Headline & UI'], ['logo', 'Logo']];
 
 (async () => {
   const browser = await chromium.launch();
