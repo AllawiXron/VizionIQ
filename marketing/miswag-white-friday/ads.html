@@ -36,6 +36,13 @@
   .bot .cta { display: flex; align-items: center; gap: 12px; background: #fff; color: var(--red); font-weight: 800; font-size: 21px; padding: 13px 24px; border-radius: 16px; box-shadow: 0 12px 26px rgba(90, 0, 4, 0.3); }
   .bot .cta svg { width: 20px; height: 20px; }
 
+  .sub { display: inline-block; font-weight: 700; font-size: 26px; padding: 10px 24px 12px; border-radius: 999px; background: #fff; color: var(--red); box-shadow: 0 10px 24px rgba(90, 0, 4, 0.25); }
+  /* the gift tag: a white card with a punched hole, clipped corners on the hole side */
+  .tag-card { position: absolute; z-index: 8; width: 200px; height: 96px; transform-origin: 14px 48px; background: #fff;
+    clip-path: polygon(26px 0, 100% 0, 100% 100%, 26px 100%, 0 70px, 0 26px); border-radius: 0 10px 10px 0;
+    filter: drop-shadow(0 12px 16px rgba(80, 0, 6, 0.35)); display: flex; align-items: center; justify-content: flex-end; padding-right: 20px; direction: ltr; }
+  .tag-card .hole { position: absolute; left: 12px; top: 40px; width: 16px; height: 16px; border-radius: 50%; background: #b8121b; box-shadow: inset 0 2px 3px rgba(0,0,0,0.35); }
+  .tag-card img { width: 124px; display: block; }
   .coin { position: absolute; filter: drop-shadow(0 18px 18px rgba(80, 0, 6, 0.4)); }
   .spark { position: absolute; z-index: 9; }
 
@@ -53,46 +60,45 @@
 </defs></svg>
 
 <!-- ============ 1 · the white piggy bank and the 1932 riyal ============ -->
+<!-- background: a studio shot made with ChatGPT (photo/chatgpt-piggy.png); its coin is painted out in prep_sets.py
+     and replaced by the real 1932 Iraqi riyal -->
 <section class="ad" id="c1">
-  <div class="studio" data-l="bg"></div>
+  <img class="abs" data-l="bg" src="img/piggy-set.png" alt="" style="left:0; top:0; width:1080px; height:1350px" />
   <div class="top" data-l="txt"><img data-l="logo" src="img/logo-white.png" alt="miswag" /><span class="tag">الجمعة البيضاء</span></div>
 
   <div class="t lead" data-l="txt" style="top:116px; font-size:36px">خبّي قرشك الأبيض…</div>
   <div class="t big" data-l="txt" style="top:166px; font-size:146px">لجمعتك البيضاء</div>
 
   <div data-l="photo">
-    <div class="shadow" style="left:270px; top:1112px; width:600px; height:90px; filter:blur(6px)"></div>
-    <div class="shadow" style="left:330px; top:1138px; width:470px; height:44px; background:radial-gradient(closest-side, rgba(60,0,4,0.75), rgba(60,0,4,0))"></div>
-    <img class="abs" src="img/piggy-photo.png" alt="" style="left:205px; top:520px; width:700px; z-index:6; filter: drop-shadow(0 30px 40px rgba(90,0,6,0.25))" />
-    <!-- the coin about to drop into the slot, and one still falling -->
-    <img class="coin" src="img/riyal.png" alt="" style="left:486px; top:376px; width:164px; z-index:7; transform: perspective(900px) rotateY(46deg) rotateZ(-12deg)" />
-    <img class="coin" src="img/riyal-falling.png" alt="" style="left:700px; top:380px; width:104px; z-index:5; opacity:0.92; transform: perspective(900px) rotateY(-34deg) rotateZ(24deg)" />
+    <img class="coin" src="img/riyal.png" alt="" style="left:489px; top:556px; width:150px; transform: perspective(700px) rotateY(58deg); filter: drop-shadow(0 10px 10px rgba(80,0,6,0.35))" />
   </div>
 
   <div class="bot" data-l="txt"><span>#مسواگ · أكثر من ١٧٠ ألف منتج أصلي</span><span class="cta"><svg><use href="#dl" /></svg>حمّل التطبيق</span></div>
-  <div class="grain" data-l="bg"></div>
 </section>
 
 <!-- ============ 2 · the white gift box ============ -->
+<!-- background: a studio shot made with ChatGPT (photo/chatgpt-gift.png). The Miswag mark is printed on the box
+     (multiplied into the paper) and the third line says plainly what the gift is: Miswag products, White Friday prices -->
 <section class="ad" id="c2">
-  <div class="studio" data-l="bg"></div>
+  <img class="abs" data-l="bg" src="img/gift-set.png" alt="" style="left:0; top:0; width:1080px; height:1350px" />
   <div class="top" data-l="txt"><img data-l="logo" src="img/logo-white.png" alt="miswag" /><span class="tag">الجمعة البيضاء</span></div>
 
-  <div class="t lead" data-l="txt" style="top:116px; font-size:36px">هدية لأمك، لخطيبتك، لأهلك…</div>
-  <div class="t big" data-l="txt" style="top:162px; font-size:170px">بيّض وجهك</div>
+  <div class="t lead" data-l="txt" style="top:112px; font-size:34px">هدية لأمك، لخطيبتك، لأهلك…</div>
+  <div class="t big" data-l="txt" style="top:154px; font-size:160px">بيّض وجهك</div>
+  <div class="t" data-l="txt" style="top:384px"><span class="sub">هداياك من مسواگ بأسعار الجمعة البيضاء</span></div>
 
   <div data-l="photo">
-    <div class="shadow" style="left:300px; top:1130px; width:520px; height:84px; filter:blur(6px)"></div>
-    <div class="shadow" style="left:350px; top:1156px; width:420px; height:36px; background:radial-gradient(closest-side, rgba(60,0,4,0.75), rgba(60,0,4,0))"></div>
-    <img class="abs" src="img/giftbox-photo.png" alt="" style="left:296px; top:430px; width:500px; z-index:6; transform: rotate(-4deg); transform-origin: 50% 100%; filter: drop-shadow(-24px 30px 36px rgba(90,0,6,0.32))" />
-    <svg class="spark" style="left:226px; top:520px; width:46px; height:46px"><use href="#spark" /></svg>
-    <svg class="spark" style="left:842px; top:470px; width:34px; height:34px; opacity:0.9"><use href="#spark" /></svg>
-    <svg class="spark" style="left:870px; top:790px; width:24px; height:24px; opacity:0.8"><use href="#spark" /></svg>
-    <svg class="spark" style="left:196px; top:860px; width:22px; height:22px; opacity:0.75"><use href="#spark" /></svg>
+    <!-- a gift tag tied to the bow: a thin cord from the knot, a white card with the Miswag mark -->
+    <svg class="abs" width="1080" height="1350" style="left:0; top:0; z-index:7; overflow:visible" fill="none">
+      <path d="M556 654 C 574 704, 604 776, 644 822" stroke="#f3e8e4" stroke-width="2.5" stroke-linecap="round" />
+    </svg>
+    <div class="tag-card" style="left:624px; top:776px; transform: rotate(16deg)">
+      <i class="hole"></i>
+      <img src="img/logo-red.png" alt="miswag" />
+    </div>
   </div>
 
   <div class="bot" data-l="txt"><span>#مسواگ · توصيل لكل العراق</span><span class="cta"><svg><use href="#dl" /></svg>تسوّق هسة</span></div>
-  <div class="grain" data-l="bg"></div>
 </section>
 </body>
 </html>
