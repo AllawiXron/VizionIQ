@@ -1,10 +1,13 @@
-// node render.cjs           -> out/<name>.png at 1.5x (1620×2025 posts, 1620×2880 story)
-// node render.cjs --layers  -> also layers/<name>/*.png at 1x (transparent) for build_psd.py
+// node render.cjs           -> out/alshifa-*.png at 1.5x (1620×2025 posts, 1620×2880 story)
+// node render.cjs --layers  -> also layers/alshifa-*/*.png at 1x (transparent) for build_psd.py
+// --lab naqaa               -> the same posts for a made-up lab (out/naqaa-*.png), to show the style to anyone
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
-const url = 'file://' + path.join(__dirname, 'posts.html');
-const DESIGNS = [['p1', 'alshifa-offer', 1350], ['p2', 'alshifa-vitamin-d', 1350], ['st', 'alshifa-offer-story', 1920]];
+const lab = process.argv.includes('--lab') ? process.argv[process.argv.indexOf('--lab') + 1] : null;
+const url = 'file://' + path.join(__dirname, 'posts.html') + (lab ? '?lab=' + lab : '');
+const PREFIX = lab || 'alshifa';
+const DESIGNS = [['p1', PREFIX + '-offer', 1350], ['p2', PREFIX + '-vitamin-d', 1350], ['st', PREFIX + '-offer-story', 1920]];
 const LAYERS = [['bg', 'Teal + grid'], ['photo', 'Hand (photo)'], ['card', 'Card'], ['txt', 'Headline & footer'], ['logo', 'Logo'], ['grain', 'Grain']];
 
 (async () => {

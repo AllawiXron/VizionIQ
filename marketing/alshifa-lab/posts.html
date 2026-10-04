@@ -111,6 +111,11 @@
       <path d="M50 27 V58" stroke="currentColor" stroke-width="3.6" />
       <circle cx="50" cy="64" r="6.4" fill="currentColor" />
     </symbol>
+    <!-- made-up lab for neutral samples (?lab=naqaa) -->
+    <mask id="naqaa-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="#fff" /><path d="M46.2 50 H53.8 V58.2 H62 V65.8 H53.8 V74 H46.2 V65.8 H38 V58.2 H46.2 Z" fill="#000" /></mask>
+    <symbol id="mark-naqaa" viewBox="0 0 100 100">
+      <path d="M50 10 C 44 20, 24 40, 24 61 A 26 26 0 0 0 76 61 C 76 40, 56 20, 50 10 Z" fill="currentColor" mask="url(#naqaa-cut)" />
+    </symbol>
     <symbol id="tick" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#27768a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" /></symbol>
     <symbol id="chat" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 1 4 6.9L4 20l1.2-3.6A7.9 7.9 0 0 1 4 12z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" /></symbol>
   </defs>
@@ -127,7 +132,7 @@
   <div class="a" data-l="txt" style="top:180px; font-size:130px">افحص <span class="u">كلشي.</span></div>
 
   <div data-l="photo"><img class="photo" src="img/hand-tube.png" style="left:-60px; top:372px; width:720px" alt="" />
-    <div class="tlabel" style="left:493px; top:764px"><b>مختبر الشفاء</b><span>EDTA · CBC</span></div></div>
+    <div class="tlabel" style="left:493px; top:764px"><b data-brand="name">مختبر الشفاء</b><span>EDTA · CBC</span></div></div>
 
   <div class="pin" data-l="card" style="left:622px; top:520px; width:420px; transform: rotate(1.5deg)">
     <div class="card pkg">
@@ -148,7 +153,7 @@
   </div>
 
   <div class="foot" data-l="txt" style="bottom:46px">
-    <div class="brand"><svg class="logo" data-l="logo" style="color:#fff"><use href="#mark" /></svg><div class="nm"><b>مختبر الشفاء</b><span>للتحليلات المرضية · حي سومر</span></div></div>
+    <div class="brand"><svg class="logo" data-l="logo" style="color:#fff"><use href="#mark" /></svg><div class="nm"><b data-brand="name">مختبر الشفاء</b><span data-brand="sub">للتحليلات المرضية · حي سومر</span></div></div>
     <div class="cta"><svg><use href="#chat" /></svg>احجز بالرسائل</div>
   </div>
   <div class="grain" data-l="grain"></div>
@@ -189,7 +194,7 @@
   <p class="note" data-l="txt" style="left:60px; top:932px; width:440px">التعب والنعاس ممكن سببهم نقص فيتامين D،<br />وفحصه بسيط: عينة دم وحدة.</p>
 
   <div class="foot" data-l="txt" style="bottom:46px">
-    <div class="brand"><svg class="logo" data-l="logo" style="color:#fff"><use href="#mark" /></svg><div class="nm"><b>مختبر الشفاء</b><span>للتحليلات المرضية · حي سومر</span></div></div>
+    <div class="brand"><svg class="logo" data-l="logo" style="color:#fff"><use href="#mark" /></svg><div class="nm"><b data-brand="name">مختبر الشفاء</b><span data-brand="sub">للتحليلات المرضية · حي سومر</span></div></div>
     <div class="cta"><svg><use href="#chat" /></svg>افحص فيتامين D</div>
   </div>
   <div class="grain" data-l="grain"></div>
@@ -206,7 +211,7 @@
   <div class="a" data-l="txt" style="top:384px; font-size:132px">افحص <span class="u">كلشي.</span></div>
 
   <div data-l="photo"><img class="photo" src="img/hand-tube.png" style="left:-70px; top:640px; width:760px" alt="" />
-    <div class="tlabel" style="left:513px; top:1053px"><b>مختبر الشفاء</b><span>EDTA · CBC</span></div></div>
+    <div class="tlabel" style="left:513px; top:1053px"><b data-brand="name">مختبر الشفاء</b><span>EDTA · CBC</span></div></div>
 
   <div class="pin" data-l="card" style="left:626px; top:800px; width:426px; transform: rotate(1.5deg)">
     <div class="card pkg">
@@ -228,10 +233,21 @@
 
   <div class="foot" data-l="txt" style="top:1560px; flex-direction:column; gap:30px; left:0; right:0">
     <div class="cta" style="font-size:30px; padding:22px 44px; border-radius:22px"><svg style="width:30px;height:30px"><use href="#chat" /></svg>احجز بالرسائل</div>
-    <div class="brand"><svg class="logo" data-l="logo" style="color:#fff; width:62px; height:62px"><use href="#mark" /></svg><div class="nm"><b>مختبر الشفاء</b><span>للتحليلات المرضية · حي سومر</span></div></div>
+    <div class="brand"><svg class="logo" data-l="logo" style="color:#fff; width:62px; height:62px"><use href="#mark" /></svg><div class="nm"><b data-brand="name">مختبر الشفاء</b><span data-brand="sub">للتحليلات المرضية · حي سومر</span></div></div>
   </div>
   <div class="grain" data-l="grain"></div>
 </section>
 
+<script>
+  // ?lab=naqaa swaps the client's name and mark for a made-up lab, for showing the style to anyone
+  const LABS = { naqaa: { name: 'مختبر نقاء', sub: 'للتحليلات المرضية', mark: '#mark-naqaa' } };
+  const lab = LABS[new URLSearchParams(location.search).get('lab')];
+  if (lab) {
+    document.title = lab.name + ' — نماذج بوستات';
+    document.querySelectorAll('[data-brand="name"]').forEach((el) => { el.textContent = lab.name; });
+    document.querySelectorAll('[data-brand="sub"]').forEach((el) => { el.textContent = lab.sub; });
+    document.querySelectorAll('use[href="#mark"]').forEach((el) => el.setAttribute('href', lab.mark));
+  }
+</script>
 </body>
 </html>

@@ -12,6 +12,11 @@ pinned card in the client's own language, logo + CTA footer, grain), in the lab'
 | `out/alshifa-offer-story.png` (1620×2880) | The offer as a 9:16 story (text clear of the top bar and the reply bar). |
 | `psd/*.psd` | Layered, 1080 wide: teal + grid, hand (photo), card, headline & footer, logo, grain (Overlay). |
 
+**Neutral copies (`out/naqaa-*.png`, `psd/naqaa-*.psd`):** the same three posts for a made-up lab, «مختبر نقاء
+للتحليلات المرضية», with its own mark (a drop with a cross cut out). Use them to show the style to any lab without
+using a real lab's name. Build them with `node render.cjs --layers --lab naqaa` and `python build_psd.py naqaa`
+(`posts.html?lab=naqaa` swaps the name, the line under it and the mark).
+
 **Before posting for real:** the prices (٣٥٬٠٠٠ instead of ٥٠٬٠٠٠), the package contents and the vitamin D wording are
 examples. The lab supplies or approves every test name, price and health line. The logo is redrawn from their
 profile picture; swap in their original file.

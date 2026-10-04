@@ -1,7 +1,9 @@
 """Builds psd/<name>.psd for each design from layers/<name>/ (run `node render.cjs --layers` first).
+`python build_psd.py naqaa` builds the made-up lab's set (after `node render.cjs --layers --lab naqaa`).
 Requires psd-tools and pillow."""
 import json
 import os
+import sys
 
 from PIL import Image
 from psd_tools import PSDImage
@@ -9,7 +11,8 @@ from psd_tools.constants import BlendMode, Compression
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 os.makedirs(os.path.join(HERE, "psd"), exist_ok=True)
-for name in ("alshifa-offer", "alshifa-vitamin-d", "alshifa-offer-story"):
+PREFIX = sys.argv[1] if len(sys.argv) > 1 else "alshifa"
+for name in (f"{PREFIX}-offer", f"{PREFIX}-vitamin-d", f"{PREFIX}-offer-story"):
     d = os.path.join(HERE, "layers", name)
     size = Image.open(os.path.join(d, "bg.png")).size
     psd = PSDImage.new("RGB", size, color=(39, 118, 138))
