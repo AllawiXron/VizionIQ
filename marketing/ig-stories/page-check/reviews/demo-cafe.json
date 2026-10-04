@@ -1,0 +1,12 @@
+{
+  "_about": "Example review of a made-up page (mock-profile.html). Coordinates are screenshot pixels, 1080 wide: each note circles x/y with radii rx/ry. crop = the part of the screenshot shown in the phone.",
+  "handle": "@demo.cafe",
+  "n": "1/3",
+  "shot": "shots/demo-cafe.png",
+  "crop": [110, 2340],
+  "notes": [
+    { "t": "البايو ما يگول شنو يميزكم", "sub": "ماكو موقع، أوقات دوام، ولا طريقة طلب", "x": 836, "y": 630, "rx": 236, "ry": 118 },
+    { "t": "الهايلايت بدون أغلفة", "sub": "وماكو هايلايت للمنيو والأسعار", "x": 540, "y": 960, "rx": 520, "ry": 112 },
+    { "t": "كل بوست بلون وخط", "sub": "الصفحة ما إلها هوية، فالزبون ما يتذكرها", "x": 540, "y": 1700, "rx": 548, "ry": 500 }
+  ]
+}
