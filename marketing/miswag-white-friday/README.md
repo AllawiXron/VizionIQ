@@ -6,23 +6,23 @@ Shorja ad). Both play on the word "white" in an Iraqi saying.
 **The look (v5):** the same language as big regional campaigns (valU, Injaz, Bunzy). Each post has one product in
 a seamless red studio, big white display lettering (Lalezar, with Marhey for the lead line), a small logo top right,
 the campaign tag top left, and one CTA. The two studio shots were made with ChatGPT image generation by allawi.psd
-(`photo/chatgpt-piggy.png`, `photo/chatgpt-gift.png`), upscaled with Real-ESRGAN and finished here.
+(`photo/chatgpt-pricetag.png`, `photo/chatgpt-gift.png`); the gift shot is upscaled with Real-ESRGAN.
 
-**1 · «خبّي قرشك الأبيض… لجمعتك البيضاء»** The proverb tells you to keep your white coin for a black day; Miswag
-says keep it for your White Friday. A white ceramic piggy bank. The generated coin was a US quarter, so it is
-painted out (`photo/prep_sets.py`) and replaced with a real 1932 Iraqi silver riyal («المملكة العراقية · ريال ·
-١٩٣٢»). 1932 is also the year of the Shorja photo in the first ad.
+**1 · «بالجمعة البيضاء… الأسعار انگصّت»** «انگصّت» is Iraqi for "got cut": a blank price tag snipped in half by
+scissors, with the Miswag mark printed on the tag (multiplied into the card, at its angle). The white pill says it
+plainly: «كلشي من مسواگ بأسعار أقل». (This replaced the piggy-bank post; its files, `photo/chatgpt-piggy.png` and
+the 1932 riyal cut-out `img/riyal.png`, are kept.)
 
 **2 · «هدية لأمك، لخطيبتك، لأهلك… بيّض وجهك»** «بيّض وجهك» is what you say to someone who did right by you; here it
 is the gift you bring home. To make it plainly Miswag's, the gift has a Miswag tag tied to the bow. The line under
 the headline says what the post is: «هداياك من مسواگ بأسعار الجمعة البيضاء».
 
 - `out/miswag-white-friday-1.png`, `-2.png`: 1620×2025.
-- `psd/*.psd`: layered, 1080×1350 (studio shot, coin / gift tag, headline & UI, logo).
+- `psd/*.psd`: layered, 1080×1350 (studio shot, printed logo / gift tag, headline & UI, logo).
 - `ads.html`: both layouts. `node render.cjs` re-renders the PNGs; `node render.cjs --layers` then
   `python build_psd.py` rebuilds the PSDs.
-- `photo/prep_sets.py`: prepares the two studio shots at 1620×2025 (`--x4 DIR` uses Real-ESRGAN upscales); it
-  paints out the quarter and moves the gift up so it clears the CTA row.
+- `photo/prep_sets.py`: prepares the studio shots at 1620×2025 (`--x4 DIR` uses Real-ESRGAN upscales); it moves the
+  gift up so it clears the CTA row (and, for the retired piggy shot, paints out the generated US quarter).
 - `photo/prep.py`: the coin cut-out (`img/riyal.png`), plus earlier cut-outs from stock photos (piggy, gift box)
   used in v4.
 

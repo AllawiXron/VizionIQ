@@ -1,5 +1,7 @@
-"""Prepares the two studio shots made with ChatGPT (chatgpt-piggy.png, chatgpt-gift.png, 1122×1402) as full-frame
-backgrounds for ads.html, at 1620×2025.
+"""Prepares the studio shots made with ChatGPT (chatgpt-pricetag.png 1600×2000, chatgpt-gift.png and the earlier
+chatgpt-piggy.png 1122×1402) as full-frame backgrounds for ads.html, at 1620×2025.
+
+- Price tag: resized only.
 
 - Piggy: the generated coin is a US quarter, so it is painted out (the red sweep is filled back in from either side,
   with matching grain); ads.html puts the 1932 Iraqi riyal in its place.
@@ -72,3 +74,8 @@ ext = np.concatenate([floor[::-1], floor] * (need // 120 + 1))[:need]
 a = np.concatenate([a, ext])
 Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).save(os.path.join(OUT, "gift-set.png"), optimize=True)
 print("gift-set.png", a.shape[1::-1])
+
+# ---------- price tag: resized only ----------
+im = load("chatgpt-pricetag.png", "pricetag_x4.png")
+im.crop((0, 0, W, H)).save(os.path.join(OUT, "pricetag-set.png"), optimize=True)
+print("pricetag-set.png", (W, H))
