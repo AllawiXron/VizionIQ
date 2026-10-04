@@ -64,6 +64,8 @@
 <section class="ad" id="c1">
   <div class="full ground" data-l="bg"></div>
   <img class="full" data-l="photo" src="img/coins.png" alt="" style="top:44px" />
+  <!-- the coins up in the dark fade behind the proverb, so it reads -->
+  <div class="full" data-l="bg" style="z-index:5; background:linear-gradient(180deg, rgba(6,6,7,0.92) 0%, rgba(6,6,7,0.8) 30%, rgba(6,6,7,0.35) 40%, rgba(6,6,7,0) 47%)"></div>
 
   <div class="meta" data-l="txt">
     <span class="tag" style="color:rgba(255,255,255,0.82)"><i></i>الجمعة البيضاء</span>
@@ -72,7 +74,7 @@
 
   <div class="t" data-l="txt" style="top:118px; left:0; right:0; text-align:center; font-weight:600; font-size:26px; color:rgba(255,255,255,0.6)">المثل يگول:</div>
   <div class="t ruqaa" data-l="txt" style="top:136px; left:0; right:0; text-align:center; font-size:112px; color:#fff">خبّي قرشك الأبيض</div>
-  <div class="t ruqaa" data-l="txt" id="old" style="top:292px; left:0; right:0; text-align:center; font-size:96px; color:rgba(255,255,255,0.72); text-shadow:0 0 28px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9)">ليومك الأسود</div>
+  <div class="t ruqaa" data-l="txt" id="old" style="top:292px; left:0; right:0; text-align:center; font-size:96px; color:rgba(255,255,255,0.8); text-shadow:0 0 28px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9)">ليومك الأسود</div>
   <!-- the correction, by hand: a marker line through the old ending and an arrow down to the new one -->
   <svg class="t" data-l="txt" id="edit" width="1080" height="1350" style="left:0; top:0" fill="none" stroke="#f0222b" stroke-linecap="round" stroke-linejoin="round"></svg>
 
@@ -133,9 +135,10 @@
     const strike = `M${o.l - 18} ${y + 6} C ${o.l + 120} ${y - 10}, ${o.r - 160} ${y + 4}, ${o.r + 16} ${y - 8}`;
     const strike2 = `M${o.l - 4} ${y + 16} C ${o.l + 160} ${y + 2}, ${o.r - 120} ${y + 14}, ${o.r + 6} ${y + 2}`;
     // the arrow leaves the left end of the strike and swings down the left side to the new ending
-    const sx = o.l - 30, sy = y + 18, ex = n.l + 20, ey = n.t + (n.b - n.t) * 0.28;
-    const arrow = `M${sx} ${sy} C ${sx - 120} ${sy + 160}, ${66} ${ey - 260}, ${ex - 40} ${ey}`;
-    const ang = Math.atan2(ey - (ey - 260), (ex - 40) - 66), ax = ex - 40, ay = ey;
+    // it lands just left of the new ending's first stroke (the full stop), coming in from above-left
+    const sx = o.l - 30, sy = y + 18, ax = 222, ay = 948, c2 = [96, 846];
+    const arrow = `M${sx} ${sy} C ${sx - 150} ${sy + 170}, ${c2[0]} ${c2[1]}, ${ax} ${ay}`;
+    const ang = Math.atan2(ay - c2[1], ax - c2[0]);
     const head = (a) => `M${ax - 34 * Math.cos(ang - a)} ${ay - 34 * Math.sin(ang - a)} L ${ax} ${ay} L ${ax - 34 * Math.cos(ang + a)} ${ay - 34 * Math.sin(ang + a)}`;
     document.getElementById('edit').innerHTML =
       `<path d="${strike}" stroke-width="11" /><path d="${strike2}" stroke-width="6" opacity="0.75" />` +
