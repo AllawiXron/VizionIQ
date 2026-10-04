@@ -7,7 +7,7 @@ transform boxes, the marble head).
 
 | Story | File | Notes |
 |---|---|---|
-| 1 · The call | `out/01-call.png` | «مراجعة مجانية لصفحتك · أول ٣ يدزون يوزر صفحتهم، أسويلهم مراجعة مجانية» with a phone showing a page with 3 marks. The arrow points at the empty band above the footer: put Instagram's **question sticker** there («دز يوزر صفحتك 👇»). |
+| 1 · The call | `out/01-call.png` | «مراجعة مجانية لصفحتك · أول ٣ يدزون يوزر صفحتهم، أسويلهم مراجعة مجانية». Below, a big phone runs off the bottom with a page under review: the page's orange ring becomes a loupe on the bio (①), loops on the highlights (②) and the posts (③), and the phone is the selected layer (transform box, cursor). The arrow points at the empty band under the text: put Instagram's **question sticker** there («دز يوزر صفحتك 👇»). |
 | 2 · A review | `out/02-review-<name>.png` | One per page. Their screenshot in a phone, 3 orange loops, numbered notes with leader lines, «تريد مراجعة لصفحتك؟ راسلني». `02-review-demo-cafe.png` is an example on a made-up café page (`mock-profile.html`). Don't post it. |
 | 3 · Wrap-up | `out/03-wrap.png` | «خلصت المراجعات · الجولة الجاية الأسبوع الجاي، تابعني حتى لا تفوتك» and the head with the selected layer «تريد أرتب صفحتك؟ راسلني». |
 

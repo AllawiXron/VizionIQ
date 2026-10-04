@@ -41,6 +41,15 @@
   .phone .screen { position: relative; overflow: hidden; border-radius: 36px; background: #fff; }
   .phone .screen img { position: absolute; left: 0; display: block; }
 
+  .phone.big { border-radius: 92px; padding: 14px; background: linear-gradient(135deg, #3b3b3d, #0d0d0e 30%, #1c1c1e 70%, #4a4a4c);
+    box-shadow: 0 0 0 2px #0a0a0a, inset 0 0 0 2px rgba(255,255,255,0.12), 30px 50px 80px rgba(70, 30, 10, 0.38), 0 8px 18px rgba(70, 30, 10, 0.25); }
+  .phone.big .screen { border-radius: 78px; }
+  .island { position: absolute; left: 50%; top: 20px; width: 168px; height: 50px; margin-left: -84px; border-radius: 30px; background: #000; }
+  .loupe { position: absolute; z-index: 10; border-radius: 50%; overflow: hidden; background: #fff; }
+  .loupe img { position: absolute; left: 0; top: 0; width: 1080px; transform-origin: 0 0; }
+  .loupe::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(120% 120% at 28% 22%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.08) 28%, rgba(255,255,255,0) 45%), radial-gradient(closest-side, rgba(0,0,0,0) 86%, rgba(60,25,8,0.28) 100%); }
+
   /* Photoshop transform box */
   .frame { position: absolute; inset: -16px; border: 2px solid var(--ink); pointer-events: none; z-index: 8; }
   .frame i { position: absolute; width: 16px; height: 16px; background: var(--cream); border: 2px solid var(--ink); }
@@ -92,28 +101,25 @@
 </svg>
 
 <!-- ============ 1 · the call: first 3 get a free review ============ -->
+<!-- the question sticker goes in the empty band under the text (the arrow points at it); below, a big phone runs off
+     the bottom with the page under review, and the page's orange ring becomes a loupe on the bio -->
 <section class="story" id="s1">
-  <svg data-l="bg" class="ink" width="1080" height="1920" style="z-index:1"><circle cx="540" cy="1050" r="290" fill="none" stroke="#e2541b" stroke-width="22" filter="url(#soft)" /></svg>
   <div class="meta" data-l="txt"><span><span class="dot"></span>Free page check</span><span class="ar">الجولة الأولى</span></div>
-  <h1 class="title" data-l="txt" style="top:226px; font-size:140px">مراجعة مجانية</h1>
-  <div class="sub" data-l="txt" style="top:440px"><span class="en">for your page</span><span class="rule"></span><span class="ar">لصفحتك</span></div>
-  <p class="body" data-l="txt" style="top:516px">أول <em>٣</em> يدزون يوزر صفحتهم،<br />أسويلهم مراجعة مجانية</p>
+  <h1 class="title" data-l="txt" style="top:222px; font-size:150px">مراجعة مجانية</h1>
+  <div class="sub" data-l="txt" style="top:444px"><span class="en">for your page</span><span class="rule"></span><span class="ar">لصفحتك</span></div>
+  <p class="body" data-l="txt" style="top:520px">أول <em>٣</em> يدزون يوزر صفحتهم،<br />أسويلهم مراجعة مجانية</p>
+  <svg data-l="ui" class="ink" width="1080" height="1920" fill="none" stroke="#1f1510" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M906 600 C 968 640, 966 716, 900 768" />
+    <path d="M896 732 L 896 772 L 934 776" />
+  </svg>
 
+  <div data-l="bg" class="glow1" style="position:absolute; left:120px; top:980px; width:900px; height:900px; border-radius:50%; background:radial-gradient(closest-side, rgba(240,122,46,0.26), rgba(240,122,46,0))"></div>
   <div data-l="photo">
-    <div class="phone" id="s1-phone" style="left:350px; top:803px; width:380px; transform: rotate(-4deg)">
-      <div class="screen" style="height:470px"><img src="shots/demo-cafe.png" style="top:-41px; width:356px" alt="" /></div>
+    <div class="phone big" id="s1-phone" style="left:240px; top:1000px; width:660px; transform: rotate(-7deg)">
+      <div class="screen" style="height:1340px"><img src="shots/demo-cafe.png" style="top:0; width:632px" alt="" /><i class="island"></i></div>
     </div>
   </div>
   <div data-l="ui" id="s1-ui"></div>
-
-  <!-- arrow down to where the question sticker goes (the empty band above the footer) -->
-  <svg data-l="ui" class="ink" width="1080" height="1920" fill="none" stroke="#1f1510" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M852 1262 C 900 1306, 898 1364, 836 1408" />
-    <path d="M828 1374 L 832 1412 L 868 1416" />
-  </svg>
-
-  <div class="foot r" data-l="txt" style="bottom:188px"><span class="mono">Layer by layer</span><span class="big">طبقة فوق طبقة</span></div>
-  <div class="foot l" data-l="txt" style="bottom:188px"><span class="mono">Follow</span><span class="handle">@allawi.psd</span></div>
   <div class="grain" data-l="grain"></div>
 </section>
 
@@ -172,24 +178,39 @@
   }
   const SVG = (w, h, inner) => `<svg class="ink" width="${w}" height="${h}" fill="none" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
 
-  // story 1: the demo page in the tilted phone, with three marks on it (given in screenshot pixels, 1080 wide)
+  // story 1: the page in the tilted phone; marks and the loupe are given in screenshot pixels (1080 wide)
   (function () {
     const ph = document.getElementById('s1-phone'), img = ph.querySelector('img');
-    const L = ph.offsetLeft, T = ph.offsetTop, Wp = ph.offsetWidth, Hp = ph.offsetHeight;
-    const s = img.offsetWidth / 1080, y0 = -img.offsetTop / s, th = (-4 * Math.PI) / 180, c = Math.cos(th), si = Math.sin(th);
-    const at = (x, y) => { const lx = 12 + x * s - Wp / 2, ly = 12 + (y - y0) * s - Hp / 2; return [L + Wp / 2 + lx * c - ly * si, T + Hp / 2 + lx * si + ly * c]; };
-    const marks = [[836, 640, 250, 112], [540, 960, 530, 112], [540, 1440, 556, 190]];
-    let ink = '', nums = '';
-    marks.forEach(([x, y, rx, ry], i) => {
+    const L = ph.offsetLeft, T = ph.offsetTop, Wp = ph.offsetWidth, Hp = ph.offsetHeight, pad = 14;
+    const s = img.offsetWidth / 1080, deg = -7, th = (deg * Math.PI) / 180, c = Math.cos(th), si = Math.sin(th);
+    const at = (x, y) => { const lx = pad + x * s - Wp / 2, ly = pad + y * s - Hp / 2; return [L + Wp / 2 + lx * c - ly * si, T + Hp / 2 + lx * si + ly * c]; };
+    let ink = '', ui = '';
+    // ② highlights without covers, ③ posts with no identity
+    [[540, 962, 528, 108, 2], [540, 1405, 556, 170, 3]].forEach(([x, y, rx, ry, k]) => {
       const [cx, cy] = at(x, y);
-      ink += `<path d="${rough(cx, cy, rx * s, ry * s, i + 1, th)}" stroke="#e2541b" stroke-width="7" />`;
-      const [nx, ny] = at(x - rx - 46, y - ry * 0.2);
-      nums += `<div class="num" style="left:${nx}px; top:${ny}px">${'١٢٣'[i]}</div>`;
+      ink += `<path d="${rough(cx, cy, rx * s, ry * s, k, th)}" stroke="#e2541b" stroke-width="8" />`;
+      const [nx, ny] = at(x - rx - 40, y - ry * 0.2);
+      ui += `<div class="num" style="left:${nx}px; top:${ny}px; width:72px; height:72px; margin:-36px 0 0 -36px; font-size:38px">${'١٢٣'[k - 1]}</div>`;
     });
-    const [kx, ky] = at(1080 + 20, y0 + (Hp - 12) / s);
-    document.getElementById('s1-ui').innerHTML = SVG(1080, 1920, ink) + nums +
-      `<div class="frame" style="inset:auto; left:${L - 16}px; top:${T - 16}px; width:${Wp + 32}px; height:${Hp + 32}px; transform:rotate(-4deg)"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>` +
-      `<svg class="cursor" style="left:${kx}px; top:${ky}px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>`;
+    // ① the loupe, on the bio
+    const P = [832, 612], Z = 1.45, R = 182, [lx, ly] = at(...P);
+    const ang = Math.PI / 4 + th, hx = lx + Math.cos(ang) * (R + 6), hy = ly + Math.sin(ang) * (R + 6);
+    ui += `<svg class="ink" width="1080" height="1920" style="z-index:9"><g transform="translate(${hx} ${hy}) rotate(${(ang * 180) / Math.PI})">
+        <rect x="-4" y="-34" width="70" height="68" rx="12" fill="#e2541b" />
+        <rect x="56" y="-27" width="250" height="54" rx="27" fill="#1f1510" />
+        <rect x="64" y="-27" width="236" height="12" rx="6" fill="rgba(255,255,255,0.14)" /></g></svg>`;
+    ui += `<div style="position:absolute; z-index:9; left:${lx - R - 4}px; top:${ly - R - 4}px; width:${2 * R + 8}px; height:${2 * R + 8}px; border-radius:50%; box-shadow:26px 40px 50px rgba(70,30,10,0.38)"></div>`;
+    ui += `<div class="loupe" style="left:${lx - R}px; top:${ly - R}px; width:${2 * R}px; height:${2 * R}px">
+        <img src="${img.getAttribute('src')}" style="transform: translate(${R}px, ${R}px) rotate(${deg}deg) scale(${s * Z}) translate(${-P[0]}px, ${-P[1]}px)" alt="" /></div>`;
+    ui += `<svg class="ink" width="1080" height="1920" style="z-index:11"><circle cx="${lx}" cy="${ly}" r="${R + 2}" fill="none" stroke="#e2541b" stroke-width="22" />
+        <circle cx="${lx}" cy="${ly}" r="${R - 9}" fill="none" stroke="rgba(31,21,16,0.35)" stroke-width="2" /></svg>`;
+    const a1 = (-3 * Math.PI) / 4, b1x = lx + Math.cos(a1) * (R + 4), b1y = ly + Math.sin(a1) * (R + 4);
+    ui += `<div class="num" style="z-index:12; left:${b1x}px; top:${b1y}px; width:72px; height:72px; margin:-36px 0 0 -36px; font-size:38px">١</div>`;
+    // the phone is the selected layer: transform box (its bottom runs off the story) and the cursor on a corner
+    const [tx, ty] = at(1080 + 12, -10);
+    ui += `<div class="frame" style="inset:auto; z-index:7; left:${L - 18}px; top:${T - 18}px; width:${Wp + 36}px; height:${Hp + 36}px; transform:rotate(${deg}deg)"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>`;
+    ui += `<svg class="cursor" style="left:${tx + 14}px; top:${ty - 8}px; width:58px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>`;
+    document.getElementById('s1-ui').innerHTML = `<svg class="ink" width="1080" height="1920" fill="none" stroke-linecap="round" style="z-index:9">${ink}</svg>` + ui;
   })();
 
   // story 2: one review. data = {handle, n, shot, crop:[y0,y1], notes:[{t, sub, x, y, rx, ry}]} in screenshot pixels (1080 wide)
