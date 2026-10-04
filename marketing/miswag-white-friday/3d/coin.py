@@ -1,7 +1,9 @@
-"""Miswag White Friday, concept 1: a silver coin («قرشك الأبيض») tumbling from black into white.
+"""Miswag White Friday, concept 1: silver coins («قرشك الأبيض») falling out of the dark into the light.
 
-A bevelled cylinder in polished silver. The face (coin_height.png, from coin_face.html) is a bump map: polished
-field, slightly frosted relief. The edge is reeded. Rendered on a transparent background for ad.html.
+Each coin is a bevelled cylinder in polished silver. The face (coin_height.png, from coin_face.html) is a bump map:
+polished field, slightly frosted relief; the edge is reeded. One hero coin is in focus; the others fall at other
+depths, so the lens blurs them, and all of them carry real motion blur from their fall. Rendered as the full 4:5
+frame on a transparent background; ads.html puts the dark-to-light ground under it.
 
 Usage: bvenv/bin/python coin.py <out.png> [percent] [samples]
 """
@@ -25,7 +27,7 @@ sc.cycles.samples = SAMPLES
 sc.cycles.use_denoising = True
 sc.cycles.max_bounces = 8
 sc.render.film_transparent = True
-sc.render.resolution_x = sc.render.resolution_y = 1400
+sc.render.resolution_x, sc.render.resolution_y = 1620, 2025
 sc.render.resolution_percentage = PCT
 sc.render.image_settings.file_format = "PNG"
 sc.render.image_settings.color_mode = "RGBA"
@@ -49,6 +51,7 @@ try:
 except Exception:
     pass
 coin.rotation_euler = Euler((math.radians(62), math.radians(-14), math.radians(-24)))
+coin.location, coin.scale = Vector((0.08, 0, 1.12)), (0.62, 0.62, 0.62)
 
 m = bpy.data.materials.new("silver")
 m.use_nodes = True
@@ -121,6 +124,32 @@ L.new(rmap.outputs["Result"], rmix.inputs["B"])
 L.new(rmix.outputs["Result"], bsdf.inputs["Roughness"])
 coin.data.materials.append(m)
 
+# the others: same coin, other depths and angles (x across, y away from the camera, z up)
+OTHERS = [((-0.95, 2.2, 1.98), (40, 30, 70), 0.42), ((1.05, 1.3, 1.72), (75, -35, 10), 0.46),
+          ((0.3, 3.8, 2.2), (20, 60, -40), 0.36), ((1.22, -2.6, 1.58), (55, 10, 120), 0.34),
+          ((-1.08, 0.8, 1.3), (85, 20, -60), 0.3)]
+coins = [coin]
+for i, (loc, rot, s) in enumerate(OTHERS):
+    c = coin.copy()
+    c.name = f"coin{i + 2}"
+    sc.collection.objects.link(c)
+    c.location, c.scale = Vector(loc), (s, s, s)
+    c.rotation_euler = Euler(tuple(math.radians(a) for a in rot))
+    coins.append(c)
+# the fall: keyframe one step down and a little spin either side of the rendered frame, for motion blur
+sc.frame_set(1)
+for i, c in enumerate(coins):
+    drop, spin = (0.025, math.radians(0.5)) if i == 0 else (0.11, math.radians(5))  # the hero stays crisp
+    base_loc, base_rot = c.location.copy(), c.rotation_euler.copy()
+    for f, k in ((0, -1), (1, 0), (2, 1)):
+        c.location = base_loc - Vector((0, 0, drop * k))
+        c.rotation_euler = Euler((base_rot.x + spin * k, base_rot.y, base_rot.z))
+        c.keyframe_insert("location", frame=f)
+        c.keyframe_insert("rotation_euler", frame=f)
+sc.render.use_motion_blur = True
+sc.render.motion_blur_shutter = 0.5
+sc.frame_set(1)
+
 # ---------- studio: soft boxes for the metal to reflect, a dark-to-light world ----------
 w = bpy.data.worlds.new("w")
 sc.world = w
@@ -161,12 +190,17 @@ for name, loc, size, power in [("key", (-3.2, -3.0, 4.2), (3.0, 0.9), 1100), ("r
                                ("fill", (2.8, -3.6, -0.6), (1.6, 1.6), 160), ("top", (0.4, 0.2, 5.0), (4.0, 0.5), 520)]:
     aim(softbox(name, Vector(loc), size, power, (0, 0, 0)))
 
-# ---------- camera ----------
+# ---------- camera: focused on the hero coin ----------
 cd = bpy.data.cameras.new("cam")
-cd.lens = 100
+cd.lens = 85
+cd.sensor_fit = "VERTICAL"
+cd.sensor_height = 36
+cd.dof.use_dof = True
+cd.dof.focus_object = coin
+cd.dof.aperture_fstop = 1.6
 cam = bpy.data.objects.new("cam", cd)
-cam.location = Vector((0, -9.2, 1.1))
-aim(cam)
+cam.location = Vector((0, -9.2, 1.0))
+aim(cam, Vector((0, 0, 1.0)))
 sc.collection.objects.link(cam)
 sc.camera = cam
 

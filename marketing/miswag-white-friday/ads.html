@@ -4,47 +4,49 @@
 <meta charset="utf-8" />
 <title>Miswag — الجمعة البيضاء (2 concepts)</title>
 <link rel="stylesheet" href="fonts/src.css" />
+<link rel="stylesheet" href="3d/fonts/src.css" />
 <style>
-  :root { --red: #de1c24; --red-hi: #f0222b; --ink: #141417; }
+  :root { --red: #de1c24; --red-hi: #f0222b; --ink: #17161a; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #111; display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 40px 0; }
   .ad { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: "Alexandria", sans-serif; direction: rtl; }
-  .grain { position: absolute; inset: 0; z-index: 30; pointer-events: none; opacity: 0.16; mix-blend-mode: overlay;
+  .full { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .grain { position: absolute; inset: 0; z-index: 30; pointer-events: none; opacity: 0.14; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>"); }
-  .line { position: absolute; left: 0; right: 0; z-index: 10; text-align: center; white-space: nowrap; }
-  .kicker { font-weight: 600; font-size: 26px; letter-spacing: 0.02em; }
-  .pill { display: inline-block; border-radius: 999px; padding: 8px 22px 10px; font-weight: 700; font-size: 24px; }
+  .t { position: absolute; z-index: 12; white-space: nowrap; }
+  .ruqaa { font-family: "Aref Ruqaa", serif; font-weight: 700; line-height: 1.6; }
+  .meta { position: absolute; z-index: 12; top: 50px; left: 56px; right: 56px; display: flex; justify-content: space-between; align-items: center; }
+  .meta .tag { font-weight: 600; font-size: 21px; letter-spacing: 0.02em; display: flex; align-items: center; gap: 12px; }
+  .meta .tag i { width: 10px; height: 10px; border-radius: 50%; background: var(--red-hi); }
+  .meta img { height: 40px; display: block; }
 
   /* Miswag's order card, as in the Shorja ad */
-  .pin { position: absolute; z-index: 12; transform: translateX(-50%); }
+  .pin { position: absolute; z-index: 14; transform: translateX(-50%); }
   .card { display: flex; align-items: center; gap: 16px; background: #fff; color: #1a1b22; border-radius: 22px; padding: 14px 18px 14px 22px; white-space: nowrap;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(0, 0, 0, 0.04); }
+    box-shadow: 0 22px 44px rgba(20, 12, 4, 0.28), 0 0 0 1px rgba(0, 0, 0, 0.04); }
   .card img { width: 58px; height: 58px; border-radius: 16px; flex: none; }
-  .card .t b { display: block; font-weight: 800; font-size: 25px; line-height: 1.3; }
-  .card .t span { display: block; font-weight: 500; font-size: 18px; color: #5a5d6b; line-height: 1.4; }
+  .card .tt b { display: block; font-weight: 800; font-size: 25px; line-height: 1.3; }
+  .card .tt span { display: block; font-weight: 500; font-size: 18px; color: #5a5d6b; line-height: 1.4; }
   .card .badge { flex: none; background: var(--red); color: #fff; border-radius: 14px; padding: 8px 12px; text-align: center; line-height: 1.15; }
   .card .badge b { display: block; font-weight: 900; font-size: 21px; }
   .card .badge small { font-weight: 600; font-size: 13px; opacity: 0.92; }
   .pin .tail { position: absolute; left: 50%; width: 26px; height: 26px; background: #fff; transform: translateX(-50%) rotate(45deg); border-radius: 4px; }
 
-  .foot { position: absolute; z-index: 12; left: 56px; right: 56px; bottom: 46px; display: flex; justify-content: space-between; align-items: center; }
+  .foot { position: absolute; z-index: 14; left: 56px; right: 56px; bottom: 44px; display: flex; justify-content: space-between; align-items: center; }
   .foot .brand { display: flex; align-items: center; gap: 22px; }
-  .foot .brand img { height: 50px; display: block; }
-  .foot .brand span { font-weight: 600; font-size: 21px; line-height: 1.5; padding-right: 22px; }
-  .foot .cta { background: var(--red); color: #fff; font-weight: 800; font-size: 22px; padding: 14px 26px; border-radius: 16px; }
+  .foot .brand img { height: 48px; display: block; }
+  .foot .brand span { font-weight: 600; font-size: 20px; line-height: 1.5; padding-right: 22px; color: #3a3b44; border-right: 2px solid rgba(0, 0, 0, 0.16); }
+  .foot .cta { background: var(--red); color: #fff; font-weight: 800; font-size: 22px; padding: 14px 26px; border-radius: 16px; box-shadow: 0 10px 22px rgba(150, 10, 16, 0.25); }
 
   /* ---- 1 · the white coin ---- */
   #c1 { background: #f6f5f2; }
-  #c1 .night { position: absolute; left: 0; right: 0; top: 0; height: 640px; background: radial-gradient(90% 80% at 50% 100%, #1c1c1f 0%, #0b0b0c 60%, #060607 100%); }
-  #c1 .day { position: absolute; left: 0; right: 0; top: 640px; bottom: 0; background: radial-gradient(80% 70% at 50% 0%, #ffffff 0%, #f6f5f2 55%, #ebe9e4 100%); }
-  #c1 .coin { position: absolute; z-index: 8; left: 50%; top: 262px; width: 720px; margin-left: -360px; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.35)); }
-  #c1 .landing { position: absolute; z-index: 7; left: 50%; top: 868px; width: 330px; height: 40px; margin-left: -165px; border-radius: 50%; filter: blur(14px); background: rgba(40, 30, 20, 0.28); }
-  #c1 .streaks { position: absolute; z-index: 6; left: 0; top: 0; }
+  #c1 .ground { background:
+      radial-gradient(60% 26% at 50% 57%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, #060607 0%, #0a0a0c 34%, #1b1b1d 44%, #8d8b87 52%, #e9e7e2 58%, #f6f5f2 64%, #efede8 100%); }
 
-  /* ---- 2 · the white gift ---- */
-  #c2 { background: radial-gradient(70% 55% at 50% 58%, #ffffff 0%, #f5f4f2 50%, #e7e5e1 100%); color: var(--ink); }
-  #c2 .gift { position: absolute; z-index: 8; left: 50%; top: 306px; width: 980px; margin-left: -490px;
-    -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }
+  /* ---- 2 · the gift in the shanasheel light ---- */
+  #c2 .floorfade { position: absolute; left: 0; right: 0; bottom: 0; height: 300px; z-index: 2;
+    background: linear-gradient(180deg, rgba(240, 238, 234, 0) 0%, rgba(240, 238, 234, 0.82) 62%, rgba(240, 238, 234, 0.94) 100%); }
 
   /* layer export */
   body.export { background: transparent; padding: 0; display: block; }
@@ -55,74 +57,90 @@
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute"><defs>
-  <linearGradient id="streak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0" /><stop offset="1" stop-color="#fff" stop-opacity="0.5" /></linearGradient>
-</defs></svg>
 
 <!-- ============ 1 · «خبّي قرشك الأبيض… لجمعتك البيضاء» ============ -->
-<!-- The proverb says to keep your white coin for a black day. Here the coin falls out of the black into the white:
-     its day has come. Top half black, bottom half white; the old ending is struck through in Miswag red. -->
+<!-- The proverb says keep your white coin for a black day. Its old ending is crossed out by hand, and an arrow carries
+     the eye down past the falling coins, out of the dark and into the light, to the new ending. -->
 <section class="ad" id="c1">
-  <div data-l="bg"><div class="night"></div><div class="day"></div></div>
-  <svg class="streaks" data-l="bg" width="1080" height="1350">
-    <g stroke="url(#streak)" stroke-width="3" stroke-linecap="round">
-      <path d="M392 330 V 470" /><path d="M446 300 V 452" /><path d="M520 318 V 430" /><path d="M590 292 V 446" /><path d="M652 326 V 468" /><path d="M700 340 V 470" />
-    </g>
-  </svg>
+  <div class="full ground" data-l="bg"></div>
+  <img class="full" data-l="photo" src="img/coins.png" alt="" style="top:44px" />
 
-  <div class="line kicker" data-l="txt" style="top:62px; color:rgba(255,255,255,0.62)">المثل يگول:</div>
-  <div class="line" data-l="txt" style="top:104px; font-weight:800; font-size:84px; line-height:1.3; color:#fff">خبّي قرشك الأبيض</div>
-  <div class="line" data-l="txt" style="top:212px; font-weight:800; font-size:84px; line-height:1.3; color:rgba(255,255,255,0.42)">ليومك الأسود</div>
-  <!-- the old ending, struck out by hand -->
-  <svg data-l="txt" style="position:absolute; left:0; top:0; z-index:11" width="1080" height="1350" fill="none" stroke="#f0222b" stroke-width="10" stroke-linecap="round">
-    <path d="M312 284 C 420 268, 560 276, 772 258" />
-  </svg>
+  <div class="meta" data-l="txt">
+    <span class="tag" style="color:rgba(255,255,255,0.82)"><i></i>الجمعة البيضاء</span>
+    <img data-l="logo" src="img/logo-white.png" alt="miswag" />
+  </div>
 
-  <div class="landing" data-l="photo"></div>
-  <img class="coin" data-l="photo" src="img/coin.png" alt="" />
+  <div class="t" data-l="txt" style="top:118px; left:0; right:0; text-align:center; font-weight:600; font-size:26px; color:rgba(255,255,255,0.6)">المثل يگول:</div>
+  <div class="t ruqaa" data-l="txt" style="top:136px; left:0; right:0; text-align:center; font-size:112px; color:#fff">خبّي قرشك الأبيض</div>
+  <div class="t ruqaa" data-l="txt" id="old" style="top:292px; left:0; right:0; text-align:center; font-size:96px; color:rgba(255,255,255,0.72); text-shadow:0 0 28px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9)">ليومك الأسود</div>
+  <!-- the correction, by hand: a marker line through the old ending and an arrow down to the new one -->
+  <svg class="t" data-l="txt" id="edit" width="1080" height="1350" style="left:0; top:0" fill="none" stroke="#f0222b" stroke-linecap="round" stroke-linejoin="round"></svg>
 
-  <div class="line" data-l="txt" style="top:904px; font-weight:900; font-size:112px; line-height:1.2; color:var(--red-hi); letter-spacing:-0.01em">لجمعتك البيضاء.</div>
+  <div class="t ruqaa" data-l="txt" id="new" style="top:846px; left:0; right:0; text-align:center; font-size:132px; color:var(--red-hi)">لجمعتك البيضاء.</div>
 
-  <div class="pin" data-l="card" style="left:540px; top:1084px">
+  <div class="pin" data-l="card" style="left:540px; top:1094px">
     <div class="card">
       <img src="img/app-icon.png" alt="" />
-      <div class="t"><b>الجمعة البيضاء بمسواگ</b><span>خصومات على آلاف المنتجات الأصلية</span></div>
+      <div class="tt"><b>الجمعة البيضاء بمسواگ</b><span>خصومات على آلاف المنتجات الأصلية</span></div>
       <div class="badge"><b>قريباً</b><small>فعّل التنبيه</small></div>
     </div>
   </div>
 
   <div class="foot">
-    <div class="brand"><img data-l="logo" src="img/logo-red.png" alt="miswag" /><span data-l="txt" style="color:#3a3b44; border-right:2px solid rgba(0,0,0,0.15)">أكثر من ١٧٠ ألف منتج أصلي</span></div>
+    <div class="brand"><img data-l="logo" src="img/logo-red.png" alt="miswag" /><span data-l="txt">أكثر من ١٧٠ ألف منتج أصلي</span></div>
     <div class="cta" data-l="txt">حمّل التطبيق</div>
   </div>
   <div class="grain" data-l="grain"></div>
 </section>
 
 <!-- ============ 2 · «بيّض وجهك» ============ -->
-<!-- «بيّض وجهك» is what you say to someone who did right by you; here it is the gift you bring home, in white with
-     a Miswag-red ribbon. -->
+<!-- The gift in a white room, in late-afternoon light through a shanasheel; the line sits in the shade, right. -->
 <section class="ad" id="c2">
-  <div data-l="bg" style="position:absolute; inset:0"></div>
-  <div class="line" data-l="txt" style="top:58px"><span class="pill" style="color:var(--red); box-shadow: inset 0 0 0 2.5px var(--red)">الجمعة البيضاء</span></div>
-  <div class="line" data-l="txt" style="top:134px; font-weight:700; font-size:46px; line-height:1.35; color:#2a2b31">هدية لأمك، لخطيبتك، لأهلك…</div>
-  <div class="line" data-l="txt" style="top:200px; font-weight:900; font-size:150px; line-height:1.25; color:var(--red); letter-spacing:-0.01em">بيّض وجهك.</div>
+  <img class="full" data-l="bg" src="img/room.png" alt="" style="z-index:1" />
+  <div class="floorfade" data-l="bg"></div>
 
-  <img class="gift" data-l="photo" src="img/gift.png" alt="" />
+  <div class="meta" data-l="txt" style="flex-direction:row-reverse">
+    <img data-l="logo" src="img/logo-red.png" alt="miswag" style="height:38px" />
+    <span class="tag" style="color:var(--red)"><i style="background:var(--red)"></i>الجمعة البيضاء</span>
+  </div>
 
-  <div class="pin" data-l="card" style="left:540px; top:1056px">
+  <div class="t" data-l="txt" style="top:150px; right:64px; text-align:right; font-weight:600; font-size:36px; line-height:1.5; color:#2c2a29">هدية لأمك، لخطيبتك، لأهلك…</div>
+  <div class="t ruqaa" data-l="txt" style="top:206px; right:56px; text-align:right; font-size:176px; line-height:1.12; color:var(--red)">بيّض<br />وجهك.</div>
+
+  <div class="pin" data-l="card" style="left:560px; top:1088px">
     <i class="tail" style="top:-12px"></i>
     <div class="card">
       <img src="img/app-icon.png" alt="" />
-      <div class="t"><b>هديتك بالطريق</b><span>توصيل لكل العراق · الدفع عند الاستلام</span></div>
+      <div class="tt"><b>هديتك بالطريق</b><span>توصيل لكل العراق · الدفع عند الاستلام</span></div>
       <div class="badge"><b>عروض</b><small>الجمعة البيضاء</small></div>
     </div>
   </div>
 
   <div class="foot">
-    <div class="brand"><img data-l="logo" src="img/logo-red.png" alt="miswag" /><span data-l="txt" style="color:#3a3b44; border-right:2px solid rgba(0,0,0,0.15)">أكثر من ١٧٠ ألف منتج أصلي</span></div>
+    <div class="brand"><img data-l="logo" src="img/logo-red.png" alt="miswag" /><span data-l="txt">أكثر من ١٧٠ ألف منتج أصلي</span></div>
     <div class="cta" data-l="txt">تسوّق هسة</div>
   </div>
   <div class="grain" data-l="grain"></div>
 </section>
+
+<script>
+  // the hand edit on concept 1, placed from the real text box of «ليومك الأسود» and «لجمعتك البيضاء»
+  (function () {
+    const ad = document.getElementById('c1').getBoundingClientRect();
+    const box = (el) => { const r = document.createRange(); r.selectNodeContents(el); const b = r.getBoundingClientRect(); return { l: b.left - ad.left, r: b.right - ad.left, t: b.top - ad.top, b: b.bottom - ad.top }; };
+    const o = box(document.getElementById('old')), n = box(document.getElementById('new'));
+    const y = o.t + (o.b - o.t) * 0.63;  // through the body of the letters (Ruqaa sits low in its line box)
+    const strike = `M${o.l - 18} ${y + 6} C ${o.l + 120} ${y - 10}, ${o.r - 160} ${y + 4}, ${o.r + 16} ${y - 8}`;
+    const strike2 = `M${o.l - 4} ${y + 16} C ${o.l + 160} ${y + 2}, ${o.r - 120} ${y + 14}, ${o.r + 6} ${y + 2}`;
+    // the arrow leaves the left end of the strike and swings down the left side to the new ending
+    const sx = o.l - 30, sy = y + 18, ex = n.l + 20, ey = n.t + (n.b - n.t) * 0.28;
+    const arrow = `M${sx} ${sy} C ${sx - 120} ${sy + 160}, ${66} ${ey - 260}, ${ex - 40} ${ey}`;
+    const ang = Math.atan2(ey - (ey - 260), (ex - 40) - 66), ax = ex - 40, ay = ey;
+    const head = (a) => `M${ax - 34 * Math.cos(ang - a)} ${ay - 34 * Math.sin(ang - a)} L ${ax} ${ay} L ${ax - 34 * Math.cos(ang + a)} ${ay - 34 * Math.sin(ang + a)}`;
+    document.getElementById('edit').innerHTML =
+      `<path d="${strike}" stroke-width="11" /><path d="${strike2}" stroke-width="6" opacity="0.75" />` +
+      `<path d="${arrow}" stroke-width="5" /><path d="${head(0.5)}" stroke-width="5" />`;
+  })();
+</script>
 </body>
 </html>
