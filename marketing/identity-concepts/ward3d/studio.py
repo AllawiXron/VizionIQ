@@ -386,7 +386,7 @@ def bag(loc, size=(22, 10, 27), rot=0.0, color=WINE, label="wrap-logo", foil=Tru
     # the front texture is projected from above in object space; make it face the front instead
     nt = front.node_tree
     mp = [n for n in nt.nodes if n.type == "MAPPING"][0]
-    W = w * 1.05
+    W = w * 1.8  # the width the 2:1 logo image covers (the art itself is about a third of it)
     mp.inputs["Scale"].default_value = (1 / (W * CM), 1, 1 / (W / 2 * CM))
     mp.inputs["Rotation"].default_value = (math.radians(-90), 0, 0)
     mp.inputs["Location"].default_value = (0.5, 0.5 - 0.24 * h / W, 0)  # logo a little above the middle
