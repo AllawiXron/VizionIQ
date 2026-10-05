@@ -2,48 +2,39 @@
 <html lang="ar"><head><meta charset="utf-8" />
 <link rel="stylesheet" href="fonts/fonts.css" />
 <link rel="stylesheet" href="../identity-concepts/fonts/fonts.css" />
-<!-- «لو أكلاتنا صارت براندات فخمة», real-photo version: food photos cut out on bold flat colours, heavy Arabic
-     headlines with a highlight box, white hand-drawn doodles. 6 slides at 1080x1350. -->
+<!-- «لو أكلاتنا صارت براندات فخمة»: AI product photos (ai/), branded by brand.py and fitted by compose.py (bg/),
+     with heavy Arabic headlines, a highlight box and a few white doodles. 6 slides at 1080x1350. -->
 <style>
-:root { --red:#d71e25; --red-d:#9e1016; --yellow:#ffc619; --cream:#fff5e8; --ink:#2b0708 }
+:root { --red:#d71e25; --red-d:#9e1016; --yellow:#ffc619; --ink:#2b0708 }
 * { box-sizing:border-box; margin:0; padding:0 }
 body { background:#333; display:flex; flex-direction:column; gap:40px; padding:40px; align-items:center }
-.slide { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; font-family:'Alexandria' }
-.red { background:radial-gradient(ellipse 75% 60% at 50% 52%, #ea2b31 0%, var(--red) 55%, #b5141a 100%); color:#fff }
-.yellow { background:radial-gradient(ellipse 75% 60% at 50% 52%, #ffd23f 0%, var(--yellow) 60%, #f4ab00 100%); color:var(--red) }
-.cream { background:radial-gradient(ellipse 75% 60% at 50% 50%, #fffaf2 0%, var(--cream) 60%, #f6e3cc 100%); color:var(--red) }
-/* the faint grid the food posts sit on */
-.grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.07) 1.5px, transparent 1.5px), linear-gradient(90deg, rgba(255,255,255,.07) 1.5px, transparent 1.5px); background-size:60px 60px }
-.yellow .grid, .cream .grid { background-image:linear-gradient(rgba(215,30,37,.07) 1.5px, transparent 1.5px), linear-gradient(90deg, rgba(215,30,37,.07) 1.5px, transparent 1.5px) }
-.logo { position:absolute; top:46px; left:0; right:0; text-align:center; direction:ltr; font:800 34px 'Alexandria'; letter-spacing:-.01em }
+.slide { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; font-family:'Alexandria'; background-size:cover }
+.light { color:var(--red) }
+.dark { color:#fff }
+.logo { position:absolute; top:44px; left:0; right:0; text-align:center; direction:ltr; font:800 32px 'Alexandria' }
 .logo i { font-style:normal; color:var(--yellow) }
-.yellow .logo i, .cream .logo i { color:var(--ink) }
+.light .logo i { color:var(--ink) }
+.head { position:absolute; left:0; right:0; top:118px; text-align:center }
+.h1 { font:900 100px/1.12 'Alexandria'; letter-spacing:-.01em }
+.dark .h1 { text-shadow:0 4px 30px rgba(80,0,0,.25) }
+.box { display:inline-block; padding:4px 32px 16px; font:800 66px/1.2 'Alexandria'; transform:rotate(-2deg); margin-top:10px; box-shadow:0 10px 24px rgba(60,0,0,.18) }
+.dark .box { background:var(--yellow); color:var(--red-d) }
+.light .box { background:var(--red); color:#fff }
 .dots { position:absolute; bottom:40px; left:0; right:0; display:flex; justify-content:center; gap:10px }
-.dots b { width:11px; height:11px; border-radius:50%; background:currentColor; opacity:.35 }
+.dots b { width:11px; height:11px; border-radius:50%; background:currentColor; opacity:.4 }
 .dots b.on { opacity:1 }
-.handle { position:absolute; bottom:34px; left:56px; direction:ltr; font:800 22px 'Alexandria'; opacity:.85 }
-.food { position:absolute; filter:saturate(1.15) contrast(1.06) drop-shadow(0 26px 30px rgba(60,0,0,.38)) }
-.food.bread { filter:drop-shadow(0 26px 30px rgba(90,20,0,.38)) }
-.cream .food, .yellow .food { filter:saturate(1.15) contrast(1.06) drop-shadow(0 26px 30px rgba(110,40,0,.3)) }
-.h1 { font:900 104px/1.12 'Alexandria'; letter-spacing:-.01em }
-.box { display:inline-block; padding:4px 30px 14px; font:800 66px/1.2 'Alexandria'; transform:rotate(-2deg); margin-top:10px }
-.red .box { background:var(--yellow); color:var(--red-d) }
-.yellow .box, .cream .box { background:var(--red); color:#fff }
-.head { position:absolute; left:0; right:0; text-align:center }
-.brand { position:absolute; direction:ltr; font:600 26px 'Cormorant Garamond'; letter-spacing:.32em; text-transform:uppercase }
-.brand small { display:block; font:500 17px 'Cormorant Garamond'; letter-spacing:.36em; opacity:.85; margin-top:4px }
+.handle { position:absolute; bottom:34px; left:56px; direction:ltr; font:800 22px 'Alexandria'; opacity:.9 }
 .doodle { position:absolute; fill:none; stroke:currentColor; stroke-width:5.5; stroke-linecap:round; stroke-linejoin:round }
 .doodle .fill { fill:currentColor; stroke:none }
 .tag { position:absolute; display:flex; align-items:center; gap:12px; padding:14px 26px 18px 34px; background:#fff; color:var(--red); border-radius:14px;
-  font:800 40px 'Alexandria'; box-shadow:0 14px 26px rgba(120,40,0,.25) }
+  font:800 38px 'Alexandria'; box-shadow:0 14px 26px rgba(90,40,0,.22) }
 .tag::before { content:""; width:16px; height:16px; border-radius:50%; background:var(--yellow); box-shadow:inset 0 0 0 3px #fff, 0 0 0 2px var(--red) }
-.swipe { position:absolute; bottom:30px; right:56px; display:flex; align-items:center; gap:12px; font:700 30px 'Alexandria'; text-shadow:0 2px 12px rgba(60,0,0,.6) }
-#s1 .handle { text-shadow:0 2px 12px rgba(60,0,0,.6); opacity:1 }
-.chip { display:inline-block; padding:12px 30px 16px; margin:8px; border-radius:999px; background:var(--red); color:#fff; font:800 40px 'Alexandria' }
-.credit { position:absolute; bottom:86px; left:60px; right:60px; text-align:center; direction:ltr; font:500 17px 'Cormorant Garamond'; letter-spacing:.04em; opacity:.75 }
+.swipe { position:absolute; bottom:30px; right:56px; display:flex; align-items:center; gap:12px; font:700 30px 'Alexandria' }
+.chip { display:inline-block; padding:12px 30px 16px; margin:8px; border-radius:999px; background:var(--red); color:#fff; font:800 38px 'Alexandria' }
+.tiles { position:absolute; left:70px; right:70px; top:860px; display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; direction:ltr }
+.tiles img { width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:20px; box-shadow:0 14px 28px rgba(120,60,0,.25); display:block }
 </style></head><body>
 
-<!-- doodles, drawn once and placed with <svg><use> -->
 <svg width="0" height="0" style="position:absolute"><defs>
   <g id="d-heart"><path d="M50 90 C 22 70, 6 52, 9 32 C 12 12, 38 6, 50 28 C 62 6, 88 12, 91 32 C 94 52, 78 70, 50 90 Z" />
     <path d="M22 34 L34 22 M22 48 L44 24 M28 58 L58 28 M36 68 L70 32 M46 76 L80 40 M60 70 L82 50" stroke-width="4.5" /></g>
@@ -51,119 +42,85 @@ body { background:#333; display:flex; flex-direction:column; gap:40px; padding:4
     <circle class="fill" cx="50" cy="10" r="5" /><circle class="fill" cx="14" cy="22" r="4.5" /><circle class="fill" cx="86" cy="20" r="4.5" /></g>
   <g id="d-spark"><path class="fill" d="M50 4 C 54 38, 62 46, 96 50 C 62 54, 54 62, 50 96 C 46 62, 38 54, 4 50 C 38 46, 46 38, 50 4 Z" /></g>
   <g id="d-wave"><path d="M20 96 C 4 80, 36 66, 20 50 C 4 34, 36 20, 20 4" /></g>
-  <g id="d-arrow"><path d="M8 14 C 50 2, 94 24, 84 58 C 76 86, 40 80, 52 58 C 64 38, 104 60, 104 100" /><path d="M88 88 L104 102 L116 84" /></g>
-  <g id="d-swoosh"><path d="M6 22 C 60 6, 140 4, 196 16" /><path d="M30 34 C 80 24, 130 22, 180 28" stroke-width="4" /></g>
   <g id="d-down"><path d="M50 6 C 46 30, 56 52, 50 84" /><path d="M32 66 L50 88 L68 66" /></g>
 </defs></svg>
 
 <!-- 1. cover -->
-<div class="slide red" id="s1">
-  <div class="grid"></div>
+<div class="slide dark" id="s1" style="background-image:url(bg/cover.png)">
   <div class="logo">allawi<i>.</i>psd</div>
-  <div class="head" style="top:150px">
+  <div class="head" style="top:96px">
     <div style="font:800 76px/1.2 'Alexandria'">لو أكلاتنا العراقية</div>
     <div class="box" style="font-size:92px; padding:2px 36px 16px">صارت براندات فخمة</div>
   </div>
-  <img class="food" src="cut/dolma.png" style="width:820px; left:130px; top:930px; transform:rotate(-8deg)" />
-  <img class="food" src="cut/amba.png" style="height:560px; left:40px; top:500px; transform:rotate(-10deg)" />
-  <img class="food" src="cut/tea.png" style="width:380px; right:30px; top:600px; transform:rotate(7deg)" />
-  <img class="food bread" src="cut/samoon-gold.png" style="height:600px; left:330px; top:380px; transform:rotate(90deg)" />
-  <svg class="doodle" viewBox="0 0 100 90" style="width:150px; left:465px; top:470px; transform:rotate(-5deg); color:#fff"><use href="#d-crown" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:54px; left:330px; top:520px; color:var(--yellow)"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:38px; left:700px; top:500px; color:#fff"><use href="#d-spark" /></svg>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:46px; left:230px; top:520px; color:#fff"><use href="#d-spark" /></svg>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:32px; left:830px; top:640px; color:#fff"><use href="#d-spark" /></svg>
   <div class="swipe">اسحب <svg viewBox="0 0 60 24" width="56" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M56 12 H6 M16 3 L5 12 L16 21" /></svg></div>
   <div class="handle">@allawi.psd</div>
 </div>
 
-<!-- 2. samoon: «چان بربع… صار بربع مليون» -->
-<div class="slide cream" id="s2">
-  <div class="grid"></div>
+<!-- 2. samoon -->
+<div class="slide light" id="s2" style="background-image:url(bg/samoon.png)">
   <div class="logo">allawi<i>.</i>psd</div>
-  <div class="head" style="top:150px">
+  <div class="head">
     <div class="h1">چان بربع…</div>
     <div class="box">صار بربع مليون</div>
   </div>
-  <img class="food bread" src="cut/samoon-gold.png" style="height:900px; left:303px; top:300px; transform:rotate(80deg)" />
-  <svg class="doodle" viewBox="0 0 100 90" style="width:170px; left:470px; top:500px; transform:rotate(-8deg); color:var(--red)"><use href="#d-crown" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:64px; left:150px; top:560px; color:var(--yellow)"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:40px; left:230px; top:640px; color:var(--red)"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:52px; left:880px; top:900px; color:var(--yellow)"><use href="#d-spark" /></svg>
-  <div class="tag" style="left:90px; top:1000px; transform:rotate(-6deg)">سمّونة وحدة · ٢٥٠,٠٠٠ د.ع</div>
-  <div class="brand" style="right:70px; top:1170px; text-align:right">Samoon<small>Maison de Bagdad</small></div>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:52px; left:180px; top:470px; color:var(--yellow)"><use href="#d-spark" /></svg>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:34px; left:240px; top:540px; color:var(--red)"><use href="#d-spark" /></svg>
+  <div class="tag" style="left:40px; top:1185px; transform:rotate(-5deg)">سمّونة وحدة · ٢٥٠,٠٠٠ د.ع</div>
   <div class="dots" style="color:var(--red)"><b class="on"></b><b></b><b></b><b></b></div>
 </div>
 
-<!-- 3. amba: «عطر يبقى وياك ٣ أيام… حتى لو تسبحت» -->
-<div class="slide red" id="s3">
-  <div class="grid"></div>
+<!-- 3. amba -->
+<div class="slide dark" id="s3" style="background-image:url(bg/amba.png)">
   <div class="logo">allawi<i>.</i>psd</div>
-  <div class="head" style="top:150px">
+  <div class="head">
     <div class="h1" style="font-size:84px">عطر يبقى وياك ٣ أيام</div>
     <div class="box">حتى لو تسبحت</div>
   </div>
-  <img class="food" src="cut/amba-cup.png" style="width:300px; left:230px; top:1050px; transform:rotate(-6deg)" />
-  <img class="food" src="cut/amba.png" style="height:860px; left:430px; top:470px; transform:rotate(7deg)" />
-  <svg class="doodle" viewBox="0 0 40 100" style="width:40px; height:120px; left:560px; top:400px; color:#fff"><use href="#d-wave" /></svg>
-  <svg class="doodle" viewBox="0 0 40 100" style="width:40px; height:150px; left:620px; top:370px; color:#fff"><use href="#d-wave" /></svg>
-  <svg class="doodle" viewBox="0 0 40 100" style="width:40px; height:120px; left:680px; top:400px; color:#fff"><use href="#d-wave" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:58px; left:800px; top:640px; color:var(--yellow)"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:36px; left:380px; top:700px; color:#fff"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 100 92" style="width:130px; left:170px; top:620px; transform:rotate(-12deg); color:#fff"><use href="#d-heart" /></svg>
-  <div class="brand" style="left:70px; top:880px; color:#fff">Amba<small>Eau de parfum · 100 ml</small></div>
+  <svg class="doodle" viewBox="0 0 40 100" style="width:34px; height:100px; left:680px; top:420px; color:#fff"><use href="#d-wave" /></svg>
+  <svg class="doodle" viewBox="0 0 40 100" style="width:34px; height:126px; left:735px; top:395px; color:#fff"><use href="#d-wave" /></svg>
+  <svg class="doodle" viewBox="0 0 40 100" style="width:34px; height:100px; left:790px; top:420px; color:#fff"><use href="#d-wave" /></svg>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:48px; left:250px; top:560px; color:var(--yellow)"><use href="#d-spark" /></svg>
   <div class="dots" style="color:#fff"><b></b><b class="on"></b><b></b><b></b></div>
 </div>
 
-<!-- 4. istikan: «ما تگدر تگول لا للاستكان الثاني» -->
-<div class="slide yellow" id="s4">
-  <div class="grid"></div>
+<!-- 4. istikan -->
+<div class="slide light" id="s4" style="background-image:url(bg/tea.png)">
   <div class="logo">allawi<i>.</i>psd</div>
-  <div class="head" style="top:150px">
+  <div class="head">
     <div class="h1">ما تگدر تگول لا</div>
     <div class="box">للاستكان الثاني</div>
   </div>
-  <img class="food" src="cut/tea.png" style="width:600px; left:240px; top:470px" />
-  <svg class="doodle" viewBox="0 0 40 100" style="width:36px; height:110px; left:420px; top:470px; color:var(--red)"><use href="#d-wave" /></svg>
-  <svg class="doodle" viewBox="0 0 40 100" style="width:36px; height:140px; left:480px; top:440px; color:var(--red)"><use href="#d-wave" /></svg>
-  <svg class="doodle" viewBox="0 0 40 100" style="width:36px; height:110px; left:540px; top:470px; color:var(--red)"><use href="#d-wave" /></svg>
-  <svg class="doodle" viewBox="0 0 100 92" style="width:120px; left:790px; top:560px; transform:rotate(12deg); color:var(--red)"><use href="#d-heart" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:50px; left:170px; top:650px; color:#fff"><use href="#d-spark" /></svg>
-  <div class="brand" style="left:0; right:0; top:1222px; text-align:center; color:var(--red)">Istikan<small>Thé noir à la cardamome</small></div>
+  <svg class="doodle" viewBox="0 0 100 92" style="width:100px; left:110px; top:520px; transform:rotate(-12deg); color:var(--red)"><use href="#d-heart" /></svg>
   <div class="dots" style="color:var(--red)"><b></b><b></b><b class="on"></b><b></b></div>
 </div>
 
-<!-- 5. dolma: «الفخامة تبدي من قلبة الجدر» -->
-<div class="slide red" id="s5">
-  <div class="grid"></div>
+<!-- 5. dolma -->
+<div class="slide dark" id="s5" style="background-image:url(bg/dolma.png)">
   <div class="logo">allawi<i>.</i>psd</div>
-  <div class="head" style="top:150px">
+  <div class="head">
     <div class="h1">الفخامة تبدي</div>
     <div class="box">من قلبة الجدر</div>
   </div>
-  <img class="food" src="cut/dolma.png" style="width:900px; left:150px; top:500px; transform:rotate(-14deg)" />
-  <svg class="doodle" viewBox="0 0 120 110" style="width:150px; left:60px; top:470px; transform:scaleX(-1) rotate(8deg); color:#fff"><use href="#d-arrow" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:60px; left:880px; top:470px; color:var(--yellow)"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:36px; left:960px; top:560px; color:#fff"><use href="#d-spark" /></svg>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:52px; left:120px; top:520px; color:var(--yellow)"><use href="#d-spark" /></svg>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:34px; left:190px; top:600px; color:#fff"><use href="#d-spark" /></svg>
   <div class="dots" style="color:#fff"><b></b><b></b><b></b><b class="on"></b></div>
 </div>
 
 <!-- 6. the question for the comments -->
-<div class="slide yellow" id="s6">
-  <div class="grid"></div>
+<div class="slide light" id="s6" style="background:radial-gradient(ellipse 75% 60% at 50% 45%, #ffd23f 0%, var(--yellow) 60%, #f4ab00 100%)">
   <div class="logo">allawi<i>.</i>psd</div>
-  <div class="head" style="top:300px">
-    <div class="h1" style="font-size:112px">شنو الأكلة</div>
-    <div class="box" style="font-size:96px">الجاية؟</div>
-    <div style="font:700 44px/1.5 'Alexandria'; color:var(--ink); margin-top:44px">اكتبها بالتعليقات<br>والأكثر طلب أسويله براند</div>
-    <svg class="doodle" viewBox="0 0 100 92" style="position:relative; width:64px; margin-top:14px; color:var(--red)"><use href="#d-down" /></svg>
-    <div style="margin-top:18px; padding:0 70px"><span class="chip">باچة؟</span><span class="chip">كبة؟</span><span class="chip">لبلبي؟</span><span class="chip">تمن ومرگ؟</span></div>
+  <div class="head" style="top:150px">
+    <div class="h1" style="font-size:110px">شنو الأكلة</div>
+    <div class="box" style="font-size:92px">الجاية؟</div>
+    <div style="font:700 42px/1.5 'Alexandria'; color:var(--ink); margin-top:36px">اكتبها بالتعليقات… والأكثر طلب أسويله براند</div>
+    <div style="margin-top:22px; padding:0 70px"><span class="chip">باچة؟</span><span class="chip">كبة؟</span><span class="chip">لبلبي؟</span><span class="chip">تمن ومرگ؟</span></div>
   </div>
-  <svg class="doodle" viewBox="0 0 100 90" style="width:130px; left:110px; top:180px; transform:rotate(-14deg); color:var(--red)"><use href="#d-crown" /></svg>
-  <svg class="doodle" viewBox="0 0 100 92" style="width:110px; right:110px; top:200px; transform:rotate(12deg); color:#fff"><use href="#d-heart" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:56px; left:120px; top:640px; color:#fff"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 100 100" style="width:40px; right:150px; top:760px; color:var(--red)"><use href="#d-spark" /></svg>
-  <svg class="doodle" viewBox="0 0 200 40" style="width:300px; left:390px; top:1150px; color:var(--red)"><use href="#d-swoosh" /></svg>
-  <div style="position:absolute; bottom:212px; left:0; right:0; text-align:center; font:700 38px 'Alexandria'; color:var(--ink)">تحتاج تصاميم لمشروعك؟ <span style="color:var(--red)">راسلني</span></div>
-  <div class="credit" style="color:var(--ink)">Photos: Muhib mansour, Nirvadel, Abdulsalam Al Dabbagh (CC BY-SA 4.0) · tea photo CC0 · via Wikimedia Commons</div>
+  <div class="tiles"><img src="bg/samoon.png" /><img src="bg/amba.png" /><img src="bg/tea.png" /><img src="bg/dolma.png" /></div>
+  <svg class="doodle" viewBox="0 0 100 90" style="width:100px; left:200px; top:330px; transform:rotate(-14deg); color:var(--red)"><use href="#d-crown" /></svg>
+  <svg class="doodle" viewBox="0 0 100 100" style="width:44px; right:140px; top:180px; color:#fff"><use href="#d-spark" /></svg>
+  <div style="position:absolute; bottom:120px; left:0; right:0; text-align:center; font:700 38px 'Alexandria'; color:var(--ink)">تحتاج تصاميم لمشروعك؟ <span style="color:var(--red)">راسلني</span></div>
   <div class="handle" style="color:var(--ink)">@allawi.psd</div>
 </div>
 
@@ -172,9 +129,8 @@ Promise.all([
   document.fonts.load("900 100px 'Alexandria'", 'چان بربع گدر'),
   document.fonts.load("800 60px 'Alexandria'", 'صار بربع مليون'),
   document.fonts.load("700 40px 'Alexandria'", 'اكتبها'),
-  document.fonts.load("600 26px 'Cormorant Garamond'", 'SAMOON'),
-  document.fonts.load("500 17px 'Cormorant Garamond'", 'Maison'),
   ...[...document.images].map((im) => (im.complete ? 0 : new Promise((r) => { im.onload = r; im.onerror = r; }))),
+  ...['cover', 'samoon', 'amba', 'tea', 'dolma'].map((n) => new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = `bg/${n}.png`; })),
 ]).then(() => (document.body.dataset.ready = 1));
 </script>
 </body></html>

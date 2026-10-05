@@ -1,38 +1,34 @@
-# «لو أكلاتنا صارت براندات فخمة»: real-photo version
+# «لو أكلاتنا صارت براندات فخمة»: Iraqi foods as luxury brands
 
-An Instagram carousel for @allawi.psd. It is the same idea and jokes as `../ig-luxury-food`, redone without 3D, in
-the style of bold Iraqi food-brand posts:
-- real food photos cut out on flat red, yellow and cream backgrounds, on a faint grid;
-- heavy Arabic headlines with a highlight box;
-- white hand-drawn doodles: crown, sparkles, heart, steam, arrow.
+An Instagram carousel for @allawi.psd. Four everyday Iraqi foods are shown as luxury products, with a joke in Iraqi
+dialect on each, in the style of bold Iraqi food-brand posts: flat red and yellow, heavy Arabic headlines with a
+highlight box, and a few white doodles.
 
 Slides, 1080×1350 (`out/food-1..6.png`):
 
-1. **Cover:** all four foods, «لو أكلاتنا العراقية / صارت براندات فخمة», with a crown on the samoon.
-2. **Samoon:** «چان بربع… / صار بربع مليون», with a price tag «سمّونة وحدة · ٢٥٠,٠٠٠ د.ع».
-3. **Amba:** the squeeze bottle as a perfume. «عطر يبقى وياك ٣ أيام / حتى لو تسبحت».
-4. **Istikan:** «ما تگدر تگول لا / للاستكان الثاني».
-5. **Dolma:** «الفخامة تبدي / من قلبة الجدر».
-6. **Question:** «شنو الأكلة الجاية؟», with chips (باچة؟ كبة؟ لبلبي؟ تمن ومرگ؟) to get comments, plus
+1. **Cover:** a gloved hand holding up a samoon like a jewel. «لو أكلاتنا العراقية / صارت براندات فخمة».
+2. **SAMOON:** the samoon in a velvet jewellery box, «چان بربع… / صار بربع مليون», price tag ٢٥٠,٠٠٠ د.ع.
+3. **AMBA:** amba as an eau de parfum. «عطر يبقى وياك ٣ أيام / حتى لو تسبحت».
+4. **ISTIKAN:** tea with its own tin. «ما تگدر تگول لا / للاستكان الثاني».
+5. **DOLMA:** dolma as a box of pralines. «الفخامة تبدي / من قلبة الجدر».
+6. **Question:** «شنو الأكلة الجاية؟», with prompts to get comments, the four products, and
    «تحتاج تصاميم لمشروعك؟ راسلني».
 
-## Files
+## How it is made
 
-- `photo/`: the source photos.
-- `cutout.py`: cuts the foods out with rembg, writing `cut/*.png`. The amba bottle is cut hard-edged with its nozzle
-  restored. `cut/samoon-gold.png` is the samoon warmed and with its shadows lifted.
-- `slides.html` / `slides.cjs`: the slides. Run `node slides.cjs`.
-- `fonts/`: Alexandria 800/900, Lalezar and Reem Kufi Fun, from Google Fonts (OFL).
+1. `ai/*.png`: the product photos, generated with an AI image tool from prompts that ask for blank, unbranded
+   packaging on flat brand-colour backdrops, with the top third left empty. The picks used are `samoon-b`, `amba-a`,
+   `tea-b`, `dolma` and `cover`.
+2. `brand-art.html` / `brand-art.cjs` → `art/*.png`: the four marks (SAMOON, AMBA, ISTIKAN, DOLMA).
+3. `brand.py` → `ai/branded/*.png`: prints each mark onto its packaging as gold foil that follows the surface's
+   light and perspective:
+   - inside the jewellery box's lid, kept off the loaf;
+   - on the dolma box's lid;
+   - on a black label on the perfume bottle, under the glass's highlights;
+   - wrapped around the tea tin.
+4. `compose.py` → `bg/*.png`: fits each photo to the slide. Where the headline needs room, the photo is scaled down and
+   its studio backdrop extended.
+5. `slides.html` / `slides.cjs` → `out/`: type, doodles and layout. Run `node slides.cjs`.
 
-## Photo credits (Wikimedia Commons)
-
-- Samoon: "Iraqi Samoon 2.jpg", Muhib mansour, CC BY-SA 4.0.
-  https://commons.wikimedia.org/wiki/File:Iraqi_Samoon_2.jpg
-- Amba: "עמבה.jpg", Nirvadel, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:%D7%A2%D7%9E%D7%91%D7%94.jpg
-- Dolma: "Iraqi Dolma-Mosul 04.jpg", Abdulsalam Al Dabbagh, CC BY-SA 4.0.
-  https://commons.wikimedia.org/wiki/File:Iraqi_Dolma-Mosul_04.jpg
-- Tea: "Turkish tea with classical glass.jpg", CC0. https://commons.wikimedia.org/wiki/File:Turkish_tea_with_classical_glass.jpg
-
-CC BY-SA asks for the credit, which is on slide 6 and should also go in the caption. It also asks that the
-adapted images be shared under the same licence. To own every picture outright, reshoot the four foods on a plain
-table and drop the new cutouts into `cut/`.
+Fonts: Alexandria 800/900 (`fonts/`), Cormorant Garamond, Aref Ruqaa and Playfair Display (`../identity-concepts/fonts`).
+All are from Google Fonts (OFL).
