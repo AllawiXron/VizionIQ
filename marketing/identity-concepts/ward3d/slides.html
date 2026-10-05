@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>WARD, beauty brand identity (concept)</title>
+<link rel="stylesheet" href="../fonts/fonts.css" />
+<script src="../marks.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #222; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+  .s { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'IBM Plex Sans Arabic', sans-serif; color: #5e1624; }
+  .full { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cap { position: absolute; z-index: 30; font-family: 'Playfair Display', serif; font-weight: 500; font-size: 16px; letter-spacing: 0.34em; text-transform: uppercase; color: #e9d3b0; }
+  .cap.tl { top: 50px; left: 56px; } .cap.tr { top: 50px; right: 56px; } .cap.bl { bottom: 48px; left: 56px; } .cap.br { bottom: 48px; right: 56px; }
+  .light .cap { color: #5e1624; }
+  .grain { position: absolute; inset: 0; z-index: 40; pointer-events: none; background: url(../img/grain.png); background-size: 320px; mix-blend-mode: overlay; opacity: 0.22; }
+  .grid { position: absolute; inset: 40px; display: grid; gap: 14px; }
+  .tile { position: relative; border-radius: 22px; overflow: hidden; background: #5e1624; }
+  .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .center { display: grid; place-items: center; }
+  .note { position: absolute; z-index: 30; font-size: 25px; font-weight: 300; line-height: 1.7; text-align: center; direction: rtl; }
+  .note em { display: block; direction: ltr; font-family: 'Playfair Display', serif; font-size: 20px; opacity: 0.75; }
+</style>
+</head>
+<body>
+
+<!-- 1 · cover: the whole identity at a glance -->
+<section class="s light" id="ward-1" style="background:#efe3d3">
+  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 300px 330px 250px 1fr">
+    <div class="tile center" style="grid-column: span 2; background: radial-gradient(80% 90% at 50% 40%, #7a2133, #5e1624 60%, #45101a)"><div style="width:470px; height:235px" data-word></div></div>
+    <div class="tile"><img src="renders/lipsticks.png" style="object-position:50% 45%" /></div>
+    <div class="tile"><img src="renders/hero.png" style="object-position:50% 50%" /></div>
+    <div class="tile"><img src="renders/skincare.png" style="object-position:50% 50%" /></div>
+    <div class="tile"><img src="renders/bags.png" style="object-position:50% 45%" /></div>
+    <div class="tile center" style="grid-column: span 2; background:#e6d2bd" data-swatches="small"></div>
+    <div class="tile"><img src="renders/compact.png" style="object-position:50% 45%" /></div>
+    <div class="tile"><img src="renders/giftbox.png" style="object-position:40% 45%" /></div>
+    <div class="tile"><img src="../img/mock-ward-cards.jpg" style="object-position:50% 40%" /></div>
+    <div class="tile" data-pattern></div>
+  </div>
+</section>
+
+<!-- 2 · the logo, and the colours as lipstick bullets -->
+<section class="s" id="ward-2" style="background: radial-gradient(85% 60% at 50% 38%, #7a2133, #5e1624 55%, #3f0d17)">
+  <span class="cap tl">Ward</span><span class="cap tr">Brand identity</span>
+  <div style="position:absolute; left:180px; top:270px; width:720px; height:360px" data-word></div>
+  <div style="position:absolute; left:0; right:0; top:650px; text-align:center"><svg width="520" height="60" data-latin></svg>
+    <div style="font-size:17px; letter-spacing:0.5em; padding-left:0.5em; color:#d9b77a; opacity:0.8; margin-top:6px">BEAUTY · مكياج وعناية</div></div>
+  <div style="position:absolute; left:0; right:0; top:860px; display:flex; justify-content:center" data-swatches="big"></div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">02</span>
+  <div class="grain"></div>
+</section>
+
+<!-- 3 · the idea -->
+<section class="s light" id="ward-3" style="background:#eadbc8">
+  <span class="cap tl">Ward</span><span class="cap tr">The idea</span>
+  <div style="position:absolute; left:190px; top:190px; width:700px; height:700px" data-construction></div>
+  <div class="note" style="left:80px; right:80px; bottom:140px; color:#5e1624">
+    راس الواو صار <b style="font-weight:500">وردة تتفتح</b>، وذيله صار الساق والورقة
+    <em>The wāw blooms: its head a rose bud, its tail the stem and a leaf.</em></div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">03</span>
+  <div class="grain" style="mix-blend-mode:multiply; opacity:0.08"></div>
+</section>
+
+<!-- 4–9 · the products -->
+<section class="s" id="ward-4"><img class="full" src="renders/hero.png" /><span class="cap tl">Ward</span><span class="cap tr">The collection</span><span class="cap bl">allawi.psd</span><span class="cap br">04</span></section>
+<section class="s" id="ward-5"><img class="full" src="renders/lipsticks.png" /><span class="cap tl">Ward</span><span class="cap tr">Lipstick</span><span class="cap bl">allawi.psd</span><span class="cap br">05</span></section>
+<section class="s light" id="ward-6"><img class="full" src="renders/skincare.png" /><span class="cap tl">Ward</span><span class="cap tr">Skincare</span><span class="cap bl">allawi.psd</span><span class="cap br">06</span></section>
+<section class="s" id="ward-7"><img class="full" src="renders/giftbox.png" /><span class="cap tl">Ward</span><span class="cap tr">Gift box</span><span class="cap bl">allawi.psd</span><span class="cap br">07</span></section>
+<section class="s" id="ward-8"><img class="full" src="renders/compact.png" /><span class="cap tl">Ward</span><span class="cap tr">Compact</span><span class="cap bl">allawi.psd</span><span class="cap br">08</span></section>
+<section class="s light" id="ward-9"><img class="full" src="renders/bags.png" /><span class="cap tl">Ward</span><span class="cap tr">Shopping bags</span><span class="cap bl">allawi.psd</span><span class="cap br">09</span></section>
+
+<!-- 10 · stationery and social -->
+<section class="s light" id="ward-10" style="background:#efe3d3">
+  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1.6fr 1fr 1fr">
+    <div class="tile" style="grid-column: span 2"><img src="../img/mock-ward-cards.jpg" style="object-position:50% 35%" /></div>
+    <div class="tile" data-pattern></div>
+    <div class="tile center" style="background: radial-gradient(70% 70% at 50% 35%, #8d2236, #5e1624); flex-direction:column; display:flex; justify-content:center; align-items:center; gap:8px; color:#ead6b8">
+      <div style="width:100px; height:100px" data-rose></div>
+      <div style="font-family:'Amiri'; font-weight:700; font-size:38px; line-height:1.25; text-align:center; direction:rtl">مجموعة الورد<br />وصلت</div></div>
+    <div class="tile"><img src="renders/lipsticks.png" style="object-position:50% 40%" />
+      <div style="position:absolute; left:0; right:0; bottom:0; padding:18px; background:linear-gradient(transparent, rgba(40,8,14,0.85)); color:#f0dcc0; font-size:24px; text-align:center; direction:rtl">أحمر شفاه بثلاث درجات</div></div>
+    <div class="tile center" style="background:#eadbc8"><div style="text-align:center; direction:rtl; color:#5e1624">
+      <div style="font-family:'Amiri'; font-weight:700; font-size:44px; line-height:1.3">هديتچ<br />بلمسة ورد</div>
+      <div style="width:60px; height:60px; margin:10px auto 0" data-rose-wine></div></div></div>
+    <div class="tile center" style="grid-column: span 2; background:#1b1416"><div style="display:flex; gap:22px; align-items:center">
+      <div style="width:120px; height:120px; border-radius:30px; background:linear-gradient(145deg,#7a2133,#5e1624); display:grid; place-items:center; box-shadow:0 16px 28px rgba(0,0,0,0.5)"><div style="width:96px; height:96px" data-rose></div></div>
+      <div style="color:#d9b77a; direction:ltr"><div style="font-family:'Playfair Display'; font-size:30px; letter-spacing:0.3em">WARD</div><div style="font-size:16px; opacity:0.75; letter-spacing:0.12em; margin-top:4px">@ward.beauty · app icon</div></div></div></div>
+    <div class="tile center" style="background:#5e1624" data-swatch-mini></div>
+  </div>
+</section>
+
+<script>
+const BULLETS = [['#5e1624', 'نبيذي', '5E1624'], ['#b23a4e', 'وردي', 'B23A4E'], ['#e7c3b4', 'نود', 'E7C3B4'], ['#cc9f63', 'ذهبي', 'CC9F63'], ['#1b1416', 'أسود', '1B1416']];
+// a colour swatch drawn as a lipstick bullet on its gold sleeve
+const bullet = (c, w = 90, h = 230, dark) => `<svg width="${w}" height="${h}" viewBox="0 0 90 230">
+  <defs><linearGradient id="sh${c.slice(1)}" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0.18" /><stop offset="0.35" stop-color="#fff" stop-opacity="0.16" /><stop offset="0.6" stop-color="#fff" stop-opacity="0" /><stop offset="1" stop-color="#000" stop-opacity="0.22" /></linearGradient><linearGradient id="gs${c.slice(1)}" x1="0" x2="1"><stop offset="0" stop-color="#8a6738" /><stop offset="0.28" stop-color="#e6cc8f" /><stop offset="0.45" stop-color="#f6e7b8" /><stop offset="0.7" stop-color="#b48a4e" /><stop offset="1" stop-color="#7d5c31" /></linearGradient></defs>
+  <path d="M10 150 L10 52 Q10 40 22 34 L78 4 Q80 3 80 6 L80 150 Z" fill="${c}" ${dark ? 'stroke="#d9b77a" stroke-width="1.2"' : ''} />
+  <path d="M10 150 L10 52 Q10 40 22 34 L78 4 Q80 3 80 6 L80 150 Z" fill="url(#sh${c.slice(1)})" />
+  <rect x="4" y="148" width="82" height="80" rx="5" fill="url(#gs${c.slice(1)})" /></svg>`;
+
+Promise.all([document.fonts.load("400 40px 'IBM Plex Sans Arabic'", 'ورد'), document.fonts.ready]).then(() => {
+  document.querySelectorAll('[data-word]').forEach((el) => (el.innerHTML = wardWordmark({ gold: true, stroke: 4.6 })));
+  document.querySelectorAll('[data-latin]').forEach((el) => (el.innerHTML = `<defs>${goldDefs('wl')}</defs><text x="260" y="44" text-anchor="middle" font-family="Playfair Display" font-weight="500" font-size="40" letter-spacing="26" fill="url(#wl)">WARD</text>`));
+  document.querySelectorAll('[data-rose]').forEach((el) => (el.innerHTML = wardRose({ gold: true, stroke: 6 })));
+  document.querySelectorAll('[data-rose-wine]').forEach((el) => (el.innerHTML = wardRose({ ink: '#5e1624', stroke: 7 })));
+  document.querySelectorAll('[data-swatches]').forEach((el) => {
+    const big = el.dataset.swatches === 'big';
+    el.innerHTML = `<div style="display:flex; gap:${big ? 46 : 26}px; align-items:flex-end">${BULLETS.map(([c, n, hx]) => `<div style="display:flex; flex-direction:column; align-items:center; gap:10px">
+      ${bullet(c, big ? 90 : 56, big ? 230 : 143, c === '#1b1416' && !big)}
+      ${big ? `<div style="color:#ecd9bd; font-size:20px; direction:rtl">${n}</div><div style="color:#d9b77a; font-family:'Playfair Display'; font-size:14px; letter-spacing:0.15em">#${hx}</div>` : ''}</div>`).join('')}</div>`;
+  });
+  document.querySelectorAll('[data-swatch-mini]').forEach((el) => (el.innerHTML = `<div style="display:flex; gap:12px; align-items:flex-end">${BULLETS.map(([c]) => bullet(c, 40, 102, true)).join('')}</div>`));
+  // the rose pattern, gold on wine
+  let rp = '';
+  for (let y = 0; y < 6; y++) for (let x = 0; x < 6; x++) rp += `<g transform="translate(${x * 70 + (y % 2) * 35 - 40} ${y * 70 - 30}) rotate(${((x * 7 + y * 13) % 5 - 2) * 12} 50 50) scale(0.4)">${wardRose({ gold: true, stroke: 5, id: 'p' + x + y })}</g>`;
+  document.querySelectorAll('[data-pattern]').forEach((el) => (el.innerHTML = `<svg width="100%" height="100%" style="position:absolute; inset:0">${rp.replace(/<svg /g, '<svg width="200" height="200" ')}</svg>`));
+  // the construction drawing
+  const g = '#b23a4e';
+  document.querySelectorAll('[data-construction]').forEach((el) => (el.innerHTML = wardRose({ ink: '#5e1624', stroke: 3.4 }).replace('<svg ', '<svg width="700" height="700" ').replace('</svg>', `
+    <g fill="none" stroke="${g}" stroke-width="0.45" opacity="0.8">
+      <circle cx="119" cy="58" r="13" /><circle cx="119.5" cy="66" r="34" /><circle cx="119.5" cy="66" r="47" stroke-dasharray="1.5 2" />
+      <line x1="40" x2="190" y1="99" y2="99" /><line x1="40" x2="190" y1="33" y2="33" /><line x1="119.5" x2="119.5" y1="10" y2="190" />
+      <path d="M120 99 C 125 128, 113 160, 52 176" stroke-dasharray="1.5 2" transform="translate(4 -3)" /><line x1="112" y1="146" x2="168" y2="118" />
+    </g>
+    <g font-family="Playfair Display" font-style="italic" font-size="5.6" fill="${g}"><text x="170" y="40">bud</text><text x="62" y="186">stem = the wāw's tail</text><text x="166" y="113">leaf</text></g></svg>`)));
+  setTimeout(() => (document.body.dataset.ready = '1'), 300);
+});
+</script>
+</body>
+</html>

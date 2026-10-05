@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../fonts/fonts.css" />
+<script src="../marks.js"></script>
+<!-- Texture maps for the 3D products. Each map is drawn in white on transparent; the render uses its alpha as the
+     gold foil (or print) mask over the product's own colour. Sizes are the texture pixel sizes. -->
+<style>body{margin:0;background:transparent} .t{position:relative;overflow:hidden;color:#fff}</style>
+</head><body>
+<!-- around a cylinder: u = angle (0..1 around), v = height; the front (facing the camera) is u = 0.5 -->
+<div class="t" id="wrap-logo" style="width:2048px;height:1024px">
+  <div style="position:absolute;left:774px;top:300px;width:500px;height:250px" data-ward></div>
+  <div style="position:absolute;left:774px;width:500px;top:580px;text-align:center;font:500 40px 'Playfair Display';letter-spacing:.5em;padding-left:.5em">WARD</div>
+</div>
+<div class="t" id="wrap-label" style="width:2048px;height:1024px">
+  <div style="position:absolute;left:799px;top:250px;width:450px;height:225px" data-ward></div>
+  <div style="position:absolute;left:774px;width:500px;top:500px;text-align:center;font:500 34px 'Playfair Display';letter-spacing:.5em;padding-left:.5em">WARD</div>
+  <div style="position:absolute;left:824px;width:400px;top:575px;height:2px;background:#fff"></div>
+  <div style="position:absolute;left:724px;width:600px;top:610px;text-align:center;direction:rtl;font:400 40px 'IBM Plex Sans Arabic'" data-text>غسول ماء الورد</div>
+  <div style="position:absolute;left:724px;width:600px;top:675px;text-align:center;font:500 24px 'Playfair Display';letter-spacing:.35em" data-en>ROSE WATER CLEANSER</div>
+</div>
+<div class="t" id="rose-only" style="width:1024px;height:1024px"><div style="position:absolute;inset:80px" data-rose></div></div>
+<div class="t" id="pattern" style="width:2048px;height:2048px" data-pattern></div>
+<script>
+Promise.all([document.fonts.load("400 40px 'IBM Plex Sans Arabic'", 'غسول'), document.fonts.ready]).then(() => {
+  document.querySelectorAll('[data-ward]').forEach((el) => (el.innerHTML = wardWordmark({ ink: '#fff', stroke: 6.5 })));
+  document.querySelectorAll('[data-rose]').forEach((el) => (el.innerHTML = wardRose({ ink: '#fff', stroke: 7 })));
+  // the rose toile: fine-line roses scattered (seeded), rotated and flipped, with leaves and dots between
+  let s = 7; const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  let svg = '';
+  const N = 9;
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const cx = (x + 0.5 + (y % 2) * 0.5) * (2048 / N) + (rnd() - 0.5) * 60, cy = (y + 0.5) * (2048 / N) + (rnd() - 0.5) * 60;
+    const sc = 0.62 + rnd() * 0.3, rot = (rnd() - 0.5) * 70, fl = rnd() > 0.5 ? -1 : 1;
+    for (const [ox, oy] of [[0, 0], [-2048, 0], [2048, 0], [0, -2048], [0, 2048]])
+      svg += `<g transform="translate(${cx + ox} ${cy + oy}) rotate(${rot}) scale(${sc * fl} ${sc}) translate(-110 -100)">${wardRose({ ink: '#fff', stroke: 4 }).replace(/<\/?svg[^>]*>/g, '')}</g>`;
+    svg += `<circle cx="${cx + 110}" cy="${cy + 95}" r="4" fill="#fff" />`;
+  }
+  document.querySelector('[data-pattern]').innerHTML = `<svg width="2048" height="2048">${svg}</svg>`;
+  document.body.dataset.ready = 1;
+});
+</script></body></html>
