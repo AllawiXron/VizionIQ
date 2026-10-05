@@ -1,23 +1,22 @@
-# «شكراً ليو»: Messi's farewell, in the allawi.psd look
+# «حتى بغداد سهرت تودّعك»: Messi's farewell, from a Baghdad café
 
-A tribute for @allawi.psd on the day of Messi's farewell match with Argentina: Argentina v Benin at the Monumental,
-Buenos Aires, on 6 October 2026. It is listed at 18:00 local time, which is around midnight in Iraq. Two options, both
-in the page's own style: paper background, orange ring, Aref Ruqaa, Instrument Serif and Plex Mono labels, and
-Photoshop selection chrome.
+A tribute for @allawi.psd on the night of Messi's farewell match with Argentina: Argentina v Benin at the Monumental,
+Buenos Aires, on 6 October 2026. It is listed at 18:00 local time, which is around midnight in Baghdad.
 
-- `out/messi-a.png`: the «أعمالي» cover layout. Messi stands in the orange ring, with «شكراً ليو» in Ruqaa, «The Last
-  Dance — آخر رقصة», a selected `thank_you_leo.psd` layer bar with cursor, and Fig. labels with his numbers and trophies.
-- `out/messi-b.png`: the brand-post layout. A finished tribute poster («آخر رقصة», the Albiceleste stripes, Messi's
-  fist-pump, a «شكراً ليو» stamp, and a band with 207 matches, 125 goals and the 2022 world title) sits on the paper as
-  the selected layer `messi_last_dance.psd`.
+The idea is an Iraqi café at midnight. Through the arch you can see the river and a minaret; men watch an old TV where
+the number 10 waves goodbye; an Argentina flag hangs on an empty chair; a glass of tea steams on the table. The scene is
+AI-generated (`photo/baghdad-cafe.png`, made from our prompt). The allawi.psd marks go on top:
 
-Photos: Hossein Zohrevand / Tasnim News Agency, CC BY 4.0, via Wikimedia Commons ("Lionel-Messi-Argentina-2022-FIFA-World-Cup
-(cropped-upscale).jpg" and "Lionel Messi WC2022.jpg"), cut out with rembg (`photo/*-cut.png`). The credit is on both
-designs and must stay in the caption too. Some 2022 final photos on Flickr are marked "public domain" by an account that
-re-uploads agency images. Those are not really free, so they are not used.
+- the Ruqaa title «حتى بغداد سهرت تودّعك», selected as a Photoshop layer (frame, handles, the orange
+  `thank_you_leo.psd` tag, cursor);
+- «2005 — 2026 —— شكراً ليو»;
+- the orange ring circling the TV, with a Fig. 10 label;
+- Plex Mono meta and footer, @allawi.psd, and grain.
 
-Facts: ESPN and CNN for the retirement and the 207 caps and 125 goals; Hypebeast, AFP and Buenos Aires Times for the
-farewell against Benin.
+Outputs:
 
-Run `node render-theme.cjs` to render (Playwright). Fonts are from `../ig-brand-posts/fonts` plus Anton and Lalezar
-(`fonts/`), all OFL.
+- `out/messi-cafe-post.png`: the feed post, 1080×1350.
+- `out/messi-cafe-story.png`: the story, 1080×1920. The photo is extended with its own blurred edges, and the text stays
+  clear of Instagram's bars.
+
+Run `node render-cafe.cjs` to render (Playwright). Fonts are from `../ig-brand-posts/fonts` (OFL).

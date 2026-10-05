@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<!-- «حتى بغداد سهرت تودّعك»: Messi's farewell night seen from a Baghdad café (AI image, photo/baghdad-cafe.png), with
+     the allawi.psd marks on top: the Ruqaa title selected as a Photoshop layer (frame, handles, orange file tag, cursor),
+     the orange ring circling the TV, Plex Mono labels and grain. #post 1080x1350 · #story 1080x1920 -->
+<style>
+:root { --cream:#fbf3e6; --orange:#e2541b; --orange-2:#f07a2e; --ink:#1f1510 }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#111; display:flex; gap:40px; padding:40px; align-items:flex-start }
+.art { position:relative; width:1080px; overflow:hidden; background:#0d0b09; color:var(--cream); font-family:'Readex Pro' }
+#post { height:1350px }
+#story { height:1920px }
+.photo { position:absolute; left:0; width:1080px; height:1350px; background:url(photo/baghdad-cafe.png) center/cover }
+/* the story extends the dark ceiling above and the table below */
+.ext { position:absolute; left:0; right:0; background:url(photo/baghdad-cafe.png) center/cover; filter:blur(40px) brightness(.55); transform:scale(1.2) }
+.shade { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(8,6,5,.55) 0%, rgba(8,6,5,0) 30%, rgba(8,6,5,0) 78%, rgba(8,6,5,.6) 100%) }
+.grain { position:absolute; inset:0; z-index:30; pointer-events:none; opacity:.5; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.5'/></svg>") }
+
+.meta { position:absolute; left:64px; right:64px; z-index:20; display:flex; justify-content:space-between; align-items:center;
+  font:500 17px 'IBM Plex Mono'; letter-spacing:.14em; text-transform:uppercase; color:rgba(251,243,230,.78) }
+.meta .ar { font:500 21px 'Readex Pro'; letter-spacing:0; text-transform:none }
+.meta .dot { width:9px; height:9px; border-radius:99px; background:var(--orange); display:inline-block; margin-inline-end:10px; vertical-align:1px }
+
+.titlebox { position:absolute; left:50%; transform:translateX(-50%); z-index:20; text-align:center; white-space:nowrap; padding:4px 34px 14px }
+.title { font:700 104px/1.25 'Aref Ruqaa'; direction:rtl; color:var(--cream); text-shadow:0 6px 30px rgba(0,0,0,.55) }
+.frame { position:absolute; inset:0; border:2px solid rgba(251,243,230,.9); pointer-events:none }
+.frame i { position:absolute; width:14px; height:14px; background:var(--cream); border:2px solid var(--ink) }
+.frame .tl { left:-8px; top:-8px } .frame .tr { right:-8px; top:-8px } .frame .bl { left:-8px; bottom:-8px } .frame .br { right:-8px; bottom:-8px }
+.frame .tm { left:calc(50% - 7px); top:-8px } .frame .bm { left:calc(50% - 7px); bottom:-8px } .frame .ml { left:-8px; top:calc(50% - 7px) } .frame .mr { right:-8px; top:calc(50% - 7px) }
+.tag { position:absolute; left:-2px; top:-56px; height:42px; padding:0 18px 0 14px; border-radius:12px; background:linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%);
+  color:var(--cream); display:flex; align-items:center; gap:10px; font:600 21px 'Readex Pro'; direction:ltr; box-shadow:0 10px 20px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.3) }
+.tag svg { width:21px; height:21px }
+.cursor { position:absolute; right:-44px; bottom:-48px; width:46px; filter:drop-shadow(0 4px 5px rgba(0,0,0,.45)) }
+.sub { position:absolute; left:0; right:0; z-index:20; text-align:center; display:flex; justify-content:center; align-items:center; gap:22px }
+.sub .ar { font:500 34px 'Readex Pro'; direction:rtl; text-shadow:0 2px 14px rgba(0,0,0,.6) }
+.sub .mono { font:500 17px 'IBM Plex Mono'; letter-spacing:.16em; color:rgba(251,243,230,.75) }
+.sub .rule { width:70px; height:2px; background:rgba(251,243,230,.7) }
+
+.ring { position:absolute; z-index:10; border-radius:50%; border:9px solid var(--orange); filter:blur(.8px) drop-shadow(0 0 18px rgba(226,84,27,.55)) }
+.fig { position:absolute; z-index:20; font:500 12.5px/1.6 'IBM Plex Mono'; letter-spacing:.08em; text-transform:uppercase; color:rgba(251,243,230,.82); text-shadow:0 1px 6px rgba(0,0,0,.8) }
+.fig b { display:block; color:var(--cream); font-weight:500 }
+.fig::before { content:""; display:block; width:28px; height:2px; background:var(--orange); margin-bottom:10px }
+.foot { position:absolute; left:64px; right:64px; z-index:20; display:flex; justify-content:space-between; align-items:flex-end; text-shadow:0 2px 10px rgba(0,0,0,.8) }
+.foot .l { display:flex; flex-direction:column; gap:6px }
+.foot .mono { font:500 15px 'IBM Plex Mono'; letter-spacing:.14em; text-transform:uppercase; color:rgba(251,243,230,.7) }
+.foot .handle { font:500 24px 'IBM Plex Mono' }
+.foot .r { font:500 13px/1.6 'IBM Plex Mono'; letter-spacing:.1em; color:rgba(251,243,230,.6); text-align:right; text-transform:uppercase }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.6-4.3 2.9 6.6 3-1.3-2.9-6.5 6.3-.3z" fill="#1f1510" stroke="#fbf3e6" stroke-width="1.4" stroke-linejoin="round" /></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></symbol>
+</defs></svg>
+
+<div class="art" id="post"></div>
+<div class="art" id="story"></div>
+
+<script>
+function build(el, tall) {
+  const y0 = tall ? 330 : 0;                    // where the photo sits
+  const T = tall ? { meta: 270, title: 420, sub: 610, foot: 1700 } : { meta: 40, title: 134, sub: 302, foot: 1286 };
+  // the TV in the photo: centre (739, 472) in post pixels
+  const ring = { cx: 739, cy: 474 + y0, r: 120 };
+  el.innerHTML = `
+    ${tall ? `<div class="ext" style="top:-120px; height:620px"></div><div class="ext" style="top:1560px; height:520px"></div>` : ''}
+    <div class="photo" style="top:${y0}px"></div>
+    ${tall ? `<div style="position:absolute; left:0; right:0; top:${y0 - 2}px; height:160px; background:linear-gradient(#0d0b09, rgba(13,11,9,0))"></div>
+              <div style="position:absolute; left:0; right:0; top:${y0 + 1350 - 160}px; height:162px; background:linear-gradient(rgba(13,11,9,0), #0d0b09)"></div>` : ''}
+    <div class="shade"></div>
+    <div class="ring" style="left:${ring.cx - ring.r}px; top:${ring.cy - ring.r}px; width:${ring.r * 2}px; height:${ring.r * 2}px"></div>
+    <div class="meta" style="top:${T.meta}px"><span><span class="dot"></span>Tribute — 06.10.2026</span><span class="ar">بغداد — ١٢ بالليل</span></div>
+    <div class="titlebox" style="top:${T.title}px">
+      <div class="title">حتى بغداد سهرت تودّعك</div>
+      <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+      <div class="tag"><svg><use href="#i-eye" /></svg>thank_you_leo.psd</div>
+      <svg class="cursor" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+    </div>
+    <div class="sub" style="top:${T.sub}px"><span class="mono">2005 — 2026</span><span class="rule"></span><span class="ar">شكراً ليو</span></div>
+    <div class="fig" style="left:${ring.cx + ring.r + 22}px; top:${ring.cy - 52}px"><b>Fig. 10</b>The last dance<br>Buenos Aires → Baghdad</div>
+    <div class="foot" style="top:${T.foot}px"><div class="l"><span class="mono">Follow</span><span class="handle">@allawi.psd</span></div>
+      <div class="r">Layer by layer<br>طبقة فوق طبقة</div></div>
+    <div class="grain"></div>`;
+}
+build(document.getElementById('post'), false);
+build(document.getElementById('story'), true);
+Promise.all([
+  document.fonts.load("700 104px 'Aref Ruqaa'", 'حتى بغداد سهرت تودّعك'),
+  document.fonts.load("500 34px 'Readex Pro'", 'شكراً ليو بغداد بالليل'),
+  document.fonts.load("600 21px 'Readex Pro'", 'thank_you_leo.psd'),
+  document.fonts.load("500 17px 'IBM Plex Mono'", 'TRIBUTE'),
+  new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = 'photo/baghdad-cafe.png'; }),
+]).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
