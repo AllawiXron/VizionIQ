@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../identity-concepts/fonts/fonts.css" />
+<!-- «لو أكلاتنا صارت براندات فخمة»: an Instagram carousel for @allawi.psd, 6 slides at 1080x1350.
+     Slides 2-5 are full-bleed renders from studio.py with the brand and the joke over them. -->
+<style>
+:root { --gold:#d9b779; --cream:#f3eadb; }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#222; display:flex; flex-direction:column; gap:40px; padding:40px; align-items:center }
+.slide { position:relative; width:1080px; height:1350px; overflow:hidden; color:var(--cream); background:#111 }
+.bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover }
+.scrim { position:absolute; left:0; right:0; top:0; height:640px; background:linear-gradient(to bottom, rgba(8,6,5,.78) 0%, rgba(8,6,5,.5) 50%, rgba(8,6,5,0) 100%) }
+.scrim.bottom { top:auto; bottom:0; height:220px; background:linear-gradient(to top, rgba(8,6,5,.55), rgba(8,6,5,0)) }
+.chrome { position:absolute; top:52px; left:64px; right:64px; display:flex; justify-content:space-between; align-items:center;
+  font:500 26px 'Cormorant Garamond'; letter-spacing:.24em; color:var(--cream); opacity:.92 }
+.chrome .ar { font:500 27px 'Alexandria'; letter-spacing:0; direction:rtl }
+.num { font:600 26px 'Cormorant Garamond'; letter-spacing:.2em; color:var(--gold) }
+.brand { position:absolute; left:0; right:0; top:132px; text-align:center }
+.foot { position:absolute; left:0; right:0; bottom:104px; text-align:center }
+.joke { font:600 60px 'Alexandria'; direction:rtl; line-height:1.4; color:#fff; padding:0 70px; text-shadow:0 2px 24px rgba(0,0,0,.35) }
+.rule { width:110px; height:2px; background:var(--gold); margin:26px auto 24px; opacity:.9 }
+.name { display:flex; justify-content:center; align-items:baseline; gap:22px; color:var(--gold) }
+.en { font:600 40px 'Cormorant Garamond'; letter-spacing:.34em; padding-left:.34em; line-height:1 }
+.arname { font:700 44px 'Aref Ruqaa'; line-height:1 }
+.dot { width:6px; height:6px; border-radius:50%; background:var(--gold); align-self:center; opacity:.8 }
+.sub { font:500 24px 'Cormorant Garamond'; letter-spacing:.34em; padding-left:.34em; color:var(--cream); opacity:.85 }
+.handle { position:absolute; bottom:48px; left:0; right:0; text-align:center; font:500 24px 'Cormorant Garamond'; letter-spacing:.3em; opacity:.8 }
+.tag { display:inline-flex; align-items:center; gap:14px; padding:10px 26px; border:1.5px solid var(--gold); border-radius:999px;
+  font:500 28px 'Alexandria'; direction:rtl; color:var(--gold) }
+/* on the light dolma slide the type goes dark green instead */
+.light { --gold:#8a6a2c; --cream:#1f3a28; color:#1f3a28 }
+.light .scrim { background:linear-gradient(to bottom, rgba(250,244,230,.75) 0%, rgba(250,244,230,.45) 50%, rgba(250,244,230,0) 100%) }
+.light .scrim.bottom { background:none }
+.light .joke { color:#173222; text-shadow:none }
+
+/* cover */
+#s1 { background:#1b2740 }
+#s1 .head { position:absolute; top:96px; left:0; right:0; text-align:center; direction:rtl }
+#s1 .l1 { font:600 64px 'Alexandria'; color:var(--cream) }
+#s1 .l2 { font:700 128px 'Aref Ruqaa'; color:var(--gold); line-height:1.25; margin-top:6px }
+#s1 .crown { display:block; margin:0 auto 18px }
+#s1 .swipe { position:absolute; bottom:56px; left:64px; display:flex; align-items:center; gap:14px; font:500 30px 'Alexandria'; direction:rtl; color:var(--cream) }
+#s1 .handle { left:auto; right:64px; bottom:62px; text-align:right }
+
+/* last slide */
+#s6 { background:#14110f }
+#s6 .q { position:absolute; top:150px; left:0; right:0; text-align:center; direction:rtl }
+#s6 .q1 { font:700 120px 'Aref Ruqaa'; color:var(--gold); line-height:1.2 }
+#s6 .q2 { font:500 44px 'Alexandria'; color:var(--cream); margin-top:22px; line-height:1.5 }
+#s6 .chips { display:flex; flex-wrap:wrap; justify-content:center; gap:18px; margin:44px 90px 0; direction:rtl }
+#s6 .chip { padding:16px 34px; border-radius:999px; background:rgba(217,183,121,.12); border:1.5px solid rgba(217,183,121,.6); font:500 36px 'Alexandria'; color:var(--cream) }
+#s6 .grid { position:absolute; left:90px; right:90px; bottom:250px; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px }
+#s6 .grid img { width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:18px; display:block }
+#s6 .cta { position:absolute; bottom:120px; left:0; right:0; text-align:center; font:500 34px 'Alexandria'; direction:rtl; color:var(--cream) }
+#s6 .cta b { color:var(--gold); font-weight:600 }
+</style></head><body>
+
+<!-- 1. cover: the headline over the samoon in its jewellery box -->
+<div class="slide" id="s1">
+  <img class="bg" data-r="cover" />
+  <div class="scrim"></div><div class="scrim bottom"></div>
+  <div class="head">
+    <svg class="crown" width="92" height="64" viewBox="0 0 92 64" fill="none" stroke="#d9b779" stroke-width="3" stroke-linejoin="round"><path d="M8 54 L4 14 L26 34 L46 6 L66 34 L88 14 L84 54 Z" /><path d="M8 62 H84" /><circle cx="46" cy="6" r="3.5" fill="#d9b779" /><circle cx="4" cy="14" r="3" fill="#d9b779" /><circle cx="88" cy="14" r="3" fill="#d9b779" /></svg>
+    <div class="l1">لو أكلاتنا العراقية</div>
+    <div class="l2">صارت براندات فخمة</div>
+  </div>
+  <div class="swipe"><svg width="44" height="20" viewBox="0 0 44 20" fill="none" stroke="#f3eadb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M42 10 H3 M12 2 L3 10 L12 18" /></svg>اسحب</div>
+  <div class="handle">@ALLAWI.PSD</div>
+</div>
+
+<!-- 2-5. one brand per slide -->
+<div class="slide" id="s2">
+  <img class="bg" data-r="samoon" />
+  <div class="scrim"></div><div class="scrim bottom"></div>
+  <div class="chrome"><span class="num">01 / 04</span><span class="ar">لو أكلاتنا صارت براندات فخمة</span></div>
+  <div class="brand">
+    <div class="joke">چان بربع…<br>صار بربع مليون</div>
+    <div class="rule"></div>
+    <div class="name"><span class="arname">سمّون</span><span class="dot"></span><span class="en">SAMOON</span></div>
+  </div>
+  <div class="foot"><div class="tag">سمّونة وحدة · ٢٥٠,٠٠٠ د.ع</div></div>
+  <div class="handle">@ALLAWI.PSD</div>
+</div>
+
+<div class="slide" id="s3">
+  <img class="bg" data-r="amba" />
+  <div class="scrim"></div><div class="scrim bottom"></div>
+  <div class="chrome"><span class="num">02 / 04</span><span class="ar">لو أكلاتنا صارت براندات فخمة</span></div>
+  <div class="brand">
+    <div class="joke">عطر يبقى وياك ٣ أيام<br>حتى لو تسبحت</div>
+    <div class="rule"></div>
+    <div class="name"><span class="arname">عمبة</span><span class="dot"></span><span class="en">AMBA</span></div>
+  </div>
+  <div class="foot"><div class="sub">EAU DE PARFUM · 100 ML</div></div>
+  <div class="handle">@ALLAWI.PSD</div>
+</div>
+
+<div class="slide" id="s4">
+  <img class="bg" data-r="istikan" />
+  <div class="scrim"></div><div class="scrim bottom"></div>
+  <div class="chrome"><span class="num">03 / 04</span><span class="ar">لو أكلاتنا صارت براندات فخمة</span></div>
+  <div class="brand">
+    <div class="joke">ما تگدر تگول لا<br>للاستكان الثاني</div>
+    <div class="rule"></div>
+    <div class="name"><span class="arname">استكان</span><span class="dot"></span><span class="en">ISTIKAN</span></div>
+  </div>
+  <div class="foot"><div class="sub">THÉ NOIR À LA CARDAMOME</div></div>
+  <div class="handle">@ALLAWI.PSD</div>
+</div>
+
+<div class="slide light" id="s5">
+  <img class="bg" data-r="dolma" />
+  <div class="scrim"></div><div class="scrim bottom"></div>
+  <div class="chrome"><span class="num">04 / 04</span><span class="ar">لو أكلاتنا صارت براندات فخمة</span></div>
+  <div class="brand">
+    <div class="joke">الفخامة تبدي<br>من قلبة الجدر</div>
+    <div class="rule"></div>
+    <div class="name"><span class="arname">دولمة</span><span class="dot"></span><span class="en">DOLMA</span></div>
+  </div>
+  <div class="foot"><div class="sub">PRALINES DE BAGDAD · 12 PIÈCES</div></div>
+  <div class="handle">@ALLAWI.PSD</div>
+</div>
+
+<!-- 6. the question that brings the comments -->
+<div class="slide" id="s6">
+  <div class="q">
+    <div class="q1">شنو الأكلة الجاية؟</div>
+    <div class="q2">اكتبها بالتعليقات… والأكثر طلب أسويله براند</div>
+    <div class="chips"><span class="chip">باچة؟</span><span class="chip">كبة؟</span><span class="chip">لبلبي؟</span><span class="chip">تمن ومرگ؟</span></div>
+  </div>
+  <div class="grid"><img data-r="samoon" /><img data-r="amba" /><img data-r="istikan" /><img data-r="dolma" /></div>
+  <div class="cta">تحتاج هوية فخمة لمشروعك؟ <b>راسلني</b></div>
+  <div class="handle">@ALLAWI.PSD</div>
+</div>
+
+<script>
+const preview = location.hash === '#preview';
+const imgs = [...document.querySelectorAll('img[data-r]')];
+imgs.forEach((im) => (im.src = `renders/${im.dataset.r}${preview ? '-preview' : ''}.png`));
+Promise.all([
+  document.fonts.load("700 100px 'Aref Ruqaa'", 'صارت براندات فخمة شنو الأكلة الجاية سمّون عمبة استكان دولمة'),
+  document.fonts.load("600 60px 'Alexandria'", 'چان بربع گدر'),
+  document.fonts.load("500 40px 'Alexandria'", 'اكتبها باچة مرگ'),
+  document.fonts.load("600 90px 'Cormorant Garamond'", 'SAMOON'),
+  document.fonts.load("500 26px 'Cormorant Garamond'", 'EAU'),
+  ...imgs.map((im) => (im.complete ? Promise.resolve() : new Promise((r) => { im.onload = r; im.onerror = r; }))),
+]).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
