@@ -546,34 +546,71 @@ def cup(loc, r=1.95, h=1.5, pleats=28):
 
 
 def leaf_mat():
-    m = principled("vine-leaf", "#4b5a20", 0.42, coat=0.6, spec=0.5)
+    """cooked vine leaf: matte olive with darker veins, the leaf's wrap lines and a little oil shine"""
+    m = principled("vine-leaf", "#4f5a24", 0.55, coat=0.25, spec=0.45)
     nt = m.node_tree
     b = nt.nodes["Principled BSDF"]
+    b.inputs["Coat Roughness"].default_value = 0.25
     tc = nt.nodes.new("ShaderNodeTexCoord")
+    # wrap lines: bands across the roll, bent by noise like a hand-rolled leaf
     wv = nt.nodes.new("ShaderNodeTexWave")
     wv.wave_type = "BANDS"
-    wv.bands_direction = "DIAGONAL"
-    wv.inputs["Scale"].default_value = 14
-    wv.inputs["Distortion"].default_value = 7
-    wv.inputs["Detail"].default_value = 4
+    wv.bands_direction = "X"
+    wv.wave_profile = "SAW"
+    wv.inputs["Scale"].default_value = 26
+    wv.inputs["Distortion"].default_value = 9
+    wv.inputs["Detail"].default_value = 5
+    wv.inputs["Detail Scale"].default_value = 2.5
     nt.links.new(tc.outputs["Object"], wv.inputs["Vector"])
+    # veins: thin ridged lines from a voronoi distance
+    vo = nt.nodes.new("ShaderNodeTexVoronoi")
+    vo.feature = "DISTANCE_TO_EDGE"
+    vo.inputs["Scale"].default_value = 55
+    nt.links.new(tc.outputs["Object"], vo.inputs["Vector"])
+    vr = nt.nodes.new("ShaderNodeMapRange")
+    vr.inputs["From Min"].default_value = 0.0
+    vr.inputs["From Max"].default_value = 0.06
+    nt.links.new(vo.outputs["Distance"], vr.inputs["Value"])
     nz = nt.nodes.new("ShaderNodeTexNoise")
-    nz.inputs["Scale"].default_value = 60
+    nz.inputs["Scale"].default_value = 45
+    nz.inputs["Detail"].default_value = 6
     nt.links.new(tc.outputs["Object"], nz.inputs["Vector"])
     ramp = nt.nodes.new("ShaderNodeValToRGB")
-    ramp.color_ramp.elements[0].color = lin("#28351a")
-    ramp.color_ramp.elements[1].color = lin("#5e6e27")
+    ramp.color_ramp.elements[0].color = lin("#2a3416")
+    ramp.color_ramp.elements[1].color = lin("#66722e")
+    e = ramp.color_ramp.elements.new(0.6)
+    e.color = lin("#4c5823")
     nt.links.new(nz.outputs["Fac"], ramp.inputs["Fac"])
-    nt.links.new(ramp.outputs["Color"], b.inputs["Base Color"])
+    dark = nt.nodes.new("ShaderNodeMix")
+    dark.data_type = "RGBA"
+    dark.blend_type = "MULTIPLY"
+    inv = nt.nodes.new("ShaderNodeMath")
+    inv.operation = "SUBTRACT"
+    inv.inputs[0].default_value = 1.0
+    nt.links.new(vr.outputs["Result"], inv.inputs[1])
+    mul = nt.nodes.new("ShaderNodeMath")
+    mul.operation = "MULTIPLY"
+    mul.inputs[1].default_value = 0.32
+    nt.links.new(inv.outputs["Value"], mul.inputs[0])
+    nt.links.new(mul.outputs["Value"], dark.inputs["Factor"])
+    nt.links.new(ramp.outputs["Color"], dark.inputs["A"])
+    dark.inputs["B"].default_value = lin("#1d2410")
+    nt.links.new(dark.outputs["Result"], b.inputs["Base Color"])
+    hsum = nt.nodes.new("ShaderNodeMath")
+    hsum.operation = "MULTIPLY_ADD"
+    hsum.inputs[1].default_value = 0.6
+    nt.links.new(vr.outputs["Result"], hsum.inputs[0])
+    nt.links.new(wv.outputs["Fac"], hsum.inputs[2])
     bp = nt.nodes.new("ShaderNodeBump")
-    bp.inputs["Strength"].default_value = 0.7
-    nt.links.new(wv.outputs["Fac"], bp.inputs["Height"])
+    bp.inputs["Strength"].default_value = 0.55
+    bp.inputs["Distance"].default_value = 0.0015
+    nt.links.new(hsum.outputs["Value"], bp.inputs["Height"])
     nt.links.new(bp.outputs["Normal"], b.inputs["Normal"])
     return m
 
 
 def onion_mat():
-    m = principled("onion", "#d9a85a", 0.3, coat=0.6, spec=0.6)
+    m = principled("onion", "#c9934a", 0.45, coat=0.3, spec=0.5)
     b = m.node_tree.nodes["Principled BSDF"]
     b.inputs["Subsurface Weight"].default_value = 0.4
     b.inputs["Subsurface Radius"].default_value = (1.0, 0.6, 0.25)
@@ -583,8 +620,8 @@ def onion_mat():
     wv = nt.nodes.new("ShaderNodeTexWave")
     wv.wave_type = "RINGS"
     wv.rings_direction = "X"
-    wv.inputs["Scale"].default_value = 14
-    wv.inputs["Distortion"].default_value = 2
+    wv.inputs["Scale"].default_value = 22
+    wv.inputs["Distortion"].default_value = 3
     nt.links.new(tc.outputs["Object"], wv.inputs["Vector"])
     bp = nt.nodes.new("ShaderNodeBump")
     bp.inputs["Strength"].default_value = 0.25
@@ -593,16 +630,25 @@ def onion_mat():
     return m
 
 
-def roll(loc, rot, mat, length=3.4, r=0.95):
-    """a stuffed roll lying on its side: a capsule, slightly flattened where it rests"""
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=40, ring_count=24, radius=1)
+def roll(loc, rot, mat, length=3.4, r=0.95, seed=0):
+    """a stuffed roll lying on its side: blunt-ended, a little uneven, slightly flattened where it rests"""
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=48, ring_count=28, radius=1)
     ob = bpy.context.active_object
-    half = length / 2 - r
+    cap = 0.55  # short, blunt ends rather than round capsule ends
+    half = length / 2 - r * cap
     for v in ob.data.vertices:
         x, y, z = v.co
-        v.co = Vector((x * r + math.copysign(half, x) if abs(x) > 1e-4 else x * r, y * r, z * r * 0.86))
+        sx = math.copysign(half, x) if abs(x) > 1e-4 else 0.0
+        v.co = Vector((x * r * cap + sx, y * r, z * r * 0.86))
     ob.scale = (CM,) * 3
     bpy.ops.object.transform_apply(scale=True)
+    tex = bpy.data.textures.new("lumpy%d" % seed, "CLOUDS")
+    tex.noise_scale = 0.012
+    dp = ob.modifiers.new("lumps", "DISPLACE")
+    dp.texture = tex
+    dp.texture_coords = "GLOBAL"
+    dp.strength = 0.0011
+    dp.mid_level = 0.5
     bpy.ops.object.shade_smooth()
     ob.data.materials.append(mat)
     ob.location = Vector(loc) * CM + Vector((0, 0, r * 0.86 * CM))
@@ -626,7 +672,7 @@ def dolma_box(cols=4, rows=3, pitch=4.3, floor=1.0, h=2.9):
             cup((x, y, z))
             kind = (i + 2 * j) % 3
             mat = onion if kind == 1 else leaf
-            roll((x, y, z + 0.08), (0, 0, rng.uniform(-0.3, 0.3) + (math.pi / 2 if (i + j) % 2 else 0)), mat, 3.0 if kind == 1 else 3.3, 0.9 if kind == 1 else 0.82)
+            roll((x, y, z + 0.08), (0, 0, rng.uniform(-0.3, 0.3) + (math.pi / 2 if (i + j) % 2 else 0)), mat, (3.0 if kind == 1 else 3.4) * rng.uniform(0.93, 1.05), 0.9 if kind == 1 else 0.84, i * 7 + j)
     # the lid, leaning on the back of the box with its top (and the foil) towards the camera
     lw, ld, lh = w + 0.4, d + 0.4, 1.6
     lid = box("dolma-lid", (lw, ld, lh), (0, 0, 0), green, None, 0.3)
@@ -648,7 +694,7 @@ def shot_dolma():
     area("rim", (0.3, 0.6, 0.55), (0, 0, 0.05), 0.8, 36)
     area("top", (0, 0, 0.9), (0, 0, 0), 0.6, 14)
     dolma_box()
-    cam = camera((0.0, -0.46, 0.46), (0.0, 0.07, 0.115), 58)
+    cam = camera((0.0, -0.5, 0.5), (0.0, 0.07, 0.112), 58)
     dof(cam, (0, -0.02, 0.03), 5.6)
 
 
