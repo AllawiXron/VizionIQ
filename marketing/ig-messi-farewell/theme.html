@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<link rel="stylesheet" href="fonts/fonts.css" />
+<!-- Messi farewell in the allawi.psd look (paper, orange ring, Aref Ruqaa, Instrument Serif, Plex Mono labels,
+     Photoshop selection chrome). Two options, 1080x1350:
+       #a  the «أعمالي» cover layout: Messi standing in the orange ring, «شكراً ليو» in Ruqaa
+       #b  the brand-post layout: a finished tribute poster placed on the paper as a selected layer
+     Photos: Hossein Zohrevand / Tasnim News Agency, CC BY 4.0 (Wikimedia Commons), cut out with rembg. -->
+<style>
+:root { --paper:#ece3d4; --paper-2:#e3d6c2; --ink:#1f1510; --ink-soft:rgba(31,21,16,.62); --orange:#e2541b; --orange-2:#f07a2e; --cream:#fbf3e6; --sky:#75aadb; --navy:#0e2a47 }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#111; display:flex; gap:40px; padding:40px; align-items:flex-start }
+.slide { position:relative; width:1080px; height:1350px; overflow:hidden; color:var(--ink); font-family:'Readex Pro';
+  background:radial-gradient(120% 90% at 50% 0%, #f1e9dc 0%, var(--paper) 55%, var(--paper-2) 100%) }
+.grain { position:absolute; inset:0; z-index:30; pointer-events:none; opacity:.32; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.18  0 0 0 0.55 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>") }
+.meta { position:absolute; top:52px; left:64px; right:64px; z-index:20; display:flex; justify-content:space-between; align-items:center;
+  font:500 17px 'IBM Plex Mono'; letter-spacing:.14em; text-transform:uppercase }
+.meta .ar { font:500 20px 'Readex Pro'; letter-spacing:0; text-transform:none }
+.meta .dot { width:9px; height:9px; border-radius:99px; background:var(--orange); display:inline-block; margin-inline-end:10px; vertical-align:1px }
+.frame { position:absolute; inset:-14px; border:2px solid var(--ink); pointer-events:none }
+.frame i { position:absolute; width:14px; height:14px; background:var(--cream); border:2px solid var(--ink) }
+.frame .tl { left:-8px; top:-8px } .frame .tr { right:-8px; top:-8px } .frame .bl { left:-8px; bottom:-8px } .frame .br { right:-8px; bottom:-8px }
+.frame .tm { left:calc(50% - 7px); top:-8px } .frame .bm { left:calc(50% - 7px); bottom:-8px } .frame .ml { left:-8px; top:calc(50% - 7px) } .frame .mr { right:-8px; top:calc(50% - 7px) }
+.cursor { position:absolute; z-index:22; width:50px; filter:drop-shadow(0 4px 5px rgba(0,0,0,.3)) }
+.tag { position:absolute; z-index:22; height:44px; padding:0 18px 0 14px; border-radius:12px; background:linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%);
+  color:var(--cream); display:flex; align-items:center; gap:10px; font:600 22px 'Readex Pro'; direction:ltr; box-shadow:0 10px 20px rgba(150,50,10,.28), inset 0 1px 0 rgba(255,255,255,.3) }
+.tag svg { width:22px; height:22px }
+.label { position:absolute; z-index:20; width:170px; font:500 12.5px/1.6 'IBM Plex Mono'; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft) }
+.label b { display:block; color:var(--ink); font-weight:500; margin-bottom:6px }
+.label::after { content:""; position:absolute; left:0; top:-14px; width:28px; height:2px; background:var(--orange) }
+.foot { position:absolute; bottom:56px; z-index:20; display:flex; flex-direction:column; gap:8px }
+.foot.r { right:64px; align-items:flex-end; direction:rtl; text-align:right }
+.foot.l { left:64px; align-items:flex-start }
+.foot .big { font-size:30px; font-weight:500 }
+.foot .mono { font:500 16px 'IBM Plex Mono'; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft) }
+.foot .handle { font:500 24px 'IBM Plex Mono'; letter-spacing:.02em }
+
+/* ---------- A ---------- */
+#a .title { position:absolute; top:84px; left:0; right:0; z-index:3; text-align:center; direction:rtl; font:700 232px/1.32 'Aref Ruqaa' }
+#a .sub { position:absolute; top:420px; left:64px; right:64px; z-index:20; display:flex; justify-content:space-between; align-items:baseline }
+#a .sub .ar { direction:rtl; font-size:40px; font-weight:500 }
+#a .sub .en { font:italic 46px/1 'Instrument Serif' }
+#a .sub .rule { flex:1; height:2px; background:var(--ink); margin:0 26px; transform:translateY(-11px); opacity:.85 }
+#a .ring { position:absolute; left:0; top:0; width:1080px; height:1350px; pointer-events:none }
+#a .messi { position:absolute; z-index:5; left:212px; top:478px; width:656px;
+  filter:drop-shadow(18px 26px 30px rgba(70,30,10,.28));
+  -webkit-mask-image:linear-gradient(to bottom, #000 70%, transparent 90%); mask-image:linear-gradient(to bottom, #000 70%, transparent 90%) }
+#a .bar { position:absolute; z-index:10; left:540px; top:1118px; width:520px; height:88px; transform:translate(-50%,-50%) rotate(-4deg);
+  background:linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%); border-radius:16px; color:var(--cream);
+  box-shadow:0 18px 34px rgba(150,50,10,.32), inset 0 2px 0 rgba(255,255,255,.28); display:flex; align-items:center; justify-content:center; gap:16px }
+#a .bar .name { font:600 40px 'Readex Pro'; direction:ltr }
+#a .bar svg { width:36px; height:36px }
+
+/* ---------- B ---------- */
+#b .art { position:absolute; z-index:5; left:140px; top:118px; width:800px; height:1000px; overflow:hidden;
+  background:repeating-linear-gradient(90deg, var(--sky) 0 92px, #f7f9fc 92px 184px); box-shadow:14px 22px 34px rgba(70,30,10,.2), 0 2px 6px rgba(70,30,10,.12) }
+#b .art::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 55%, rgba(255,255,255,0) 30%, rgba(14,42,71,.28) 100%) }
+#b .ten { position:absolute; left:0; right:0; top:150px; text-align:center; font:400 620px/1 'Anton'; color:rgba(14,42,71,.12); -webkit-text-stroke:3px rgba(14,42,71,.28); direction:ltr }
+#b .art .messi { position:absolute; left:90px; bottom:196px; width:650px; filter:drop-shadow(0 18px 30px rgba(14,42,71,.35)) }
+#b .art .h1 { position:absolute; top:44px; left:0; right:0; text-align:center; font:400 128px/1.1 'Lalezar'; color:var(--navy) }
+#b .art .h2 { position:absolute; bottom:142px; left:0; right:0; z-index:2; height:54px; line-height:54px; text-align:center; font:400 26px 'Anton'; letter-spacing:.34em; padding-left:.34em; color:var(--navy); background:#e8c26a; direction:ltr }
+#b .art .band { position:absolute; left:0; right:0; bottom:0; height:142px; background:var(--navy); display:grid; grid-template-columns:repeat(3, 1fr); color:#fff; text-align:center; align-items:center }
+#b .art .band div { display:flex; flex-direction:column; gap:2px }
+#b .art .band b { font:700 50px/1.1 'Readex Pro' }
+#b .art .band span { font:400 22px 'Readex Pro'; color:var(--sky) }
+#b .art .stamp { position:absolute; right:30px; top:300px; width:150px; height:150px; border-radius:50%; background:#e8c26a; color:var(--navy); transform:rotate(10deg);
+  display:flex; align-items:center; justify-content:center; text-align:center; font:400 40px/1.05 'Lalezar'; box-shadow:0 10px 24px rgba(14,42,71,.3) }
+#b .caprow { position:absolute; left:64px; right:64px; top:1172px; z-index:20; display:flex; align-items:baseline }
+#b .caprow .name { direction:rtl; font-size:38px; font-weight:500; line-height:1.2 }
+#b .caprow .mono { font:500 15px 'IBM Plex Mono'; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap }
+#b .caprow .rule { flex:1; height:2px; background:var(--ink); margin:0 24px; opacity:.85; transform:translateY(-8px) }
+#b .ft { position:absolute; left:64px; right:64px; bottom:52px; z-index:20; display:flex; justify-content:space-between; align-items:center; font:500 17px 'IBM Plex Mono'; letter-spacing:.12em; text-transform:uppercase }
+#b .ft .pg { color:var(--ink-soft) }
+.credit { position:absolute; z-index:20; font:500 11px 'IBM Plex Mono'; letter-spacing:.06em; color:var(--ink-soft); text-transform:uppercase }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.6-4.3 2.9 6.6 3-1.3-2.9-6.5 6.3-.3z" fill="#1f1510" stroke="#fbf3e6" stroke-width="1.4" stroke-linejoin="round" /></symbol>
+  <symbol id="i-layer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z" /><path d="M3 13l9 5 9-5" /></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.8l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 17.9 5.6 21.4 7 14.3 1.7 9.3l7.2-.9z" /></symbol>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2" /></filter>
+</defs></svg>
+
+<!-- A: the «أعمالي» cover, with Messi -->
+<section class="slide" id="a">
+  <svg class="ring" style="z-index:1" viewBox="0 0 1080 1350"><circle cx="540" cy="860" r="372" fill="none" stroke="#e2541b" stroke-width="22" filter="url(#soft)" /></svg>
+  <div class="meta"><span><span class="dot"></span>Tribute — 06.10.2026</span><span class="ar">وداع الأسطورة ٢٠٠٥–٢٠٢٦</span></div>
+  <h1 class="title">شكراً ليو</h1>
+  <div class="sub"><span class="en">The Last Dance</span><span class="rule"></span><span class="ar">آخر رقصة</span></div>
+  <img class="messi" src="photo/m-upscale-cut.png" />
+  <!-- the front half of the ring passes in front of him -->
+  <svg class="ring" style="z-index:6; clip-path:inset(1000px 0 0 0)" viewBox="0 0 1080 1350"><circle cx="540" cy="860" r="372" fill="none" stroke="#e2541b" stroke-width="22" filter="url(#soft)" /></svg>
+  <div class="bar"><svg><use href="#i-eye" /></svg><span class="name">thank_you_leo.psd</span>
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div></div>
+  <svg class="cursor" style="left:792px; top:1150px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+  <div class="label" style="left:64px; top:600px"><b>Fig. 10</b>Lionel Messi<br>Argentina<br>207 caps<br>125 goals<br>2005 — 2026</div>
+  <div class="label" style="left:auto; right:44px; top:600px; width:150px; text-align:left"><b>Trophies</b>World Cup 2022<br>Copa América<br>2021 · 2024</div>
+  <div class="credit" style="left:64px; top:856px; width:160px; line-height:1.6">Photo · H. Zohrevand<br>Tasnim · CC BY 4.0</div>
+  <div class="foot r"><span class="mono" dir="ltr">20 years of magic</span><span class="big">٢٠ سنة من السحر</span></div>
+  <div class="foot l"><span class="mono">Follow</span><span class="handle">@allawi.psd</span></div>
+  <div class="grain"></div>
+</section>
+
+<!-- B: a tribute poster placed as a selected layer -->
+<section class="slide" id="b">
+  <div class="meta"><span><span class="dot"></span>Tribute — Vol.10</span><span class="ar">وداع الأسطورة ٢٠٢٦</span></div>
+  <div class="art">
+    <div class="ten">10</div>
+    <div class="h1">آخر رقصة</div>
+    <div class="h2">LIONEL MESSI · 2005—2026</div>
+    <img class="messi" src="photo/m-wc22-cut.png" />
+    <div class="stamp">شكراً<br>ليو</div>
+    <div class="band">
+      <div><b>٢٠٧</b><span>مباراة</span></div>
+      <div><b>١٢٥</b><span>هدف</span></div>
+      <div><b>٢٠٢٢</b><span>بطل العالم</span></div>
+    </div>
+  </div>
+  <div style="position:absolute; z-index:8; left:140px; top:118px; width:800px; height:1000px; pointer-events:none">
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div></div>
+  <div class="tag" style="left:150px; top:96px"><svg><use href="#i-layer" /></svg>messi_last_dance.psd</div>
+  <svg class="cursor" style="left:930px; top:1110px" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
+  <div class="caprow"><span class="mono">Tribute · 2026</span><span class="rule"></span><span class="name">شكراً ليو</span></div>
+  <div class="credit" style="left:64px; right:64px; top:1232px; text-align:left">Photo: Hossein Zohrevand / Tasnim News Agency · CC BY 4.0</div>
+  <div class="ft"><span>@allawi.psd</span><span class="pg">01 / 01</span><span>DM for work</span></div>
+  <div class="grain"></div>
+</section>
+
+<script>
+Promise.all([
+  document.fonts.load("700 232px 'Aref Ruqaa'", 'شكراً ليو'),
+  document.fonts.load("italic 46px 'Instrument Serif'", 'The Last Dance'),
+  document.fonts.load("500 40px 'Readex Pro'", 'آخر رقصة وداع'),
+  document.fonts.load("600 40px 'Readex Pro'", 'thank_you_leo.psd'),
+  document.fonts.load("500 17px 'IBM Plex Mono'", 'TRIBUTE'),
+  document.fonts.load("400 128px 'Lalezar'", 'آخر رقصة شكراً ليو'),
+  document.fonts.load("400 34px 'Anton'", 'LIONEL MESSI 10'),
+  ...[...document.images].map((im) => (im.complete ? 0 : new Promise((r) => { im.onload = r; im.onerror = r; }))),
+]).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>

@@ -1,17 +1,23 @@
-# «شكراً ليو»: Messi's farewell to Argentina
+# «شكراً ليو»: Messi's farewell, in the allawi.psd look
 
-A typographic tribute for @allawi.psd on the day of Messi's farewell match with Argentina: Argentina v Benin at the
-Monumental, Buenos Aires, on 6 October 2026. It is listed at 18:00 local time, which is around midnight in Iraq.
+A tribute for @allawi.psd on the day of Messi's farewell match with Argentina: Argentina v Benin at the Monumental,
+Buenos Aires, on 6 October 2026. It is listed at 18:00 local time, which is around midnight in Iraq. Two options, both
+in the page's own style: paper background, orange ring, Aref Ruqaa, Instrument Serif and Plex Mono labels, and
+Photoshop selection chrome.
 
-- `out/messi-post.png`: the feed post, 1080×1350.
-- `out/messi-story.png`: the story, 1080×1920. Its text stays clear of Instagram's top and bottom bars.
+- `out/messi-a.png`: the «أعمالي» cover layout. Messi stands in the orange ring, with «شكراً ليو» in Ruqaa, «The Last
+  Dance — آخر رقصة», a selected `thank_you_leo.psd` layer bar with cursor, and Fig. labels with his numbers and trophies.
+- `out/messi-b.png`: the brand-post layout. A finished tribute poster («آخر رقصة», the Albiceleste stripes, Messi's
+  fist-pump, a «شكراً ليو» stamp, and a band with 207 matches, 125 goals and the 2022 world title) sits on the paper as
+  the selected layer `messi_last_dance.psd`.
 
-The design is a big «10» filled with the Albiceleste stripes, three gold stars, a captain's band (2005–2026), and the
-career numbers: 207 matches, 125 goals, the 2022 World Cup and two Copa Américas (2021, 2024). There is confetti,
-stadium light and grain. It uses no photographs and no federation crest, only type, colour and shapes.
+Photos: Hossein Zohrevand / Tasnim News Agency, CC BY 4.0, via Wikimedia Commons ("Lionel-Messi-Argentina-2022-FIFA-World-Cup
+(cropped-upscale).jpg" and "Lionel Messi WC2022.jpg"), cut out with rembg (`photo/*-cut.png`). The credit is on both
+designs and must stay in the caption too. Some 2022 final photos on Flickr are marked "public domain" by an account that
+re-uploads agency images. Those are not really free, so they are not used.
 
-Facts: ESPN and CNN for the retirement (announced 31 Aug 2026) and the 207 caps and 125 goals; Hypebeast, AFP and
-Buenos Aires Times for the 6 October farewell against Benin.
+Facts: ESPN and CNN for the retirement and the 207 caps and 125 goals; Hypebeast, AFP and Buenos Aires Times for the
+farewell against Benin.
 
-Run `node render.cjs` to render it (Playwright). Fonts are Anton and Lalezar (`fonts/`), plus Readex Pro and IBM Plex
-Mono from `../ig-brand-posts/fonts`, all from Google Fonts (OFL).
+Run `node render-theme.cjs` to render (Playwright). Fonts are from `../ig-brand-posts/fonts` plus Anton and Lalezar
+(`fonts/`), all OFL.
