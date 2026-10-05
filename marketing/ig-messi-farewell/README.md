@@ -10,7 +10,7 @@ AI-generated (`photo/baghdad-cafe.png`, made from our prompt). The allawi.psd ma
 - the Ruqaa title «حتى بغداد سهرت تودّعك», selected as a Photoshop layer (frame, handles, the orange
   `thank_you_leo.psd` tag, cursor);
 - «2005 — 2026 —— شكراً ليو»;
-- the orange ring circling the TV, with a Fig. 10 label;
+- the orange ring circling the TV;
 - Plex Mono meta and footer, @allawi.psd, and grain.
 
 Outputs:
@@ -20,3 +20,5 @@ Outputs:
   clear of Instagram's bars.
 
 Run `node render-cafe.cjs` to render (Playwright). Fonts are from `../ig-brand-posts/fonts` (OFL).
+
+The photo is graded by `grade.py` (`photo/baghdad-cafe-graded.png`): lamp and screen bloom, blue TV light spilling into the room, teal shadows, amber highlights and a soft vignette.

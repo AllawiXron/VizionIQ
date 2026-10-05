@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ar"><head><meta charset="utf-8" />
 <link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
-<!-- «حتى بغداد سهرت تودّعك»: Messi's farewell night seen from a Baghdad café (AI image, photo/baghdad-cafe.png), with
+<!-- «حتى بغداد سهرت تودّعك»: Messi's farewell night seen from a Baghdad café (AI image, photo/baghdad-cafe-graded.png), with
      the allawi.psd marks on top: the Ruqaa title selected as a Photoshop layer (frame, handles, orange file tag, cursor),
      the orange ring circling the TV, Plex Mono labels and grain. #post 1080x1350 · #story 1080x1920 -->
 <style>
@@ -11,9 +11,9 @@ body { background:#111; display:flex; gap:40px; padding:40px; align-items:flex-s
 .art { position:relative; width:1080px; overflow:hidden; background:#0d0b09; color:var(--cream); font-family:'Readex Pro' }
 #post { height:1350px }
 #story { height:1920px }
-.photo { position:absolute; left:0; width:1080px; height:1350px; background:url(photo/baghdad-cafe.png) center/cover }
+.photo { position:absolute; left:0; width:1080px; height:1350px; background:url(photo/baghdad-cafe-graded.png) center/cover }
 /* the story extends the dark ceiling above and the table below */
-.ext { position:absolute; left:0; right:0; background:url(photo/baghdad-cafe.png) center/cover; filter:blur(40px) brightness(.55); transform:scale(1.2) }
+.ext { position:absolute; left:0; right:0; background:url(photo/baghdad-cafe-graded.png) center/cover; filter:blur(40px) brightness(.55); transform:scale(1.2) }
 .shade { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(8,6,5,.55) 0%, rgba(8,6,5,0) 30%, rgba(8,6,5,0) 78%, rgba(8,6,5,.6) 100%) }
 .grain { position:absolute; inset:0; z-index:30; pointer-events:none; opacity:.5; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.5'/></svg>") }
@@ -38,7 +38,7 @@ body { background:#111; display:flex; gap:40px; padding:40px; align-items:flex-s
 .sub .mono { font:500 17px 'IBM Plex Mono'; letter-spacing:.16em; color:rgba(251,243,230,.75) }
 .sub .rule { width:70px; height:2px; background:rgba(251,243,230,.7) }
 
-.ring { position:absolute; z-index:10; border-radius:50%; border:9px solid var(--orange); filter:blur(.8px) drop-shadow(0 0 18px rgba(226,84,27,.55)) }
+.ring { position:absolute; z-index:10; border-radius:50%; border:7px solid var(--orange); filter:blur(.8px) drop-shadow(0 0 18px rgba(226,84,27,.55)) }
 .fig { position:absolute; z-index:20; font:500 12.5px/1.6 'IBM Plex Mono'; letter-spacing:.08em; text-transform:uppercase; color:rgba(251,243,230,.82); text-shadow:0 1px 6px rgba(0,0,0,.8) }
 .fig b { display:block; color:var(--cream); font-weight:500 }
 .fig::before { content:""; display:block; width:28px; height:2px; background:var(--orange); margin-bottom:10px }
@@ -78,9 +78,8 @@ function build(el, tall) {
       <svg class="cursor" viewBox="0 0 24 24"><use href="#i-cursor" /></svg>
     </div>
     <div class="sub" style="top:${T.sub}px"><span class="mono">2005 — 2026</span><span class="rule"></span><span class="ar">شكراً ليو</span></div>
-    <div class="fig" style="left:${ring.cx + ring.r + 22}px; top:${ring.cy - 52}px"><b>Fig. 10</b>The last dance<br>Buenos Aires → Baghdad</div>
     <div class="foot" style="top:${T.foot}px"><div class="l"><span class="mono">Follow</span><span class="handle">@allawi.psd</span></div>
-      <div class="r">Layer by layer<br>طبقة فوق طبقة</div></div>
+      <div class="r">Fig. 10 · The last dance</div></div>
     <div class="grain"></div>`;
 }
 build(document.getElementById('post'), false);
@@ -90,7 +89,7 @@ Promise.all([
   document.fonts.load("500 34px 'Readex Pro'", 'شكراً ليو بغداد بالليل'),
   document.fonts.load("600 21px 'Readex Pro'", 'thank_you_leo.psd'),
   document.fonts.load("500 17px 'IBM Plex Mono'", 'TRIBUTE'),
-  new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = 'photo/baghdad-cafe.png'; }),
+  new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = 'photo/baghdad-cafe-graded.png'; }),
 ]).then(() => (document.body.dataset.ready = 1));
 </script>
 </body></html>
