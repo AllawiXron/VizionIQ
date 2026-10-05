@@ -290,7 +290,7 @@ def lipstick(loc, rot=0.0, open_=True, shade=ROSE, case=WINE, tilt=0.0):
 def jar(loc, rot=0.0, body=WINE, label="label-jar"):
     lac = printed("jar-" + label, body, label, rough=0.25, coat=0.8)
     gold = principled("gold", GOLDLIN, 0.2, metal=1.0)
-    return [lathe("jar", rounded(3.6, 0, 4.4, 0.45), mat=lac, uv_r=3.6 * 1.4, uv_z=2.3, loc=loc, rot=rot),
+    return [lathe("jar", rounded(3.6, 0, 4.4, 0.45), mat=lac, uv_r=3.6, uv_z=2.05, loc=loc, rot=rot),
             lathe("jar-lid", rounded(3.75, 4.3, 6.2, 0.35, bottom=False), mat=gold, loc=loc, rot=rot)]
 
 
