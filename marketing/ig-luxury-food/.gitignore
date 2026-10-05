@@ -1,2 +1,3 @@
 renders/*-preview.png
 out/*-preview.png
+__pycache__/
