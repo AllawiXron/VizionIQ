@@ -347,7 +347,7 @@ def mango(loc, size=2.6):
     ob.rotation_euler = (0, math.radians(-14), 0)
     stem = lathe("stem", rounded(0.18, 0, 0.6, 0.05), mat=gold(0.2))
     stem.parent = ob
-    stem.location = (0.12 * CM, 0, size / 2 * CM * 1.12)
+    stem.location = (0.08 * CM, 0, size / 2 * CM * 0.9)  # sunk into the top of the mango
     stem.rotation_euler = (0, math.radians(20), 0)
     return ob
 
