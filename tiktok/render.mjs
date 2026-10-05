@@ -22,7 +22,7 @@ for (const composition of comps.filter((c) => c.durationInFrames > 1 && pick(c))
     onProgress: ({ progress }) => process.stdout.write(`\r${composition.id} ${Math.round(progress * 100)}%   `),
   });
   // cover: the frame with the whole verse on screen
-  await renderStill({ composition, serveUrl, browserExecutable, frame: 400, imageFormat: 'jpeg', jpegQuality: 92, output: path.join(root, 'out', composition.id + '-cover.jpg') });
+  await renderStill({ composition, serveUrl, browserExecutable, frame: 440, imageFormat: 'jpeg', jpegQuality: 92, output: path.join(root, 'out', composition.id + '-cover.jpg') });
   console.log(`\r${composition.id} done in ${((Date.now() - t0) / 1000).toFixed(0)}s`);
 }
 for (const composition of comps.filter((c) => c.durationInFrames === 1 && pick(c))) {
