@@ -2,11 +2,12 @@
 
 `offer.html` renders five images with `node render.cjs offer.html`, written to `out/offer-<id>.png`:
 
-- `post` (1080x1350): the offer ad.
-  - Headline «إعلانك يستاهل / يبين أحسن», with the Photoshop selection on the second line.
-  - A «تبدي من 14 ألف» badge beside the headline.
-  - A fan of five real designs with an orange glow behind. From left to right, one per brand: Miswag, Sala, the Al-Shifa lab offer (biggest, in front), Baly and Optes.
-  - Three perks and a «راسلني هسه» bar that points to the price highlight.
+- `post` (1080x1350): the offer ad, built as a before/after.
+  - Headline «صورة عادية.. / صارت إعلان يبيع», with the Photoshop selection on the second line.
+  - «قبل»: the plain stock photo of a gloved hand holding a tube (`../alshifa-lab/photo/source-lab-tube.jpg`), shown as a print labelled IMG_2041.jpg.
+  - «بعد»: the finished Al-Shifa lab ad, with a hand-drawn arrow from the before to the after.
+  - «ونفس الشغل لكل مجال»: one design each from Miswag, Sala and Baly.
+  - A bar with «راسلني هسه» and «التصميم يبدي من 14 ألف».
 - `h1`, `h2`, `h3` (1080x1920): highlight stories.
   - `h1`: single prices.
   - `h2`: monthly packages, each showing its saving against the single prices.

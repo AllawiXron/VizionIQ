@@ -99,6 +99,20 @@ body { background:#333; display:flex; gap:40px; padding:40px; align-items:flex-s
 
 .glow { position:absolute; left:140px; right:140px; height:440px; border-radius:50%; background:radial-gradient(ellipse at center, rgba(240,122,46,.32), rgba(240,122,46,0) 70%); filter:blur(10px) }
 .fan img.hero { border-width:7px; box-shadow:0 34px 60px rgba(60,35,15,.35), 0 3px 8px rgba(60,35,15,.2) }
+
+.ba-label { position:absolute; z-index:6; padding:6px 26px 10px; border-radius:99px; color:#fff; font:700 30px 'Readex Pro'; box-shadow:0 8px 16px rgba(60,35,15,.18) }
+.polar { position:absolute; z-index:4; width:440px; padding:14px 14px 0; background:#fff; border-radius:8px; box-shadow:0 22px 44px rgba(60,35,15,.22), 0 2px 6px rgba(60,35,15,.12) }
+.polar img { display:block; width:100%; aspect-ratio:1024/685; object-fit:cover; border-radius:3px; filter:saturate(.9) }
+.polar .fn { direction:ltr; text-align:left; padding:12px 4px 14px; font:500 20px 'IBM Plex Mono'; color:#8b8178 }
+.after { position:absolute; z-index:5; width:390px; height:488px; object-fit:cover; border-radius:22px; border:7px solid var(--cream);
+  box-shadow:0 34px 64px rgba(60,35,15,.34), 0 3px 8px rgba(60,35,15,.2) }
+.swoop { position:absolute; z-index:6; width:220px; height:150px; fill:none; stroke:var(--ink); stroke-width:5; stroke-linecap:round; stroke-linejoin:round }
+.more { position:absolute; z-index:4; width:440px; text-align:right }
+.more .ml { font:600 26px 'Readex Pro'; color:var(--soft); margin-bottom:12px }
+.more .thumbs { display:flex; gap:14px; direction:ltr; justify-content:flex-end }
+.more .thumbs img { width:120px; height:150px; object-fit:cover; border-radius:12px; border:4px solid var(--cream); box-shadow:0 10px 22px rgba(60,35,15,.2) }
+.cta .pr { font:500 28px 'Readex Pro'; color:rgba(251,243,230,.75) }
+.cta .pr b { font:900 36px 'Alexandria'; color:var(--orange-2); margin-right:6px }
 </style></head><body>
 
 <svg width="0" height="0" style="position:absolute"><defs>
@@ -111,36 +125,42 @@ body { background:#333; display:flex; gap:40px; padding:40px; align-items:flex-s
 </defs></svg>
 
 
-<!-- ============ the offer ad ============ -->
+<!-- ============ the offer ad: before / after ============ -->
 <div class="art" id="post">
   <div class="top" style="top:52px"><span class="pill">عرض تصميم</span><span class="mono">allawi.psd</span></div>
-  <div style="position:absolute; left:0; right:0; top:136px; text-align:center">
-    <div class="hl1">إعلانك يستاهل</div>
-    <div class="sel" style="margin-top:72px">
-      <div class="hl2">يبين أحسن</div>
+  <div style="position:absolute; left:0; right:0; top:120px; text-align:center">
+    <div class="hl1" style="font-size:72px">صورة عادية..</div>
+    <div class="sel" style="margin-top:66px; padding:0 30px 30px">
+      <div class="hl2" style="font-size:108px">صارت إعلان يبيع</div>
       <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
-      <div class="tag"><svg><use href="#i-layer"/></svg>your_ad.psd</div>
+      <div class="tag"><svg><use href="#i-layer"/></svg>alshifa_ad.psd</div>
       <svg class="cursor" viewBox="0 0 24 24"><use href="#i-cursor"/></svg>
     </div>
   </div>
-  <div class="glow" style="top:560px"></div>
-  <div class="fan" style="top:556px">
-    <img src="../miswag-ad/out/miswag-ad.png" style="left:30px; top:100px; width:200px; height:250px; transform:rotate(-9deg); z-index:3" />
-    <img src="../optes-ad/out/optes-flash.png" style="left:856px; top:100px; width:200px; height:250px; transform:rotate(9deg); z-index:3" />
-    <img src="../sala-ad/out/sala-ad.png" style="left:180px; top:44px; width:252px; height:315px; transform:rotate(-4.5deg); z-index:2" />
-    <img src="../baly-ad/out/baly-ad.png" style="left:648px; top:44px; width:252px; height:315px; transform:rotate(4.5deg); z-index:2" />
-    <img class="hero" src="../alshifa-lab/out/alshifa-offer.png" style="left:388px; top:0; width:304px; height:380px; z-index:4" />
+
+  <!-- before (right, read first) -->
+  <div class="ba-label" style="right:96px; top:520px; background:#8b8178">قبل</div>
+  <div class="polar" style="right:70px; top:578px; transform:rotate(4deg)">
+    <img src="../alshifa-lab/photo/source-lab-tube.jpg" />
+    <div class="fn">IMG_2041.jpg</div>
   </div>
-  <div class="badge" style="left:70px; top:290px; width:190px; height:190px; z-index:6"><small>تبدي من</small><b style="font-size:70px">14</b><span>ألف دينار</span></div>
-  <div class="cap" style="top:968px">نماذج من شغلي</div>
-  <div class="perks" style="top:1030px">
-    <div class="perk"><svg><use href="#i-check"/></svg>فكرة + كتابة + تصميم</div>
-    <div class="perk"><svg><use href="#i-check"/></svg>تعديلين مجاناً</div>
-    <div class="perk"><svg><use href="#i-check"/></svg>تسليم بيومين</div>
+
+  <!-- after (left) -->
+  <div class="ba-label" style="left:96px; top:476px; background:var(--orange)">بعد</div>
+  <img class="after" src="../alshifa-lab/out/alshifa-offer.png" style="left:70px; top:530px; transform:rotate(-3deg)" />
+
+  <svg class="swoop" viewBox="0 0 110 90" style="left:462px; top:700px; width:110px; height:90px">
+    <path d="M102 70 C 88 18, 40 8, 14 46"/><path d="M8 20 L14 47 L40 40"/>
+  </svg>
+
+  <div class="more" style="right:70px; top:952px">
+    <div class="ml">ونفس الشغل لكل مجال</div>
+    <div class="thumbs"><img src="../miswag-ad/out/miswag-ad.png"/><img src="../sala-ad/out/sala-ad.png"/><img src="../baly-ad/out/baly-ad.png"/></div>
   </div>
-  <div class="cta" style="top:1150px">
+
+  <div class="cta" style="top:1186px">
     <div class="go">راسلني هسه<svg><use href="#i-arrow"/></svg></div>
-    <div class="h"><span style="font:500 24px 'Readex Pro'; direction:rtl">الأسعار كلها بالهايلايت 📌</span></div>
+    <div class="pr">التصميم يبدي من <b>14 ألف</b></div>
   </div>
 </div>
 
