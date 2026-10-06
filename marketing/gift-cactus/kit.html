@@ -2,40 +2,53 @@
 <html lang="ar"><head><meta charset="utf-8" />
 <link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
 <link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
-<!-- «كاكتوس» starter kit (gift): a handmade crochet store. Brand idea: the name made literal, a cactus knitted from yarn.
-     Chrome: stitched (dashed) outlines instead of hard borders. No photos of people.
-     #logo #avatar 1080x1080 · #hl-orders #hl-prices #hl-work #hl-colors 1080x1920 · #post-welcome #post-order 1080x1350 -->
+<!-- «كاكتوس» starter kit (gift) for a new handmade crochet store: amigurumi keychains, headbands/bandanas, AirPods cases,
+     everything made to order («قابل للتنفيذ») and custom pieces from a photo. Her own look: sage green + pink, gingham, white sparkles.
+     Brand idea: the name made literal, a cactus knitted from yarn, used as a mascot beside her existing "Cactus" logo.
+     No photos of people. Template photo slots stay empty here; demo renders fill them (see render.cjs). -->
 <style>
-:root { --green:#6b9a5b; --green-d:#2f5a3a; --green-l:#9cc585; --cream:#f7f0e3; --cream-2:#efe4d0; --terra:#c96b45; --terra-d:#a9532f; --pink:#f2a7b4; --pink-d:#d97f90; --sun:#f3c552; --ink:#2b2420 }
+:root { --green:#6b9a5b; --green-d:#2f5a3a; --green-l:#9cc585; --cream:#f7f0e3; --terra:#c96b45; --pink:#f2a7b4; --pink-d:#d97f90; --sun:#f3c552 }
+@font-palette-values --cactus { font-family:'Reem Kufi Fun'; override-colors: 0 #e88a9b, 1 #e88a9b, 2 #e88a9b, 3 #e88a9b; }
+@font-palette-values --cactus-cream { font-family:'Reem Kufi Fun'; override-colors: 0 #fbf6ec, 1 #fbf6ec, 2 #fbf6ec, 3 #fbf6ec; }
 * { box-sizing:border-box; margin:0; padding:0 }
 body { background:#444; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:4600px; align-items:flex-start }
 .art { flex:none; position:relative; width:1080px; overflow:hidden; direction:rtl; font-family:'Readex Pro'; color:var(--green-d) }
 .sq { height:1080px } .tall { height:1920px } .post { height:1350px }
-.art::after { content:""; position:absolute; inset:0; z-index:50; pointer-events:none; opacity:.28; mix-blend-mode:multiply;
+.art::after { content:""; position:absolute; inset:0; z-index:50; pointer-events:none; opacity:.25; mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E") }
 .cream { background:var(--cream) }
 .greenbg { background:var(--green) }
-/* knit texture: rows of V stitches */
+.gingham { background-color:#f3f0e1; background-size:84px 84px;
+  background-image:linear-gradient(90deg, rgba(107,154,91,.30) 50%, transparent 50%), linear-gradient(rgba(107,154,91,.30) 50%, transparent 50%) }
 .knit { position:absolute; inset:0; opacity:.16;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='34'%3E%3Cpath d='M4 4 L22 28 L40 4' fill='none' stroke='%23fff' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-size:44px 34px }
 .knit.dark { opacity:.07; filter:invert(1) }
-.stitch { position:absolute; border:6px dashed rgba(47,90,58,.45); border-radius:44px }
-@font-palette-values --cactus { font-family:'Reem Kufi Fun'; override-colors: 0 #e88a9b, 1 #e88a9b, 2 #e88a9b, 3 #e88a9b; }
+.card { position:absolute; border-radius:48px; background:var(--cream); box-shadow:0 30px 70px rgba(40,60,30,.22) }
+.stitch { position:absolute; border:6px dashed rgba(47,90,58,.42); border-radius:40px }
 .wm { font:700 190px/1.1 'Reem Kufi Fun'; color:var(--green-d); white-space:nowrap; font-palette:--cactus }
 .sub { font:500 46px/1.4 'Readex Pro'; color:rgba(47,90,58,.72); white-space:nowrap }
-.ring { position:absolute; left:50%; top:50%; width:720px; height:720px; margin:-360px 0 0 -360px; border-radius:50%; background:var(--cream);
-  box-shadow:0 30px 70px rgba(20,40,25,.25) }
-.ring::before { content:""; position:absolute; inset:28px; border-radius:50%; border:7px dashed rgba(47,90,58,.4) }
-.ring svg { position:absolute; left:50%; top:50%; width:340px; height:340px; margin:-170px 0 0 -170px; overflow:visible }
 .pill { display:inline-block; padding:16px 46px 24px; border-radius:999px; background:var(--green-d); color:var(--cream); font:600 46px 'Readex Pro'; white-space:nowrap }
-.step { display:flex; align-items:center; gap:34px; padding:26px 36px; border-radius:36px; background:rgba(255,255,255,.55); border:5px dashed rgba(47,90,58,.3) }
-.step b { flex:none; width:96px; height:96px; border-radius:50%; background:var(--green); color:var(--cream); font:700 54px/96px 'Reem Kufi Fun'; text-align:center }
-.step span { font:600 50px/1.35 'Readex Pro'; color:var(--green-d); white-space:nowrap }
+.pill.pink { background:var(--pink); color:var(--green-d) }
+.ring { position:absolute; left:50%; top:50%; width:720px; height:720px; margin:-360px 0 0 -360px; border-radius:50%; background:var(--cream); box-shadow:0 30px 70px rgba(20,40,25,.25) }
+.ring::before { content:""; position:absolute; inset:28px; border-radius:50%; border:7px dashed rgba(47,90,58,.4) }
+.ring svg { position:absolute; left:50%; top:50%; width:400px; height:400px; margin:-200px 0 0 -200px; overflow:visible }
+.spark { position:absolute; overflow:visible }
+.step { display:flex; align-items:center; gap:30px; padding:24px 34px; border-radius:36px; background:rgba(255,255,255,.6); border:5px dashed rgba(47,90,58,.3) }
+.step b { flex:none; width:92px; height:92px; border-radius:50%; background:var(--green); color:var(--cream); font:700 52px/92px 'Reem Kufi Fun'; text-align:center }
+.step span { font:600 46px/1.35 'Readex Pro'; color:var(--green-d); white-space:nowrap }
+.step span small { display:block; font:500 32px 'Readex Pro'; color:rgba(47,90,58,.65) }
+/* photo window for templates */
+.win { position:absolute; border-radius:40px; overflow:hidden; background:var(--green); box-shadow:0 0 0 12px var(--cream), 0 34px 70px rgba(40,60,30,.28) }
+.win .ph { position:absolute; inset:0; background-size:cover; background-position:center }
+.win .ph:not([style*="url"])::after { content:"صورة القطعة هنا"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font:600 54px 'Readex Pro'; color:rgba(247,240,227,.9) }
+.win::after { content:""; position:absolute; inset:18px; border:5px dashed rgba(247,240,227,.85); border-radius:28px; pointer-events:none }
+.badge { position:absolute; width:250px; height:250px; border-radius:50%; background:var(--pink); display:flex; align-items:center; justify-content:center; text-align:center;
+  font:700 54px/1.15 'Reem Kufi Fun'; color:var(--green-d); box-shadow:0 18px 36px rgba(40,60,30,.3); font-palette:--cactus-cream }
+.badge::before { content:""; position:absolute; inset:14px; border-radius:50%; border:5px dashed rgba(47,90,58,.45) }
 </style></head>
 <body>
 
-<!-- the knitted cactus, drawn once -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <pattern id="vst" width="30" height="24" patternUnits="userSpaceOnUse">
@@ -47,6 +60,9 @@ body { background:#444; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
       <rect width="26" height="20" fill="#c96b45" />
       <path d="M3 3 L13 16 L23 3" fill="none" stroke="#d98660" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
     </pattern>
+    <pattern id="sts-red" width="10" height="8" patternUnits="userSpaceOnUse"><rect width="10" height="8" fill="#d1343b" /><path d="M1 1 L5 6 L9 1" fill="none" stroke="#e2535a" stroke-width="2" stroke-linecap="round" /></pattern>
+    <pattern id="sts-org" width="10" height="8" patternUnits="userSpaceOnUse"><rect width="10" height="8" fill="#d9622b" /><path d="M1 1 L5 6 L9 1" fill="none" stroke="#ea7d45" stroke-width="2" stroke-linecap="round" /></pattern>
+    <pattern id="sts-grn" width="5" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="10" fill="#6f8f45" /><path d="M2.5 0 V10" stroke="#5c7a37" stroke-width="1.6" /></pattern>
     <linearGradient id="shade" x1="0" x2="1">
       <stop offset="0" stop-color="#1d3a24" stop-opacity=".35" /><stop offset=".45" stop-color="#1d3a24" stop-opacity="0" /><stop offset="1" stop-color="#fff" stop-opacity=".12" />
     </linearGradient>
@@ -58,20 +74,16 @@ body { background:#444; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
       <rect x="386" y="196" width="60" height="156" rx="30" />
     </clipPath>
     <symbol id="cactus" viewBox="0 0 600 720">
-      <!-- yarn strand from the pot to the ball -->
       <path d="M420 560 C 480 600, 470 650, 520 655" fill="none" stroke="#f2a7b4" stroke-width="9" stroke-linecap="round" />
-      <!-- body -->
       <g clip-path="url(#body)">
         <rect x="140" y="130" width="320" height="360" fill="url(#vst)" />
         <rect x="140" y="130" width="320" height="360" fill="url(#shade)" />
       </g>
-      <!-- spines as little cross stitches -->
       <g stroke="#f7f0e3" stroke-width="5" stroke-linecap="round">
         <path d="M262 212 l14 0 M269 205 l0 14" /><path d="M322 262 l14 0 M329 255 l0 14" /><path d="M270 330 l14 0 M277 323 l0 14" />
         <path d="M330 400 l14 0 M337 393 l0 14" /><path d="M176 270 l14 0 M183 263 l0 14" /><path d="M404 236 l14 0 M411 229 l0 14" />
         <path d="M300 160 l12 0 M306 154 l0 12" />
       </g>
-      <!-- flower -->
       <g transform="translate(300 138)">
         <g fill="#f2a7b4" stroke="#d97f90" stroke-width="3">
           <ellipse rx="17" ry="30" transform="rotate(0) translate(0 -26)" /><ellipse rx="17" ry="30" transform="rotate(72) translate(0 -26)" />
@@ -80,33 +92,67 @@ body { background:#444; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
         </g>
         <circle r="15" fill="#f3c552" stroke="#d9a730" stroke-width="3" />
       </g>
-      <!-- pot -->
       <path d="M178 486 H422 L398 650 Q396 664 382 664 H218 Q204 664 202 650 Z" fill="url(#vst-pot)" />
       <path d="M178 486 H422 L398 650 Q396 664 382 664 H218 Q204 664 202 650 Z" fill="url(#shade)" />
       <rect x="150" y="452" width="300" height="62" rx="20" fill="#a9532f" />
       <path d="M176 483 H424" stroke="#f7f0e3" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round" />
       <path d="M214 596 H386" stroke="#f7f0e3" stroke-width="4" stroke-dasharray="12 12" stroke-linecap="round" opacity=".8" />
-      <!-- yarn ball + hook -->
       <g transform="translate(520 640)">
         <circle r="54" fill="#f2a7b4" />
         <g fill="none" stroke="#d97f90" stroke-width="5" stroke-linecap="round">
-          <path d="M-42 -30 C -10 -10, 10 20, 30 46" /><path d="M-52 -4 C -20 6, 10 30, 18 52" /><path d="M-20 -50 C 10 -30, 36 -6, 50 20" />
-          <path d="M-36 38 C -10 10, 20 -20, 44 -34" />
+          <path d="M-42 -30 C -10 -10, 10 20, 30 46" /><path d="M-52 -4 C -20 6, 10 30, 18 52" /><path d="M-20 -50 C 10 -30, 36 -6, 50 20" /><path d="M-36 38 C -10 10, 20 -20, 44 -34" />
         </g>
         <path d="M-80 -86 L 46 48" stroke="#f7f0e3" stroke-width="10" stroke-linecap="round" />
         <path d="M-80 -86 q -10 -6 -4 -16" fill="none" stroke="#f7f0e3" stroke-width="8" stroke-linecap="round" />
       </g>
     </symbol>
+    <!-- a white sparkle, like the doodles in her stories -->
+    <symbol id="spark" viewBox="-50 -50 100 100">
+      <path d="M0 -44 C 5 -9, 9 -5, 44 0 C 9 5, 5 9, 0 44 C -5 9, -9 5, -44 0 C -9 -5, -5 -9, 0 -44 Z" fill="#fff" stroke="#2f5a3a" stroke-width="4" stroke-linejoin="round" />
+    </symbol>
+    <!-- her products, drawn in the same knitted style -->
+    <symbol id="i-strawberry" viewBox="0 0 100 100">
+      <circle cx="50" cy="10" r="7" fill="none" stroke="#8b9097" stroke-width="3.5" />
+      <path d="M50 17 V26" stroke="#8b9097" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="3 2.5" />
+      <path d="M50 94 C 27 82, 16 60, 20 44 C 23 33, 35 29, 50 33 C 65 29, 77 33, 80 44 C 84 60, 73 82, 50 94 Z" fill="url(#sts-red)" stroke="#b02a30" stroke-width="2.5" />
+      <g stroke="#fbeee6" stroke-width="3" stroke-linecap="round"><path d="M34 50 l2 5" /><path d="M50 46 l0 5" /><path d="M65 51 l-2 5" /><path d="M41 66 l1 5" /><path d="M59 66 l-1 5" /><path d="M50 80 l0 4" /></g>
+      <path d="M28 38 L39 31 L42 22 L50 29 L58 22 L61 31 L72 38 L59 40 L50 35 L41 40 Z" fill="#8cb87a" stroke="#5f8f4e" stroke-width="2.5" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-headband" viewBox="0 0 100 100">
+      <path d="M6 44 C 30 36, 70 36, 94 44 L94 66 C 70 58, 30 58, 6 66 Z" fill="url(#sts-grn)" stroke="#55732f" stroke-width="2.5" stroke-linejoin="round" />
+      <circle cx="68" cy="52" r="19" fill="#f2a7b4" stroke="#d97f90" stroke-width="3" />
+      <circle cx="68" cy="52" r="12" fill="none" stroke="#e48d9d" stroke-width="2.5" stroke-dasharray="3 3" />
+      <path d="M62 46 L74 58 M74 46 L62 58" stroke="#6f8f45" stroke-width="4" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-case" viewBox="0 0 100 100">
+      <rect x="22" y="32" width="56" height="56" rx="22" fill="url(#sts-org)" stroke="#b84f20" stroke-width="3" />
+      <g fill="none" stroke="#b84f20" stroke-width="2.5"><path d="M38 34 C 32 50, 32 70, 38 86" /><path d="M62 34 C 68 50, 68 70, 62 86" /><path d="M50 33 V87" /></g>
+      <path d="M23 54 H77" stroke="#8f3d17" stroke-width="3" />
+      <rect x="46" y="18" width="8" height="17" rx="4" fill="#7a4a2a" />
+      <path d="M54 26 C 60 16, 72 16, 76 22 C 70 28, 60 30, 54 26 Z" fill="#8cb87a" stroke="#5f8f4e" stroke-width="2.5" />
+      <circle cx="50" cy="62" r="2.6" fill="#f3c552" />
+    </symbol>
+    <symbol id="i-custom" viewBox="0 0 100 100">
+      <rect x="14" y="18" width="62" height="54" rx="8" fill="#fff" stroke="#2f5a3a" stroke-width="5" />
+      <circle cx="30" cy="34" r="6" fill="#f3c552" />
+      <path d="M18 66 L36 46 L48 58 L56 50 L72 66 Z" fill="#9cc585" />
+      <path d="M72 92 C 54 80, 52 70, 59 64 C 64 60, 70 62, 72 67 C 74 62, 80 60, 85 64 C 92 70, 90 80, 72 92 Z" fill="#f2a7b4" stroke="#d97f90" stroke-width="3.5" />
+    </symbol>
+    <symbol id="i-price" viewBox="0 0 100 100">
+      <path d="M14 50 L50 14 H82 a4 4 0 0 1 4 4 V50 L50 86 a5 5 0 0 1 -7 0 L14 57 a5 5 0 0 1 0 -7 z" fill="#f2a7b4" stroke="#d97f90" stroke-width="3.5" stroke-linejoin="round" />
+      <path d="M22 51 L52 21 H78 V48 L49 77 Z" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="4 4" opacity=".9" />
+      <circle cx="70" cy="30" r="6" fill="#f7f0e3" stroke="#2f5a3a" stroke-width="3" />
+    </symbol>
   </defs>
 </svg>
 
-<!-- LOGO -->
+<!-- LOGO (a mascot beside her "Cactus" logo) -->
 <div class="art sq cream" id="logo">
   <div class="knit dark"></div>
   <div class="stitch" style="inset:46px;"></div>
   <svg style="position:absolute; left:300px; top:96px; width:480px; height:576px;"><use href="#cactus" /></svg>
-  <div style="position:absolute; left:0; right:0; top:690px; text-align:center;"><div class="wm">كاكتوس</div></div>
-  <div style="position:absolute; left:0; right:0; top:910px; text-align:center;"><div class="sub">حياكة يدوية.. بكل حب</div></div>
+  <div style="position:absolute; left:0; right:0; top:680px; text-align:center;"><div class="wm">كاكتوس</div></div>
+  <div style="position:absolute; left:0; right:0; top:905px; text-align:center;"><div class="sub">حياكة يدوية.. بكل حب</div></div>
 </div>
 
 <!-- PROFILE PICTURE (circle-safe) -->
@@ -117,65 +163,81 @@ body { background:#444; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
   <svg style="position:absolute; left:255px; top:200px; width:580px; height:696px;"><use href="#cactus" /></svg>
 </div>
 
-<!-- HIGHLIGHT COVERS -->
-<div class="art tall greenbg" id="hl-orders"><div class="knit"></div><div class="ring">
-  <svg viewBox="0 0 100 100" fill="none" stroke="#2f5a3a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 30 h64 l-6 54 a6 6 0 0 1 -6 5 H30 a6 6 0 0 1 -6 -5 z" /><path d="M36 30 v-6 a14 14 0 0 1 28 0 v6" />
-    <path d="M50 74 c-14 -9 -16 -18 -10 -23 c4 -3 9 -1 10 3 c1 -4 6 -6 10 -3 c6 5 4 14 -10 23 z" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
-  </svg></div></div>
-<div class="art tall greenbg" id="hl-prices"><div class="knit"></div><div class="ring">
-  <svg viewBox="0 0 100 100" fill="none" stroke="#2f5a3a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M14 50 L50 14 H82 a4 4 0 0 1 4 4 V50 L50 86 a5 5 0 0 1 -7 0 L14 57 a5 5 0 0 1 0 -7 z" />
-    <circle cx="70" cy="30" r="7" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
-    <path d="M38 52 l12 12 M44 46 l12 12" stroke-dasharray="1 9" />
-  </svg></div></div>
-<div class="art tall greenbg" id="hl-work"><div class="knit"></div><div class="ring">
-  <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="46" cy="56" r="30" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
-    <g stroke="#d97f90" stroke-width="4"><path d="M22 42 c14 4 26 18 34 38" /><path d="M18 58 c14 0 28 12 32 27" /><path d="M32 30 c18 6 32 20 40 36" /><path d="M26 76 c10 -16 28 -32 46 -36" /></g>
-    <path d="M70 12 L34 66" stroke="#2f5a3a" stroke-width="7" /><path d="M70 12 q5 -6 10 -1" stroke="#2f5a3a" stroke-width="6" />
-  </svg></div></div>
-<div class="art tall greenbg" id="hl-colors"><div class="knit"></div><div class="ring">
-  <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="32" cy="62" r="20" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
-    <circle cx="68" cy="62" r="20" fill="#f3c552" stroke="#d9a730" stroke-width="4" />
-    <circle cx="50" cy="32" r="20" fill="#9cc585" stroke="#6b9a5b" stroke-width="4" />
-    <g stroke="rgba(0,0,0,.18)" stroke-width="3"><path d="M18 56 c8 2 16 10 20 22" /><path d="M54 56 c8 2 16 10 20 22" /><path d="M36 26 c8 2 16 10 20 22" /></g>
-  </svg></div></div>
+<!-- HIGHLIGHT COVERS: her categories -->
+<div class="art tall greenbg" id="hl-ready"><div class="knit"></div><div class="ring"><svg viewBox="0 0 100 100"><use href="#i-strawberry" /></svg></div></div>
+<div class="art tall greenbg" id="hl-bands"><div class="knit"></div><div class="ring"><svg viewBox="0 0 100 100"><use href="#i-headband" /></svg></div></div>
+<div class="art tall greenbg" id="hl-cases"><div class="knit"></div><div class="ring"><svg viewBox="0 0 100 100"><use href="#i-case" /></svg></div></div>
+<div class="art tall greenbg" id="hl-custom"><div class="knit"></div><div class="ring"><svg viewBox="0 0 100 100"><use href="#i-custom" /></svg></div></div>
+<div class="art tall greenbg" id="hl-prices"><div class="knit"></div><div class="ring"><svg viewBox="0 0 100 100"><use href="#i-price" /></svg></div></div>
 
-<!-- WELCOME POST -->
-<div class="art post cream" id="post-welcome">
-  <div class="knit dark"></div>
-  <div class="stitch" style="inset:46px;"></div>
-  <div style="position:absolute; right:110px; top:130px;"><span class="pill" style="font-size:38px; padding:12px 38px 18px;">أول بوست</span></div>
-  <div style="position:absolute; right:110px; top:250px; font:600 84px/1.25 'Readex Pro'; color:rgba(47,90,58,.8); white-space:nowrap;">أهلاً بيكم بـ</div>
-  <div style="position:absolute; right:104px; top:340px;" class="wm">كاكتوس</div>
-  <div style="position:absolute; right:110px; top:600px; font:500 48px/1.55 'Readex Pro'; color:rgba(47,90,58,.78); white-space:nowrap;">حياكة يدوية..<br />كل قطعة تنسوّى بإيدينا<br />بصبر وبحب</div>
-  <svg style="position:absolute; left:40px; top:470px; width:520px; height:624px;"><use href="#cactus" /></svg>
-  <div style="position:absolute; right:110px; top:1110px;"><span class="pill">الطلب بالخاص</span></div>
+<!-- WELCOME POST, in her own words -->
+<div class="art post gingham" id="post-welcome">
+  <div class="card" style="inset:60px;"></div>
+  <div class="stitch" style="inset:88px;"></div>
+  <svg class="spark" style="left:120px; top:130px; width:70px; height:70px;"><use href="#spark" /></svg>
+  <svg class="spark" style="left:200px; top:210px; width:38px; height:38px;"><use href="#spark" /></svg>
+  <svg class="spark" style="left:860px; top:1110px; width:54px; height:54px;"><use href="#spark" /></svg>
+  <div style="position:absolute; right:150px; top:150px;"><span class="pill" style="font-size:38px; padding:12px 38px 18px;">أهلاً بيكم بـ كاكتوس</span></div>
+  <div style="position:absolute; right:150px; top:268px; font:600 64px/1.3 'Readex Pro'; color:rgba(47,90,58,.78); white-space:nowrap;">كل اللي احتجته..</div>
+  <div style="position:absolute; right:146px; top:350px;" class="wm"><span style="font-size:150px;">سنارة وخيط</span></div>
+  <div style="position:absolute; right:150px; top:575px; font:500 44px/1.6 'Readex Pro'; color:rgba(47,90,58,.78); white-space:nowrap;">حياكة يدوية من داخل البيت..<br />كل قطعة تنسوّى بإيدي، بصبر وبحب</div>
+  <svg style="position:absolute; left:110px; top:690px; width:440px; height:528px;"><use href="#cactus" /></svg>
+  <div style="position:absolute; right:150px; top:1080px;"><span class="pill">الطلب بالخاص</span></div>
 </div>
 
-<!-- HOW TO ORDER -->
-<div class="art post greenbg" id="post-order">
-  <div class="knit"></div>
-  <div style="position:absolute; inset:60px; border-radius:48px; background:var(--cream);"></div>
+<!-- HOW TO ORDER, her way -->
+<div class="art post gingham" id="post-order">
+  <div class="card" style="inset:60px;"></div>
   <div class="stitch" style="inset:88px;"></div>
-  <div style="position:absolute; right:150px; top:150px;" class="wm" ><span style="font-size:120px;">شلون تطلب؟</span></div>
-  <div style="position:absolute; right:150px; left:150px; top:370px; display:flex; flex-direction:column; gap:30px;">
-    <div class="step"><b>١</b><span>اختار القطعة اللي تعجبك</span></div>
-    <div class="step"><b>٢</b><span>راسلنا بالخاص</span></div>
-    <div class="step"><b>٣</b><span>نختار سوا اللون والقياس</span></div>
-    <div class="step"><b>٤</b><span>نحيكها إلك بإيدينا</span></div>
+  <div style="position:absolute; right:150px; top:140px;" class="wm"><span style="font-size:118px;">شلون تطلب؟</span></div>
+  <svg class="spark" style="left:150px; top:170px; width:64px; height:64px;"><use href="#spark" /></svg>
+  <div style="position:absolute; right:150px; left:150px; top:350px; display:flex; flex-direction:column; gap:26px;">
+    <div class="step"><b>١</b><span>اختار من «قابل للتنفيذ»<small>كل اللي ننشره نگدر نسويه</small></span></div>
+    <div class="step"><b>٢</b><span>أو دزلي صورة التصميم<small>اللي شايفه وعاجبك</small></span></div>
+    <div class="step"><b>٣</b><span>نتفق على اللون والقياس</span></div>
+    <div class="step"><b>٤</b><span>أحيكه إلك بإيدي</span></div>
   </div>
-  <svg style="position:absolute; left:130px; top:1070px; width:160px; height:192px;"><use href="#cactus" /></svg>
-  <div style="position:absolute; right:150px; top:1140px; font:700 64px 'Reem Kufi Fun'; color:var(--green-d); font-palette:--cactus;">كاكتوس</div>
+  <svg style="position:absolute; left:130px; top:1080px; width:150px; height:180px;"><use href="#cactus" /></svg>
+  <div style="position:absolute; right:150px; top:1150px; font:700 64px 'Reem Kufi Fun'; color:var(--green-d); font-palette:--cactus;">كاكتوس</div>
+</div>
+
+<!-- TEMPLATE: new piece post (photo slot) -->
+<div class="art post gingham" id="tpl-new">
+  <div class="win" style="left:110px; top:120px; width:860px; height:950px;"><div class="ph" id="ph-new"></div></div>
+  <div class="badge" style="left:62px; top:70px; transform:rotate(-10deg);">قطعة<br />جديدة</div>
+  <svg class="spark" style="left:300px; top:90px; width:64px; height:64px;"><use href="#spark" /></svg>
+  <svg class="spark" style="left:880px; top:1000px; width:80px; height:80px;"><use href="#spark" /></svg>
+  <div class="card" style="left:110px; right:110px; top:1120px; height:150px; border-radius:40px; display:flex; align-items:center; justify-content:space-between; padding:0 44px;">
+    <span class="pill" style="font-size:40px; padding:12px 38px 18px;">الطلب بالخاص</span>
+    <span style="display:flex; align-items:center; gap:18px;"><span style="font:700 60px 'Reem Kufi Fun'; color:var(--green-d); font-palette:--cactus;">كاكتوس</span>
+      <svg style="width:84px; height:100px;"><use href="#cactus" /></svg></span>
+  </div>
+</div>
+
+<!-- TEMPLATE: «قابل للتنفيذ» story (photo slot) -->
+<div class="art tall gingham" id="tpl-story">
+  <div style="position:absolute; left:0; right:0; top:200px; text-align:center;"><span class="pill pink" style="font-size:56px; padding:16px 56px 26px; box-shadow:0 16px 34px rgba(40,60,30,.25);">قابل للتنفيذ</span></div>
+  <svg class="spark" style="left:150px; top:170px; width:84px; height:84px;"><use href="#spark" /></svg>
+  <svg class="spark" style="left:860px; top:250px; width:48px; height:48px;"><use href="#spark" /></svg>
+  <div class="win" style="left:90px; top:370px; width:900px; height:1100px;"><div class="ph" id="ph-story"></div></div>
+  <div class="card" style="left:90px; right:90px; top:1520px; height:200px; border-radius:40px;"></div>
+  <div style="position:absolute; right:150px; top:1540px; font:700 74px/1.3 'Reem Kufi Fun'; color:var(--green-d); font-palette:--cactus; white-space:nowrap;">تريده بلون ثاني؟</div>
+  <div style="position:absolute; right:150px; top:1640px; font:500 40px 'Readex Pro'; color:rgba(47,90,58,.75); white-space:nowrap;">دزلي صورة أو اللون اللي يعجبك</div>
+  <svg style="position:absolute; left:120px; top:1500px; width:170px; height:204px;"><use href="#cactus" /></svg>
 </div>
 
 <script>
+// ?new=<image url>&story=<image url>[&newpos=<css position>] fills the template photo slots (demo renders)
+const q = new URLSearchParams(location.search);
+if (q.get('new')) document.getElementById('ph-new').style.backgroundImage = `url("${q.get('new')}")`;
+if (q.get('newpos')) document.getElementById('ph-new').style.backgroundPosition = q.get('newpos');
+if (q.get('story')) document.getElementById('ph-story').style.backgroundImage = `url("${q.get('story')}")`;
+const imgs = [q.get('new'), q.get('story')].filter(Boolean).map((u) => new Promise((r) => { const i = new Image(); i.onload = i.onerror = r; i.src = u; }));
 Promise.all([
-  document.fonts.load("700 190px 'Reem Kufi Fun'", 'كاكتوس شلون تطلب؟ ١٢٣٤'),
-  document.fonts.load("500 46px 'Readex Pro'", 'حياكة يدوية.. بكل حب كل قطعة تنسوّى بإيدينا بصبر وبحب'),
-  document.fonts.load("600 46px 'Readex Pro'", 'أهلاً بيكم بـ الطلب بالخاص أول بوست اختار القطعة اللي تعجبك راسلنا بالخاص نختار سوا اللون والقياس نحيكها إلك بإيدينا'),
+  document.fonts.load("700 190px 'Reem Kufi Fun'", 'كاكتوس شلون تطلب؟ ١٢٣٤ سنارة وخيط قطعة جديدة تريده بلون ثاني؟ قابل للتنفيذ'),
+  document.fonts.load("500 46px 'Readex Pro'", 'حياكة يدوية.. بكل حب من داخل البيت كل قطعة تنسوّى بإيدي، بصبر وبحب دزلي صورة أو اللون اللي يعجبك'),
+  document.fonts.load("600 46px 'Readex Pro'", 'أهلاً بيكم بـ كاكتوس الطلب بالخاص كل اللي احتجته اختار من «قابل للتنفيذ» أو دزلي صورة التصميم نتفق على اللون والقياس أحيكه إلك بإيدي صورة القطعة هنا'),
+  ...imgs,
 ]).then(() => document.fonts.ready).then(() => (document.body.dataset.ready = 1));
 </script>
 </body></html>

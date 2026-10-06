@@ -1,19 +1,26 @@
 # «كاكتوس» starter kit (a gift)
 
-A free starter kit for a new handmade crochet store. The brand idea makes the name literal: a cactus knitted from yarn, in a terracotta pot, with a pink yarn ball and hook. Stitched (dashed) outlines stand in for hard borders. There are no photos of people.
+A free starter kit for a new handmade crochet store. What she makes and how she sells:
+- **Products:** amigurumi keychains, headbands and bandanas, and AirPods cases.
+- **Made to order:** everything she posts can be made again («قابل للتنفيذ»).
+- **Custom pieces:** customers send her a photo of what they want.
 
-`node render.cjs` renders every board in `kit.html` to `out/<id>.png`:
+Her own look is sage green and pink, gingham, and white sparkle doodles, next to an existing green "Cactus" logo. The kit adds a mascot that makes the name literal: a cactus knitted from yarn, in a terracotta pot, with a pink yarn ball and hook. Stitched (dashed) outlines replace hard borders. There are no photos of people.
+
+`node render.cjs` renders every board in `kit.html` to `out/<id>.png`. The template photo slots stay empty in these renders.
 
 | Board | Size | What |
 |---|---|---|
-| `logo` | 1080x1080 | Cactus + «كاكتوس» wordmark + «حياكة يدوية.. بكل حب» |
-| `avatar` | 1080x1080 | Profile picture, circle-safe, cactus only |
-| `hl-orders` `hl-prices` `hl-work` `hl-colors` | 1080x1920 | Highlight covers: bag with a heart, price tag, yarn ball + hook, yarn colours |
-| `post-welcome` | 1080x1350 | «أهلاً بيكم بـ كاكتوس», «الطلب بالخاص» |
-| `post-order` | 1080x1350 | «شلون تطلب؟» in 4 steps |
+| `logo` | 1080x1080 | Mascot + «كاكتوس» + «حياكة يدوية.. بكل حب» |
+| `avatar` | 1080x1080 | Profile picture, circle-safe, mascot only |
+| `hl-ready` `hl-bands` `hl-cases` `hl-custom` `hl-prices` | 1080x1920 | Highlight covers, with her products drawn in the knitted style: strawberry keychain (قابل للتنفيذ), headband with button (باندانات), pumpkin AirPods case (كفرات), photo + heart (طلبات خاصة), price tag (الأسعار) |
+| `post-welcome` | 1080x1350 | «كل اللي احتجته.. سنارة وخيط», built from her own intro video |
+| `post-order` | 1080x1350 | «شلون تطلب؟»: pick from «قابل للتنفيذ» or send a photo, agree on colour and size, she makes it by hand |
+| `tpl-new` | 1080x1350 | Template: new-piece post with a photo slot, a «قطعة جديدة» badge and «الطلب بالخاص» |
+| `tpl-story` | 1080x1920 | Template: «قابل للتنفيذ» story with a photo slot and «تريده بلون ثاني؟ دزلي…» |
 
-`out/sheet.jpg` shows all eight boards together.
+`node render.cjs --demo <dir> <post-photo> <story-photo> [post-photo-position]` fills the two templates with real photos. Demo renders that use her product photos stay out of the repo.
 
 **Look:**
-- Colours: cactus green #6b9a5b, deep green #2f5a3a, cream #f7f0e3, terracotta #c96b45, yarn pink #f2a7b4, and sun #f3c552 for the flower.
-- Fonts: Reem Kufi Fun for the wordmark (its colour-font dots are recoloured pink with `@font-palette-values`) and Readex Pro for the text.
+- Colours: cactus green #6b9a5b, deep green #2f5a3a, cream #f7f0e3, terracotta #c96b45, yarn pink #f2a7b4, sun #f3c552, and a sage gingham background.
+- Fonts: Reem Kufi Fun (its colour-font dots are recoloured with `@font-palette-values`: pink on cream, cream on the pink badge) and Readex Pro.
