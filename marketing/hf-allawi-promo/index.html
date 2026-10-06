@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>allawi.psd — صورة عادية.. صارت إعلان يبيع</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+/* arabic */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fonts/fb351b4fc0.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fonts/d09128cc92.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/fonts/fb351b4fc0.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/fonts/d09128cc92.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/fb351b4fc0.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/d09128cc92.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(assets/fonts/fb351b4fc0.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(assets/fonts/d09128cc92.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(assets/fonts/fb351b4fc0.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(assets/fonts/d09128cc92.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Aref Ruqaa';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/ac84eb6de2.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Aref Ruqaa';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/3ee1fd9513.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/e2661bcc0d.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fonts/0bc96cd0d5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/253e49fe39.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/d65c264453.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(assets/fonts/0b716e0324.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(assets/fonts/fee239086e.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/0b716e0324.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/fee239086e.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fonts/0b716e0324.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fonts/fee239086e.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/fonts/0b716e0324.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/fonts/fee239086e.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+      :root {
+        --ink: #1f1510;
+        --night: #170f0a;
+        --paper: #ece3d4;
+        --cream: #fbf3e6;
+        --orange: #e2541b;
+        --orange2: #f07a2e;
+        --peach: #ffb37a;
+        --teal: #27768a;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Readex Pro", sans-serif; }
+      .scene { position: absolute; inset: 0; overflow: hidden; }
+      .scene .inner { position: absolute; inset: 0; }
+      .dark { background: radial-gradient(80% 55% at 70% 32%, #3b2416 0%, #22150d 48%, #120b07 100%); color: var(--cream); }
+      .light { background: radial-gradient(75% 55% at 35% 40%, #fbf6ee 0%, #f1e9dc 50%, #e2d6c4 100%); color: var(--ink); }
+      #s2, #s3, #s4, #s5, #s6 { opacity: 0; }
+
+      /* shared furniture */
+      .ghost { position: absolute; font-family: "Alexandria"; font-weight: 900; line-height: 1; white-space: nowrap; pointer-events: none; }
+      .dark .ghost { color: rgba(251, 243, 230, 0.055); }
+      .light .ghost { color: rgba(31, 21, 16, 0.05); }
+      .glow { position: absolute; border-radius: 50%; pointer-events: none; }
+      .meta { position: absolute; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 26px; letter-spacing: 0.08em; direction: ltr; white-space: nowrap; }
+      .dark .meta { color: rgba(251, 243, 230, 0.55); }
+      .light .meta { color: rgba(31, 21, 16, 0.5); }
+      .rule { position: absolute; height: 3px; transform-origin: 100% 50%; }
+      .dark .rule { background: rgba(251, 243, 230, 0.22); }
+      .light .rule { background: rgba(31, 21, 16, 0.16); }
+      .dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--orange2); margin-right: 14px; vertical-align: 1px; }
+      .grid-paper {
+        position: absolute; inset: 0; opacity: 0.5;
+        background-image: linear-gradient(rgba(31,21,16,0.06) 2px, transparent 2px), linear-gradient(90deg, rgba(31,21,16,0.06) 2px, transparent 2px);
+        background-size: 72px 72px;
+        -webkit-mask-image: radial-gradient(60% 45% at 50% 45%, #000 0%, transparent 100%);
+        mask-image: radial-gradient(60% 45% at 50% 45%, #000 0%, transparent 100%);
+      }
+      .rings { position: absolute; inset: 0; background: repeating-radial-gradient(circle at 70% 32%, rgba(255,190,140,0.035) 0 80px, transparent 80px 200px); }
+
+      /* type */
+      .block { position: absolute; right: 90px; left: 90px; display: flex; flex-direction: column; align-items: flex-start; direction: rtl; }
+      .mask { overflow: hidden; padding: 0.22em 0.12em 0.32em; margin: -0.22em -0.12em -0.32em; }
+      .mask > * { display: block; }
+      .lead { font-family: "Readex Pro"; font-weight: 500; font-size: 66px; line-height: 1.3; white-space: nowrap; }
+      .dark .lead { color: rgba(251, 243, 230, 0.78); }
+      .light .lead { color: rgba(31, 21, 16, 0.68); }
+      .hero { font-family: "Alexandria"; font-weight: 900; font-size: 176px; line-height: 1.2; white-space: nowrap; }
+      .body { font-family: "Readex Pro"; font-weight: 400; font-size: 42px; line-height: 1.45; white-space: nowrap; }
+      .dark .body { color: rgba(251, 243, 230, 0.62); }
+      .light .body { color: rgba(31, 21, 16, 0.6); }
+
+      /* highlight box with selection handles (the reference's marker) */
+      .hl { position: relative; display: inline-block; padding: 4px 40px 22px; }
+      .hl .box { position: absolute; inset: 0; background: var(--orange); border-radius: 10px; transform-origin: 100% 50%; box-shadow: 0 24px 60px rgba(226, 84, 27, 0.35); }
+      .hl .hd { position: absolute; width: 6px; background: var(--cream); }
+      .hl .hd::after { content: ""; position: absolute; left: -12px; width: 30px; height: 30px; border-radius: 50%; background: var(--cream); }
+      .hl .hd.r { right: -3px; top: -30px; height: calc(100% + 30px); transform-origin: 50% 0; }
+      .hl .hd.r::after { top: -15px; }
+      .hl .hd.l { left: -3px; bottom: -30px; height: calc(100% + 30px); transform-origin: 50% 100%; }
+      .hl .hd.l::after { bottom: -15px; }
+      .hl .mask { position: relative; }
+      .hl .hero { color: var(--cream); }
+
+      /* pill */
+      .pill { position: relative; display: inline-flex; align-items: center; padding: 20px 52px 28px; border-radius: 999px; background: #fff; border: 5px solid var(--orange2);
+        font-family: "Readex Pro"; font-weight: 600; font-size: 54px; color: var(--ink); white-space: nowrap; box-shadow: 0 22px 50px rgba(31, 21, 16, 0.18); direction: rtl; }
+
+      /* S1 print */
+      .print { position: absolute; width: 660px; padding: 18px 18px 0; background: #fff; border-radius: 12px; box-shadow: 0 50px 90px rgba(0,0,0,0.45), 0 6px 14px rgba(0,0,0,0.25); }
+      .print .ph { width: 100%; aspect-ratio: 1024 / 685; overflow: hidden; border-radius: 4px; }
+      .print .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .print .cap { padding: 16px 4px 20px; font-family: "IBM Plex Mono"; font-weight: 500; font-size: 26px; color: #786e66; direction: ltr; display: flex; justify-content: space-between; }
+
+      /* S2 feed */
+      .feed-win { position: absolute; left: 90px; right: 90px; top: 760px; bottom: 0; overflow: hidden;
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 120px, #000 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 120px, #000 100%); }
+      .feed { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; gap: 44px; }
+      .post { background: #fff; border-radius: 30px; overflow: hidden; box-shadow: 0 24px 50px rgba(31, 21, 16, 0.14); direction: ltr; }
+      .post .hdr { display: flex; align-items: center; gap: 18px; padding: 22px 26px; }
+      .post .av { width: 60px; height: 60px; border-radius: 50%; background: #d8cec1; }
+      .post .nm { height: 20px; width: 220px; border-radius: 10px; background: #e6ded2; }
+      .post .img { height: 600px; background: linear-gradient(160deg, #e7dfd3, #d4c7b5); }
+      .post .img.photo { height: auto; aspect-ratio: 1024 / 685; background: none; }
+      .post .img.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .bgph { width: 100%; height: 100%; background: url(assets/img/before.jpg) center / cover no-repeat; }
+      .post .bar { display: flex; gap: 26px; padding: 22px 26px 28px; }
+      .post .bar i { width: 40px; height: 40px; border-radius: 12px; border: 4px solid #2a2a2a; display: block; }
+      .post.mine .av { background: linear-gradient(135deg, var(--orange2), var(--orange)); }
+      .post.mine .nm { background: none; width: auto; height: auto; font-family: "Readex Pro"; font-weight: 600; font-size: 30px; color: var(--ink); }
+      .post .views { padding: 0 26px 26px; font-family: "Readex Pro"; font-weight: 500; font-size: 26px; color: #6f665d; }
+      .stretch { display: flex; align-items: baseline; direction: rtl; font-family: "Alexandria"; font-weight: 900; font-size: 176px; line-height: 1.2; color: var(--ink); white-space: nowrap; }
+      .stretch span { display: inline-block; }
+      #s2-run { transform-origin: 100% 50%; }
+
+      /* S4 build */
+      .win { position: absolute; left: 70px; top: 390px; width: 648px; height: 1152px; border-radius: 0 0 22px 22px; overflow: hidden; box-shadow: 0 40px 90px rgba(31, 21, 16, 0.3), 0 0 0 6px #2b2522; }
+      .tab { position: absolute; left: 64px; top: 336px; height: 54px; padding: 0 24px; border-radius: 16px 16px 0 0; background: #2b2522; color: #e9e1d6; display: flex; align-items: center; gap: 12px;
+        font-family: "IBM Plex Mono"; font-weight: 500; font-size: 24px; direction: ltr; }
+      .tab .dot { margin: 0; width: 12px; height: 12px; }
+      .cam { position: absolute; left: 0; top: 0; width: 648px; height: 1152px; transform-origin: 0 0; }
+      .doc { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform: scale(0.6); transform-origin: 0 0;
+        background-color: #fff; background-size: 60px 60px; background-position: 0 0, 0 30px, 30px -30px, -30px 0;
+        background-image: linear-gradient(45deg, #e9e9e9 25%, transparent 25%), linear-gradient(-45deg, #e9e9e9 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e9e9e9 75%), linear-gradient(-45deg, transparent 75%, #e9e9e9 75%); }
+      .doc img, .doc .lyr { position: absolute; display: block; }
+      #d-teal { left: 0; top: 0; width: 1080px; height: 1920px; }
+      #d-raw { left: -332.1px; top: 555.6px; width: 1490.9px; height: 997.3px; }
+      .sel { position: absolute; border: 3px solid var(--orange2); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45); opacity: 0; }
+      .sel i { position: absolute; width: 16px; height: 16px; background: #fff; border: 3px solid var(--orange2); }
+      .sel i:nth-child(1) { left: -10px; top: -10px; }
+      .sel i:nth-child(2) { right: -10px; top: -10px; }
+      .sel i:nth-child(3) { left: -10px; bottom: -10px; }
+      .sel i:nth-child(4) { right: -10px; bottom: -10px; }
+      .sel b { position: absolute; left: -3px; top: -40px; height: 34px; padding: 0 12px; background: var(--orange2); color: #1f1510; font-family: "IBM Plex Mono"; font-weight: 500; font-size: 19px; line-height: 34px; white-space: nowrap; direction: ltr; border-radius: 4px 4px 0 0; }
+      .sheen { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.55) 50%, transparent 65%); mix-blend-mode: soft-light; opacity: 0; }
+      .steps { position: absolute; right: 70px; top: 470px; width: 270px; direction: rtl; }
+      .step { position: relative; height: 190px; padding-right: 54px; }
+      .step .n { font-family: "IBM Plex Mono"; font-weight: 500; font-size: 26px; color: #c8460f; letter-spacing: 0.1em; direction: ltr; text-align: right; }
+      .step .t { font-family: "Readex Pro"; font-weight: 600; font-size: 40px; line-height: 1.35; color: var(--ink); white-space: nowrap; }
+      .step .s { font-family: "Readex Pro"; font-weight: 400; font-size: 26px; color: rgba(31, 21, 16, 0.55); white-space: nowrap; }
+      .step .pin { position: absolute; right: 0; top: 10px; width: 30px; height: 30px; border-radius: 50%; border: 4px solid rgba(31, 21, 16, 0.25); background: var(--paper); }
+      .step .pin i { position: absolute; inset: 4px; border-radius: 50%; background: var(--orange2); transform: scale(0); display: block; }
+      .track { position: absolute; right: 83px; top: 500px; width: 4px; height: 570px; background: rgba(31, 21, 16, 0.12); }
+      .track i { position: absolute; inset: 0; background: var(--orange2); transform-origin: 50% 0; transform: scaleY(0); display: block; }
+      .ready { position: absolute; right: 70px; top: 1300px; display: inline-flex; align-items: center; gap: 14px; padding: 16px 34px 22px; border-radius: 999px; background: var(--orange); color: #fff;
+        font-family: "Readex Pro"; font-weight: 600; font-size: 36px; white-space: nowrap; direction: rtl; box-shadow: 0 18px 40px rgba(226, 84, 27, 0.35); }
+
+      /* S5 before/after */
+      .card-b { position: absolute; left: 70px; top: 620px; width: 560px; }
+      .card-a { position: absolute; right: 80px; top: 820px; width: 470px; padding: 16px; background: var(--cream); border-radius: 30px; box-shadow: 0 50px 90px rgba(0,0,0,0.5); }
+      .card-a img { display: block; width: 100%; border-radius: 18px; }
+      .tag { position: absolute; display: inline-flex; padding: 10px 30px 16px; border-radius: 999px; font-family: "Readex Pro"; font-weight: 600; font-size: 36px; white-space: nowrap; }
+
+      /* S6 */
+      .logo { display: flex; align-items: baseline; direction: ltr; font-family: "Readex Pro"; font-weight: 600; font-size: 176px; line-height: 1; color: var(--ink); }
+      .logo .ch { display: inline-block; }
+      .logo .pt { display: inline-block; width: 40px; height: 40px; border-radius: 50%; background: var(--orange); margin: 0 8px; }
+      .logo .psd { display: inline-block; font-family: "IBM Plex Mono"; font-weight: 500; font-size: 146px; color: var(--orange); }
+      .cta { display: inline-flex; align-items: center; gap: 24px; padding: 30px 70px 38px; border-radius: 999px; background: linear-gradient(180deg, var(--orange2), var(--orange)); color: #fff;
+        font-family: "Readex Pro"; font-weight: 600; font-size: 70px; white-space: nowrap; direction: rtl; box-shadow: 0 30px 60px rgba(226, 84, 27, 0.4), inset 0 2px 0 rgba(255,255,255,0.3); }
+      .cta svg { width: 60px; height: 60px; }
+      .grain { position: absolute; inset: 0; z-index: 50; pointer-events: none; opacity: 0.22; mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.6'/></svg>"); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="24">
+
+      <!-- ===== S1 · dark · «عندك صورة / [عادية؟]» + the print ===== -->
+      <div id="s1" class="scene dark">
+        <div class="inner" id="s1-in">
+          <div class="rings"></div>
+          <div class="glow" id="s1-glow" style="left:480px; top:160px; width:900px; height:900px; background: radial-gradient(circle, rgba(240,122,46,0.26), rgba(240,122,46,0) 65%);"></div>
+          <div class="ghost" data-layout-ignore id="s1-ghost" style="left:-260px; top:1180px; font-size:560px;">صورة</div>
+          <div class="meta" style="left:90px; top:236px;"><span class="dot"></span>IMG_2041.jpg</div>
+          <div class="meta" style="right:90px; top:236px;">01 / 05</div>
+          <div class="rule" id="s1-rule" style="left:90px; right:90px; top:296px;"></div>
+          <div class="block" style="top:350px;">
+            <div class="mask"><div class="lead" id="s1-l1">عندك صورة</div></div>
+            <div class="hl" id="s1-hl" style="margin-top:50px;">
+              <div class="box"></div><i class="hd r"></i><i class="hd l"></i>
+              <div class="mask"><div class="hero" id="s1-w">عادية؟</div></div>
+            </div>
+          </div>
+          <div class="print" id="s1-print" style="left:80px; top:900px;">
+            <div class="ph"><img id="s1-photo" src="assets/img/before.jpg" alt="" /></div>
+            <div class="cap"><span>IMG_2041.jpg</span><span>2.4 MB</span></div>
+          </div>
+          <div class="block" style="top:1420px;">
+            <div class="mask"><div class="body" id="s1-cap">صورتها بالتلفون.. ونزلتها</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== S2 · light · the feed scrolls past: «الناس تشوفها.. / وتعبــر» ===== -->
+      <div id="s2" class="scene light">
+        <div class="inner" id="s2-in">
+          <div class="grid-paper"></div>
+          <div class="meta" style="left:90px; top:236px;"><span class="dot"></span>رسائل: 0</div>
+          <div class="meta" style="right:90px; top:236px;">02 / 05</div>
+          <div class="rule" id="s2-rule" style="left:90px; right:90px; top:296px;"></div>
+          <div class="block" style="top:350px;">
+            <div class="mask"><div class="lead" id="s2-l1">الناس تشوفها..</div></div>
+            <div class="mask" id="s2-stm" style="margin-top:6px; align-self: stretch;">
+              <div class="stretch" id="s2-st"><span id="s2-pre">وتعبـ</span><span id="s2-run">ـ</span><span id="s2-post">ـر</span></div>
+            </div>
+          </div>
+          <div class="feed-win">
+            <div class="feed" id="s2-feed">
+              <div class="post"><div class="hdr"><div class="av"></div><div class="nm"></div></div><div class="img"></div><div class="bar"><i></i><i></i><i></i></div></div>
+              <div class="post mine"><div class="hdr"><div class="av"></div><div class="nm">your.business</div></div><div class="img photo"><div class="bgph"></div></div><div class="bar"><i></i><i></i><i></i></div><div class="views">12,480 views</div></div>
+              <div class="post"><div class="hdr"><div class="av"></div><div class="nm"></div></div><div class="img"></div><div class="bar"><i></i><i></i><i></i></div></div>
+              <div class="post"><div class="hdr"><div class="av"></div><div class="nm"></div></div><div class="img"></div><div class="bar"><i></i><i></i><i></i></div></div>
+            </div>
+          </div>
+          <div style="position:absolute; left:0; right:0; top:1180px; display:flex; justify-content:center;">
+            <div class="pill" id="s2-pill">ولا رسالة وحدة</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== S3 · dark · «خليني أحولها / [لإعلان يبيع]» ===== -->
+      <div id="s3" class="scene dark">
+        <div class="inner" id="s3-in">
+          <div class="rings"></div>
+          <div class="glow" id="s3-glow" style="left:120px; top:520px; width:1000px; height:1000px; background: radial-gradient(circle, rgba(240,122,46,0.24), rgba(240,122,46,0) 65%);"></div>
+          <div class="ghost" data-layout-ignore id="s3-ghost" style="right:-200px; top:1260px; font-size:520px;">إعلان</div>
+          <div class="meta" style="left:90px; top:236px;"><span class="dot"></span>alshifa_offer.psd</div>
+          <div class="meta" style="right:90px; top:236px;">03 / 05</div>
+          <div class="rule" id="s3-rule" style="left:90px; right:90px; top:296px;"></div>
+          <div class="block" style="top:700px;">
+            <div class="mask"><div class="lead" id="s3-l1">خليني أحولها</div></div>
+            <div class="hl" id="s3-hl" style="margin-top:54px;">
+              <div class="box"></div><i class="hd r"></i><i class="hd l"></i>
+              <div class="mask"><div class="hero" id="s3-w" style="font-size:150px;">لإعلان يبيع</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== S4 · light · the ad builds inside a Photoshop-style window, step by step ===== -->
+      <div id="s4" class="scene light">
+        <div class="inner" id="s4-in">
+          <div class="grid-paper"></div>
+          <div class="meta" style="left:90px; top:236px;"><span class="dot"></span>1080 × 1920</div>
+          <div class="meta" style="right:90px; top:236px;">04 / 05</div>
+          <div class="rule" id="s4-rule" style="left:90px; right:90px; top:296px;"></div>
+          <div class="tab" id="s4-tab"><span class="dot"></span>alshifa_offer.psd</div>
+          <div class="win" id="s4-win">
+            <div class="cam" id="s4-cam">
+              <div class="doc">
+                <div class="lyr" id="d-teal" style="background:url(assets/layers/bg.jpg) center/cover;"></div>
+                <div class="lyr" id="d-raw" style="background:url(assets/img/before.jpg) center / 100% 100% no-repeat;"></div>
+                <img id="d-hand" src="assets/layers/hand.png" alt="" style="left:0px; top:626.67px; width:692.67px; height:946.67px;" />
+                <img id="d-tlabel" src="assets/layers/tlabel.png" alt="" style="left:487.33px; top:986.67px; width:49.33px; height:132.67px;" />
+                <img id="d-pill" src="assets/layers/pill.png" alt="" style="left:374.67px; top:232px; width:330.67px; height:59.33px;" />
+                <img id="d-qline" src="assets/layers/qline.png" alt="" style="left:228px; top:296px; width:622.67px; height:77.33px;" />
+                <img id="d-a1" src="assets/layers/a1.png" alt="" style="left:510px; top:366.67px; width:547.33px; height:240px;" />
+                <img id="d-a2" src="assets/layers/a2.png" alt="" style="left:22.67px; top:363.33px; width:530.67px; height:290.67px;" />
+                <div class="lyr" id="d-cardgrp" style="left:0; top:0; width:1080px; height:1920px;">
+                  <img id="d-card" src="assets/layers/card.png" alt="" style="left:561.33px; top:761.33px; width:518.67px; height:610.67px;" />
+                  <img class="d-li" src="assets/layers/li1.png" alt="" style="left:648.67px; top:886.67px; width:387.33px; height:47.33px;" />
+                  <img class="d-li" src="assets/layers/li2.png" alt="" style="left:647.33px; top:932px; width:387.33px; height:48px;" />
+                  <img class="d-li" src="assets/layers/li3.png" alt="" style="left:646.67px; top:977.33px; width:386.67px; height:48.67px;" />
+                  <img class="d-li" src="assets/layers/li4.png" alt="" style="left:645.33px; top:1024.67px; width:386.67px; height:47.33px;" />
+                  <img class="d-li" src="assets/layers/li5.png" alt="" style="left:644px; top:1070.67px; width:387.33px; height:47.33px;" />
+                  <img class="d-li" src="assets/layers/li6.png" alt="" style="left:642.67px; top:1116.67px; width:387.33px; height:47.33px;" />
+                  <img class="d-li" src="assets/layers/li7.png" alt="" style="left:642.67px; top:1162.67px; width:386px; height:35.33px;" />
+                  <img id="d-price" src="assets/layers/price.png" alt="" style="left:616px; top:1198px; width:436px; height:96px;" />
+                </div>
+                <img id="d-sticker" src="assets/layers/sticker.png" alt="" style="left:513.33px; top:1233.33px; width:205.33px; height:205.33px;" />
+                <img id="d-cta" src="assets/layers/cta.png" alt="" style="left:345.33px; top:1540.67px; width:390px; height:140px;" />
+                <img id="d-brand" src="assets/layers/brand.png" alt="" style="left:382px; top:1670.67px; width:297.33px; height:68.67px;" />
+              </div>
+              <div class="sel" id="sel1" style="left:6px; top:370px; width:410px; height:572px;"><i></i><i></i><i></i><i></i><b>layer · product</b></div>
+              <div class="sel" id="sel3" style="left:9px; top:133px; width:630px; height:264px;"><i></i><i></i><i></i><i></i><b>layer · headline</b></div>
+              <div class="sel" id="sel4" style="left:332px; top:452px; width:311px; height:376px;"><i></i><i></i><i></i><i></i><b>layer · offer</b></div>
+              <div class="sheen" id="s4-sheen"></div>
+            </div>
+          </div>
+          <div class="track"><i id="s4-fill"></i></div>
+          <div class="steps">
+            <div class="step" id="st1"><div class="pin"><i></i></div><div class="n">01</div><div class="t">قص المنتج</div><div class="s">نشيل الخلفية</div></div>
+            <div class="step" id="st2"><div class="pin"><i></i></div><div class="n">02</div><div class="t">لون البراند</div><div class="s">هوية المختبر</div></div>
+            <div class="step" id="st3"><div class="pin"><i></i></div><div class="n">03</div><div class="t">العنوان</div><div class="s">جملة توقف الناس</div></div>
+            <div class="step" id="st4"><div class="pin"><i></i></div><div class="n">04</div><div class="t">العرض</div><div class="s">السعر والباقة</div></div>
+          </div>
+          <div class="ready" id="s4-ready">جاهز للنشر</div>
+        </div>
+      </div>
+
+      <!-- ===== S5 · dark · before / after ===== -->
+      <div id="s5" class="scene dark">
+        <div class="inner" id="s5-in">
+          <div class="rings"></div>
+          <div class="glow" id="s5-glow" style="left:380px; top:700px; width:900px; height:900px; background: radial-gradient(circle, rgba(240,122,46,0.24), rgba(240,122,46,0) 65%);"></div>
+          <div class="meta" style="left:90px; top:236px;"><span class="dot"></span>before → after</div>
+          <div class="meta" style="right:90px; top:236px;">05 / 05</div>
+          <div class="rule" id="s5-rule" style="left:90px; right:90px; top:296px;"></div>
+          <div class="block" style="top:340px;">
+            <div class="mask"><div class="lead" id="s5-l1" style="font-size:58px;">من صورة عادية..</div></div>
+            <div class="mask"><div class="hero" id="s5-l2" style="font-size:92px; color:var(--cream);">لإعلان يجيب رسايل</div></div>
+          </div>
+          <div class="card-b" id="s5-b">
+            <div class="print" style="position:relative; width:560px;">
+              <div class="ph"><div class="bgph"></div></div>
+              <div class="cap"><span>IMG_2041.jpg</span><span>2.4 MB</span></div>
+            </div>
+          </div>
+          <div class="card-a" id="s5-a"><img src="assets/img/after.jpg" alt="" /></div>
+          <div class="tag" id="s5-tb" style="left:90px; top:1110px; background:rgba(251,243,230,0.14); color:var(--cream); border:3px solid rgba(251,243,230,0.35);">قبل</div>
+          <div class="tag" id="s5-ta" style="right:96px; top:740px; background:var(--orange2); color:#fff;">بعد</div>
+          <svg id="s5-arrow" width="300" height="240" viewBox="0 0 300 240" style="position:absolute; left:300px; top:1180px; overflow:visible;">
+            <path id="s5-arrow-p" d="M30 20 C 40 150, 150 210, 270 180" fill="none" stroke="#ffb37a" stroke-width="9" stroke-linecap="round" />
+            <path id="s5-arrow-h" d="M232 150 L272 180 L228 206" fill="none" stroke="#ffb37a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ===== S6 · light · the offer ===== -->
+      <div id="s6" class="scene light">
+        <div class="inner" id="s6-in">
+          <div class="grid-paper"></div>
+          <div class="ghost" data-layout-ignore id="s6-ghost" style="left:-120px; top:1220px; font-size:420px; direction:ltr; font-family:'Readex Pro'; font-weight:600;">allawi</div>
+          <div class="block" style="top:520px;">
+            <div class="mask"><div class="lead" id="s6-l1">تريد إعلانك يصير هيچ؟</div></div>
+          </div>
+          <div style="position:absolute; right:90px; top:690px;">
+            <div class="logo" id="s6-logo">
+              <span class="ch">a</span><span class="ch">l</span><span class="ch">l</span><span class="ch">a</span><span class="ch">w</span><span class="ch">i</span><span class="pt" id="s6-pt"></span><span class="psd" id="s6-psd">psd</span>
+            </div>
+          </div>
+          <div style="position:absolute; right:90px; top:960px;">
+            <div class="cta" id="s6-cta">راسلني هسه
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6" /></svg>
+            </div>
+          </div>
+          <div class="block" style="top:1150px;">
+            <div class="mask"><div class="body" id="s6-price" style="font-size:46px;">التصميم يبدي من <b style="font-family:'Alexandria'; font-weight:900; color:var(--orange); font-size:60px;">14 ألف</b></div></div>
+          </div>
+          <div class="rule" id="s6-rule" style="left:90px; right:90px; top:1400px;"></div>
+          <div class="meta" style="left:90px; top:1430px; font-size:30px;"><span class="dot"></span>@allawi.psd</div>
+        </div>
+      </div>
+
+      <div class="grain"></div>
+
+      <!-- sound marks (sound effects only; add music in the app) -->
+      <audio id="sfx-1" src="assets/sfx/swoosh.wav" data-start="0.25" data-duration="1.2" data-track-index="10" data-volume="0.35"></audio>
+      <audio id="sfx-2" src="assets/sfx/pop.wav" data-start="0.62" data-duration="0.6" data-track-index="11" data-volume="0.55"></audio>
+      <audio id="sfx-3" src="assets/sfx/thump.wav" data-start="1.15" data-duration="0.69" data-track-index="12" data-volume="0.55"></audio>
+      <audio id="sfx-4" src="assets/sfx/whoosh.wav" data-start="3.5" data-duration="0.57" data-track-index="10" data-volume="0.7"></audio>
+      <audio id="sfx-5" src="assets/sfx/swoosh.wav" data-start="5.3" data-duration="1.2" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="sfx-6" src="assets/sfx/pop.wav" data-start="6.45" data-duration="0.6" data-track-index="12" data-volume="0.6"></audio>
+      <audio id="sfx-7" src="assets/sfx/whoosh.wav" data-start="7.3" data-duration="0.57" data-track-index="10" data-volume="0.7"></audio>
+      <audio id="sfx-8" src="assets/sfx/zoomin.wav" data-start="8.15" data-duration="0.65" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="sfx-9" src="assets/sfx/whoosh2.wav" data-start="9.6" data-duration="1.1" data-track-index="10" data-volume="0.85"></audio>
+      <audio id="sfx-10" src="assets/sfx/click.wav" data-start="10.4" data-duration="0.5" data-track-index="12" data-volume="0.6"></audio>
+      <audio id="sfx-11" src="assets/sfx/success.wav" data-start="10.9" data-duration="1.0" data-track-index="13" data-volume="0.4"></audio>
+      <audio id="sfx-12" src="assets/sfx/click.wav" data-start="11.8" data-duration="0.5" data-track-index="12" data-volume="0.6"></audio>
+      <audio id="sfx-13" src="assets/sfx/flood.wav" data-start="11.9" data-duration="1.4" data-track-index="11" data-volume="0.7"></audio>
+      <audio id="sfx-14" src="assets/sfx/click.wav" data-start="13.0" data-duration="0.5" data-track-index="12" data-volume="0.6"></audio>
+      <audio id="sfx-15" src="assets/sfx/thump.wav" data-start="14.0" data-duration="0.69" data-track-index="13" data-volume="0.6"></audio>
+      <audio id="sfx-16" src="assets/sfx/boom.wav" data-start="14.25" data-duration="1.2" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="sfx-17" src="assets/sfx/click.wav" data-start="14.6" data-duration="0.5" data-track-index="12" data-volume="0.6"></audio>
+      <audio id="sfx-18" src="assets/sfx/swoosh.wav" data-start="14.8" data-duration="1.2" data-track-index="10" data-volume="0.6"></audio>
+      <audio id="sfx-19" src="assets/sfx/pop.wav" data-start="16.0" data-duration="0.6" data-track-index="13" data-volume="0.85"></audio>
+      <audio id="sfx-20" src="assets/sfx/success.wav" data-start="16.7" data-duration="1.0" data-track-index="11" data-volume="0.55"></audio>
+      <audio id="sfx-21" src="assets/sfx/whoosh.wav" data-start="17.3" data-duration="0.57" data-track-index="10" data-volume="0.7"></audio>
+      <audio id="sfx-22" src="assets/sfx/swoosh.wav" data-start="18.2" data-duration="1.2" data-track-index="12" data-volume="0.55"></audio>
+      <audio id="sfx-23" src="assets/sfx/zoomin.wav" data-start="19.0" data-duration="0.65" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-24" src="assets/sfx/reveal.wav" data-start="20.6" data-duration="1.6" data-track-index="10" data-volume="0.6"></audio>
+      <audio id="sfx-25" src="assets/sfx/pop.wav" data-start="21.85" data-duration="0.6" data-track-index="12" data-volume="0.75"></audio>
+    </div>
+
+    <script>
+      // One paused timeline. Scenes are stacked divs; transitions move both scenes at the same time.
+      // Seconds. Scene in-points: S1 0 · S2 3.6 · S3 7.4 · S4 9.8 · S5 17.4 · S6 20.6 · end 24.
+      document.fonts.ready.then(() => {
+        const tl = gsap.timeline({ paused: true });
+        const R = (sel) => document.querySelector(sel);
+
+        // --- reusable entrances -------------------------------------------------------------
+        const rise = (sel, t, d = 0.8, ease = "expo.out") => tl.fromTo(sel, { yPercent: 118 }, { yPercent: 0, duration: d, ease }, t);
+        const ruleIn = (sel, t) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, t);
+        const highlight = (id, t) => {
+          tl.fromTo(`${id} .box`, { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power4.out" }, t);
+          tl.fromTo(`${id} .hero`, { yPercent: 118 }, { yPercent: 0, duration: 0.75, ease: "expo.out" }, t + 0.14);
+          tl.fromTo(`${id} .hd.r`, { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: "back.out(2)" }, t + 0.42);
+          tl.fromTo(`${id} .hd.l`, { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: "back.out(2)" }, t + 0.5);
+        };
+        // vertical push: the feed metaphor (primary transition)
+        const push = (from, to, T) => {
+          tl.to(from, { yPercent: -100, duration: 0.6, ease: "power3.inOut" }, T);
+          tl.fromTo(to, { yPercent: 100, opacity: 1 }, { yPercent: 0, opacity: 1, duration: 0.6, ease: "power3.inOut" }, T);
+          tl.set(from, { opacity: 0 }, T + 0.6);
+        };
+
+        // ===== S1 =====
+        ruleIn("#s1-rule", 0.15);
+        rise("#s1-l1", 0.25, 0.8);
+        highlight("#s1-hl", 0.55);
+        tl.fromTo("#s1-print", { y: 520, rotation: 9, opacity: 0 }, { y: 0, rotation: -4, opacity: 1, duration: 1.0, ease: "power4.out" }, 0.95);
+        tl.fromTo("#s1-photo", { scale: 1.0 }, { scale: 1.07, duration: 3.0, ease: "none" }, 0.95);
+        tl.to("#s1-print", { y: -14, rotation: -3, duration: 1.6, ease: "sine.inOut" }, 1.95);
+        rise("#s1-cap", 1.75, 0.8);
+        tl.fromTo("#s1-ghost", { x: 0 }, { x: 140, duration: 3.8, ease: "none" }, 0);
+        tl.fromTo("#s1-glow", { scale: 0.9, opacity: 0.6 }, { scale: 1.08, opacity: 1, duration: 3.6, ease: "sine.inOut" }, 0);
+
+        // ===== S1 → S2 · vertical push =====
+        push("#s1", "#s2", 3.6);
+
+        // ===== S2 =====
+        ruleIn("#s2-rule", 3.85);
+        rise("#s2-l1", 3.95, 0.8);
+        rise("#s2-st", 4.15, 0.85);
+        // the feed: drifts, then a thumb-flick carries the post away
+        tl.fromTo("#s2-feed", { y: -260 }, { y: -700, duration: 1.6, ease: "sine.inOut" }, 3.6);
+        tl.to("#s2-feed", { y: -2500, duration: 1.15, ease: "power3.in" }, 5.2);
+        tl.fromTo("#s2-feed", { filter: "blur(0px)" }, { filter: "blur(10px)", duration: 1.15, ease: "power3.in", immediateRender: false }, 5.2);
+        tl.fromTo("#s2-feed", { opacity: 1 }, { opacity: 0, duration: 0.45, ease: "power1.in", immediateRender: false }, 5.9);
+        // «وتعبـــر» stretches in step with the flick (the tatweel scales, the last letter rides its edge)
+        const runW = R("#s2-run").getBoundingClientRect().width || 40;
+        const stW = ["#s2-pre", "#s2-run", "#s2-post"].reduce((w, q) => w + R(q).getBoundingClientRect().width, 0);
+        const room = R("#s2-stm").getBoundingClientRect().width - stW - 30;
+        const K = Math.max(3, Math.min(9, 1 + room / runW));
+        tl.fromTo("#s2-run", { scaleX: 1 }, { scaleX: K, duration: 1.1, ease: "power2.inOut" }, 5.25);
+        tl.fromTo("#s2-post", { x: 0 }, { x: -(K - 1) * runW, duration: 1.1, ease: "power2.inOut" }, 5.25);
+        tl.fromTo("#s2-pill", { scale: 0.4, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: -3, duration: 0.6, ease: "back.out(2.2)" }, 6.4);
+        tl.to("#s2-pill", { rotation: 0, y: -10, duration: 0.8, ease: "sine.inOut" }, 7.0);
+
+        // ===== S2 → S3 · vertical push =====
+        push("#s2", "#s3", 7.4);
+
+        // ===== S3 =====
+        ruleIn("#s3-rule", 7.65);
+        rise("#s3-l1", 7.75, 0.8);
+        highlight("#s3-hl", 8.05);
+        tl.fromTo("#s3-ghost", { x: 0 }, { x: -160, duration: 2.6, ease: "none" }, 7.4);
+        tl.fromTo("#s3-glow", { scale: 0.85 }, { scale: 1.1, duration: 2.4, ease: "sine.inOut" }, 7.4);
+
+        // ===== S3 → S4 · zoom through (accent: the turn into the build) =====
+        tl.to("#s3-in", { scale: 2.6, opacity: 0, filter: "blur(10px)", duration: 0.45, ease: "power3.in", transformOrigin: "60% 52%" }, 9.6);
+        tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 9.78);
+        tl.fromTo("#s4-in", { scale: 0.55, filter: "blur(10px)" }, { scale: 1, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 9.78);
+        tl.set("#s3", { opacity: 0 }, 10.1);
+
+        // ===== S4 · the build (scene time = 9.8 + t) =====
+        const S = 9.8;
+        ruleIn("#s4-rule", S + 0.35);
+        tl.fromTo("#s4-tab", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, S + 0.3);
+        const step = (n, t) => {
+          tl.fromTo(`#st${n}`, { x: 40, opacity: 0.25 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, t);
+          tl.fromTo(`#st${n} .pin i`, { scale: 0 }, { scale: 1, duration: 0.4, ease: "back.out(2.5)" }, t + 0.1);
+          tl.to("#s4-fill", { scaleY: n / 4, duration: 0.6, ease: "power2.inOut" }, t);
+        };
+        tl.fromTo(".step", { opacity: 0.25 }, { opacity: 0.25, duration: 0.01 }, S);
+        // 01 cut the product out
+        step(1, S + 0.6);
+        tl.fromTo("#d-hand", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, S + 0.9);
+        tl.fromTo("#d-hand", { filter: "drop-shadow(0 0 0px rgba(255,255,255,0))" },
+          { filter: "drop-shadow(0 0 14px rgba(255,255,255,1))", duration: 0.45, ease: "sine.out", yoyo: true, repeat: 1, immediateRender: false }, S + 0.95);
+        tl.fromTo("#d-raw", { opacity: 1 }, { opacity: 0, duration: 0.7, ease: "power2.inOut" }, S + 1.3);
+        // 02 brand colour floods out from the hand
+        step(2, S + 2.0);
+        tl.fromTo("#d-teal", { clipPath: "circle(0px at 345px 1100px)" }, { clipPath: "circle(1700px at 345px 1100px)", duration: 1.0, ease: "power2.inOut" }, S + 2.1);
+        // 03 the headline 
+        step(3, S + 3.2);
+        tl.fromTo("#d-tlabel", { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 0.5, ease: "power2.out" }, S + 3.35);
+        tl.fromTo("#d-pill", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, S + 3.55);
+        tl.fromTo("#d-qline", { clipPath: "inset(0 0 0 100%)" }, { clipPath: "inset(0 0 0 0%)", duration: 0.6, ease: "power3.out" }, S + 3.75);
+        tl.fromTo("#d-a1", { scale: 1.45, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }, S + 4.2);
+        tl.fromTo("#d-a2", { scale: 1.45, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }, S + 4.45);
+        tl.fromTo("#s4-win", { x: 0 }, { x: 0, keyframes: [{ x: -7, duration: 0.05 }, { x: 5, duration: 0.06 }, { x: -2, duration: 0.07 }, { x: 0, duration: 0.08 }], ease: "none", immediateRender: false }, S + 4.5);
+        // 04 the offer card 
+        step(4, S + 4.8);
+        tl.fromTo("#d-cardgrp", { x: 560, rotation: 10, opacity: 0 }, { x: 0, rotation: 0, opacity: 1, duration: 0.8, ease: "power4.out", transformOrigin: "822px 1066px" }, S + 5.0);
+        tl.fromTo(".d-li", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out", stagger: 0.07 }, S + 5.45);
+        tl.fromTo("#d-price", { scale: 0.75, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)", transformOrigin: "50% 50%" }, S + 6.0);
+        tl.fromTo("#d-sticker", { scale: 0, rotation: -60 }, { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2.6)", transformOrigin: "50% 50%" }, S + 6.2);
+        // selection boxes: the designer's hand on each layer
+        const sel = (id, t, out) => {
+          tl.fromTo(id, { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, t);
+          tl.to(id, { opacity: 0, duration: 0.3, ease: "power1.in" }, out);
+        };
+        sel("#sel1", S + 0.75, S + 1.9);
+        sel("#sel3", S + 3.25, S + 4.75);
+        sel("#sel4", S + 5.1, S + 6.55);
+        // ready: footer rises, a sheen passes
+        tl.fromTo("#d-cta", { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, S + 6.85);
+        tl.fromTo("#d-brand", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, S + 6.95);
+        tl.fromTo("#s4-sheen", { xPercent: -60 }, { xPercent: 60, duration: 0.7, ease: "power1.inOut" }, S + 7.0);
+        tl.fromTo("#s4-sheen", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power1.out", immediateRender: false }, S + 7.0);
+        tl.to("#s4-sheen", { opacity: 0, duration: 0.2 }, S + 7.5);
+        tl.fromTo("#s4-ready", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2.2)" }, S + 6.9);
+        tl.fromTo("#s4-win", { y: 0 }, { y: -10, duration: 2.0, ease: "sine.inOut", yoyo: true, repeat: 2 }, S + 0.6);
+
+        // ===== S4 → S5 · vertical push =====
+        push("#s4", "#s5", 17.4);
+
+        // ===== S5 =====
+        const B = 17.4;
+        ruleIn("#s5-rule", B + 0.25);
+        rise("#s5-l1", B + 0.3, 0.8);
+        rise("#s5-l2", B + 0.45, 0.85);
+        tl.fromTo("#s5-b", { x: -620, rotation: -14 }, { x: 0, rotation: -4, duration: 0.9, ease: "power4.out" }, B + 0.55);
+        tl.fromTo("#s5-a", { x: 620, rotation: 14 }, { x: 0, rotation: 3, duration: 0.95, ease: "power4.out" }, B + 0.75);
+        tl.fromTo("#s5-tb", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }, B + 1.2);
+        tl.fromTo("#s5-ta", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }, B + 1.35);
+        const ap = R("#s5-arrow-p"), al = ap.getTotalLength();
+        tl.fromTo(ap, { strokeDasharray: al, strokeDashoffset: al }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, B + 1.6);
+        tl.fromTo("#s5-arrow-h", { opacity: 0 }, { opacity: 1, duration: 0.15 }, B + 2.2);
+        tl.to("#s5-b", { y: -12, duration: 1.6, ease: "sine.inOut" }, B + 1.5);
+        tl.to("#s5-a", { y: 12, duration: 1.6, ease: "sine.inOut" }, B + 1.5);
+        tl.fromTo("#s5-glow", { scale: 0.85 }, { scale: 1.12, duration: 3.2, ease: "sine.inOut" }, B);
+
+        // ===== S5 → S6 · blur crossfade (wind-down) =====
+        tl.to("#s5-in", { filter: "blur(15px)", scale: 1.05, opacity: 0, duration: 0.45, ease: "power2.in" }, 20.6);
+        tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 20.75);
+        tl.fromTo("#s6-in", { filter: "blur(15px)", scale: 0.95 }, { filter: "blur(0px)", scale: 1, duration: 0.5, ease: "power2.out" }, 20.75);
+        tl.set("#s5", { opacity: 0 }, 21.1);
+
+        // ===== S6 =====
+        const E = 20.6;
+        rise("#s6-l1", E + 0.35, 0.8);
+        tl.fromTo("#s6-logo .ch", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.6, ease: "expo.out", stagger: 0.05 }, E + 0.55);
+        tl.fromTo("#s6-pt", { y: -260, scale: 0.4 }, { y: 0, scale: 1, duration: 0.6, ease: "bounce.out" }, E + 0.85);
+        tl.fromTo("#s6-psd", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, E + 1.0);
+        tl.fromTo("#s6-cta", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(2)" }, E + 1.25);
+        tl.to("#s6-cta", { scale: 1.04, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 3 }, E + 1.9);
+        rise("#s6-price", E + 1.5, 0.8);
+        ruleIn("#s6-rule", E + 1.6);
+        tl.fromTo("#s6-ghost", { x: 0 }, { x: 120, duration: 3.4, ease: "none" }, E);
+
+        window.__timelines["main"] = tl;
+      });
+    </script>
+  </body>
+</html>
