@@ -284,8 +284,9 @@ const SD: React.FC = () => {
   const t = useCurrentFrame();
   const open = prog(t, 0, 18, expo);
   const frame = sp(t, 4, {damping: 16, stiffness: 120});
-  // the viewport: zoom on the step being worked on, story coordinates of the focus point
-  const [z, px, py] = track(t, [[0, 1, 540, 960], [108, 1, 540, 960], [122, 1.32, 540, 560], [168, 1.32, 540, 560], [182, 1.24, 780, 1080], [238, 1.24, 780, 1080], [250, 1, 540, 960]], inout);
+  // the viewport: zoom on the step being worked on, story coordinates of the focus point (kept at least 1080/2z
+  // and 1920/2z from the document's edges, so the zoom never shows past them)
+  const [z, px, py] = track(t, [[0, 1, 540, 960], [108, 1, 540, 960], [122, 1.32, 540, 735], [168, 1.32, 540, 735], [182, 1.24, 640, 1080], [238, 1.24, 640, 1080], [250, 1, 540, 960]], inout);
   const [sx, sy] = shake(t, 160, 7);
   const dx = -z * (px * K - CW / 2), dy = -z * (py * K - CH / 2);
   return (
