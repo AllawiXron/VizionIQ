@@ -3,9 +3,10 @@
 `offer.html` renders five images with `node render.cjs offer.html`, written to `out/offer-<id>.png`:
 
 - `post` (1080x1350): the offer ad.
-  - «خلّي صفحتك / تبين هيچ», with a phone showing an Instagram profile filled with nine real designs.
-  - The price card «البوست الواحد 14,000», three perks and a «راسلني هسه» button.
-- `post-v1`: the earlier version, with a fan of five designs.
+  - Headline «إعلانك يستاهل / يبين أحسن», with the Photoshop selection on the second line.
+  - A «تبدي من 14 ألف» badge beside the headline.
+  - A fan of five real designs with an orange glow behind, the Al-Shifa lab offer biggest in front.
+  - Three perks and a «راسلني هسه» bar that points to the price highlight.
 - `h1`, `h2`, `h3` (1080x1920): highlight stories.
   - `h1`: single prices.
   - `h2`: monthly packages, each showing its saving against the single prices.
