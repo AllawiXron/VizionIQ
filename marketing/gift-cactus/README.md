@@ -30,3 +30,20 @@ Her own look is sage green and pink, gingham, and white sparkle doodles, next to
 - `out/overlay-tpl-story.png`: photo window x90 y370, 900x1100.
 
 Rebuild them with `node render.cjs --overlay <dir>`, which paints the slots #00ff00, then `python overlay.py <dir>/key-tpl-new.png out/overlay-tpl-new.png` (and the same for the story). The keying only removes strong chroma, so the kit's own greens stay opaque.
+
+## Layered PSD of the logo (for learning)
+
+Rebuild it with `node logo-layers.cjs` (writes `layers/logo/*.png`), then `python build_psd.py` (writes `psd/kaktus-logo.psd`). Every part of the logo is its own named layer, grouped as **Cactus**, **Pot**, **Yarn ball + hook** and **Text**, with the design's opacities and blend modes:
+- The knit texture is set to Multiply at 7%.
+- The grain is set to Multiply at 25%.
+
+How to rebuild it by hand in Photoshop:
+1. **Knit texture:** draw one "V" stroke in a 44x34 px document, then use Edit → Define Pattern. Fill a layer with the pattern and set it to Multiply at about 7%.
+2. **Cactus body:** five rounded rectangles: the trunk, two arm uprights and two arm joints. Merge them into one shape. Put a pattern-fill layer (a 30x24 "V" stitch tile in greens) above it as a clipping mask (Alt-click between the two layers).
+3. **Shading:** a gradient layer (dark green at 35% → transparent → white at 12%), clipped to the same shape.
+4. **Stitch lines:** shape layers with a dashed stroke (Stroke Options → dashed, round caps), in cream.
+5. **Flower:** five ellipses rotated 72° apart, around a yellow circle.
+6. **Text:**
+   - «كاكتوس» is Reem Kufi Fun 700. It's a colour font, so its dots come with their own colour; in the design they're recoloured pink.
+   - «حياكة يدوية.. بكل حب» is Readex Pro 500.
+   - These layers are rasterised in the PSD, so retype them to edit.
