@@ -24,3 +24,9 @@ Her own look is sage green and pink, gingham, and white sparkle doodles, next to
 **Look:**
 - Colours: cactus green #6b9a5b, deep green #2f5a3a, cream #f7f0e3, terracotta #c96b45, yarn pink #f2a7b4, sun #f3c552, and a sage gingham background.
 - Fonts: Reem Kufi Fun (its colour-font dots are recoloured with `@font-palette-values`: pink on cream, cream on the pink badge) and Readex Pro.
+
+**Overlays she can use herself.** These are PNGs with a transparent photo window: put one on top of any product photo in Canva, CapCut or InShot.
+- `out/overlay-tpl-new.png`: photo window x110 y120, 860x950.
+- `out/overlay-tpl-story.png`: photo window x90 y370, 900x1100.
+
+Rebuild them with `node render.cjs --overlay <dir>`, which paints the slots #00ff00, then `python overlay.py <dir>/key-tpl-new.png out/overlay-tpl-new.png` (and the same for the story). The keying only removes strong chroma, so the kit's own greens stay opaque.
