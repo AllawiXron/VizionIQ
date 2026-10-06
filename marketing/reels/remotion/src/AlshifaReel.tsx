@@ -3,6 +3,7 @@ import {AbsoluteFill, Easing, Html5Audio, Img, Sequence, staticFile, useCurrentF
 import {CameraMotionBlur} from '@remotion/motion-blur';
 import {Fonts} from './Fonts';
 import {clamp, prog, shake, sp, track} from './anim';
+import {BOX} from './alshifaBoxes';
 
 // «صورة عادية.. صارت إعلان يبيع»: a plain stock photo of a gloved hand and a tube gets selected, its background
 // deleted, and the Al-Shifa lab offer builds itself around the hand, layer by layer; then before/after and the CTA.
@@ -20,11 +21,13 @@ const PK = 760 / 522;
 const RAW = {x: -70 - 180 * PK, y: 640 - 58 * PK, w: 1024 * PK, h: 685 * PK};
 const RAWC = {x: RAW.x + RAW.w / 2, y: RAW.y + RAW.h / 2};
 
-// a full-canvas layer (each PNG is the whole 1080x1920 story with one element on it)
-const Layer: React.FC<{n: string; style?: React.CSSProperties; origin?: [number, number]}> = ({n, style, origin}) => (
-  <Img src={src(n.includes('.') ? n : n + '.png')} style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 1920,
-    transformOrigin: origin ? `${origin[0]}px ${origin[1]}px` : '50% 50%', ...style}} />
-);
+// one element of the story, cropped to its box (BOX, story coordinates); bg.jpg is the full 1080x1920 canvas.
+// origin is given in story coordinates. Cropped layers keep the render light: motion blur draws the scene 5 times.
+const Layer: React.FC<{n: string; style?: React.CSSProperties; origin?: [number, number]}> = ({n, style, origin}) => {
+  const [x, y, w, h] = n.endsWith('.jpg') ? [0, 0, 1080, 1920] : BOX[n];
+  return <Img src={src(n.includes('.') ? n : n + '.png')} style={{position: 'absolute', left: x, top: y, width: w, height: h,
+    transformOrigin: origin ? `${origin[0] - x}px ${origin[1] - y}px` : '50% 50%', ...style}} />;
+};
 
 const Cursor: React.FC<{x: number; y: number; press?: number; o?: number}> = ({x, y, press = 0, o = 1}) => (
   <svg viewBox="0 0 24 24" width={66} height={66} style={{position: 'absolute', left: x - 12, top: y - 6, opacity: o, zIndex: 50,
@@ -98,12 +101,12 @@ const BuiltAd: React.FC<{f: number}> = ({f}) => {
         <Layer n="hand" style={{opacity: handO, filter: glow > 0 ? `drop-shadow(0 0 ${3 + 5 * glow}px rgba(255,255,255,${glow})) drop-shadow(0 0 2px rgba(255,255,255,${glow}))` : undefined,
           WebkitMaskImage: u < 1 ? `linear-gradient(90deg, transparent 0px, #000 ${150 * (1 - u)}px)` : undefined,
           maskImage: u < 1 ? `linear-gradient(90deg, transparent 0px, #000 ${150 * (1 - u)}px)` : undefined}} />
-        <Layer n="tlabel" style={{clipPath: `inset(${991}px 0 ${1920 - (991 + 126 * lab)}px 0)`, opacity: lab}} />
+        <Layer n="tlabel" style={{clipPath: `inset(0 0 ${(1 - lab) * 100}% 0)`, opacity: lab}} />
       </AbsoluteFill>
 
       {/* headline block */}
       <Layer n="pill" origin={[540, 261]} style={{opacity: clamp(pill * 1.5), transform: `scale(${0.5 + 0.5 * pill})`}} />
-      <Layer n="qline" style={{clipPath: `inset(0 0 0 ${232 + 620 * (1 - q)}px)`, opacity: clamp(q * 3), transform: `translateX(${-30 * (1 - q)}px)`}} />
+      <Layer n="qline" style={{clipPath: `inset(0 0 0 ${(1 - q) * 100}%)`, opacity: clamp(q * 3), transform: `translateX(${-30 * (1 - q)}px)`}} />
       <Layer n="a1" origin={[783, 487]} style={{opacity: clamp(a1 * 2), transform: `scale(${1.7 - 0.7 * a1})`, filter: `blur(${(1 - clamp(a1)) * 14}px)`}} />
       <Layer n="a2" origin={[288, 508]} style={{opacity: clamp(a2 * 2), transform: `scale(${1.7 - 0.7 * a2})`, filter: `blur(${(1 - clamp(a2)) * 14}px)`}} />
 
@@ -122,7 +125,6 @@ const BuiltAd: React.FC<{f: number}> = ({f}) => {
       <Layer n="cta" style={{opacity: clamp(cta * 2), transform: `translateY(${80 * (1 - cta)}px)`}} />
       <Layer n="brand" style={{opacity: clamp(brand * 2), transform: `translateY(${60 * (1 - brand)}px)`}} />
 
-      <Layer n="grain" style={{opacity: flood}} />
       {/* light sweep across the finished ad */}
       {sweep > 0 && sweep < 1 && <AbsoluteFill style={{mixBlendMode: 'soft-light',
         background: `linear-gradient(115deg, transparent ${-40 + 160 * sweep}%, rgba(255,255,255,0.75) ${-25 + 160 * sweep}%, transparent ${-10 + 160 * sweep}%)`}} />}

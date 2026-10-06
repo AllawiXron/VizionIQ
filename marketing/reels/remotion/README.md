@@ -79,7 +79,7 @@ A plain stock photo turns into the Al-Shifa lab offer, built from its real layer
 | 372–430 | The ad shrinks into a rounded card («بعد») next to the original photo («قبل»); «صورة عادية.. / صارت إعلان يبيع» and a hand-drawn arrow |
 | 430–510 | «راسلني هسه» button with «التصميم يبدي من 14 ألف — @allawi.psd»; the cursor taps it |
 
-- **Layers:** `public/img/alshifa/`, exported from the lab's story design by `../../alshifa-lab/motion-layers.cjs`.
+- **Layers:** `public/img/alshifa/`, exported from the lab's story design by `../../alshifa-lab/motion-layers.cjs`, then cropped to each element's box (`src/alshifaBoxes.ts` holds the positions).
   Every element (each card row, the sticker, each headline word) is its own 1080×1920 transparent PNG, rendered at 1.5x.
 - **Before photo:** `public/img/alshifa/before.jpg`, the CC0 Rawpixel lab-tube photo.
 - **Motion blur:** 5 samples at a 180° shutter, but only on the fast moves (`FAST` in the file), so the render stays quick.
