@@ -5,7 +5,7 @@
 - `post` (1080x1350): the offer ad.
   - Headline «إعلانك يستاهل / يبين أحسن», with the Photoshop selection on the second line.
   - A «تبدي من 14 ألف» badge beside the headline.
-  - A fan of five real designs with an orange glow behind. From left to right: Miswag Shorja, Sala, the Al-Shifa lab offer (biggest, in front), Miswag White Friday and vitamin D.
+  - A fan of five real designs with an orange glow behind. From left to right, one per brand: Miswag, Sala, the Al-Shifa lab offer (biggest, in front), Baly and Optes.
   - Three perks and a «راسلني هسه» bar that points to the price highlight.
 - `h1`, `h2`, `h3` (1080x1920): highlight stories.
   - `h1`: single prices.
