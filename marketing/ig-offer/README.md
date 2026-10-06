@@ -4,7 +4,7 @@
 
 - `post` (1080x1350): the offer ad.
   - Headline «إعلانك يستاهل / يبين أحسن», with the Photoshop selection on the second line.
-  - A fan of three portfolio pieces from `../ig-brand-posts/works`.
+  - A fan of five portfolio pieces: the Al-Shifa lab offer in front, then Miswag White Friday, «ثنينهم», Sala and the vitamin D post.
   - A «تبدي من 14 ألف» badge, three perks and a «راسلني هسه» bar.
 - `h1`, `h2`, `h3` (1080x1920): highlight stories.
   - `h1`: single prices.
