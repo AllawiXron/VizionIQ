@@ -19,6 +19,7 @@ npx hyperframes@0.8.137 check
 npx hyperframes@0.8.137 render -o renders/allawi-promo.mp4 --quality delivery
 ```
 
-- **Sound effects:** the user's own sounds, cut from their TikTok edit (`assets/sfx/u_*.wav`, 18 cuts placed on 60 cues). `assets/sfx/` is gitignored because some cuts come from licensed libraries (Motion Array, Mixkit).
+- **Music:** "Gummies" from Mixkit (Stock Music Free License, which allows social media posts and online ads; not TV, radio or games). It's at 120 BPM like the edit, trimmed from 12.3s so the beat drops as the feed scene lands, with fades and loudness set to -16 LUFS (`assets/music/gummies.wav`, gitignored).
+- **Sound effects:** the user's own sounds, cut from their TikTok edit (`assets/sfx/u_*.wav`, gitignored). 34 cues sit about 12 dB under the music; the clicks, blips, glitch and pops use `_soft` copies with the harsh highs cut. Final mix: -16.2 LUFS, -1.1 dBFS peak.
 - **GSAP:** vendored in `assets/vendor/` so renders work offline.
 - **Ad layers:** come from `marketing/alshifa-lab/motion-layers.cjs`.
