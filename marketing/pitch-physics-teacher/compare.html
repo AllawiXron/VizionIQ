@@ -19,15 +19,15 @@ h1 span { color:#5fd0ff }
 </style></head><body>
 <div class="art" id="grid">
   <h1>نفس الدروس.. <span>هوية وحدة</span></h1>
-  <div class="sub">كل فيديو إله رسمة الدرس نفسه، وكلهم يبينون من نفس الصفحة</div>
-  <div class="row"><div class="tag"><b>قبل</b>NOW</div>
+  <div class="sub">كل درس إله رسمته الخاصة.. وكلهم يبينون من صفحة وحدة</div>
+  <div class="row"><div class="tag"><b>قبل</b></div>
     <div class="tiles"><div style="background-image:url(photo/old-3.png)"></div><div style="background-image:url(photo/old-2.png)"></div><div style="background-image:url(photo/old-1.png)"></div></div></div>
-  <div class="row"><div class="tag"><b>بعد</b>NEW SYSTEM</div>
+  <div class="row"><div class="tag"><b>بعد</b></div>
     <div class="tiles"><div style="background-image:url(out/covers-c3.png)"></div><div style="background-image:url(out/covers-c2.png)"></div><div style="background-image:url(out/covers-c1.png)"></div></div></div>
-  <div class="foot"><span>SPEC FOR @M.JABER8</span><span>DESIGN — @ALLAWI.PSD</span></div>
+  <div class="foot"><span>@allawi.psd</span><span style="font:500 22px 'Readex Pro'; letter-spacing:0">مقترح خاص لصفحة سيد الفيزياء</span></div>
 </div>
 <script>
-Promise.all([document.fonts.load("900 64px 'Alexandria'", 'نفس الدروس هوية وحدة قبل بعد'), document.fonts.load("400 26px 'Readex Pro'", 'كل فيديو'),
+Promise.all([document.fonts.load("900 64px 'Alexandria'", 'نفس الدروس هوية وحدة قبل بعد'), document.fonts.load("400 26px 'Readex Pro'", 'كل درس إله رسمته الخاصة مقترح خاص لصفحة سيد الفيزياء'),
   ...['photo/old-1.png','photo/old-2.png','photo/old-3.png','out/covers-c1.png','out/covers-c2.png','out/covers-c3.png'].map((s) => new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = s; }))])
   .then(() => (document.body.dataset.ready = 1));
 </script>

@@ -134,13 +134,13 @@ const logo = `<div class="logo"><span class="s">سيد</span><span class="f">ا�
 for (const c of COVERS) {
   document.getElementById(c.id).innerHTML = `
     <div class="grid"></div>
-    <div class="edge" style="top:120px"><span>I take physics <b style="color:var(--cyan); font-weight:500">personally</b></span><span>@m.jaber8</span></div>
+    <div class="edge" style="top:120px"><span style="font:500 24px 'Readex Pro'; letter-spacing:0; text-transform:none">الفيزياء عندي <b style="color:var(--cyan); font-weight:500">شغلة شخصية</b></span><span>@m.jaber8</span></div>
     <div class="num">${c.n}</div>
     <div class="label"><i></i>${c.label}</div>
     <svg class="dia" viewBox="0 0 1080 760">${c.dia()}</svg>
     <div class="title">${c.title}</div>
     <div class="foot">${logo}<div class="who">أ. <b>محمد جابر</b></div></div>
-    <div class="edge" style="top:1780px"><span>Physics — 6th grade</span><span>Winter 2027</span></div>
+    <div class="edge" style="top:1780px"><span style="font:500 24px 'Readex Pro'; letter-spacing:0; text-transform:none">الدورة الشتوية 2027</span><span style="font:500 24px 'Readex Pro'; letter-spacing:0; text-transform:none">فيزياء السادس الإعدادي</span></div>
     <div class="grain"></div>`;
 }
 Promise.all([
