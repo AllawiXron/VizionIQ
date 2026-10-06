@@ -38,3 +38,11 @@ It also renders `covers-preview.png`, which shows all three as small circles on 
 `reel-cover.html` renders the cover for the before/after reel (`../hf-allawi-promo`): `node render.cjs reel-cover.html` writes `out/reel-cover-reelcover.png` (1080x1920).
 - It uses the video's dark look: the headline «صورة عادية.. صارت إعلان [يبيع]», a before/after slider card with the cursor on the handle, and a «التصميم يبدي من 14 ألف» sticker.
 - Everything important sits inside y 240–1680, the 3:4 window the profile grid shows.
+
+`identity-covers.html` renders the cover for the «هويات» highlight, which collects identity work. The first entry is the «كاكتوس» case study in `../gift-cactus/showcase.html`, stories `st1`–`st6`. Running `node render.cjs identity-covers.html` writes `out/identity-covers-<id>.png`:
+- `a`, `b` and `c` show a pen-tool nib with an orange hole, in the same three styles as the «الأسعار» options above:
+  - A: an ink nib on paper, selected like a Photoshop layer.
+  - B: a cream nib with an ink collar on orange.
+  - C: a cream outline nib inside an orange ring on dark.
+- The nib is drawn on the same 24px grid as the tag icon, so a pair reads as one set.
+- `preview` shows each one next to its «الأسعار» partner. It reads the PNGs, so render twice.

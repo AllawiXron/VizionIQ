@@ -73,12 +73,4 @@ Frame 1 is built from her real profile, so its inputs and output stay out of git
 
 Without the `private/` files, `st1` renders with empty cards.
 
-## Highlight cover for the case study
-
-`cover.html` renders the cover for the highlight that holds `st1`–`st6`. Running `node render.cjs --page cover.html` writes `out/cover-<id>.png`:
-- `a`, `b` and `c` are 1080x1920, with the motif inside the centre circle Instagram shows. Each matches the «الأسعار» cover option with the same letter in `../ig-offer/covers.html`:
-  - A: an ink outline cactus on paper, selected like a Photoshop layer.
-  - B: a cream cactus sticker on orange, with ink knit stitches and a cream flower.
-  - C: a cream outline cactus inside an orange ring on dark.
-- The icon is drawn on the same 24px grid as the «الأسعار» tag icon: a cactus in a pot, two V knit stitches, and an orange flower.
-- `preview` shows each cover next to its «الأسعار» partner as profile circles. It reads the PNGs, so render twice.
+These stories go in the «هويات» highlight on allawi.psd, which collects the identity projects. Its cover is in `../ig-offer/identity-covers.html`.
