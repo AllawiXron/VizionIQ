@@ -58,8 +58,122 @@ body { background:#333; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
 .pm .empty b { display:block; width:76px; height:76px; margin:0 auto 14px; border-radius:50%; border:3px solid #c9c1b4; position:relative }
 .pm .empty b::before { content:""; position:absolute; left:20px; top:24px; width:30px; height:22px; border:3px solid #c9c1b4; border-radius:6px }
 .pm .empty b::after { content:""; position:absolute; left:30px; top:30px; width:10px; height:10px; border:3px solid #c9c1b4; border-radius:50% }
+/* story: equation + callouts */
+.tile { width:270px; height:290px; border-radius:36px; background:#fbf6ec; box-shadow:0 24px 50px rgba(60,35,15,.16); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px }
+.tile small { font:500 30px 'Readex Pro'; color:var(--soft) }
+.op { font:900 76px 'Alexandria'; color:var(--orange) }
+.tlayer { position:relative; padding:14px 26px 22px; border:3px dashed var(--ink) }
+.tlayer span { font:600 50px 'Readex Pro'; color:var(--ink) }
+.tlayer i { position:absolute; width:16px; height:16px; background:var(--cream); border:3px solid var(--ink) }
+.tlayer i:nth-of-type(1) { left:-10px; top:-10px } .tlayer i:nth-of-type(2) { right:-10px; top:-10px } .tlayer i:nth-of-type(3) { left:-10px; bottom:-10px } .tlayer i:nth-of-type(4) { right:-10px; bottom:-10px }
+.call { position:absolute; width:250px }
+.call span { display:inline-block; font:600 28px/1.35 'Readex Pro'; color:var(--ink); padding:10px 18px 14px; border-radius:16px; background:#fbf6ec; box-shadow:0 10px 24px rgba(60,35,15,.12) }
+.lines { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:visible; pointer-events:none }
+.lines path { fill:none; stroke:var(--orange); stroke-width:4; stroke-dasharray:2 9; stroke-linecap:round }
+.lines circle { fill:var(--orange) }
 </style></head>
 <body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <pattern id="vst" width="30" height="24" patternUnits="userSpaceOnUse">
+      <rect width="30" height="24" fill="#6b9a5b" />
+      <path d="M3 3 L15 20 L27 3" fill="none" stroke="#86b371" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M0 0 V24 M30 0 V24" stroke="#5a8a4c" stroke-width="2" />
+    </pattern>
+    <pattern id="vst-pot" width="26" height="20" patternUnits="userSpaceOnUse">
+      <rect width="26" height="20" fill="#c96b45" />
+      <path d="M3 3 L13 16 L23 3" fill="none" stroke="#d98660" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    </pattern>
+    <pattern id="sts-red" width="10" height="8" patternUnits="userSpaceOnUse"><rect width="10" height="8" fill="#d1343b" /><path d="M1 1 L5 6 L9 1" fill="none" stroke="#e2535a" stroke-width="2" stroke-linecap="round" /></pattern>
+    <pattern id="sts-org" width="10" height="8" patternUnits="userSpaceOnUse"><rect width="10" height="8" fill="#d9622b" /><path d="M1 1 L5 6 L9 1" fill="none" stroke="#ea7d45" stroke-width="2" stroke-linecap="round" /></pattern>
+    <pattern id="sts-grn" width="5" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="10" fill="#6f8f45" /><path d="M2.5 0 V10" stroke="#5c7a37" stroke-width="1.6" /></pattern>
+    <linearGradient id="shade" x1="0" x2="1">
+      <stop offset="0" stop-color="#1d3a24" stop-opacity=".35" /><stop offset=".45" stop-color="#1d3a24" stop-opacity="0" /><stop offset="1" stop-color="#fff" stop-opacity=".12" />
+    </linearGradient>
+    <clipPath id="body">
+      <rect x="235" y="140" width="130" height="340" rx="65" />
+      <rect x="150" y="330" width="120" height="66" rx="33" />
+      <rect x="150" y="226" width="66" height="170" rx="33" />
+      <rect x="330" y="292" width="116" height="60" rx="30" />
+      <rect x="386" y="196" width="60" height="156" rx="30" />
+    </clipPath>
+    <symbol id="cactus" viewBox="0 0 600 720">
+      <path d="M420 560 C 480 600, 470 650, 520 655" fill="none" stroke="#f2a7b4" stroke-width="9" stroke-linecap="round" />
+      <g clip-path="url(#body)">
+        <rect x="140" y="130" width="320" height="360" fill="url(#vst)" />
+        <rect x="140" y="130" width="320" height="360" fill="url(#shade)" />
+      </g>
+      <g stroke="#f7f0e3" stroke-width="5" stroke-linecap="round">
+        <path d="M262 212 l14 0 M269 205 l0 14" /><path d="M322 262 l14 0 M329 255 l0 14" /><path d="M270 330 l14 0 M277 323 l0 14" />
+        <path d="M330 400 l14 0 M337 393 l0 14" /><path d="M176 270 l14 0 M183 263 l0 14" /><path d="M404 236 l14 0 M411 229 l0 14" />
+        <path d="M300 160 l12 0 M306 154 l0 12" />
+      </g>
+      <g transform="translate(300 138)">
+        <g fill="#f2a7b4" stroke="#d97f90" stroke-width="3">
+          <ellipse rx="17" ry="30" transform="rotate(0) translate(0 -26)" /><ellipse rx="17" ry="30" transform="rotate(72) translate(0 -26)" />
+          <ellipse rx="17" ry="30" transform="rotate(144) translate(0 -26)" /><ellipse rx="17" ry="30" transform="rotate(216) translate(0 -26)" />
+          <ellipse rx="17" ry="30" transform="rotate(288) translate(0 -26)" />
+        </g>
+        <circle r="15" fill="#f3c552" stroke="#d9a730" stroke-width="3" />
+      </g>
+      <path d="M178 486 H422 L398 650 Q396 664 382 664 H218 Q204 664 202 650 Z" fill="url(#vst-pot)" />
+      <path d="M178 486 H422 L398 650 Q396 664 382 664 H218 Q204 664 202 650 Z" fill="url(#shade)" />
+      <rect x="150" y="452" width="300" height="62" rx="20" fill="#a9532f" />
+      <path d="M176 483 H424" stroke="#f7f0e3" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round" />
+      <path d="M214 596 H386" stroke="#f7f0e3" stroke-width="4" stroke-dasharray="12 12" stroke-linecap="round" opacity=".8" />
+      <g transform="translate(520 640)">
+        <circle r="54" fill="#f2a7b4" />
+        <g fill="none" stroke="#d97f90" stroke-width="5" stroke-linecap="round">
+          <path d="M-42 -30 C -10 -10, 10 20, 30 46" /><path d="M-52 -4 C -20 6, 10 30, 18 52" /><path d="M-20 -50 C 10 -30, 36 -6, 50 20" /><path d="M-36 38 C -10 10, 20 -20, 44 -34" />
+        </g>
+        <path d="M-80 -86 L 46 48" stroke="#f7f0e3" stroke-width="10" stroke-linecap="round" />
+        <path d="M-80 -86 q -10 -6 -4 -16" fill="none" stroke="#f7f0e3" stroke-width="8" stroke-linecap="round" />
+      </g>
+    </symbol>
+    <!-- a white sparkle, like the doodles in her stories -->
+    <symbol id="spark" viewBox="-50 -50 100 100">
+      <path d="M0 -44 C 5 -9, 9 -5, 44 0 C 9 5, 5 9, 0 44 C -5 9, -9 5, -44 0 C -9 -5, -5 -9, 0 -44 Z" fill="#fff" stroke="#2f5a3a" stroke-width="4" stroke-linejoin="round" />
+    </symbol>
+    <!-- her products, drawn in the same knitted style -->
+    <symbol id="i-strawberry" viewBox="0 0 100 100">
+      <circle cx="50" cy="10" r="7" fill="none" stroke="#8b9097" stroke-width="3.5" />
+      <path d="M50 17 V26" stroke="#8b9097" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="3 2.5" />
+      <path d="M50 94 C 27 82, 16 60, 20 44 C 23 33, 35 29, 50 33 C 65 29, 77 33, 80 44 C 84 60, 73 82, 50 94 Z" fill="url(#sts-red)" stroke="#b02a30" stroke-width="2.5" />
+      <g stroke="#fbeee6" stroke-width="3" stroke-linecap="round"><path d="M34 50 l2 5" /><path d="M50 46 l0 5" /><path d="M65 51 l-2 5" /><path d="M41 66 l1 5" /><path d="M59 66 l-1 5" /><path d="M50 80 l0 4" /></g>
+      <path d="M28 38 L39 31 L42 22 L50 29 L58 22 L61 31 L72 38 L59 40 L50 35 L41 40 Z" fill="#8cb87a" stroke="#5f8f4e" stroke-width="2.5" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-headband" viewBox="0 0 100 100">
+      <path d="M6 44 C 30 36, 70 36, 94 44 L94 66 C 70 58, 30 58, 6 66 Z" fill="url(#sts-grn)" stroke="#55732f" stroke-width="2.5" stroke-linejoin="round" />
+      <circle cx="68" cy="52" r="19" fill="#f2a7b4" stroke="#d97f90" stroke-width="3" />
+      <circle cx="68" cy="52" r="12" fill="none" stroke="#e48d9d" stroke-width="2.5" stroke-dasharray="3 3" />
+      <path d="M62 46 L74 58 M74 46 L62 58" stroke="#6f8f45" stroke-width="4" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-case" viewBox="0 0 100 100">
+      <rect x="22" y="32" width="56" height="56" rx="22" fill="url(#sts-org)" stroke="#b84f20" stroke-width="3" />
+      <g fill="none" stroke="#b84f20" stroke-width="2.5"><path d="M38 34 C 32 50, 32 70, 38 86" /><path d="M62 34 C 68 50, 68 70, 62 86" /><path d="M50 33 V87" /></g>
+      <path d="M23 54 H77" stroke="#8f3d17" stroke-width="3" />
+      <rect x="46" y="18" width="8" height="17" rx="4" fill="#7a4a2a" />
+      <path d="M54 26 C 60 16, 72 16, 76 22 C 70 28, 60 30, 54 26 Z" fill="#8cb87a" stroke="#5f8f4e" stroke-width="2.5" />
+      <circle cx="50" cy="62" r="2.6" fill="#f3c552" />
+    </symbol>
+    <symbol id="i-custom" viewBox="0 0 100 100">
+      <rect x="14" y="18" width="62" height="54" rx="8" fill="#fff" stroke="#2f5a3a" stroke-width="5" />
+      <circle cx="30" cy="34" r="6" fill="#f3c552" />
+      <path d="M18 66 L36 46 L48 58 L56 50 L72 66 Z" fill="#9cc585" />
+      <path d="M72 92 C 54 80, 52 70, 59 64 C 64 60, 70 62, 72 67 C 74 62, 80 60, 85 64 C 92 70, 90 80, 72 92 Z" fill="#f2a7b4" stroke="#d97f90" stroke-width="3.5" />
+    </symbol>
+    <symbol id="i-price" viewBox="0 0 100 100">
+      <path d="M14 50 L50 14 H82 a4 4 0 0 1 4 4 V50 L50 86 a5 5 0 0 1 -7 0 L14 57 a5 5 0 0 1 0 -7 z" fill="#f2a7b4" stroke="#d97f90" stroke-width="3.5" stroke-linejoin="round" />
+      <path d="M22 51 L52 21 H78 V48 L49 77 Z" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="4 4" opacity=".9" />
+      <circle cx="70" cy="30" r="6" fill="#f7f0e3" stroke="#2f5a3a" stroke-width="3" />
+    </symbol>
+  </defs>
+</svg>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="yarnball" viewBox="420 530 170 175">
+  <g transform="translate(520 640)"><circle r="54" fill="#f2a7b4" />
+    <g fill="none" stroke="#d97f90" stroke-width="5" stroke-linecap="round"><path d="M-42 -30 C -10 -10, 10 20, 30 46" /><path d="M-52 -4 C -20 6, 10 30, 18 52" /><path d="M-20 -50 C 10 -30, 36 -6, 50 20" /><path d="M-36 38 C -10 10, 20 -20, 44 -34" /></g>
+    <path d="M-80 -86 L 46 48" stroke="#2f5a3a" stroke-width="10" stroke-linecap="round" /><path d="M-80 -86 q -10 -6 -4 -16" fill="none" stroke="#2f5a3a" stroke-width="8" stroke-linecap="round" /></g>
+</symbol></defs></svg>
 
 <template id="pm-before">
   <div class="bar"><span>كاكتوس</span><i></i></div>
@@ -70,7 +184,7 @@ body { background:#333; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
 </template>
 <template id="pm-after">
   <div class="bar"><span>كاكتوس</span><i></i></div>
-  <div class="head"><div class="av" style="background-image:url(out/avatar.png)"></div><div style="flex:1"><div class="nm">كاكتوس</div><div class="bio">حياكة يدوية.. بكل حب<br />كل شي «قابل للتنفيذ»، الطلب بالخاص</div></div></div>
+  <div class="head"><div class="av" style="background-image:url(out/avatar.png)"></div><div style="flex:1"><div class="nm">كاكتوس</div><div class="bio">ستور خاص للحياكة اليدوية<br />التوصيل لكافة محافظات العراق</div></div></div>
   <div class="btns"><span class="b">متابعة</span><span>مراسلة</span></div>
   <div class="hls">
     <div><div class="c" style="background-image:url(out/hl-ready.png)"></div><small>قابل للتنفيذ</small></div>
@@ -87,7 +201,7 @@ body { background:#333; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
   <div class="top"><span><span class="dot"></span>allawi.psd · case study</span><span>01 / 04</span></div>
   <div class="rule"></div>
   <div class="block" style="top:170px;">
-    <div class="lead">هدية لستور جديد</div>
+    <div class="lead">هوية لستور حياكة يدوية</div>
     <div class="hero">من حساب جديد..</div>
     <div class="hl"><div class="box"></div><i class="hd r"></i><i class="hd l"></i><div class="hero">لهوية كاملة</div></div>
   </div>
@@ -149,31 +263,48 @@ body { background:#333; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
   <div class="mono" style="position:absolute; left:70px; top:1220px;">@allawi.psd</div>
 </div>
 
-<!-- story for the «أعمالي» highlight -->
+<!-- story for the «أعمالي» highlight: name + craft = idea, then the result with callouts -->
 <div class="art tall" id="story">
   <div class="top" style="top:140px;"><span><span class="dot"></span>allawi.psd · case study</span><span>كاكتوس</span></div>
   <div class="rule" style="top:192px;"></div>
-  <div class="block" style="top:240px;">
-    <div class="lead">هدية لستور جديد</div>
-    <div class="hero">من حساب جديد..</div>
-    <div class="hl"><div class="box"></div><i class="hd r"></i><i class="hd l"></i><div class="hero">لهوية كاملة</div></div>
+  <div class="block" style="top:236px;">
+    <div class="lead" style="font-size:52px;">من اسم وفكرة..</div>
+    <div class="hl" style="margin-top:30px;"><div class="box"></div><i class="hd r"></i><i class="hd l"></i><div class="hero" style="font-size:112px;">لهوية كاملة</div></div>
   </div>
-  <div style="position:absolute; left:70px; top:720px;"><span class="pill or">بعد</span></div>
-  <div class="pm" id="pm-a2" style="left:70px; top:800px; transform:scale(1.36);"></div>
-  <div class="pm" id="pm-b2" style="right:60px; top:1270px; transform:rotate(4deg) scale(.62); transform-origin:100% 0; opacity:.95;"></div>
-  <div style="position:absolute; right:110px; top:1190px; transform:rotate(4deg);"><span class="pill ink" style="font-size:32px;">قبل</span></div>
+  <!-- the equation -->
+  <div class="eq" style="position:absolute; left:70px; right:70px; top:560px; height:300px; display:flex; align-items:center; justify-content:space-between; direction:rtl;">
+    <div class="tile"><div class="tlayer"><span>كاكتوس</span><i></i><i></i><i></i><i></i></div><small>الاسم</small></div>
+    <b class="op">+</b>
+    <div class="tile"><svg style="width:170px; height:175px;"><use href="#yarnball" /></svg><small>الحياكة</small></div>
+    <b class="op">=</b>
+    <div class="tile"><svg style="width:190px; height:228px;" viewBox="0 0 600 720"><use href="#cactus" /></svg><small>الفكرة</small></div>
+  </div>
+  <!-- the result -->
+  <div class="pm" id="pm-a2" style="left:309px; top:935px; transform:scale(1.05);"></div>
+  <div class="call" style="right:36px; top:1030px;"><span>لوگو<br />كاكتوس محيوك</span></div>
+  <svg class="lines" viewBox="0 0 1080 1920"><path d="M738 1074 H800" /><circle cx="738" cy="1074" r="7" /></svg>
+  <div class="call" style="left:36px; top:1228px; text-align:left;"><span>هايلايت<br />لكل قسم</span></div>
+  <svg class="lines" viewBox="0 0 1080 1920"><path d="M360 1272 H270" /><circle cx="360" cy="1272" r="7" /></svg>
+  <div class="call" style="right:36px; top:1438px;"><span>بوستات<br />وقوالب جاهزة</span></div>
+  <svg class="lines" viewBox="0 0 1080 1920"><path d="M740 1480 H800" /><circle cx="740" cy="1480" r="7" /></svg>
+  <div style="position:absolute; left:70px; right:70px; top:1690px; display:flex; justify-content:space-between; align-items:center;">
+    <span style="font:600 40px 'Readex Pro';">تريد هوية لمشروعك؟</span>
+    <span class="pill or" style="font-size:36px;">راسلني</span>
+  </div>
 </div>
 
 <script>
-for (const [id, tpl] of [['pm-b1', 'pm-before'], ['pm-a1', 'pm-after'], ['pm-a2', 'pm-after'], ['pm-b2', 'pm-before']])
+for (const [id, tpl] of [['pm-b1', 'pm-before'], ['pm-a1', 'pm-after'], ['pm-a2', 'pm-after']])
   document.getElementById(id).appendChild(document.getElementById(tpl).content.cloneNode(true));
 const imgs = [...document.querySelectorAll('img')].map((i) => (i.complete ? 0 : new Promise((r) => (i.onload = i.onerror = r))));
 Promise.all([
   document.fonts.load("900 104px 'Alexandria'", 'من حساب جديد.. لهوية كاملة بس صار يبين ستور سنارة وخيط خلّي حسابه يبين احترافي 14 ألف'),
-  document.fonts.load("500 56px 'Readex Pro'", 'هدية لستور جديد نفس الحساب.. مبنية على شغلها وكلامها مشروعك جديد؟ التصميم يبدي من'),
-  document.fonts.load("600 38px 'Readex Pro'", 'قبل بعد راسلني هسه متابعة مراسلة كاكتوس'),
+  document.fonts.load("500 56px 'Readex Pro'", 'هوية لستور حياكة يدوية نفس الحساب.. مبنية على شغلها وكلامها مشروعك جديد؟ التصميم يبدي من'),
+  document.fonts.load("600 38px 'Readex Pro'", 'قبل بعد راسلني هسه متابعة مراسلة كاكتوس تريد هوية لمشروعك؟ لوگو كاكتوس محيوك هايلايت لكل قسم بوستات وقوالب جاهزة'),
+  document.fonts.load("700 60px 'Reem Kufi Fun'", 'كاكتوس'),
   document.fonts.load("700 30px 'Readex Pro'", 'كاكتوس'),
-  document.fonts.load("400 19px 'Readex Pro'", 'حياكة يدوية.. بكل حب كل شي «قابل للتنفيذ»، الطلب بالخاص ما كو منشورات بعد'),
+  document.fonts.load("400 19px 'Readex Pro'", 'ستور خاص للحياكة اليدوية التوصيل لكافة محافظات العراق ما كو منشورات بعد'),
+  document.fonts.load("500 30px 'Readex Pro'", 'الاسم الحياكة الفكرة هوية لستور حياكة يدوية من اسم وفكرة..'),
   document.fonts.load("500 24px 'IBM Plex Mono'", 'allawi.psd case study before after posts templates swipe 01 / 04'),
   ...imgs,
 ]).then(() => document.fonts.ready).then(() => (document.body.dataset.ready = 1));

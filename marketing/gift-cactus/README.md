@@ -56,6 +56,10 @@ Posted with the store's OK. `node render.cjs --page showcase.html` renders `out/
   2. before/after profile mocks;
   3. posts and templates;
   4. the CTA, «راسلني هسه» and «التصميم يبدي من 14 ألف».
-- `story`: a 1080x1920 story for the «أعمالي» highlight.
+- `story`: a 1080x1920 story for the «أعمالي» highlight, «من اسم وفكرة.. [لهوية كاملة]».
+  - An equation: the name «كاكتوس» as a plain text layer + yarn = the knitted cactus.
+  - The result: her profile with the new identity and her real bio, with callouts on the logo, the highlights and the posts.
+  - A small «تريد هوية لمشروعك؟ راسلني».
+  - It never mentions a gift.
 
 The "before" is a generic empty new account, not her real profile, and no product photos are used.
