@@ -19,7 +19,8 @@ body { background:#333; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
 .block { position:absolute; left:70px; right:70px; display:flex; flex-direction:column; align-items:flex-start }
 .lead { font:500 56px/1.3 'Readex Pro'; color:var(--soft); white-space:nowrap }
 .hero { font:900 104px/1.2 'Alexandria'; white-space:nowrap }
-.hl { position:relative; display:inline-block; padding:0 34px 18px; margin-top:34px }
+/* top padding leaves room for tall glyphs (ل, the stroke on گ, the hamza on أ), which rise ~20px above Alexandria's line box */
+.hl { position:relative; display:inline-block; padding:34px 34px 14px; margin-top:34px }
 .hl .box { position:absolute; inset:0; background:var(--orange); border-radius:10px; box-shadow:0 22px 50px rgba(226,84,27,.3) }
 .hl .hd { position:absolute; width:5px; background:var(--ink) }
 .hl .hd::after { content:""; position:absolute; left:-11px; width:27px; height:27px; border-radius:50%; background:var(--cream); border:4px solid var(--ink) }
@@ -307,7 +308,7 @@ body { background:#333; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
   <div class="tt" style="right:70px; top:668px;"><img src="private/before-profile.jpg" alt="" /></div>
   <div class="tt" style="left:70px; top:668px;"><div class="tts"><img src="private/after-base.jpg" alt="" /><div class="tav"><div></div></div><div class="ttrow"></div></div></div>
   <div style="position:absolute; right:90px; top:584px;"><span class="pill ink">قبل</span></div>
-  <div style="position:absolute; left:90px; top:584px;"><span class="pill or">بعد</span></div>
+  <div style="position:absolute; left:130px; top:584px;"><span class="pill or">بعد</span></div>
   <div class="swap" style="left:490px; top:881px;"><svg viewBox="0 0 24 24" width="52" height="52" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5M11 5l-7 7 7 7" /></svg></div>
   <div class="strip" style="top:1244px;"><div class="in b4"></div><span class="pill ink">قبل</span></div>
   <div class="strip" style="top:1444px;"><div class="in"><div class="ttrow"></div></div><span class="pill or">بعد</span></div>
