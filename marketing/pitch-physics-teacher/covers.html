@@ -17,13 +17,17 @@ body { background:#222; display:flex; gap:40px; padding:40px; align-items:flex-s
   background-size:54px 54px; mask-image:radial-gradient(ellipse 70% 45% at 50% 42%, #000 30%, transparent 90%) }
 .grain { position:absolute; inset:0; z-index:40; pointer-events:none; opacity:.35; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.5'/></svg>") }
-.num { position:absolute; left:40px; top:250px; direction:ltr; font:900 330px/1 'Alexandria'; color:transparent; -webkit-text-stroke:2px rgba(95,208,255,.16) }
+.num { position:absolute; left:80px; top:312px; direction:ltr; font:500 30px 'IBM Plex Mono'; letter-spacing:.12em; color:var(--mute) }
+.num b { font:800 44px 'Alexandria'; color:var(--cyan); letter-spacing:0; margin-right:6px }
+.formula { position:absolute; left:0; right:0; top:1128px; display:flex; justify-content:center }
+.formula span { direction:ltr; padding:6px 30px 12px; border-radius:99px; border:1.5px solid rgba(95,208,255,.4); background:rgba(11,23,54,.85); font:italic 48px 'Instrument Serif'; color:#9fe6ff }
 .label { position:absolute; right:80px; top:300px; display:flex; align-items:center; gap:16px; padding:12px 26px 14px; border-radius:99px;
   border:1.5px solid rgba(95,208,255,.45); background:rgba(11,23,54,.7); font:700 34px 'Readex Pro' }
 .label i { width:14px; height:14px; border-radius:50%; background:var(--amber); box-shadow:0 0 14px var(--amber) }
-.dia { direction:ltr; position:absolute; left:0; top:420px; width:1080px; height:760px; overflow:visible }
-.title { position:absolute; left:70px; right:70px; top:1190px; text-align:center; font:900 104px/1.22 'Alexandria'; text-shadow:0 8px 30px rgba(0,0,0,.5) }
-.title em { font-style:normal; background:linear-gradient(90deg, #9fe6ff, var(--cyan) 50%, #3f8bff); -webkit-background-clip:text; background-clip:text; color:transparent }
+.dia { direction:ltr; position:absolute; left:0; top:400px; width:1080px; height:720px; overflow:hidden;
+  -webkit-mask-image:radial-gradient(ellipse 60% 56% at 50% 48%, #000 62%, transparent 100%); mask-image:radial-gradient(ellipse 60% 56% at 50% 48%, #000 62%, transparent 100%) }
+.title { position:absolute; left:70px; right:70px; top:1228px; text-align:center; font:900 96px/1.4 'Alexandria'; text-shadow:0 8px 30px rgba(0,0,0,.5) }
+.title em { display:inline-block; padding:0 .08em .22em; margin-bottom:-.22em; font-style:normal; background:linear-gradient(90deg, #9fe6ff, var(--cyan) 50%, #3f8bff); -webkit-background-clip:text; background-clip:text; color:transparent }
 .foot { position:absolute; left:80px; right:80px; top:1560px; display:flex; justify-content:space-between; align-items:center }
 .logo { position:relative; display:flex; flex-direction:column; align-items:flex-start; line-height:1 }
 .logo .s { font:800 26px 'Alexandria'; color:var(--cyan); margin-inline-start:6px }
@@ -47,44 +51,41 @@ svg text { font-family:'Instrument Serif'; font-style:italic }
 <div class="art" id="c3"></div>
 
 <script>
-const CX = 540, CY = 380;                      // diagram centre inside .dia (760 tall)
+const CX = 540, CY = 345;                      // diagram centre inside .dia (720 tall)
 const line = (d, w = 3.2, o = .9, arrow = true) => `<path d="${d}" fill="none" stroke="#5fd0ff" stroke-width="${w}" stroke-linecap="round" opacity="${o}" ${arrow ? 'marker-mid="url(#arr)"' : ''}/>`;
 const plus = (x, y, r = 11, c = '#ffb547') => `<path d="M${x - r} ${y} H${x + r} M${x} ${y - r} V${y + r}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
 const minus = (x, y, r = 11, c = '#9fe6ff') => `<path d="M${x - r} ${y} H${x + r}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
 
 // 1. isolated spherical conductor: charge on the surface, radial E outside, equipotential shells
 function sphere() {
-  const R = 150; let s = '';
-  for (const r of [R + 95, R + 200, R + 300]) s += `<circle cx="${CX}" cy="${CY}" r="${r}" fill="none" stroke="rgba(95,208,255,${(.5 - (r - R) / 800).toFixed(2)})" stroke-width="2" stroke-dasharray="6 10"/>`;
+  const R = 140; let s = '';
+  for (const r of [R + 90, R + 180, R + 270]) s += `<circle cx="${CX}" cy="${CY}" r="${r}" fill="none" stroke="rgba(95,208,255,${(.5 - (r - R) / 800).toFixed(2)})" stroke-width="2" stroke-dasharray="6 10"/>`;
   for (let i = 0; i < 16; i++) {
     const a = (i / 16) * Math.PI * 2 + .1, c = Math.cos(a), n = Math.sin(a);
     const p = (r) => `${(CX + c * r).toFixed(1)} ${(CY + n * r).toFixed(1)}`;
-    s += line(`M${p(R + 14)} L${p(R + 150)} L${p(R + 330)}`, 3.4, .85);
+    s += line(`M${p(R + 14)} L${p(R + 140)} L${p(R + 300)}`, 3.4, .85);
   }
   s += `<circle cx="${CX}" cy="${CY}" r="${R + 40}" fill="#2f6bff" opacity=".35" filter="url(#soft)"/>
     <circle cx="${CX}" cy="${CY}" r="${R}" fill="url(#ball)" stroke="#9fe6ff" stroke-width="3" filter="url(#glow)"/>`;
   for (let i = 0; i < 12; i++) { const a = (i / 12) * Math.PI * 2; s += plus(CX + Math.cos(a) * (R - 26), CY + Math.sin(a) * (R - 26), 10); }
-  s += `<text x="${CX + 4}" y="${CY + 22}" text-anchor="middle" style="font-size:64px; fill:#e8f1ff">E = 0</text>
-    <text x="${CX + 250}" y="${CY - 255}" style="font-size:54px; fill:#9fe6ff">E = kq/r²</text>`;
+  s += `<text x="${CX + 4}" y="${CY + 22}" text-anchor="middle" style="font-size:64px; fill:#e8f1ff">E = 0</text>`;
   return s;
 }
 
 // 2. parallel-plate capacitor: uniform field between the plates, fringing at the ends
 function capacitor() {
-  const x1 = 360, x2 = 720, y1 = 110, y2 = 650, t = 22; let s = '';
+  const x1 = 360, x2 = 720, y1 = 90, y2 = 560, t = 22; let s = '';
   s += `<rect x="${x1}" y="${y1}" width="${x2 - x1}" height="${y2 - y1}" fill="#2f6bff" opacity=".18" filter="url(#soft)"/>`;
   for (let y = y1 + 45; y <= y2 - 45; y += 54) s += line(`M${x1 + t} ${y} L${(x1 + x2) / 2} ${y} L${x2 - 4} ${y}`, 3.4, .9);
   for (const [sy, dir] of [[y1, -1], [y2, 1]]) for (const k of [1, 2]) {
-    const b = 70 * k;
+    const b = 45 * k;
     s += line(`M${x1 + t} ${sy - dir * 8} C ${x1 + 80} ${sy + dir * b}, ${x2 - 80} ${sy + dir * b}, ${x2 - 4} ${sy - dir * 8}`, 2.6, .5 - k * .12, false);
   }
   s += `<rect x="${x1 - t / 2}" y="${y1 - 20}" width="${t}" height="${y2 - y1 + 40}" rx="6" fill="#ffb547" filter="url(#glow)"/>
     <rect x="${x2 - t / 2}" y="${y1 - 20}" width="${t}" height="${y2 - y1 + 40}" rx="6" fill="#9fe6ff" filter="url(#glow)"/>`;
   for (let y = y1 + 20; y <= y2 - 10; y += 90) { s += plus(x1 - 50, y); s += minus(x2 + 50, y); }
   s += `<path d="M${x1} ${y2 + 70} H${x2} M${x1 + 14} ${y2 + 58} L${x1} ${y2 + 70} L${x1 + 14} ${y2 + 82} M${x2 - 14} ${y2 + 58} L${x2} ${y2 + 70} L${x2 - 14} ${y2 + 82}" stroke="rgba(232,241,255,.6)" stroke-width="2.4" fill="none"/>
-    <text x="${(x1 + x2) / 2}" y="${y2 + 120}" text-anchor="middle" style="font-size:50px; fill:#e8f1ff">d</text>
-    <text x="${x2 + 110}" y="${y1 + 40}" style="font-size:56px; fill:#9fe6ff">C = ε₀A / d</text>
-    <text x="${(x1 + x2) / 2 + 30}" y="${y1 - 40}" text-anchor="middle" style="font-size:54px; fill:#e8f1ff">E</text>`;
+    <text x="${x2 + 34}" y="${y2 + 86}" style="font-size:50px; fill:#e8f1ff">d</text>`;
   return s;
 }
 
@@ -119,14 +120,13 @@ function induction() {
     back += `<path d="M${x} ${CY - ry} A${rx} ${ry} 0 0 0 ${x} ${CY + ry}" fill="none" stroke="#b86a2a" stroke-width="7" opacity=".55"/>`;
     front += `<path d="M${x} ${CY - ry} A${rx} ${ry} 0 0 1 ${x + gap * .5} ${CY + ry}" fill="none" stroke="#ffb547" stroke-width="8" stroke-linecap="round"/>`; }
   s = back + s + front;
-  s += `<text x="${cx0 + 110}" y="${CY - 175}" text-anchor="middle" style="font-size:56px; fill:#9fe6ff">ε = −dΦ / dt</text>`;
   return s;
 }
 
 const COVERS = [
-  { id: 'c1', n: '01', label: 'مختبر الفيزياء 1', title: 'الموصل الكروي<br><em>المنفرد المعزول</em>', dia: sphere },
-  { id: 'c2', n: '02', label: 'الفصل الأول', title: 'المتسعة<br><em>ذات الصفيحتين</em>', dia: capacitor },
-  { id: 'c3', n: '03', label: 'الفصل الثاني', title: 'الحث<br><em>الكهرومغناطيسي</em>', dia: induction },
+  { id: 'c1', n: '01', label: 'مختبر الفيزياء 1', title: 'الموصل الكروي<br><em>المنفرد المعزول</em>', dia: sphere, f: 'E = kq / r²' },
+  { id: 'c2', n: '02', label: 'الفصل الأول', title: 'المتسعة<br><em>ذات الصفيحتين</em>', dia: capacitor, f: 'C = ε₀A / d' },
+  { id: 'c3', n: '03', label: 'الفصل الثاني', title: 'الحث<br><em>الكهرومغناطيسي</em>', dia: induction, f: 'ε = −dΦ / dt' },
 ];
 const logo = `<div class="logo"><span class="s">سيد</span><span class="f">الفيزياء</span>
   <svg viewBox="0 0 100 60" preserveAspectRatio="none"><ellipse cx="50" cy="32" rx="49" ry="17" transform="rotate(-12 50 32)" fill="none" stroke="#5fd0ff" stroke-width="1.6" vector-effect="non-scaling-stroke" opacity=".85"/>
@@ -135,9 +135,10 @@ for (const c of COVERS) {
   document.getElementById(c.id).innerHTML = `
     <div class="grid"></div>
     <div class="edge" style="top:120px"><span style="font:500 24px 'Readex Pro'; letter-spacing:0; text-transform:none">الفيزياء عندي <b style="color:var(--cyan); font-weight:500">شغلة شخصية</b></span><span>@m.jaber8</span></div>
-    <div class="num">${c.n}</div>
+    <div class="num"><b>${c.n}</b>/ 03</div>
     <div class="label"><i></i>${c.label}</div>
-    <svg class="dia" viewBox="0 0 1080 760">${c.dia()}</svg>
+    <svg class="dia" viewBox="0 0 1080 720">${c.dia()}</svg>
+    <div class="formula"><span>${c.f}</span></div>
     <div class="title">${c.title}</div>
     <div class="foot">${logo}<div class="who">أ. <b>محمد جابر</b></div></div>
     <div class="edge" style="top:1780px"><span style="font:500 24px 'Readex Pro'; letter-spacing:0; text-transform:none">الدورة الشتوية 2027</span><span style="font:500 24px 'Readex Pro'; letter-spacing:0; text-transform:none">فيزياء السادس الإعدادي</span></div>
