@@ -3,9 +3,9 @@
 `offer.html` renders five images with `node render.cjs offer.html`, written to `out/offer-<id>.png`:
 
 - `post` (1080x1350): the offer ad.
-  - Headline «إعلانك يستاهل / يبين أحسن», with the Photoshop selection on the second line.
-  - A fan of five portfolio pieces: the Al-Shifa lab offer in front, then Miswag White Friday, «ثنينهم», Sala and the vitamin D post.
-  - A «تبدي من 14 ألف» badge, three perks and a «راسلني هسه» bar.
+  - «خلّي صفحتك / تبين هيچ», with a phone showing an Instagram profile filled with nine real designs.
+  - The price card «البوست الواحد 14,000», three perks and a «راسلني هسه» button.
+- `post-v1`: the earlier version, with a fan of five designs.
 - `h1`, `h2`, `h3` (1080x1920): highlight stories.
   - `h1`: single prices.
   - `h2`: monthly packages, each showing its saving against the single prices.
