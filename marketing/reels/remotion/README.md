@@ -116,3 +116,26 @@ logo. Dark scenes and paper scenes alternate, in the allawi.psd colours (ink, pa
 ```bash
 npx remotion render src/index.ts AllawiKinetic out/allawi-kinetic.mp4 --concurrency=3 --timeout=120000
 ```
+
+---
+
+# Reel 4: «صورة عادية.. صارت إعلان يبيع» in the reference's edit style (current)
+
+`out/allawi-motion.mp4`: 1080×1920, 30 fps, 24 s. Composition `AllawiMotion` (`src/AllawiMotion.tsx`).
+This is the before/after idea of reel 2, cut with the editing style of the reference reel. It uses pills, an
+orange highlight box with selection handles, lines that slide up out of a mask, a stretched word, brush wipes on
+the cuts, and alternating dark and paper scenes. It is paced to be read, with no emoji. All type sits on one
+centred column.
+
+| Time | Scene |
+|---|---|
+| 0:00 | Dark. «عندك صورة» / [عادية لمنتجك؟] in a pill; the plain photo drops in as a print (IMG_2041.jpg); «صورتها بالتلفون.. ونزلتها» |
+| 0:03 | Brush wipe → light. «الناس تشوفها..» / «وتعبــر» stretching while the same photo, now an Instagram post, flicks away up the feed; «ولا رسالة وحدة» |
+| 0:06 | Brush wipe → dark. «خليني أحولها» / [لإعلان يبيع] highlighted, then the camera dives into the orange box |
+| 0:08.7 | Circle reveal → a Photoshop-style canvas (alshifa_offer.psd), built step by step under a numbered pill: 01 نقص المنتج (the background dissolves to transparency), 02 لون البراند (teal flood), 03 العنوان (the viewport zooms onto the headline), 04 العرض (zooms onto the card), 05 جاهز للنشر |
+| 0:17.7 | Brush wipe → dark. «من صورة عادية..» / «لإعلان يجيب رسايل»; «قبل» / «بعد» cards and an arrow |
+| 0:21 | Brush wipe → light. «تريد إعلانك يصير هيچ؟», the allawi.psd logo, «راسلني هسه», «التصميم يبدي من 14 ألف» |
+
+```bash
+npx remotion render src/index.ts AllawiMotion out/allawi-motion.mp4 --concurrency=3 --timeout=120000
+```
