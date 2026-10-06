@@ -19,6 +19,6 @@ npx hyperframes@0.8.137 check
 npx hyperframes@0.8.137 render -o renders/allawi-promo.mp4 --quality delivery
 ```
 
-- **Sound effects:** `assets/sfx/` is gitignored. They come from `marketing/reels/remotion/public/sfx`.
+- **Sound effects:** the user's own sounds, cut from their TikTok edit (`assets/sfx/u_*.wav`, 18 cuts placed on 60 cues). `assets/sfx/` is gitignored because some cuts come from licensed libraries (Motion Array, Mixkit).
 - **GSAP:** vendored in `assets/vendor/` so renders work offline.
 - **Ad layers:** come from `marketing/alshifa-lab/motion-layers.cjs`.
