@@ -58,3 +58,34 @@ Remotion downloads its own. Remotion is free for individuals and companies of up
 - `src/SalaAd.tsx`: the ad, driven by build time `b` (`S` holds each layer's entrance).
 - `src/anim.ts`: springs, keyframe tracks, shake. `src/Fonts.tsx`: local fonts (Alexandria, Readex Pro, IBM Plex Mono).
 - `public/`: the ad's images (basket, doodles, logo, thumbnail), layer thumbnails, fonts.
+
+---
+
+# Reel 2: «صورة عادية.. صارت إعلان يبيع» (Al-Shifa lab)
+
+`out/alshifa-reel.mp4`: 1080×1920, 30 fps, 17 s, H.264 + AAC. Composition `AlshifaReel` (`src/AlshifaReel.tsx`).
+A plain stock photo turns into the Al-Shifa lab offer, built from its real layers, then before/after and the CTA.
+
+| Frames | Beat |
+|---|---|
+| 0–40 | Shutter flash; the plain photo pops in as a print (IMG_2041.jpg) on the allawi.psd paper, with «صورة عادية..» above and «شوف شصار بيها 👇» below |
+| 40–92 | The cursor comes in and drags a marquee (marching ants) around the photo |
+| 92–106 | A «Select Subject» chip pops; click, and the hand glows as it gets selected |
+| 104–128 | The background dissolves, leaving only the cut-out hand. The cut-out is lined up pixel for pixel with the photo, so nothing jumps |
+| 112–150 | The teal floods out from the hand while the hand glides and scales into its place in the ad; landing shake |
+| 156–212 | The lab's name wipes onto the tube, the pill pops, the first line wipes in, then «افحص» and «كلشي.» slam down (with shake) |
+| 228–300 | The package card swings in, its 7 rows tick in one by one, the price pops, then the «وفّر ١٥ ألف» sticker spins in |
+| 318–372 | CTA and logo rise; a light sweep crosses the finished ad on a slow push-in |
+| 372–430 | The ad shrinks into a rounded card («بعد») next to the original photo («قبل»); «صورة عادية.. / صارت إعلان يبيع» and a hand-drawn arrow |
+| 430–510 | «راسلني هسه» button with «التصميم يبدي من 14 ألف — @allawi.psd»; the cursor taps it |
+
+- **Layers:** `public/img/alshifa/`, exported from the lab's story design by `../../alshifa-lab/motion-layers.cjs`.
+  Every element (each card row, the sticker, each headline word) is its own 1080×1920 transparent PNG, rendered at 1.5x.
+- **Before photo:** `public/img/alshifa/before.jpg`, the CC0 Rawpixel lab-tube photo.
+- **Motion blur:** 6 samples at a 180° shutter, but only on the fast moves (`FAST` in the file), so the render stays quick.
+- **Sound effects:** the same set as the Sala reel (`public/sfx`), cued per frame in `CUES`.
+
+```bash
+npx remotion render src/index.ts AlshifaReel out/alshifa-reel.mp4 --concurrency=4
+npx remotion still src/index.ts AlshifaReel out/alshifa-cover.png --frame=360   # reel cover
+```
