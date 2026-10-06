@@ -30,7 +30,7 @@ body { background:#333; display:flex; gap:40px; padding:40px; align-items:flex-s
 .sel .cursor { position:absolute; right:-40px; bottom:-46px; width:48px; filter:drop-shadow(0 4px 5px rgba(0,0,0,.3)) }
 
 /* post */
-.hl1 { font:700 84px/1.3 'Readex Pro' }
+.hl1 { font:700 76px/1.3 'Readex Pro' }
 .hl2 { font:700 128px/1.25 'Aref Ruqaa'; color:var(--orange) }
 .fan { position:absolute; left:0; right:0; height:470px; direction:ltr }
 .fan img { position:absolute; width:270px; height:338px; object-fit:cover; border-radius:20px; border:6px solid var(--cream);
@@ -99,24 +99,6 @@ body { background:#333; display:flex; gap:40px; padding:40px; align-items:flex-s
 
 .glow { position:absolute; left:140px; right:140px; height:440px; border-radius:50%; background:radial-gradient(ellipse at center, rgba(240,122,46,.32), rgba(240,122,46,0) 70%); filter:blur(10px) }
 .fan img.hero { border-width:7px; box-shadow:0 34px 60px rgba(60,35,15,.35), 0 3px 8px rgba(60,35,15,.2) }
-
-/* Photoshop canvas: rulers + guides */
-.ruler { position:absolute; z-index:30; background:#f4ede2; color:rgba(31,21,16,.45); font:500 11px 'IBM Plex Mono'; direction:ltr; overflow:hidden }
-.ruler.h { left:0; right:0; top:0; height:28px; border-bottom:1px solid rgba(31,21,16,.18);
-  background-image:repeating-linear-gradient(90deg, rgba(31,21,16,.35) 0 1px, transparent 1px 10px), repeating-linear-gradient(90deg, rgba(31,21,16,.5) 0 1px, transparent 1px 100px);
-  background-size:100% 7px, 100% 14px; background-position:0 100%, 0 100%; background-repeat:repeat-x }
-.ruler.v { left:0; top:0; bottom:0; width:28px; border-right:1px solid rgba(31,21,16,.18);
-  background-image:repeating-linear-gradient(180deg, rgba(31,21,16,.35) 0 1px, transparent 1px 10px), repeating-linear-gradient(180deg, rgba(31,21,16,.5) 0 1px, transparent 1px 100px);
-  background-size:7px 100%, 14px 100%; background-position:100% 0, 100% 0; background-repeat:repeat-y }
-.ruler.h span { position:absolute; top:3px }
-.ruler.v span { position:absolute; left:3px; writing-mode:vertical-rl; transform:rotate(180deg) }
-.ruler.c { left:0; top:0; width:28px; height:28px; z-index:31; border-right:1px solid rgba(31,21,16,.18); border-bottom:1px solid rgba(31,21,16,.18) }
-.guide { position:absolute; z-index:0; background:rgba(226,84,27,.5) }
-.perkbar { position:absolute; left:64px; right:64px; display:flex; align-items:center; justify-content:space-around; padding:20px 18px 23px; border-radius:22px;
-  background:var(--cream); box-shadow:0 10px 26px rgba(60,35,15,.09) }
-.perkbar div { display:flex; align-items:center; gap:12px; font:600 28px 'Readex Pro'; white-space:nowrap }
-.perkbar svg { width:32px; height:32px; flex:none }
-.perkbar i { width:2px; height:34px; background:rgba(31,21,16,.12) }
 </style></head><body>
 
 <svg width="0" height="0" style="position:absolute"><defs>
@@ -131,11 +113,8 @@ body { background:#333; display:flex; gap:40px; padding:40px; align-items:flex-s
 
 <!-- ============ the offer ad ============ -->
 <div class="art" id="post">
-  <div class="ruler h"><span style="left:104px">100</span><span style="left:204px">200</span><span style="left:304px">300</span><span style="left:404px">400</span><span style="left:504px">500</span><span style="left:604px">600</span><span style="left:704px">700</span><span style="left:804px">800</span><span style="left:904px">900</span><span style="left:1004px">1000</span></div><div class="ruler v"><span style="top:104px">100</span><span style="top:204px">200</span><span style="top:304px">300</span><span style="top:404px">400</span><span style="top:504px">500</span><span style="top:604px">600</span><span style="top:704px">700</span><span style="top:804px">800</span><span style="top:904px">900</span><span style="top:1004px">1000</span><span style="top:1104px">1100</span><span style="top:1204px">1200</span><span style="top:1304px">1300</span></div><div class="ruler c"></div>
-  <div class="guide" style="left:540px; top:28px; height:930px; width:1px; opacity:.55"></div>
-  <div class="guide" style="left:28px; right:0; top:556px; height:1px; opacity:.55"></div>
-  <div class="top" style="top:62px; left:72px"><span class="pill">عرض تصميم</span><span class="mono">allawi.psd</span></div>
-  <div style="position:absolute; left:28px; right:0; top:140px; text-align:center">
+  <div class="top" style="top:52px"><span class="pill">عرض تصميم</span><span class="mono">allawi.psd</span></div>
+  <div style="position:absolute; left:0; right:0; top:136px; text-align:center">
     <div class="hl1">إعلانك يستاهل</div>
     <div class="sel" style="margin-top:72px">
       <div class="hl2">يبين أحسن</div>
@@ -152,14 +131,14 @@ body { background:#333; display:flex; gap:40px; padding:40px; align-items:flex-s
     <img src="../miswag-white-friday/out/miswag-white-friday-2.png" style="left:648px; top:44px; width:252px; height:315px; transform:rotate(4.5deg); z-index:2" />
     <img class="hero" src="../alshifa-lab/out/alshifa-offer.png" style="left:388px; top:0; width:304px; height:380px; z-index:4" />
   </div>
-  <div class="badge" style="left:78px; top:300px; width:190px; height:190px; z-index:6"><small>تبدي من</small><b style="font-size:70px">14</b><span>ألف دينار</span></div>
-  <div class="cap" style="top:968px; left:28px">نماذج من شغلي</div>
-  <div class="perkbar" style="top:1030px; left:72px">
-    <div><svg><use href="#i-check"/></svg>فكرة + كتابة + تصميم</div><i></i>
-    <div><svg><use href="#i-check"/></svg>تعديلين مجاناً</div><i></i>
-    <div><svg><use href="#i-check"/></svg>تسليم بيومين</div>
+  <div class="badge" style="left:70px; top:290px; width:190px; height:190px; z-index:6"><small>تبدي من</small><b style="font-size:70px">14</b><span>ألف دينار</span></div>
+  <div class="cap" style="top:968px">نماذج من شغلي</div>
+  <div class="perks" style="top:1030px">
+    <div class="perk"><svg><use href="#i-check"/></svg>فكرة + كتابة + تصميم</div>
+    <div class="perk"><svg><use href="#i-check"/></svg>تعديلين مجاناً</div>
+    <div class="perk"><svg><use href="#i-check"/></svg>تسليم بيومين</div>
   </div>
-  <div class="cta" style="top:1150px; left:72px">
+  <div class="cta" style="top:1150px">
     <div class="go">راسلني هسه<svg><use href="#i-arrow"/></svg></div>
     <div class="h"><span style="font:500 24px 'Readex Pro'; direction:rtl">الأسعار كلها بالهايلايت 📌</span></div>
   </div>
