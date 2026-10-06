@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<!-- «كاكتوس» starter kit (gift): a handmade crochet store. Brand idea: the name made literal, a cactus knitted from yarn.
+     Chrome: stitched (dashed) outlines instead of hard borders. No photos of people.
+     #logo #avatar 1080x1080 · #hl-orders #hl-prices #hl-work #hl-colors 1080x1920 · #post-welcome #post-order 1080x1350 -->
+<style>
+:root { --green:#6b9a5b; --green-d:#2f5a3a; --green-l:#9cc585; --cream:#f7f0e3; --cream-2:#efe4d0; --terra:#c96b45; --terra-d:#a9532f; --pink:#f2a7b4; --pink-d:#d97f90; --sun:#f3c552; --ink:#2b2420 }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#444; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:4600px; align-items:flex-start }
+.art { flex:none; position:relative; width:1080px; overflow:hidden; direction:rtl; font-family:'Readex Pro'; color:var(--green-d) }
+.sq { height:1080px } .tall { height:1920px } .post { height:1350px }
+.art::after { content:""; position:absolute; inset:0; z-index:50; pointer-events:none; opacity:.28; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E") }
+.cream { background:var(--cream) }
+.greenbg { background:var(--green) }
+/* knit texture: rows of V stitches */
+.knit { position:absolute; inset:0; opacity:.16;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='34'%3E%3Cpath d='M4 4 L22 28 L40 4' fill='none' stroke='%23fff' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size:44px 34px }
+.knit.dark { opacity:.07; filter:invert(1) }
+.stitch { position:absolute; border:6px dashed rgba(47,90,58,.45); border-radius:44px }
+@font-palette-values --cactus { font-family:'Reem Kufi Fun'; override-colors: 0 #e88a9b, 1 #e88a9b, 2 #e88a9b, 3 #e88a9b; }
+.wm { font:700 190px/1.1 'Reem Kufi Fun'; color:var(--green-d); white-space:nowrap; font-palette:--cactus }
+.sub { font:500 46px/1.4 'Readex Pro'; color:rgba(47,90,58,.72); white-space:nowrap }
+.ring { position:absolute; left:50%; top:50%; width:720px; height:720px; margin:-360px 0 0 -360px; border-radius:50%; background:var(--cream);
+  box-shadow:0 30px 70px rgba(20,40,25,.25) }
+.ring::before { content:""; position:absolute; inset:28px; border-radius:50%; border:7px dashed rgba(47,90,58,.4) }
+.ring svg { position:absolute; left:50%; top:50%; width:340px; height:340px; margin:-170px 0 0 -170px; overflow:visible }
+.pill { display:inline-block; padding:16px 46px 24px; border-radius:999px; background:var(--green-d); color:var(--cream); font:600 46px 'Readex Pro'; white-space:nowrap }
+.step { display:flex; align-items:center; gap:34px; padding:26px 36px; border-radius:36px; background:rgba(255,255,255,.55); border:5px dashed rgba(47,90,58,.3) }
+.step b { flex:none; width:96px; height:96px; border-radius:50%; background:var(--green); color:var(--cream); font:700 54px/96px 'Reem Kufi Fun'; text-align:center }
+.step span { font:600 50px/1.35 'Readex Pro'; color:var(--green-d); white-space:nowrap }
+</style></head>
+<body>
+
+<!-- the knitted cactus, drawn once -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <pattern id="vst" width="30" height="24" patternUnits="userSpaceOnUse">
+      <rect width="30" height="24" fill="#6b9a5b" />
+      <path d="M3 3 L15 20 L27 3" fill="none" stroke="#86b371" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M0 0 V24 M30 0 V24" stroke="#5a8a4c" stroke-width="2" />
+    </pattern>
+    <pattern id="vst-pot" width="26" height="20" patternUnits="userSpaceOnUse">
+      <rect width="26" height="20" fill="#c96b45" />
+      <path d="M3 3 L13 16 L23 3" fill="none" stroke="#d98660" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    </pattern>
+    <linearGradient id="shade" x1="0" x2="1">
+      <stop offset="0" stop-color="#1d3a24" stop-opacity=".35" /><stop offset=".45" stop-color="#1d3a24" stop-opacity="0" /><stop offset="1" stop-color="#fff" stop-opacity=".12" />
+    </linearGradient>
+    <clipPath id="body">
+      <rect x="235" y="140" width="130" height="340" rx="65" />
+      <rect x="150" y="330" width="120" height="66" rx="33" />
+      <rect x="150" y="226" width="66" height="170" rx="33" />
+      <rect x="330" y="292" width="116" height="60" rx="30" />
+      <rect x="386" y="196" width="60" height="156" rx="30" />
+    </clipPath>
+    <symbol id="cactus" viewBox="0 0 600 720">
+      <!-- yarn strand from the pot to the ball -->
+      <path d="M420 560 C 480 600, 470 650, 520 655" fill="none" stroke="#f2a7b4" stroke-width="9" stroke-linecap="round" />
+      <!-- body -->
+      <g clip-path="url(#body)">
+        <rect x="140" y="130" width="320" height="360" fill="url(#vst)" />
+        <rect x="140" y="130" width="320" height="360" fill="url(#shade)" />
+      </g>
+      <!-- spines as little cross stitches -->
+      <g stroke="#f7f0e3" stroke-width="5" stroke-linecap="round">
+        <path d="M262 212 l14 0 M269 205 l0 14" /><path d="M322 262 l14 0 M329 255 l0 14" /><path d="M270 330 l14 0 M277 323 l0 14" />
+        <path d="M330 400 l14 0 M337 393 l0 14" /><path d="M176 270 l14 0 M183 263 l0 14" /><path d="M404 236 l14 0 M411 229 l0 14" />
+        <path d="M300 160 l12 0 M306 154 l0 12" />
+      </g>
+      <!-- flower -->
+      <g transform="translate(300 138)">
+        <g fill="#f2a7b4" stroke="#d97f90" stroke-width="3">
+          <ellipse rx="17" ry="30" transform="rotate(0) translate(0 -26)" /><ellipse rx="17" ry="30" transform="rotate(72) translate(0 -26)" />
+          <ellipse rx="17" ry="30" transform="rotate(144) translate(0 -26)" /><ellipse rx="17" ry="30" transform="rotate(216) translate(0 -26)" />
+          <ellipse rx="17" ry="30" transform="rotate(288) translate(0 -26)" />
+        </g>
+        <circle r="15" fill="#f3c552" stroke="#d9a730" stroke-width="3" />
+      </g>
+      <!-- pot -->
+      <path d="M178 486 H422 L398 650 Q396 664 382 664 H218 Q204 664 202 650 Z" fill="url(#vst-pot)" />
+      <path d="M178 486 H422 L398 650 Q396 664 382 664 H218 Q204 664 202 650 Z" fill="url(#shade)" />
+      <rect x="150" y="452" width="300" height="62" rx="20" fill="#a9532f" />
+      <path d="M176 483 H424" stroke="#f7f0e3" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round" />
+      <path d="M214 596 H386" stroke="#f7f0e3" stroke-width="4" stroke-dasharray="12 12" stroke-linecap="round" opacity=".8" />
+      <!-- yarn ball + hook -->
+      <g transform="translate(520 640)">
+        <circle r="54" fill="#f2a7b4" />
+        <g fill="none" stroke="#d97f90" stroke-width="5" stroke-linecap="round">
+          <path d="M-42 -30 C -10 -10, 10 20, 30 46" /><path d="M-52 -4 C -20 6, 10 30, 18 52" /><path d="M-20 -50 C 10 -30, 36 -6, 50 20" />
+          <path d="M-36 38 C -10 10, 20 -20, 44 -34" />
+        </g>
+        <path d="M-80 -86 L 46 48" stroke="#f7f0e3" stroke-width="10" stroke-linecap="round" />
+        <path d="M-80 -86 q -10 -6 -4 -16" fill="none" stroke="#f7f0e3" stroke-width="8" stroke-linecap="round" />
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- LOGO -->
+<div class="art sq cream" id="logo">
+  <div class="knit dark"></div>
+  <div class="stitch" style="inset:46px;"></div>
+  <svg style="position:absolute; left:300px; top:96px; width:480px; height:576px;"><use href="#cactus" /></svg>
+  <div style="position:absolute; left:0; right:0; top:690px; text-align:center;"><div class="wm">كاكتوس</div></div>
+  <div style="position:absolute; left:0; right:0; top:910px; text-align:center;"><div class="sub">حياكة يدوية.. بكل حب</div></div>
+</div>
+
+<!-- PROFILE PICTURE (circle-safe) -->
+<div class="art sq greenbg" id="avatar">
+  <div class="knit"></div>
+  <div style="position:absolute; left:140px; top:140px; width:800px; height:800px; border-radius:50%; background:var(--cream); box-shadow:0 30px 70px rgba(20,40,25,.3);"></div>
+  <div style="position:absolute; left:172px; top:172px; width:736px; height:736px; border-radius:50%; border:8px dashed rgba(47,90,58,.4);"></div>
+  <svg style="position:absolute; left:255px; top:200px; width:580px; height:696px;"><use href="#cactus" /></svg>
+</div>
+
+<!-- HIGHLIGHT COVERS -->
+<div class="art tall greenbg" id="hl-orders"><div class="knit"></div><div class="ring">
+  <svg viewBox="0 0 100 100" fill="none" stroke="#2f5a3a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 30 h64 l-6 54 a6 6 0 0 1 -6 5 H30 a6 6 0 0 1 -6 -5 z" /><path d="M36 30 v-6 a14 14 0 0 1 28 0 v6" />
+    <path d="M50 74 c-14 -9 -16 -18 -10 -23 c4 -3 9 -1 10 3 c1 -4 6 -6 10 -3 c6 5 4 14 -10 23 z" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
+  </svg></div></div>
+<div class="art tall greenbg" id="hl-prices"><div class="knit"></div><div class="ring">
+  <svg viewBox="0 0 100 100" fill="none" stroke="#2f5a3a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 50 L50 14 H82 a4 4 0 0 1 4 4 V50 L50 86 a5 5 0 0 1 -7 0 L14 57 a5 5 0 0 1 0 -7 z" />
+    <circle cx="70" cy="30" r="7" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
+    <path d="M38 52 l12 12 M44 46 l12 12" stroke-dasharray="1 9" />
+  </svg></div></div>
+<div class="art tall greenbg" id="hl-work"><div class="knit"></div><div class="ring">
+  <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="46" cy="56" r="30" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
+    <g stroke="#d97f90" stroke-width="4"><path d="M22 42 c14 4 26 18 34 38" /><path d="M18 58 c14 0 28 12 32 27" /><path d="M32 30 c18 6 32 20 40 36" /><path d="M26 76 c10 -16 28 -32 46 -36" /></g>
+    <path d="M70 12 L34 66" stroke="#2f5a3a" stroke-width="7" /><path d="M70 12 q5 -6 10 -1" stroke="#2f5a3a" stroke-width="6" />
+  </svg></div></div>
+<div class="art tall greenbg" id="hl-colors"><div class="knit"></div><div class="ring">
+  <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="62" r="20" fill="#f2a7b4" stroke="#d97f90" stroke-width="4" />
+    <circle cx="68" cy="62" r="20" fill="#f3c552" stroke="#d9a730" stroke-width="4" />
+    <circle cx="50" cy="32" r="20" fill="#9cc585" stroke="#6b9a5b" stroke-width="4" />
+    <g stroke="rgba(0,0,0,.18)" stroke-width="3"><path d="M18 56 c8 2 16 10 20 22" /><path d="M54 56 c8 2 16 10 20 22" /><path d="M36 26 c8 2 16 10 20 22" /></g>
+  </svg></div></div>
+
+<!-- WELCOME POST -->
+<div class="art post cream" id="post-welcome">
+  <div class="knit dark"></div>
+  <div class="stitch" style="inset:46px;"></div>
+  <div style="position:absolute; right:110px; top:130px;"><span class="pill" style="font-size:38px; padding:12px 38px 18px;">أول بوست</span></div>
+  <div style="position:absolute; right:110px; top:250px; font:600 84px/1.25 'Readex Pro'; color:rgba(47,90,58,.8); white-space:nowrap;">أهلاً بيكم بـ</div>
+  <div style="position:absolute; right:104px; top:340px;" class="wm">كاكتوس</div>
+  <div style="position:absolute; right:110px; top:600px; font:500 48px/1.55 'Readex Pro'; color:rgba(47,90,58,.78); white-space:nowrap;">حياكة يدوية..<br />كل قطعة تنسوّى بإيدينا<br />بصبر وبحب</div>
+  <svg style="position:absolute; left:40px; top:470px; width:520px; height:624px;"><use href="#cactus" /></svg>
+  <div style="position:absolute; right:110px; top:1110px;"><span class="pill">الطلب بالخاص</span></div>
+</div>
+
+<!-- HOW TO ORDER -->
+<div class="art post greenbg" id="post-order">
+  <div class="knit"></div>
+  <div style="position:absolute; inset:60px; border-radius:48px; background:var(--cream);"></div>
+  <div class="stitch" style="inset:88px;"></div>
+  <div style="position:absolute; right:150px; top:150px;" class="wm" ><span style="font-size:120px;">شلون تطلب؟</span></div>
+  <div style="position:absolute; right:150px; left:150px; top:370px; display:flex; flex-direction:column; gap:30px;">
+    <div class="step"><b>١</b><span>اختار القطعة اللي تعجبك</span></div>
+    <div class="step"><b>٢</b><span>راسلنا بالخاص</span></div>
+    <div class="step"><b>٣</b><span>نختار سوا اللون والقياس</span></div>
+    <div class="step"><b>٤</b><span>نحيكها إلك بإيدينا</span></div>
+  </div>
+  <svg style="position:absolute; left:130px; top:1070px; width:160px; height:192px;"><use href="#cactus" /></svg>
+  <div style="position:absolute; right:150px; top:1140px; font:700 64px 'Reem Kufi Fun'; color:var(--green-d); font-palette:--cactus;">كاكتوس</div>
+</div>
+
+<script>
+Promise.all([
+  document.fonts.load("700 190px 'Reem Kufi Fun'", 'كاكتوس شلون تطلب؟ ١٢٣٤'),
+  document.fonts.load("500 46px 'Readex Pro'", 'حياكة يدوية.. بكل حب كل قطعة تنسوّى بإيدينا بصبر وبحب'),
+  document.fonts.load("600 46px 'Readex Pro'", 'أهلاً بيكم بـ الطلب بالخاص أول بوست اختار القطعة اللي تعجبك راسلنا بالخاص نختار سوا اللون والقياس نحيكها إلك بإيدينا'),
+]).then(() => document.fonts.ready).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
