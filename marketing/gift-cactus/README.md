@@ -57,7 +57,7 @@ Posted with the store's OK. `node render.cjs --page showcase.html` renders `out/
   3. posts and templates;
   4. the CTA, «راسلني هسه» and «التصميم يبدي من 14 ألف».
 - `st1`–`st6`: a 6-frame story sequence (1080x1920) for the «أعمالي» highlight. It never mentions a gift.
-  1. The real before/after, «نفس الستور ونفس الشغل.. [بهوية جديدة]». It shows her TikTok profile screenshot next to the same screenshot with the new avatar and the five highlight covers drawn in at TikTok's sizes. Below that, her old highlight row is compared with the new one.
+  1. The real before/after, «نفس الستور، ونفس الشغل.. [بس بهوية جديدة]». It shows her TikTok profile screenshot next to the same screenshot with the new avatar and the five highlight covers drawn in at TikTok's sizes. Below that, her old highlight row is compared with the new one.
   2. The idea: «من اسم وفكرة.. [لهوية كاملة]», and the name + yarn = knitted cactus equation.
   3. The logo: a magnifier on the V stitches, and where the colours come from.
   4. The five highlight covers: which of her pieces each one draws.
