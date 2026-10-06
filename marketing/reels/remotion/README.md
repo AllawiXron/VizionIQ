@@ -89,3 +89,30 @@ A plain stock photo turns into the Al-Shifa lab offer, built from its real layer
 npx remotion render src/index.ts AlshifaReel out/alshifa-reel.mp4 --concurrency=4
 npx remotion still src/index.ts AlshifaReel out/alshifa-cover.png --frame=360   # reel cover
 ```
+
+---
+
+# Reel 3: kinetic ad for allawi.psd (in the style of the reference reel)
+
+`out/allawi-kinetic.mp4`: 1080×1920, 30 fps, 27 s. Composition `AllawiKinetic` (`src/AllawiKinetic.tsx`).
+It is a kinetic-typography ad: short Iraqi lines in pills, 3D icons in rounded tiles, outlined counters, chat
+bubbles, an Instagram post crossed out, swooshes on every cut, notifications, a rising graph, the offer and the
+logo. Dark scenes and paper scenes alternate, in the allawi.psd colours (ink, paper, orange).
+
+| Time | Scene |
+|---|---|
+| 0:00 | Dark. «تصرف على الإعلان..» with the megaphone tile and flying shapes; counters climb; «وتجيك آلاف المشاهدات»; «بس..» |
+| 0:03 | Light. Bubbles «ولا رسالة وحدة» and «ولا طلب!» with question marks; an Instagram post whose word swaps «المشكلة» → «مو» → «بالإعلان», then a red X |
+| 0:06.6 | Dark. «المشكلة بالتصميم..» with [ما يوقّف أحد] highlighted (selection handles); the sleepy tile, «الناس تسكرول بسرعة», «وإذا تصميمك ما وقّفهم», «يعبــرون» stretching |
+| 0:10.2 | Dark. «فكرة» «كتابة» «تصميم»; a tile flicks through real ads (Sala, Miswag, Baly, White Friday, Al-Shifa); «48 HRS» counts up with «وتستلمه خلال يومين», a gear and an hourglass |
+| 0:13.9 | Light (circle wipe). Camera icon and «دزلي صورة منتجك / وأرجعهالك إعلان يبيع»; «والنتيجة؟» with three Instagram message notifications stacking; «رسايل أكثر» tilted over rising chevrons |
+| 0:18.4 | Light. A rising graph over «مبيعات أكثر», «تزيد مبيعاتك», circles «متابعين» and «طلبات» |
+| 0:21.7 | Light. «راسلني هسه», the allawi.psd logo assembling, «التصميم يبدي من 14 ألف», before/after cards, «الأسعار كلها بالهايلايت 📌» |
+
+- **3D icons:** Microsoft Fluent Emoji 3D (MIT), in `public/emoji/`.
+- **Portfolio thumbnails:** `public/img/kinetic/`.
+- **No music.** Add a trending sound inside Instagram; the sound effects sit under it.
+
+```bash
+npx remotion render src/index.ts AllawiKinetic out/allawi-kinetic.mp4 --concurrency=3 --timeout=120000
+```
