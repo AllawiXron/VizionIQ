@@ -34,3 +34,7 @@ Prices (IQD), based on 14,000 per post:
 - C: a cream tag icon inside an orange ring on dark.
 
 It also renders `covers-preview.png`, which shows all three as small circles on a profile. Render it twice: the preview reads the PNGs from the first pass.
+
+`reel-cover.html` renders the cover for the before/after reel (`../hf-allawi-promo`): `node render.cjs reel-cover.html` writes `out/reel-cover-reelcover.png` (1080x1920).
+- It uses the video's dark look: the headline «صورة عادية.. صارت إعلان [يبيع]», a before/after slider card with the cursor on the handle, and a «التصميم يبدي من 14 ألف» sticker.
+- Everything important sits inside y 240–1680, the 3:4 window the profile grid shows.
