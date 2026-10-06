@@ -1,4 +1,5 @@
 assets/sfx/
-renders/
+renders/*
+!renders/allawi-promo.mp4
 snapshots/
 node_modules/
