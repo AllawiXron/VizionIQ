@@ -82,7 +82,7 @@ A plain stock photo turns into the Al-Shifa lab offer, built from its real layer
 - **Layers:** `public/img/alshifa/`, exported from the lab's story design by `../../alshifa-lab/motion-layers.cjs`.
   Every element (each card row, the sticker, each headline word) is its own 1080×1920 transparent PNG, rendered at 1.5x.
 - **Before photo:** `public/img/alshifa/before.jpg`, the CC0 Rawpixel lab-tube photo.
-- **Motion blur:** 6 samples at a 180° shutter, but only on the fast moves (`FAST` in the file), so the render stays quick.
+- **Motion blur:** 5 samples at a 180° shutter, but only on the fast moves (`FAST` in the file), so the render stays quick.
 - **Sound effects:** the same set as the Sala reel (`public/sfx`), cued per frame in `CUES`.
 
 ```bash

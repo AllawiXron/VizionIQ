@@ -269,7 +269,7 @@ const FAST: [number, number][] = [[0, 10], [110, 156], [196, 222], [228, 250], [
 const Blur: React.FC<{children: React.ReactNode}> = ({children}) => {
   const f = useCurrentFrame();
   const fast = FAST.some(([a, b]) => f >= a && f <= b);
-  return <CameraMotionBlur shutterAngle={180} samples={fast ? 6 : 1}>{children}</CameraMotionBlur>;
+  return <CameraMotionBlur shutterAngle={180} samples={fast ? 5 : 1}>{children}</CameraMotionBlur>;
 };
 
 const CUES: [number, string, number][] = [
