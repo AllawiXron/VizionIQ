@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<link rel="stylesheet" href="../identity-concepts/fonts/fonts.css" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<!-- Spec redesign of «دورة الفيزياء الإلكترونية الشتوية 2027» for سيد الفيزياء (TikTok @m.jaber8).
+     Idea: his own hook «لسة البداية من الصفر ممكنة» becomes the headline, drawn as a v–t graph that starts at v₀ = 0
+     ("إنت هنا") and rises to the ministerial exam. Photo: photo/teacher.png (prep.py). #tall 1080x1920 · #post 1080x1350 -->
+<style>
+:root { --bg:#060c1d; --navy:#0b1736; --blue:#2f6bff; --cyan:#5fd0ff; --ice:#e8f1ff; --amber:#ffb547; --mute:rgba(232,241,255,.62) }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#222; display:flex; gap:40px; padding:40px; align-items:flex-start }
+.art { position:relative; width:1080px; overflow:hidden; color:var(--ice); font-family:'Readex Pro'; direction:rtl;
+  background:radial-gradient(ellipse 70% 45% at 70% 22%, #12306e 0%, rgba(18,48,110,0) 70%),
+             radial-gradient(ellipse 60% 50% at 20% 70%, #0e1f48 0%, rgba(14,31,72,0) 70%), var(--bg) }
+#tall { height:1920px } #post { height:1350px }
+.grid { position:absolute; inset:0; opacity:.5;
+  background-image:linear-gradient(rgba(95,208,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(95,208,255,.07) 1px, transparent 1px);
+  background-size:54px 54px; mask-image:radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 85%) }
+.grain { position:absolute; inset:0; z-index:40; pointer-events:none; opacity:.35; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.5'/></svg>") }
+.photo { position:absolute; left:0; z-index:2; background:url(photo/teacher.png) left top/100% 100% no-repeat }
+
+.top { position:absolute; left:64px; right:64px; z-index:20; display:flex; justify-content:space-between; align-items:center }
+.logo { position:relative; display:flex; flex-direction:column; align-items:flex-start; line-height:1 }
+.logo .s { font:800 30px 'Alexandria'; color:var(--cyan); margin-inline-start:6px }
+.logo .f { font:900 52px 'Alexandria'; margin-top:-2px }
+.logo svg { position:absolute; inset:-18px -26px -14px -22px; width:calc(100% + 48px); height:calc(100% + 32px); overflow:visible }
+.tagline { direction:ltr; font:500 16px 'IBM Plex Mono'; letter-spacing:.2em; text-transform:uppercase; color:var(--mute) }
+.tagline b { color:var(--cyan); font-weight:500 }
+
+.head { position:absolute; right:64px; z-index:20; text-align:right }
+.hook { display:inline-flex; align-items:center; gap:14px; font:600 46px 'Readex Pro'; color:var(--amber) }
+.hook::before { content:""; width:14px; height:14px; border-radius:50%; background:var(--amber); box-shadow:0 0 18px var(--amber) }
+.h1 { font:900 150px/1.12 'Alexandria'; letter-spacing:-.01em; text-shadow:0 10px 40px rgba(0,0,0,.45) }
+.h2 { white-space:nowrap; font:900 120px/1.22 'Alexandria'; background:linear-gradient(90deg, #8fe0ff 0%, var(--cyan) 40%, #3f8bff 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 0 24px rgba(95,208,255,.35)) }
+.course { margin-top:26px; display:inline-flex; align-items:center; gap:18px; padding:14px 26px 16px; border-radius:16px;
+  background:rgba(11,23,54,.72); border:1px solid rgba(95,208,255,.3); font:500 30px 'Readex Pro'; backdrop-filter:blur(6px) }
+.course b { font:800 34px 'Alexandria'; color:var(--ice) }
+.course .yr { direction:ltr; font:900 34px 'Alexandria'; color:var(--cyan) }
+
+.graph { position:absolute; z-index:10; overflow:visible }
+.graph text { font-family:'Readex Pro' }
+
+.cards { position:absolute; z-index:20; display:flex; flex-direction:column; gap:16px }
+.card { display:flex; justify-content:space-between; align-items:center; padding:20px 28px 22px; border-radius:20px;
+  background:linear-gradient(180deg, rgba(20,40,90,.85), rgba(11,23,54,.85)); border:1px solid rgba(95,208,255,.28);
+  box-shadow:0 18px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08) }
+.card .n { font:700 30px 'Readex Pro'; white-space:nowrap }
+.card .n small { display:block; font:400 20px 'Readex Pro'; color:var(--mute); margin-top:4px }
+.card .p { direction:ltr; font:900 44px 'Alexandria'; color:var(--ice); display:flex; align-items:baseline; gap:10px }
+.card .p i { font:600 22px 'Readex Pro'; font-style:normal; color:var(--cyan) }
+
+.cta { position:absolute; z-index:25; left:48px; right:48px; display:flex; justify-content:space-between; align-items:center;
+  padding:24px 34px 26px; border-radius:26px; background:linear-gradient(90deg, #2f6bff, #3a8dff 60%, #46b4ff);
+  box-shadow:0 24px 50px rgba(20,60,200,.45), inset 0 1px 0 rgba(255,255,255,.35) }
+.cta .go { font:900 46px 'Alexandria'; color:#fff; display:flex; align-items:center; gap:16px }
+.cta .go svg { width:40px; height:40px }
+.cta .ids { direction:ltr; display:flex; flex-direction:column; gap:8px; font:500 24px 'IBM Plex Mono'; color:#fff }
+.cta .ids span { display:flex; align-items:center; gap:10px }
+.cta .ids svg { width:26px; height:26px }
+.who { position:absolute; z-index:20; font:400 22px 'Readex Pro'; color:var(--mute); text-align:right }
+.who b { font:700 26px 'Readex Pro'; color:var(--ice) }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="i-tg" viewBox="0 0 24 24"><path fill="currentColor" d="M21.5 3.6 2.9 10.8c-1.3.5-1.2 1.3-.2 1.6l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.3-1.5zM8.6 13.6l9.6-6.1c.5-.3.9-.1.5.2l-8 7.3-.3 3.3z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></symbol>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="line" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffb547"/><stop offset=".35" stop-color="#5fd0ff"/><stop offset="1" stop-color="#9fe6ff"/></linearGradient>
+</defs></svg>
+
+<div class="art" id="tall"></div>
+<div class="art" id="post"></div>
+
+<script>
+// the logo: «سيد / الفيزياء» with an orbit and an electron (rebuilt in vector from his mark)
+const logo = (k = 1) => `<div class="logo" style="transform:scale(${k}); transform-origin:right top">
+  <span class="s">سيد</span><span class="f">الفيزياء</span>
+  <svg viewBox="0 0 100 60" preserveAspectRatio="none"><ellipse cx="50" cy="32" rx="49" ry="17" transform="rotate(-12 50 32)" fill="none" stroke="#5fd0ff" stroke-width="1.6" vector-effect="non-scaling-stroke" opacity=".85"/>
+  <circle cx="7" cy="45" r="3.2" fill="#ffb547" style="filter:drop-shadow(0 0 4px #ffb547)"/></svg></div>`;
+
+// v–t graph: origin (0, v₀ = 0) "إنت هنا" -> the exam
+function graph(w, h, s = 1) {
+  const ox = 40, oy = h - 46, ex = w - 70, ey = 70;          // origin & end point
+  let grid = '';
+  for (let x = ox + 54; x < w - 20; x += 54) grid += `<line x1="${x}" y1="20" x2="${x}" y2="${oy}" stroke="rgba(95,208,255,.10)"/>`;
+  for (let y = oy - 54; y > 20; y -= 54) grid += `<line x1="${ox}" y1="${y}" x2="${w - 20}" y2="${y}" stroke="rgba(95,208,255,.10)"/>`;
+  const ticks = [0.25, 0.5, 0.75].map((t) => { const x = ox + (ex - ox) * t, y = oy + (ey - oy) * t;
+    return `<circle cx="${x}" cy="${y}" r="${5 * s}" fill="#0b1736" stroke="#5fd0ff" stroke-width="${2.5 * s}"/>`; }).join('');
+  return `<svg class="graph" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    ${grid}
+    <path d="M${ox} ${oy} H${w - 14} M${w - 26} ${oy - 9} L${w - 12} ${oy} L${w - 26} ${oy + 9}" fill="none" stroke="rgba(232,241,255,.7)" stroke-width="${2.6 * s}" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M${ox} ${oy} V14 M${ox - 9} 28 L${ox} 13 L${ox + 9} 28" fill="none" stroke="rgba(232,241,255,.7)" stroke-width="${2.6 * s}" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="${w - 16}" y="${oy + 38 * s}" text-anchor="end" style="font:italic ${34 * s}px 'Instrument Serif'; fill:rgba(232,241,255,.75)">t</text>
+    <text x="${ox + 18}" y="${30}" style="font:italic ${34 * s}px 'Instrument Serif'; fill:rgba(232,241,255,.75)">v</text>
+    <line x1="${ox}" y1="${ey}" x2="${ex}" y2="${ey}" stroke="rgba(95,208,255,.45)" stroke-width="2" stroke-dasharray="8 8"/>
+    <line x1="${ox}" y1="${oy}" x2="${ex}" y2="${ey}" stroke="url(#line)" stroke-width="${9 * s}" stroke-linecap="round" filter="url(#glow)"/>
+    ${ticks}
+    <circle cx="${ox}" cy="${oy}" r="${26 * s}" fill="none" stroke="#ffb547" stroke-width="2" opacity=".5"/>
+    <circle cx="${ox}" cy="${oy}" r="${12 * s}" fill="#ffb547" filter="url(#glow)"/>
+    <circle cx="${ex}" cy="${ey}" r="${30 * s}" fill="none" stroke="#9fe6ff" stroke-width="2" opacity=".5"/>
+    <circle cx="${ex}" cy="${ey}" r="${15 * s}" fill="#e8f1ff" filter="url(#glow)"/>
+  </svg>
+  <div class="glabel" data-k="here" style="position:absolute; z-index:21"></div>`;
+}
+
+function build(el, tall) {
+  const C = tall
+    ? { top: 72, hook: 210, logoK: 1, h1: 150, h2: 100, g: { x: 590, y: 720, w: 440, h: 560, s: 1 }, cards: { top: 1376, x: 572 },
+        photo: { y: 660, w: 640 }, cta: 1724, who: 1640 }
+    : { top: 48, hook: 136, logoK: .82, h1: 112, h2: 90, g: { x: 600, y: 540, w: 420, h: 380, s: .85 }, cards: { top: 986, x: 572 },
+        photo: { y: 470, w: 520 }, cta: 1212, who: null };
+  const ph = C.photo.w * 2300 / 1400;
+  el.innerHTML = `
+    <div class="grid"></div>
+    <div class="photo" style="top:${C.photo.y}px; width:${C.photo.w}px; height:${ph}px"></div>
+    <div class="top" style="top:${C.top}px">${logo(C.logoK)}<div class="tagline">I take physics <b>personally</b></div></div>
+    <div class="head" style="top:${C.hook}px">
+      <div class="hook" style="font-size:${tall ? 46 : 38}px">متأخر بدراستك؟</div>
+      <div class="h1" style="font-size:${C.h1}px">لسة البداية</div>
+      <div class="h2" style="font-size:${C.h2}px; margin-top:${tall ? 14 : 8}px">من الصفر ممكنة</div>
+      <div class="course" style="${tall ? '' : 'margin-top:16px; transform:scale(.86); transform-origin:right top'}"><b>دورة الفيزياء الإلكترونية الشتوية</b><span class="yr">2027</span></div>
+    </div>
+    <div style="position:absolute; left:${C.g.x}px; top:${C.g.y}px; width:${C.g.w}px; height:${C.g.h}px; z-index:10">
+      ${graph(C.g.w, C.g.h, C.g.s)}
+      <div style="position:absolute; left:${18}px; top:${C.g.h - 46 + 30 * C.g.s}px; display:flex; align-items:baseline; gap:${14 * C.g.s}px; white-space:nowrap; direction:ltr">
+        <span style="font:italic ${30 * C.g.s}px 'Instrument Serif'; color:var(--mute)">v₀ = 0</span>
+        <span style="font:800 ${34 * C.g.s}px 'Alexandria'; color:var(--amber)">إنت هنا</span></div>
+      <div style="position:absolute; right:${70 + 44 * C.g.s}px; top:${70 - 26 * C.g.s}px; white-space:nowrap">
+        <div style="font:800 ${36 * C.g.s}px 'Alexandria'; color:#fff">يوم الوزاري</div></div>
+      <div style="position:absolute; right:${24}px; top:${C.g.h * (tall ? .62 : .52)}px; text-align:right; white-space:nowrap">
+        <div style="direction:ltr; font:italic ${36 * C.g.s}px 'Instrument Serif'; color:#9fe6ff">v = v₀ + at</div>
+        <div style="font:500 ${25 * C.g.s}px/1.45 'Readex Pro'; color:var(--mute); margin-top:4px">إنت بس ابدأ..<br><b style="color:var(--ice)">والتعجيل علينا</b></div></div>
+    </div>
+    <div class="cards" style="top:${C.cards.top}px; left:${C.cards.x}px; right:48px; ${tall ? '' : 'gap:12px'}">
+      <div class="card" ${tall ? '' : 'style="padding:14px 24px 16px"'}><div class="n">الكورس الأول</div><div class="p">90,000<i>د.ع</i></div></div>
+      <div class="card" ${tall ? '' : 'style="padding:14px 24px 16px"'}><div class="n">الكورس الثاني</div><div class="p">90,000<i>د.ع</i></div></div>
+    </div>
+    ${tall ? `<div class="who" style="top:${C.who}px; right:60px"><b style="display:inline">أ. محمد جابر</b> — أستاذ الفيزياء، جامعة واسط</div>` : ''}
+    <div class="cta" style="top:${C.cta}px; ${tall ? '' : 'padding:18px 30px 20px'}">
+      <div class="go" style="${tall ? '' : 'font-size:40px'}">احجز مكانك هسه<svg><use href="#i-arrow"/></svg></div>
+      <div class="ids"><span><svg><use href="#i-tg"/></svg>@m_jaber8</span><span><svg><use href="#i-ig"/></svg>@m_jaber</span></div>
+    </div>
+    <div class="grain"></div>`;
+}
+build(document.getElementById('tall'), true);
+build(document.getElementById('post'), false);
+Promise.all([
+  document.fonts.load("900 150px 'Alexandria'", 'لسة البداية من الصفر ممكنة 2027 90,000'),
+  document.fonts.load("800 34px 'Alexandria'", 'سيد إنت هنا يوم الوزاري دورة'),
+  document.fonts.load("600 46px 'Readex Pro'", 'متأخر بدراستك؟ الكورس'),
+  document.fonts.load("400 22px 'Readex Pro'", 'أستاذ الفيزياء والتعجيل'),
+  document.fonts.load("italic 34px 'Instrument Serif'", 'v₀ = 0 t'),
+  document.fonts.load("500 16px 'IBM Plex Mono'", '@m_jaber8'),
+  new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = 'photo/teacher.png'; }),
+]).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>

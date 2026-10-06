@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<link rel="stylesheet" href="../identity-concepts/fonts/fonts.css" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<!-- Lesson-cover system for سيد الفيزياء: one template, the topic's own field diagram as the picture, so every video in the
+     grid is recognisable but different. 1080x1920 (TikTok); everything that matters sits in the centre 3:4 (y 240–1680),
+     the part the profile grid shows. -->
+<style>
+:root { --bg:#060c1d; --cyan:#5fd0ff; --ice:#e8f1ff; --amber:#ffb547; --mute:rgba(232,241,255,.6) }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#222; display:flex; gap:40px; padding:40px; align-items:flex-start }
+.art { position:relative; width:1080px; height:1920px; overflow:hidden; color:var(--ice); direction:rtl; font-family:'Readex Pro';
+  background:radial-gradient(ellipse 75% 40% at 50% 42%, #133274 0%, rgba(19,50,116,0) 72%), var(--bg) }
+.grid { position:absolute; inset:0; opacity:.55;
+  background-image:linear-gradient(rgba(95,208,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(95,208,255,.07) 1px, transparent 1px);
+  background-size:54px 54px; mask-image:radial-gradient(ellipse 70% 45% at 50% 42%, #000 30%, transparent 90%) }
+.grain { position:absolute; inset:0; z-index:40; pointer-events:none; opacity:.35; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.5'/></svg>") }
+.num { position:absolute; left:40px; top:250px; direction:ltr; font:900 330px/1 'Alexandria'; color:transparent; -webkit-text-stroke:2px rgba(95,208,255,.16) }
+.label { position:absolute; right:80px; top:300px; display:flex; align-items:center; gap:16px; padding:12px 26px 14px; border-radius:99px;
+  border:1.5px solid rgba(95,208,255,.45); background:rgba(11,23,54,.7); font:700 34px 'Readex Pro' }
+.label i { width:14px; height:14px; border-radius:50%; background:var(--amber); box-shadow:0 0 14px var(--amber) }
+.dia { direction:ltr; position:absolute; left:0; top:420px; width:1080px; height:760px; overflow:visible }
+.title { position:absolute; left:70px; right:70px; top:1190px; text-align:center; font:900 104px/1.22 'Alexandria'; text-shadow:0 8px 30px rgba(0,0,0,.5) }
+.title em { font-style:normal; background:linear-gradient(90deg, #9fe6ff, var(--cyan) 50%, #3f8bff); -webkit-background-clip:text; background-clip:text; color:transparent }
+.foot { position:absolute; left:80px; right:80px; top:1560px; display:flex; justify-content:space-between; align-items:center }
+.logo { position:relative; display:flex; flex-direction:column; align-items:flex-start; line-height:1 }
+.logo .s { font:800 26px 'Alexandria'; color:var(--cyan); margin-inline-start:6px }
+.logo .f { font:900 44px 'Alexandria' }
+.logo svg { position:absolute; inset:-16px -24px -12px -20px; width:calc(100% + 44px); height:calc(100% + 28px); overflow:visible }
+.who { font:500 28px 'Readex Pro'; color:var(--mute) }
+.who b { color:var(--ice); font-weight:700 }
+.edge { position:absolute; left:80px; right:80px; direction:ltr; display:flex; justify-content:space-between; font:500 18px 'IBM Plex Mono'; letter-spacing:.2em; text-transform:uppercase; color:var(--mute) }
+svg text { font-family:'Instrument Serif'; font-style:italic }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+  <marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1 L9 5 L1 9 Z" fill="#9fe6ff"/></marker>
+  <radialGradient id="ball" cx=".38" cy=".34" r=".75"><stop offset="0" stop-color="#3b7dff"/><stop offset=".55" stop-color="#173a8f"/><stop offset="1" stop-color="#0a1940"/></radialGradient>
+</defs></svg>
+
+<div class="art" id="c1"></div>
+<div class="art" id="c2"></div>
+<div class="art" id="c3"></div>
+
+<script>
+const CX = 540, CY = 380;                      // diagram centre inside .dia (760 tall)
+const line = (d, w = 3.2, o = .9, arrow = true) => `<path d="${d}" fill="none" stroke="#5fd0ff" stroke-width="${w}" stroke-linecap="round" opacity="${o}" ${arrow ? 'marker-mid="url(#arr)"' : ''}/>`;
+const plus = (x, y, r = 11, c = '#ffb547') => `<path d="M${x - r} ${y} H${x + r} M${x} ${y - r} V${y + r}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+const minus = (x, y, r = 11, c = '#9fe6ff') => `<path d="M${x - r} ${y} H${x + r}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+
+// 1. isolated spherical conductor: charge on the surface, radial E outside, equipotential shells
+function sphere() {
+  const R = 150; let s = '';
+  for (const r of [R + 95, R + 200, R + 300]) s += `<circle cx="${CX}" cy="${CY}" r="${r}" fill="none" stroke="rgba(95,208,255,${(.5 - (r - R) / 800).toFixed(2)})" stroke-width="2" stroke-dasharray="6 10"/>`;
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * Math.PI * 2 + .1, c = Math.cos(a), n = Math.sin(a);
+    const p = (r) => `${(CX + c * r).toFixed(1)} ${(CY + n * r).toFixed(1)}`;
+    s += line(`M${p(R + 14)} L${p(R + 150)} L${p(R + 330)}`, 3.4, .85);
+  }
+  s += `<circle cx="${CX}" cy="${CY}" r="${R + 40}" fill="#2f6bff" opacity=".35" filter="url(#soft)"/>
+    <circle cx="${CX}" cy="${CY}" r="${R}" fill="url(#ball)" stroke="#9fe6ff" stroke-width="3" filter="url(#glow)"/>`;
+  for (let i = 0; i < 12; i++) { const a = (i / 12) * Math.PI * 2; s += plus(CX + Math.cos(a) * (R - 26), CY + Math.sin(a) * (R - 26), 10); }
+  s += `<text x="${CX + 4}" y="${CY + 22}" text-anchor="middle" style="font-size:64px; fill:#e8f1ff">E = 0</text>
+    <text x="${CX + 250}" y="${CY - 255}" style="font-size:54px; fill:#9fe6ff">E = kq/r²</text>`;
+  return s;
+}
+
+// 2. parallel-plate capacitor: uniform field between the plates, fringing at the ends
+function capacitor() {
+  const x1 = 360, x2 = 720, y1 = 110, y2 = 650, t = 22; let s = '';
+  s += `<rect x="${x1}" y="${y1}" width="${x2 - x1}" height="${y2 - y1}" fill="#2f6bff" opacity=".18" filter="url(#soft)"/>`;
+  for (let y = y1 + 45; y <= y2 - 45; y += 54) s += line(`M${x1 + t} ${y} L${(x1 + x2) / 2} ${y} L${x2 - 4} ${y}`, 3.4, .9);
+  for (const [sy, dir] of [[y1, -1], [y2, 1]]) for (const k of [1, 2]) {
+    const b = 70 * k;
+    s += line(`M${x1 + t} ${sy - dir * 8} C ${x1 + 80} ${sy + dir * b}, ${x2 - 80} ${sy + dir * b}, ${x2 - 4} ${sy - dir * 8}`, 2.6, .5 - k * .12, false);
+  }
+  s += `<rect x="${x1 - t / 2}" y="${y1 - 20}" width="${t}" height="${y2 - y1 + 40}" rx="6" fill="#ffb547" filter="url(#glow)"/>
+    <rect x="${x2 - t / 2}" y="${y1 - 20}" width="${t}" height="${y2 - y1 + 40}" rx="6" fill="#9fe6ff" filter="url(#glow)"/>`;
+  for (let y = y1 + 20; y <= y2 - 10; y += 90) { s += plus(x1 - 50, y); s += minus(x2 + 50, y); }
+  s += `<path d="M${x1} ${y2 + 70} H${x2} M${x1 + 14} ${y2 + 58} L${x1} ${y2 + 70} L${x1 + 14} ${y2 + 82} M${x2 - 14} ${y2 + 58} L${x2} ${y2 + 70} L${x2 - 14} ${y2 + 82}" stroke="rgba(232,241,255,.6)" stroke-width="2.4" fill="none"/>
+    <text x="${(x1 + x2) / 2}" y="${y2 + 120}" text-anchor="middle" style="font-size:50px; fill:#e8f1ff">d</text>
+    <text x="${x2 + 110}" y="${y1 + 40}" style="font-size:56px; fill:#9fe6ff">C = ε₀A / d</text>
+    <text x="${(x1 + x2) / 2 + 30}" y="${y1 - 40}" text-anchor="middle" style="font-size:54px; fill:#e8f1ff">E</text>`;
+  return s;
+}
+
+// 3. electromagnetic induction: a bar magnet's dipole field (traced numerically) pushed into a coil
+function induction() {
+  const N = { x: 470, y: CY }, S = { x: 250, y: CY }; let s = '';
+  const field = (x, y) => { let ex = 0, ey = 0;
+    for (const [q, p] of [[1, N], [-1, S]]) { const dx = x - p.x, dy = y - p.y, r3 = Math.pow(dx * dx + dy * dy, 1.5) + 1e-6; ex += q * dx / r3; ey += q * dy / r3; }
+    const m = Math.hypot(ex, ey); return [ex / m, ey / m]; };
+  for (let i = 1; i < 14; i++) {
+    if (i === 7) continue;
+    const a = (i / 14) * Math.PI * 2; let x = N.x + Math.cos(a) * 14, y = N.y + Math.sin(a) * 14; const pts = [[x, y]];
+    for (let k = 0; k < 2400; k++) { const [u, v] = field(x, y); x += u * 2.2; y += v * 2.2;
+      if (Math.hypot(x - S.x, y - S.y) < 16 || x < -200 || x > 1280 || y < -300 || y > 1060) break; if (k % 6 === 0) pts.push([x, y]); }
+    const mid = Math.floor(pts.length / 2);
+    const d = 'M' + pts.map((p, j) => (j === mid ? 'L' : (j ? 'L' : '')) + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    s += `<path d="${d}" fill="none" stroke="#5fd0ff" stroke-width="3" opacity=".75"/>`;
+    const p0 = pts[mid], p1 = pts[mid + 1] || p0, ang = Math.atan2(p1[1] - p0[1], p1[0] - p0[0]) * 180 / Math.PI;
+    s += `<path d="M-9 -8 L7 0 L-9 8 Z" fill="#9fe6ff" transform="translate(${p0[0].toFixed(1)} ${p0[1].toFixed(1)}) rotate(${ang.toFixed(1)})"/>`;
+  }
+  s += `<line x1="${S.x - 40}" y1="${CY}" x2="${N.x + 40}" y2="${CY}" stroke="#5fd0ff" stroke-width="3" opacity=".75"/>`;
+  // magnet
+  s += `<rect x="${S.x - 46}" y="${CY - 50}" width="${(N.x - S.x) / 2 + 46}" height="100" rx="10" fill="#1d4fd1"/>
+    <rect x="${(S.x + N.x) / 2}" y="${CY - 50}" width="${(N.x - S.x) / 2 + 46}" height="100" rx="10" fill="#ffb547"/>
+    <rect x="${S.x - 46}" y="${CY - 50}" width="${N.x - S.x + 92}" height="100" rx="10" fill="none" stroke="#e8f1ff" stroke-width="2.5" filter="url(#glow)"/>
+    <text x="${S.x + 10}" y="${CY + 22}" text-anchor="middle" style="font:900 60px Alexandria; font-style:normal; fill:#e8f1ff">S</text>
+    <text x="${N.x - 10}" y="${CY + 22}" text-anchor="middle" style="font:900 60px Alexandria; font-style:normal; fill:#1f1510">N</text>
+    <path d="M${S.x + 40} ${CY + 110} H${N.x - 20} M${N.x - 38} ${CY + 96} L${N.x - 18} ${CY + 110} L${N.x - 38} ${CY + 124}" stroke="#ffb547" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // coil: back halves dim, front halves bright
+  const cx0 = 640, turns = 7, gap = 40, ry = 120, rx = 30; let back = '', front = '';
+  for (let i = 0; i < turns; i++) { const x = cx0 + i * gap;
+    back += `<path d="M${x} ${CY - ry} A${rx} ${ry} 0 0 0 ${x} ${CY + ry}" fill="none" stroke="#b86a2a" stroke-width="7" opacity=".55"/>`;
+    front += `<path d="M${x} ${CY - ry} A${rx} ${ry} 0 0 1 ${x + gap * .5} ${CY + ry}" fill="none" stroke="#ffb547" stroke-width="8" stroke-linecap="round"/>`; }
+  s = back + s + front;
+  s += `<text x="${cx0 + 110}" y="${CY - 175}" text-anchor="middle" style="font-size:56px; fill:#9fe6ff">ε = −dΦ / dt</text>`;
+  return s;
+}
+
+const COVERS = [
+  { id: 'c1', n: '01', label: 'مختبر الفيزياء 1', title: 'الموصل الكروي<br><em>المنفرد المعزول</em>', dia: sphere },
+  { id: 'c2', n: '02', label: 'الفصل الأول', title: 'المتسعة<br><em>ذات الصفيحتين</em>', dia: capacitor },
+  { id: 'c3', n: '03', label: 'الفصل الثاني', title: 'الحث<br><em>الكهرومغناطيسي</em>', dia: induction },
+];
+const logo = `<div class="logo"><span class="s">سيد</span><span class="f">الفيزياء</span>
+  <svg viewBox="0 0 100 60" preserveAspectRatio="none"><ellipse cx="50" cy="32" rx="49" ry="17" transform="rotate(-12 50 32)" fill="none" stroke="#5fd0ff" stroke-width="1.6" vector-effect="non-scaling-stroke" opacity=".85"/>
+  <circle cx="7" cy="45" r="3.2" fill="#ffb547"/></svg></div>`;
+for (const c of COVERS) {
+  document.getElementById(c.id).innerHTML = `
+    <div class="grid"></div>
+    <div class="edge" style="top:120px"><span>I take physics <b style="color:var(--cyan); font-weight:500">personally</b></span><span>@m.jaber8</span></div>
+    <div class="num">${c.n}</div>
+    <div class="label"><i></i>${c.label}</div>
+    <svg class="dia" viewBox="0 0 1080 760">${c.dia()}</svg>
+    <div class="title">${c.title}</div>
+    <div class="foot">${logo}<div class="who">أ. <b>محمد جابر</b></div></div>
+    <div class="edge" style="top:1780px"><span>Physics — 6th grade</span><span>Winter 2027</span></div>
+    <div class="grain"></div>`;
+}
+Promise.all([
+  document.fonts.load("900 104px 'Alexandria'", 'الموصل الكروي المنفرد المعزول المتسعة ذات الصفيحتين الحث الكهرومغناطيسي 01 SN'),
+  document.fonts.load("800 26px 'Alexandria'", 'سيد'),
+  document.fonts.load("700 34px 'Readex Pro'", 'مختبر الفيزياء 1 الفصل الأول الثاني محمد جابر'),
+  document.fonts.load("italic 56px 'Instrument Serif'", 'E = kq/r² C = ε₀A / d ε = −dΦ / dt'),
+  document.fonts.load("500 18px 'IBM Plex Mono'", 'PHYSICS'),
+]).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>

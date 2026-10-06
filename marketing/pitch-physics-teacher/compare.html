@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<!-- Private pitch sheet: his current grid covers vs the new cover system, as they'd sit on his profile (3:4 grid crops). -->
+<style>
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#222; padding:40px }
+.art { position:relative; width:1080px; height:1350px; background:#0b0b0d; color:#f1ece4; direction:rtl; font-family:'Readex Pro'; padding:70px 60px }
+h1 { font:900 64px/1.2 'Alexandria' }
+h1 span { color:#5fd0ff }
+.sub { font:400 26px 'Readex Pro'; color:rgba(241,236,228,.6); margin-top:10px }
+.row { margin-top:44px }
+.tag { display:inline-flex; align-items:center; gap:12px; font:500 18px 'IBM Plex Mono'; letter-spacing:.2em; color:rgba(241,236,228,.6); margin-bottom:16px; direction:ltr }
+.tag b { font:800 30px 'Alexandria'; letter-spacing:0; color:#f1ece4 }
+.tiles { display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; direction:ltr }
+.tiles div { aspect-ratio:3/4; background-size:cover; background-position:center }
+.foot { position:absolute; left:60px; right:60px; bottom:50px; display:flex; justify-content:space-between; font:500 20px 'IBM Plex Mono'; letter-spacing:.14em; color:rgba(241,236,228,.55); direction:ltr }
+</style></head><body>
+<div class="art" id="grid">
+  <h1>نفس الدروس.. <span>هوية وحدة</span></h1>
+  <div class="sub">كل فيديو إله رسمة الدرس نفسه، وكلهم يبينون من نفس الصفحة</div>
+  <div class="row"><div class="tag"><b>قبل</b>NOW</div>
+    <div class="tiles"><div style="background-image:url(photo/old-3.png)"></div><div style="background-image:url(photo/old-2.png)"></div><div style="background-image:url(photo/old-1.png)"></div></div></div>
+  <div class="row"><div class="tag"><b>بعد</b>NEW SYSTEM</div>
+    <div class="tiles"><div style="background-image:url(out/covers-c3.png)"></div><div style="background-image:url(out/covers-c2.png)"></div><div style="background-image:url(out/covers-c1.png)"></div></div></div>
+  <div class="foot"><span>SPEC FOR @M.JABER8</span><span>DESIGN — @ALLAWI.PSD</span></div>
+</div>
+<script>
+Promise.all([document.fonts.load("900 64px 'Alexandria'", 'نفس الدروس هوية وحدة قبل بعد'), document.fonts.load("400 26px 'Readex Pro'", 'كل فيديو'),
+  ...['photo/old-1.png','photo/old-2.png','photo/old-3.png','out/covers-c1.png','out/covers-c2.png','out/covers-c3.png'].map((s) => new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = s; }))])
+  .then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
