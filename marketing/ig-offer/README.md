@@ -26,3 +26,11 @@ Prices (IQD), based on 14,000 per post:
 | Basic package (8 posts + 4 stories) | 100,000 |
 | Premium package (12 posts + 8 stories + 1 carousel) | 175,000 |
 | Complete package (16 posts + 12 stories + 2 carousels + content plan) | 250,000 |
+
+`covers.html` renders three highlight cover options (1080x1920 each) to `out/covers-a.png`, `-b.png` and `-c.png`:
+
+- A: «د.ع» on paper, selected like a Photoshop layer.
+- B: a cream price tag on orange.
+- C: a cream tag icon inside an orange ring on dark.
+
+It also renders `covers-preview.png`, which shows all three as small circles on a profile. Render it twice: the preview reads the PNGs from the first pass.

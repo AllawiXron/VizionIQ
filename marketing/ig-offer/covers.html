@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<!-- Highlight cover options for «الأسعار» (1080x1920; Instagram shows the centre as a small circle, so each motif
+     sits inside a ~700px centre circle). #preview shows all three as they look on a profile. -->
+<style>
+:root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange-2:#f07a2e; --cream:#fbf3e6 }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#333; display:flex; gap:40px; padding:40px; align-items:flex-start }
+.art { flex:none; position:relative; width:1080px; height:1920px; overflow:hidden }
+.c { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) }
+
+/* A: the currency selected like a Photoshop layer */
+#a { background:var(--paper) }
+#a .sel { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:10px 50px 70px }
+#a .cur { font:900 430px/1 'Alexandria'; color:var(--ink); direction:rtl; white-space:nowrap }
+#a .cur b { color:var(--orange) }
+.frame { position:absolute; inset:0; border:5px solid var(--ink) }
+.frame i { position:absolute; width:34px; height:34px; background:var(--cream); border:5px solid var(--ink) }
+.frame .tl { left:-20px; top:-20px } .frame .tr { right:-20px; top:-20px } .frame .bl { left:-20px; bottom:-20px } .frame .br { right:-20px; bottom:-20px }
+.frame .tm { left:calc(50% - 17px); top:-20px } .frame .bm { left:calc(50% - 17px); bottom:-20px } .frame .ml { left:-20px; top:calc(50% - 17px) } .frame .mr { right:-20px; top:calc(50% - 17px) }
+#a .cursor { position:absolute; right:-80px; bottom:-96px; width:110px; filter:drop-shadow(0 8px 10px rgba(0,0,0,.25)) }
+
+/* B: cream price tag on orange */
+#b { background:radial-gradient(circle at 50% 45%, var(--orange-2) 0%, var(--orange) 55%, #c4440f 100%) }
+#b svg.tag { width:960px; height:960px; filter:drop-shadow(0 30px 40px rgba(90,25,0,.35)) }
+
+/* C: dark, orange ring, cream tag outline */
+#c { background:var(--ink) }
+#c .ring { width:820px; height:820px; border-radius:50%; border:30px solid var(--orange); display:flex; align-items:center; justify-content:center }
+#c svg { width:440px; height:440px; color:var(--cream) }
+
+/* preview */
+#preview { width:1300px; height:620px; background:#000; color:#f5f5f5; font-family:'Readex Pro'; direction:rtl; padding:60px 80px }
+#preview h4 { font:500 26px 'IBM Plex Mono'; direction:ltr; text-align:left; color:#8a8a8a; margin-bottom:40px }
+#preview .row { display:flex; justify-content:space-around }
+#preview .hl { text-align:center; font:400 30px 'Readex Pro' }
+#preview .ci { width:240px; height:240px; border-radius:50%; padding:8px; border:4px solid #3a3a3a; margin-bottom:22px }
+#preview .ci div { width:100%; height:100%; border-radius:50%; background-size:cover; background-position:center }
+#preview .k { margin-top:10px; font:500 24px 'IBM Plex Mono'; color:#e2541b; direction:ltr }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.6-4.3 2.9 6.6 3-1.3-2.9-6.5 6.3-.3z" fill="#1f1510" stroke="#fbf3e6" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12.6V4.5A1.5 1.5 0 0 1 4.5 3h8.1a1.5 1.5 0 0 1 1.06.44l6.9 6.9a1.5 1.5 0 0 1 0 2.12l-8.1 8.1a1.5 1.5 0 0 1-2.12 0l-6.9-6.9A1.5 1.5 0 0 1 3 12.6z"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></symbol>
+</defs></svg>
+
+<div class="art" id="a">
+  <div class="sel"><div class="cur">د<b>.</b>ع</div>
+    <div class="frame"><i class="tl"></i><i class="tm"></i><i class="tr"></i><i class="ml"></i><i class="mr"></i><i class="bl"></i><i class="bm"></i><i class="br"></i></div>
+    <svg class="cursor" viewBox="0 0 24 24"><use href="#i-cursor"/></svg></div>
+</div>
+
+<div class="art" id="b">
+  <svg class="tag c" viewBox="0 0 200 200">
+    <g transform="rotate(-18 100 100)">
+      <path d="M40 60 H128 L172 100 L128 140 H40 A12 12 0 0 1 28 128 V72 A12 12 0 0 1 40 60 Z" fill="#fbf3e6"/>
+      <circle cx="140" cy="100" r="9" fill="#e2541b"/>
+      <text x="80" y="117" text-anchor="middle" style="font:900 50px Alexandria; fill:#1f1510">د.ع</text>
+    </g>
+  </svg>
+</div>
+
+<div class="art" id="c"><div class="ring c"><svg><use href="#i-tag"/></svg></div></div>
+
+<div class="art" id="preview" style="height:620px">
+  <h4>HOW IT LOOKS ON YOUR PROFILE</h4>
+  <div class="row">
+    <div class="hl"><div class="ci"><div style="background-image:url(out/covers-a.png)"></div></div>الأسعار<div class="k">A</div></div>
+    <div class="hl"><div class="ci"><div style="background-image:url(out/covers-b.png)"></div></div>الأسعار<div class="k">B</div></div>
+    <div class="hl"><div class="ci"><div style="background-image:url(out/covers-c.png)"></div></div>الأسعار<div class="k">C</div></div>
+  </div>
+</div>
+
+<script>
+Promise.all([
+  document.fonts.load("900 330px 'Alexandria'", 'د.ع'),
+  document.fonts.load("400 30px 'Readex Pro'", 'الأسعار'),
+  document.fonts.load("500 24px 'IBM Plex Mono'", 'HOW ABC'),
+  ...['a','b','c'].map((k) => new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = `out/covers-${k}.png`; })),
+]).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
