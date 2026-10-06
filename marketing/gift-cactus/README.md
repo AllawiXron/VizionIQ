@@ -47,3 +47,15 @@ How to rebuild it by hand in Photoshop:
    - «كاكتوس» is Reem Kufi Fun 700. It's a colour font, so its dots come with their own colour; in the design they're recoloured pink.
    - «حياكة يدوية.. بكل حب» is Readex Pro 500.
    - These layers are rasterised in the PSD, so retype them to edit.
+
+## Showcase for allawi.psd
+
+Posted with the store's OK. `node render.cjs --page showcase.html` renders `out/showcase-<id>.png`:
+- `s1`–`s4`: a 1080x1350 carousel:
+  1. the cover, «من حساب جديد.. [لهوية كاملة]»;
+  2. before/after profile mocks;
+  3. posts and templates;
+  4. the CTA, «راسلني هسه» and «التصميم يبدي من 14 ألف».
+- `story`: a 1080x1920 story for the «أعمالي» highlight.
+
+The "before" is a generic empty new account, not her real profile, and no product photos are used.
