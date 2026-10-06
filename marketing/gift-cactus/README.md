@@ -56,11 +56,19 @@ Posted with the store's OK. `node render.cjs --page showcase.html` renders `out/
   2. before/after profile mocks;
   3. posts and templates;
   4. the CTA, «راسلني هسه» and «التصميم يبدي من 14 ألف».
-- `st1`–`st5`: a 5-frame story sequence (1080x1920) for the «أعمالي» highlight. It never mentions a gift.
-  1. The idea: «من اسم وفكرة.. [لهوية كاملة]», and the name + yarn = knitted cactus equation.
-  2. The logo: a magnifier on the V stitches, and where the colours come from.
-  3. The five highlight covers: which of her pieces each one draws.
-  4. The posts and templates.
-  5. The result: her profile with callouts, plus the «راسلني» card.
+- `st1`–`st6`: a 6-frame story sequence (1080x1920) for the «أعمالي» highlight. It never mentions a gift.
+  1. The real before/after, «نفس الستور ونفس الشغل.. [بهوية جديدة]». It shows her TikTok profile screenshot next to the same screenshot with the new avatar and the five highlight covers drawn in at TikTok's sizes. Below that, her old highlight row is compared with the new one.
+  2. The idea: «من اسم وفكرة.. [لهوية كاملة]», and the name + yarn = knitted cactus equation.
+  3. The logo: a magnifier on the V stitches, and where the colours come from.
+  4. The five highlight covers: which of her pieces each one draws.
+  5. The posts and templates.
+  6. The result: her profile with callouts, plus the «راسلني» card.
 
-The "before" is a generic empty new account, not her real profile, and no product photos are used.
+The carousel's "before" is a generic empty new account, and no product photos are used.
+
+Frame 1 is built from her real profile, so its inputs and output stay out of git:
+- `private/before-profile.jpg` is her screenshot cropped to y 132–1380, which leaves out the pinned video.
+- `private/after-base.jpg` is the same crop with the avatar, her note bubble and the highlight row blacked out; `showcase.html` draws the new ones on top.
+- `out/showcase-st1.png` is the rendered frame.
+
+Without the `private/` files, `st1` renders with empty cards.
