@@ -1,6 +1,6 @@
 # The dollar reel «الدولار صعد» (HyperFrames)
 
-`renders/dollar-reel.mp4` is a 38.8 s reel at 1080×1920 and 30 fps, with sound effects only. The voice and music go on in CapCut. `timing.txt` gives the time of every line and word, and the AI-voice text.
+`renders/dollar-reel.mp4` is a 38.8 s reel at 1080×1920 and 30 fps (31 MB), with sound effects only. The voice and music go on in CapCut. `timing.txt` gives the time of every line and word, and the AI-voice text.
 
 The look follows the user's reference reel (a Baghdad agency's): analog collage, not clean UI.
 - Deep red cloth, old paper with a film frame («ALLAWI 400»), a green board.
