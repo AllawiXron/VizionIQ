@@ -105,6 +105,14 @@
   src: url(assets/fonts/48d1e9cdfb.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+@font-face { font-family:'Abril Fatface'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/abril-latin.woff2) format('woff2') }
+@font-face { font-family:'Anton'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/anton-latin.woff2) format('woff2') }
+@font-face { font-family:'Bebas Neue'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/bebas-latin.woff2) format('woff2') }
+@font-face { font-family:'Courier Prime'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/courierprime700-latin.woff2) format('woff2') }
+@font-face { font-family:'Reem Kufi'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/reemkufi700-arabic.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Reem Kufi'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/reemkufi700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
 :root { --cream:#efe5d3; --ink:#2a2420; --red:#9a1015; --marker:#c4161c; --pen:#1f3a8a }
 * { margin:0; padding:0; box-sizing:border-box }
 html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
@@ -117,15 +125,16 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 .pin { position:absolute; width:46px; height:46px; z-index:3 }
 .tape { position:absolute; height:54px; background:rgba(236,226,200,.72); box-shadow:0 2px 6px rgba(0,0,0,.18);
   clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
-.mk { position:absolute; overflow:visible; pointer-events:none }
+/* marker strokes boil like hand-drawn animation: the displacement noise changes 12 times a second */
+.mk, .wmk { position:absolute; overflow:visible; pointer-events:none; filter:url(#boil) }
 .mk path { fill:none; stroke:var(--marker); stroke-width:9; stroke-linecap:round; stroke-linejoin:round; opacity:.92 }
+.mk.thin path { stroke-width:7 }
 
 /* subtitles: small, like the reference; each word fades in as it is said */
 .sub { position:absolute; left:80px; right:80px; text-align:center; font:500 50px/1.6 'IBM Plex Sans Arabic'; color:var(--cream);
   text-shadow:0 2px 14px rgba(0,0,0,.55) }
 .sub.on-paper { color:var(--red); text-shadow:none }
 .sub .w { display:inline-block; opacity:0; margin:0 7px; position:relative }
-.wmk { position:absolute; overflow:visible; pointer-events:none }
 .wmk path { fill:none; stroke:var(--marker); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; opacity:.92 }
 .sub.echo { color:#c4161c; text-shadow:none; opacity:0 }
 
@@ -134,7 +143,19 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 .film .fr { position:absolute; left:34px; right:34px; top:120px; bottom:120px; border:3px solid rgba(40,28,20,.5); border-radius:4px }
 .film .ed { position:absolute; font:500 22px 'IBM Plex Sans Arabic'; letter-spacing:.22em; color:rgba(40,28,20,.6); direction:ltr; white-space:nowrap }
 
-/* S1 calendar */
+/* S1 hook: the note, an equals sign, and 180,000 cut out of magazines */
+#hBill { position:absolute; left:160px; top:330px; width:760px }
+#rans { position:absolute; left:0; right:0; top:860px; height:240px; display:flex; justify-content:center; align-items:center; direction:ltr;
+  filter:drop-shadow(0 12px 14px rgba(0,0,0,.5)) drop-shadow(0 2px 3px rgba(0,0,0,.4)) }
+.rn { display:inline-block; line-height:1; padding:14px 16px 10px; margin:0 -3px }
+#qScrap { position:absolute; left:390px; top:850px; width:300px; filter:drop-shadow(0 14px 16px rgba(0,0,0,.5)) }
+#qScrap span { display:block; text-align:center; font:700 230px/1.15 'Reem Kufi'; color:#b3121a; background:#efe6d4;
+  clip-path:polygon(4% 3%, 97% 0, 100% 95%, 2% 100%) }
+#dlab { position:absolute; left:400px; top:1150px; width:280px; filter:drop-shadow(0 10px 12px rgba(0,0,0,.5)) }
+#dlab span { display:block; padding:10px 0 18px; text-align:center; font:700 78px/1.2 'Reem Kufi'; color:#a8121a; background:url(assets/img/newsprint.jpg) center/600px;
+  clip-path:polygon(0 6%, 9% 0, 22% 5%, 37% 1%, 51% 6%, 66% 0, 80% 5%, 92% 1%, 100% 7%, 99% 94%, 88% 100%, 73% 95%, 58% 100%, 42% 94%, 27% 100%, 12% 95%, 1% 100%) }
+
+/* S2 calendar */
 #cal { position:absolute; left:160px; top:400px; width:760px; height:860px; transform-origin:380px 0 }
 #cal img { position:absolute; inset:0; width:100%; height:100% }
 #cal .hd { position:absolute; left:0; right:0; top:96px; text-align:center; font:600 50px 'IBM Plex Sans Arabic'; color:var(--ink) }
@@ -143,11 +164,13 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 #cal .grid div { height:94px; display:flex; align-items:center; justify-content:center; font:400 42px 'IBM Plex Sans Arabic'; color:var(--ink) }
 #cal .grid .dn { height:60px; font:600 30px 'IBM Plex Sans Arabic'; color:#7c6f63 }
 
-/* S3 big number */
-#num { position:absolute; left:0; right:0; top:630px; height:300px; overflow:hidden; direction:ltr }
-#num .n { position:absolute; left:0; right:0; text-align:center; font:900 230px/300px 'Playfair Display'; color:var(--red); white-space:nowrap }
-#num .n2 { font-size:196px }
-#cur { position:absolute; left:0; right:0; top:968px; text-align:center; font:600 54px 'IBM Plex Sans Arabic'; color:var(--red); opacity:0 }
+/* S3 the seesaw: cardboard on paper */
+#ground { position:absolute; left:40px; top:1211px; width:1000px; height:40px; filter:brightness(.78) drop-shadow(0 8px 10px rgba(0,0,0,.35)) }
+#ful { position:absolute; left:425px; top:1046px; width:230px; height:168px; filter:drop-shadow(0 10px 10px rgba(0,0,0,.35)) }
+#plank { position:absolute; left:50px; top:1000px; width:980px; height:62px; transform-origin:490px 31px }
+#plank > img.pl { position:absolute; inset:0; width:100%; height:100%; filter:drop-shadow(0 10px 10px rgba(0,0,0,.35)) }
+#ssBill { position:absolute; left:40px; top:-122px; width:300px; transform-origin:150px 126px }
+.ssD { position:absolute; right:40px; width:300px; transform-origin:150px 133px }
 
 /* S4 payslip */
 #slip { position:absolute; left:290px; top:360px; width:520px; height:815px; transform-origin:260px 400px }
@@ -157,7 +180,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 #slip .r { font:400 30px 'IBM Plex Sans Arabic'; text-align:right; color:#4a4038 }
 #slip .dash { position:absolute; left:40px; right:40px; border-top:3px dashed #9d9286 }
 #slip .amt { top:470px; font:600 34px 'IBM Plex Sans Arabic'; color:#4a4038 }
-#slip .big { top:530px; font:900 92px 'Playfair Display'; color:#1f1a17; direction:ltr }
+#amt { position:absolute; left:0; top:500px; width:520px; height:170px; transform-origin:260px 88px }
+#slip #amt .big { top:30px; font:900 92px 'Playfair Display'; color:#1f1a17; direction:ltr }
 #slip .bars { position:absolute; left:110px; right:110px; top:690px; height:70px;
   background:repeating-linear-gradient(90deg, #2b2622 0 4px, transparent 4px 7px, #2b2622 7px 9px, transparent 9px 14px, #2b2622 14px 20px, transparent 20px 23px) }
 
@@ -172,6 +196,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 .stamp { position:absolute; padding:10px 34px 18px; border:7px double #b3121a; border-radius:18px; color:#b3121a; font:600 76px/1.3 'IBM Plex Sans Arabic';
   white-space:nowrap; opacity:0; mix-blend-mode:multiply;
   -webkit-mask-image:url(assets/img/grain.png); mask-image:url(assets/img/grain.png); -webkit-mask-size:300px; mask-size:300px }
+.dim { position:absolute; inset:0; background:#050303; opacity:0; pointer-events:none }
 
 /* S6 price tag + chat */
 #tag { position:absolute; left:260px; top:760px; width:560px; height:298px; transform-origin:30px 149px }
@@ -188,6 +213,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 .bub.them { left:230px; top:1120px; background:#e7e7ea; color:#111; border-bottom-left-radius:12px }
 .bub.dots { left:230px; top:1120px; background:#e7e7ea; padding:30px 34px }
 .bub.dots i { display:inline-block; width:18px; height:18px; border-radius:50%; background:#9b9ba1; margin:0 6px }
+#hl { border-radius:6px; padding:0 4px; margin:0 -4px }
 
 /* S7 retro window + ticket */
 #win { position:absolute; left:70px; top:520px; width:540px; height:470px; background:#c3c3c3; padding:6px;
@@ -207,21 +233,46 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 #ticket .bars { position:absolute; left:40px; right:40px; top:465px; height:56px;
   background:repeating-linear-gradient(90deg, #2b2622 0 3px, transparent 3px 6px, #2b2622 6px 8px, transparent 8px 12px, #2b2622 12px 17px, transparent 17px 19px) }
 
-/* S13 / S14 */
-#zahawi { position:absolute; left:90px; top:540px; width:900px; transform-origin:450px 360px }
-#zahawi img { width:100%; display:block }
-#list { position:absolute; left:220px; top:360px; width:640px; height:800px; transform-origin:320px 0 }
+/* S8 everyone asks: paper speech bubbles over the people */
+.bq { position:absolute; border-radius:50%; background:#efe6d6; display:flex; align-items:center; justify-content:center; font-family:'Reem Kufi'; font-weight:700;
+  color:#b3121a; line-height:1; opacity:0; filter:drop-shadow(0 8px 10px rgba(0,0,0,.5)) }
+.bq i { position:absolute; bottom:-16%; left:38%; width:26%; height:32%; background:#efe6d6; clip-path:polygon(0 0, 100% 0, 18% 100%) }
+
+/* S12 the bazaar: the sunbeam and its dust */
+#beam { position:absolute; left:930px; top:60px; width:300px; height:1250px; transform-origin:150px 0; transform:rotate(43deg); mix-blend-mode:screen;
+  background:linear-gradient(90deg, rgba(255,236,200,0), rgba(255,236,200,.42) 50%, rgba(255,236,200,0));
+  -webkit-mask-image:linear-gradient(180deg, #000 0%, #000 45%, transparent 100%); mask-image:linear-gradient(180deg, #000 0%, #000 45%, transparent 100%) }
+.dust { position:absolute; border-radius:50%; background:#fff4e0 }
+
+/* S13 then and now */
+#pc { position:absolute; left:70px; top:330px; width:560px }
+#zahawi { position:absolute; left:230px; top:640px; width:780px; transform-origin:390px 300px }
+#pc img, #zahawi img { width:100%; display:block }
+
+/* S14 the question to the viewer */
+#list { position:absolute; left:220px; top:300px; width:640px; height:800px; transform-origin:320px 0 }
 #list img { position:absolute; inset:0; width:100%; height:100% }
-#list .t { position:absolute; left:40px; right:110px; color:var(--pen); font:500 46px 'IBM Plex Sans Arabic'; transform:rotate(-1.5deg) }
-#list .h { top:66px; font-weight:600; font-size:58px; text-align:center; left:30px; right:30px }
+#list .t { position:absolute; left:40px; right:110px; color:var(--pen); font:500 44px 'IBM Plex Sans Arabic'; transform:rotate(-1.5deg); white-space:nowrap }
+#list .h { top:60px; font-weight:600; font-size:52px; text-align:center; left:30px; right:30px }
+.qm { position:absolute; left:70px; font:700 60px 'Reem Kufi'; color:var(--marker); opacity:0 }
 
 /* S15 signature */
 #sig { position:absolute; left:0; right:0; top:760px; text-align:center; font:400 250px/1.2 'Mrs Saint Delafield'; color:var(--cream); direction:ltr;
   clip-path:inset(0 100% 0 0) }
 #handle { position:absolute; left:0; right:0; top:1110px; text-align:center; font:500 34px 'IBM Plex Sans Arabic'; letter-spacing:.32em; color:rgba(239,229,211,.8); direction:ltr; opacity:0 }
 
+/* the newspaper that flies past the lens on three cuts */
+#newsW { position:absolute; left:0; top:-340px; width:1900px; height:2600px; filter:drop-shadow(0 0 40px rgba(0,0,0,.6)) }
+#news { position:absolute; inset:0; background:url(assets/img/newsprint.jpg) 0 0/700px; direction:rtl; color:#1d1a17; filter:blur(2px) }
+#news .mast { position:absolute; left:0; right:0; top:420px; text-align:center; font:700 170px/1.2 'Reem Kufi' }
+#news .dl { position:absolute; left:420px; right:420px; top:660px; text-align:center; font:400 34px 'IBM Plex Sans Arabic'; border-top:4px solid #1d1a17; border-bottom:4px solid #1d1a17; padding:8px 0 }
+#news .hd { position:absolute; left:380px; right:380px; top:760px; text-align:center; font:600 118px/1.3 'IBM Plex Sans Arabic' }
+#news .ph { position:absolute; left:470px; top:1100px; width:560px; filter:grayscale(1) contrast(1.1) }
+#news .col { position:absolute; top:1100px; width:300px; font:400 30px/1.55 'IBM Plex Sans Arabic'; color:#3a3530; text-align:justify }
+
 /* film finish over everything */
 #fx, #grain, #vig, #leak, #flash, #burn, #black { position:absolute; inset:0; pointer-events:none }
+#fx { overflow:hidden }
 #grain { background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.46 }
 #vig { background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%) }
 #flash { opacity:0; background:#f3e6d3 }
@@ -231,58 +282,71 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="38.2" data-width="1080" data-height="1920">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence id="boilT" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="38.8" data-width="1080" data-height="1920">
 
-      <!-- S1: one week -->
-      <section class="scene clip" id="s1" data-start="0" data-duration="2.6" data-track-index="0">
+      <!-- S1 (hook): $100 = 180,000, cut out of magazines -->
+      <section class="scene clip" id="s1" data-start="0" data-duration="3" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/red.jpg" alt="" />
+          <img class="ab" id="hB2" src="assets/img/bill.png" alt="" style="left:650px; top:0; width:300px; filter:blur(2px) brightness(.75)" />
+          <img class="ab" id="hD3" src="assets/img/dinar.png" alt="" style="left:80px; top:0; width:280px; filter:blur(2.4px) brightness(.75)" />
+          <img class="shadow jit" id="hBill" src="assets/img/bill.png" alt="" />
+          <svg class="mk" id="eqMk" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+          <div id="rans"></div>
+          <div id="qScrap" class="jit"><span>؟</span></div>
+          <div id="dlab" class="jit"><span>دينار</span></div>
+          <img class="ab" id="hD2" src="assets/img/dinar.png" alt="" style="left:-140px; top:0; width:1000px; filter:blur(11px)" />
+        </div>
+      </section>
+
+      <!-- S2: all in one week -->
+      <section class="scene clip" id="s2" data-start="3" data-duration="2.4" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/board.jpg" alt="" />
-          <div id="cal" class="shadow">
+          <div id="cal" class="shadow jit">
             <img src="assets/img/cal.png" alt="" />
             <div class="hd">تشرين الأول<span class="yr">2026</span></div>
             <div class="grid" id="calgrid"></div>
             <svg class="mk" id="calmk" width="760" height="860" viewBox="0 0 760 860" style="left:0;top:0"></svg>
           </div>
         </div>
-        <div class="sub" style="top:1390px" data-words="أسبوع|واحد..|بس|أسبوع." data-at="0,0.42,1.25,1.5"></div>
+        <div class="sub" style="top:1390px" data-words="وكلها|بأسبوع|واحد." data-at="3.1,3.75,4.15"></div>
       </section>
 
-      <!-- S2: the dollar up, the dinar down -->
-      <section class="scene clip" id="s2" data-start="2.6" data-duration="2.4" data-track-index="0">
-        <div class="cam">
-          <img class="bg" src="assets/img/red.jpg" alt="" />
-          <img class="ab" id="bill2" src="assets/img/bill.png" alt="" style="left:640px; top:0; width:300px; filter:blur(1.6px) brightness(.8)" />
-          <img class="ab" id="dinar3" src="assets/img/dinar.png" alt="" style="left:90px; top:0; width:270px; filter:blur(1.8px) brightness(.8)" />
-          <img class="ab shadow" id="bill" src="assets/img/bill.png" alt="" style="left:180px; top:0; width:720px" />
-          <img class="ab shadow" id="dinar" src="assets/img/dinar.png" alt="" style="left:240px; top:0; width:600px" />
-          <img class="ab" id="dinar2" src="assets/img/dinar.png" alt="" style="left:-120px; top:0; width:980px; filter:blur(10px)" />
-        </div>
-        <div class="sub" style="top:900px" data-words="الدولار|صعد..|والدينار|نزل." data-at="2.7,3.05,3.75,4.15"></div>
-      </section>
-
-      <!-- S3: $100 = 180,000 -->
-      <section class="scene clip" id="s3" data-start="5" data-duration="3" data-track-index="0">
+      <!-- S3: the dollar up, the dinar down (a cardboard seesaw) -->
+      <section class="scene clip" id="s3" data-start="5.4" data-duration="2.6" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/paper.jpg" alt="" />
-          <img class="ab shadow" id="p3a" src="assets/img/p-bazaar1.png" alt="" style="left:70px; top:230px; width:430px" />
-          <div class="tape" id="t3a" style="left:200px; top:205px; width:170px"></div>
-          <img class="ab shadow" id="p3b" src="assets/img/p-coffee.png" alt="" style="left:610px; top:300px; width:370px" />
-          <div class="tape" id="t3b" style="left:730px; top:282px; width:150px"></div>
-          <img class="ab shadow" id="p3c" src="assets/img/p-fan.png" alt="" style="left:560px; top:1250px; width:380px" />
-          <div class="tape" id="t3c" style="left:690px; top:1230px; width:160px"></div>
-          <div id="num"><div class="n" id="n1">$100</div><div class="n n2" id="n2">180,000</div></div>
-          <div id="cur">دينار</div>
-          <svg class="mk" id="numU" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"><path pathLength="1" d="M250 948 C 420 924, 620 930, 840 940" /></svg>
+          <img id="ground" src="assets/img/plank.png" alt="" />
+          <img id="ful" src="assets/img/fulcrum.png" alt="" />
+          <div id="plank">
+            <img class="pl" src="assets/img/plank.png" alt="" />
+            <img class="shadow jit" id="ssBill" src="assets/img/bill.png" alt="" />
+            <img class="ssD shadow" id="ssD1" src="assets/img/dinar.png" alt="" style="top:-129px" />
+            <img class="ssD shadow" id="ssD2" src="assets/img/dinar.png" alt="" style="top:-141px; right:30px" />
+            <img class="ssD shadow" id="ssD3" src="assets/img/dinar.png" alt="" style="top:-153px; right:46px" />
+            <img class="ssD shadow" id="ssD4" src="assets/img/dinar.png" alt="" style="top:-165px; right:36px" />
+          </div>
+          <svg class="mk" id="ssMk" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0">
+            <path id="arUp" pathLength="1" d="M520 640 C 516 560, 522 470, 518 330 M480 380 L518 328 L556 382" />
+            <path id="arDn" pathLength="1" d="M850 640 C 854 720, 848 800, 852 900 M812 852 L852 904 L890 850" />
+          </svg>
         </div>
         <div class="film"><div class="fr"></div><div class="ed" style="left:60px; bottom:70px">ALLAWI 400</div><div class="ed" style="right:60px; bottom:70px">▸ 12&nbsp;&nbsp;&nbsp;▸ 12A</div></div>
-        <div class="sub on-paper" style="top:1090px" data-words="الـ١٠٠|دولار..|صارت|١٨٠|ألف." data-at="5.1,5.5,6.25,6.6,6.9"></div>
+        <div class="sub on-paper" style="top:1390px" data-words="الدولار|صعد..|والدينار|نزل." data-at="5.5,5.85,6.6,7.0"></div>
       </section>
 
-      <!-- S4: the same salary, smaller -->
+      <!-- S4: the same salary, smaller (the number itself shrinks) -->
       <section class="scene clip" id="s4" data-start="8" data-duration="2.6" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/dark.jpg" alt="" />
-          <div id="slip" class="shadow">
+          <div id="slip" class="shadow jit">
             <img src="assets/img/slip.png" alt="" />
             <div class="t h">قسيمة راتب</div>
             <div class="t r" style="top:170px">الشهر: تشرين الأول</div>
@@ -291,9 +355,11 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
             <div class="dash" style="top:360px"></div>
             <div class="t r" style="top:385px">الاستقطاعات: ٠</div>
             <div class="t amt">صافي الراتب</div>
-            <div class="t big">750,000</div>
+            <div id="amt">
+              <div class="t big">750,000</div>
+              <svg class="mk" id="slipC" width="520" height="170" viewBox="0 0 520 170" style="left:0;top:0"></svg>
+            </div>
             <div class="bars"></div>
-            <svg class="mk" id="slipC" width="520" height="815" viewBox="0 0 520 815" style="left:0;top:0"></svg>
           </div>
         </div>
         <div class="sub" style="top:1290px" data-words="الراتب|نفسه..|بس|صار|أصغر." data-at="8.1,8.5,9.25,9.45,9.7"></div>
@@ -303,9 +369,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <section class="scene clip" id="s5" data-start="10.6" data-duration="2.6" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/red.jpg" alt="" />
-          <img class="ab shadow" id="p5" src="assets/img/p-bulb.png" alt="" style="left:90px; top:480px; width:420px" />
+          <img class="ab shadow jit" id="p5" src="assets/img/p-bulb.png" alt="" style="left:90px; top:480px; width:420px" />
           <div class="tape" id="t5" style="left:190px; top:458px; width:160px"></div>
-          <div id="wasl" class="shadow">
+          <div id="wasl" class="shadow jit">
             <img src="assets/img/wasl.png" alt="" />
             <div class="t h">وصل اشتراك مولدة</div>
             <div class="t no">No. 0417</div>
@@ -316,6 +382,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
             <div class="stamp" id="st1" style="left:150px; top:520px; transform:rotate(-12deg)">زيادة</div>
           </div>
         </div>
+        <div class="dim" id="dim5"></div>
         <div class="sub" style="top:250px" data-words="صاحب|المولدة..|رفع|سعر|الأمبير." data-at="10.7,11.05,11.75,12.0,12.25"></div>
       </section>
 
@@ -342,7 +409,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
             <div class="day" style="margin-top:160px">اليوم، ١١:١١</div>
             <div class="bub me" id="bMe">ليش غيّرت السعر؟</div>
             <div class="bub dots" id="bDots"><i></i><i></i><i></i></div>
-            <div class="bub them" id="bThem">الدولار صاعد عيوني</div>
+            <div class="bub them" id="bThem">الدولار <span id="hl">صاعد</span> عيوني</div>
           </div>
         </div>
       </section>
@@ -360,21 +427,35 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
             <div class="t thx">شكراً لزيارتكم</div>
             <div class="bars"></div>
           </div>
-          <div id="win"><div class="bar">falafel.jpg<div><span></span><span></span><span></span></div></div><div class="ph"><img id="winImg" src="assets/img/p-falafel.png" alt="" /></div></div>
+          <div id="win" class="jit"><div class="bar">falafel.jpg<div><span></span><span></span><span></span></div></div><div class="ph"><img id="winImg" src="assets/img/p-falafel.png" alt="" /></div></div>
         </div>
         <div class="sub" style="top:1380px" data-words="حتى|لفّة|الفلافل..|صارت|تنحسب|بالدولار." data-at="17.1,17.35,17.65,18.3,18.6,19.0"></div>
       </section>
 
-      <!-- S8: everyone asks -->
+      <!-- S8: everyone asks (a «؟» pops over each head) -->
       <section class="scene clip" id="s8" data-start="20.2" data-duration="2.4" data-track-index="0">
-        <div class="cam"><img class="bg" src="assets/img/street.jpg" alt="" /></div>
-        <div class="sub" style="top:880px" data-words="والكل|صار|يسأل|نفس|السؤال.." data-at="20.3,20.65,20.9,21.3,21.6"></div>
+        <div class="cam">
+          <img class="bg" src="assets/img/street.jpg" alt="" />
+          <div class="bq jit" id="q1" style="left:404px; top:972px; width:104px; height:96px; font-size:62px">؟<i></i></div>
+          <div class="bq jit" id="q2" style="left:600px; top:1062px; width:150px; height:136px; font-size:88px">؟<i></i></div>
+          <div class="bq jit" id="q3" style="left:655px; top:958px; width:90px; height:82px; font-size:52px">؟<i></i></div>
+          <div class="bq jit" id="q4" style="left:760px; top:1046px; width:140px; height:128px; font-size:82px">؟<i></i></div>
+          <div class="bq jit" id="q5" style="left:182px; top:876px; width:66px; height:60px; font-size:38px">؟<i></i></div>
+          <div class="bq jit" id="q6" style="left:548px; top:960px; width:100px; height:92px; font-size:58px">؟<i></i></div>
+          <div class="bq jit" id="q7" style="left:100px; top:902px; width:54px; height:50px; font-size:31px">؟<i></i></div>
+        </div>
+        <div class="sub" style="top:560px" data-words="والكل|صار|يسأل|نفس|السؤال.." data-at="20.3,20.65,20.9,21.3,21.6"></div>
       </section>
 
-      <!-- S9: will it come down? -->
+      <!-- S9: will it come down? (a chart that only goes up behind the question) -->
       <section class="scene clip" id="s9" data-start="22.6" data-duration="2" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/paper.jpg" alt="" />
+          <svg class="mk thin" id="chart" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0">
+            <path id="chAx" pathLength="1" d="M150 1120 L146 1600 L950 1596" />
+            <path id="chLn" pathLength="1" d="M170 1570 L250 1520 L320 1548 L410 1450 L480 1478 L580 1350 L650 1376 L760 1236 L820 1262 L928 1128" />
+            <path id="chHd" pathLength="1" d="M872 1134 L930 1124 L926 1184" />
+          </svg>
         </div>
         <div class="film"><div class="fr"></div><div class="ed" style="left:60px; bottom:70px">ALLAWI 400</div><div class="ed" style="right:60px; bottom:70px">▸ 13&nbsp;&nbsp;&nbsp;▸ 13A</div></div>
         <div class="sub on-paper" style="top:880px" data-words="هو|الدولار|راح|ينزل؟" data-at="22.7,22.9,23.35,23.6" data-circle="3"></div>
@@ -392,49 +473,73 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
         <div class="sub" style="top:880px" data-words="بس|اللي|ندريه.." data-at="26.35,26.6,26.85"></div>
       </section>
 
-      <!-- S12: the Iraqi gets by -->
+      <!-- S12: the Iraqi gets by (the 1932 bazaar, with its sunbeam alive) -->
       <section class="scene clip" id="s12" data-start="27.8" data-duration="2.2" data-track-index="0">
-        <div class="cam"><img class="bg" src="assets/img/bazaar2.jpg" alt="" /></div>
-        <div class="sub" style="top:1300px" data-words="إنو|العراقي..|يمشّيها." data-at="27.95,28.2,29.0" data-under="2"></div>
+        <div class="cam">
+          <img class="bg" src="assets/img/bazaar2.jpg" alt="" />
+          <div id="beam"></div>
+          <div id="dust"></div>
+        </div>
+        <div class="sub" style="top:1300px; text-shadow:0 2px 16px rgba(0,0,0,.9), 0 0 5px rgba(0,0,0,.7)" data-words="إنو|العراقي..|يمشّيها." data-at="27.95,28.2,29.0" data-under="2"></div>
       </section>
 
-      <!-- S13: laughs at the crisis -->
+      <!-- S13: laughs at the crisis (the coffeehouse then, and Al-Zahawi now) -->
       <section class="scene clip" id="s13" data-start="30" data-duration="2.4" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/red.jpg" alt="" />
-          <div id="zahawi" class="shadow"><img src="assets/img/p-zahawi.png" alt="" /></div>
-          <div class="tape" id="t13a" style="left:80px; top:520px; width:170px"></div>
-          <div class="tape" id="t13b" style="left:830px; top:1180px; width:170px"></div>
+          <div id="pc" class="shadow jit"><img src="assets/img/p-coffee.png" alt="" /></div>
+          <div class="tape" id="t13c" style="left:280px; top:306px; width:150px"></div>
+          <div id="zahawi" class="shadow jit"><img src="assets/img/p-zahawi.png" alt="" /></div>
+          <div class="tape" id="t13a" style="left:220px; top:618px; width:170px"></div>
+          <div class="tape" id="t13b" style="left:860px; top:1200px; width:170px"></div>
         </div>
-        <div class="sub" style="top:1330px" data-words="يضحك|على|الأزمة..|ويكمّل." data-at="30.1,30.45,30.65,31.5"></div>
+        <div class="sub" style="top:1340px" data-words="يضحك|على|الأزمة..|ويكمّل." data-at="30.1,30.45,30.65,31.5"></div>
       </section>
 
-      <!-- S14: my prices -->
-      <section class="scene clip" id="s14" data-start="32.4" data-duration="2.8" data-track-index="0">
+      <!-- S14: and you? what is the $100 where you are? (a fill-in sheet; the answer goes in the comments) -->
+      <section class="scene clip" id="s14" data-start="32.4" data-duration="3.4" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/paper.jpg" alt="" />
-          <div id="list" class="shadow">
+          <div id="list" class="shadow jit">
             <img src="assets/img/list.png" alt="" />
-            <div class="t h">أسعاري</div>
-            <div class="t" style="top:236px">بوست ........ ١٤ ألف</div>
-            <div class="t" style="top:368px">ستوري ........ ٧ آلاف</div>
-            <div class="t" style="top:500px">كاروسيل ..... ٤٠ ألف</div>
-            <div class="stamp" id="st2" style="left:150px; top:600px; transform:rotate(-9deg)">ثابتة</div>
+            <div class="t h">سعر الـ١٠٠$ اليوم</div>
+            <div class="t" style="top:205px">بغداد ........................</div>
+            <div class="t" style="top:322px">بعقوبة .....................</div>
+            <div class="t" style="top:439px">البصرة .....................</div>
+            <div class="t" style="top:556px">الموصل ....................</div>
+            <div class="t" style="top:673px">أربيل ........................</div>
+            <div class="qm" id="qm1" style="top:190px" data-rot="-8">؟</div>
+            <div class="qm" id="qm2" style="top:307px" data-rot="5">؟</div>
+            <div class="qm" id="qm3" style="top:424px" data-rot="-4">؟</div>
+            <div class="qm" id="qm4" style="top:541px" data-rot="7">؟</div>
+            <div class="qm" id="qm5" style="top:658px" data-rot="-6">؟</div>
           </div>
+          <svg class="mk" id="ctaMk" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0">
+            <path id="ctaAr" pathLength="1" d="M880 1150 C 930 1220, 950 1300, 948 1420 M904 1380 L948 1424 L990 1376" />
+          </svg>
         </div>
         <div class="film"><div class="fr"></div><div class="ed" style="left:60px; bottom:70px">ALLAWI 400</div><div class="ed" style="right:60px; bottom:70px">▸ 14&nbsp;&nbsp;&nbsp;▸ 14A</div></div>
-        <div class="sub on-paper" style="top:1250px" data-words="وأسعاري؟|ظلّت|مثل|ما|هي." data-at="32.5,33.4,33.7,33.9,34.05"></div>
+        <div class="sub on-paper" style="top:1170px; left:130px; right:130px" data-words="وإنتو؟|الـ١٠٠|عدكم|بيش؟|/|اكتبوها|بالتعليقات." data-at="32.5,33.1,33.4,33.65,34.45,34.85"></div>
       </section>
 
       <!-- S15: signature -->
-      <section class="scene clip" id="s15" data-start="35.2" data-duration="3" data-track-index="0">
+      <section class="scene clip" id="s15" data-start="35.8" data-duration="3" data-track-index="0">
         <div class="cam"><img class="bg" src="assets/img/red.jpg" alt="" /></div>
         <div id="sig">Allawi</div>
         <div id="handle">ALLAWI.PSD</div>
       </section>
 
       <div id="fx">
-                <div id="grain"></div>
+        <div id="newsW" data-layout-allow-overflow><div id="news" data-layout-allow-overflow>
+          <div class="mast">جريدة علاوي</div>
+          <div class="dl">الأربعاء ٧ تشرين الأول ٢٠٢٦ · العدد ٤١٢</div>
+          <div class="hd">الدولار يقفز.. والسوق يغلي</div>
+          <img class="ph" src="assets/img/p-bazaar1.png" alt="" />
+          <div class="col" style="left:1060px">ارتفع سعر صرف الدولار في الأسواق المحلية خلال الأسبوع الحالي، وسط ترقّب المواطنين وأصحاب المحلات لأي قرار جديد. وقال تجّار إن الأسعار تتغيّر كل يوم، وإن المواطن صار يحسب حسابه قبل أي شراء. ارتفع سعر صرف الدولار في الأسواق المحلية خلال الأسبوع الحالي.</div>
+          <div class="col" style="left:120px">وفي الأسواق الشعبية، قال أصحاب المحلات إن البضاعة المستوردة أول ما تتأثر، بينما يحاول المواطن أن يدبّر أموره كما تعوّد دائماً. وفي الأسواق الشعبية، قال أصحاب المحلات إن البضاعة المستوردة أول ما تتأثر.</div>
+          <div class="col" style="left:1400px">وتبقى الأسئلة نفسها في كل بيت: هل سينزل الدولار؟ ومتى؟ ولا أحد يملك الجواب حتى الآن. وتبقى الأسئلة نفسها في كل بيت: هل سينزل الدولار؟ ومتى؟</div>
+        </div></div>
+        <div id="grain"></div>
         <div id="vig"></div>
         <div id="leak"></div>
         <div id="flash"></div>
@@ -443,59 +548,94 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       </div>
 
       <!-- sound: effects only (the voice and music are added in CapCut) -->
-      <audio id="a-hiss" src="assets/sfx/hiss.wav" data-start="0" data-duration="38.2" data-track-index="1" data-volume="0.22"></audio>
+      <audio id="a-hiss" src="assets/sfx/hiss.wav" data-start="0" data-duration="38.8" data-track-index="1" data-volume="0.22"></audio>
       <audio id="a0-slap" src="assets/sfx/slap.wav" data-start="0.02" data-duration="0.3" data-track-index="2" data-volume="0.45"></audio>
-      <audio id="a1-marker" src="assets/sfx/marker.wav" data-start="0.30" data-duration="0.18" data-track-index="3" data-volume="0.32"></audio>
-      <audio id="a2-marker" src="assets/sfx/marker.wav" data-start="0.47" data-duration="0.18" data-track-index="4" data-volume="0.32"></audio>
-      <audio id="a3-marker" src="assets/sfx/marker.wav" data-start="0.64" data-duration="0.18" data-track-index="5" data-volume="0.32"></audio>
-      <audio id="a4-marker" src="assets/sfx/marker.wav" data-start="0.81" data-duration="0.18" data-track-index="6" data-volume="0.32"></audio>
-      <audio id="a5-marker" src="assets/sfx/marker.wav" data-start="0.98" data-duration="0.18" data-track-index="7" data-volume="0.32"></audio>
-      <audio id="a6-marker" src="assets/sfx/marker.wav" data-start="1.15" data-duration="0.18" data-track-index="8" data-volume="0.32"></audio>
-      <audio id="a7-scribble" src="assets/sfx/scribble.wav" data-start="1.40" data-duration="0.6" data-track-index="9" data-volume="0.42"></audio>
-      <audio id="a8-swish" src="assets/sfx-kit/u_swish_soft.wav" data-start="2.60" data-duration="0.29" data-track-index="10" data-volume="0.28"></audio>
-      <audio id="a9-flutter" src="assets/sfx/flutter.wav" data-start="2.65" data-duration="0.9" data-track-index="11" data-volume="0.6"></audio>
-      <audio id="a10-flutter" src="assets/sfx/flutter.wav" data-start="3.66" data-duration="0.9" data-track-index="12" data-volume="0.6"></audio>
-      <audio id="a11-slap" src="assets/sfx/slap.wav" data-start="5.02" data-duration="0.3" data-track-index="13" data-volume="0.5"></audio>
-      <audio id="a12-paper" src="assets/sfx/paper.wav" data-start="5.05" data-duration="0.55" data-track-index="14" data-volume="0.35"></audio>
-      <audio id="a13-tick" src="assets/sfx/tick.wav" data-start="6.30" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
-      <audio id="a14-tick" src="assets/sfx/tick.wav" data-start="6.34" data-duration="0.05" data-track-index="16" data-volume="0.3"></audio>
-      <audio id="a15-tick" src="assets/sfx/tick.wav" data-start="6.38" data-duration="0.05" data-track-index="17" data-volume="0.3"></audio>
-      <audio id="a16-tick" src="assets/sfx/tick.wav" data-start="6.42" data-duration="0.05" data-track-index="18" data-volume="0.3"></audio>
-      <audio id="a17-tick" src="assets/sfx/tick.wav" data-start="6.46" data-duration="0.05" data-track-index="19" data-volume="0.3"></audio>
-      <audio id="a18-tick" src="assets/sfx/tick.wav" data-start="6.50" data-duration="0.05" data-track-index="20" data-volume="0.3"></audio>
-      <audio id="a19-tick" src="assets/sfx/tick.wav" data-start="6.54" data-duration="0.05" data-track-index="21" data-volume="0.3"></audio>
-      <audio id="a20-tick" src="assets/sfx/tick.wav" data-start="6.58" data-duration="0.05" data-track-index="22" data-volume="0.3"></audio>
-      <audio id="a21-marker" src="assets/sfx/marker.wav" data-start="6.85" data-duration="0.18" data-track-index="23" data-volume="0.38"></audio>
-      <audio id="a22-paper" src="assets/sfx/paper.wav" data-start="8.02" data-duration="0.55" data-track-index="24" data-volume="0.42"></audio>
-      <audio id="a23-scribble" src="assets/sfx/scribble.wav" data-start="8.55" data-duration="0.6" data-track-index="25" data-volume="0.32"></audio>
-      <audio id="a24-shrink" src="assets/sfx/shrink.wav" data-start="9.30" data-duration="0.6" data-track-index="26" data-volume="0.6"></audio>
-      <audio id="a25-slap" src="assets/sfx/slap.wav" data-start="10.62" data-duration="0.3" data-track-index="27" data-volume="0.4"></audio>
-      <audio id="a26-paper" src="assets/sfx/paper.wav" data-start="10.65" data-duration="0.55" data-track-index="28" data-volume="0.3"></audio>
-      <audio id="a27-thud" src="assets/sfx/thud.wav" data-start="12.08" data-duration="0.4" data-track-index="29" data-volume="0.85"></audio>
-      <audio id="a28-paper" src="assets/sfx/paper.wav" data-start="13.22" data-duration="0.55" data-track-index="30" data-volume="0.32"></audio>
-      <audio id="a29-marker" src="assets/sfx/marker.wav" data-start="13.65" data-duration="0.18" data-track-index="31" data-volume="0.4"></audio>
-      <audio id="a30-marker" src="assets/sfx/marker.wav" data-start="13.95" data-duration="0.18" data-track-index="32" data-volume="0.36"></audio>
-      <audio id="a31-swish" src="assets/sfx-kit/u_swish_soft.wav" data-start="14.60" data-duration="0.29" data-track-index="33" data-volume="0.2"></audio>
-      <audio id="a32-sent" src="assets/sfx/sent.wav" data-start="14.80" data-duration="0.38" data-track-index="34" data-volume="0.45"></audio>
-      <audio id="a33-got" src="assets/sfx/got.wav" data-start="15.80" data-duration="0.38" data-track-index="35" data-volume="0.45"></audio>
-      <audio id="a34-slap" src="assets/sfx/slap.wav" data-start="17.02" data-duration="0.3" data-track-index="36" data-volume="0.4"></audio>
-      <audio id="a35-printer" src="assets/sfx/printer.wav" data-start="18.20" data-duration="1.2" data-track-index="37" data-volume="0.5"></audio>
-      <audio id="a36-swish" src="assets/sfx-kit/u_swish_soft.wav" data-start="20.20" data-duration="0.29" data-track-index="38" data-volume="0.22"></audio>
-      <audio id="a37-paper" src="assets/sfx/paper.wav" data-start="22.62" data-duration="0.55" data-track-index="39" data-volume="0.32"></audio>
-      <audio id="a38-scribble" src="assets/sfx/scribble.wav" data-start="23.75" data-duration="0.6" data-track-index="40" data-volume="0.4"></audio>
-      <audio id="a39-swish" src="assets/sfx-kit/u_swish_soft.wav" data-start="24.60" data-duration="0.29" data-track-index="41" data-volume="0.18"></audio>
-      <audio id="a40-swish" src="assets/sfx-kit/u_swish_soft.wav" data-start="26.20" data-duration="0.29" data-track-index="42" data-volume="0.2"></audio>
-      <audio id="a41-whoosh" src="assets/sfx-kit/u_whoosh_short.wav" data-start="27.75" data-duration="0.63" data-track-index="43" data-volume="0.3"></audio>
-      <audio id="a42-slap" src="assets/sfx/slap.wav" data-start="30.02" data-duration="0.3" data-track-index="44" data-volume="0.32"></audio>
-      <audio id="a43-paper" src="assets/sfx/paper.wav" data-start="32.42" data-duration="0.55" data-track-index="45" data-volume="0.4"></audio>
-      <audio id="a44-thud" src="assets/sfx/thud.wav" data-start="33.86" data-duration="0.4" data-track-index="46" data-volume="0.85"></audio>
-      <audio id="a45-boom" src="assets/sfx/boom.wav" data-start="35.22" data-duration="2.2" data-track-index="47" data-volume="0.6"></audio>
-      <audio id="a46-scribble" src="assets/sfx/scribble.wav" data-start="35.45" data-duration="0.6" data-track-index="48" data-volume="0.42"></audio>
-      <audio id="a47-scribble" src="assets/sfx/scribble.wav" data-start="36.00" data-duration="0.6" data-track-index="49" data-volume="0.3"></audio>
+      <audio id="a1-flutter" src="assets/sfx/flutter.wav" data-start="0.05" data-duration="0.9" data-track-index="3" data-volume="0.35"></audio>
+      <audio id="a2-flutter" src="assets/sfx/flutter.wav" data-start="0.56" data-duration="0.9" data-track-index="4" data-volume="0.5"></audio>
+      <audio id="a3-paper" src="assets/sfx/paper.wav" data-start="1.28" data-duration="0.55" data-track-index="5" data-volume="0.5"></audio>
+      <audio id="a4-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="1.30" data-duration="0.29" data-track-index="6" data-volume="0.3"></audio>
+      <audio id="a5-slap" src="assets/sfx/slap.wav" data-start="1.50" data-duration="0.3" data-track-index="7" data-volume="0.42"></audio>
+      <audio id="a6-slap" src="assets/sfx/slap.wav" data-start="1.60" data-duration="0.3" data-track-index="8" data-volume="0.5"></audio>
+      <audio id="a7-slap" src="assets/sfx/slap.wav" data-start="1.70" data-duration="0.3" data-track-index="9" data-volume="0.4"></audio>
+      <audio id="a8-slap" src="assets/sfx/slap.wav" data-start="1.80" data-duration="0.3" data-track-index="10" data-volume="0.3"></audio>
+      <audio id="a9-slap" src="assets/sfx/slap.wav" data-start="1.90" data-duration="0.3" data-track-index="11" data-volume="0.46"></audio>
+      <audio id="a10-slap" src="assets/sfx/slap.wav" data-start="2.00" data-duration="0.3" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="a11-slap" src="assets/sfx/slap.wav" data-start="2.10" data-duration="0.3" data-track-index="13" data-volume="0.5"></audio>
+      <audio id="a12-paper" src="assets/sfx/paper.wav" data-start="2.30" data-duration="0.55" data-track-index="14" data-volume="0.4"></audio>
+      <audio id="a13-swipe" src="assets/sfx/swipe.wav" data-start="2.82" data-duration="0.42" data-track-index="15" data-volume="0.62"></audio>
+      <audio id="a14-marker" src="assets/sfx/marker.wav" data-start="3.25" data-duration="0.18" data-track-index="16" data-volume="0.3"></audio>
+      <audio id="a15-marker" src="assets/sfx/marker.wav" data-start="3.38" data-duration="0.18" data-track-index="17" data-volume="0.3"></audio>
+      <audio id="a16-marker" src="assets/sfx/marker.wav" data-start="3.51" data-duration="0.18" data-track-index="18" data-volume="0.3"></audio>
+      <audio id="a17-marker" src="assets/sfx/marker.wav" data-start="3.64" data-duration="0.18" data-track-index="19" data-volume="0.3"></audio>
+      <audio id="a18-marker" src="assets/sfx/marker.wav" data-start="3.77" data-duration="0.18" data-track-index="20" data-volume="0.3"></audio>
+      <audio id="a19-marker" src="assets/sfx/marker.wav" data-start="3.90" data-duration="0.18" data-track-index="21" data-volume="0.3"></audio>
+      <audio id="a20-scribble" src="assets/sfx/scribble.wav" data-start="4.20" data-duration="0.6" data-track-index="22" data-volume="0.42"></audio>
+      <audio id="a21-paper" src="assets/sfx/paper.wav" data-start="5.42" data-duration="0.55" data-track-index="23" data-volume="0.3"></audio>
+      <audio id="a22-creak" src="assets/sfx/creak.wav" data-start="5.80" data-duration="0.45" data-track-index="24" data-volume="0.55"></audio>
+      <audio id="a23-flutter" src="assets/sfx/flutter.wav" data-start="5.95" data-duration="0.9" data-track-index="25" data-volume="0.5"></audio>
+      <audio id="a24-thunk" src="assets/sfx/thunk.wav" data-start="6.02" data-duration="0.35" data-track-index="26" data-volume="0.75"></audio>
+      <audio id="a25-marker" src="assets/sfx/marker.wav" data-start="6.25" data-duration="0.18" data-track-index="27" data-volume="0.34"></audio>
+      <audio id="a26-thunk" src="assets/sfx/thunk.wav" data-start="6.57" data-duration="0.35" data-track-index="28" data-volume="0.8"></audio>
+      <audio id="a27-paper" src="assets/sfx/paper.wav" data-start="6.64" data-duration="0.55" data-track-index="29" data-volume="0.3"></audio>
+      <audio id="a28-marker" src="assets/sfx/marker.wav" data-start="7.00" data-duration="0.18" data-track-index="30" data-volume="0.34"></audio>
+      <audio id="a29-paper" src="assets/sfx/paper.wav" data-start="8.02" data-duration="0.55" data-track-index="31" data-volume="0.42"></audio>
+      <audio id="a30-scribble" src="assets/sfx/scribble.wav" data-start="8.55" data-duration="0.6" data-track-index="32" data-volume="0.32"></audio>
+      <audio id="a31-shrink" src="assets/sfx/shrink.wav" data-start="9.30" data-duration="0.6" data-track-index="33" data-volume="0.55"></audio>
+      <audio id="a32-tick" src="assets/sfx/tick.wav" data-start="9.30" data-duration="0.05" data-track-index="34" data-volume="0.35"></audio>
+      <audio id="a33-tick" src="assets/sfx/tick.wav" data-start="9.42" data-duration="0.05" data-track-index="35" data-volume="0.35"></audio>
+      <audio id="a34-tick" src="assets/sfx/tick.wav" data-start="9.54" data-duration="0.05" data-track-index="36" data-volume="0.35"></audio>
+      <audio id="a35-tick" src="assets/sfx/tick.wav" data-start="9.66" data-duration="0.05" data-track-index="37" data-volume="0.35"></audio>
+      <audio id="a36-slap" src="assets/sfx/slap.wav" data-start="10.62" data-duration="0.3" data-track-index="38" data-volume="0.4"></audio>
+      <audio id="a37-paper" src="assets/sfx/paper.wav" data-start="10.70" data-duration="0.55" data-track-index="39" data-volume="0.3"></audio>
+      <audio id="a38-marker" src="assets/sfx/marker.wav" data-start="10.94" data-duration="0.18" data-track-index="40" data-volume="0.14"></audio>
+      <audio id="a39-buzz" src="assets/sfx/buzz.wav" data-start="11.28" data-duration="0.7" data-track-index="41" data-volume="0.55"></audio>
+      <audio id="a40-thud" src="assets/sfx/thud.wav" data-start="12.08" data-duration="0.4" data-track-index="42" data-volume="0.85"></audio>
+      <audio id="a41-paper" src="assets/sfx/paper.wav" data-start="13.22" data-duration="0.55" data-track-index="43" data-volume="0.32"></audio>
+      <audio id="a42-marker" src="assets/sfx/marker.wav" data-start="13.65" data-duration="0.18" data-track-index="44" data-volume="0.4"></audio>
+      <audio id="a43-marker" src="assets/sfx/marker.wav" data-start="13.95" data-duration="0.18" data-track-index="45" data-volume="0.36"></audio>
+      <audio id="a44-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="14.60" data-duration="0.29" data-track-index="46" data-volume="0.2"></audio>
+      <audio id="a45-sent" src="assets/sfx/sent.wav" data-start="14.80" data-duration="0.38" data-track-index="47" data-volume="0.45"></audio>
+      <audio id="a46-got" src="assets/sfx/got.wav" data-start="15.80" data-duration="0.38" data-track-index="48" data-volume="0.45"></audio>
+      <audio id="a47-tick" src="assets/sfx/tick.wav" data-start="16.30" data-duration="0.05" data-track-index="49" data-volume="0.25"></audio>
+      <audio id="a48-slap" src="assets/sfx/slap.wav" data-start="17.02" data-duration="0.3" data-track-index="50" data-volume="0.4"></audio>
+      <audio id="a49-printer" src="assets/sfx/printer.wav" data-start="18.20" data-duration="1.2" data-track-index="51" data-volume="0.5"></audio>
+      <audio id="a50-swipe" src="assets/sfx/swipe.wav" data-start="20.02" data-duration="0.42" data-track-index="52" data-volume="0.62"></audio>
+      <audio id="a51-pop" src="assets/sfx/pop.wav" data-start="20.75" data-duration="0.16" data-track-index="53" data-volume="0.45"></audio>
+      <audio id="a52-pop" src="assets/sfx/pop.wav" data-start="20.95" data-duration="0.16" data-track-index="54" data-volume="0.5"></audio>
+      <audio id="a53-pop" src="assets/sfx/pop.wav" data-start="21.10" data-duration="0.16" data-track-index="55" data-volume="0.4"></audio>
+      <audio id="a54-pop" src="assets/sfx/pop.wav" data-start="21.30" data-duration="0.16" data-track-index="56" data-volume="0.5"></audio>
+      <audio id="a55-pop" src="assets/sfx/pop.wav" data-start="21.45" data-duration="0.16" data-track-index="57" data-volume="0.35"></audio>
+      <audio id="a56-pop" src="assets/sfx/pop.wav" data-start="21.60" data-duration="0.16" data-track-index="58" data-volume="0.45"></audio>
+      <audio id="a57-pop" src="assets/sfx/pop.wav" data-start="21.75" data-duration="0.16" data-track-index="59" data-volume="0.45"></audio>
+      <audio id="a58-marker" src="assets/sfx/marker.wav" data-start="22.62" data-duration="0.18" data-track-index="60" data-volume="0.3"></audio>
+      <audio id="a59-paper" src="assets/sfx/paper.wav" data-start="22.62" data-duration="0.55" data-track-index="61" data-volume="0.32"></audio>
+      <audio id="a60-scribble" src="assets/sfx/scribble.wav" data-start="22.80" data-duration="0.6" data-track-index="62" data-volume="0.38"></audio>
+      <audio id="a61-marker" src="assets/sfx/marker.wav" data-start="23.30" data-duration="0.18" data-track-index="63" data-volume="0.3"></audio>
+      <audio id="a62-scribble" src="assets/sfx/scribble.wav" data-start="23.85" data-duration="0.6" data-track-index="64" data-volume="0.4"></audio>
+      <audio id="a63-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="24.60" data-duration="0.29" data-track-index="65" data-volume="0.18"></audio>
+      <audio id="a64-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="26.20" data-duration="0.29" data-track-index="66" data-volume="0.2"></audio>
+      <audio id="a65-whoosh_short" src="assets/sfx-kit/u_whoosh_short.wav" data-start="27.75" data-duration="0.63" data-track-index="67" data-volume="0.3"></audio>
+      <audio id="a66-marker" src="assets/sfx/marker.wav" data-start="29.30" data-duration="0.18" data-track-index="68" data-volume="0.34"></audio>
+      <audio id="a67-slap" src="assets/sfx/slap.wav" data-start="30.02" data-duration="0.3" data-track-index="69" data-volume="0.34"></audio>
+      <audio id="a68-slap" src="assets/sfx/slap.wav" data-start="30.27" data-duration="0.3" data-track-index="70" data-volume="0.38"></audio>
+      <audio id="a69-paper" src="assets/sfx/paper.wav" data-start="30.40" data-duration="0.55" data-track-index="71" data-volume="0.3"></audio>
+      <audio id="a70-paper" src="assets/sfx/paper.wav" data-start="30.60" data-duration="0.55" data-track-index="72" data-volume="0.22"></audio>
+      <audio id="a71-swipe" src="assets/sfx/swipe.wav" data-start="32.21" data-duration="0.42" data-track-index="73" data-volume="0.62"></audio>
+      <audio id="a72-paper" src="assets/sfx/paper.wav" data-start="32.45" data-duration="0.55" data-track-index="74" data-volume="0.4"></audio>
+      <audio id="a73-tick" src="assets/sfx/tick.wav" data-start="32.78" data-duration="0.05" data-track-index="75" data-volume="0.3"></audio>
+      <audio id="a74-marker" src="assets/sfx/marker.wav" data-start="33.80" data-duration="0.18" data-track-index="76" data-volume="0.32"></audio>
+      <audio id="a75-marker" src="assets/sfx/marker.wav" data-start="33.95" data-duration="0.18" data-track-index="77" data-volume="0.32"></audio>
+      <audio id="a76-marker" src="assets/sfx/marker.wav" data-start="34.10" data-duration="0.18" data-track-index="78" data-volume="0.32"></audio>
+      <audio id="a77-marker" src="assets/sfx/marker.wav" data-start="34.25" data-duration="0.18" data-track-index="79" data-volume="0.32"></audio>
+      <audio id="a78-marker" src="assets/sfx/marker.wav" data-start="34.40" data-duration="0.18" data-track-index="80" data-volume="0.32"></audio>
+      <audio id="a79-scribble" src="assets/sfx/scribble.wav" data-start="34.60" data-duration="0.6" data-track-index="81" data-volume="0.42"></audio>
+      <audio id="a80-boom" src="assets/sfx/boom.wav" data-start="35.82" data-duration="2.2" data-track-index="82" data-volume="0.6"></audio>
+      <audio id="a81-scribble" src="assets/sfx/scribble.wav" data-start="36.05" data-duration="0.6" data-track-index="83" data-volume="0.42"></audio>
+      <audio id="a82-scribble" src="assets/sfx/scribble.wav" data-start="36.60" data-duration="0.6" data-track-index="84" data-volume="0.3"></audio>
     </div>
 
     <script>
-      const D = 38.2;
+      const D = 38.8;
       let pinN = 0;
       const PIN = () => { const id = 'pg' + (pinN++); return `<svg viewBox="0 0 46 46"><defs><radialGradient id="${id}" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".42" stop-color="#c4161c"/><stop offset="1" stop-color="#5e0609"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#${id})"/><circle cx="21" cy="19" r="14" fill="none" stroke="#4a0507" stroke-opacity=".5" stroke-width="1"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`; };
 
@@ -515,20 +655,51 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       }
       const addPath = (svg, d, cls = '') => { const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); p.setAttribute('pathLength', '1'); if (cls) p.setAttribute('class', cls); svg.appendChild(p); return p; };
 
-      // S1 calendar grid: October 2026 starts on a Thursday; weeks start on Saturday
+      // S1: 180,000 as a ransom note, every character cut from a different magazine
+      const RANS = [
+        ['1', "400 190px 'Abril Fatface'", '#1d1a17', 'url(assets/img/newsprint.jpg) 30% 40%/500px', -6, -10],
+        ['8', "400 196px 'Anton'", '#f4efe4', '#151312', 4, 8],
+        ['0', "900 178px 'Playfair Display'", '#b3121a', '#efe6d4', -3, -4],
+        [',', "700 150px 'Courier Prime'", '#1d1a17', '#e6d6a2', 8, 40],
+        ['0', "400 214px 'Bebas Neue'", '#1d1a17', '#f6f3ec', -5, 2],
+        ['0', "400 180px 'Abril Fatface'", '#f6f1e6', '#1f3a8a', 3, -8],
+        ['0', "400 190px 'Anton'", '#1d1a17', 'url(assets/img/newsprint.jpg) 70% 20%/500px', -4, 6],
+      ];
+      const rans = document.getElementById('rans');
+      RANS.forEach(([ch, font, col, bg, rot, dy], i) => {
+        const e = document.createElement('span');
+        e.className = 'rn jit'; e.id = 'rn' + i; e.textContent = ch;
+        e.style.font = font; e.style.color = col; e.style.background = bg; e.style.marginTop = dy + 'px';
+        e.dataset.rot = rot;
+        // scissor cuts: four straight-ish edges, never quite square
+        const j = () => (rnd() * 7).toFixed(1);
+        e.style.clipPath = `polygon(${j()}% ${j()}%, ${100 - j()}% ${j()}%, ${100 - j()}% ${100 - j()}%, ${j()}% ${100 - j()}%)`;
+        rans.appendChild(e);
+      });
+
+      // S2 calendar grid: October 2026 starts on a Thursday; weeks start on Saturday
       const AR = (n) => String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[d]);
       const grid = document.getElementById('calgrid');
       ['س', 'ح', 'ن', 'ث', 'ر', 'خ', 'ج'].forEach((d) => { const e = document.createElement('div'); e.className = 'dn'; e.textContent = d; grid.appendChild(e); });
       for (let i = 0; i < 5; i++) grid.appendChild(document.createElement('div'));
       for (let d = 1; d <= 31; d++) { const e = document.createElement('div'); e.textContent = AR(d); e.id = 'd' + d; grid.appendChild(e); }
-      // pins
       [['#cal', 357, -16]].forEach(([sel, x, y]) => { const p = document.createElement('div'); p.className = 'pin'; p.style.left = x + 'px'; p.style.top = y + 'px'; p.innerHTML = PIN(); document.querySelector(sel).appendChild(p); });
       const pinList = document.createElement('div'); pinList.className = 'pin'; pinList.style.left = '297px'; pinList.style.top = '-14px'; pinList.innerHTML = PIN(); pinList.id = 'pinL'; document.getElementById('list').appendChild(pinList);
 
-      // subtitle words
+      // S12: dust in the sunbeam (positions along the beam, seeded)
+      const dust = document.getElementById('dust'), DUST = [];
+      for (let i = 0; i < 46; i++) {
+        const u = 0.06 + rnd() * 0.78, v = (rnd() - 0.5) * 230, s = 2 + rnd() * 4.5;
+        const x = 1080 - Math.sin(43 * Math.PI / 180) * u * 1250 + Math.cos(43 * Math.PI / 180) * v, y = 60 + Math.cos(43 * Math.PI / 180) * u * 1250 + Math.sin(43 * Math.PI / 180) * v;
+        const e = document.createElement('div'); e.className = 'dust';
+        Object.assign(e.style, { left: x.toFixed(0) + 'px', top: y.toFixed(0) + 'px', width: s.toFixed(1) + 'px', height: s.toFixed(1) + 'px', opacity: (0.25 + rnd() * 0.6).toFixed(2), filter: s > 5 ? 'blur(1.5px)' : 'none' });
+        dust.appendChild(e); DUST.push([e, (rnd() - 0.5) * 40, 30 + rnd() * 50, rnd() * 6.28]);
+      }
+
+      // subtitle words ('/' is a line break)
       document.querySelectorAll('.sub[data-words]').forEach((s) => {
-        const ws = s.dataset.words.split('|');
-        s.innerHTML = ws.map((w, i) => `<span class="w" id="${s.parentElement.id}-w${i}">${w}</span>`).join(' ');
+        let k = 0;
+        s.innerHTML = s.dataset.words.split('|').map((w) => (w === '/' ? '<br>' : `<span class="w" id="${s.parentElement.id}-w${k++}">${w}</span>`)).join(' ');
         // marker marks that belong to a word ride on the word itself, so they always sit on it
         if (s.dataset.circle !== undefined) {
           const w = s.querySelectorAll('.w')[+s.dataset.circle];
@@ -541,128 +712,156 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
         }
       });
 
+      // the newspaper's torn left and right edges
+      (() => { const pts = []; for (let k = 0; k <= 26; k++) pts.push(`${(1.2 + rnd() * 1.6).toFixed(2)}% ${(k / 26 * 100).toFixed(1)}%`);
+        const rt = []; for (let k = 26; k >= 0; k--) rt.push(`${(98.8 - rnd() * 1.6).toFixed(2)}% ${(k / 26 * 100).toFixed(1)}%`);
+        document.getElementById('news').style.clipPath = `polygon(${pts.join(', ')}, ${rt.join(', ')})`; })();
+
       function build() {
         const tl = gsap.timeline({ paused: true });
+        // stop-motion: a move is shot on twos, 12 poses a second, so pieces step instead of glide
+        const SM = (name, dur, fps = 12) => { const f = gsap.parseEase(name); const n = Math.max(1, Math.round(dur * fps)); return (p) => f(Math.round(p * n) / n); };
+        const draw = (sel, t, d, ease = 'power1.inOut') => tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: SM(ease, d, 15) }, t);
         const cell = (d) => { const p = 5 + d - 1, r = Math.floor(p / 7), c = p % 7, cw = 656 / 7; return { x: 52 + 656 - (c + 0.5) * cw, y: 200 + 60 + 8 + r * 102 + 47 }; };
 
-        // camera on every shot: a rack focus in, then a slow push with a little handheld drift
+        // camera on every shot: a rack focus in, then a slow push with a little handheld drift (the camera itself glides)
         document.querySelectorAll('.scene').forEach((sc, i) => {
           const t0 = +sc.dataset.start, d = +sc.dataset.duration, cam = sc.querySelector('.cam');
           const dx = (rnd() - 0.5) * 30, dy = (rnd() - 0.5) * 24, r0 = (rnd() - 0.5) * 1.2;
           tl.fromTo(cam, { scale: 1.06, x: -dx, y: -dy, rotation: r0 }, { scale: 1.11, x: dx, y: dy, rotation: -r0, duration: d, ease: 'sine.inOut' }, t0);
-          tl.fromTo(cam, { filter: 'blur(14px)' }, { filter: 'blur(0px)', duration: i === 0 ? 0.01 : 0.32, ease: 'power2.out' }, t0);
-          // subtitle words: fade and focus in as they are said
+          if (i > 0) tl.fromTo(cam, { filter: 'blur(14px)' }, { filter: 'blur(0px)', duration: 0.32, ease: 'power2.out' }, t0);   // frame one of the hook is sharp
           sc.querySelectorAll('.sub[data-words]').forEach((s) => {
             s.dataset.at.split(',').forEach((a, k) => {
               const w = document.getElementById(`${sc.id}-w${k}`);
-              if (+a <= 0) { gsap.set(w, { opacity: 1 }); return; }
               tl.fromTo(w, { opacity: 0, y: 8, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.24, ease: 'power2.out', immediateRender: false }, +a);
             });
           });
         });
 
-        // S1: crosses on the first week, then today circled
+        const land = (sel, t, rot, from = { y: -320 }, d = 0.42) => tl.fromTo(sel, { ...from, rotation: rot - 9, opacity: 0, scale: 1.08 }, { y: 0, x: 0, rotation: rot, opacity: 1, scale: 1, duration: d, ease: SM('back.out(1.4)', d) }, t);
+        const tape = (sel, t, rot) => tl.fromTo(sel, { opacity: 0, scale: 1.25, rotation: rot }, { opacity: 1, scale: 1, rotation: rot, duration: 0.17, ease: SM('power2.out', 0.17) }, t);
+        const pop = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.4, rotation: -10 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.25, ease: SM('back.out(2.4)', 0.25) }, t);
+
+        // S1 (hook): the note is already there on frame one; it settles, a flurry falls past, then = and 180,000 and دينار
+        tl.fromTo('#hBill', { rotation: -9, y: -14 }, { rotation: -4, y: 0, duration: 0.34, ease: SM('back.out(2)', 0.34) }, 0);
+        tl.fromTo('#hB2', { y: 1700, rotation: 30, rotationY: -40, transformPerspective: 1000 }, { y: -500, x: -140, rotation: -20, rotationY: 50, duration: 3.0, ease: 'none' }, 0);
+        tl.fromTo('#hD3', { y: -500, rotation: -20, rotationX: 40, transformPerspective: 1000 }, { y: 1900, x: 90, rotation: 25, rotationX: -40, duration: 2.6, ease: 'none' }, 0.2);
+        tl.fromTo('#hD2', { y: -1100, rotation: 14 }, { y: 2200, x: 60, rotation: -10, duration: 0.6, ease: 'none' }, 0.55);
+        const eq = document.getElementById('eqMk');
+        // frame one already asks the question: $100 = ؟  (the = is there from the start)
+        addPath(eq, 'M452 742 C 500 736, 560 738, 628 733'); addPath(eq, 'M450 792 C 510 788, 568 790, 630 784');
+        tl.fromTo('#qScrap', { rotation: 4, scale: 1 }, { rotation: -3, scale: 1.04, duration: 1.2, ease: SM('sine.inOut', 1.2) }, 0);
+        tl.to('#qScrap', { x: 760, y: -520, rotation: 38, duration: 0.25, ease: SM('power2.in', 0.25) }, 1.28);   // «صارت»: the ؟ is torn off
+        RANS.forEach((r, i) => tl.fromTo('#rn' + i, { opacity: 0, scale: 1.4, rotation: r[4] - 10 }, { opacity: 1, scale: 1, rotation: r[4], duration: 0.17, ease: SM('back.out(2)', 0.17) }, 1.5 + i * 0.1));
+        land('#dlab', 2.3, -3, { y: 120 }, 0.3);
+
+        // S2: crosses on the first week, then today circled
         const mk = document.getElementById('calmk');
-        tl.fromTo('#cal', { rotation: -5 }, { rotation: -2, duration: 2.6, ease: 'sine.out' }, 0);
+        tl.fromTo('#cal', { rotation: -5 }, { rotation: -2, duration: 2.4, ease: SM('sine.out', 2.4) }, 3.0);
         for (let d = 1; d <= 6; d++) {
-          const c = cell(d), s = 22;
-          const p1 = addPath(mk, `M${c.x - s} ${c.y - s} L${c.x + s} ${c.y + s}`), p2 = addPath(mk, `M${c.x + s} ${c.y - s} L${c.x - s} ${c.y + s}`);
-          const t = 0.3 + (d - 1) * 0.17;
-          [p1, p2].forEach((p, k) => tl.fromTo(p, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.07, ease: 'none' }, t + k * 0.07));
+          const c = cell(d), s = 22, t = 3.25 + (d - 1) * 0.13;
+          draw(addPath(mk, `M${c.x - s} ${c.y - s} L${c.x + s} ${c.y + s}`), t, 0.06, 'none');
+          draw(addPath(mk, `M${c.x + s} ${c.y - s} L${c.x - s} ${c.y + s}`), t + 0.06, 0.06, 'none');
         }
         const c7 = cell(7);
-        const ring = addPath(mk, loopPath(c7.x, c7.y, 54, 46));
-        tl.fromTo(ring, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, ease: 'power1.inOut' }, 1.4);
+        draw(addPath(mk, loopPath(c7.x, c7.y, 54, 46)), 4.2, 0.45);
 
-        // S2: the $100 rises, tumbling; the 25,000 falls
-        tl.fromTo('#bill', { y: 1750, x: -60, rotation: -24, rotationY: 40, rotationX: 20, transformPerspective: 1200 },
-          { y: -900, x: 120, rotation: 18, rotationY: -50, rotationX: -25, duration: 1.35, ease: 'none' }, 2.6);
-        tl.fromTo('#dinar', { y: -800, x: 60, rotation: 20, rotationY: -30, rotationX: 30, transformPerspective: 1200 },
-          { y: 1850, x: -80, rotation: -30, rotationY: 50, rotationX: -20, duration: 1.35, ease: 'none' }, 3.62);
+        // S3: the seesaw tips, the dollar is thrown up, the dinars pile on the low end
+        tl.fromTo('#plank', { rotation: 0 }, { rotation: 17, duration: 0.22, ease: SM('power3.in', 0.22) }, 5.82);
+        tl.to('#plank', { rotation: 15.6, duration: 0.17, ease: SM('sine.out', 0.17) }, 6.04);
+        tl.to('#plank', { rotation: 17, duration: 0.17, ease: SM('sine.in', 0.17) }, 6.21);
+        tl.fromTo('#ssBill', { x: 0, y: 0, rotation: 0 }, { x: -110, y: -420, rotation: -14, duration: 0.5, ease: SM('power3.out', 0.5) }, 5.95);
+        draw('#arUp', 6.25, 0.3);
+        ['#ssD2', '#ssD3', '#ssD4'].forEach((s, i) => land(s, 6.55 + i * 0.09, [3, -4, 2][i], { y: -260 }, 0.17));
+        tl.to('#plank', { rotation: 18, duration: 0.09, ease: SM('power2.out', 0.09) }, 6.6);
+        tl.to('#plank', { rotation: 17, duration: 0.17, ease: SM('sine.inOut', 0.17) }, 6.74);
+        draw('#arDn', 7.0, 0.3);
 
-        // S3: $100 rolls over to 180,000, underlined
-        tl.fromTo('#n1', { y: 0 }, { y: -300, duration: 0.28, ease: 'power3.in' }, 6.3);
-        tl.fromTo('#n2', { y: 300 }, { y: 0, duration: 0.32, ease: 'back.out(1.6)' }, 6.5);
-        tl.fromTo('#cur', { opacity: 0 }, { opacity: 1, duration: 0.25 }, 6.75);
-        tl.fromTo('#numU path', { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, 6.85);
+        // S4: the amount circled, then the number itself shrinks in four steps (the slip stays the same)
+        tl.fromTo('#slip', { y: -1250 }, { y: 0, duration: 0.42, ease: SM('power3.out', 0.42) }, 8.0);
+        draw(addPath(document.getElementById('slipC'), loopPath(260, 88, 210, 70)), 8.55, 0.45);
+        [[9.3, 0.74], [9.42, 0.52], [9.54, 0.36], [9.66, 0.24]].forEach(([t, s], k) => tl.set('#amt', { scale: s, rotation: [2, -3, 3, -2][k] }, t));
 
-        // S4: the amount circled, then the whole slip shrinks
-        const sc = addPath(document.getElementById('slipC'), loopPath(260, 588, 210, 70));
-        tl.fromTo(sc, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power1.inOut' }, 8.55);
-        tl.fromTo('#slip', { scale: 1, rotation: 2 }, { scale: 0.56, rotation: -4, duration: 0.55, ease: 'back.in(1.4)' }, 9.3);
-
-        // S5: the stamp
+        // S5: the bulb lands, the receipt slides in, the power dips, the stamp comes down
+        land('#p5', 10.6, -6); tape('#t5', 10.92, -10);
+        tl.fromTo('#wasl', { x: 560, rotation: 14 }, { x: 0, rotation: 4, duration: 0.45, ease: SM('power3.out', 0.45) }, 10.7);
+        [[11.3, 0.78], [11.34, 0.2], [11.4, 0.86], [11.5, 0.1], [11.55, 0.6], [11.62, 0]].forEach(([t, v]) => tl.set('#dim5', { opacity: v }, t));
         tl.fromTo('#st1', { opacity: 0, scale: 1.7 }, { opacity: 0.9, scale: 1, duration: 0.14, ease: 'power4.in' }, 12.08);
 
         // S6a: the old price struck, the new one written
-        tl.fromTo('#tag', { rotation: -14 }, { rotation: -6, duration: 1.4, ease: 'elastic.out(1, 0.4)' }, 13.2);
-        tl.fromTo('#tagX path', { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.2, ease: 'none' }, 13.65);
-        tl.fromTo('#tagNew', { opacity: 0, clipPath: 'inset(0 0 0 100%)' }, { opacity: 1, clipPath: 'inset(0 0 0 0%)', duration: 0.35, ease: 'none' }, 13.95);
+        tl.fromTo('#tag', { rotation: -14 }, { rotation: -6, duration: 1.4, ease: SM('elastic.out(1, 0.4)', 1.4) }, 13.2);
+        draw('#tagX path', 13.65, 0.2, 'none');
+        tl.fromTo('#tagNew', { opacity: 0, clipPath: 'inset(0 0 0 100%)' }, { opacity: 1, clipPath: 'inset(0 0 0 0%)', duration: 0.35, ease: SM('none', 0.35, 15) }, 13.95);
 
-        // S6b: the chat
+        // S6b: the chat; «صاعد» gets selected, like a screenshot someone is about to send around
         tl.fromTo('#chatCam', { rotationX: 18, rotationY: -10, transformPerspective: 1600 }, { rotationX: 8, rotationY: -4, duration: 2.4, ease: 'sine.out' }, 14.6);
         tl.fromTo('#bMe', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'back.out(1.8)' }, 14.8);
         tl.fromTo('#bDots', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(2)' }, 15.25);
         tl.set('#bDots', { opacity: 0 }, 15.8);
         tl.fromTo('#bThem', { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'back.out(1.8)' }, 15.8);
-        tl.fromTo('#chat', { filter: 'blur(0px)' }, { filter: 'blur(0px)', duration: 0.01 }, 14.6);
+        tl.fromTo('#hl', { backgroundColor: 'rgba(80,140,255,0)' }, { backgroundColor: 'rgba(80,140,255,.38)', duration: 0.12, ease: 'none' }, 16.3);
 
-        // S7: the window pops, the receipt prints out of it
-        tl.fromTo('#win', { scale: 0.86, rotation: -6 }, { scale: 1, rotation: -2, duration: 0.45, ease: 'back.out(1.7)' }, 17.0);
+        // S7: the window pops, the photo loads line by line, the receipt prints out
+        tl.fromTo('#win', { scale: 0.86, rotation: -6 }, { scale: 1, rotation: -2, duration: 0.45, ease: SM('back.out(1.7)', 0.45) }, 17.0);
+        tl.fromTo('#winImg', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.5, ease: 'steps(9)' }, 17.15);
         tl.fromTo('#ticket', { clipPath: 'inset(0 0 100% 0)', x: -120, rotation: 0 }, { clipPath: 'inset(0 0 0% 0)', x: 0, rotation: 4, duration: 1.0, ease: 'steps(14)' }, 18.2);
 
-        // S9: «ينزل؟» circled (the circle rides on the word)
-        tl.fromTo('#s9-w3 .wmk path', { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power1.inOut' }, 23.85);
-        // S12: «يمشّيها.» underlined
-        tl.fromTo('#s12-w2 .wmk path', { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, 29.3);
-        // S10: the echo, like stacked type pulling apart
+        // S8: a «؟» over every head
+        [['#q1', 20.75], ['#q2', 20.95], ['#q3', 21.1], ['#q4', 21.3], ['#q5', 21.45], ['#q6', 21.6], ['#q7', 21.75]].forEach(([s, t]) => pop(s, t));
+
+        // S9: the chart that only goes up, then «ينزل؟» circled (the circle rides on the word)
+        draw('#chAx', 22.62, 0.16, 'none'); draw('#chLn', 22.8, 0.5, 'power1.in'); draw('#chHd', 23.3, 0.1, 'none');
+        draw('#s9-w3 .wmk path', 23.85, 0.45);
+
+        // S10: the echo, like stacked type pulling apart, and a flicker
         tl.fromTo('#e1', { opacity: 0, y: 0, filter: 'blur(4px)' }, { opacity: 0.55, y: -118, filter: 'blur(1px)', duration: 0.4, ease: 'power3.out', immediateRender: false }, 25.2);
         tl.fromTo('#e2', { opacity: 0, y: 0, filter: 'blur(4px)' }, { opacity: 0.55, y: 118, filter: 'blur(1px)', duration: 0.4, ease: 'power3.out', immediateRender: false }, 25.2);
-
-        // S2: the rest of the flurry, at other depths
-        tl.fromTo('#bill2', { y: 1500, x: 0, rotation: 30, rotationY: -40, transformPerspective: 1000 }, { y: -500, x: -120, rotation: -20, rotationY: 50, duration: 2.1, ease: 'none' }, 2.6);
-        tl.fromTo('#dinar3', { y: -450, x: 0, rotation: -20, rotationX: 40, transformPerspective: 1000 }, { y: 1800, x: 90, rotation: 25, rotationX: -40, duration: 2.0, ease: 'none' }, 3.1);
-        tl.fromTo('#dinar2', { y: -1000, x: 0, rotation: 14 }, { y: 2200, x: 60, rotation: -10, duration: 0.75, ease: 'none' }, 4.05);
-
-        // pieces land instead of already being there
-        const land = (sel, t, rot, from = { y: -320 }) => tl.fromTo(sel, { ...from, rotation: rot - 9, opacity: 0, scale: 1.08 }, { y: 0, x: 0, rotation: rot, opacity: 1, scale: 1, duration: 0.38, ease: 'back.out(1.4)' }, t);
-        const tape = (sel, t, rot) => tl.fromTo(sel, { opacity: 0, scale: 1.25, rotation: rot }, { opacity: 1, scale: 1, rotation: rot, duration: 0.18, ease: 'power2.out' }, t);
-        land('#p3a', 5.0, -5); land('#p3b', 5.1, 4); land('#p3c', 5.22, 6, { y: 360 });
-        tape('#t3a', 5.32, -8); tape('#t3b', 5.4, 6); tape('#t3c', 5.5, 3);
-        tl.fromTo('#slip', { y: -1250 }, { y: 0, duration: 0.42, ease: 'power3.out' }, 8.0);
-        land('#p5', 10.6, -6); tape('#t5', 10.9, -10);
-        tl.fromTo('#wasl', { x: 560, rotation: 14 }, { x: 0, rotation: 4, duration: 0.45, ease: 'power3.out' }, 10.7);
-        tl.fromTo('#winImg', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.5, ease: 'steps(9)' }, 17.15);
-        tape('#t13a', 30.42, -38); tape('#t13b', 30.5, -38);
-        tl.fromTo('#pinL', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.16, ease: 'power3.in' }, 32.78);
-
-        // flash frames on three cuts, more light leaks, and a film burn out
-        [5.0, 22.6, 27.8].forEach((t) => { tl.set('#flash', { opacity: 0.7 }, t); tl.set('#flash', { opacity: 0.25 }, t + 0.034); tl.set('#flash', { opacity: 0 }, t + 0.067); });
-        tl.fromTo('#burn', { opacity: 0, scale: 0.35 }, { opacity: 0.95, scale: 2.4, duration: 0.5, ease: 'power2.in', immediateRender: false }, 37.55);
-        tl.fromTo('#black', { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', immediateRender: false }, 38.0);
-
-        // S10: a flicker
         [[25.4, 0.55], [25.45, 1], [25.9, 0.7], [25.94, 1]].forEach(([t, v]) => tl.set('#s10 .sub', { opacity: v }, t));
 
-        // S13 / S14
-        tl.fromTo('#zahawi', { y: -440, rotation: -12, opacity: 0, scale: 1.06 }, { y: 0, rotation: -2, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(1.3)' }, 30.0);
-        tl.fromTo('#list', { y: -520, rotation: -9, opacity: 0 }, { y: 0, rotation: -2, opacity: 1, duration: 0.42, ease: 'back.out(1.3)' }, 32.4);
-        tl.fromTo('#st2', { opacity: 0, scale: 1.7 }, { opacity: 0.9, scale: 1, duration: 0.14, ease: 'power4.in' }, 33.86);
+        // S12: the beam breathes, the dust drifts; «يمشّيها.» underlined
+        tl.fromTo('#beam', { opacity: 0.55 }, { opacity: 1, duration: 1.1, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 27.8);
+        DUST.forEach(([e, dx, dy, ph]) => tl.fromTo(e, { x: 0, y: 0 }, { x: dx, y: dy, duration: 2.2, ease: 'none' }, 27.8));
+        draw('#s12-w2 .wmk path', 29.3, 0.35, 'power2.out');
+
+        // S13: the old coffeehouse print lands, then Al-Zahawi on top of it
+        land('#pc', 30.0, -7); tape('#t13c', 30.2, -4);
+        land('#zahawi', 30.25, -2, { y: -440 }, 0.45);
+        tape('#t13a', 30.55, -38); tape('#t13b', 30.62, -38);
+
+        // S14: the sheet drops and is pinned; a «؟» on every city; an arrow down to the comments
+        tl.fromTo('#list', { y: -520, rotation: -9, opacity: 0 }, { y: 0, rotation: -2, opacity: 1, duration: 0.42, ease: SM('back.out(1.3)', 0.42) }, 32.4);
+        tl.fromTo('#pinL', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.16, ease: SM('power3.in', 0.16) }, 32.78);
+        [33.8, 33.95, 34.1, 34.25, 34.4].forEach((t, i) => { const q = document.getElementById('qm' + (i + 1)), r = +q.dataset.rot; tl.fromTo(q, { opacity: 0, scale: 1.5, rotation: r }, { opacity: 1, scale: 1, rotation: r, duration: 0.09, ease: SM('power2.out', 0.09) }, t); });
+        draw('#ctaAr', 34.6, 0.38);
 
         // S15: the signature writes on
-        tl.fromTo('#sig', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.25, ease: 'power1.inOut' }, 35.45);
-        tl.fromTo('#handle', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 36.75);
+        tl.fromTo('#sig', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.25, ease: 'power1.inOut' }, 36.05);
+        tl.fromTo('#handle', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 37.35);
 
-        // light leaks on a few cuts
-        [2.6, 5.0, 13.2, 17.0, 22.6, 27.8, 35.2].forEach((t) => { tl.fromTo('#leak', { opacity: 0 }, { opacity: 0.85, duration: 0.12, immediateRender: false }, t); tl.to('#leak', { opacity: 0, duration: 0.5, ease: 'power2.out' }, t + 0.12); });
+        // the newspaper flies past the lens; the cut happens while it covers the whole frame
+        [3.0, 20.2, 32.4].forEach((t) => {
+          const t0 = t - 1 / 60 - 0.1756;
+          tl.fromTo('#newsW', { x: 1200 }, { x: -2100, duration: 0.36, ease: 'none', immediateRender: false }, t0);
+          tl.set('#newsW', { x: 1300 }, t0 + 0.37);
+        });
+        gsap.set('#newsW', { x: 1300, rotation: -4 }); tl.set('#newsW', { x: 1300, rotation: -4 }, 0);
 
-        // film grain and scratches move every frame (deterministic per frame)
+        // flash frames on three cuts, light leaks, and a film burn out
+        [5.4, 22.6, 27.8].forEach((t) => { tl.set('#flash', { opacity: 0.7 }, t); tl.set('#flash', { opacity: 0.25 }, t + 0.034); tl.set('#flash', { opacity: 0 }, t + 0.067); });
+        [5.4, 13.2, 17.0, 22.6, 27.8, 35.8].forEach((t) => { tl.fromTo('#leak', { opacity: 0 }, { opacity: 0.85, duration: 0.12, immediateRender: false }, t); tl.to('#leak', { opacity: 0, duration: 0.5, ease: 'power2.out' }, t + 0.12); });
+        tl.fromTo('#burn', { opacity: 0, scale: 0.35 }, { opacity: 0.95, scale: 2.4, duration: 0.5, ease: 'power2.in', immediateRender: false }, 38.15);
+        tl.fromTo('#black', { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', immediateRender: false }, 38.6);
+
+        // every frame: the grain moves; 12 times a second the marker lines boil and the paper pieces nudge,
+        // the way a stop-motion set never sits perfectly still (deterministic per frame)
         const film = { f: 0 };
         const hash = (n) => { let x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
-        const g = document.getElementById('grain');
+        const g = document.getElementById('grain'), boil = document.getElementById('boilT'), jit = [...document.querySelectorAll('.jit')];
         tl.to(film, { f: D * 30, duration: D, ease: 'none', onUpdate: () => {
-          const n = Math.floor(film.f);
+          const n = Math.floor(film.f), k = Math.floor(n * 0.4);
           g.style.backgroundPosition = `${Math.floor(hash(n) * 420)}px ${Math.floor(hash(n + 7) * 420)}px`;
+          boil.setAttribute('seed', String(k % 7 + 1));
+          jit.forEach((e, i) => { e.style.rotate = `${((hash(k * 31 + i * 7) - 0.5) * 0.7).toFixed(2)}deg`; e.style.translate = `${((hash(k * 17 + i * 3) - 0.5) * 2.4).toFixed(1)}px ${((hash(k * 13 + i * 5) - 0.5) * 2.4).toFixed(1)}px`; });
         } }, 0);
 
         window.__timelines['main'] = tl;

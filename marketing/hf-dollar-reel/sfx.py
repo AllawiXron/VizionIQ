@@ -12,6 +12,12 @@ the voiceover and a track in CapCut, so these stay small and physical.
   tick.wav      a number flipping
   shrink.wav    a falling squeeze (the salary getting smaller)
   boom.wav      a low soft hit for the ending
+v3:
+  pop.wav       a paper speech bubble popping on
+  thunk.wav     cardboard landing on cardboard (the seesaw)
+  creak.wav     a short cardboard creak as the seesaw tips
+  buzz.wav      the generator's power dipping (a mains buzz that stutters)
+  swipe.wav     a newspaper flying past the lens
 python sfx.py   (numpy + scipy)"""
 import numpy as np, wave, os
 from scipy.signal import butter, sosfilt
@@ -107,4 +113,39 @@ save('shrink.wav', lp(sh + .15 * bp(N(len(t)), 400, 3000) * np.exp(-t * 6), 3000
 # low soft hit for the ending
 t = t_(2.2)
 save('boom.wav', lp(np.sin(2 * np.pi * 48 * t) * np.exp(-t * 2.2) + .25 * N(len(t)) * np.exp(-t * 7), 600), .8)
+# --- v3 ---
+# paper bubble pop: a flick of paper plus a soft, quick pluck
+t = t_(.16)
+save('pop.wav', bp(N(len(t)), 1500, 8000) * np.exp(-t * 90) * .7 + np.sin(2 * np.pi * (520 + 900 * np.exp(-t * 40)) * t) * np.exp(-t * 38) * .5, .6)
+
+# cardboard thunk: hollow low knock with a papery top
+t = t_(.35)
+save('thunk.wav', np.sin(2 * np.pi * 140 * t) * np.exp(-t * 26) + np.sin(2 * np.pi * 230 * t) * np.exp(-t * 40) * .4
+     + bp(N(len(t)), 500, 4000) * np.exp(-t * 55) * .5, .85)
+
+# creak: a slow stick-slip (a train of tiny clicks that speed up and slow down)
+t = t_(.45)
+x = np.zeros(len(t)); ph = 0.0
+for i in range(len(t)):
+    ph += (70 + 90 * np.sin(np.pi * t[i] / .45)) / SR
+    if ph >= 1: ph -= 1; x[i] = 1
+cr = bp(np.convolve(x, np.exp(-np.arange(200) / 25), 'same'), 300, 2500)
+save('creak.wav', cr * env(len(t), .03, .1), .5)
+
+# generator power dip: 50 Hz mains buzz (harmonics) that stutters off and back on
+t = t_(.7)
+hum = sum(np.sign(np.sin(2 * np.pi * 50 * k * t)) / k for k in (1, 2, 3, 5))
+gate = np.ones(len(t))
+for a_, b_ in ((.12, .2), (.26, .3), (.36, .5)):
+    gate[int(a_ * SR):int(b_ * SR)] = 0.08
+save('buzz.wav', lp(hum, 2500) * lp(gate, 60) * env(len(t), .01, .12), .5)
+
+# newspaper swipe: a rustling whoosh that peaks in the middle
+t = t_(.42)
+sh = np.sin(np.pi * t / .42) ** 2
+rust = np.zeros(len(t))
+for s_ in np.sort(rng.uniform(0, .4, 26)):
+    i = int(s_ * SR); n = int(rng.uniform(.006, .02) * SR); rust[i:i + n] += np.hanning(n)
+save('swipe.wav', (lp(N(len(t)), 1800) * 1.2 + bp(N(len(t)), 1500, 7000) * rust * .8) * sh, .7)
+
 print('ok', sorted(os.listdir(out)))

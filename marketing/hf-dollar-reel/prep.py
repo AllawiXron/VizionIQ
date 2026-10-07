@@ -6,7 +6,8 @@ Textures (1080x1920): red.jpg, paper.jpg, dark.jpg, board.jpg; grain.png (1024 t
 Paper pieces (RGBA, torn or cut edges, words are set on top in the page): cal.png, slip.png, wasl.png, tag.png,
   list.png, ticket.png.
 Photos: bill.png (the $100 note), dinar.png (25,000 dinar note), and prints with a white border:
-  p-fan.png, p-bazaar1.png, p-coffee.png, p-bulb.png, p-zahawi.png; plus full-frame plates bazaar2.jpg and street.jpg."""
+  p-fan.png, p-bazaar1.png, p-coffee.png, p-bulb.png, p-zahawi.png; plus full-frame plates bazaar2.jpg and street.jpg.
+v3: plank.png + fulcrum.png (a cardboard seesaw), newsprint.jpg (the newspaper swipe and the ransom-note scraps)."""
 import os
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
@@ -205,5 +206,43 @@ def plate(path, name, crop_box, tint=None, blur=0, dark=1.0, inset=0.0):
     save(a, name)
 
 plate(src('src-bazaar2.jpg'), 'bazaar2.jpg', 0.42, tint=(1.0, 0.97, 0.92), inset=0.07)
-plate(src('src-rashid.jpg'), 'street.jpg', 0.5, tint=(1.0, 0.16, 0.14), blur=6, dark=0.75)
+# Al-Rashid Street as a sharp duotone: deep red-black shadows, warm cream lights (the «؟» bubbles sit on the people)
+im = Image.open(src('src-rashid.jpg')).convert('RGB')
+w0, h0 = im.size; cw = h0 * W / H; x0 = int(0.5 * (w0 - cw))
+im = im.crop((x0, 0, int(x0 + cw), h0)).resize((W, H), Image.LANCZOS)
+L = (np.asarray(im).astype(np.float32) / 255) @ np.array([0.3, 0.59, 0.11])
+L = np.clip((L - 0.04) * 1.12, 0, 1) ** 1.15
+stops = np.array([[0.03, 0.004, 0.008], [0.42, 0.035, 0.05], [0.97, 0.86, 0.76]])   # black-red, crimson, cream
+k = np.clip(L * 2, 0, 2)[..., None]
+duo = np.where(k < 1, stops[0] + (stops[1] - stops[0]) * k, stops[1] + (stops[2] - stops[1]) * (k - 1))
+save(duo * vignette(H, W, 0.75, 1.7)[..., None], 'street.jpg')
+
+
+# ---------- v3: cardboard seesaw, newsprint ----------
+def cardboard(w, h, tri=False):
+    m = noise(h, w, 90) * 0.6 + noise(h, w, 10, 2) * 0.4
+    flute = 0.5 + 0.5 * np.sin(np.arange(w) / w * np.pi * 2 * (w / 14))[None, :]          # corrugation showing through
+    rgb = np.array([0.69, 0.52, 0.34])[None, None, :] * (0.86 + 0.18 * m[..., None] + 0.04 * flute[..., None])
+    a = np.ones((h, w))
+    yy, xx = np.mgrid[0:h, 0:w]
+    if tri:                                                     # a cut triangle, edges a touch uneven
+        j = gaussian_filter(rng.standard_normal(h), 3) * 2.5
+        half = (yy / h) * (w / 2 - 6) + j[:, None]
+        a[np.abs(xx - w / 2) > half] = 0
+        rgb *= (1.06 - 0.22 * (xx / w))[..., None]               # lit from the left
+    else:
+        rgb[h - 12:] *= 0.62                                    # the cut edge shows its thickness
+        j = gaussian_filter(rng.standard_normal(w), 4) * 1.6
+        a[yy < 2 + j[None, :]] = 0
+    rgb *= (1.05 - 0.12 * ((xx / w + yy / h) / 2))[..., None]
+    return np.dstack([np.clip(rgb, 0, 1), gaussian_filter(a, 0.7)])
+
+
+save(cardboard(980, 62), 'plank.png')
+save(cardboard(250, 270, tri=True), 'fulcrum.png')
+
+# newsprint: grey-cream, fibrous, a little uneven (for the newspaper swipe and the ransom-note scraps)
+m = noise(1024, 1024, 160) * 0.6 + noise(1024, 1024, 12, 2) * 0.4
+fib = gaussian_filter(rng.standard_normal((1024, 1024)), (0.6, 2.5)) * 0.03
+save(np.array([0.86, 0.84, 0.78])[None, None, :] * (0.9 + 0.12 * m[..., None] + fib[..., None]), 'newsprint.jpg')
 print('ok', sorted(os.listdir(out)))

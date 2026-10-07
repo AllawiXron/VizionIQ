@@ -1,55 +1,66 @@
 # The dollar reel «الدولار صعد» (HyperFrames)
 
-`renders/dollar-reel.mp4`: a 38.2 s reel at 1080×1920, 30 fps, 30 MB, with sound effects only. The voice and music go on in CapCut; `timing.txt` gives the time of every line and word.
+`renders/dollar-reel.mp4` is a 38.8 s reel at 1080×1920 and 30 fps, with sound effects only. The voice and music go on in CapCut. `timing.txt` gives the time of every line and word, and the AI-voice text.
 
 The look follows the user's reference reel (a Baghdad agency's): analog collage, not clean UI.
 - Deep red cloth, old paper with a film frame («ALLAWI 400»), a green board.
-- Torn slips: a calendar page, a payslip, a generator receipt, a price tag, a notebook price list.
-- Black-and-white and sepia prints with white borders and tape.
-- Red marker crosses, circles and underlines, and rubber stamps.
-- Heavy moving film grain, a vignette, light leaks on some cuts.
-- Every shot opens with a rack focus, then a slow push with a little handheld drift.
+- Torn slips, black-and-white and sepia prints with white borders and tape.
+- Red marker crosses, circles, arrows and underlines, and rubber stamps.
+- Heavy moving film grain, a vignette, light leaks, flash frames, and a rack focus on every cut.
 - Small subtitles fade in word by word, like the reference.
+
+## v3: what changed and why
+
+The user asked for it to be "10x better". People who watched v2 were also confused by its ending: it was a story the whole way, then «وأسعاري؟ ظلّت مثل ما هي» showed a price list for posts, and nothing had said who was talking or what posts.
+
+- **The ending is a question for the viewer, not a pitch.** «وإنتو؟ الـ١٠٠ عدكم بيش؟ اكتبوها بالتعليقات.» A notebook sheet reads «سعر الـ١٠٠$ اليوم» with Baghdad, Baqubah, Basra, Mosul and Erbil. A red «؟» lands on each, and a marker arrow points down to the comments. The rate differs from city to city, so people have something real to comment. The caption asks the same.
+- **A new hook that asks a question on frame one.** The first frame reads «$100 = ؟»: a real note on red cloth, a marker «=», and a «؟» scrap. On «صارت» the «؟» is torn off. «180,000» slaps in, each character cut from a different magazine (a ransom note), then «دينار». The first frame is sharp; v2 opened on a rack-focus blur.
+- **A cardboard seesaw** for «الدولار صعد.. والدينار نزل»: it tips, the $100 is thrown up, dinars pile onto the low end, and marker arrows show ↑ and ↓.
+- **The salary number itself shrinks** («الراتب نفسه.. بس صار أصغر»). The payslip stays the same while «750,000» and its circle get smaller in four steps.
+- **Small story beats:**
+  - The generator's power dips with a mains buzz.
+  - «صاعد» gets selected in the chat, like a screenshot about to be shared.
+  - A «؟» bubble pops over the people's heads on Al-Rashid Street, now a sharp red-and-cream duotone.
+  - A hand-drawn chart that only goes up sits behind «هو الدولار راح ينزل؟».
+  - The 1932 bazaar's sunbeam breathes, with dust drifting in it.
+  - An old coffeehouse print lands under Al-Zahawi's, then and now.
+- **It moves like real stop-motion, not software:**
+  - Paper pieces move on twos (12 poses a second) and never sit perfectly still. They nudge a pixel or two 12 times a second, like a stop-motion set.
+  - Marker lines boil, through an SVG turbulence filter whose seed changes 12 times a second.
+  - The camera still glides, like a real camera filming a stop-motion set.
+- **Transitions:** a newspaper («جريدة علاوي», a made-up paper) flies past the lens on three cuts (3.0, 20.2, 32.4 s). The cut happens while it covers the whole frame.
 
 | # | Time | Line | Shot |
 |---|---|---|---|
-| 1 | 0–2.6 | أسبوع واحد.. بس أسبوع. | A calendar page pinned to a green board; red crosses on 1–6 October, then the 7th circled |
-| 2 | 2.6–5.0 | الدولار صعد.. والدينار نزل. | Red cloth; $100 notes tumble up and 25,000 dinar notes tumble down, at three depths (near, mid, far and blurred) |
-| 3 | 5.0–8.0 | الـ١٠٠ دولار.. صارت ١٨٠ ألف. | A paper wall; old Baghdad prints drop in and get taped; a big red «$100» rolls over to «180,000 دينار», underlined |
-| 4 | 8.0–10.6 | الراتب نفسه.. بس صار أصغر. | A payslip «750,000» drops in; the amount is circled, then the whole slip shrinks |
-| 5 | 10.6–13.2 | صاحب المولدة.. رفع سعر الأمبير. | A bulb print lands and is taped; the generator receipt «وصل اشتراك مولدة» slides in; the stamp «زيادة» comes down |
-| 6 | 13.2–17.0 | وأبو المحل غيّر الأسعار.. وگال: الدولار صاعد عيوني. | A price tag «٣,٠٠٠» struck and rewritten «٣,٥٠٠», then a chat: «ليش غيّرت السعر؟» / «الدولار صاعد عيوني» |
-| 7 | 17.0–20.2 | حتى لفّة الفلافل.. صارت تنحسب بالدولار. | A falafel wrap loads line by line in a retro «falafel.jpg» window; a receipt prints out: «$0.67» |
-| 8 | 20.2–22.6 | والكل صار يسأل نفس السؤال.. | Al-Rashid Street, dark and red |
-| 9 | 22.6–24.6 | هو الدولار راح ينزل؟ | Old paper; «ينزل؟» circled in red (the circle is attached to the word itself) |
-| 10–11 | 24.6–27.8 | محد يدري. / بس اللي ندريه.. | Black with «محد يدري.» echoing down, then red |
-| 12 | 27.8–30.0 | إنو العراقي.. يمشّيها. | A 1932 Baghdad coppersmiths' bazaar; «يمشّيها.» underlined in marker |
-| 13 | 30.0–32.4 | يضحك على الأزمة.. ويكمّل. | Al-Zahawi coffeehouse (2025): the print lands and is taped |
-| 14 | 32.4–35.2 | وأسعاري؟ ظلّت مثل ما هي. | A notebook price list (14 / 7 / 40 ألف) drops and is pinned; the stamp «ثابتة» comes down |
-| 15 | 35.2–38.2 | — | The «Allawi» signature writes itself on red, with ALLAWI.PSD under it; a film burn, then black |
-
-## Polish pass (v2)
-
-- **The circle on «ينزل؟».** In v1 it was drawn inside the moving camera layer while the subtitle stayed still, so it drifted off the word. The circle (and the underline on «يمشّيها.») is now built inside the word's own span and sized to it. It stays on the word whatever the camera or the font does.
-- **Pieces arrive instead of already being there.** Prints, the payslip, the bulb, the Zahawi print and the price list drop in with a little overshoot. Tape pops on after them, and the pin presses in. The payslip comes from above so it never crosses the subtitle.
-- **Depth.** The money in shot 2 falls at three depths, the far notes blurred. The paper pieces have light baked in (brighter top left, shaded bottom right), and the pins have proper highlights.
-- **Small story beats.** The falafel photo loads line by line like an old dial-up image. «محد يدري.» echoes down the frame.
-- **Cuts.** There are more light leaks, flash frames on three cuts (5.0, 22.6, 27.8 s), and a film burn into black at the end.
-- No subtitle time changed, so `timing.txt` is still right.
+| 1 | 0–3.0 | الـ١٠٠ دولار.. صارت ١٨٠ ألف. | «$100 = ؟» on red cloth with notes falling past; the ؟ is torn off and «180,000» slaps in as a ransom note, then «دينار» |
+| 2 | 3.0–5.4 | وكلها بأسبوع واحد. | A calendar page pinned to a green board; red crosses on 1–6 October, then the 7th circled |
+| 3 | 5.4–8.0 | الدولار صعد.. والدينار نزل. | A cardboard seesaw on paper: it tips, the $100 is thrown up, dinars pile on the low end; ↑ and ↓ in marker |
+| 4 | 8.0–10.6 | الراتب نفسه.. بس صار أصغر. | A payslip drops in; «750,000» is circled, then shrinks in four steps |
+| 5 | 10.6–13.2 | صاحب المولدة.. رفع سعر الأمبير. | A bulb print and a generator receipt; the power dips; the stamp «زيادة» comes down |
+| 6 | 13.2–17.0 | وأبو المحل غيّر الأسعار.. وگال: الدولار صاعد عيوني. | A price tag «٣,٠٠٠» struck and rewritten «٣,٥٠٠», then a chat with «صاعد» selected |
+| 7 | 17.0–20.2 | حتى لفّة الفلافل.. صارت تنحسب بالدولار. | A falafel wrap loads line by line in a retro window; a receipt prints «$0.67» |
+| 8 | 20.2–22.6 | والكل صار يسأل نفس السؤال.. | Al-Rashid Street, red and cream; a «؟» pops over each head |
+| 9 | 22.6–24.6 | هو الدولار راح ينزل؟ | Old paper; a chart that only goes up; «ينزل؟» circled (the circle rides on the word) |
+| 10–11 | 24.6–27.8 | محد يدري. / بس اللي ندريه.. | Black with «محد يدري.» echoing, then red |
+| 12 | 27.8–30.0 | إنو العراقي.. يمشّيها. | The 1932 coppersmiths' bazaar, its sunbeam and dust moving; «يمشّيها.» underlined |
+| 13 | 30.0–32.4 | يضحك على الأزمة.. ويكمّل. | An old Baghdad coffeehouse print, then Al-Zahawi (2025) landing on top |
+| 14 | 32.4–35.8 | وإنتو؟ الـ١٠٠ عدكم بيش؟ اكتبوها بالتعليقات. | A fill-in sheet: «سعر الـ١٠٠$ اليوم» with five cities, a «؟» on each, and an arrow down to the comments |
+| 15 | 35.8–38.8 | — | The «Allawi» signature writes itself on red, with ALLAWI.PSD; a film burn, then black |
 
 ## Files
 
 - `index.html`: the composition, 16 timed shots on one GSAP timeline. The subtitle words and their times live in each `.sub`'s `data-words` / `data-at`.
 - `prep.py` builds `assets/img/` (Pillow, numpy, scipy):
-  - the textures: red cloth, paper, desk, board, and a grain tile;
+  - the textures: red cloth, paper, desk, board, newsprint, and a grain tile;
+  - the cardboard seesaw (plank and fulcrum);
   - the torn and cut paper pieces;
   - the note cut-outs;
   - the photo prints;
   - the two full-frame plates.
-- `sfx.py` builds `assets/sfx/*.wav`: film hiss, paper, slap, marker, scribble, banknote flutter, stamp, receipt printer, message tones, tick, shrink, boom. `assets/sfx-kit/` (two whooshes from the user's own kit) is gitignored.
+- `sfx.py` builds `assets/sfx/*.wav`: film hiss, paper, slap, marker, scribble, banknote flutter, stamp, receipt printer, message tones, tick, shrink, boom; and for v3 a bubble pop, a cardboard thunk and creak, the generator's buzz and the newspaper swipe. `assets/sfx-kit/` (two whooshes from the user's own kit) is gitignored.
 - `timing.txt`: the voice timing sheet for CapCut.
 - `caption.txt`: the post caption.
-- `renders/dollar-reel-cover.jpg`: the cover.
+- `renders/dollar-reel-cover.jpg`: the cover, the frame at 2.75 s («$100 = 180,000 دينار»).
 
 The render comes out of HyperFrames at about 180 MB, because grain is hard to compress. To build the posted file, rename that render to `renders/dollar-reel-master.mp4` (it is gitignored) and re-encode it:
 
@@ -63,19 +74,19 @@ ffmpeg -i renders/dollar-reel-master.mp4 -c:v libx264 -preset slow -crf 23 -tune
 
 Checks:
 - `check` passes.
-- `../tools/textcheck.cjs` finds no collisions in any of the 16 shots. Each shot was checked alone, with every word showing and its final state forced.
+- `../tools/textcheck.cjs` finds no collisions in any of the 16 shots. Each shot was checked alone, seeked to its last frame. The only hits are the «180,000» scraps overlapping each other's paper on purpose; with the paper hidden, the digits are clear of each other.
 
 ## Credits (all public domain or CC0; none needs a credit)
 
 - $100 note: "Obverse of the series 2009 $100 Federal Reserve Note", Wikimedia Commons. Public domain (US government work).
 - 25,000 dinar note: "Iraq 25,000 Dinars Banknote", Gary Lee Todd, Flickr. Public Domain Mark.
-- Hand fanning $100 notes: Rubel Miah, WordPress Photo Directory. CC0.
+- Hand fanning $100 notes: Rubel Miah, WordPress Photo Directory. CC0. (Used in v1–v2; `prep.py` still builds it, v3 does not show it.)
 - Falafel wrap: "Falafel & Tzatziki Wrap - Lavash", Andy Li, Wikimedia Commons. CC0.
 - Baghdad bazaars, 1932: G. Eric and Edith Matson Photograph Collection, Library of Congress (via rawpixel). No known restrictions / CC0.
 - Coffee shop, Baghdad (sepia): Museums Victoria. Public domain.
 - Al-Zahawi Coffeehouse in 2025: Ayham4002, Wikimedia Commons. CC0.
 - Al-Rashid Street: Thegiantofgiants, Wikimedia Commons. CC0.
 - Light bulb: Ashesh Magar, WordPress Photo Directory. CC0.
-- Fonts: IBM Plex Sans Arabic, Playfair Display, Mrs Saint Delafield (SIL OFL).
+- Fonts: IBM Plex Sans Arabic, Playfair Display, Mrs Saint Delafield, Reem Kufi, Abril Fatface, Anton, Bebas Neue, Courier Prime (SIL OFL).
 
 Only the reference's style is followed. None of its footage, logo or characters is used.
