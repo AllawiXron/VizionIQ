@@ -118,6 +118,9 @@ def piece(w, h, color, torn=('top',), tex=0.06, holes=False, lines=None, perf=No
         for x in range(70, w - 40, 64):
             yy, xx = np.ogrid[0:h, 0:w]
             a[(yy - 44) ** 2 + (xx - x) ** 2 < 70] = 0
+    # light falls across it from the top left: a touch brighter there, shaded towards the bottom right
+    yy, xx = np.mgrid[0:h, 0:w]
+    rgb = rgb * (1.07 - 0.2 * ((xx / w + yy / h) / 2) ** 1.2)[..., None]
     # soft edge so it doesn't look cut by a computer
     a = gaussian_filter(a, 0.6)
     return np.dstack([np.clip(rgb, 0, 1), a])

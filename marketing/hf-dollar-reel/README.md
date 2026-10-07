@@ -14,19 +14,28 @@ The look follows the user's reference reel (a Baghdad agency's): analog collage,
 | # | Time | Line | Shot |
 |---|---|---|---|
 | 1 | 0–2.6 | أسبوع واحد.. بس أسبوع. | A calendar page pinned to a green board; red crosses on 1–6 October, then the 7th circled |
-| 2 | 2.6–5.0 | الدولار صعد.. والدينار نزل. | Red cloth; a $100 note tumbles up through the frame, a 25,000 dinar note tumbles down |
-| 3 | 5.0–8.0 | الـ١٠٠ دولار.. صارت ١٨٠ ألف. | A paper wall with old Baghdad prints; a big red «$100» rolls over to «180,000 دينار», underlined |
-| 4 | 8.0–10.6 | الراتب نفسه.. بس صار أصغر. | A payslip «750,000»: the amount is circled, then the whole slip shrinks |
-| 5 | 10.6–13.2 | صاحب المولدة.. رفع سعر الأمبير. | A bulb print and a generator receipt «وصل اشتراك مولدة»; the stamp «زيادة» comes down |
+| 2 | 2.6–5.0 | الدولار صعد.. والدينار نزل. | Red cloth; $100 notes tumble up and 25,000 dinar notes tumble down, at three depths (near, mid, far and blurred) |
+| 3 | 5.0–8.0 | الـ١٠٠ دولار.. صارت ١٨٠ ألف. | A paper wall; old Baghdad prints drop in and get taped; a big red «$100» rolls over to «180,000 دينار», underlined |
+| 4 | 8.0–10.6 | الراتب نفسه.. بس صار أصغر. | A payslip «750,000» drops in; the amount is circled, then the whole slip shrinks |
+| 5 | 10.6–13.2 | صاحب المولدة.. رفع سعر الأمبير. | A bulb print lands and is taped; the generator receipt «وصل اشتراك مولدة» slides in; the stamp «زيادة» comes down |
 | 6 | 13.2–17.0 | وأبو المحل غيّر الأسعار.. وگال: الدولار صاعد عيوني. | A price tag «٣,٠٠٠» struck and rewritten «٣,٥٠٠», then a chat: «ليش غيّرت السعر؟» / «الدولار صاعد عيوني» |
-| 7 | 17.0–20.2 | حتى لفّة الفلافل.. صارت تنحسب بالدولار. | A falafel wrap in a retro «falafel.jpg» window; a receipt prints out: «$0.67» |
+| 7 | 17.0–20.2 | حتى لفّة الفلافل.. صارت تنحسب بالدولار. | A falafel wrap loads line by line in a retro «falafel.jpg» window; a receipt prints out: «$0.67» |
 | 8 | 20.2–22.6 | والكل صار يسأل نفس السؤال.. | Al-Rashid Street, dark and red |
-| 9 | 22.6–24.6 | هو الدولار راح ينزل؟ | Old paper; «ينزل؟» circled in red |
-| 10–11 | 24.6–27.8 | محد يدري. / بس اللي ندريه.. | Black, then red |
-| 12 | 27.8–30.0 | إنو العراقي.. يمشّيها. | A 1932 Baghdad coppersmiths' bazaar |
-| 13 | 30.0–32.4 | يضحك على الأزمة.. ويكمّل. | Al-Zahawi coffeehouse (2025) as a taped print |
-| 14 | 32.4–35.2 | وأسعاري؟ ظلّت مثل ما هي. | A notebook price list (14 / 7 / 40 ألف); the stamp «ثابتة» comes down |
-| 15 | 35.2–38.2 | — | The «Allawi» signature writes itself on red, with ALLAWI.PSD under it |
+| 9 | 22.6–24.6 | هو الدولار راح ينزل؟ | Old paper; «ينزل؟» circled in red (the circle is attached to the word itself) |
+| 10–11 | 24.6–27.8 | محد يدري. / بس اللي ندريه.. | Black with «محد يدري.» echoing down, then red |
+| 12 | 27.8–30.0 | إنو العراقي.. يمشّيها. | A 1932 Baghdad coppersmiths' bazaar; «يمشّيها.» underlined in marker |
+| 13 | 30.0–32.4 | يضحك على الأزمة.. ويكمّل. | Al-Zahawi coffeehouse (2025): the print lands and is taped |
+| 14 | 32.4–35.2 | وأسعاري؟ ظلّت مثل ما هي. | A notebook price list (14 / 7 / 40 ألف) drops and is pinned; the stamp «ثابتة» comes down |
+| 15 | 35.2–38.2 | — | The «Allawi» signature writes itself on red, with ALLAWI.PSD under it; a film burn, then black |
+
+## Polish pass (v2)
+
+- **The circle on «ينزل؟».** In v1 it was drawn inside the moving camera layer while the subtitle stayed still, so it drifted off the word. The circle (and the underline on «يمشّيها.») is now built inside the word's own span and sized to it. It stays on the word whatever the camera or the font does.
+- **Pieces arrive instead of already being there.** Prints, the payslip, the bulb, the Zahawi print and the price list drop in with a little overshoot. Tape pops on after them, and the pin presses in. The payslip comes from above so it never crosses the subtitle.
+- **Depth.** The money in shot 2 falls at three depths, the far notes blurred. The paper pieces have light baked in (brighter top left, shaded bottom right), and the pins have proper highlights.
+- **Small story beats.** The falafel photo loads line by line like an old dial-up image. «محد يدري.» echoes down the frame.
+- **Cuts.** There are more light leaks, flash frames on three cuts (5.0, 22.6, 27.8 s), and a film burn into black at the end.
+- No subtitle time changed, so `timing.txt` is still right.
 
 ## Files
 

@@ -124,7 +124,10 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 .sub { position:absolute; left:80px; right:80px; text-align:center; font:500 50px/1.6 'IBM Plex Sans Arabic'; color:var(--cream);
   text-shadow:0 2px 14px rgba(0,0,0,.55) }
 .sub.on-paper { color:var(--red); text-shadow:none }
-.sub .w { display:inline-block; opacity:0; margin:0 7px }
+.sub .w { display:inline-block; opacity:0; margin:0 7px; position:relative }
+.wmk { position:absolute; overflow:visible; pointer-events:none }
+.wmk path { fill:none; stroke:var(--marker); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; opacity:.92 }
+.sub.echo { color:#c4161c; text-shadow:none; opacity:0 }
 
 /* the film frame on paper shots */
 .film { position:absolute; inset:0; pointer-events:none }
@@ -218,9 +221,12 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 #handle { position:absolute; left:0; right:0; top:1110px; text-align:center; font:500 34px 'IBM Plex Sans Arabic'; letter-spacing:.32em; color:rgba(239,229,211,.8); direction:ltr; opacity:0 }
 
 /* film finish over everything */
-#fx, #grain, #vig, #leak, #scratch { position:absolute; inset:0; pointer-events:none }
+#fx, #grain, #vig, #leak, #flash, #burn, #black { position:absolute; inset:0; pointer-events:none }
 #grain { background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.46 }
 #vig { background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%) }
+#flash { opacity:0; background:#f3e6d3 }
+#burn { opacity:0; mix-blend-mode:screen; transform-origin:540px 1100px; background:radial-gradient(520px 520px at 540px 1100px, rgba(255,214,150,1), rgba(255,120,40,.8) 40%, rgba(255,60,20,0) 72%) }
+#black { opacity:0; background:#000 }
 #leak { opacity:0; mix-blend-mode:screen; background:radial-gradient(700px 900px at 85% 20%, rgba(255,170,90,.95), rgba(255,90,40,.45) 40%, rgba(255,60,20,0) 75%) }
     </style>
   </head>
@@ -245,8 +251,11 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <section class="scene clip" id="s2" data-start="2.6" data-duration="2.4" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/red.jpg" alt="" />
+          <img class="ab" id="bill2" src="assets/img/bill.png" alt="" style="left:640px; top:0; width:300px; filter:blur(1.6px) brightness(.8)" />
+          <img class="ab" id="dinar3" src="assets/img/dinar.png" alt="" style="left:90px; top:0; width:270px; filter:blur(1.8px) brightness(.8)" />
           <img class="ab shadow" id="bill" src="assets/img/bill.png" alt="" style="left:180px; top:0; width:720px" />
           <img class="ab shadow" id="dinar" src="assets/img/dinar.png" alt="" style="left:240px; top:0; width:600px" />
+          <img class="ab" id="dinar2" src="assets/img/dinar.png" alt="" style="left:-120px; top:0; width:980px; filter:blur(10px)" />
         </div>
         <div class="sub" style="top:900px" data-words="الدولار|صعد..|والدينار|نزل." data-at="2.7,3.05,3.75,4.15"></div>
       </section>
@@ -255,12 +264,12 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <section class="scene clip" id="s3" data-start="5" data-duration="3" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/paper.jpg" alt="" />
-          <img class="ab shadow" src="assets/img/p-bazaar1.png" alt="" style="left:70px; top:230px; width:430px; transform:rotate(-5deg)" />
-          <div class="tape" style="left:200px; top:205px; width:170px; transform:rotate(-8deg)"></div>
-          <img class="ab shadow" src="assets/img/p-coffee.png" alt="" style="left:610px; top:300px; width:370px; transform:rotate(4deg)" />
-          <div class="tape" style="left:730px; top:282px; width:150px; transform:rotate(6deg)"></div>
-          <img class="ab shadow" src="assets/img/p-fan.png" alt="" style="left:560px; top:1250px; width:380px; transform:rotate(6deg)" />
-          <div class="tape" style="left:690px; top:1230px; width:160px; transform:rotate(3deg)"></div>
+          <img class="ab shadow" id="p3a" src="assets/img/p-bazaar1.png" alt="" style="left:70px; top:230px; width:430px" />
+          <div class="tape" id="t3a" style="left:200px; top:205px; width:170px"></div>
+          <img class="ab shadow" id="p3b" src="assets/img/p-coffee.png" alt="" style="left:610px; top:300px; width:370px" />
+          <div class="tape" id="t3b" style="left:730px; top:282px; width:150px"></div>
+          <img class="ab shadow" id="p3c" src="assets/img/p-fan.png" alt="" style="left:560px; top:1250px; width:380px" />
+          <div class="tape" id="t3c" style="left:690px; top:1230px; width:160px"></div>
           <div id="num"><div class="n" id="n1">$100</div><div class="n n2" id="n2">180,000</div></div>
           <div id="cur">دينار</div>
           <svg class="mk" id="numU" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"><path pathLength="1" d="M250 948 C 420 924, 620 930, 840 940" /></svg>
@@ -294,9 +303,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <section class="scene clip" id="s5" data-start="10.6" data-duration="2.6" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/red.jpg" alt="" />
-          <img class="ab shadow" src="assets/img/p-bulb.png" alt="" style="left:90px; top:480px; width:420px; transform:rotate(-6deg)" />
-          <div class="tape" style="left:190px; top:458px; width:160px; transform:rotate(-10deg)"></div>
-          <div id="wasl" class="shadow" style="transform:rotate(4deg)">
+          <img class="ab shadow" id="p5" src="assets/img/p-bulb.png" alt="" style="left:90px; top:480px; width:420px" />
+          <div class="tape" id="t5" style="left:190px; top:458px; width:160px"></div>
+          <div id="wasl" class="shadow">
             <img src="assets/img/wasl.png" alt="" />
             <div class="t h">وصل اشتراك مولدة</div>
             <div class="t no">No. 0417</div>
@@ -351,7 +360,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
             <div class="t thx">شكراً لزيارتكم</div>
             <div class="bars"></div>
           </div>
-          <div id="win"><div class="bar">falafel.jpg<div><span></span><span></span><span></span></div></div><div class="ph"><img src="assets/img/p-falafel.png" alt="" /></div></div>
+          <div id="win"><div class="bar">falafel.jpg<div><span></span><span></span><span></span></div></div><div class="ph"><img id="winImg" src="assets/img/p-falafel.png" alt="" /></div></div>
         </div>
         <div class="sub" style="top:1380px" data-words="حتى|لفّة|الفلافل..|صارت|تنحسب|بالدولار." data-at="17.1,17.35,17.65,18.3,18.6,19.0"></div>
       </section>
@@ -366,15 +375,16 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <section class="scene clip" id="s9" data-start="22.6" data-duration="2" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/paper.jpg" alt="" />
-          <svg class="mk" id="qC" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
         </div>
         <div class="film"><div class="fr"></div><div class="ed" style="left:60px; bottom:70px">ALLAWI 400</div><div class="ed" style="right:60px; bottom:70px">▸ 13&nbsp;&nbsp;&nbsp;▸ 13A</div></div>
-        <div class="sub on-paper" style="top:880px" data-words="هو|الدولار|راح|ينزل؟" data-at="22.7,22.9,23.35,23.6"></div>
+        <div class="sub on-paper" style="top:880px" data-words="هو|الدولار|راح|ينزل؟" data-at="22.7,22.9,23.35,23.6" data-circle="3"></div>
       </section>
 
       <!-- S10 / S11 -->
       <section class="scene clip" id="s10" data-start="24.6" data-duration="1.6" data-track-index="0">
         <div class="cam" style="background:#0b0909"></div>
+        <div class="sub echo" id="e1" style="top:880px" data-layout-allow-overlap>محد يدري.</div>
+        <div class="sub echo" id="e2" style="top:880px" data-layout-allow-overlap>محد يدري.</div>
         <div class="sub" style="top:880px" data-words="محد|يدري." data-at="24.75,25.1"></div>
       </section>
       <section class="scene clip" id="s11" data-start="26.2" data-duration="1.6" data-track-index="0">
@@ -385,16 +395,16 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <!-- S12: the Iraqi gets by -->
       <section class="scene clip" id="s12" data-start="27.8" data-duration="2.2" data-track-index="0">
         <div class="cam"><img class="bg" src="assets/img/bazaar2.jpg" alt="" /></div>
-        <div class="sub" style="top:1300px" data-words="إنو|العراقي..|يمشّيها." data-at="27.95,28.2,29.0"></div>
+        <div class="sub" style="top:1300px" data-words="إنو|العراقي..|يمشّيها." data-at="27.95,28.2,29.0" data-under="2"></div>
       </section>
 
       <!-- S13: laughs at the crisis -->
       <section class="scene clip" id="s13" data-start="30" data-duration="2.4" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/red.jpg" alt="" />
-          <div id="zahawi" class="shadow" style="transform:rotate(-3deg)"><img src="assets/img/p-zahawi.png" alt="" /></div>
-          <div class="tape" style="left:80px; top:520px; width:170px; transform:rotate(-38deg)"></div>
-          <div class="tape" style="left:830px; top:1180px; width:170px; transform:rotate(-38deg)"></div>
+          <div id="zahawi" class="shadow"><img src="assets/img/p-zahawi.png" alt="" /></div>
+          <div class="tape" id="t13a" style="left:80px; top:520px; width:170px"></div>
+          <div class="tape" id="t13b" style="left:830px; top:1180px; width:170px"></div>
         </div>
         <div class="sub" style="top:1330px" data-words="يضحك|على|الأزمة..|ويكمّل." data-at="30.1,30.45,30.65,31.5"></div>
       </section>
@@ -403,7 +413,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <section class="scene clip" id="s14" data-start="32.4" data-duration="2.8" data-track-index="0">
         <div class="cam">
           <img class="bg" src="assets/img/paper.jpg" alt="" />
-          <div id="list" class="shadow" style="transform:rotate(-2deg)">
+          <div id="list" class="shadow">
             <img src="assets/img/list.png" alt="" />
             <div class="t h">أسعاري</div>
             <div class="t" style="top:236px">بوست ........ ١٤ ألف</div>
@@ -427,6 +437,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
                 <div id="grain"></div>
         <div id="vig"></div>
         <div id="leak"></div>
+        <div id="flash"></div>
+        <div id="burn"></div>
+        <div id="black"></div>
       </div>
 
       <!-- sound: effects only (the voice and music are added in CapCut) -->
@@ -483,7 +496,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 
     <script>
       const D = 38.2;
-      const PIN = '<svg viewBox="0 0 46 46"><circle cx="23" cy="20" r="15" fill="#c4161c"/><circle cx="18" cy="15" r="5" fill="#ff8a8a" opacity=".7"/><ellipse cx="25" cy="40" rx="9" ry="3" fill="rgba(0,0,0,.35)"/></svg>';
+      let pinN = 0;
+      const PIN = () => { const id = 'pg' + (pinN++); return `<svg viewBox="0 0 46 46"><defs><radialGradient id="${id}" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".42" stop-color="#c4161c"/><stop offset="1" stop-color="#5e0609"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#${id})"/><circle cx="21" cy="19" r="14" fill="none" stroke="#4a0507" stroke-opacity=".5" stroke-width="1"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`; };
 
       // seeded randomness (deterministic)
       function seeded(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -508,13 +522,23 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       for (let i = 0; i < 5; i++) grid.appendChild(document.createElement('div'));
       for (let d = 1; d <= 31; d++) { const e = document.createElement('div'); e.textContent = AR(d); e.id = 'd' + d; grid.appendChild(e); }
       // pins
-      [['#cal', 357, -16]].forEach(([sel, x, y]) => { const p = document.createElement('div'); p.className = 'pin'; p.style.left = x + 'px'; p.style.top = y + 'px'; p.innerHTML = PIN; document.querySelector(sel).appendChild(p); });
-      const pinList = document.createElement('div'); pinList.className = 'pin'; pinList.style.left = '297px'; pinList.style.top = '-14px'; pinList.innerHTML = PIN; document.getElementById('list').appendChild(pinList);
+      [['#cal', 357, -16]].forEach(([sel, x, y]) => { const p = document.createElement('div'); p.className = 'pin'; p.style.left = x + 'px'; p.style.top = y + 'px'; p.innerHTML = PIN(); document.querySelector(sel).appendChild(p); });
+      const pinList = document.createElement('div'); pinList.className = 'pin'; pinList.style.left = '297px'; pinList.style.top = '-14px'; pinList.innerHTML = PIN(); pinList.id = 'pinL'; document.getElementById('list').appendChild(pinList);
 
       // subtitle words
       document.querySelectorAll('.sub[data-words]').forEach((s) => {
         const ws = s.dataset.words.split('|');
         s.innerHTML = ws.map((w, i) => `<span class="w" id="${s.parentElement.id}-w${i}">${w}</span>`).join(' ');
+        // marker marks that belong to a word ride on the word itself, so they always sit on it
+        if (s.dataset.circle !== undefined) {
+          const w = s.querySelectorAll('.w')[+s.dataset.circle];
+          let d = ''; for (let k = 0; k <= 48; k++) { const a = -2.5 + (k / 48) * Math.PI * 2 * 1.1, wob = 1 + (rnd() - 0.5) * 0.05 + k * 0.001; d += (k ? ' L' : 'M') + (50 + Math.cos(a) * 49 * wob).toFixed(1) + ' ' + (30 + Math.sin(a) * 29 * wob).toFixed(1); }
+          w.insertAdjacentHTML('beforeend', `<svg class="wmk" viewBox="0 0 100 60" preserveAspectRatio="none" style="left:-12px; top:-6px; width:calc(100% + 24px); height:calc(100% + 12px)"><path pathLength="1" vector-effect="non-scaling-stroke" d="${d}"/></svg>`);
+        }
+        if (s.dataset.under !== undefined) {
+          const w = s.querySelectorAll('.w')[+s.dataset.under];
+          w.insertAdjacentHTML('beforeend', `<svg class="wmk" viewBox="0 0 100 24" preserveAspectRatio="none" style="left:-8px; bottom:-14px; width:calc(100% + 16px); height:24px"><path pathLength="1" vector-effect="non-scaling-stroke" d="M2 15 C 28 6, 64 19, 98 9"/></svg>`);
+        }
       });
 
       function build() {
@@ -587,16 +611,42 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
         tl.fromTo('#win', { scale: 0.86, rotation: -6 }, { scale: 1, rotation: -2, duration: 0.45, ease: 'back.out(1.7)' }, 17.0);
         tl.fromTo('#ticket', { clipPath: 'inset(0 0 100% 0)', x: -120, rotation: 0 }, { clipPath: 'inset(0 0 0% 0)', x: 0, rotation: 4, duration: 1.0, ease: 'steps(14)' }, 18.2);
 
-        // S9: the question circled
-        const q = addPath(document.getElementById('qC'), loopPath(358, 922, 78, 50, 1.1, -2.9));
-        tl.fromTo(q, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power1.inOut' }, 23.75);
+        // S9: «ينزل؟» circled (the circle rides on the word)
+        tl.fromTo('#s9-w3 .wmk path', { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.45, ease: 'power1.inOut' }, 23.85);
+        // S12: «يمشّيها.» underlined
+        tl.fromTo('#s12-w2 .wmk path', { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, 29.3);
+        // S10: the echo, like stacked type pulling apart
+        tl.fromTo('#e1', { opacity: 0, y: 0, filter: 'blur(4px)' }, { opacity: 0.55, y: -118, filter: 'blur(1px)', duration: 0.4, ease: 'power3.out', immediateRender: false }, 25.2);
+        tl.fromTo('#e2', { opacity: 0, y: 0, filter: 'blur(4px)' }, { opacity: 0.55, y: 118, filter: 'blur(1px)', duration: 0.4, ease: 'power3.out', immediateRender: false }, 25.2);
+
+        // S2: the rest of the flurry, at other depths
+        tl.fromTo('#bill2', { y: 1500, x: 0, rotation: 30, rotationY: -40, transformPerspective: 1000 }, { y: -500, x: -120, rotation: -20, rotationY: 50, duration: 2.1, ease: 'none' }, 2.6);
+        tl.fromTo('#dinar3', { y: -450, x: 0, rotation: -20, rotationX: 40, transformPerspective: 1000 }, { y: 1800, x: 90, rotation: 25, rotationX: -40, duration: 2.0, ease: 'none' }, 3.1);
+        tl.fromTo('#dinar2', { y: -1000, x: 0, rotation: 14 }, { y: 2200, x: 60, rotation: -10, duration: 0.75, ease: 'none' }, 4.05);
+
+        // pieces land instead of already being there
+        const land = (sel, t, rot, from = { y: -320 }) => tl.fromTo(sel, { ...from, rotation: rot - 9, opacity: 0, scale: 1.08 }, { y: 0, x: 0, rotation: rot, opacity: 1, scale: 1, duration: 0.38, ease: 'back.out(1.4)' }, t);
+        const tape = (sel, t, rot) => tl.fromTo(sel, { opacity: 0, scale: 1.25, rotation: rot }, { opacity: 1, scale: 1, rotation: rot, duration: 0.18, ease: 'power2.out' }, t);
+        land('#p3a', 5.0, -5); land('#p3b', 5.1, 4); land('#p3c', 5.22, 6, { y: 360 });
+        tape('#t3a', 5.32, -8); tape('#t3b', 5.4, 6); tape('#t3c', 5.5, 3);
+        tl.fromTo('#slip', { y: -1250 }, { y: 0, duration: 0.42, ease: 'power3.out' }, 8.0);
+        land('#p5', 10.6, -6); tape('#t5', 10.9, -10);
+        tl.fromTo('#wasl', { x: 560, rotation: 14 }, { x: 0, rotation: 4, duration: 0.45, ease: 'power3.out' }, 10.7);
+        tl.fromTo('#winImg', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.5, ease: 'steps(9)' }, 17.15);
+        tape('#t13a', 30.42, -38); tape('#t13b', 30.5, -38);
+        tl.fromTo('#pinL', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.16, ease: 'power3.in' }, 32.78);
+
+        // flash frames on three cuts, more light leaks, and a film burn out
+        [5.0, 22.6, 27.8].forEach((t) => { tl.set('#flash', { opacity: 0.7 }, t); tl.set('#flash', { opacity: 0.25 }, t + 0.034); tl.set('#flash', { opacity: 0 }, t + 0.067); });
+        tl.fromTo('#burn', { opacity: 0, scale: 0.35 }, { opacity: 0.95, scale: 2.4, duration: 0.5, ease: 'power2.in', immediateRender: false }, 37.55);
+        tl.fromTo('#black', { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none', immediateRender: false }, 38.0);
 
         // S10: a flicker
         [[25.4, 0.55], [25.45, 1], [25.9, 0.7], [25.94, 1]].forEach(([t, v]) => tl.set('#s10 .sub', { opacity: v }, t));
 
         // S13 / S14
-        tl.fromTo('#zahawi', { rotation: -6, scale: 1.04 }, { rotation: -2, scale: 1, duration: 2.4, ease: 'power2.out' }, 30.0);
-        tl.fromTo('#list', { rotation: -6, rotationX: 10, transformPerspective: 1400 }, { rotation: -2, rotationX: 2, duration: 2.8, ease: 'sine.out' }, 32.4);
+        tl.fromTo('#zahawi', { y: -440, rotation: -12, opacity: 0, scale: 1.06 }, { y: 0, rotation: -2, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(1.3)' }, 30.0);
+        tl.fromTo('#list', { y: -520, rotation: -9, opacity: 0 }, { y: 0, rotation: -2, opacity: 1, duration: 0.42, ease: 'back.out(1.3)' }, 32.4);
         tl.fromTo('#st2', { opacity: 0, scale: 1.7 }, { opacity: 0.9, scale: 1, duration: 0.14, ease: 'power4.in' }, 33.86);
 
         // S15: the signature writes on
@@ -604,7 +654,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
         tl.fromTo('#handle', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 36.75);
 
         // light leaks on a few cuts
-        [5.0, 17.0, 27.8, 35.2].forEach((t) => { tl.fromTo('#leak', { opacity: 0 }, { opacity: 0.85, duration: 0.12, immediateRender: false }, t); tl.to('#leak', { opacity: 0, duration: 0.5, ease: 'power2.out' }, t + 0.12); });
+        [2.6, 5.0, 13.2, 17.0, 22.6, 27.8, 35.2].forEach((t) => { tl.fromTo('#leak', { opacity: 0 }, { opacity: 0.85, duration: 0.12, immediateRender: false }, t); tl.to('#leak', { opacity: 0, duration: 0.5, ease: 'power2.out' }, t + 0.12); });
 
         // film grain and scratches move every frame (deterministic per frame)
         const film = { f: 0 };
