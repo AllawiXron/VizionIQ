@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <title>allawi.psd — مطلوب صوت</title>
+    <link rel="stylesheet" href="fonts.css" />
+    <style>
+:root { --cream:#efe5d3; --ink:#2a2420; --red:#a8121a; --marker:#c4161c; --pen:#1f3a8a }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#222; display:flex; flex-direction:column; align-items:center; gap:40px; padding:40px 0; direction:rtl; font-family:'IBM Plex Sans Arabic' }
+.art { position:relative; width:1080px; overflow:hidden; flex:none }
+.post { height:1350px }
+.story { height:1920px }
+.red { background:#2a0507 url(../hf-dollar-reel/assets/img/red.jpg) center/cover }
+.paper { background:#cbbd9f url(../hf-dollar-reel/assets/img/paper.jpg) center/cover }
+.grain { position:absolute; inset:0; background:url(../hf-dollar-reel/assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.42; pointer-events:none }
+.vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.5) 100%); pointer-events:none }
+.ab { position:absolute }
+.shadow { filter:drop-shadow(0 18px 22px rgba(0,0,0,.45)) drop-shadow(0 3px 4px rgba(0,0,0,.35)) }
+.tape { position:absolute; height:54px; background:rgba(236,226,200,.75); box-shadow:0 2px 6px rgba(0,0,0,.18);
+  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+.pin { position:absolute; width:46px; height:46px; z-index:3 }
+.mk { position:absolute; overflow:visible; pointer-events:none }
+.mk path { fill:none; stroke:var(--marker); stroke-width:8; stroke-linecap:round; stroke-linejoin:round; opacity:.92 }
+.kicker { position:absolute; left:70px; font:500 24px 'IBM Plex Sans Arabic'; letter-spacing:.3em; color:rgba(239,229,211,.75); direction:ltr; white-space:nowrap }
+
+/* the headline on a torn strip of newsprint */
+.stripW { position:absolute; left:70px; width:940px; filter:drop-shadow(0 14px 16px rgba(0,0,0,.5)); transform:rotate(-2deg) }
+.strip { background:url(../hf-dollar-reel/assets/img/newsprint.jpg) 30% 40%/700px; padding:26px 0 40px; text-align:center;
+  clip-path:polygon(0 7%, 6% 2%, 14% 6%, 23% 0, 33% 5%, 44% 1%, 55% 6%, 66% 0, 77% 5%, 88% 1%, 100% 6%, 99% 93%, 90% 99%, 79% 94%, 67% 100%, 55% 95%, 43% 100%, 31% 94%, 19% 99%, 9% 94%, 1% 99%) }
+.strip .h { font:700 156px/1.15 'Reem Kufi'; color:#1d1a17 }
+.strip .s { font:600 66px/1.3 'IBM Plex Sans Arabic'; color:var(--red); margin-top:4px }
+
+/* the microphone print */
+.mic { position:absolute; transform-origin:50% 0 }
+.mic img { width:100%; display:block }
+
+/* the notebook sheet with the details, in blue pen */
+.sheet { position:absolute; transform-origin:50% 0 }
+.sheet > img { position:absolute; inset:0; width:100%; height:100% }
+.sheet .t { position:absolute; right:30px; left:70px; color:var(--pen); font:500 34px 'IBM Plex Sans Arabic'; white-space:nowrap; transform:rotate(-1deg) }
+.sheet .t.hd { font-weight:600; font-size:42px; text-align:center; left:30px }
+.stamp { position:absolute; padding:8px 30px 14px; border:7px double #b3121a; border-radius:16px; color:#b3121a; font:600 64px/1.3 'IBM Plex Sans Arabic';
+  white-space:nowrap; opacity:.88; mix-blend-mode:multiply; filter:url(#stampF) }
+
+.cta { position:absolute; left:60px; right:60px; text-align:center; color:var(--cream); text-shadow:0 2px 14px rgba(0,0,0,.55) }
+.cta .a { font:600 50px/1.4 'IBM Plex Sans Arabic' }
+.cta .b { font:400 30px/1.5 'IBM Plex Sans Arabic'; color:rgba(239,229,211,.82) }
+
+/* slide 2 */
+.film { position:absolute; inset:0; pointer-events:none }
+.film .fr { position:absolute; left:34px; right:34px; top:60px; bottom:90px; border:3px solid rgba(40,28,20,.5); border-radius:4px }
+.film .ed { position:absolute; bottom:44px; font:500 22px 'IBM Plex Sans Arabic'; letter-spacing:.22em; color:rgba(40,28,20,.6); direction:ltr; white-space:nowrap }
+.ttl { position:absolute; left:0; right:0; text-align:center; font:700 100px/1.2 'Reem Kufi'; color:var(--red) }
+.step { position:absolute; right:110px; left:110px; font:600 40px/1.5 'IBM Plex Sans Arabic'; color:var(--ink) }
+.step b { color:var(--red); font-weight:600; margin-left:10px }
+.scriptW { position:absolute; left:100px; right:100px; filter:drop-shadow(0 12px 14px rgba(0,0,0,.35)); transform:rotate(-1deg) }
+.script { background:#f4f0e6; padding:44px 50px 54px; font:500 46px/1.75 'IBM Plex Sans Arabic'; color:#2a2420; text-align:right;
+  clip-path:polygon(0 3%, 8% 0, 18% 2%, 30% 0, 42% 3%, 55% 0, 68% 2%, 80% 0, 92% 3%, 100% 1%, 100% 97%, 91% 100%, 79% 98%, 66% 100%, 53% 97%, 40% 100%, 27% 98%, 14% 100%, 0 98%) }
+.note { position:absolute; left:110px; right:110px; text-align:center }
+.note .r { font:600 44px/1.5 'IBM Plex Sans Arabic'; color:var(--red) }
+.note .i { font:400 32px/1.6 'IBM Plex Sans Arabic'; color:#4a4038; margin-top:6px }
+.handle { position:absolute; left:0; right:0; text-align:center; font:500 30px 'IBM Plex Sans Arabic'; letter-spacing:.28em; color:rgba(40,28,20,.75); direction:ltr }
+    </style>
+  </head>
+  <body>
+    <!-- a rubber stamp never inks evenly: noise eats holes in it and roughens its edge -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <filter id="stampF" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="3" result="n" />
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.75" result="m" />
+        <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
+        <feDisplacementMap in="s" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <!-- slide 1: the call -->
+    <div class="art post red" id="s1">
+      <div class="kicker" style="top:70px">ALLAWI.PSD — CASTING CALL</div>
+      <div class="stripW" style="top:126px"><div class="strip"><div class="h">مطلوب صوت</div><div class="s">نسائي عراقي</div></div></div>
+      <div class="mic shadow" style="left:80px; top:560px; width:400px; transform:rotate(-6deg)"><img src="img/p-mic.png" alt="" /></div>
+      <div class="tape" style="left:190px; top:548px; width:170px; transform:rotate(-8deg)"></div>
+      <div class="sheet shadow" id="sheet1" style="left:500px; top:566px; width:500px; height:625px; transform:rotate(2.5deg)" data-lines="التفاصيل|تعليق صوتي لريلزات قصيرة|من ٣٠ لـ ٤٠ ثانية|باللهجة العراقية|من البيت، بالموبايل يكفي|شغل مستمر"></div>
+      <div class="cta" style="top:1222px"><div class="a">دزّيلي فويس ٢٠ ثانية بالدايركت</div><div class="b">النص اللي تقرينه بالسلايد الثانية</div></div>
+      <div class="grain"></div><div class="vig"></div>
+    </div>
+
+    <!-- slide 2: how to apply, and the script to read -->
+    <div class="art post paper" id="s2">
+      <div class="ttl" style="top:110px">شلون تتقدمين؟</div>
+      <div class="step" style="top:290px"><b>١.</b>سجّلي هذا النص بصوتج:</div>
+      <div class="scriptW" style="top:370px"><div class="script">الميّة دولار.. صارت ميّة وثمانين ألف.<br />والراتب نفسه.. بس صار أصغر.<br />هو الدولار راح ينزل؟<br />محد يدري.</div></div>
+      <div class="step" style="top:812px"><b>٢.</b>دزّيه فويس بالدايركت.</div>
+      <div class="step" style="top:880px"><b>٣.</b>إذا الصوت ناسب، نتفق على الأجر والتفاصيل.</div>
+      <div class="note" style="top:990px"><div class="r" id="anon">ما تحتاجين تنشرين اسمج أو صورتج.. بس الصوت.</div><div class="i">الاستوديو مو ضروري: غرفة هادئة وموبايل يكفي.</div></div>
+      <div class="handle" style="top:1180px">@ALLAWI.PSD</div>
+      <div class="film"><div class="fr"></div><div class="ed" style="left:60px">ALLAWI 400</div><div class="ed" style="right:60px">▸ 01&nbsp;&nbsp;&nbsp;▸ 01A</div></div>
+      <div class="grain"></div><div class="vig" style="opacity:.6"></div>
+    </div>
+
+    <!-- story -->
+    <div class="art story red" id="story">
+      <div class="kicker" style="top:236px">ALLAWI.PSD — CASTING CALL</div>
+      <div class="stripW" style="top:296px"><div class="strip"><div class="h">مطلوب صوت</div><div class="s">نسائي عراقي</div></div></div>
+      <div class="mic shadow" style="left:80px; top:740px; width:410px; transform:rotate(-6deg)"><img src="img/p-mic.png" alt="" /></div>
+      <div class="tape" style="left:195px; top:728px; width:170px; transform:rotate(-8deg)"></div>
+      <div class="sheet shadow" id="sheet2" style="left:505px; top:760px; width:500px; height:625px; transform:rotate(2.5deg)" data-lines="التفاصيل|تعليق صوتي لريلزات قصيرة|من ٣٠ لـ ٤٠ ثانية|باللهجة العراقية|من البيت، بالموبايل يكفي|شغل مستمر"></div>
+      <div class="cta" style="top:1450px"><div class="a">دزّيلي فويس ٢٠ ثانية بالدايركت</div><div class="b">النص اللي تقرينه بآخر بوست</div></div>
+      <div class="grain"></div><div class="vig"></div>
+    </div>
+
+    <script>
+      // the notebook sheet: ruled-line positions follow list.png (lines every 66 px from 170, in a 720x900 sheet)
+      let pinN = 0;
+      const PIN = () => { const id = 'pg' + (pinN++); return `<svg viewBox="0 0 46 46"><defs><radialGradient id="${id}" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".42" stop-color="#c4161c"/><stop offset="1" stop-color="#5e0609"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#${id})"/><circle cx="21" cy="19" r="14" fill="none" stroke="#4a0507" stroke-opacity=".5" stroke-width="1"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`; };
+      document.querySelectorAll('.sheet').forEach((sh) => {
+        const w = parseFloat(sh.style.width), k = w / 720, rule = (n) => (170 + 66 * n) * k;
+        let html = '<img src="../hf-dollar-reel/assets/img/list.png" alt="" />';
+        sh.dataset.lines.split('|').forEach((t, i) => {
+          const n = i === 0 ? 0 : 1 + i * 1.6, fs = i === 0 ? 42 : 34;
+          html += `<div class="t${i === 0 ? ' hd' : ''}" style="top:${(rule(n) - fs * 1.25).toFixed(0)}px">${i === 0 ? t : '– ' + t}</div>`;
+        });
+        html += `<div class="stamp" style="left:22px; top:${(rule(8.7)).toFixed(0)}px; transform:rotate(-9deg)">مدفوع</div>`;
+        html += `<div class="pin" style="left:${(w / 2 - 23).toFixed(0)}px; top:-14px">${PIN()}</div>`;
+        sh.innerHTML = html;
+      });
+      // a red marker underline under the line about staying anonymous
+      const a = document.getElementById('anon');
+      a.style.position = 'relative';
+      a.insertAdjacentHTML('beforeend', '<svg class="mk" viewBox="0 0 100 20" preserveAspectRatio="none" style="left:2%; bottom:-10px; width:96%; height:20px"><path vector-effect="non-scaling-stroke" d="M2 12 C 30 4, 64 17, 98 7"/></svg>');
+      document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+    </script>
+  </body>
+</html>
