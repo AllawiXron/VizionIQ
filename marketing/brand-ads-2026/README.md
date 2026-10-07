@@ -17,6 +17,7 @@ None of these brands commissioned the work. Label them as concepts when you post
 - `node render.cjs [name ...]` renders `<name>.html` to `out/<name>.png` at 1620×2025. With no names, it renders every page.
 - Each page is a 1080×1350 `#ad`.
 - Fonts are local, in `fonts/`, from Google Fonts. All are under the SIL OFL: Alexandria, Readex Pro, IBM Plex Sans Arabic, IBM Plex Mono, Baloo Bhaijaan 2, Amiri, Aref Ruqaa and Lalezar.
+- `node layers.cjs` splits each ad into its layers (`layers/<name>/<key>.png`, 1080×1350, transparent). `../ig-brand-posts` uses them for its «Layer by layer» slides; that folder also has the posts and captions for posting these on the page.
 - Photo prep scripts are in `photo/` and run with the venv that has Pillow, numpy, scipy and rembg:
   - `window.py`: builds `img/iqa-window.jpg`. It puts the aerial photo inside the window glass, along the outline traced in `glass.py` (run `python glass.py source-window.jpg check.png` to see it). It adds haze toward the horizon, a reflection on the acrylic and a dark gasket rim.
   - `bulb.py`: builds `img/bulb-off.png`. It cuts the bulb out with rembg, grades it to look switched off (dull cold filament, see-through glass) and adds a faint red spill from the neon side.

@@ -1,4 +1,4 @@
-# Instagram brand posts — allawi.psd (6 posts × 2 slides)
+# Instagram brand posts — allawi.psd (11 posts × 2 slides)
 
 One post per ad, so the profile grid reads as one set next to the أعمالي carousel (`../ig-portfolio-cover`).
 
@@ -9,12 +9,15 @@ One post per ad, so the profile grid reads as one set next to the أعمالي c
   pulled apart in an isometric 3D view on a dark Photoshop-style workspace, each named as in the PSD, with the key
   layer selected in orange, plus the idea in one dialect line.
 
-Brands (`<brand>`): `sala`, `baly`, `miswag`, `saj` (Saj Al-Reef), `waseet` (Al-Waseet), `faqma` (Al-Faqma).
+Brands (`<brand>`): `sala`, `baly`, `miswag`, `saj` (Saj Al-Reef), `waseet` (Al-Waseet), `faqma` (Al-Faqma), and the 2026
+set from `../brand-ads-2026`: `qi` (Qi Card), `iqa` (Iraqi Airways), `pepsi`, `asiacell`, `talabat`. The 2026 ads' layers
+come from `../brand-ads-2026/layers.cjs`.
 
-`grid-preview.jpg` shows the profile grid (Instagram's 3:4 tiles) once all six are posted in the order in
-`captions.txt` (Baly first, Sala last), with the أعمالي carousel below them. `captions.txt` has a ready caption for
-each post, including the concept label and the credits the photos need (Baly's photo is CC BY-SA 2.0 and must be
-credited).
+`grid-preview.jpg` (`python grid_preview.py`) shows the profile grid (Instagram's 3:4 tiles) once all eleven are posted in
+the order in `captions.txt` (Baly first, talabat last), with the أعمالي carousel below them. `captions.txt` has a ready caption for
+each post, including the concept label and the credits the photos need (Baly's photo is CC BY-SA 2.0, the Iraqi
+Airways aerial CC BY 2.0 and the Pepsi can CC BY-SA 3.0; all three must be credited). The 2026 captions keep to
+Instagram's 5-hashtag limit.
 
 ## Files
 

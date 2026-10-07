@@ -147,6 +147,22 @@
     { k: 'faqma', glass: 'rgba(220, 110, 45, 0.16)', glassBy: { txt: 'rgba(220, 110, 45, 0.8)' }, ar: 'الفقمة', file: 'alfaqma_ad.psd', tint: 'rgba(200, 100, 42, 0.9)', on: 'bg',
       layers: [['bg', '3D render (Blender) + grade'], ['mist', 'Cold mist'], ['temp', '50° sticker'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
       idea: 'تموز ببغداد والمبردة ما تكفي، <b>فتحناها ولگيناها مليانة ايس كريم.</b>' },
+    // 2026 set (../brand-ads-2026); layers from its layers.cjs
+    { k: 'asiacell', glass: 'rgba(232, 34, 40, 0.16)', ar: 'آسيا سيل', file: 'asiacell_ad.psd', on: 'sign',
+      layers: [['bg', 'Dark room + red glow'], ['sign', 'Neon sign (vector)'], ['bulb', 'Bulb (photo, graded)'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'الوطنية طفت والبيت ظلمة، بس علامة النت بعدها شاعلة: <b>النت ما طفى.</b>' },
+    { k: 'talabat', glass: 'rgba(255, 90, 0, 0.3)', ar: 'طلبات', file: 'talabat_ad.psd', on: 'map',
+      layers: [['bg', 'Orange + grain'], ['map', 'Baghdad map (vector)'], ['card', 'Tracking card'], ['txt', 'Verse, headline & footer'], ['logo', 'Logo']],
+      idea: 'بيت علي بن الجهم المشهور عن بغداد، وكملناه بالطلب اللي يعبر الجسر: <b>وطلبك هم.</b>' },
+    { k: 'qi', glass: 'rgba(243, 205, 0, 0.2)', glassBy: { txt: 'rgba(243, 205, 0, 0.62)', logo: 'rgba(243, 205, 0, 0.42)', lock: 'rgba(243, 205, 0, 0.5)' }, ar: 'كي كارد', file: 'qicard_ad.psd', on: 'notes',
+      layers: [['bg', 'Yellow + Q wallpaper'], ['lock', 'Lock screen'], ['notes', 'Notifications'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'أول الشهر، بين تذكير المولدة ورسالة ماما، <b>أحلى إشعار بالشهر.</b>' },
+    { k: 'iqa', glass: 'rgba(18, 71, 13, 0.4)', ar: 'الخطوط العراقية', file: 'iraqiairways_ad.psd', on: 'bg',
+      layers: [['bg', 'Window + Baghdad (photo composite)'], ['pass', 'Boarding pass'], ['txt', 'Headline & footer'], ['logo', 'Logo']],
+      idea: 'شبّاك طيارة حقيقي، ومن وراه بغداد ودجلة والنخل: <b>مهما طالت الغربة، بغداد قريبة.</b>' },
+    { k: 'pepsi', glass: 'rgba(17, 70, 255, 0.3)', ar: 'ببسي', file: 'pepsi_ad.psd', on: 'can',
+      layers: [['bg', 'Blue, spotlight & floor'], ['can', 'Can (photo, relit)'], ['txt', 'Headline & footer']],
+      idea: 'بالعراق كل كولا اسمها ببسي، <b>من أيام التسعينات لهسه.</b>' },
   ];
   const AR = '٠١٢٣٤٥٦٧٨٩';
   const ar = (n) => String(n).replace(/\d/g, (d) => AR[d]);
