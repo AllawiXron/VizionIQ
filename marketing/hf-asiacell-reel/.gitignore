@@ -1,0 +1,8 @@
+assets/sfx-kit/
+assets/music/
+renders/*
+!renders/asiacell-reel.mp4
+!renders/asiacell-reel-cover.jpg
+snapshots/
+node_modules/
+.hyperframes/

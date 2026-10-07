@@ -21,6 +21,7 @@ None of these brands commissioned the work. Label them as concepts when you post
 - Photo prep scripts are in `photo/` and run with the venv that has Pillow, numpy, scipy and rembg:
   - `window.py`: builds `img/iqa-window.jpg`. It puts the aerial photo inside the window glass, along the outline traced in `glass.py` (run `python glass.py source-window.jpg check.png` to see it). It adds haze toward the horizon, a reflection on the acrylic and a dark gasket rim.
   - `bulb.py`: builds `img/bulb-off.png`. It cuts the bulb out with rembg, grades it to look switched off (dull cold filament, see-through glass) and adds a faint red spill from the neon side.
+  - `bulb_on.py`: builds `img/bulb-on.png`, the same cut-out kept switched on, and `img/bulb-photo.jpg`, the plain crop as shot. The Asiacell reel (`../hf-asiacell-reel`) uses both.
   - `retro_can.py`: builds `img/pepsi-retro-can.png`, the cut-out. The can is white and silver and its lid sits against a bright wall, so rembg alone fades it. Its mask only seeds OpenCV GrabCut for the body; the lid and shoulders are traced by hand, and the outline is smoothed down the can.
   - `relight.py`: builds `img/pepsi-retro-can-lit.png`, the can the ad uses. The photo was shot close-up from above, in flat warm room light, so on its own the can looked flat and narrowed like a cup. The script:
     - corrects the perspective so the sides are parallel;
