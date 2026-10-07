@@ -1,6 +1,6 @@
 # The dollar reel «الدولار صعد» (HyperFrames)
 
-`renders/dollar-reel.mp4` is a 38.8 s reel at 1080×1920 and 30 fps (31 MB), with sound effects only. The voice and music go on in CapCut. `timing.txt` gives the time of every line and word, and the AI-voice text.
+`renders/dollar-reel.mp4` is a 38.8 s reel at 1080×1920 and 30 fps, with the voiceover and sound effects mixed in. Only music is left to add in CapCut, about −18 dB under the voice.
 
 The look follows the user's reference reel (a Baghdad agency's): analog collage, not clean UI.
 - Deep red cloth, old paper with a film frame («ALLAWI 400»), a green board.
@@ -47,6 +47,25 @@ The user asked for it to be "10x better". People who watched v2 were also confus
 | 14 | 32.4–35.8 | وإنتو؟ الـ١٠٠ عدكم بيش؟ اكتبوها بالتعليقات. | A fill-in sheet: «سعر الـ١٠٠$ اليوم» with five cities, a «؟» on each, and an arrow down to the comments |
 | 15 | 35.8–38.8 | — | The «Allawi» signature writes itself on red, with ALLAWI.PSD; a film burn, then black |
 
+## Voice
+
+The user made the voiceover in Google AI Studio (Gemini TTS, a female voice). They recorded it as two takes, `assets/voice/part1.wav` and `part2.wav`, because AI Studio stops at about 30 s.
+
+`voice.py` places the voice on the reel:
+- It cuts each spoken phrase at its pauses, found with ffmpeg silencedetect.
+- It places each phrase on its visual beat: «صارت» as the ؟ is torn off, «صعد» on the seesaw's slam, «غيّر» as the price is struck, «صاعد» as it is selected, «ينزل» as it is circled.
+- It speeds four phrases up by at most 1.12× so each line ends inside its own shot.
+- It writes `assets/voice/voice-aligned.wav`, one 48 kHz track from 0:00 at about −16 LUFS.
+
+The subtitle times (`data-at`) were then set to when each word is actually spoken. The word times inside phrases come from faster-whisper (medium, Arabic). A few beats moved to land on their word:
+- the ring around the 7th on «واحد»;
+- the salary number shrinking on «أصغر»;
+- the circle on «ينزل»;
+- the echo after «يدري»;
+- the underline on «يمشّيها».
+
+`mix.sh` lays the voice over the rendered sound effects, ducks the effects under it, limits peaks, and encodes `renders/dollar-reel.mp4` and the cover.
+
 ## Files
 
 - `index.html`: the composition, 16 timed shots on one GSAP timeline. The subtitle words and their times live in each `.sub`'s `data-words` / `data-at`.
@@ -58,18 +77,19 @@ The user asked for it to be "10x better". People who watched v2 were also confus
   - the photo prints;
   - the two full-frame plates.
 - `sfx.py` builds `assets/sfx/*.wav`: film hiss, paper, slap, marker, scribble, banknote flutter, stamp, receipt printer, message tones, tick, shrink, boom; and for v3 a bubble pop, a cardboard thunk and creak, the generator's buzz and the newspaper swipe. `assets/sfx-kit/` (two whooshes from the user's own kit) is gitignored.
-- `timing.txt`: the voice timing sheet for CapCut.
+- `timing.txt`: the script and the original timing sheet.
+- `voice.py`, `mix.sh`, `assets/voice/`: the voiceover, placed and mixed (see Voice).
 - `caption.txt`: the post caption.
 - `renders/dollar-reel-cover.jpg`: the cover, the frame at 2.75 s («$100 = 180,000 دينار»).
 
-The render comes out of HyperFrames at about 180 MB, because grain is hard to compress. To build the posted file, rename that render to `renders/dollar-reel-master.mp4` (it is gitignored) and re-encode it:
+The render comes out of HyperFrames at about 190 MB, because grain is hard to compress. It is gitignored as `renders/dollar-reel-master.mp4`. `mix.sh` adds the voice and re-encodes it to the posted file:
 
 ```bash
 export HYPERFRAMES_BROWSER_PATH=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell
 npx hyperframes@0.8.140 check
 npx hyperframes@0.8.140 render -o renders/dollar-reel-master.mp4 --quality delivery
-ffmpeg -i renders/dollar-reel-master.mp4 -c:v libx264 -preset slow -crf 23 -tune grain -maxrate 9M -bufsize 18M \
-  -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart renders/dollar-reel.mp4
+python3 voice.py      # only when the voice or its placement changes
+./mix.sh
 ```
 
 Checks:

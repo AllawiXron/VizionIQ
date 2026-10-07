@@ -1,6 +1,8 @@
-Dollar reel v3 — voice timing sheet for CapCut (the video is 38.8 s)
-Place each voice line so it starts at its time. The words appear on screen at the times in brackets; nudge the voice
-so each word lands as it appears. If a line runs long, speed that clip up a little (1.05–1.15x) in CapCut.
+Dollar reel v3 — voice timing sheet (the video is 38.8 s)
+
+UPDATE: the voice (the user's Gemini TTS takes) is now placed and mixed into renders/dollar-reel.mp4, and the subtitles
+were re-timed to it (voice.py has the exact placement). In CapCut only the music is left to add. The sheet below is the
+script as written; the subtitle times in index.html follow the recorded voice and differ a little from these.
 
  #  start–end   line                                                (words appear at)
  1  0.0–3.0     الـ١٠٠ دولار.. صارت ١٨٠ ألف.                          (no subtitle: the picture says it.
