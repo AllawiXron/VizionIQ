@@ -1,37 +1,35 @@
 # Asiacell concept reel (HyperFrames)
 
-`renders/asiacell-reel.mp4`: a 12 s reel at 1080×1920, 30 fps, with sound. It is the Asiacell concept ad «الوطنية طفت.. النت ما طفى.» (`../brand-ads-2026/asiacell.html`), recomposed for 9:16.
+`renders/asiacell-reel.mp4`: a 7.5 s reel at 1080×1920, 30 fps, with sound, that loops with no seam. It is the Asiacell concept ad «الوطنية طفت.. النت ما طفى.» (`../brand-ads-2026/asiacell.html`) as a short cinematic spot.
 
-It is built for the 3-second problem. On allawi.psd's reels (Metricool, 3–7 Oct 2026), only 8–25% of viewers stayed past 3 seconds, so everything that matters happens before then:
-- by 2.1 s the whole joke and the brand are on screen;
-- the rest is a reason to stay;
-- the end lands back on the first frame, so the reel loops with no seam.
+Why it is built this way:
+- On allawi.psd's reels (Metricool, 3–7 Oct 2026), only 8–25% of viewers stayed past 3 seconds, so the joke and the brand are on screen by 2.5 s.
+- At 7.5 s, most viewers reach the end, and the loop gives them a replay.
+- v1 (12 s, with a 3D layer breakdown) looked fake at the start and was boring in the middle. v2 uses the real photo of the room and drops the breakdown.
 
-| Time | What happens | Sound |
+| Time | Picture | Sound |
 |---|---|---|
-| 0–0.8 | A lit room, the bulb on, «كل بيت عراقي / يعرف هاللحظة..». The light flickers, and the grid drops. | Room hum (50 Hz), flicker crackle, relay clunk winding down |
-| 0.8–2.1 | Dark. Only the red signal sign is on. «الوطنية طفت..», then «النت» slams in and «ما طفى.» ignites like neon; then the sub line, the logo and «اشترك بباقة نت». | A beat of silence, thud, neon ticks and buzz, sub boom |
-| 2.95 | The music drops, and the ad splits into its 5 layers in 3D: «هذا الإعلان ٥ طبقات.. خلّي أراويك شلون انبنى». | Music in, whoosh |
-| 3.95–5.45 | **The bulb** flips out of the stack to face the camera. It shows the real photo, then the cut-out (lit), then the off grade wiping down it. | Clicks on the beat, swish, flicker |
-| 5.45 / 6.45 / 7.45 | **The sign** (its bars redraw: «مرسوم رسم، مو صورة»), **the words** (the neon stutters), **the logo and button** (the button gets pressed). | Clicks on the beat |
-| 8.45–8.95 | The layers slam back into the finished ad. | Whoosh, boom, flash, shake |
-| 9–11 | «دزّه لواحد بيتهم بلا وطنية هسه» with a share icon, and «تصميم مقترح · @allawi.psd». | Music under |
-| 11–12 | The power comes back with a flicker, the ad washes out, and the hook text returns. This is the opening frame again. | Relay click, hum spinning up, then the same hum level as at 0 s |
+| 0–0.72 | The real room, lit by its bulb, with «كل بيت عراقي / يعرف هاللحظة..». The light flickers, and the grid drops. | Room hum (50 Hz), flicker crackle, relay clunk winding down |
+| 0.72–1.4 | Black. The filament's orange afterglow dies away, and «الوطنية طفت..» fades in. | Silence |
+| 1.38–2.2 | «النت» ignites as white neon, then «ما طفى.» as red neon, and the red light spills over the room's walls. The signal bars light one by one, and dust floats in the glow. | Neon ticks and buzz, sub boom, a dark drone, a glass tick per bar, then the street generator starting up |
+| 2.3–4.2 | The sub line, the Asiacell logo and «اشترك بباقة نت». The neon stutters once. | |
+| 4.2–6.4 | The share ask takes the top line: «دزّه لواحد بيتهم بلا وطنية هسه» and «تصميم مقترح · @allawi.psd». | |
+| 6.4–7.5 | The grid comes back with a flicker, the lit room washes out the neon, and the hook text returns. This is the opening frame again. | Relay click, hum spinning up, then the same hum level as at 0 s |
 
-The pop-out works like this. The stack is the whole ad pushed back to half size (`z = −perspective`), tilted 54° and turned −36°. A focused layer counter-rotates by the same angles, so it lands flat and facing the camera. `pop()` in `index.html` solves its translation so the layer's content centre lands at screen (540, 900) at a chosen size.
+The camera pushes in slowly (1 → 1.07) through the cut and eases back as the light returns.
 
 ## Files
 
 - `index.html`: the composition, a single scene with one GSAP timeline.
 - `BRIEF.md`: the brief.
-- `sfx.py` builds `assets/sfx/*.wav`: room hum, flicker, power cut, neon, power back. It runs with numpy and scipy.
-- `assets/img/`:
-  - `bulb-off.png`, `bulb-on.png` and `bulb-photo.jpg`, from `../brand-ads-2026/photo/` (`bulb.py`, `bulb_on.py`);
-  - the Asiacell logo, from asiacell.com.
-- `assets/sfx-kit/` and `assets/music/` are gitignored. They are copied from `../hf-allawi-promo/assets/`:
-  - the user's own sound kit, plus boom and whoosh;
-  - "Gummies" from Mixkit (Stock Music Free License: social media is fine).
-- `renders/asiacell-reel-cover.jpg`: the reel cover, the finished ad at 2.6 s.
+- `photo.py` builds the plates in `assets/img/` from the CC0 bulb photo (`../brand-ads-2026/photo/source-bulb.jpg`), a real room lit by that bulb:
+  - `room-lit.jpg`: the room as shot;
+  - `room-dark.jpg`: the power cut (~6% exposure, cold), with the bulb swapped for its switched-off grade;
+  - `room-red.jpg`: the room lit only by the neon words, using the shot's surfaces tinted red and falling off from the text;
+  - `filament.png`: the orange afterglow.
+- `sfx.py` builds `assets/sfx/*.wav`: room hum, flicker, power cut, neon, power back, generator, drone and tick. It runs with numpy and scipy.
+- `assets/sfx-kit/` is gitignored. It holds the user's own sound kit (boom, whoosh, pops), copied from `../hf-allawi-promo/assets/sfx/`.
+- `renders/asiacell-reel-cover.jpg`: the reel cover, the frame at 3 s.
 - `caption.txt`: the post caption.
 
 ```bash
@@ -40,7 +38,9 @@ npx hyperframes@0.8.140 check
 npx hyperframes@0.8.140 render -o renders/asiacell-reel.mp4 --quality delivery
 ```
 
-`check` passes: 0 errors in lint, runtime, layout, motion and contrast. The text overlaps inside the exploded 3D stack are intentional (the dimmed layers sit behind the popped one), and are marked `data-layout-allow-overlap`.
+Checks:
+- `check` passes, with 0 errors.
+- `../tools/textcheck.cjs` finds no glyph collisions in the three text states (the hook, the ad, and the ad with the share ask). textcheck only reads the frame's static state, so to check each state, force its elements visible in a copy of the page.
 
 ## Posting
 
@@ -48,4 +48,4 @@ npx hyperframes@0.8.140 render -o renders/asiacell-reel.mp4 --quality delivery
 - Pick `renders/asiacell-reel-cover.jpg` as the cover.
 - Keep the original audio.
 - This is concept work that Asiacell did not commission; the caption says so.
-- The bulb photo is CC0 (Ashesh Magar, WordPress Photo Directory) and needs no credit.
+- The bulb and room photo is CC0 (Ashesh Magar, WordPress Photo Directory) and needs no credit.
