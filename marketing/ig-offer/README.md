@@ -46,3 +46,10 @@ It also renders `covers-preview.png`, which shows all three as small circles on 
   - C: a cream outline nib inside an orange ring on dark.
 - The nib is drawn on the same 24px grid as the tag icon, so a pair reads as one set.
 - `preview` shows each one next to its «الأسعار» partner. It reads the PNGs, so render twice.
+
+`fixed-prices.html` is a story for the week of the 7 Oct 2026 devaluation, when the official rate went from 1,310 to 1,500 and the market jumped to 170–180k per $100. `node render.cjs fixed-prices.html` writes `out/fixed-prices-story.png` (1080x1920):
+- The headline «الدولار صعد.. / وأسعاري / [ثابتة]», with a Photoshop-style «LOCKED» badge on the selection.
+- A chart where the dollar line shoots up and «أسعاري» stays flat, ending in a lock.
+- Three prices from the table above, each with a lock (بوست 14 ألف، ستوري 7 آلاف، كاروسيل 40 ألف).
+- The «راسلني هسه» button.
+- Everything sits between y 250 and 1760, clear of the story header and reply bar.

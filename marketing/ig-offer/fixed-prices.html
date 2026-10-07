@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<!-- Story for the week of the 7 Oct 2026 dinar devaluation: «الدولار صعد.. وأسعاري ثابتة». #story 1080x1920.
+     A chart (the dollar shoots up, my prices stay flat and locked) and the main prices from offer.html, in dinars.
+     Everything sits between y 250 and 1680, clear of the story header and the reply bar. -->
+<style>
+:root { --paper:#ece3d4; --paper-2:#e3d6c2; --ink:#1f1510; --soft:#6f655c; --orange:#e2541b; --orange-2:#f07a2e; --cream:#fbf3e6; --red:#cf2f36 }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#333; padding:40px }
+.art { position:relative; width:1080px; height:1920px; overflow:hidden; direction:rtl; color:var(--ink); font-family:'Readex Pro';
+  background:radial-gradient(120% 80% at 50% 0%, #f1e9dc 0%, var(--paper) 55%, var(--paper-2) 100%) }
+.art::after { content:""; position:absolute; inset:0; z-index:50; pointer-events:none; opacity:.32; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.18  0 0 0 0.55 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>") }
+
+.top { position:absolute; left:70px; right:70px; top:250px; display:flex; justify-content:space-between; align-items:center; direction:ltr;
+  font:500 24px 'IBM Plex Mono'; letter-spacing:.08em; color:var(--soft) }
+.top .ar { font:500 26px 'Readex Pro'; letter-spacing:0; color:var(--ink) }
+.dot { display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--orange); margin-right:12px; vertical-align:1px }
+.rule { position:absolute; left:70px; right:70px; top:302px; height:3px; background:#d3c7b5 }
+
+.block { position:absolute; left:70px; right:70px; top:340px; display:flex; flex-direction:column; align-items:flex-start }
+.lead { display:flex; align-items:center; gap:18px; font:500 64px/1.3 'Readex Pro'; color:var(--soft); white-space:nowrap }
+.lead svg { width:58px; height:58px }
+.hero { font:900 150px/1.12 'Alexandria'; white-space:nowrap; margin-top:4px }
+.hl { position:relative; display:inline-block; padding:36px 44px 18px; margin-top:44px }
+.hl .box { position:absolute; inset:0; background:var(--orange); border-radius:12px; box-shadow:0 24px 56px rgba(226,84,27,.32) }
+.hl .hd { position:absolute; width:5px; background:var(--ink) }
+.hl .hd::after { content:""; position:absolute; left:-11px; width:27px; height:27px; border-radius:50%; background:var(--cream); border:4px solid var(--ink) }
+.hl .hd.r { right:-2px; top:-30px; height:calc(100% + 30px) } .hl .hd.r::after { top:-14px }
+.hl .hd.l { left:-3px; bottom:-30px; height:calc(100% + 30px) } .hl .hd.l::after { bottom:-14px }
+.hl .hero { position:relative; font-size:170px; color:var(--cream); margin:0 }
+/* Photoshop-style "locked layer" badge on the selection */
+.lock { position:absolute; z-index:3; left:-30px; top:-34px; display:flex; align-items:center; gap:10px; padding:10px 18px 12px 14px; border-radius:14px;
+  background:var(--ink); color:var(--cream); font:500 22px 'IBM Plex Mono'; letter-spacing:.06em; direction:ltr; box-shadow:0 12px 26px rgba(31,21,16,.3); transform:rotate(-4deg) }
+.lock svg { width:26px; height:26px }
+
+/* chart */
+.chart { position:absolute; left:70px; right:70px; top:944px; height:380px; border-radius:36px; background:var(--cream);
+  box-shadow:0 26px 56px rgba(60,35,15,.16), 0 0 0 1px rgba(31,21,16,.05) }
+.chart svg { position:absolute; inset:0; width:100%; height:100% }
+.chart .t { position:absolute; font:600 30px 'Readex Pro'; white-space:nowrap }
+.chart .ax { position:absolute; bottom:22px; font:500 22px 'Readex Pro'; color:var(--soft) }
+
+/* prices */
+.prices { position:absolute; left:70px; right:70px; top:1356px; display:flex; flex-direction:column }
+.prices .row { display:flex; align-items:center; justify-content:space-between; padding:12px 4px 16px; border-bottom:2px dashed #d3c7b5 }
+.prices .row:last-child { border-bottom:none }
+.prices .n { font:500 40px 'Readex Pro' }
+.prices .p { display:flex; align-items:center; gap:16px; direction:ltr }
+.prices .p b { font:900 52px 'Alexandria'; color:var(--ink); white-space:nowrap }
+.prices .p svg { width:30px; height:30px; color:var(--orange) }
+
+.cta { position:absolute; left:70px; right:70px; top:1664px; display:flex; justify-content:space-between; align-items:center }
+.cta .pill { font:600 42px 'Readex Pro'; background:var(--orange); color:#fff; padding:14px 44px 22px; border-radius:999px; box-shadow:0 20px 44px rgba(226,84,27,.32); white-space:nowrap }
+.cta .h { font:500 26px 'IBM Plex Mono'; color:var(--soft); direction:ltr }
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.4" fill="currentColor" stroke="none" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /></symbol>
+</defs></svg>
+
+<div class="art" id="story">
+  <div class="top"><span><span class="dot"></span>allawi.psd</span><span class="ar">أسعار التصميم</span></div>
+  <div class="rule"></div>
+
+  <div class="block">
+    <div class="lead">الدولار صعد..<svg viewBox="0 0 24 24" fill="none" stroke="#cf2f36" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5M5.5 11.5L12 5l6.5 6.5" /></svg></div>
+    <div class="hero">وأسعاري</div>
+    <div class="hl"><div class="box"></div><i class="hd r"></i><i class="hd l"></i><div class="hero">ثابتة</div>
+      <div class="lock"><svg><use href="#i-lock" /></svg>LOCKED</div></div>
+  </div>
+
+  <div class="chart">
+    <svg viewBox="0 0 940 380" fill="none">
+      <g stroke="#e6dccd" stroke-width="2"><path d="M60 80 H880 M60 160 H880 M60 240 H880 M60 320 H880" /></g>
+      <!-- the dollar: wobbles, then jumps -->
+      <path d="M60 222 C 140 216, 190 228, 260 220 S 400 212, 470 218 S 600 208, 660 204 C 720 198, 750 176, 778 128 C 798 94, 815 76, 840 62" stroke="#cf2f36" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="840" cy="62" r="13" fill="#cf2f36" /><circle cx="840" cy="62" r="24" fill="#cf2f36" opacity=".18" />
+      <!-- my prices: flat -->
+      <path d="M60 312 H812" stroke="#e2541b" stroke-width="9" stroke-linecap="round" />
+      <circle cx="840" cy="312" r="24" fill="#e2541b" />
+      <g transform="translate(826 298)" color="#fbf3e6"><use href="#i-lock" width="28" height="28" /></g>
+    </svg>
+    <div class="t" style="left:560px; top:48px; color:#cf2f36;">الدولار</div>
+    <div class="t" style="left:300px; top:252px; color:#e2541b;">أسعاري</div>
+    <div class="ax" style="left:60px;">قبل</div>
+    <div class="ax" style="left:806px;">هسه</div>
+  </div>
+
+  <div class="prices">
+    <div class="row"><span class="n">بوست</span><span class="p"><svg><use href="#i-lock" /></svg><b>14 ألف</b></span></div>
+    <div class="row"><span class="n">ستوري</span><span class="p"><svg><use href="#i-lock" /></svg><b>7 آلاف</b></span></div>
+    <div class="row"><span class="n">كاروسيل</span><span class="p"><svg><use href="#i-lock" /></svg><b>40 ألف</b></span></div>
+  </div>
+
+  <div class="cta"><span class="pill">راسلني هسه</span><span class="h">@allawi.psd</span></div>
+</div>
+<script>
+Promise.all([
+  document.fonts.load("500 64px 'Readex Pro'", 'الدولار صعد.. أسعار التصميم بوست ستوري كاروسيل قبل هسه'),
+  document.fonts.load("600 42px 'Readex Pro'", 'راسلني هسه الدولار أسعاري'),
+  document.fonts.load("900 150px 'Alexandria'", 'وأسعاري ثابتة 14 ألف 7 آلاف 40'),
+  document.fonts.load("500 24px 'IBM Plex Mono'", 'allawi.psd LOCKED @'),
+]).then(() => document.fonts.ready).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
