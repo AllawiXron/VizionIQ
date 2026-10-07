@@ -10,7 +10,7 @@ None of these brands commissioned the work. Label them as concepts when you post
 | `out/talabat.png` | talabat Iraq | «عيونُ المها بين الرصافة والجسرِ / ..وطلبك هم.» Ali ibn al-Jahm's Baghdad verse is the set-up. The order is the punchline: the rider is on the bridge between الكرخ and الرصافة, with a tracking card «طلبك يعبر الجسر هسه». | Flat vector map in talabat orange |
 | `out/qi.png` | Qi Card (كي كارد) | «أحلى إشعار بالشهر.» The post is a lock screen on Sunday 1 November with the salary notification on top. Under it sit the generator («اشتراك الأمبير يخلص باچر») and Mum («جيب خبز وانت راجع»). | Phone UI in Qi yellow, with the Q mark as wallpaper |
 | `out/iraqiairways.png` | Iraqi Airways | «مهما طالت الغربة.. / بغداد قريبة» A real plane window; through it, Baghdad, the Tigris and the palm groves. A boarding pass is tucked on the sill: IST → BGW, «راجع للأهل», «12A · شبّاك». | Cinematic photo, Ruqaa calligraphy |
-| `out/pepsi.png` | Pepsi | «بالعراق ما نگول ~~كولا~~.. / نگول / ببسي.», then «ويا العشا، ويا الكص، ويا كلشي.» A real glass bottle with the current Pepsi globe bleeds off the right edge under a spotlight. | Product photo on electric blue |
+| `out/pepsi.png` | Pepsi | «بالعراق ما نگول ~~كولا~~.. / نگول / ببسي.», then «من أيام التسعينات.. لهسه.» The 1990s-design Pepsi can stands on a glossy floor under a spotlight. | Retro product shot on electric blue |
 
 ## Build
 
@@ -20,7 +20,7 @@ None of these brands commissioned the work. Label them as concepts when you post
 - Photo prep scripts are in `photo/` and run with the venv that has Pillow, numpy, scipy and rembg:
   - `window.py`: builds `img/iqa-window.jpg`. It puts the aerial photo inside the window glass, along the outline traced in `glass.py` (run `python glass.py source-window.jpg check.png` to see it). It adds haze toward the horizon, a reflection on the acrylic and a dark gasket rim.
   - `bulb.py`: builds `img/bulb-off.png`. It cuts the bulb out with rembg, grades it to look switched off (dull cold filament, see-through glass) and adds a faint red spill from the neon side.
-  - `bottle.py`: builds `img/pepsi-bottle.png`. It cuts the glass bottle out with rembg and re-tints the clear neck from the restaurant's warm lights to the ad's blue. The bottle touches the photo's right edge, so the layout bleeds it off the canvas.
+  - `retro_can.py`: builds `img/pepsi-retro-can.png`. The can is white and silver and its lid sits against a bright wall, so rembg alone fades it. Its mask only seeds OpenCV GrabCut for the body; the lid and shoulders are traced by hand, and the base is trimmed to a fitted curve. Colours come straight from the photo.
 
 ## Credits and licences
 
@@ -29,11 +29,11 @@ None of these brands commissioned the work. Label them as concepts when you post
 | Asiacell | Hanging light bulb, by Ashesh Magar, WordPress Photo Directory, https://wordpress.org/photos/photo/146663e556/ | CC0 |
 | Iraqi Airways | Plane window, by Moin Uddin Ahmed, WordPress Photo Directory, https://wordpress.org/photos/photo/424667aec8/ | CC0 |
 | Iraqi Airways | Aerial view of Baghdad, "160731-D-PB383-021", by the Chairman of the Joint Chiefs of Staff (U.S. DoD), https://www.flickr.com/photos/42310076@N04/28578136122 | CC BY 2.0 |
-| Pepsi | "Top-down View of a Burger Meal with Two Pepsi Bottles", by Iwaqarhashmi, https://commons.wikimedia.org/w/index.php?curid=150883079 | CC BY-SA 4.0 |
+| Pepsi | "Pepsi Can Retro Design", by Ominae, https://commons.wikimedia.org/w/index.php?curid=76921111 | CC BY-SA 3.0 |
 
 When posting publicly, credit the two non-CC0 photos in the caption:
 - Iraqi Airways: «Photo: U.S. DoD / CJCS (CC BY 2.0)».
-- Pepsi: «Photo: Iwaqarhashmi (CC BY-SA 4.0)». The Pepsi ad is an adaptation of a CC BY-SA photo, so it is shared under CC BY-SA 4.0 too.
+- Pepsi: «Photo: Ominae (CC BY-SA 3.0)». The Pepsi ad is an adaptation of a CC BY-SA photo, so it is shared under CC BY-SA 3.0 too.
 
 The CC0 photos need no credit.
 
