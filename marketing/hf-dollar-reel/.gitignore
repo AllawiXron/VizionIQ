@@ -1,0 +1,7 @@
+renders/*
+!renders/dollar-reel.mp4
+!renders/dollar-reel-cover.jpg
+assets/sfx-kit/
+snapshots/
+node_modules/
+.hyperframes/
