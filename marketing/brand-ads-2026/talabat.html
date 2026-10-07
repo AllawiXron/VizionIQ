@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<title>talabat — عيون المها بين الرصافة والجسر.. وطلبك هم</title>
+<link rel="stylesheet" href="fonts/fonts.css" />
+<!-- Concept ad for talabat Iraq. Ali ibn al-Jahm's Baghdad verse «عيون المها بين الرصافة والجسر» as the set-up; the
+     punchline is the order, caught on the bridge between الكرخ and الرصافة on an illustrated map. Brand orange #ff5a00
+     and wordmark from talabat.com. No photos: all vector. -->
+<style>
+:root { --or:#ff5a00; --or-2:#ff7a2e; --deep:#e24d00; --cream:#fff4ea; --ink:#2b1a10 }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#111; display:flex; justify-content:center; padding:40px }
+#ad { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; color:#fff; font-family:'Baloo Bhaijaan 2';
+  background:radial-gradient(900px 700px at 60% 55%, #ff6a14, #ff5a00 55%, #f04f00 100%) }
+#ad::after { content:""; position:absolute; inset:0; z-index:40; pointer-events:none; opacity:.14; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.8'/></svg>") }
+.map { position:absolute; left:0; top:0; width:1080px; height:1350px; z-index:1 }
+
+.head { position:absolute; z-index:10; top:58px; left:60px; right:60px; text-align:center }
+.verse { font:400 46px/1.4 'Amiri'; color:rgba(255,244,234,.94) }
+.verse small { display:block; font:500 20px 'Readex Pro'; letter-spacing:.04em; color:rgba(255,244,234,.66); margin-top:2px }
+.punch { font:800 136px/1.05 'Baloo Bhaijaan 2'; color:#fff; margin-top:18px; text-shadow:0 10px 30px rgba(150,40,0,.35) }
+
+/* tracking card, in the app's own language */
+.card { position:absolute; z-index:12; left:70px; right:70px; top:1006px; height:176px; border-radius:30px; background:#fff; color:var(--ink);
+  box-shadow:0 30px 60px rgba(130,35,0,.35); display:flex; align-items:center; gap:26px; padding:0 30px; direction:rtl }
+.card .ic { width:96px; height:96px; border-radius:24px; background:#fff1e8; display:grid; place-items:center; flex:none }
+.card .ic svg { width:64px; height:64px }
+.card .t { flex:1 }
+.card .t b { display:block; font:700 36px/1.2 'Baloo Bhaijaan 2' }
+.card .t span { display:block; font:400 23px/1.4 'Readex Pro'; color:#8a7466; margin-top:2px }
+.card .bar { display:flex; gap:8px; margin-top:14px; direction:rtl }
+.card .bar i { height:8px; flex:1; border-radius:4px; background:#f1e4da } .card .bar i.on { background:var(--or) }
+.card .bar i.half { background:linear-gradient(270deg, var(--or) 55%, #f1e4da 55%) }
+.card .eta { flex:none; text-align:center; background:var(--or); color:#fff; border-radius:22px; padding:12px 20px 10px }
+.card .eta b { display:block; font:800 52px/1 'Baloo Bhaijaan 2' }
+.card .eta span { display:block; font:500 20px 'Readex Pro'; margin-top:2px }
+
+.foot { position:absolute; z-index:10; left:70px; right:70px; bottom:50px; display:flex; justify-content:space-between; align-items:center }
+.foot img { height:52px; display:block }
+.foot .cta { font:700 30px 'Baloo Bhaijaan 2'; background:#fff; color:var(--or); padding:12px 34px 10px; border-radius:999px; display:flex; align-items:center; gap:12px }
+.foot .cta svg { width:24px; height:24px }
+</style></head>
+<body>
+<section id="ad">
+  <svg class="map" viewBox="0 0 1080 1350">
+    <defs>
+      <pattern id="streets" width="64" height="64" patternUnits="userSpaceOnUse" patternTransform="rotate(-24)">
+        <path d="M0 0 H64 M0 0 V64" stroke="rgba(255,255,255,.16)" stroke-width="3" />
+      </pattern>
+      <linearGradient id="fade" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0" /><stop offset=".16" stop-color="#fff" /><stop offset=".86" stop-color="#fff" /><stop offset="1" stop-color="#fff" stop-opacity="0" /></linearGradient>
+      <mask id="m" maskUnits="userSpaceOnUse" x="0" y="240" width="1080" height="860"><rect x="0" y="240" width="1080" height="860" fill="url(#fade)" /></mask>
+      <linearGradient id="water" x1="0" x2="1"><stop offset="0" stop-color="#ffd2b3" /><stop offset=".5" stop-color="#ffe6d4" /><stop offset="1" stop-color="#ffd2b3" /></linearGradient>
+      <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#8a2a00" flood-opacity=".35" /></filter>
+    </defs>
+    <!-- the map fades in under the headline and out under the card -->
+    <g mask="url(#m)">
+      <rect x="0" y="240" width="1080" height="860" fill="url(#streets)" />
+      <!-- parks / palm groves -->
+      <g fill="#ff8a3d" opacity=".55">
+        <path d="M96 470 q60 -30 120 6 q20 60 -30 92 q-70 12 -96 -30 z" />
+        <path d="M860 820 q70 -20 118 30 q-6 70 -80 74 q-60 -6 -38 -104 z" />
+        <path d="M740 418 q50 -14 84 22 q-4 44 -54 48 q-44 -6 -30 -70 z" />
+      </g>
+      <!-- main roads -->
+      <g fill="none" stroke="rgba(255,255,255,.34)" stroke-width="10" stroke-linecap="round">
+        <path d="M-20 900 C 200 860, 330 760, 390 700" />
+        <path d="M690 735 C 790 700, 900 640, 1100 600" />
+        <path d="M120 250 C 150 480, 250 640, 390 700" />
+      </g>
+      <!-- the Tigris -->
+      <path d="M660 220 C 640 260, 620 280, 610 300 C 700 420, 760 520, 690 620 C 640 690, 540 700, 470 760 C 400 820, 380 920, 440 1100 L 300 1100 C 250 920, 290 800, 380 720 C 450 660, 560 640, 590 570 C 620 500, 560 420, 470 300 C 480 280, 500 250, 520 220 Z" fill="url(#water)" />
+      <path d="M660 220 C 640 260, 620 280, 610 300 C 700 420, 760 520, 690 620 C 640 690, 540 700, 470 760 C 400 820, 380 920, 440 1100" fill="none" stroke="#fff" stroke-width="3" opacity=".7" />
+      <path d="M520 220 C 500 250, 480 280, 470 300 C 560 420, 620 500, 590 570 C 560 640, 450 660, 380 720 C 290 800, 250 920, 300 1100" fill="none" stroke="#fff" stroke-width="3" opacity=".7" />
+    </g>
+    <!-- district labels -->
+    <text x="210" y="640" text-anchor="middle" style="font:800 64px 'Baloo Bhaijaan 2'; fill:rgba(255,255,255,.30); letter-spacing:4px">الكرخ</text>
+    <text x="910" y="430" text-anchor="middle" style="font:800 64px 'Baloo Bhaijaan 2'; fill:rgba(255,255,255,.30); letter-spacing:4px">الرصافة</text>
+    <text x="350" y="915" text-anchor="middle" transform="rotate(-68 350 915)" style="font:600 24px 'Readex Pro'; fill:#e0662a; letter-spacing:10px">دجلة</text>
+    <!-- route: restaurant (Karkh) -> bridge -> home (Rusafa); done part solid, the rest dashed -->
+    <path d="M200 860 C 280 820, 330 760, 400 712" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" />
+    <path d="M400 712 L 682 734" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" />
+    <path d="M682 734 C 760 712, 820 640, 870 560" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 20" />
+    <!-- the bridge -->
+    <g filter="url(#sh)">
+      <path d="M392 690 L 690 712 L 688 758 L 388 736 Z" fill="#fff8f2" />
+      <path d="M392 690 L 690 712" stroke="#ffcfae" stroke-width="5" /><path d="M388 736 L 688 758" stroke="#ffcfae" stroke-width="5" />
+    </g>
+    <text x="540" y="796" text-anchor="middle" transform="rotate(4 540 796)" style="font:600 26px 'Readex Pro'; fill:#fff; letter-spacing:3px">الجسر</text>
+    <!-- rider on the bridge -->
+    <g transform="translate(540 712)" filter="url(#sh)">
+      <circle r="52" fill="#fff" />
+      <circle r="52" fill="none" stroke="#ff5a00" stroke-width="6" />
+      <g transform="translate(-30 -24) scale(2.5)" fill="none" stroke="#ff5a00" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="5" cy="17" r="3" /><circle cx="19" cy="17" r="3" />
+        <path d="M8 17h7l3-6h-4" /><path d="M14 11l-2-5h-3" /><rect x="2" y="7" width="7" height="6" rx="1.2" fill="#ff5a00" stroke="none" />
+      </g>
+    </g>
+    <!-- pins -->
+    <g transform="translate(200 860)" filter="url(#sh)">
+      <path d="M0 0 C -40 -44, -40 -96, 0 -96 C 40 -96, 40 -44, 0 0 Z" fill="#fff" />
+      <g transform="translate(-14 -82)" stroke="#ff5a00" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M6 0 v26 M0 0 v10 a6 6 0 0 0 12 0 v-10 M24 0 c-6 4 -6 14 0 16 v10" /></g>
+    </g>
+    <g transform="translate(870 560)" filter="url(#sh)">
+      <path d="M0 0 C -40 -44, -40 -96, 0 -96 C 40 -96, 40 -44, 0 0 Z" fill="#fff" />
+      <g transform="translate(-17 -80)" stroke="#ff5a00" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round" fill="none"><path d="M0 14 L17 0 L34 14 M5 11 V30 H29 V11" /><path d="M14 30 V20 H20 V30" /></g>
+    </g>
+  </svg>
+
+  <div class="head">
+    <div class="verse">عيونُ المها بين الرصافة والجسرِ<small>علي بن الجهم</small></div>
+    <div class="punch">..وطلبك هم.</div>
+  </div>
+
+  <div class="card">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#ff5a00" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="17" r="3" /><circle cx="19" cy="17" r="3" /><path d="M8 17h7l3-6h-4" /><path d="M14 11l-2-5h-3" /><rect x="2" y="7" width="7" height="6" rx="1.2" fill="#ff5a00" stroke="none" /></svg></div>
+    <div class="t">
+      <b>طلبك يعبر الجسر هسه</b>
+      <span>لفّتين كص + لبن · من الكرخ للرصافة</span>
+      <div class="bar"><i class="on"></i><i class="on"></i><i class="half"></i><i></i></div>
+    </div>
+    <div class="eta"><b>٨</b><span>دقايق</span></div>
+  </div>
+
+  <div class="foot">
+    <img src="img/talabat-logo.svg" alt="talabat" />
+    <div class="cta">اطلب هسه<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 5l-7 7 7 7" /></svg></div>
+  </div>
+</section>
+<script>
+const imgs = [...document.images].map((i) => (i.complete ? 0 : new Promise((r) => (i.onload = i.onerror = r))));
+Promise.all([
+  document.fonts.load("400 46px 'Amiri'", 'عيونُ المها بين الرصافة والجسرِ'),
+  document.fonts.load("800 136px 'Baloo Bhaijaan 2'", '..وطلبك هم. الكرخ الرصافة ٨'),
+  document.fonts.load("700 36px 'Baloo Bhaijaan 2'", 'طلبك يعبر الجسر هسه اطلب هسه'),
+  document.fonts.load("400 23px 'Readex Pro'", 'لفّتين كص + لبن · من الكرخ للرصافة دقايق علي بن الجهم الجسر دجلة'),
+  ...imgs,
+]).then(() => document.fonts.ready).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>

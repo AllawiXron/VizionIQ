@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<title>Asiacell — الوطنية طفت.. النت ما طفى</title>
+<link rel="stylesheet" href="fonts/fonts.css" />
+<!-- Concept ad for Asiacell. Two pendants in a dark room: the national-grid bulb, dead (img/bulb-off.png, photo/bulb.py),
+     and a red neon signal sign that is still on. Brand red #e82228 and logo from asiacell.com. -->
+<style>
+:root { --red:#e82228; --neon:#ff4049; --core:#ffe6e7 }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#111; display:flex; justify-content:center; padding:40px }
+#ad { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; color:#fff; font-family:'Alexandria';
+  background:
+    radial-gradient(520px 520px at 330px 430px, rgba(232,34,40,.30), rgba(232,34,40,.10) 45%, rgba(232,34,40,0) 70%),
+    radial-gradient(900px 700px at 330px 520px, rgba(120,8,14,.35), rgba(120,8,14,0) 70%),
+    linear-gradient(180deg, #0b0b0e 0%, #070709 100%) }
+#ad::after { content:""; position:absolute; inset:0; z-index:40; pointer-events:none; opacity:.2; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.8'/></svg>") }
+.scene { position:absolute; left:0; top:0; width:1080px; height:700px; z-index:5 }
+
+/* the dead bulb */
+.bulb { position:absolute; left:590px; top:214px; width:300px }
+.socket { position:absolute; left:707px; top:150px; width:66px; height:78px; border-radius:10px 10px 6px 6px;
+  background:linear-gradient(90deg, #121214, #2b2b30 40%, #18181b 70%, #0d0d0f); box-shadow:inset 0 -6px 0 rgba(0,0,0,.4) }
+
+/* labels under each pendant */
+.tag { position:absolute; top:600px; font:500 22px 'IBM Plex Mono'; letter-spacing:.16em; direction:ltr; white-space:nowrap }
+.tag.off { left:740px; transform:translateX(-50%); color:rgba(255,255,255,.32) }
+.tag.on { left:330px; transform:translateX(-50%); color:#ff6b72; text-shadow:0 0 12px rgba(232,34,40,.8) }
+
+.txt { position:absolute; z-index:10; left:70px; right:70px; top:732px; text-align:right }
+.lead { font:600 66px/1.25 'Alexandria'; color:rgba(255,255,255,.38) }
+.hero { font:900 128px/1.15 'Alexandria'; color:#fff; white-space:nowrap; margin-top:4px }
+.hero span { color:var(--neon); text-shadow:0 0 6px rgba(255,90,96,.9), 0 0 22px rgba(232,34,40,.85), 0 0 60px rgba(232,34,40,.55) }
+.sub { font:400 32px/1.6 'Readex Pro'; color:rgba(255,255,255,.66); margin-top:22px }
+.sub b { font-weight:600; color:#fff; font-family:'Readex Pro' }
+
+.foot { position:absolute; z-index:10; left:70px; right:70px; bottom:58px; display:flex; justify-content:space-between; align-items:center }
+.foot img { height:96px; display:block }
+.foot .cta { font:600 26px 'Readex Pro'; background:var(--red); color:#fff; padding:16px 32px 18px; border-radius:999px; display:flex; align-items:center; gap:12px;
+  box-shadow:0 14px 34px rgba(232,34,40,.35) }
+.foot .cta svg { width:24px; height:24px }
+.rule { position:absolute; z-index:10; left:70px; right:70px; bottom:184px; height:2px; background:rgba(255,255,255,.1) }
+</style></head>
+<body>
+<section id="ad">
+  <svg class="scene" viewBox="0 0 1080 700">
+    <defs>
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b1" />
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="b2" />
+        <feGaussianBlur in="SourceGraphic" stdDeviation="26" result="b3" />
+        <feMerge><feMergeNode in="b3" /><feMergeNode in="b2" /><feMergeNode in="b2" /><feMergeNode in="b1" /><feMergeNode in="SourceGraphic" /></feMerge>
+      </filter>
+      <linearGradient id="plate" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".09" /><stop offset=".5" stop-color="#fff" stop-opacity=".02" /><stop offset="1" stop-color="#fff" stop-opacity=".06" /></linearGradient>
+    </defs>
+    <!-- bulb cord -->
+    <path d="M740 0 V152" stroke="#232327" stroke-width="5" />
+    <!-- neon sign: two wires, an acrylic plate, four bars -->
+    <path d="M232 0 V262 M428 0 V262" stroke="#2a2a2e" stroke-width="2.5" />
+    <rect x="186" y="256" width="288" height="318" rx="22" fill="url(#plate)" stroke="rgba(255,255,255,.14)" stroke-width="2" />
+    <circle cx="232" cy="276" r="6" fill="#3a3a40" /><circle cx="428" cy="276" r="6" fill="#3a3a40" />
+    <g filter="url(#glow)" fill="none" stroke-linecap="round">
+      <g stroke="#ff3a44" stroke-width="20">
+        <path d="M232 534 V490" /><path d="M296 534 V430" /><path d="M360 534 V370" /><path d="M424 534 V310" />
+      </g>
+      <g stroke="#ffd6d8" stroke-width="7">
+        <path d="M232 534 V490" /><path d="M296 534 V430" /><path d="M360 534 V370" /><path d="M424 534 V310" />
+      </g>
+    </g>
+  </svg>
+  <div class="socket"></div>
+  <img class="bulb" src="img/bulb-off.png" alt="" style="z-index:6" />
+  <div class="tag off">OFF</div>
+  <div class="tag on">4G · ON</div>
+
+  <div class="txt">
+    <div class="lead">الوطنية طفت..</div>
+    <div class="hero">النت <span>ما طفى.</span></div>
+    <div class="sub">إنترنت <b>آسيا سيل</b> شغّال، حتى لو البيت ظلمة.</div>
+  </div>
+
+  <div class="rule"></div>
+  <div class="foot">
+    <img src="img/asiacell-logo-dark.svg" alt="Asiacell" />
+    <div class="cta">اشترك بباقة نت<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 5l-7 7 7 7" /></svg></div>
+  </div>
+</section>
+<script>
+const imgs = [...document.images].map((i) => (i.complete ? 0 : new Promise((r) => (i.onload = i.onerror = r))));
+Promise.all([
+  document.fonts.load("900 150px 'Alexandria'", 'النت ما طفى.'),
+  document.fonts.load("600 66px 'Alexandria'", 'الوطنية طفت..'),
+  document.fonts.load("400 32px 'Readex Pro'", 'إنترنت شغّال، حتى لو البيت ظلمة.'),
+  document.fonts.load("600 32px 'Readex Pro'", 'آسيا سيل اشترك بباقة نت'),
+  document.fonts.load("500 22px 'IBM Plex Mono'", 'OFF 4G ON'),
+  ...imgs,
+]).then(() => document.fonts.ready).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
