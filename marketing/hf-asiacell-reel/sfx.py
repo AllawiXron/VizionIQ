@@ -82,7 +82,7 @@ print('ok', sorted(os.listdir(out)))
 
 # ---- v2 additions
 # the street generator (المولدة) kicking in, far off: a diesel's 12.5 Hz chug and its harmonics, low-passed, with a slow wobble
-t = t_(4.6)
+t = t_(6.6)
 ph = 2 * np.pi * 12.5 * t
 chug = (np.maximum(np.sin(ph), 0) ** 3) * 1.0 + .5 * np.sin(2 * np.pi * 50 * t) * (0.6 + .4 * np.sin(ph)) + .25 * np.sin(2 * np.pi * 100 * t)
 gen = lp(chug + .35 * lp(rng.standard_normal(len(t)), 400), 320) * (1 + .08 * np.sin(2 * np.pi * .7 * t))
@@ -90,7 +90,7 @@ start = np.clip(t / 1.2, 0, 1) ** 2                       # cranks up over ~1 s
 save('generator.wav', gen * start * env(len(t), 0, .5), .6)
 
 # a dark drone under the neon: A1 + E2, detuned saws, low-passed, breathing
-t = t_(5.0)
+t = t_(6.8)
 def saw(f): return 2 * ((t * f) % 1) - 1
 dr = sum(saw(f) for f in (55, 55.4, 82.4, 82.0, 110.2)) / 5
 dr = lp(dr, 420) * (0.85 + .15 * np.sin(2 * np.pi * .35 * t))

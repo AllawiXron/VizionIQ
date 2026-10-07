@@ -165,17 +165,13 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#050506 }
 #pill { display:flex; align-items:center; gap:12px; font:600 29px 'Readex Pro'; color:#fff; background:var(--red); padding:14px 30px 18px;
   border-radius:999px; box-shadow:0 14px 34px rgba(232,34,40,.4) }
 #pill svg { width:26px; height:26px }
-#share { position:absolute; left:70px; right:70px; top:250px; display:flex; flex-direction:column; align-items:center; gap:18px }
-#shareBtn { display:flex; align-items:center; gap:18px; padding:20px 40px 26px; border-radius:999px; background:var(--cream); color:var(--ink);
-  font:600 40px 'Readex Pro'; white-space:nowrap; box-shadow:0 22px 50px rgba(0,0,0,.55); opacity:0 }
-#shareBtn svg { width:44px; height:44px; color:var(--orange); margin-top:6px }
-#credit { font:500 27px 'Readex Pro'; color:#c2c2c8; opacity:0 }
+#credit { position:absolute; left:80px; right:80px; top:414px; text-align:center; font:500 27px 'Readex Pro'; color:#c2c2c8; opacity:0 }
 #credit span { font-family:'IBM Plex Mono'; color:var(--orange2) }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="7.5" data-width="1080" data-height="1920">
-      <div id="scene" class="clip" data-start="0" data-duration="7.5" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="9.9" data-width="1080" data-height="1920">
+      <div id="scene" class="clip" data-start="0" data-duration="9.9" data-track-index="0">
         <div id="cam">
           <img class="plate" id="roomDark" src="assets/img/room-dark.jpg" alt="" />
           <img class="plate" id="roomRed" src="assets/img/room-red.jpg" alt="" />
@@ -210,39 +206,34 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#050506 }
             <img src="assets/img/asiacell-logo-dark.svg" alt="Asiacell" />
             <div id="pill">اشترك بباقة نت<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 5l-7 7 7 7" /></svg></div>
           </div>
-          <div id="share">
-            <div id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M21.5 3 3 10.3l7.6 3.1L13.7 21z" /><path d="m21.5 3-10.9 10.4" /></svg>دزّه لواحد بيتهم بلا وطنية هسه</div>
-            <div id="credit">تصميم مقترح · <span>@allawi.psd</span></div>
-          </div>
+          <div id="credit">تصميم مقترح · <span>@allawi.psd</span></div>
         </div>
       </div>
 
-      <!-- sound. The room hum is at the same level at 0 s and 7.5 s, so the reel loops clean. -->
-      <audio id="a-hum" src="assets/sfx/hum.wav" data-start="0" data-duration="0.74" data-track-index="2" data-volume="0.5"></audio>
-      <audio id="a-flk1" src="assets/sfx/flicker.wav" data-start="0.45" data-duration="0.16" data-track-index="3" data-volume="0.55"></audio>
-      <audio id="a-flk2" src="assets/sfx/flicker.wav" data-start="0.58" data-duration="0.16" data-track-index="4" data-volume="0.45"></audio>
-      <audio id="a-cut" src="assets/sfx/cut.wav" data-start="0.72" data-duration="1.1" data-track-index="3" data-volume="0.95"></audio>
-      <audio id="a-lead" src="assets/sfx-kit/u_swish_soft.wav" data-start="0.95" data-duration="0.29" data-track-index="4" data-volume="0.3"></audio>
-      <audio id="a-neon1" src="assets/sfx/neon.wav" data-start="1.38" data-duration="0.9" data-track-index="5" data-volume="0.45"></audio>
-      <audio id="a-neon2" src="assets/sfx/neon.wav" data-start="1.6" data-duration="2" data-track-index="6" data-volume="0.85"></audio>
-      <audio id="a-boom" src="assets/sfx-kit/boom.wav" data-start="1.62" data-duration="1.6" data-track-index="7" data-volume="0.55"></audio>
-      <audio id="a-drone" src="assets/sfx/drone.wav" data-start="1.6" data-duration="4.9" data-track-index="1" data-volume="0.45"></audio>
-      <audio id="a-t1" src="assets/sfx/tick.wav" data-start="1.9" data-duration="0.12" data-track-index="9" data-volume="0.55"></audio>
-      <audio id="a-t2" src="assets/sfx/tick.wav" data-start="2.0" data-duration="0.12" data-track-index="10" data-volume="0.55"></audio>
-      <audio id="a-t3" src="assets/sfx/tick.wav" data-start="2.1" data-duration="0.12" data-track-index="9" data-volume="0.6"></audio>
-      <audio id="a-t4" src="assets/sfx/tick.wav" data-start="2.2" data-duration="0.12" data-track-index="10" data-volume="0.65"></audio>
-      <audio id="a-gen" src="assets/sfx/generator.wav" data-start="2.0" data-duration="4.5" data-track-index="8" data-volume="0.45"></audio>
-      <audio id="a-foot" src="assets/sfx-kit/u_pop_tonal_soft.wav" data-start="2.45" data-duration="0.16" data-track-index="4" data-volume="0.45"></audio>
-      <audio id="a-swish" src="assets/sfx-kit/u_whoosh_short.wav" data-start="4.18" data-duration="0.63" data-track-index="4" data-volume="0.35"></audio>
-      <audio id="a-share" src="assets/sfx-kit/u_pop_tonal_soft.wav" data-start="4.28" data-duration="0.16" data-track-index="5" data-volume="0.55"></audio>
-      <audio id="a-on" src="assets/sfx/on.wav" data-start="6.4" data-duration="0.62" data-track-index="3" data-volume="0.75"></audio>
-      <audio id="a-flk3" src="assets/sfx/flicker.wav" data-start="6.53" data-duration="0.16" data-track-index="4" data-volume="0.4"></audio>
-      <audio id="a-hum2" src="assets/sfx/hum.wav" data-start="6.85" data-duration="0.65" data-track-index="2" data-volume="0.5"
+      <!-- sound. The room hum is at the same level at 0 s and at the end, so the reel loops clean. -->
+      <audio id="a-hum" src="assets/sfx/hum.wav" data-start="0" data-duration="1.14" data-track-index="2" data-volume="0.5"></audio>
+      <audio id="a-flk1" src="assets/sfx/flicker.wav" data-start="0.85" data-duration="0.16" data-track-index="3" data-volume="0.55"></audio>
+      <audio id="a-flk2" src="assets/sfx/flicker.wav" data-start="0.98" data-duration="0.16" data-track-index="4" data-volume="0.45"></audio>
+      <audio id="a-cut" src="assets/sfx/cut.wav" data-start="1.12" data-duration="1.1" data-track-index="3" data-volume="0.95"></audio>
+      <audio id="a-lead" src="assets/sfx-kit/u_swish_soft.wav" data-start="1.4" data-duration="0.29" data-track-index="4" data-volume="0.3"></audio>
+      <audio id="a-neon1" src="assets/sfx/neon.wav" data-start="1.95" data-duration="0.9" data-track-index="5" data-volume="0.45"></audio>
+      <audio id="a-neon2" src="assets/sfx/neon.wav" data-start="2.25" data-duration="2" data-track-index="6" data-volume="0.85"></audio>
+      <audio id="a-boom" src="assets/sfx-kit/boom.wav" data-start="2.27" data-duration="1.6" data-track-index="7" data-volume="0.55"></audio>
+      <audio id="a-drone" src="assets/sfx/drone.wav" data-start="2.25" data-duration="6.8" data-track-index="1" data-volume="0.45"></audio>
+      <audio id="a-t1" src="assets/sfx/tick.wav" data-start="2.6" data-duration="0.12" data-track-index="9" data-volume="0.55"></audio>
+      <audio id="a-t2" src="assets/sfx/tick.wav" data-start="2.7" data-duration="0.12" data-track-index="10" data-volume="0.55"></audio>
+      <audio id="a-t3" src="assets/sfx/tick.wav" data-start="2.8" data-duration="0.12" data-track-index="9" data-volume="0.6"></audio>
+      <audio id="a-t4" src="assets/sfx/tick.wav" data-start="2.9" data-duration="0.12" data-track-index="10" data-volume="0.65"></audio>
+      <audio id="a-gen" src="assets/sfx/generator.wav" data-start="2.6" data-duration="6.6" data-track-index="8" data-volume="0.45"></audio>
+      <audio id="a-foot" src="assets/sfx-kit/u_pop_tonal_soft.wav" data-start="3.35" data-duration="0.16" data-track-index="4" data-volume="0.45"></audio>
+      <audio id="a-on" src="assets/sfx/on.wav" data-start="8.8" data-duration="0.62" data-track-index="3" data-volume="0.75"></audio>
+      <audio id="a-flk3" src="assets/sfx/flicker.wav" data-start="8.93" data-duration="0.16" data-track-index="4" data-volume="0.4"></audio>
+      <audio id="a-hum2" src="assets/sfx/hum.wav" data-start="9.25" data-duration="0.65" data-track-index="2" data-volume="0.5"
         data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.12,"v":0.5},{"t":0.65,"v":0.5}]}]}'></audio>
     </div>
 
     <script>
-      const D = 7.5;
+      const D = 9.9;
 
       // dust in the neon's red light: a fixed, seeded set of motes (no Math.random)
       function seeded(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -261,41 +252,36 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#050506 }
         };
         const flick = (sel, steps) => steps.forEach(([t, v]) => tl.set(sel, { opacity: v }, t));
 
-        // camera: a slow push in through the whole cut, easing back as the light returns, so the last frame meets the first
-        tl.fromTo('#cam', { scale: 1 }, { scale: 1.07, duration: 6.4, ease: 'power1.inOut' }, 0);
-        tl.to('#cam', { scale: 1, duration: 1.1, ease: 'sine.inOut' }, 6.4);
+        // camera: a slow push in through the cut, easing back as the light returns, so the last frame meets the first
+        tl.fromTo('#cam', { scale: 1 }, { scale: 1.08, duration: 8.8, ease: 'power1.inOut' }, 0);
+        tl.to('#cam', { scale: 1, duration: 1.1, ease: 'sine.inOut' }, 8.8);
 
-        // ---- 0–0.72 s: the real room, lit. Then the grid flickers and drops.
-        [[0.45, 0.3], [0.51, 1], [0.58, 0.15], [0.66, 0.8], [0.72, 0]].forEach(([t, v]) => power(t, v));
-        tl.fromTo('#filament', { opacity: 0.9 }, { opacity: 0, duration: 0.6, ease: 'power2.out', immediateRender: false }, 0.72);   // afterglow
+        // ---- 0–1.12 s: the real room, lit, long enough to read the hook. Then the grid flickers and drops.
+        [[0.85, 0.3], [0.91, 1], [0.98, 0.15], [1.06, 0.8], [1.12, 0]].forEach(([t, v]) => power(t, v));
+        tl.fromTo('#filament', { opacity: 0.9 }, { opacity: 0, duration: 0.65, ease: 'power2.out', immediateRender: false }, 1.12);   // afterglow
 
-        // ---- 0.95 s: a whisper, then the neon
-        tl.fromTo('#lead', { opacity: 0, y: 12, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.45, ease: 'power2.out' }, 0.95);
-        flick('#w1', [[1.38, 1], [1.41, 0.1], [1.44, 1], [1.5, 0.5], [1.53, 1]]);
-        flick('#w2', [[1.6, 1], [1.633, 0.15], [1.667, 1], [1.733, 0.3], [1.767, 1]]);
-        flick('#roomRed', [[1.6, 0.55], [1.633, 0.08], [1.667, 0.65], [1.733, 0.2], [1.767, 0.8]]);
-        tl.to('#roomRed', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 1.8);
-        ['#b1', '#b2', '#b3', '#b4'].forEach((b, i) => flick(b, [[1.9 + i * 0.1, 1], [1.93 + i * 0.1, 0.4], [1.96 + i * 0.1, 1]]));
-        tl.fromTo('#dust', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 1.8);
-        MOTES.forEach((m, i) => tl.fromTo('#m' + i, { x: 0, y: 0 }, { x: m.dx, y: m.dy, duration: 4.8, ease: 'none' }, 1.6));
+        // ---- 1.4 s: a whisper, then the neon
+        tl.fromTo('#lead', { opacity: 0, y: 12, filter: 'blur(10px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.5, ease: 'power2.out' }, 1.4);
+        flick('#w1', [[1.95, 1], [1.98, 0.1], [2.01, 1], [2.07, 0.5], [2.1, 1]]);
+        flick('#w2', [[2.25, 1], [2.283, 0.15], [2.317, 1], [2.383, 0.3], [2.417, 1]]);
+        flick('#roomRed', [[2.25, 0.55], [2.283, 0.08], [2.317, 0.65], [2.383, 0.2], [2.417, 0.8]]);
+        tl.to('#roomRed', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 2.45);
+        ['#b1', '#b2', '#b3', '#b4'].forEach((b, i) => flick(b, [[2.6 + i * 0.1, 1], [2.63 + i * 0.1, 0.4], [2.66 + i * 0.1, 1]]));
+        tl.fromTo('#dust', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 2.45);
+        MOTES.forEach((m, i) => tl.fromTo('#m' + i, { x: 0, y: 0 }, { x: m.dx * 1.3, y: m.dy * 1.3, duration: 6.6, ease: 'none' }, 2.25));
 
-        // ---- 2.3 s: the brand
-        tl.fromTo('#sub', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, 2.3);
-        tl.fromTo('#foot', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.6)' }, 2.45);
-        // the neon is alive: one stutter
-        flick('#w2', [[3.5, 0.4], [3.53, 1], [3.58, 0.7], [3.6, 1]]);
-        flick('#roomRed', [[3.5, 0.55], [3.53, 1], [3.58, 0.8], [3.6, 1]]);
+        // ---- 3.1 s: the brand, then the full ad holds to 8.8 s
+        tl.fromTo('#sub', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, 3.1);
+        tl.fromTo('#foot', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, ease: 'back.out(1.6)' }, 3.35);
+        tl.fromTo('#credit', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, 3.7);
+        // the neon is alive: a stutter now and then
+        flick('#w2', [[5.2, 0.4], [5.23, 1], [5.28, 0.7], [5.3, 1], [7.4, 0.5], [7.43, 1]]);
+        flick('#roomRed', [[5.2, 0.55], [5.23, 1], [5.28, 0.8], [5.3, 1], [7.4, 0.6], [7.43, 1]]);
 
-        // ---- 4.2 s: the ask takes the top line
-        tl.to('#lead', { opacity: 0, y: -14, duration: 0.2, ease: 'power2.in' }, 4.18);
-        tl.fromTo('#shareBtn', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, 4.28);
-        tl.fromTo('#credit', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out' }, 4.42);
-        tl.to('#shareBtn', { scale: 1.05, duration: 0.28, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 4.95);
-
-        // ---- 6.4 s: the grid comes back; the room washes out the neon; the opening frame returns
-        tl.to(['#neon', '#sub', '#foot', '#share', '#dust', '#roomRed'], { opacity: 0, duration: 0.22, ease: 'power2.in' }, 6.4);
-        [[6.4, 0.5], [6.47, 0], [6.53, 0.85], [6.6, 0.2], [6.7, 1]].forEach(([t, v]) => power(t, v, false));
-        tl.fromTo('#hook', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, 6.95);
+        // ---- 8.8 s: the grid comes back; the room washes out the neon; the opening frame returns
+        tl.to(['#neon', '#lead', '#credit', '#sub', '#foot', '#dust', '#roomRed'], { opacity: 0, duration: 0.22, ease: 'power2.in' }, 8.8);
+        [[8.8, 0.5], [8.87, 0], [8.93, 0.85], [9.0, 0.2], [9.1, 1]].forEach(([t, v]) => power(t, v, false));
+        tl.fromTo('#hook', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, 9.35);
 
         window.__timelines['main'] = tl;
       }

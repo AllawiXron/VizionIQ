@@ -1,22 +1,22 @@
 # Asiacell concept reel (HyperFrames)
 
-`renders/asiacell-reel.mp4`: a 7.5 s reel at 1080×1920, 30 fps, with sound, that loops with no seam. It is the Asiacell concept ad «الوطنية طفت.. النت ما طفى.» (`../brand-ads-2026/asiacell.html`) as a short cinematic spot.
+`renders/asiacell-reel.mp4`: a 9.9 s reel at 1080×1920, 30 fps, with sound, that loops with no seam. It is the Asiacell concept ad «الوطنية طفت.. النت ما طفى.» (`../brand-ads-2026/asiacell.html`) as a short cinematic spot.
 
 Why it is built this way:
 - On allawi.psd's reels (Metricool, 3–7 Oct 2026), only 8–25% of viewers stayed past 3 seconds, so the joke and the brand are on screen by 2.5 s.
-- At 7.5 s, most viewers reach the end, and the loop gives them a replay.
+- At just under 10 s, most viewers reach the end, and the loop gives them a replay.
 - v1 (12 s, with a 3D layer breakdown) looked fake at the start and was boring in the middle. v2 uses the real photo of the room and drops the breakdown.
+- v3 slows v2 down so the ad has time to land and stay on screen (it holds about 5.5 s), and drops the «دزّه لواحد..» share line.
 
 | Time | Picture | Sound |
 |---|---|---|
-| 0–0.72 | The real room, lit by its bulb, with «كل بيت عراقي / يعرف هاللحظة..». The light flickers, and the grid drops. | Room hum (50 Hz), flicker crackle, relay clunk winding down |
-| 0.72–1.4 | Black. The filament's orange afterglow dies away, and «الوطنية طفت..» fades in. | Silence |
-| 1.38–2.2 | «النت» ignites as white neon, then «ما طفى.» as red neon, and the red light spills over the room's walls. The signal bars light one by one, and dust floats in the glow. | Neon ticks and buzz, sub boom, a dark drone, a glass tick per bar, then the street generator starting up |
-| 2.3–4.2 | The sub line, the Asiacell logo and «اشترك بباقة نت». The neon stutters once. | |
-| 4.2–6.4 | The share ask takes the top line: «دزّه لواحد بيتهم بلا وطنية هسه» and «تصميم مقترح · @allawi.psd». | |
-| 6.4–7.5 | The grid comes back with a flicker, the lit room washes out the neon, and the hook text returns. This is the opening frame again. | Relay click, hum spinning up, then the same hum level as at 0 s |
+| 0–1.12 | The real room, lit by its bulb, with «كل بيت عراقي / يعرف هاللحظة..». The light flickers, and the grid drops. | Room hum (50 Hz), flicker crackle, relay clunk winding down |
+| 1.12–1.9 | Black. The filament's orange afterglow dies away, and «الوطنية طفت..» fades in. | Silence |
+| 1.95–2.9 | «النت» ignites as white neon, then «ما طفى.» as red neon, and the red light spills over the room's walls. The signal bars light one by one, and dust floats in the glow. | Neon ticks and buzz, sub boom, a dark drone, a glass tick per bar, then the street generator starting up |
+| 3.1–8.8 | The sub line, the Asiacell logo and «اشترك بباقة نت», then the small «تصميم مقترح · @allawi.psd» under the headline. The full ad holds for about 5.5 s, and the neon stutters twice. | Drone and generator |
+| 8.8–9.9 | The grid comes back with a flicker, the lit room washes out the neon, and the hook text returns. This is the opening frame again. | Relay click, hum spinning up, then the same hum level as at 0 s |
 
-The camera pushes in slowly (1 → 1.07) through the cut and eases back as the light returns.
+The camera pushes in slowly (1 → 1.08) through the cut and eases back as the light returns.
 
 ## Files
 
@@ -29,7 +29,7 @@ The camera pushes in slowly (1 → 1.07) through the cut and eases back as the l
   - `filament.png`: the orange afterglow.
 - `sfx.py` builds `assets/sfx/*.wav`: room hum, flicker, power cut, neon, power back, generator, drone and tick. It runs with numpy and scipy.
 - `assets/sfx-kit/` is gitignored. It holds the user's own sound kit (boom, whoosh, pops), copied from `../hf-allawi-promo/assets/sfx/`.
-- `renders/asiacell-reel-cover.jpg`: the reel cover, the frame at 3 s.
+- `renders/asiacell-reel-cover.jpg`: the reel cover, the frame at 4.5 s.
 - `caption.txt`: the post caption.
 
 ```bash
@@ -40,7 +40,7 @@ npx hyperframes@0.8.140 render -o renders/asiacell-reel.mp4 --quality delivery
 
 Checks:
 - `check` passes, with 0 errors.
-- `../tools/textcheck.cjs` finds no glyph collisions in the three text states (the hook, the ad, and the ad with the share ask). textcheck only reads the frame's static state, so to check each state, force its elements visible in a copy of the page.
+- `../tools/textcheck.cjs` finds no glyph collisions in the two text states (the hook, and the full ad). textcheck only reads the frame's static state, so to check each state, force its elements visible in a copy of the page.
 
 ## Posting
 
