@@ -52,6 +52,29 @@ coef = np.polyfit(cx, med, 2)
 yy = np.arange(m.shape[0])[:, None]
 xx = np.arange(m.shape[1])[None, :]
 m &= yy <= (np.polyval(coef, xx) - 6)
+# one continuous outline: per row, the left and right edges are smoothed down the can (the hand-traced shoulders and
+# GrabCut's body edge meet without a step), and the mask is rebuilt from them; the can is convex across every row
+rows = np.nonzero(m.any(1))[0]
+le = np.array([np.nonzero(m[y])[0].min() for y in rows], np.float32)
+re_ = np.array([np.nonzero(m[y])[0].max() for y in rows], np.float32)
+# the body below the shoulders is a straight cylinder in perspective: replace its edges with a robust quadratic fit
+# (GrabCut bulges ~30px where it meets the traced shoulder), then smooth the whole outline
+body = (rows >= J + 60) & (rows <= rows.max() - 220)
+for e in (le, re_):
+    yb, eb = rows[body].astype(np.float64), e[body].astype(np.float64)
+    keep = np.ones_like(yb, bool)
+    for _ in range(3):
+        cf = np.polyfit(yb[keep], eb[keep], 2)
+        keep = np.abs(eb - np.polyval(cf, yb)) < 6
+    fit = np.polyval(cf, rows.astype(np.float64))
+    blend = np.clip((rows - (J - 120)) / 180.0, 0, 1)             # shoulder trace above, fitted body below
+    tail = rows > rows.max() - 220                                 # keep the real base taper
+    e[~tail] = (e * (1 - blend) + fit * blend)[~tail]
+le = ndi.gaussian_filter1d(le, 8); re_ = ndi.gaussian_filter1d(re_, 8)
+mm = np.zeros_like(m)
+xx1 = np.arange(m.shape[1])[None, :]
+mm[rows] = (xx1 >= le[:, None]) & (xx1 <= re_[:, None])
+m = mm & (yy <= (np.polyval(coef, xx) - 6))
 m = m.astype(np.float32)
 alpha = np.clip(ndi.gaussian_filter(m, 1.4) * 1.1 - 0.05, 0, 1)
 rgb = np.asarray(src).astype(np.float32) / 255
