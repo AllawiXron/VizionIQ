@@ -5,3 +5,4 @@ assets/sfx-kit/
 snapshots/
 node_modules/
 .hyperframes/
+!renders/dollar-reel-voice-test.mp4

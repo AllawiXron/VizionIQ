@@ -66,6 +66,10 @@ The subtitle times (`data-at`) were then set to when each word is actually spoke
 
 `mix.sh` lays the voice over the rendered sound effects, ducks the effects under it, limits peaks, and encodes `renders/dollar-reel.mp4` and the cover.
 
+## Voice-actor test copy
+
+`renders/dollar-reel-voice-test.mp4` (720×1280, about 4 MB) is the reel with no voice, only the effects. It's for auditioning voice actors, who read along with the subtitles. Two spoken lines have no subtitle in the reel, the hook and «وگال: الدولار صاعد عيوني» over the chat, so the test copy adds them as captions in the reel's subtitle style; the chat line is set in ink over the light chat. `NODE_PATH=/opt/node-tools/node_modules node voicetest.cjs` builds it from `renders/dollar-reel-master.mp4`. A returned recording can be placed on the reel the same way `voice.py` placed the TTS takes.
+
 ## Files
 
 - `index.html`: the composition, 16 timed shots on one GSAP timeline. The subtitle words and their times live in each `.sub`'s `data-words` / `data-at`.
