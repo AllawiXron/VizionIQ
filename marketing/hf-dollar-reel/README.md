@@ -49,20 +49,24 @@ The user asked for it to be "10x better". People who watched v2 were also confus
 
 ## Voice
 
-The user made the voiceover in Google AI Studio (Gemini TTS, a female voice). They recorded it as two takes, `assets/voice/part1.wav` and `part2.wav`, because AI Studio stops at about 30 s.
+The voiceover is Google AI Studio's Gemini TTS, a female voice, made with the fixed voice profile in `../voice-studio` (the second voice; the first one, from the user's earlier settings, was replaced on 8 Oct). AI Studio stops at about 30 s, so it came as two takes:
+- `assets/voice/part1.wav`: the script up to «هو الدولار راح ينزل؟»;
+- `assets/voice/part2.wav`: «محد يدري» to the end.
 
-`voice.py` places the voice on the reel:
+AI Studio gave them as 44.1 kHz MP3s. Each one had a spoken "free audio post-production by auphonic.com" tag with a jingle that the TTS made up: at the start of part 1 and the end of part 2. Those were cut off and both takes run through `../voice-studio/studio.sh`, which is what the two WAVs are.
+
+The takes read slowly, with up to 1.1 s between lines: about 46 s of speech for a 38.8 s video. `voice.py` places the voice on the reel:
 - It cuts each spoken phrase at its pauses, found with ffmpeg silencedetect.
-- It places each phrase on its visual beat: «صارت» as the ؟ is torn off, «صعد» on the seesaw's slam, «غيّر» as the price is struck, «صاعد» as it is selected, «ينزل» as it is circled.
-- It speeds four phrases up by at most 1.12× so each line ends inside its own shot.
+- It places each phrase on its visual beat, which drops the long pauses: «صارت» as the ؟ is torn off, «صعد» on the seesaw's slam, «غيّر» as the price is struck, «صاعد» as it is selected, «ينزل» as it is circled. «هو الدولار راح ينزل؟» now comes after a short beat of silence.
+- It speeds two phrases up a little, by 1.05× and 1.07×, so each line ends inside its own shot.
 - It writes `assets/voice/voice-aligned.wav`, one 48 kHz track from 0:00 at about −16 LUFS.
 
-The subtitle times (`data-at`) were then set to when each word is actually spoken. The word times inside phrases come from faster-whisper (medium, Arabic). A few beats moved to land on their word:
-- the ring around the 7th on «واحد»;
-- the salary number shrinking on «أصغر»;
-- the circle on «ينزل»;
-- the echo after «يدري»;
-- the underline on «يمشّيها».
+The subtitle times (`data-at`) follow when each word is actually spoken. A phrase's first word starts at its silencedetect edge; the other word times come from faster-whisper (medium, Arabic), moved to the quietest point just before each word. Beats that land on a word:
+- the ring around the 7th on «واحد» (4.55 s);
+- the salary number shrinking on «أصغر» (9.84 s, moved from 9.62 with the new voice, its shrink sound and ticks with it);
+- the circle on «ينزل» (24.02 s);
+- the echo after «يدري» (25.63 s, moved from 25.8);
+- the underline on «يمشّيها» (29.05 s).
 
 `mix.sh` lays the voice over the rendered sound effects, ducks the effects under it, limits peaks, and encodes `renders/dollar-reel.mp4` and the cover.
 

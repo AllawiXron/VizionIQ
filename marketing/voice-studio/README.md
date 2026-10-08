@@ -60,9 +60,11 @@ What it does, in order:
 - tone: +1.5 dB warmth at 180 Hz, −1.5 dB boxiness at 380 Hz, +1.5 dB presence at 3.5 kHz;
 - compression at 2.5:1 for an even, close level;
 - S-softening above 5.5 kHz;
-- **air:** Gemini's audio stops at 12 kHz, a real microphone doesn't. The script doubles the frequencies of the voice's own 6–12 kHz band and mixes back only the new 11.5–15.5 kHz part, quietly. On the dollar reel's `part1.wav` this fills the empty 12–16 kHz range (from −41 and −91 dB to −34 and −33 dB relative to 1 kHz) and leaves the sibilance where it was;
+- **air, only for a 24 kHz take:** Gemini's 24 kHz audio stops at 12 kHz, a real microphone doesn't. The script doubles the frequencies of the voice's own 6–12 kHz band and mixes back only the new 11.5–15.5 kHz part, quietly. On the dollar reel's first Gemini take (24 kHz, since replaced) this fills the empty 12–16 kHz range (from −41 and −91 dB to −34 and −33 dB relative to 1 kHz) and leaves the sibilance where it was. A 44.1 or 48 kHz download already has a top end, so the script skips this step for it (more would sound harsh);
 - loudness to −16 LUFS, true peak −1.5 dBFS.
 
 Then place the takes on the video the way `../hf-dollar-reel/voice.py` places them.
+
+**Listen to the first and last seconds of every take before using it.** On 8 Oct both takes of the dollar reel came with a spoken "free audio post-production by auphonic.com" tag and a jingle, which the TTS made up (it was at the start of one take and the end of the other). Cut it off before the studio finish.
 
 Needs ffmpeg with the `acrossover`, `aeval` and `loudnorm` filters (any recent build).
