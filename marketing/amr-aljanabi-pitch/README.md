@@ -104,7 +104,7 @@ modelled and lit in Blender instead of a 500px reel screenshot.
 
 - `out/amberful.png` «شنو عطرك؟». The moment everyone who wears perfume wants: «أول ما تمرّ.. يسألوك: شنو عطرك؟». Chat
   bubbles from the people who ask («منين جايبه؟», «يا عطر هذا؟!», «ريحتك تخبّل..»; a dramatisation, not reviews). The
-  punchline carries the price: «گلهم مانسيرا.. بس لا تگلهم بـ 20 ألف». His Mancera flask stands on an amber studio
+  punchline carries the price: «كللهم مانسيرا.. بس لا تكللهم بـ 20 ألف» (the user's spelling). His Mancera flask stands on an amber studio
   sweep: a thick glass shell, amber juice filled to the shoulders, a glass collar, a rose-bronze sleeve and square cap,
   a dip tube, and his label.
 - `out/slazenger.png` «عطرك ذهب.. بلا مصنعية.». In an Iraqi gold shop you pay the gram price plus the «مصنعية»
