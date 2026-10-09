@@ -53,7 +53,7 @@ Slazenger Gold adds a small second picture of his «No. 94» jar, «نفس ال�
 
 The user didn't like it either, and asked for research into how strong brands make their ads.
 
-## v4 (current): clean product ads, from research (`dtc.html` → `out/dtc-*.jpg`, `node render.cjs dtc.html`)
+## v4: clean product ads, from research (`dtc.html` → `out/dtc-*.jpg`, `node render.cjs dtc.html`)
 
 What the research found (vendor and press write-ups, not performance data): "inspired-by" brands such as ALT. and
 Dossier keep a clean, minimal look with well-lit product shots and a clear layout, lead with value; fragrance ads sell
@@ -63,3 +63,33 @@ his real hand-held bottle cut out with `npx hyperframes remove-background` (u2ne
 the name in heavy Alexandria caps, a bold Arabic headline, the notes (or bio facts) as three ruled rows, the price as
 a huge numeral, and one delivery line. The Slazenger cut-out comes from his second shelf photo; a scrap of the box
 behind it was erased by hand (`cut/slazenger-clean.png`).
+
+The user found v4 "too simple".
+
+## v5 (current): rich product ads (`rich.html` → `out/rich-*.jpg`, `node render.cjs rich.html`)
+
+v4's direction (his real bottle, one scent colour, clear Arabic copy) with the depth big perfume houses add:
+- The name huge behind the product (fitted to the page width in JS), with the bottle cap over the letters, so the
+  frame has a back, a middle and a front.
+- Amberful: the real ingredients float around the bottle, some behind it and out of focus, some in front:
+  a yuzu, pink peppercorns and a raw amber stone close to the lens. The notes become photo chips (yuzu for the
+  opening, violet for the heart, amber for the base). The price is unchanged: 20 ألف, 35ml, category S.
+- Slazenger Gold: no notes are published for it, so no ingredients are invented. Out-of-focus gold light (seeded, so
+  every render matches) and the name do the work, with «SLAZENGER» under «GOLD». The bio facts get icon chips, and
+  the price stays «السعر بالدايركت» (`#slz-price`).
+- Both: a key light behind the bottle, a vignette, grain, and a dark delivery bar with icons (5,000 to every
+  province · Baghdad, Karrada Dakhil · order by DM).
+- The hand cut-outs had their alpha pulled in 2–4px and feathered (`cut/*-soft.png`) to remove the light halo from
+  the shelf behind.
+
+Ingredient photos (`ing/`), cut out with `npx hyperframes remove-background` or a colour key in ffmpeg:
+- Amber stone and chip: "Amber (resinite) (Baltics)" by James St. John, CC BY 2.0,
+  https://www.flickr.com/photos/47445767@N05/15545782135
+- Yuzu and chip: "Basket of Yuzu for sale - Kanagawa - 2025 Dec 23" by Nesnad, CC BY 4.0,
+  https://commons.wikimedia.org/wiki/File:Basket_of_Yuzu_for_sale_-_Kanagawa_-_2025_Dec_23.jpeg
+- Pink peppercorns (`pc*.png`): "Pink Peppercorns, Penzeys Spices, Arlington Heights MA" by John Phelan,
+  CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=30553926
+- Violet chip: "Viola-odorata-flower.jpg", CC BY-SA 3.0, https://commons.wikimedia.org/wiki/File:Viola-odorata-flower.jpg
+
+These are spec posts for a pitch. If he publishes them, the CC BY-SA images need the same credit line, so they
+should be credited in the caption, or swapped for his own photos of the ingredients.
