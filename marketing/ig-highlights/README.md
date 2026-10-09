@@ -48,5 +48,9 @@ bigger-package prices and flagged the ٣ بوستات underline running into the
 drafts and fixed. Only w1 had gone out (14:39) when the user asked to start the whole set over, so every story was
 moved into one clean run in highlight order: p1–p4 (15:00–03), w1–w6 (15:04–09), b0–b5 (15:10–15), cta (15:16); the
 user deletes the 14:39 w1 in the app.
+None of that run went out: from 15:00 every post failed with "You have reached your Metricool account limit" (the
+free plan's monthly post cap; a test story at 15:23 failed the same way). The 20:50 reel was set to draft so it
+can't double-post, and the user posts the stories and the reel from the phone (or upgrades Metricool and they are
+re-scheduled).
 
 All designs shown are the user's concept work; the brand ads are unofficial and labelled so on every story.
