@@ -4,7 +4,7 @@ duration: 31s
 message: "تطلب تصاميمك برسالة وحدة: دزّلي «أريد ٣ بوستات» وتوصلك."
 arc: Hook (the result) → The message → Samples → Every field → The receipt → Your turn
 audience: Iraqi shop, restaurant and small-brand owners scrolling Instagram
-mode: collaborative
+mode: autonomous
 version: v1
 ---
 
@@ -33,16 +33,24 @@ version: v1
   real client conversation. The images are the user's real concept designs, sent as «نماذج من شغلي». The prices are
   the user's confirmed bundle prices.
 
-## Voiceover (Noor) — written after approval, fitted to these beats
+## Changes from v1
 
-1. 0.2 s «تريد تصاميم لمحلك؟»  2. 1.5 s «كلها تبدي برسالة وحدة.»  3. 8.6 s «تشوف نماذج من الشغل قبل لا تقرر.»
+- The user (9 Oct): "idk whatever you think it's the best". Read as: plan approved as written, sketches skipped, and the
+  remaining checkpoints decided by me with reasons (mode: autonomous). The one kept question is before the render.
+- Line 6 no longer says the handle out loud (TTS reads "allawi.psd" badly): «اختار باقتك.. ودزّلي هسه.»
+- Frames 2-6 are one continuous chat, so they are built as beats of one scene in `index.html` rather than separate
+  sub-compositions; the `src` lines below point at the beat's block in `index.html`.
+
+## Voiceover (Noor) — fitted to these beats
+
+1. 0.2 s «تريد تصاميم لمحلك؟»  2. 1.5 s «كلها تبدي برسالة وحدة.»  3. 8.6 s «تشوف نماذج من الشغل.. قبل لا تقرر.»
 4. 14.2 s «لمطعمك، لعيادتك، لمتجرك.. لكل مجال.»  5. 19.6 s «والسعر واضح من أول رسالة.»
-6. 25.2 s «اختار باقتك.. ودزّها لـ allawi.psd.»
+6. 25.2 s «اختار باقتك.. ودزّلي هسه.»
 
 ## Frame 1 — 01-hook (0.0–3.0, 3.0 s)
 
 - status: outline
-- src: compositions/frames/01-hook.html
+- src: index.html#b01-hook
 - duration: 3s
 - transition_in: cut
 - scene: Three finished posts slam down in a fan on paper; a DM notification drops: «تصاميمك جاهزة ✅»
@@ -61,7 +69,7 @@ banner (motion-blur streak), which becomes the chat header.
 ## Frame 2 — 02-the-message (3.0–8.2, 5.2 s)
 
 - status: outline
-- src: compositions/frames/02-the-message.html
+- src: index.html#b02-the-message
 - duration: 5.2s
 - transition_in: zoom-through (from the notification)
 - scene: The DM opens; the customer types «هلو 👋 عندي مطعم، أريد ٣ بوستات» and presses send
@@ -81,7 +89,7 @@ Seam out: continuous, the chat scrolls up.
 ## Frame 3 — 03-samples (8.2–13.6, 5.4 s)
 
 - status: outline
-- src: compositions/frames/03-samples.html
+- src: index.html#b03-samples
 - duration: 5.4s
 - transition_in: continuous scroll
 - scene: Three image messages arrive from allawi.psd; the camera pushes in on each
@@ -100,7 +108,7 @@ the chat scrolls up.
 ## Frame 4 — 04-every-field (13.6–18.6, 5.0 s)
 
 - status: outline
-- src: compositions/frames/04-every-field.html
+- src: index.html#b04-every-field
 - duration: 5s
 - transition_in: continuous scroll, then the grid grows out of a bubble
 - scene: «وتسوي لغير المطاعم؟» → a grid of six samples from other fields assembles out of the chat
@@ -118,7 +126,7 @@ bubble. Constraint: no logos wall, no "trusted by"; these are samples. Seam out:
 ## Frame 5 — 05-receipt (18.6–24.6, 6.0 s)
 
 - status: outline
-- src: compositions/frames/05-receipt.html
+- src: index.html#b05-receipt
 - duration: 6s
 - transition_in: continuous scroll
 - scene: «يا سلام 😍 شكد؟» → a paper receipt prints out of the chat: ٣ بوستات, 42,000 struck, 40,000 counts up, stamped
@@ -137,11 +145,11 @@ An orange rubber stamp STAMPS across the corner: «تم الطلب ✓». Constr
 ## Frame 6 — 06-your-turn (24.6–31.0, 6.4 s)
 
 - status: outline
-- src: compositions/frames/06-your-turn.html
+- src: index.html#b06-your-turn
 - duration: 6.4s
 - transition_in: continuous (the receipt leaves upward)
 - scene: Quick-reply chips rise: ٣ بوستات · ٥ بوستات · باقة شهرية; a tap fills the input; the send button pulses
-- voiceover: "اختار باقتك.. ودزّها لـ allawi.psd."
+- voiceover: "اختار باقتك.. ودزّلي هسه."
 - blueprint: cta-morph-press (Adapt: chip tap, then the send button pulses for the viewer) + rules
   cursor-click-ripple, press-release-spring, sine-wave-loop
 - audio: three soft pops as the chips rise 24.9 / 25.05 / 25.2 s; tap 26.6 s; pulse ping 27.6 s; music resolves 30.5 s

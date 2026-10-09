@@ -1,55 +1,672 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+/* arabic */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 800;
+  font-display: block;
+  src: url(assets/fonts/Alexandria-800-arabic.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 800;
+  font-display: block;
+  src: url(assets/fonts/Alexandria-800-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url(assets/fonts/Alexandria-900-arabic.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'Alexandria';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url(assets/fonts/Alexandria-900-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/00b30da798.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/b9f68601ff.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/32d758561b.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/0b17f11da9.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(assets/fonts/dda02519c2.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC7, U+10EC9-10EEE, U+10EF0-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(assets/fonts/5344fa57ba.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+      :root {
+        --paper: #ece3d4;
+        --ink: #1f1510;
+        --orange: #e2541b;
+        --orange-2: #f07a2e;
+        --cream: #fbf3e6;
+        --muted: rgba(31, 21, 16, 0.62);
+        --orange-ink: #c2441a; /* the brand orange, one step deeper, for orange words on paper (3:1 and up) */
       }
-      html,
-      body {
-        margin: 0;
-        width: 1920px;
-        height: 1080px;
-        overflow: hidden;
-        background: #0a0a0a;
-      }
-      #root {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-      }
-      #title {
-        color: #f4f4f5;
-        font-size: 72px;
-        font-weight: 600;
-        letter-spacing: -0.03em;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; direction: rtl; font-family: 'IBM Plex Sans Arabic', sans-serif; color: var(--ink); }
+      .layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+      /* background: brand paper, a slow orange glow, moving grain */
+      #bg { background: var(--paper); }
+      #bg .paper { position: absolute; inset: 0; background: url(assets/img/paper.jpg) center / cover; opacity: 0.28; mix-blend-mode: multiply; }
+      #glow { position: absolute; left: 90px; top: 520px; width: 900px; height: 900px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(240, 122, 46, 0.30) 0%, rgba(240, 122, 46, 0.12) 42%, rgba(240, 122, 46, 0) 70%); }
+      #grain { position: absolute; inset: 0; background: url(assets/img/grain.png) 0 0 / 512px 512px; opacity: 0.14; mix-blend-mode: multiply; }
+
+      /* ── b01 hook ─────────────────────────────────────────────── */
+      #hookcam { position: absolute; inset: 0; transform-origin: 500px 238px; }
+      .post { position: absolute; width: 500px; height: 625px; border-radius: 18px; object-fit: cover;
+        box-shadow: 0 30px 60px rgba(31, 21, 16, 0.32), 0 6px 14px rgba(31, 21, 16, 0.22); border: 8px solid var(--cream); }
+      #pL { left: 40px; top: 470px; }
+      #pR { left: 480px; top: 470px; }
+      #pC { left: 260px; top: 400px; }
+      .notif { position: absolute; left: 70px; top: 150px; width: 860px; height: 176px; border-radius: 44px;
+        background: rgba(251, 243, 230, 0.97); box-shadow: 0 22px 50px rgba(31, 21, 16, 0.25);
+        display: flex; align-items: center; gap: 26px; padding: 0 34px; }
+      .avatar { flex: none; width: 104px; height: 104px; border-radius: 50%; background: var(--orange); color: var(--cream);
+        display: flex; align-items: center; justify-content: center; font: 900 50px/1 'Alexandria'; padding-bottom: 6px; }
+      .notif .txt { flex: 1; min-width: 0; }
+      .notif .top { display: flex; justify-content: space-between; align-items: baseline; }
+      .notif .who { font: 600 40px/1.25 'IBM Plex Sans Arabic'; direction: ltr; }
+      .notif .when { font: 400 30px/1 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .notif .body { font: 500 40px/1.35 'IBM Plex Sans Arabic'; margin-top: 4px; }
+      .hl { position: absolute; left: 60px; right: 60px; top: 1170px; text-align: center; }
+      .hl .l1 { font: 800 92px/1.25 'Alexandria'; }
+      .hl .l2 { font: 900 132px/1.2 'Alexandria'; margin-top: 4px; }
+      .hl .w { display: inline-block; }
+      .acc { color: var(--orange-ink); }
+
+      /* ── the chat (b02-b06) ──────────────────────────────────── */
+      #world, #zo, #zi { position: absolute; inset: 0; transform-origin: 540px 960px; }
+      #card { position: absolute; left: 50px; top: 150px; width: 890px; height: 1350px; border-radius: 60px; overflow: hidden;
+        background: var(--cream); box-shadow: 0 40px 90px rgba(31, 21, 16, 0.28), 0 8px 20px rgba(31, 21, 16, 0.14); }
+      .hdr { position: absolute; left: 0; right: 0; top: 0; height: 150px; display: flex; align-items: center; gap: 22px;
+        padding: 0 34px; border-bottom: 3px solid rgba(31, 21, 16, 0.08); background: var(--cream); z-index: 3; }
+      .hdr .back { width: 40px; height: 40px; flex: none; }
+      .hdr .avatar { width: 92px; height: 92px; font-size: 44px; }
+      .hdr .who { flex: 1; }
+      .hdr .name { font: 600 42px/1.2 'IBM Plex Sans Arabic'; direction: ltr; text-align: right; }
+      .hdr .sub { font: 400 30px/1.3 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .hdr .sub b { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--orange); margin-left: 10px; vertical-align: 2px; }
+      .hdr .icons { display: flex; gap: 30px; }
+      .hdr .icons svg { width: 50px; height: 50px; }
+
+      #vp { position: absolute; left: 0; right: 0; top: 150px; bottom: 160px; overflow: hidden; }
+      #stack { position: absolute; left: 0; right: 0; top: 0; padding: 26px 30px 30px; display: flex; flex-direction: column; gap: 20px; }
+      .intro { text-align: center; padding: 26px 0 30px; }
+      .intro .avatar { width: 150px; height: 150px; font-size: 72px; margin: 0 auto 16px; }
+      .intro .name { font: 600 44px/1.2 'IBM Plex Sans Arabic'; direction: ltr; }
+      .intro .sub { font: 400 32px/1.45 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .msg { display: flex; flex-direction: column; }
+      .msg.me { align-items: flex-start; }      /* RTL: start = right */
+      .msg.them { align-items: flex-end; }      /* RTL: end = left */
+      .bub { max-width: 650px; padding: 22px 34px 24px; border-radius: 46px; font: 500 44px/1.42 'IBM Plex Sans Arabic'; }
+      .me .bub { background: var(--orange); color: var(--cream); border-bottom-right-radius: 14px; }
+      .them .bub { background: var(--paper); color: var(--ink); border-bottom-left-radius: 14px; }
+      .msg .meta { font: 400 28px/1.6 'IBM Plex Sans Arabic'; color: var(--muted); padding: 4px 18px 0; }
+      .shot { width: 560px; height: 700px; border-radius: 34px; overflow: hidden; border-bottom-left-radius: 14px;
+        box-shadow: 0 10px 24px rgba(31, 21, 16, 0.16); }
+      .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .album { background: var(--paper); border-radius: 40px; border-bottom-left-radius: 14px; padding: 14px; }
+      .album .mini { display: grid; grid-template-columns: repeat(3, 150px); grid-auto-rows: 188px; gap: 8px; }
+      .album .mini img { width: 150px; height: 188px; object-fit: cover; border-radius: 14px; display: block; }
+      .album .cap { font: 500 40px/1.4 'IBM Plex Sans Arabic'; padding: 12px 14px 4px; }
+      .dots { position: absolute; display: flex; gap: 12px; padding: 30px 34px; border-radius: 46px; border-bottom-left-radius: 14px;
+        background: var(--paper); opacity: 0; }
+      .dots i { display: block; width: 18px; height: 18px; border-radius: 50%; background: rgba(31, 21, 16, 0.45); }
+
+      .inbar { position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: var(--cream);
+        border-top: 3px solid rgba(31, 21, 16, 0.06); z-index: 3; }
+      .field { position: absolute; right: 28px; left: 156px; top: 28px; height: 104px; border-radius: 52px; background: var(--paper);
+        display: flex; align-items: center; padding: 0 38px; overflow: hidden; }
+      #ftext { font: 500 44px/1 'IBM Plex Sans Arabic'; white-space: nowrap; }
+      #caret { display: inline-block; width: 4px; height: 52px; background: var(--orange); margin-right: 6px; }
+      #ph { position: absolute; right: 38px; font: 400 42px/1 'IBM Plex Sans Arabic'; color: rgba(31, 21, 16, 0.62); }
+      #send { position: absolute; left: 28px; top: 26px; width: 108px; height: 108px; border-radius: 50%; background: var(--orange);
+        display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(226, 84, 27, 0.35); }
+      #send svg { width: 54px; height: 54px; margin-right: 6px; }
+      .ring { position: absolute; left: 28px; top: 26px; width: 108px; height: 108px; border-radius: 50%; border: 6px solid var(--orange); opacity: 0; }
+
+      /* b06 quick replies */
+      #chips { position: absolute; left: 0; right: 0; bottom: 160px; height: 470px; padding: 40px 30px 22px; z-index: 2;
+        display: flex; flex-direction: column; justify-content: flex-end; gap: 18px;
+        background: linear-gradient(to top, var(--cream) 78%, rgba(251, 243, 230, 0)); opacity: 0; }
+      .chip { position: relative; display: flex; align-items: center; justify-content: space-between; height: 118px; padding: 0 40px;
+        border-radius: 59px; border: 5px solid var(--orange); background: var(--cream); }
+      .chip .k { font: 600 46px/1.1 'IBM Plex Sans Arabic'; }
+      .chip .k small { display: block; font: 400 28px/1.3 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .chip .p { font: 900 46px/1 'Alexandria'; color: var(--orange); }
+      .chip .rip { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+        border: 6px solid var(--orange); opacity: 0; }
+
+      /* overlays inside the card */
+      .scrim { position: absolute; inset: 0; background: rgba(31, 21, 16, 0.88); opacity: 0; z-index: 4; }
+      #grid { position: absolute; inset: 0; z-index: 5; }
+      #grid .ttl { position: absolute; left: 30px; right: 30px; top: 70px; text-align: center; color: var(--cream); font: 800 54px/1.3 'Alexandria'; opacity: 0; }
+      .tile { position: absolute; width: 254px; }
+      .tile .ph { width: 254px; height: 318px; border-radius: 22px; overflow: hidden; box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35); }
+      .tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .tile .lab { margin-top: 12px; text-align: center; font: 600 32px/1.3 'IBM Plex Sans Arabic'; color: var(--cream); }
+      .tile .hi { position: absolute; left: -9px; top: -9px; width: 272px; height: 336px; border-radius: 28px; border: 7px solid var(--orange-2); opacity: 0; }
+
+      #rcpt { position: absolute; inset: 0; z-index: 6; }
+      .slot { position: absolute; left: 55px; width: 780px; top: 64px; height: 40px; border-radius: 20px; background: #0f0a08;
+        box-shadow: inset 0 -6px 0 rgba(255, 255, 255, 0.08), 0 10px 26px rgba(0, 0, 0, 0.4); }
+      .feed { position: absolute; left: 95px; width: 700px; top: 84px; height: 1250px; overflow: hidden; }
+      .paperslip { position: absolute; left: 0; top: 0; width: 700px; background: var(--cream); color: var(--ink);
+        padding: 64px 56px 220px; text-align: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); }
+      .paperslip .brand { font: 900 66px/1.1 'Alexandria'; direction: ltr; }
+      .paperslip .k1 { font: 500 34px/1.5 'IBM Plex Sans Arabic'; color: var(--muted); margin-top: 8px; }
+      .rule { height: 0; border-top: 4px dotted rgba(31, 21, 16, 0.35); margin: 34px 0; }
+      .row { display: flex; justify-content: space-between; align-items: baseline; font: 500 40px/1.5 'IBM Plex Sans Arabic'; margin: 8px 0; }
+      .row .n { font: 600 42px/1.5 'IBM Plex Sans Arabic'; position: relative; }
+      .row .n.old { color: var(--muted); }
+      .row .n.cut { color: var(--orange); }
+      .strike { position: absolute; left: -10px; right: -10px; top: 50%; height: 30px; margin-top: -15px; overflow: visible; opacity: 0; }
+      .tot-l { font: 600 40px/1.4 'IBM Plex Sans Arabic'; }
+      .tot { display: flex; justify-content: center; align-items: baseline; gap: 18px; margin-top: 4px; }
+      #total { display: inline-block; font: 900 136px/1.1 'Alexandria'; font-variant-numeric: tabular-nums; transform-origin: 50% 70%; min-width: 470px; }
+      .tot .cur { font: 800 52px/1 'Alexandria'; }
+      .thanks { font: 500 36px/1.5 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .stamp { position: absolute; left: 150px; bottom: 70px; padding: 12px 32px 18px; border: 8px double var(--orange); border-radius: 22px;
+        color: var(--orange); font: 900 62px/1.1 'Alexandria'; white-space: nowrap; mix-blend-mode: multiply; filter: url(#stampF); opacity: 0; }
+
+      /* b06 headline, outside the card */
+      #cta { position: absolute; left: 60px; right: 60px; top: 120px; text-align: center; }
+      #cta .a { font: 900 112px/1.15 'Alexandria'; }
+      #cta .b { font: 800 66px/1.3 'Alexandria'; }
+      #cta .w { display: inline-block; opacity: 0; }
+      #arrow { position: absolute; left: 70px; top: 196px; width: 150px; height: 210px; overflow: visible; opacity: 0; }
     </style>
   </head>
   <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
-    >
-      <h1 id="title" class="clip" data-start="0" data-duration="10" data-track-index="0">Title</h1>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <filter id="stampF" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="5" result="n" />
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.8" result="m" />
+        <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
+        <feDisplacementMap in="s" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="31" data-width="1080" data-height="1920">
+      <div id="bg" class="clip layer" data-start="0" data-duration="31" data-track-index="0">
+        <div class="paper"></div>
+        <div id="glow"></div>
+        <div id="grain"></div>
+      </div>
+
+      <!-- b01 hook: three finished posts slam down, a DM notification drops -->
+      <div id="hook" class="clip layer" data-start="0" data-duration="3.2" data-track-index="1">
+        <div id="hookcam" data-layout-allow-overlap>
+          <img class="post" id="pL" src="assets/work/rubu.jpg" alt="" />
+          <img class="post" id="pR" src="assets/work/lux.jpg" alt="" />
+          <img class="post" id="pC" src="assets/work/saj.jpg" alt="" />
+          <div class="notif" id="notif">
+            <div class="avatar">a.</div>
+            <div class="txt">
+              <div class="top"><span class="who">allawi.psd</span><span class="when">الآن</span></div>
+              <div class="body">تصاميمك جاهزة ✅ ٣ بوستات</div>
+            </div>
+          </div>
+          <div class="hl" id="hl">
+            <div class="l1"><span class="w">كل</span> <span class="w">هذا..</span></div>
+            <div class="l2"><span class="w">برسالة</span> <span class="w acc">وحدة.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- b02-b06: one DM with allawi.psd, from the customer's side -->
+      <div id="chat" class="clip layer" data-start="0" data-duration="31" data-track-index="2">
+        <div id="world">
+          <div id="zo">
+            <div id="zi">
+              <div id="card">
+                <div class="hdr">
+                  <svg class="back" viewBox="0 0 24 24" fill="none" stroke="#1f1510" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+                  <div class="avatar">a.</div>
+                  <div class="who">
+                    <div class="name">allawi.psd</div>
+                    <div class="sub"><b></b>مصمم إعلانات · نشط الآن</div>
+                  </div>
+                  <div class="icons">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#1f1510" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#1f1510" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="2.5" /><path d="M15.5 10.5l6-3.5v10l-6-3.5z" /></svg>
+                  </div>
+                </div>
+
+                <div id="vp">
+                  <div id="stack" data-layout-allow-overflow>
+                    <div class="intro" id="m0">
+                      <div class="avatar">a.</div>
+                      <div class="name">allawi.psd</div>
+                      <div class="sub">تصاميم سوشيال ميديا · هويات · موشن</div>
+                    </div>
+                    <div class="msg me" id="m1"><div class="bub">هلو 👋 عندي مطعم، أريد ٣ بوستات</div><div class="meta">تم الإرسال</div></div>
+                    <div class="msg them" id="m2"><div class="bub">تدلل 🌹 هاي نماذج من شغلي:</div></div>
+                    <div class="msg them" id="m3"><div class="shot"><img src="assets/work/saj.jpg" alt="" /></div></div>
+                    <div class="msg them" id="m4"><div class="shot"><img src="assets/work/rubu.jpg" alt="" /></div></div>
+                    <div class="msg them" id="m5"><div class="shot"><img src="assets/work/lux.jpg" alt="" /></div><div class="meta">نماذج من شغلي</div></div>
+                    <div class="msg me" id="m6"><div class="bub">وتسوي لغير المطاعم؟</div></div>
+                    <div class="msg them" id="m7">
+                      <div class="album">
+                        <div class="mini">
+                          <img src="assets/work/shifa.jpg" alt="" /><img src="assets/work/faqma.jpg" alt="" /><img src="assets/work/miswag.jpg" alt="" />
+                          <img src="assets/work/ward.jpg" alt="" /><img src="assets/work/cactus.jpg" alt="" /><img src="assets/work/sala.jpg" alt="" />
+                        </div>
+                        <div class="cap">أكيد، لكل مجال 👌</div>
+                      </div>
+                    </div>
+                    <div class="msg me" id="m8"><div class="bub">يا سلام 😍 شكد؟</div></div>
+                    <div class="msg them" id="m9"><div class="bub">٣ بوستات بـ ٤٠ ألف بس 🌹</div></div>
+                  </div>
+                  <div class="dots" id="dots"><i></i><i></i><i></i></div>
+                </div>
+
+                <div id="chips">
+                  <div class="chip" id="c1"><div class="k">٣ بوستات</div><div class="p">٤٠ ألف</div><div class="rip"></div></div>
+                  <div class="chip" id="c2"><div class="k">٥ بوستات</div><div class="p">٦٥ ألف</div></div>
+                  <div class="chip" id="c3"><div class="k">باقة شهرية<small>٨ بوستات + ٤ ستوري</small></div><div class="p">٩٠ ألف</div></div>
+                </div>
+
+                <div class="inbar">
+                  <div class="field"><span id="ftext"></span><span id="caret"></span><span id="ph">اكتب رسالة…</span></div>
+                  <div class="ring" id="ring1"></div>
+                  <div class="ring" id="ring2"></div>
+                  <div id="send">
+                    <svg viewBox="0 0 24 24" fill="#fbf3e6"><path d="M2.6 11.2L20.4 3.1c.7-.3 1.4.4 1.1 1.1l-8.1 17.8c-.3.7-1.4.6-1.5-.2l-1.4-6.3a1 1 0 0 0-.7-.7L3.4 13.4c-.8-.2-.9-1.2-.2-1.5z" /></svg>
+                  </div>
+                </div>
+
+                <!-- b04: the album opens into a grid over the chat -->
+                <div class="scrim" id="scrim"></div>
+                <div id="grid">
+                  <div class="ttl" id="gttl">نماذج من شغلي · لكل مجال</div>
+                  <div class="tile" id="t0"><div class="ph"><img src="assets/work/shifa.jpg" alt="" /></div><div class="lab">عيادة</div><div class="hi"></div></div>
+                  <div class="tile" id="t1"><div class="ph"><img src="assets/work/faqma.jpg" alt="" /></div><div class="lab">أجهزة</div><div class="hi"></div></div>
+                  <div class="tile" id="t2"><div class="ph"><img src="assets/work/miswag.jpg" alt="" /></div><div class="lab">متجر</div><div class="hi"></div></div>
+                  <div class="tile" id="t3"><div class="ph"><img src="assets/work/ward.jpg" alt="" /></div><div class="lab">تجميل</div><div class="hi"></div></div>
+                  <div class="tile" id="t4"><div class="ph"><img src="assets/work/cactus.jpg" alt="" /></div><div class="lab">هاند ميد</div><div class="hi"></div></div>
+                  <div class="tile" id="t5"><div class="ph"><img src="assets/work/sala.jpg" alt="" /></div><div class="lab">بقالة</div><div class="hi"></div></div>
+                </div>
+
+                <!-- b05: the receipt prints out of a slot -->
+                <div id="rcpt" data-layout-allow-overflow>
+                  <div class="feed">
+                    <div class="paperslip" id="slip">
+                      <div class="brand">allawi.psd</div>
+                      <div class="k1">طلبية جديدة</div>
+                      <div class="rule"></div>
+                      <div class="row"><span>تصميم بوست سوشيال ميديا</span><span class="n">×٣</span></div>
+                      <div class="row"><span>السعر</span><span class="n old">٤٢٬٠٠٠<svg class="strike" viewBox="0 0 240 30" preserveAspectRatio="none"><path id="strk" d="M4 20 Q 60 8 120 15 T 236 10" fill="none" stroke="#e2541b" stroke-width="7" stroke-linecap="round" /></svg></span></div>
+                      <div class="row"><span>خصم الباقة</span><span class="n cut">−٢٬٠٠٠</span></div>
+                      <div class="rule"></div>
+                      <div class="tot-l">المجموع</div>
+                      <div class="tot"><span id="total">٠</span><span class="cur">د.ع</span></div>
+                      <div class="rule"></div>
+                      <div class="thanks">شكراً لثقتك 🌹</div>
+                      <div class="stamp" id="stamp">تم الطلب ✓</div>
+                    </div>
+                  </div>
+                  <div class="slot" id="slot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- b06 headline -->
+        <div id="cta">
+          <div class="a"><span class="w">دورك..</span></div>
+          <div class="b"><span class="w">دزّلي</span> <span class="w acc">وحدة</span> <span class="w">منهن</span></div>
+        </div>
+        <svg id="arrow" viewBox="0 0 150 210" fill="none" stroke="#e2541b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+          <path id="arr1" d="M118 8 C 40 40, 20 110, 70 178" />
+          <path id="arr2" d="M34 150 L 72 184 L 104 142" />
+        </svg>
+      </div>
+      <audio id="a-music" src="assets/music/bed.wav" data-start="0" data-duration="31" data-track-index="10" data-volume="0.42"></audio>
+      <audio id="a0-flutter" src="assets/sfx/flutter.wav" data-start="0.05" data-duration="0.9" data-track-index="11" data-volume="0.25"></audio>
+      <audio id="a1-slap" src="assets/sfx/slap.wav" data-start="0.07" data-duration="0.3" data-track-index="12" data-volume="0.5"></audio>
+      <audio id="a2-slap" src="assets/sfx/slap.wav" data-start="0.30" data-duration="0.3" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="a3-slap" src="assets/sfx/slap.wav" data-start="0.52" data-duration="0.3" data-track-index="14" data-volume="0.55"></audio>
+      <audio id="a4-got" src="assets/sfx/got.wav" data-start="0.86" data-duration="0.38" data-track-index="15" data-volume="0.55"></audio>
+      <audio id="a5-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="1.36" data-duration="0.292" data-track-index="16" data-volume="0.18"></audio>
+      <audio id="a6-whoosh_short" src="assets/sfx-kit/u_whoosh_short.wav" data-start="2.50" data-duration="0.632" data-track-index="17" data-volume="0.32"></audio>
+      <audio id="a7-key1" src="assets/sfx/key1.wav" data-start="3.55" data-duration="0.05" data-track-index="18" data-volume="0.32"></audio>
+      <audio id="a8-key2" src="assets/sfx/key2.wav" data-start="3.74" data-duration="0.05" data-track-index="19" data-volume="0.32"></audio>
+      <audio id="a9-key3" src="assets/sfx/key3.wav" data-start="3.92" data-duration="0.05" data-track-index="20" data-volume="0.32"></audio>
+      <audio id="a10-key1" src="assets/sfx/key1.wav" data-start="4.11" data-duration="0.05" data-track-index="21" data-volume="0.32"></audio>
+      <audio id="a11-key2" src="assets/sfx/key2.wav" data-start="4.29" data-duration="0.05" data-track-index="22" data-volume="0.32"></audio>
+      <audio id="a12-key3" src="assets/sfx/key3.wav" data-start="4.48" data-duration="0.05" data-track-index="23" data-volume="0.32"></audio>
+      <audio id="a13-key1" src="assets/sfx/key1.wav" data-start="4.66" data-duration="0.05" data-track-index="24" data-volume="0.32"></audio>
+      <audio id="a14-key2" src="assets/sfx/key2.wav" data-start="4.85" data-duration="0.05" data-track-index="25" data-volume="0.32"></audio>
+      <audio id="a15-key3" src="assets/sfx/key3.wav" data-start="5.04" data-duration="0.05" data-track-index="26" data-volume="0.32"></audio>
+      <audio id="a16-key1" src="assets/sfx/key1.wav" data-start="5.22" data-duration="0.05" data-track-index="27" data-volume="0.32"></audio>
+      <audio id="a17-key2" src="assets/sfx/key2.wav" data-start="5.41" data-duration="0.05" data-track-index="28" data-volume="0.32"></audio>
+      <audio id="a18-key3" src="assets/sfx/key3.wav" data-start="5.59" data-duration="0.05" data-track-index="29" data-volume="0.32"></audio>
+      <audio id="a19-key1" src="assets/sfx/key1.wav" data-start="5.78" data-duration="0.05" data-track-index="30" data-volume="0.32"></audio>
+      <audio id="a20-key2" src="assets/sfx/key2.wav" data-start="5.96" data-duration="0.05" data-track-index="31" data-volume="0.32"></audio>
+      <audio id="a21-tick" src="assets/sfx/tick.wav" data-start="6.25" data-duration="0.05" data-track-index="32" data-volume="0.45"></audio>
+      <audio id="a22-sent" src="assets/sfx/sent.wav" data-start="6.40" data-duration="0.38" data-track-index="33" data-volume="0.5"></audio>
+      <audio id="a23-got" src="assets/sfx/got.wav" data-start="7.60" data-duration="0.38" data-track-index="34" data-volume="0.5"></audio>
+      <audio id="a24-pop" src="assets/sfx/pop.wav" data-start="8.35" data-duration="0.16" data-track-index="35" data-volume="0.45"></audio>
+      <audio id="a25-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="8.55" data-duration="0.292" data-track-index="36" data-volume="0.16"></audio>
+      <audio id="a26-pop" src="assets/sfx/pop.wav" data-start="9.85" data-duration="0.16" data-track-index="37" data-volume="0.45"></audio>
+      <audio id="a27-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="10.05" data-duration="0.292" data-track-index="38" data-volume="0.16"></audio>
+      <audio id="a28-pop" src="assets/sfx/pop.wav" data-start="11.35" data-duration="0.16" data-track-index="39" data-volume="0.45"></audio>
+      <audio id="a29-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="11.55" data-duration="0.292" data-track-index="40" data-volume="0.16"></audio>
+      <audio id="a30-sent" src="assets/sfx/sent.wav" data-start="13.75" data-duration="0.38" data-track-index="41" data-volume="0.45"></audio>
+      <audio id="a31-got" src="assets/sfx/got.wav" data-start="14.30" data-duration="0.38" data-track-index="42" data-volume="0.45"></audio>
+      <audio id="a32-whoosh_short" src="assets/sfx-kit/u_whoosh_short.wav" data-start="14.75" data-duration="0.632" data-track-index="43" data-volume="0.22"></audio>
+      <audio id="a33-tick" src="assets/sfx/tick.wav" data-start="14.83" data-duration="0.05" data-track-index="44" data-volume="0.3"></audio>
+      <audio id="a34-tick" src="assets/sfx/tick.wav" data-start="14.90" data-duration="0.05" data-track-index="45" data-volume="0.3"></audio>
+      <audio id="a35-tick" src="assets/sfx/tick.wav" data-start="14.97" data-duration="0.05" data-track-index="46" data-volume="0.3"></audio>
+      <audio id="a36-tick" src="assets/sfx/tick.wav" data-start="15.04" data-duration="0.05" data-track-index="47" data-volume="0.3"></audio>
+      <audio id="a37-tick" src="assets/sfx/tick.wav" data-start="15.11" data-duration="0.05" data-track-index="48" data-volume="0.3"></audio>
+      <audio id="a38-tick" src="assets/sfx/tick.wav" data-start="15.18" data-duration="0.05" data-track-index="49" data-volume="0.3"></audio>
+      <audio id="a39-pop" src="assets/sfx/pop.wav" data-start="15.30" data-duration="0.16" data-track-index="50" data-volume="0.3"></audio>
+      <audio id="a40-pop" src="assets/sfx/pop.wav" data-start="15.90" data-duration="0.16" data-track-index="51" data-volume="0.3"></audio>
+      <audio id="a41-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="17.95" data-duration="0.292" data-track-index="52" data-volume="0.2"></audio>
+      <audio id="a42-sent" src="assets/sfx/sent.wav" data-start="18.70" data-duration="0.38" data-track-index="53" data-volume="0.45"></audio>
+      <audio id="a43-pop" src="assets/sfx/pop.wav" data-start="19.35" data-duration="0.16" data-track-index="54" data-volume="0.4"></audio>
+      <audio id="a44-printer" src="assets/sfx/printer.wav" data-start="19.55" data-duration="1.2" data-track-index="55" data-volume="0.55"></audio>
+      <audio id="a45-marker" src="assets/sfx/marker.wav" data-start="21.00" data-duration="0.18" data-track-index="56" data-volume="0.45"></audio>
+      <audio id="a46-tick" src="assets/sfx/tick.wav" data-start="21.40" data-duration="0.05" data-track-index="57" data-volume="0.22"></audio>
+      <audio id="a47-tick" src="assets/sfx/tick.wav" data-start="21.50" data-duration="0.05" data-track-index="58" data-volume="0.22"></audio>
+      <audio id="a48-tick" src="assets/sfx/tick.wav" data-start="21.60" data-duration="0.05" data-track-index="59" data-volume="0.22"></audio>
+      <audio id="a49-tick" src="assets/sfx/tick.wav" data-start="21.70" data-duration="0.05" data-track-index="60" data-volume="0.22"></audio>
+      <audio id="a50-tick" src="assets/sfx/tick.wav" data-start="21.80" data-duration="0.05" data-track-index="61" data-volume="0.22"></audio>
+      <audio id="a51-tick" src="assets/sfx/tick.wav" data-start="21.90" data-duration="0.05" data-track-index="62" data-volume="0.22"></audio>
+      <audio id="a52-tick" src="assets/sfx/tick.wav" data-start="22.00" data-duration="0.05" data-track-index="63" data-volume="0.22"></audio>
+      <audio id="a53-tick" src="assets/sfx/tick.wav" data-start="22.10" data-duration="0.05" data-track-index="64" data-volume="0.22"></audio>
+      <audio id="a54-thunk" src="assets/sfx/thunk.wav" data-start="22.78" data-duration="0.35" data-track-index="65" data-volume="0.75"></audio>
+      <audio id="a55-slap" src="assets/sfx/slap.wav" data-start="22.80" data-duration="0.3" data-track-index="66" data-volume="0.35"></audio>
+      <audio id="a56-swipe" src="assets/sfx/swipe.wav" data-start="23.85" data-duration="0.42" data-track-index="67" data-volume="0.45"></audio>
+      <audio id="a57-got" src="assets/sfx/got.wav" data-start="24.35" data-duration="0.38" data-track-index="68" data-volume="0.45"></audio>
+      <audio id="a58-whoosh_short" src="assets/sfx-kit/u_whoosh_short.wav" data-start="24.70" data-duration="0.632" data-track-index="69" data-volume="0.25"></audio>
+      <audio id="a59-pop" src="assets/sfx/pop.wav" data-start="25.20" data-duration="0.16" data-track-index="70" data-volume="0.35"></audio>
+      <audio id="a60-pop" src="assets/sfx/pop.wav" data-start="25.35" data-duration="0.16" data-track-index="71" data-volume="0.35"></audio>
+      <audio id="a61-pop" src="assets/sfx/pop.wav" data-start="25.50" data-duration="0.16" data-track-index="72" data-volume="0.35"></audio>
+      <audio id="a62-scribble" src="assets/sfx/scribble.wav" data-start="25.55" data-duration="0.6" data-track-index="73" data-volume="0.3"></audio>
+      <audio id="a63-tick" src="assets/sfx/tick.wav" data-start="26.60" data-duration="0.05" data-track-index="74" data-volume="0.5"></audio>
+      <audio id="a64-pop" src="assets/sfx/pop.wav" data-start="26.62" data-duration="0.16" data-track-index="75" data-volume="0.4"></audio>
+      <audio id="a65-key2" src="assets/sfx/key2.wav" data-start="26.85" data-duration="0.05" data-track-index="76" data-volume="0.35"></audio>
+      <audio id="a66-ping" src="assets/sfx/ping.wav" data-start="27.40" data-duration="0.7" data-track-index="77" data-volume="0.32"></audio>
+      <audio id="a67-ping" src="assets/sfx/ping.wav" data-start="28.20" data-duration="0.7" data-track-index="78" data-volume="0.32"></audio>
+      <audio id="a68-ping" src="assets/sfx/ping.wav" data-start="29.00" data-duration="0.7" data-track-index="79" data-volume="0.32"></audio>
     </div>
     <script>
-      const tl = gsap.timeline({ paused: true });
-      // Example: tl.fromTo("#title", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 0);
-      window.__timelines["main"] = tl;
-      tl.seek(0);
+// The DM order reel's one paused timeline. Built after the fonts load (the chat scroll and the camera push-ins read
+// the laid-out message sizes once, at build: this is a single-scene composition, so build-time measuring is allowed),
+// then registered on window.__timelines.main. Times in seconds; T holds every cue the voice may move.
+(function () {
+  const T = {
+    slam: [0.05, 0.28, 0.5], notif: 0.85, hl: 1.35, push: 2.55, card: 2.65,
+    typeA: 3.55, typeB: 6.15, press: 6.25, m1: 6.4, dots: 6.85, m2: 7.6,
+    shots: [8.35, 9.85, 11.35], m6: 13.75, m7: 14.3, gridOpen: 14.75, hiA: 15.3, hiB: 15.9, gridClose: 17.95,
+    m8: 18.7, scrim: 19.3, feed: 19.55, strike: 21.0, count: 21.4, stamp: 22.6, out: 23.85, m9: 24.35,
+    shrink: 24.7, cta: 24.95, chips: 25.2, tap: 26.6, fill: 26.85, pulse: 27.3, settle: 29.7, end: 31,
+  };
+  const TYPED = ['ه', 'هل', 'هلو', 'هلو 👋', 'هلو 👋 عن', 'هلو 👋 عندي', 'هلو 👋 عندي مط', 'هلو 👋 عندي مطعم،',
+    'هلو 👋 عندي مطعم، أ', 'هلو 👋 عندي مطعم، أريد', 'هلو 👋 عندي مطعم، أريد ٣', 'هلو 👋 عندي مطعم، أريد ٣ بو',
+    'هلو 👋 عندي مطعم، أريد ٣ بوستا', 'هلو 👋 عندي مطعم، أريد ٣ بوستات'];
+  const AR = '٠١٢٣٤٥٦٧٨٩';
+  const ar = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '٬').replace(/\d/g, (d) => AR[d]);
+  const $ = (s) => document.querySelector(s);
+
+  function build() {
+    // ── measure first: offsets read before any transform exists (a transformed .msg would become the offsetParent)
+    const stack = $('#stack'), vpH = $('#vp').clientHeight, CARD = { x: 50, y: 150 }, VP_TOP = 150;
+    const G = {};
+    const rel = (el) => {
+      let top = 0, left = 0, e = el;
+      while (e && e !== stack) { top += e.offsetTop; left += e.offsetLeft; e = e.offsetParent; }
+      return { el, top, left, w: el.offsetWidth, h: el.offsetHeight, bottom: top + el.offsetHeight };
+    };
+    ['#m1', '#m2', '#m3', '#m4', '#m5', '#m6', '#m7', '#m8', '#m9', '#m2 .bub', '#m3 .shot', '#m4 .shot', '#m5 .shot']
+      .forEach((s) => { G[s] = rel($(s)); });
+    const minis = [...document.querySelectorAll('#m7 .mini img')].map(rel);
+    const slipH = $('#slip').offsetHeight;
+    const lens = {};
+    ['#strk', '#arr1', '#arr2'].forEach((s) => { lens[s] = $(s).getTotalLength(); });
+
+    const tl = gsap.timeline({ paused: true });
+
+    // ── background: glow breathes, grain re-seeds 12 times a second ──────────────────────────────────────────
+    tl.fromTo('#glow', { scale: 0.94 }, { scale: 1.06, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: 14 }, 0);
+    const grain = $('#grain'), gp = { f: 0 };
+    tl.to(gp, { f: 372, duration: T.end, ease: 'none', onUpdate() {
+      const i = Math.floor(gp.f); grain.style.backgroundPosition = `${(i * 137) % 512}px ${(i * 251) % 512}px`;
+    } }, 0);
+
+    // ── b01 hook ────────────────────────────────────────────────────────────────────────────────────────────
+    [['#pL', -9, -16], ['#pR', 8, 15], ['#pC', -1.5, -6]].forEach(([id, rot, from], k) => {
+      const t = T.slam[k];
+      tl.fromTo(id, { scale: 1.5, rotation: from, opacity: 0, filter: 'blur(16px)' },
+        { scale: 1, rotation: rot, opacity: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, t);
+      tl.fromTo('#hookcam', { y: 10 }, { y: 0, duration: 0.22, ease: 'power2.out', immediateRender: false }, t + 0.26);
+    });
+    tl.fromTo('#notif', { y: -280, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: 'back.out(1.6)' }, T.notif);
+    [[0, 70, 0.19], [1, 50, 0.16], [2, 80, 0.2], [3, 90, 0.22]].forEach(([i, dy, d], k) => {
+      const w = document.querySelectorAll('#hl .w')[i], t = T.hl + [0, 0.17, 0.36, 0.55][k];
+      tl.fromTo(w, { opacity: 0, y: dy }, { opacity: 1, y: 0, duration: d, ease: 'power4.out' }, t);
+    });
+    tl.fromTo('#hookcam', { scale: 1, filter: 'blur(0px)' }, { scale: 2.4, filter: 'blur(14px)', duration: 0.55, ease: 'power3.in' }, T.push);
+    tl.fromTo('#hookcam', { opacity: 1 }, { opacity: 0, duration: 0.3, ease: 'power1.in', immediateRender: false }, T.push + 0.25);
+
+    // ── the chat: the card grows out of the notification ────────────────────────────────────────────────────
+    tl.fromTo('#world', { scale: 0.3, x: -26.5, y: -681.5, opacity: 0, filter: 'blur(10px)' },
+      { scale: 1, x: 0, y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.55, ease: 'expo.out' }, T.card);
+
+    const box = (sel) => G[sel];
+    let curY = 0;
+    const gone = new Set(), rows = ['#m0', '#m1', '#m2', '#m3', '#m4', '#m5', '#m6', '#m7', '#m8', '#m9'];
+    G['#m0'] = rel($('#m0'));
+    const scrollTo = (y, t) => {
+      if (y === curY) return;
+      tl.fromTo(stack, { y: curY }, { y, duration: 0.45, ease: 'power3.out', immediateRender: false }, t);
+      curY = y;
+      rows.forEach((r) => { if (!gone.has(r) && G[r].bottom + y < 0) { gone.add(r); tl.to(r, { opacity: 0, duration: 0.2 }, t + 0.3); } });
+    };
+    const fitY = (sel, room = vpH) => Math.min(0, room - box(sel).bottom - 26);
+    const reveal = (sel, t) => {
+      scrollTo(fitY(sel), t);
+      tl.fromTo(sel, { opacity: 0, y: 46, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: 'power3.out' }, t);
+    };
+    for (let i = 1; i <= 9; i++) gsap.set('#m' + i, { opacity: 0 });
+
+    // b02: the customer types the order and sends it
+    const ftext = $('#ftext'), caret = $('#caret'), ph = $('#ph'), ty = { t: 0 };
+    const stepT = (T.typeB - T.typeA) / TYPED.length;
+    const fieldAt = (t) => {
+      if (t >= T.fill && t < T.end) return 'أريد ٣ بوستات';
+      if (t >= T.m1 || t < T.typeA) return '';
+      return TYPED[Math.min(TYPED.length - 1, Math.floor((t - T.typeA) / stepT))];
+    };
+    tl.to(ty, { t: T.end, duration: T.end, ease: 'none', onUpdate() {
+      const s = fieldAt(ty.t); ftext.textContent = s; ph.style.opacity = s ? 0 : 1;
+      const typing = (ty.t >= T.typeA - 0.1 && ty.t < T.m1) || ty.t >= T.fill;
+      caret.style.opacity = typing && Math.floor(ty.t * 4) % 2 === 0 ? 1 : 0;
+    } }, 0);
+    tl.to('#send', { scale: 0.88, duration: 0.12, ease: 'power1.in' }, T.press);
+    tl.to('#send', { scale: 1, duration: 0.5, ease: 'back.out(2)' }, T.press + 0.12);
+    reveal('#m1', T.m1);
+
+    // allawi.psd is typing (the dots sit in the slot the reply will take), then the reply
+    scrollTo(fitY('#m2'), T.dots);
+    const m2b = box('#m2 .bub');
+    gsap.set('#dots', { left: m2b.left, top: curY + m2b.top });
+    tl.fromTo('#dots', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.out' }, T.dots);
+    document.querySelectorAll('#dots i').forEach((d, k) => {
+      tl.fromTo(d, { y: 0 }, { y: -10, duration: 0.18, ease: 'sine.inOut', yoyo: true, repeat: 3 }, T.dots + 0.1 + k * 0.1);
+    });
+    tl.to('#dots', { opacity: 0, duration: 0.08 }, T.m2);
+    reveal('#m2', T.m2);
+
+    // b03: three samples arrive; the camera pushes in on each
+    ['#m3', '#m4', '#m5'].forEach((sel, k) => {
+      const t = T.shots[k];
+      reveal(sel, t);
+      const s = box(sel + ' .shot');
+      const cx = CARD.x + s.left + s.w / 2, cy = CARD.y + VP_TOP + curY + s.top + s.h / 2;
+      const S = Math.min(1.42, (0.86 * 1080) / s.w, (0.86 * 1920) / s.h);
+      tl.fromTo('#zo', { scale: 1 }, { scale: S, duration: 0.45, ease: 'power3.out', immediateRender: false }, t + 0.2);
+      tl.fromTo('#zi', { x: 0, y: 0 }, { x: 540 - cx, y: 960 - cy, duration: 0.45, ease: 'power3.out', immediateRender: false }, t + 0.2);
+      tl.to('#zo', { scale: 1, duration: 0.35, ease: 'power2.inOut' }, t + 1.15);
+      tl.to('#zi', { x: 0, y: 0, duration: 0.35, ease: 'power2.inOut' }, t + 1.15);
+    });
+
+    // b04: "and for other fields?" — the album opens into a grid of six fields, then gathers back
+    reveal('#m6', T.m6);
+    reveal('#m7', T.m7);
+    const chatParts = ['#vp', '.hdr', '.inbar'];
+    tl.to('#scrim', { opacity: 1, duration: 0.35, ease: 'power2.out' }, T.gridOpen);
+    tl.to(chatParts, { opacity: 0, duration: 0.3, ease: 'power2.out' }, T.gridOpen + 0.05);
+    tl.fromTo('#gttl', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, T.gridOpen + 0.15);
+    for (let i = 0; i < 6; i++) {
+      const c = i % 3, r = Math.floor(i / 3), tx = 40 + (2 - c) * 278, tyy = 200 + r * 402;
+      const tile = $('#t' + i);
+      gsap.set(tile, { left: tx, top: tyy, transformOrigin: '0 0' });
+      const m = minis[i].el, mx = minis[i].left, my = VP_TOP + curY + minis[i].top, k = 150 / 254;
+      const t = T.gridOpen + 0.08 + i * 0.07;
+      tl.fromTo(tile, { x: mx - tx, y: my - tyy, scale: k, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.55, ease: 'expo.out' }, t);
+      tl.set(m, { opacity: 0 }, t);
+      tl.fromTo(tile.querySelector('.lab'), { opacity: 0 }, { opacity: 1, duration: 0.25 }, t + 0.35);
+      tl.to(tile, { x: mx - tx, y: my - tyy, scale: k, duration: 0.42, ease: 'power3.in' }, T.gridClose + (5 - i) * 0.03);
+      tl.to(tile, { opacity: 0, duration: 0.06 }, T.gridClose + (5 - i) * 0.03 + 0.4);
+      tl.set(m, { opacity: 1 }, T.gridClose + (5 - i) * 0.03 + 0.42);
+    }
+    [['#t0 .hi', T.hiA], ['#t2 .hi', T.hiB]].forEach(([sel, t]) => {
+      tl.fromTo(sel, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.out' }, t);
+      tl.to(sel, { opacity: 0, duration: 0.4 }, t + 0.7);
+    });
+    tl.to('#gttl', { opacity: 0, duration: 0.2 }, T.gridClose);
+    tl.to('#scrim', { opacity: 0, duration: 0.35, ease: 'power2.in' }, T.gridClose + 0.2);
+    tl.to(chatParts, { opacity: 1, duration: 0.3, ease: 'power2.in' }, T.gridClose + 0.2);
+
+    // b05: "how much?" — a receipt prints out of a slot: 42,000 struck, 40,000 counts up, stamped
+    reveal('#m8', T.m8);
+    const slip = $('#slip'), H = slipH;
+    const zig = [];
+    for (let x = 0; x <= 700; x += 25) zig.push(`${x}px ${H - ((x / 25) % 2 ? 0 : 16)}px`);
+    slip.style.clipPath = `polygon(0 0, 700px 0, ${zig.reverse().join(', ')})`;
+    tl.to('#scrim', { opacity: 1, duration: 0.3 }, T.scrim);
+    tl.to(chatParts, { opacity: 0, duration: 0.3 }, T.scrim);
+    tl.fromTo('#slot', { scaleX: 0.2, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.35, ease: 'back.out(1.8)' }, T.scrim + 0.05);
+    tl.fromTo('#slip', { y: -H - 20 }, { y: 0, duration: 1.3, ease: 'steps(13)' }, T.feed);
+    const strk = $('#strk'), L = lens['#strk'];
+    gsap.set(strk, { strokeDasharray: L, strokeDashoffset: L });
+    tl.set('.strike', { opacity: 1 }, T.strike);
+    tl.to(strk, { strokeDashoffset: 0, duration: 0.32, ease: 'power2.out' }, T.strike);
+    const total = $('#total'), cnt = { v: 0 };
+    total.textContent = ar(0);
+    tl.fromTo(cnt, { v: 0 }, { v: 40000, duration: 0.8, ease: 'power3.out', onUpdate() { total.textContent = ar(Math.round(cnt.v / 100) * 100); } }, T.count);
+    tl.fromTo('#total', { scale: 0.55 }, { scale: 1, duration: 0.8, ease: 'power3.out' }, T.count);
+    tl.fromTo('#stamp', { scale: 1.8, rotation: -24, opacity: 0 }, { scale: 1, rotation: -13, opacity: 0.92, duration: 0.22, ease: 'power4.in' }, T.stamp);
+    tl.fromTo('#slip', { x: 0 }, { x: 6, duration: 0.05, yoyo: true, repeat: 3, immediateRender: false }, T.stamp + 0.22);
+    tl.to('#rcpt', { y: -1500, duration: 0.42, ease: 'power3.in' }, T.out);
+    tl.to('#scrim', { opacity: 0, duration: 0.3 }, T.out + 0.2);
+    tl.to(chatParts, { opacity: 1, duration: 0.3 }, T.out + 0.2);
+    reveal('#m9', T.m9);
+
+    // b06: your turn — the card steps back, the headline lands, three ready-made replies rise
+    tl.fromTo('#world', { scale: 1, x: 0, y: 0 }, { scale: 0.8, x: -9, y: 108, duration: 0.55, ease: 'power3.inOut', immediateRender: false }, T.shrink);
+    scrollTo(Math.min(0, 560 - box('#m9').bottom), T.chips - 0.1);
+    tl.fromTo('#chips', { opacity: 0 }, { opacity: 1, duration: 0.25 }, T.chips - 0.1);
+    ['#c3', '#c2', '#c1'].forEach((sel, k) => {
+      tl.fromTo(sel, { y: 90, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'power3.out' }, T.chips + k * 0.15);
+    });
+    const ws = document.querySelectorAll('#cta .w');
+    [[0, 80, 0.22], [1, 50, 0.16], [2, 60, 0.17], [3, 50, 0.16]].forEach(([i, dy, d], k) => {
+      tl.fromTo(ws[i], { opacity: 0, y: dy }, { opacity: 1, y: 0, duration: d, ease: 'power4.out' }, T.cta + [0, 0.22, 0.36, 0.48][k]);
+    });
+    tl.set('#arrow', { opacity: 1 }, T.cta + 0.6);
+    ['#arr1', '#arr2'].forEach((sel, k) => {
+      const p = $(sel), l = lens[sel];
+      gsap.set(p, { strokeDasharray: l, strokeDashoffset: l });
+      tl.to(p, { strokeDashoffset: 0, duration: k ? 0.18 : 0.35, ease: 'power2.out' }, T.cta + 0.6 + k * 0.33);
+    });
+    // the tap on «٣ بوستات» fills the message; the send button waits for the viewer
+    tl.to('#c1', { scale: 0.96, duration: 0.1, ease: 'power2.in', yoyo: true, repeat: 1 }, T.tap);
+    tl.fromTo('#c1 .rip', { scale: 0, opacity: 0.9 }, { scale: 3.2, opacity: 0, duration: 0.6, ease: 'power2.out' }, T.tap);
+    tl.fromTo('.field', { backgroundColor: '#ece3d4' }, { backgroundColor: '#f8d9c7', duration: 0.12, yoyo: true, repeat: 1, immediateRender: false }, T.fill);
+    const pulse = { p: 0 }, cycles = 3;
+    tl.to(pulse, { p: Math.PI * 2 * cycles, duration: T.settle - T.pulse, ease: 'none', onUpdate() {
+      gsap.set('#send', { scale: 1 + 0.08 * Math.max(0, Math.sin(pulse.p)) });
+    } }, T.pulse);
+    [0, 0.8, 1.6].forEach((dt, k) => {
+      tl.fromTo(k % 2 ? '#ring2' : '#ring1', { scale: 1, opacity: 0.85 }, { scale: 2.3, opacity: 0, duration: 0.75, ease: 'power2.out', immediateRender: false }, T.pulse + 0.1 + dt);
+    });
+
+    window.__timelines['main'] = tl;
+    if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+  }
+
+  document.fonts.ready.then(build);
+})();
     </script>
   </body>
 </html>

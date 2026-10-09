@@ -1,0 +1,8 @@
+renders/*
+!renders/dm-order-reel.mp4
+!renders/dm-order-reel-cover.jpg
+assets/sfx-kit/
+assets/music/
+snapshots/
+node_modules/
+.hyperframes/
