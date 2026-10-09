@@ -70,6 +70,8 @@ body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
 .ul path { fill:none; stroke:var(--oink); stroke-width:11; stroke-linecap:round }
 .was::after { content:''; position:absolute; left:-8px; right:-8px; top:52%; height:5px; background:var(--marker); border-radius:3px; transform:rotate(-9deg); opacity:.9 }
 .note { position:absolute; font:700 44px/1.35 'Aref Ruqaa'; color:rgba(31,21,16,.75); text-align:center }
+.note.pp { right:70px; font-size:42px; text-align:right }
+.note em { font-style:normal; color:var(--oink) }
 .step { position:absolute; left:60px; right:60px; display:flex; gap:26px; align-items:flex-start }
 .step .n { flex:none; width:96px; height:96px; border:7px solid var(--marker); border-radius:50%; display:flex; align-items:center; justify-content:center;
   font:700 60px/1 'Aref Ruqaa'; color:var(--oink); transform:rotate(-6deg) }
@@ -131,17 +133,20 @@ const A = [];
 // ── «الأسعار» ────────────────────────────────────────────────────────────────────────────────────────────────────
 A.push(art('p1', 'paper', `
   ${strip(250, 'الأسعار.. <b>مو بالخاص</b> 😉')}
-  <div class="sheet" style="left:100px; top:470px; width:880px; height:1100px; transform:rotate(-1.5deg)">
+  <div class="sheet" style="left:100px; top:470px; width:880px; height:1130px; transform:rotate(-1.5deg)">
     <div class="ruled"></div>
-    <div class="h" style="top:66px">الباقات</div>
-    <div class="row" style="top:250px"><span class="ul">٣ بوستات<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 14 C 26 6, 62 20, 98 8" vector-effect="non-scaling-stroke"/></svg></span><i></i><span class="r"><span class="was">٤٢</span><span>٤٠ ألف</span></span></div>
-    <div class="row" style="top:440px"><span>٥ بوستات</span><i></i><span class="r"><span class="was">٧٠</span><span>٦٥ ألف</span></span></div>
+    <div class="h" style="top:56px">الباقات</div>
+    <div class="row" style="top:210px"><span class="ul">٣ بوستات<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 14 C 26 6, 62 20, 98 8" vector-effect="non-scaling-stroke"/></svg></span><i></i><span class="r"><span class="was">٤٢</span><span>٤٠ ألف</span></span></div>
+    <div class="note pp" style="top:318px">يعني البوست تقريباً بـ<em>١٣ ألف</em></div>
+    <div class="row" style="top:420px"><span>٥ بوستات</span><i></i><span class="r"><span class="was">٧٠</span><span>٦٥ ألف</span></span></div>
+    <div class="note pp" style="top:528px">يعني البوست بـ<em>١٣ ألف</em></div>
     <div class="row" style="top:630px"><span>باقة شهرية</span><i></i><span class="r"><span class="was">١٤٠</span><span>٩٠ ألف</span></span></div>
-    <div class="note" style="right:70px; top:740px">٨ بوستات + ٤ ستوري، كل شهر</div>
-    <div class="note" style="right:70px; top:930px; font-size:38px; color:var(--oink)">المشطوب = سعرها بالقطعة</div>
-    <div class="stamp" style="left:40px; top:820px; transform:rotate(-10deg); font-size:62px">الأوفر</div>
+    <div class="note pp" style="top:738px">٨ بوستات + ٤ ستوري <em>هدية 🎁</em></div>
+    <div class="note pp" style="top:802px">يعني البوست تقريباً بـ<em>١١ ألف</em></div>
+    <div class="note" style="right:70px; top:990px; font-size:36px; color:var(--oink)">المشطوب = سعرها بالقطعة (البوست ١٤ ألف)</div>
+    <div class="stamp" style="left:40px; top:880px; transform:rotate(-10deg); font-size:62px">الأوفر</div>
   </div>${pin(515, 452)}
-  ${legal(1610, 'دزّلي بالدايركت: «أريد ٣ بوستات»', true)}`));
+  ${legal(1640, 'دزّلي بالدايركت: «أريد ٣ بوستات»', true)}`));
 
 A.push(art('p2', 'ink', `
   ${strip(250, 'الأسعار.. <b>بالقطعة</b>', '')}

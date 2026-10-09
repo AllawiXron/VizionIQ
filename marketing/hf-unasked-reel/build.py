@@ -33,8 +33,8 @@ C += [(t, sx('slap'), 0.5) for t in (10.0, 11.0, 12.0)] + [(t, sx('tick'), 0.35)
 C += [(10.35, dr('pop'), 0.4), (11.35, dr('pop'), 0.4), (12.3, sx('scribble'), 0.35), (12.75, sx('marker'), 0.4)]
 # S4: the sticky note, crossed out, ripped off; the price list pinned and written
 C += [(13.7, dr('whoosh'), 0.4), (14.0, sx('slap'), 0.5), (14.17, sx('tick'), 0.4), (15.0, sx('marker'), 0.45), (15.14, sx('marker'), 0.45), (15.75, sx('rip'), 0.6)]
-C += [(16.0, sx('slap'), 0.55), (16.17, sx('tick'), 0.4)] + [(t, sx('scribble'), 0.22) for t in (16.2, 16.45, 16.7, 16.95)]
-C += [(17.3, sx('marker'), 0.45), (17.4, dr('money'), 0.35)]   # the cash sound on «٣ بوستات · ٤٠ ألف»
+C += [(16.0, sx('slap'), 0.55), (16.17, sx('tick'), 0.4)] + [(t, sx('scribble'), 0.2) for t in (16.15, 16.4, 16.62, 16.85, 17.05, 17.25)]
+C += [(17.5, sx('marker'), 0.45), (17.6, dr('money'), 0.35), (18.1, sx('thunk'), 0.7)]   # the cash sound on «٣ بوستات · ٤٠ ألف»; «الأوفر» stamped
 # S5: the note, the writing, the handle cut out of magazines, the paper plane
 C += [(19.7, dr('whoosh'), 0.4), (20.0, sx('slap'), 0.55), (21.2, sx('scribble'), 0.35)] + [(round(22.0 + i * 0.07, 2), dr('click'), 0.45) for i in range(11)]
 C += [(22.9, sx('marker'), 0.4)]

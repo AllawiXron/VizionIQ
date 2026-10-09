@@ -14,7 +14,7 @@
     // S3 your shop
     shop: [10.0, 11.0, 12.0], tape: [10.2, 11.2, 12.2], tags: [10.35, 11.35], q: 12.3, arrow: 12.75, st3: [10.1, 11.1, 12.1],
     // S4 the price
-    sticky: 14.0, st4a: 14.1, st4b: 14.8, x: 15.0, rip: 15.75, list: 16.0, rows: [16.2, 16.45, 16.7, 16.95], circle: 17.3,
+    sticky: 14.0, st4a: 14.1, st4b: 14.8, x: 15.0, rip: 15.75, list: 16.0, rows: [16.15, 16.4, 16.62, 16.85, 17.05, 17.25], circle: 17.5, best: 18.1,
     // S5 the ask
     note: 20.0, st5: 20.1, write: 21.2, handle: 22.0, plane: 22.9,
   };
@@ -182,8 +182,9 @@
     tl.set('#sticky', { opacity: 0 }, T.rip + 0.32);
     gsap.set('#list', { opacity: 0, rotation: -2 }); slap('#list', T.list, { rotation: -2 }, { y: -50 });
     tl.fromTo('#pinL', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.12, ease: SM('power3.in', 0.12, 24) }, T.list + 0.17);
-    ['#r1', '#r2', '#r3', '#r4'].forEach((s, k) => tl.fromTo(s, { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.3, ease: SM('none', 0.3, 15) }, T.rows[k]));
+    ['#r1', '#r2', '#r2n', '#r3', '#r4', '#r5'].forEach((s, k) => tl.fromTo(s, { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.3, ease: SM('none', 0.3, 15) }, T.rows[k]));
     draw('#r1ul', T.circle, 0.4, 'power2.out');   // underline «٣ بوستات»
+    tl.fromTo('#best', { opacity: 0, scale: 1.8, rotation: -9 }, { opacity: 0.92, scale: 1, rotation: -9, duration: 0.1, ease: 'power4.in' }, T.best);   // «الأوفر» on the monthly package
     strip('#st4a', T.st4a, T.st4b); strip('#st4b', T.st4b);
 
     // ── S5: the note, the handle cut out of magazines, a paper plane for the DM

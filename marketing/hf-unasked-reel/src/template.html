@@ -99,7 +99,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 #list .row { position:absolute; left:70px; right:70px; height:150px; display:flex; justify-content:space-between; align-items:center; font:700 78px 'Aref Ruqaa'; color:var(--pen); white-space:nowrap }
 #list .row i { flex:1; margin:0 22px; border-bottom:5px dotted rgba(31,21,16,.32); transform:translateY(16px) }
 #list .row b { font-weight:700 }
-#list .sub2 { position:absolute; left:0; right:0; top:742px; text-align:center; font:700 52px 'Aref Ruqaa'; color:rgba(31,21,16,.75) }
+#list .sub2 { position:absolute; left:70px; right:70px; text-align:right; font:700 44px 'Aref Ruqaa'; color:rgba(31,21,16,.72) }
+#list .sub2 em { font-style:normal; color:var(--oink) }
 #list .ul { position:relative }
 #list .ul svg { position:absolute; left:-12px; bottom:-14px; width:calc(100% + 24px); height:30px; overflow:visible }
 #list .ul path { fill:none; stroke:var(--oink); stroke-width:12; stroke-linecap:round; opacity:0 }
@@ -199,10 +200,13 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
           <div id="list" class="shadow">
             <div class="ruled"></div>
             <div class="h">الأسعار</div>
-            <div class="row" id="r1" style="top:180px"><b class="ul">٣ بوستات<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path id="r1ul" pathLength="1" d="M2 14 C 26 6, 62 20, 98 8" vector-effect="non-scaling-stroke"/></svg></b><i></i><b>٤٠ ألف</b></div>
-            <div class="row" id="r2" style="top:350px"><b>٥ بوستات</b><i></i><b>٦٥ ألف</b></div>
-            <div class="row" id="r3" style="top:520px"><b>باقة شهرية</b><i></i><b>٩٠ ألف</b></div>
-            <div class="sub2" id="r4">٨ بوستات + ٤ ستوري</div>
+            <div class="row" id="r1" style="top:140px"><b>بوست واحد</b><i></i><b>١٤ ألف</b></div>
+            <div class="row" id="r2" style="top:300px"><b class="ul">٣ بوستات<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path id="r1ul" pathLength="1" d="M2 14 C 26 6, 62 20, 98 8" vector-effect="non-scaling-stroke"/></svg></b><i></i><b>٤٠ ألف</b></div>
+            <div class="sub2" id="r2n" style="top:420px">يعني البوست تقريباً بـ<em>١٣ ألف</em></div>
+            <div class="row" id="r3" style="top:530px"><b>باقة شهرية</b><i></i><b>٩٠ ألف</b></div>
+            <div class="sub2" id="r4" style="top:650px">٨ بوستات + ٤ ستوري <em>هدية 🎁</em></div>
+            <div class="sub2" id="r5" style="top:725px">يعني البوست تقريباً بـ<em>١١ ألف</em></div>
+            <div class="stamp" id="best" style="left:36px; top:800px; transform:rotate(-9deg); direction:rtl; font-size:58px">الأوفر</div>
             <svg class="mk" id="listMk" width="780" height="975" viewBox="0 0 780 975" style="left:0;top:0"></svg>
           </div>
           <div id="sticky"><div>السعر..<br />بالخاص 🤫</div><svg class="mk" id="stickyX" width="580" height="580" viewBox="0 0 580 580" style="left:0;top:0"></svg></div>

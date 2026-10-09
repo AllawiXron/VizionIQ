@@ -121,7 +121,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
 #list .row { position:absolute; left:70px; right:70px; height:150px; display:flex; justify-content:space-between; align-items:center; font:700 78px 'Aref Ruqaa'; color:var(--pen); white-space:nowrap }
 #list .row i { flex:1; margin:0 22px; border-bottom:5px dotted rgba(31,21,16,.32); transform:translateY(16px) }
 #list .row b { font-weight:700 }
-#list .sub2 { position:absolute; left:0; right:0; top:742px; text-align:center; font:700 52px 'Aref Ruqaa'; color:rgba(31,21,16,.75) }
+#list .sub2 { position:absolute; left:70px; right:70px; text-align:right; font:700 44px 'Aref Ruqaa'; color:rgba(31,21,16,.72) }
+#list .sub2 em { font-style:normal; color:var(--oink) }
 #list .ul { position:relative }
 #list .ul svg { position:absolute; left:-12px; bottom:-14px; width:calc(100% + 24px); height:30px; overflow:visible }
 #list .ul path { fill:none; stroke:var(--oink); stroke-width:12; stroke-linecap:round; opacity:0 }
@@ -221,10 +222,13 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
           <div id="list" class="shadow">
             <div class="ruled"></div>
             <div class="h">الأسعار</div>
-            <div class="row" id="r1" style="top:180px"><b class="ul">٣ بوستات<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path id="r1ul" pathLength="1" d="M2 14 C 26 6, 62 20, 98 8" vector-effect="non-scaling-stroke"/></svg></b><i></i><b>٤٠ ألف</b></div>
-            <div class="row" id="r2" style="top:350px"><b>٥ بوستات</b><i></i><b>٦٥ ألف</b></div>
-            <div class="row" id="r3" style="top:520px"><b>باقة شهرية</b><i></i><b>٩٠ ألف</b></div>
-            <div class="sub2" id="r4">٨ بوستات + ٤ ستوري</div>
+            <div class="row" id="r1" style="top:140px"><b>بوست واحد</b><i></i><b>١٤ ألف</b></div>
+            <div class="row" id="r2" style="top:300px"><b class="ul">٣ بوستات<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path id="r1ul" pathLength="1" d="M2 14 C 26 6, 62 20, 98 8" vector-effect="non-scaling-stroke"/></svg></b><i></i><b>٤٠ ألف</b></div>
+            <div class="sub2" id="r2n" style="top:420px">يعني البوست تقريباً بـ<em>١٣ ألف</em></div>
+            <div class="row" id="r3" style="top:530px"><b>باقة شهرية</b><i></i><b>٩٠ ألف</b></div>
+            <div class="sub2" id="r4" style="top:650px">٨ بوستات + ٤ ستوري <em>هدية 🎁</em></div>
+            <div class="sub2" id="r5" style="top:725px">يعني البوست تقريباً بـ<em>١١ ألف</em></div>
+            <div class="stamp" id="best" style="left:36px; top:800px; transform:rotate(-9deg); direction:rtl; font-size:58px">الأوفر</div>
             <svg class="mk" id="listMk" width="780" height="975" viewBox="0 0 780 975" style="left:0;top:0"></svg>
           </div>
           <div id="sticky"><div>السعر..<br />بالخاص 🤫</div><svg class="mk" id="stickyX" width="580" height="580" viewBox="0 0 580 580" style="left:0;top:0"></svg></div>
@@ -299,28 +303,31 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
       <audio id="a41-marker" src="assets/sfx/marker.wav" data-start="15.14" data-duration="0.18" data-track-index="53" data-volume="0.45"></audio>
       <audio id="a42-rip" src="assets/sfx/rip.wav" data-start="15.75" data-duration="0.42" data-track-index="54" data-volume="0.6"></audio>
       <audio id="a43-slap" src="assets/sfx/slap.wav" data-start="16.00" data-duration="0.3" data-track-index="55" data-volume="0.55"></audio>
-      <audio id="a44-tick" src="assets/sfx/tick.wav" data-start="16.17" data-duration="0.05" data-track-index="56" data-volume="0.4"></audio>
-      <audio id="a45-scribble" src="assets/sfx/scribble.wav" data-start="16.20" data-duration="0.6" data-track-index="57" data-volume="0.22"></audio>
-      <audio id="a46-scribble" src="assets/sfx/scribble.wav" data-start="16.45" data-duration="0.6" data-track-index="58" data-volume="0.22"></audio>
-      <audio id="a47-scribble" src="assets/sfx/scribble.wav" data-start="16.70" data-duration="0.6" data-track-index="59" data-volume="0.22"></audio>
-      <audio id="a48-scribble" src="assets/sfx/scribble.wav" data-start="16.95" data-duration="0.6" data-track-index="60" data-volume="0.22"></audio>
-      <audio id="a49-marker" src="assets/sfx/marker.wav" data-start="17.30" data-duration="0.18" data-track-index="61" data-volume="0.45"></audio>
-      <audio id="a50-money" src="assets/sfx-drive/money.wav" data-start="17.40" data-duration="1.476" data-track-index="62" data-volume="0.35"></audio>
-      <audio id="a51-whoosh" src="assets/sfx-drive/whoosh.wav" data-start="19.70" data-duration="0.856" data-track-index="63" data-volume="0.4"></audio>
-      <audio id="a52-slap" src="assets/sfx/slap.wav" data-start="20.00" data-duration="0.3" data-track-index="64" data-volume="0.55"></audio>
-      <audio id="a53-scribble" src="assets/sfx/scribble.wav" data-start="21.20" data-duration="0.6" data-track-index="65" data-volume="0.35"></audio>
-      <audio id="a54-click" src="assets/sfx-drive/click.wav" data-start="22.00" data-duration="0.094" data-track-index="66" data-volume="0.45"></audio>
-      <audio id="a55-click" src="assets/sfx-drive/click.wav" data-start="22.07" data-duration="0.094" data-track-index="67" data-volume="0.45"></audio>
-      <audio id="a56-click" src="assets/sfx-drive/click.wav" data-start="22.14" data-duration="0.094" data-track-index="68" data-volume="0.45"></audio>
-      <audio id="a57-click" src="assets/sfx-drive/click.wav" data-start="22.21" data-duration="0.094" data-track-index="69" data-volume="0.45"></audio>
-      <audio id="a58-click" src="assets/sfx-drive/click.wav" data-start="22.28" data-duration="0.094" data-track-index="70" data-volume="0.45"></audio>
-      <audio id="a59-click" src="assets/sfx-drive/click.wav" data-start="22.35" data-duration="0.094" data-track-index="71" data-volume="0.45"></audio>
-      <audio id="a60-click" src="assets/sfx-drive/click.wav" data-start="22.42" data-duration="0.094" data-track-index="72" data-volume="0.45"></audio>
-      <audio id="a61-click" src="assets/sfx-drive/click.wav" data-start="22.49" data-duration="0.094" data-track-index="73" data-volume="0.45"></audio>
-      <audio id="a62-click" src="assets/sfx-drive/click.wav" data-start="22.56" data-duration="0.094" data-track-index="74" data-volume="0.45"></audio>
-      <audio id="a63-click" src="assets/sfx-drive/click.wav" data-start="22.63" data-duration="0.094" data-track-index="75" data-volume="0.45"></audio>
-      <audio id="a64-click" src="assets/sfx-drive/click.wav" data-start="22.70" data-duration="0.094" data-track-index="76" data-volume="0.45"></audio>
-      <audio id="a65-marker" src="assets/sfx/marker.wav" data-start="22.90" data-duration="0.18" data-track-index="77" data-volume="0.4"></audio>
+      <audio id="a44-scribble" src="assets/sfx/scribble.wav" data-start="16.15" data-duration="0.6" data-track-index="56" data-volume="0.2"></audio>
+      <audio id="a45-tick" src="assets/sfx/tick.wav" data-start="16.17" data-duration="0.05" data-track-index="57" data-volume="0.4"></audio>
+      <audio id="a46-scribble" src="assets/sfx/scribble.wav" data-start="16.40" data-duration="0.6" data-track-index="58" data-volume="0.2"></audio>
+      <audio id="a47-scribble" src="assets/sfx/scribble.wav" data-start="16.62" data-duration="0.6" data-track-index="59" data-volume="0.2"></audio>
+      <audio id="a48-scribble" src="assets/sfx/scribble.wav" data-start="16.85" data-duration="0.6" data-track-index="60" data-volume="0.2"></audio>
+      <audio id="a49-scribble" src="assets/sfx/scribble.wav" data-start="17.05" data-duration="0.6" data-track-index="61" data-volume="0.2"></audio>
+      <audio id="a50-scribble" src="assets/sfx/scribble.wav" data-start="17.25" data-duration="0.6" data-track-index="62" data-volume="0.2"></audio>
+      <audio id="a51-marker" src="assets/sfx/marker.wav" data-start="17.50" data-duration="0.18" data-track-index="63" data-volume="0.45"></audio>
+      <audio id="a52-money" src="assets/sfx-drive/money.wav" data-start="17.60" data-duration="1.476" data-track-index="64" data-volume="0.35"></audio>
+      <audio id="a53-thunk" src="assets/sfx/thunk.wav" data-start="18.10" data-duration="0.35" data-track-index="65" data-volume="0.7"></audio>
+      <audio id="a54-whoosh" src="assets/sfx-drive/whoosh.wav" data-start="19.70" data-duration="0.856" data-track-index="66" data-volume="0.4"></audio>
+      <audio id="a55-slap" src="assets/sfx/slap.wav" data-start="20.00" data-duration="0.3" data-track-index="67" data-volume="0.55"></audio>
+      <audio id="a56-scribble" src="assets/sfx/scribble.wav" data-start="21.20" data-duration="0.6" data-track-index="68" data-volume="0.35"></audio>
+      <audio id="a57-click" src="assets/sfx-drive/click.wav" data-start="22.00" data-duration="0.094" data-track-index="69" data-volume="0.45"></audio>
+      <audio id="a58-click" src="assets/sfx-drive/click.wav" data-start="22.07" data-duration="0.094" data-track-index="70" data-volume="0.45"></audio>
+      <audio id="a59-click" src="assets/sfx-drive/click.wav" data-start="22.14" data-duration="0.094" data-track-index="71" data-volume="0.45"></audio>
+      <audio id="a60-click" src="assets/sfx-drive/click.wav" data-start="22.21" data-duration="0.094" data-track-index="72" data-volume="0.45"></audio>
+      <audio id="a61-click" src="assets/sfx-drive/click.wav" data-start="22.28" data-duration="0.094" data-track-index="73" data-volume="0.45"></audio>
+      <audio id="a62-click" src="assets/sfx-drive/click.wav" data-start="22.35" data-duration="0.094" data-track-index="74" data-volume="0.45"></audio>
+      <audio id="a63-click" src="assets/sfx-drive/click.wav" data-start="22.42" data-duration="0.094" data-track-index="75" data-volume="0.45"></audio>
+      <audio id="a64-click" src="assets/sfx-drive/click.wav" data-start="22.49" data-duration="0.094" data-track-index="76" data-volume="0.45"></audio>
+      <audio id="a65-click" src="assets/sfx-drive/click.wav" data-start="22.56" data-duration="0.094" data-track-index="77" data-volume="0.45"></audio>
+      <audio id="a66-click" src="assets/sfx-drive/click.wav" data-start="22.63" data-duration="0.094" data-track-index="78" data-volume="0.45"></audio>
+      <audio id="a67-click" src="assets/sfx-drive/click.wav" data-start="22.70" data-duration="0.094" data-track-index="79" data-volume="0.45"></audio>
+      <audio id="a68-marker" src="assets/sfx/marker.wav" data-start="22.90" data-duration="0.18" data-track-index="80" data-volume="0.4"></audio>
     </div>
     <script>
 // The allawi.psd brand-ads reel: one paused timeline, built after the fonts load, registered on window.__timelines.main.
@@ -339,7 +346,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
     // S3 your shop
     shop: [10.0, 11.0, 12.0], tape: [10.2, 11.2, 12.2], tags: [10.35, 11.35], q: 12.3, arrow: 12.75, st3: [10.1, 11.1, 12.1],
     // S4 the price
-    sticky: 14.0, st4a: 14.1, st4b: 14.8, x: 15.0, rip: 15.75, list: 16.0, rows: [16.2, 16.45, 16.7, 16.95], circle: 17.3,
+    sticky: 14.0, st4a: 14.1, st4b: 14.8, x: 15.0, rip: 15.75, list: 16.0, rows: [16.15, 16.4, 16.62, 16.85, 17.05, 17.25], circle: 17.5, best: 18.1,
     // S5 the ask
     note: 20.0, st5: 20.1, write: 21.2, handle: 22.0, plane: 22.9,
   };
@@ -507,8 +514,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
     tl.set('#sticky', { opacity: 0 }, T.rip + 0.32);
     gsap.set('#list', { opacity: 0, rotation: -2 }); slap('#list', T.list, { rotation: -2 }, { y: -50 });
     tl.fromTo('#pinL', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.12, ease: SM('power3.in', 0.12, 24) }, T.list + 0.17);
-    ['#r1', '#r2', '#r3', '#r4'].forEach((s, k) => tl.fromTo(s, { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.3, ease: SM('none', 0.3, 15) }, T.rows[k]));
+    ['#r1', '#r2', '#r2n', '#r3', '#r4', '#r5'].forEach((s, k) => tl.fromTo(s, { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.3, ease: SM('none', 0.3, 15) }, T.rows[k]));
     draw('#r1ul', T.circle, 0.4, 'power2.out');   // underline «٣ بوستات»
+    tl.fromTo('#best', { opacity: 0, scale: 1.8, rotation: -9 }, { opacity: 0.92, scale: 1, rotation: -9, duration: 0.1, ease: 'power4.in' }, T.best);   // «الأوفر» on the monthly package
     strip('#st4a', T.st4a, T.st4b); strip('#st4b', T.st4b);
 
     // ── S5: the note, the handle cut out of magazines, a paper plane for the DM
