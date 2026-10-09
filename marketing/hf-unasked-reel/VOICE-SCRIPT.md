@@ -1,4 +1,4 @@
-# Noor's voice for «محد طلبها منه» (Google AI Studio)
+# Noor's voice for the brand-ads reel (Google AI Studio)
 
 Use the Noor profile in `../voice-studio/README.md` exactly as before: same model, same voice, the same Audio Profile
 and Scene. Change only these two fields:
@@ -8,7 +8,7 @@ and Scene. Change only these two fields:
 ```
 The voice-over for a 25-second funny Instagram reel about a young Iraqi designer. She tells it like a cheeky true
 story she can't believe: the brand names come quick, one after the other, then a short pause and the punchline
-"ومحد طلبها منه!" with a laugh in her voice. After that she is warm and direct, like giving a shop owner a good
+"وكلها.. من تصميمه!" with a proud smile in her voice. After that she is warm and direct, like giving a shop owner a good
 tip. A clear one-second pause after every line. Questions rise like real questions.
 ```
 
@@ -20,13 +20,13 @@ tip. A clear one-second pause after every line. Questions rise like real questio
 
 وللخطوط العراقية..
 
-ومحد طلبها منه!
+وكلها.. من تصميمه!
 
 ليش؟
 
-حتى تشوف.. شيگدر يسوّي لمحلك.
+حتى تشوف.. شيگدر يسوّي لمشروعك.
 
-لمطعمك.. لعيادتك.. لأي محل.
+لمطعمك.. لعيادتك.. لأي مشروع.
 
 والسعر؟ مو بالخاص.. هنا.
 

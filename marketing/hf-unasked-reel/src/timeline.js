@@ -1,4 +1,4 @@
-// The «محد طلبها منه» reel: one paused timeline, built after the fonts load, registered on window.__timelines.main.
+// The allawi.psd brand-ads reel: one paused timeline, built after the fonts load, registered on window.__timelines.main.
 // The look is the dollar reel's analog collage: paper pieces move on twos (12 poses a second) and nudge a pixel or two
 // 12 times a second, marker lines boil, the camera itself glides. Times in seconds. The music ("Arab Nights", from
 // 12.0 s of the track) drops at 4.0 and hits every 2 s after; T keeps every cue the voice may move.
@@ -37,21 +37,21 @@
     return d;
   };
   let pinN = 0;
-  const PIN = () => { const id = 'pg' + (pinN++); return `<svg viewBox="0 0 46 46"><defs><radialGradient id="${id}" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".42" stop-color="#c4161c"/><stop offset="1" stop-color="#5e0609"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#${id})"/><circle cx="21" cy="19" r="14" fill="none" stroke="#4a0507" stroke-opacity=".5" stroke-width="1"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`; };
+  const PIN = () => { const id = 'pg' + (pinN++); return `<svg viewBox="0 0 46 46"><defs><radialGradient id="${id}" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ffb48c"/><stop offset=".42" stop-color="#e2541b"/><stop offset="1" stop-color="#7a2a0b"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#${id})"/><circle cx="21" cy="19" r="14" fill="none" stroke="#4a0507" stroke-opacity=".5" stroke-width="1"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`; };
   const pin = (parent, x, y, id) => { const p = document.createElement('div'); p.className = 'pin'; p.id = id; p.style.left = x + 'px'; p.style.top = y + 'px'; p.innerHTML = PIN(); $(parent).appendChild(p); return p; };
 
   // S5: @allawi.psd as a ransom note, every character cut from a different magazine
   const RANS = [   // lowercase faces only, so l never reads as I
     ['@', "400 118px 'Anton'", '#f4efe4', '#151312', -5, 4],
-    ['a', "900 118px 'Playfair Display'", '#b3121a', '#efe6d4', 4, -6],
+    ['a', "900 118px 'Playfair Display'", '#e2541b', '#efe6d4', 4, -6],
     ['l', "700 116px 'Courier Prime'", '#1d1a17', '#f6f3ec', -3, 2],
-    ['l', "900 120px 'Playfair Display'", '#f6f1e6', '#1f3a8a', 6, 8],
+    ['l', "900 120px 'Playfair Display'", '#f6f1e6', '#c2441a', 6, 8],
     ['a', "700 112px 'Courier Prime'", '#1d1a17', '#e6d6a2', -6, -4],
-    ['w', "400 118px 'Abril Fatface'", '#1d1a17', 'url(assets/img/newsprint.jpg) 30% 40%/500px', 3, 6],
+    ['w', "400 118px 'Abril Fatface'", '#1d1a17', '#ece3d4', 3, 6],
     ['i', "900 122px 'Playfair Display'", '#f4efe4', '#151312', -4, -8],
     ['.', "400 118px 'Abril Fatface'", '#f4efe4', '#1d1a17', 7, 24],
-    ['p', "400 120px 'Abril Fatface'", '#f6f1e6', '#b3121a', -5, 4],
-    ['s', "900 118px 'Playfair Display'", '#1d1a17', 'url(assets/img/newsprint.jpg) 70% 20%/500px', 4, -4],
+    ['p', "400 120px 'Abril Fatface'", '#f6f1e6', '#e2541b', -5, 4],
+    ['s', "900 118px 'Playfair Display'", '#1d1a17', '#fbf3e6', 4, -4],
     ['d', "700 116px 'Courier Prime'", '#1d1a17', '#f6f3ec', -3, 6],
   ];
   const rans = $('#rans2');
@@ -168,7 +168,7 @@
     const bm = $('#blankMk'), bd = $('#blankDash');
     const dash = addPath(bd, 'M28 28 L412 28 L412 522 L28 522 Z'); dash.style.strokeDasharray = '0.035 0.025'; dash.style.strokeWidth = '7';
     tl.fromTo(dash, { opacity: 0 }, { opacity: 0.85, duration: 0.2, ease: SM('none', 0.2) }, T.q - 0.15);
-    draw(addPath(bm, 'M905 1290 C 930 1370, 880 1420, 806 1414 M840 1386 L802 1414 L846 1440'), T.arrow, 0.35);
+    draw(addPath(bm, 'M950 1372 C 968 1432, 906 1472, 816 1452 M850 1424 L812 1452 L856 1478'), T.arrow, 0.35);
     strip('#st3', T.st3[0]); words('#st3', T.st3);
 
     // ── S4: «السعر بالخاص 🤫» crossed out and ripped off; the real prices underneath
@@ -183,7 +183,7 @@
     gsap.set('#list', { opacity: 0, rotation: -2 }); slap('#list', T.list, { rotation: -2 }, { y: -50 });
     tl.fromTo('#pinL', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.12, ease: SM('power3.in', 0.12, 24) }, T.list + 0.17);
     ['#r1', '#r2', '#r3', '#r4'].forEach((s, k) => tl.fromTo(s, { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.3, ease: SM('none', 0.3, 15) }, T.rows[k]));
-    draw(addPath($('#listMk'), loopPath(560, 258, 190, 74)), T.circle, 0.45);
+    draw('#r1ul', T.circle, 0.4, 'power2.out');   // underline «٣ بوستات»
     strip('#st4a', T.st4a, T.st4b); strip('#st4b', T.st4b);
 
     // ── S5: the note, the handle cut out of magazines, a paper plane for the DM
