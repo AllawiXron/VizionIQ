@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>AMR aljanabi — spec posts</title>
+<link rel="stylesheet" href="fonts/fonts.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+
+  .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--cream); font-family: "Tajawal", sans-serif;
+    background: var(--bg); }
+  .post::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 50; opacity: .55; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  .glow { position: absolute; border-radius: 50%; filter: blur(110px); pointer-events: none; }
+
+  /* the wordmark, as on his bottles */
+  .logo { position: absolute; left: 0; right: 0; top: 46px; text-align: center; font-family: "Cormorant Garamond", serif; line-height: 1; z-index: 5; }
+  .logo .a { font-size: 74px; font-weight: 700; letter-spacing: .01em; }
+  .logo .b { font-size: 23px; font-weight: 500; letter-spacing: .52em; margin-top: 2px; padding-left: .52em; }
+  .rule { position: absolute; left: 50%; top: 158px; width: 300px; margin-left: -150px; height: 12px; z-index: 5; }
+
+  /* the arched window with his real bottle photo */
+  .arch { position: absolute; left: 70px; top: 196px; width: 500px; height: 800px; border-radius: 250px 250px 22px 22px; overflow: hidden; z-index: 4;
+    border: 2px solid var(--gold); box-shadow: 0 40px 90px rgba(0,0,0,.6), 0 0 120px var(--glow); }
+  .arch img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(1.04) contrast(1.04); }
+  .arch::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 62%, rgba(0,0,0,.35) 100%); }
+  .arch-line { position: absolute; left: 56px; top: 182px; width: 528px; height: 828px; border-radius: 264px 264px 30px 30px; border: 1px solid var(--gold-soft); z-index: 3; }
+
+  /* the copy column */
+  .col { position: absolute; right: 64px; left: 600px; top: 214px; direction: rtl; text-align: right; z-index: 5; }
+  .kicker { font-size: 21px; font-weight: 500; color: var(--gold); letter-spacing: .02em; }
+  .name { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 88px; line-height: .95; direction: ltr; text-align: right; margin-top: 18px; }
+  .name i { font-style: italic; font-weight: 500; color: var(--gold); }
+  .insp { font-size: 19px; font-weight: 400; color: var(--muted); margin-top: 14px; }
+  .insp span { direction: ltr; unicode-bidi: isolate; font-family: "Cormorant Garamond", serif; font-size: 22px; font-weight: 600; color: var(--cream); letter-spacing: .03em; }
+  .tag { font-family: "El Messiri", serif; font-size: 31px; font-weight: 500; line-height: 1.45; margin-top: 26px; }
+  .orn { display: block; width: 120px; height: 12px; margin: 30px 0 26px auto; }
+  .note + .note { margin-top: 22px; }
+  .note .l { font-size: 20px; font-weight: 700; color: var(--gold); letter-spacing: .02em; }
+  .note .v { font-size: 24px; font-weight: 400; line-height: 1.45; margin-top: 2px; }
+  .feat { display: flex; align-items: center; gap: 14px; font-size: 24px; font-weight: 500; line-height: 1.35; }
+  .feat + .feat { margin-top: 20px; }
+  .feat svg { flex: none; width: 34px; height: 34px; }
+
+  /* price and ordering band */
+  .band { position: absolute; left: 70px; right: 70px; top: 1040px; height: 232px; border: 1.5px solid var(--gold-soft); border-radius: 22px; z-index: 5;
+    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0)); display: flex; direction: rtl; }
+  .band .price { width: 46%; display: flex; flex-direction: column; justify-content: center; align-items: center; border-left: 1.5px solid var(--gold-soft); }
+  .band .price .row { display: flex; align-items: baseline; gap: 14px; direction: rtl; }
+  .band .price .n { font-family: "Cormorant Garamond", serif; font-weight: 700; font-size: 132px; line-height: .9; color: var(--gold); direction: ltr; }
+  .band .price .u { font-family: "El Messiri", serif; font-size: 36px; font-weight: 600; }
+  .band .price .s { font-size: 21px; color: var(--muted); margin-top: 10px; letter-spacing: .02em; }
+  .band .info { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 0 40px; }
+  .band .info .i { display: flex; align-items: center; gap: 14px; font-size: 24px; font-weight: 500; }
+  .band .info .i svg { flex: none; width: 30px; height: 30px; }
+  .band .info .i b { color: var(--gold); font-weight: 700; }
+  .cta { display: inline-flex; align-items: center; gap: 12px; align-self: flex-start; padding: 12px 26px; border-radius: 99px; background: var(--gold); color: var(--ink);
+    font-family: "El Messiri", serif; font-size: 25px; font-weight: 700; margin-top: 4px; }
+  .cta svg { width: 26px; height: 26px; }
+  .ico { fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  #amberful { --bg: radial-gradient(120% 85% at 30% 30%, #3b2311 0%, #1e1108 46%, #0c0603 100%);
+    --cream: #f6ead7; --gold: #d8a95c; --gold-soft: rgba(216,169,92,.45); --muted: rgba(246,234,215,.66); --glow: rgba(216,140,60,.30); --ink: #1d1008; }
+  #slazenger { --bg: radial-gradient(120% 85% at 30% 30%, #2b2721 0%, #131210 46%, #070707 100%);
+    --cream: #f4efe4; --gold: #dcb75e; --gold-soft: rgba(220,183,94,.45); --muted: rgba(244,239,228,.64); --glow: rgba(220,183,94,.22); --ink: #121110; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="rule" viewBox="0 0 300 12"><path d="M0 6 H128 M172 6 H300" stroke="currentColor" stroke-width="1.2"/><path d="M150 1 L157 6 L150 11 L143 6 Z M136 6 L140 3.5 L144 6 L140 8.5 Z M156 6 L160 3.5 L164 6 L160 8.5 Z" fill="currentColor"/></symbol>
+    <symbol id="orn" viewBox="0 0 120 12"><path d="M0 6 H48 M72 6 H120" stroke="currentColor" stroke-width="1.2"/><path d="M60 1 L66 6 L60 11 L54 6 Z" fill="currentColor"/></symbol>
+    <symbol id="truck" viewBox="0 0 24 24"><path d="M2 6.5 H14 V16 H2 Z M14 9.5 H18.5 L22 13 V16 H14 Z"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></symbol>
+    <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21 C 12 21 5 14.5 5 9.5 A 7 7 0 0 1 19 9.5 C 19 14.5 12 21 12 21 Z"/><circle cx="12" cy="9.5" r="2.4"/></symbol>
+    <symbol id="chat" viewBox="0 0 24 24"><path d="M3 5 H21 V16 H10 L5 20 V16 H3 Z"/></symbol>
+    <symbol id="drop" viewBox="0 0 24 24"><path d="M12 3 C 12 3 6 10 6 14 A 6 6 0 0 0 18 14 C 18 10 12 3 12 3 Z"/></symbol>
+    <symbol id="hour" viewBox="0 0 24 24"><path d="M6 3 H18 M6 21 H18 M7 3 C 7 8 12 10 12 12 C 12 14 7 16 7 21 M17 3 C 17 8 12 10 12 12 C 12 14 17 16 17 21"/></symbol>
+    <symbol id="bottle" viewBox="0 0 24 24"><path d="M9 3 H15 V6 H9 Z M7.5 8 H16.5 Q18 8 18 9.5 V19.5 Q18 21 16.5 21 H7.5 Q6 21 6 19.5 V9.5 Q6 8 7.5 8 Z M10 6 V8 M14 6 V8 M9 13 H15"/></symbol>
+  </defs>
+</svg>
+
+<template id="chrome">
+  <div class="logo"><div class="a">AMR</div><div class="b">aljanabi</div></div>
+  <svg class="rule" style="color:var(--gold)"><use href="#rule"/></svg>
+</template>
+
+<!-- 1 · Mancera Amberful: every fact from his own caption -->
+<section class="post" id="amberful">
+  <div class="glow" style="left:40px;top:300px;width:560px;height:620px;background:rgba(220,130,50,.22)"></div>
+  <div class="arch-line"></div>
+  <div class="arch"><img src="photos/mancera.jpg" alt="" style="object-position:50% 40%"/></div>
+  <div class="col">
+    <div class="kicker">عطر مطابق · فئة S</div>
+    <div class="name">Amber<i>ful</i></div>
+    <div class="insp">بأعلى تطابق لـ <span>Mancera Amberful</span></div>
+    <div class="tag">فخامة العنبر بلمسة حيوية<br/>وانتعاش يكسر الروتين</div>
+    <svg class="orn" style="color:var(--gold)"><use href="#orn"/></svg>
+    <div class="note"><div class="l">الافتتاحية</div><div class="v">يوزو · برغموت · فلفل وردي · جوزة الطيب</div></div>
+    <div class="note"><div class="l">القلب</div><div class="v">بنفسج · باتشولي · خشب العنبر</div></div>
+    <div class="note"><div class="l">القاعدة</div><div class="v">عنبر · خشب الأرز · طحلب السنديان</div></div>
+  </div>
+  <div class="band">
+    <div class="price">
+      <div class="row"><span class="n">20</span><span class="u">ألف</span></div>
+      <div class="s">عبوة 35ml · eau de parfum</div>
+    </div>
+    <div class="info">
+      <div class="i"><svg class="ico"><use href="#truck"/></svg><span>التوصيل لكل المحافظات <b>5,000</b></span></div>
+      <div class="i"><svg class="ico"><use href="#pin"/></svg><span>بغداد · كرادة داخل</span></div>
+      <div class="cta"><svg class="ico" style="stroke:var(--ink)"><use href="#chat"/></svg>اطلب بالدايركت</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · Slazenger Gold: only facts from his label and bio (price to be added) -->
+<section class="post" id="slazenger">
+  <div class="glow" style="left:40px;top:300px;width:560px;height:620px;background:rgba(220,183,94,.16)"></div>
+  <div class="arch-line"></div>
+  <div class="arch"><img src="photos/slazenger.jpg" alt="" style="object-position:50% 38%"/></div>
+  <div class="col">
+    <div class="kicker">عطر مطابق ومعتّق</div>
+    <div class="name">Slazenger<br/><i>Gold</i></div>
+    <div class="tag" style="margin-top:30px">سلازنجر ذهبي..<br/>بدائل نخبوية لأشهر<br/>الماركات العالمية</div>
+    <svg class="orn" style="color:var(--gold)"><use href="#orn"/></svg>
+    <div class="feat"><svg class="ico"><use href="#drop"/></svg><span>زيوت عطرية فرنسية وسويسرية</span></div>
+    <div class="feat"><svg class="ico"><use href="#hour"/></svg><span>معتّق يدوياً لضمان الجودة والثبات</span></div>
+    <div class="feat"><svg class="ico"><use href="#bottle"/></svg><span>عبوة 35ml · eau de parfum</span></div>
+  </div>
+  <div class="band">
+    <div class="price" id="slz-price">
+      <div class="row"><span class="u" style="font-size:40px">السعر</span></div>
+      <div class="s" style="font-size:24px;color:var(--cream)">بالدايركت</div>
+    </div>
+    <div class="info">
+      <div class="i"><svg class="ico"><use href="#truck"/></svg><span>التوصيل لكل المحافظات <b>5,000</b></span></div>
+      <div class="i"><svg class="ico"><use href="#pin"/></svg><span>بغداد · كرادة داخل</span></div>
+      <div class="cta"><svg class="ico" style="stroke:var(--ink)"><use href="#chat"/></svg>اطلب بالدايركت</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const tpl = document.getElementById('chrome');
+  document.querySelectorAll('.post').forEach((p) => p.prepend(tpl.content.cloneNode(true)));
+  Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode().catch(() => {}))])
+    .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
