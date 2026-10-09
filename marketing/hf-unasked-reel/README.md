@@ -3,7 +3,8 @@
 A 25 s reel at 1080×1920 that sells the user's design packages. It replaces the DM-order reel (`../hf-dm-order-reel`),
 which the user rejected as AI-looking and boring. Why this one is built the way it is: `BRIEF.md`.
 
-`renders/unasked-reel-draft.mp4` is the draft with music and sound effects. Noor's voice is next (`VOICE-SCRIPT.md`).
+`renders/unasked-reel-draft.mp4` is the draft with music and sound effects. The user on the draft (9 Oct): "thats a 10/10
+post!". Noor's voice is next (`VOICE-SCRIPT.md`); the picture is approved as it is.
 
 | Time | Scene | On screen | Noor (planned) |
 |---|---|---|---|
