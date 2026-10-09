@@ -42,7 +42,7 @@ tag, worn rubber stamp, Aref Ruqaa handwriting, Courier Prime typewriter), made 
 
 The user found the collage "too much for his style".
 
-## v3 (current): editorial (`editorial.html` → `out/editorial-*.jpg`, `node render.cjs editorial.html`)
+## v3: editorial (`editorial.html` → `out/editorial-*.jpg`, `node render.cjs editorial.html`)
 
 A magazine spread, the opposite of the AI template: flat paper (warm for Amberful, near-black for Slazenger Gold),
 one real photo bleeding off the page edge with an italic caption, the name huge in Cormorant Garamond (his logo's
@@ -50,3 +50,16 @@ serif) with an accent italic, a hairline-ruled column of copy (notes or bio fact
 and a hairline footer (delivery, Karrada, «للطلب: دايركت», @amr.aljanabi). No gradients, glows, icons, boxes or pills.
 Slazenger Gold adds a small second picture of his «No. 94» jar, «نفس العطر.. بالقنينة الكبيرة», and keeps
 «السعر بالدايركت» until the price is known (`#slz-price`).
+
+The user didn't like it either, and asked for research into how strong brands make their ads.
+
+## v4 (current): clean product ads, from research (`dtc.html` → `out/dtc-*.jpg`, `node render.cjs dtc.html`)
+
+What the research found (vendor and press write-ups, not performance data): "inspired-by" brands such as ALT. and
+Dossier keep a clean, minimal look with well-lit product shots and a clear layout, lead with value; fragrance ads sell
+a mood, and colour carries it (warm, deep tones for rich scents); real, phone-shot product images feel authentic; text
+overlays on product images help. So: one scent colour as a studio sweep (amber for Amberful, gold for Slazenger Gold),
+his real hand-held bottle cut out with `npx hyperframes remove-background` (u2net) and grounded with a soft shadow,
+the name in heavy Alexandria caps, a bold Arabic headline, the notes (or bio facts) as three ruled rows, the price as
+a huge numeral, and one delivery line. The Slazenger cut-out comes from his second shelf photo; a scrap of the box
+behind it was erased by hand (`cut/slazenger-clean.png`).
