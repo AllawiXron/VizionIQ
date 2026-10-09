@@ -16,25 +16,27 @@ def dur(f):
 
 sx = lambda n: f'assets/sfx/{n}.wav'
 kit = lambda n: f'assets/sfx-kit/{n}.wav'
+dr = lambda n: f'assets/sfx-drive/{n}.wav'   # the user's own pack (drive-sfx.sh)
 C = []  # (time, file, volume)
 # S1: five prints slam down, the tag, the fan, five stamps on the drop
 C += [(t, sx('slap'), v) for t, v in ((0.02, 0.5), (1.0, 0.55), (2.0, 0.55), (2.75, 0.5), (3.0, 0.55))]
-C += [(0.35, sx('tick'), 0.4), (3.25, sx('flutter'), 0.4), (3.3, kit('u_swish_soft'), 0.2)]
+C += [(0.0, dr('shutter'), 0.5), (0.35, sx('tick'), 0.4), (3.25, sx('flutter'), 0.4), (3.3, kit('u_swish_soft'), 0.2)]
+C += [(2.0, dr('riser'), 0.5)]   # builds into the drop; cut at its peak, on the first stamp
 C += [(t, sx('thunk'), v) for t, v in zip((4.0, 4.15, 4.3, 4.45, 4.6), (0.85, 0.7, 0.7, 0.7, 0.75))]
 C += [(4.0, sx('boom'), 0.35)]
 # S2: the cut, «ليش؟» written, the tilt, the layers lift apart, four labels, back together, out
-C += [(5.0, sx('swipe'), 0.4), (5.1, sx('marker'), 0.4), (5.45, sx('paper'), 0.35), (6.0, kit('u_swish_soft'), 0.3)]
-C += [(round(t, 2), sx('pop'), 0.4) for t in (6.3, 6.55, 6.8, 7.05)]
-C += [(8.0, kit('u_swish_soft'), 0.25), (8.3, sx('paper'), 0.3), (9.6, kit('u_whoosh_short'), 0.3)]
+C += [(4.7, dr('whoosh'), 0.45), (5.1, sx('marker'), 0.4), (5.45, sx('paper'), 0.35), (6.0, kit('u_swish_soft'), 0.3)]
+C += [(round(t, 2), dr('pop'), 0.45) for t in (6.3, 6.55, 6.8, 7.05)]
+C += [(8.0, kit('u_swish_soft'), 0.25), (8.3, sx('paper'), 0.3), (9.35, dr('whoosh-fly'), 0.5)]   # peaks as the ad leaves, over the cut
 # S3: three prints, tape, two tags, «محلك؟» written, the arrow
 C += [(t, sx('slap'), 0.5) for t in (10.0, 11.0, 12.0)] + [(t, sx('tick'), 0.35) for t in (10.2, 11.2, 12.2)]
-C += [(10.35, sx('pop'), 0.35), (11.35, sx('pop'), 0.35), (12.3, sx('scribble'), 0.35), (12.75, sx('marker'), 0.4)]
+C += [(10.35, dr('pop'), 0.4), (11.35, dr('pop'), 0.4), (12.3, sx('scribble'), 0.35), (12.75, sx('marker'), 0.4)]
 # S4: the sticky note, crossed out, ripped off; the price list pinned and written
-C += [(14.0, sx('slap'), 0.5), (14.17, sx('tick'), 0.4), (15.0, sx('marker'), 0.45), (15.14, sx('marker'), 0.45), (15.75, sx('rip'), 0.6)]
+C += [(13.7, dr('whoosh'), 0.4), (14.0, sx('slap'), 0.5), (14.17, sx('tick'), 0.4), (15.0, sx('marker'), 0.45), (15.14, sx('marker'), 0.45), (15.75, sx('rip'), 0.6)]
 C += [(16.0, sx('slap'), 0.55), (16.17, sx('tick'), 0.4)] + [(t, sx('scribble'), 0.22) for t in (16.2, 16.45, 16.7, 16.95)]
-C += [(17.3, sx('marker'), 0.45)]
+C += [(17.3, sx('marker'), 0.45), (17.4, dr('money'), 0.35)]   # the cash sound on «٣ بوستات · ٤٠ ألف»
 # S5: the note, the writing, the handle cut out of magazines, the paper plane
-C += [(20.0, sx('slap'), 0.55), (21.2, sx('scribble'), 0.35)] + [(round(22.0 + i * 0.07, 2), sx('tick'), 0.3) for i in range(11)]
+C += [(19.7, dr('whoosh'), 0.4), (20.0, sx('slap'), 0.55), (21.2, sx('scribble'), 0.35)] + [(round(22.0 + i * 0.07, 2), dr('click'), 0.45) for i in range(11)]
 C += [(22.9, sx('marker'), 0.4)]
 C.sort()
 

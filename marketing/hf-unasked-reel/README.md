@@ -22,6 +22,10 @@ Every line Noor says is also on screen, on torn paper strips, for people watchin
   is in its `T` table) and the sound cue list in `build.py`. Never edit `index.html` by hand.
 - `./music.sh` downloads the track and writes `assets/music/bed.wav` (not committed; see Credits).
 - `assets/sfx-kit/` (two whooshes from the HyperFrames kit) is not committed either; copy it from `../hf-dollar-reel`.
+- `./drive-sfx.sh` fetches seven sounds from the user's own sound pack on Google Drive into `assets/sfx-drive/` (not
+  committed): the riser into the drop (cut at its peak on the first stamp), the whooshes on the cuts, the camera shutter
+  on frame one, the cash sound as «٣ بوستات · ٤٠ ألف» is circled, the pops on the tags and the clicks on the handle's
+  cut-out letters.
 - `python sfx.py` (needs numpy) synthesizes `assets/sfx/rip.wav`, the sticky note tearing off.
 - `npx hyperframes@0.8.142 check`, then `render`. Set `HYPERFRAMES_BROWSER_PATH` to the headless shell on this machine.
 
@@ -31,4 +35,5 @@ Every line Noor says is also on screen, on torn paper strips, for people watchin
 - Photos inside the brand ads: Pepsi can by Ominae (CC BY-SA 3.0), the Baghdad aerial by U.S. DoD / CJCS (CC BY 2.0);
   credit both in the caption (`caption.txt` has it). The other photos are CC0 (see `../brand-ads-2026/README.md`).
 - The brand ads are unofficial concepts; none of the brands commissioned them. The logos are their trademarks.
-- Paper textures, the rubber stamp style, the ransom-note letters and most sound effects come from `../hf-dollar-reel`.
+- Paper textures, the rubber stamp style, the ransom-note letters and the paper sound effects come from `../hf-dollar-reel`;
+  the riser, whooshes, shutter, cash, pop and click sounds from the user's own pack (`drive-sfx.sh`).
