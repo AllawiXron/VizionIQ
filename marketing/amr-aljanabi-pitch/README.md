@@ -66,7 +66,7 @@ behind it was erased by hand (`cut/slazenger-clean.png`).
 
 The user found v4 "too simple".
 
-## v5 (current): rich product ads (`rich.html` → `out/rich-*.jpg`, `node render.cjs rich.html`)
+## v5: rich product ads (`rich.html` → `out/rich-*.jpg`, `node render.cjs rich.html`)
 
 v4's direction (his real bottle, one scent colour, clear Arabic copy) with the depth big perfume houses add:
 - The name huge behind the product (fitted to the page width in JS), with the bottle cap over the letters, so the
@@ -93,3 +93,36 @@ Ingredient photos (`ing/`), cut out with `npx hyperframes remove-background` or 
 
 These are spec posts for a pitch. If he publishes them, the CC BY-SA images need the same credit line, so they
 should be credited in the caption, or swapped for his own photos of the ingredients.
+
+The user: v5 "feels like i havent even tried", next to the brand-ads-2026 set (Asiacell, Qi Card, Pepsi and the others).
+
+## v6 (current): concept ads, 3D renders of his bottles (`v6/`)
+
+What made the brand ads work, and what v1–v5 lacked: one Iraqi idea per ad, said in dialect, with one hero visual.
+They were not spec sheets with notes, rows and bars. So each AMR ad now has an idea, and his real bottle is the hero,
+modelled and lit in Blender instead of a 500px reel screenshot.
+
+- `out/amberful.png` «شنو عطرك؟». The moment everyone who wears perfume wants: «أول ما تمرّ.. يسألوك: شنو عطرك؟». Chat
+  bubbles from the people who ask («منين جايبه؟», «يا عطر هذا؟!», «ريحتك تخبّل..»; a dramatisation, not reviews). The
+  punchline carries the price: «گلهم مانسيرا.. بس لا تگلهم بـ 20 ألف». His Mancera flask stands on an amber studio
+  sweep: a thick glass shell, amber juice filled to the shoulders, a glass collar, a rose-bronze sleeve and square cap,
+  a dip tube, and his label.
+- `out/slazenger.png` «عطرك ذهب.. بلا مصنعية.». In an Iraqi gold shop you pay the gram price plus the «مصنعية»
+  (making charge). With a dupe, you pay for the scent, not the name: «تدفع عالريحة.. مو عالاسم.» His Slazenger Gold
+  bottle is a rounded-square glass block with a sunburst base, a knurled gold collar and a black cap with a gold rim.
+  It stands on a black velvet jeweller's riser among out-of-focus shop lights, with the white gold-shop tag on a red
+  thread: «العيار 35ml / المصنعية 0». The price is still unknown, so the CTA is «اسأل عن السعر بالدايركت».
+
+Facts used: Amberful's price, size and match line from his caption; «معتّق يدوياً» and «زيوت فرنسية وسويسرية» from
+his bio; the labels as printed on his bottles. `v6/captions.txt` has the post captions (notes, delivery 5,000 to every
+province, Karrada Dakhil, DM).
+
+Build:
+- `v6/tex/labels.html` draws his two labels and the tag; `node v6/tex/render-tex.cjs` writes `v6/tex/*.png`.
+- `v6/scene.py` (Blender 4.2, Cycles): `blender -b -P v6/scene.py -- <amber|gold> v6/render/<amber|gold>.png [scale%] [samples]`.
+  Final renders: 1620×2025 at 160 samples, denoised. Details that matter:
+  - The labels' backs are transparent and invisible to reflections.
+  - The gold scene's square key light is hidden from reflections, so it can't leave pale panels inside the glass.
+  - The bokeh lamps sit 60–80 units back, behind a lens at f/0.4.
+- `v6/ads.html` sets the type over the renders: Alexandria, Readex Pro, and Cormorant for his wordmark. Run
+  `node v6/render.cjs` to write `v6/out/*.png`; add `--test` to use the quick test renders instead.

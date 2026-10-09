@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>AMR aljanabi — concept ads</title>
+<link rel="stylesheet" href="fonts/fonts.css" />
+<!-- Two concept ads for AMR aljanabi in the brand-ads-2026 manner: one Iraqi idea each, one hero (his own bottle,
+     modelled and lit in Blender from his reel photos: scene.py), a dialect headline, a pill CTA and the wordmark. -->
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0 }
+body { background: #111; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px }
+.ad { position: relative; width: 1080px; height: 1350px; overflow: hidden; direction: rtl; font-family: 'Readex Pro'; color: #fff }
+.ad > .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0 }
+.ad::after { content: ""; position: absolute; inset: 0; z-index: 40; pointer-events: none; opacity: .14; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.8'/></svg>") }
+.shade { position: absolute; inset: 0; z-index: 1; pointer-events: none }
+
+.lead { position: absolute; right: 64px; top: 92px; z-index: 10; font-weight: 600; font-size: 46px; line-height: 1.2 }
+.hl { position: absolute; right: 56px; top: 150px; z-index: 10; font-family: 'Alexandria'; font-weight: 900; line-height: 1.12; white-space: nowrap }
+.sub { position: absolute; right: 64px; z-index: 10; font-weight: 400; font-size: 27px; line-height: 1.45 }
+.sub b { font-weight: 600 }
+.sub .en { direction: ltr; unicode-bidi: isolate }
+
+.punch { position: absolute; right: 64px; z-index: 10; font-family: 'Alexandria'; font-weight: 800; line-height: 1.2 }
+
+.foot { position: absolute; left: 64px; right: 64px; bottom: 40px; z-index: 10; display: flex; justify-content: space-between; align-items: center }
+.cta { order: 2; display: inline-flex; align-items: center; gap: 12px; font-weight: 600; font-size: 27px; padding: 14px 30px 16px; border-radius: 50px }
+.logo { order: 1; direction: ltr; text-align: center; font-family: 'Cormorant Garamond', serif; line-height: 1 }
+.logo .a { font-size: 50px; font-weight: 600; letter-spacing: .01em }
+.logo .b { font-size: 17px; font-weight: 500; letter-spacing: .5em; margin-right: -.5em; margin-top: 2px }
+
+/* ---------- 1 · Amberful: «شنو عطرك؟» ---------- */
+#amberful .shade { background: linear-gradient(180deg, rgba(70,22,0,.30) 0%, rgba(70,22,0,0) 34%), linear-gradient(0deg, rgba(60,18,0,.42) 0%, rgba(60,18,0,0) 24%) }
+#amberful .lead { color: #ffe3c6 }
+#amberful .hl { font-size: 182px; color: #fff; text-shadow: 0 20px 60px rgba(90,28,0,.35) }
+#amberful .sub { top: 372px; color: #ffe9d4 }
+#amberful .punch { bottom: 126px; font-size: 56px; color: #fff }
+#amberful .punch .p { display: inline-block; background: #fff; color: #8a3410; padding: 0 18px 6px; border-radius: 16px; margin: 0 4px; transform: rotate(-2deg) }
+#amberful .cta { background: #2a0e02; color: #ffe3c6 }
+#amberful .logo { color: #ffe9d4 }
+
+.bub { position: absolute; z-index: 9; background: #fff; color: #1b1b1d; font-weight: 600; font-size: 33px; line-height: 1.2; padding: 16px 28px 19px; border-radius: 34px;
+  box-shadow: 0 22px 44px rgba(70,20,0,.28), 0 4px 10px rgba(70,20,0,.15) }
+.bub::after { content: ""; position: absolute; bottom: -10px; width: 30px; height: 30px; background: #fff; border-radius: 0 0 0 26px; clip-path: polygon(0 0, 100% 0, 100% 100%) }
+.bub.l::after { right: 18px; transform: scaleX(-1) }
+.bub.r::after { left: 18px }
+.bub small { display: block; font-size: 19px; font-weight: 500; color: #8a8a90; margin-bottom: 4px }
+
+/* ---------- 2 · Slazenger Gold: «ذهب.. بلا مصنعية» ---------- */
+#slazenger .shade { background: linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 26%) }
+#slazenger .lead { color: #e9cf8f }
+#slazenger .hl { font-size: 178px }
+#slazenger .hl .g { display: inline-block; padding: .16em .12em .34em; margin: -.16em -.12em -.34em;
+  background: linear-gradient(180deg, #fff3c9 0%, #f0cf72 42%, #c8922c 70%, #f3d58a 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 18px 40px rgba(0,0,0,.6)) }
+#slazenger .sub { top: 372px; color: #e8dcc0 }
+#slazenger .punch { bottom: 132px; font-size: 54px; color: #fff3d6 }
+#slazenger .punch s { text-decoration: none; position: relative; color: #a99a7a }
+#slazenger .punch s::after { content: ""; position: absolute; left: -6px; right: -6px; top: 54%; height: 7px; background: #c8263a; border-radius: 4px; transform: rotate(-4deg) }
+#slazenger .cta { background: linear-gradient(180deg, #f6dc8f, #d9a540); color: #1a1205 }
+#slazenger .logo { color: #f1e2bb }
+</style>
+</head>
+<body>
+
+<section class="ad" id="amberful">
+  <img class="bg" data-src="render/amber.png" alt="" />
+  <div class="shade"></div>
+  <div class="lead">أول ما تمرّ.. يسألوك:</div>
+  <div class="hl">شنو عطرك؟</div>
+  <div class="sub"><b>Amberful</b> من AMR.. بأعلى تطابق لـ <span class="en">Mancera Amberful</span></div>
+
+  <div class="bub l" style="left:70px;top:548px;transform:rotate(-3deg)"><small>زميلك بالدوام</small>منين جايبه؟</div>
+  <div class="bub r" style="right:64px;top:668px;transform:rotate(2.5deg)"><small>ابن خالتك</small>يا عطر هذا؟!</div>
+  <div class="bub l" style="left:104px;top:860px;transform:rotate(2deg)"><small>واحد بالمصعد</small>ريحتك تخبّل..</div>
+
+  <div class="punch">گلهم مانسيرا..<br/>بس لا تگلهم بـ<span class="p">20 ألف</span></div>
+  <div class="foot"><span class="cta">اطلبه بالدايركت <span>←</span></span><span class="logo"><div class="a">AMR</div><div class="b">aljanabi</div></span></div>
+</section>
+
+<section class="ad" id="slazenger">
+  <img class="bg" data-src="render/gold.png" alt="" />
+  <div class="shade"></div>
+  <div class="lead">عطرك ذهب..</div>
+  <div class="hl"><span class="g">بلا مصنعية.</span></div>
+  <div class="sub"><b>Slazenger Gold</b> من AMR.. معتّق يدوياً، بزيوت فرنسية وسويسرية</div>
+
+  <div class="punch">تدفع عالريحة.. مو عالاسم.</div>
+  <div class="foot"><span class="cta">اسأل عن السعر بالدايركت <span>←</span></span><span class="logo"><div class="a">AMR</div><div class="b">aljanabi</div></span></div>
+</section>
+
+<script>
+  // ?test shows the quick test renders while the full ones are cooking
+  const test = location.search.includes('test');
+  document.querySelectorAll('img[data-src]').forEach((im) => { im.src = test ? im.dataset.src.replace('render/', 'render/test-') : im.dataset.src; });
+  // headlines fit the width (952px) at most at their set size
+  document.fonts.ready.then(() => document.querySelectorAll('.hl').forEach((h) => {
+    const fs = parseFloat(getComputedStyle(h).fontSize), w = h.getBoundingClientRect().width;
+    if (w > 952) h.style.fontSize = (fs * 952 / w) + 'px';
+  }));
+  Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode().catch(() => {}))])
+    .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

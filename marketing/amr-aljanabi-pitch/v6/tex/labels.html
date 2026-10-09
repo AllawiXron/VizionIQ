@@ -1,0 +1,56 @@
+<!doctype html>
+<html><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../fonts/fonts.css" />
+<!-- Textures for the Blender bottles, copied from his real labels (photos/mancera.jpg, photos/slazenger-b.jpg),
+     plus the gold-shop price tag for the Slazenger Gold ad. -->
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0 }
+body { background: #888; padding: 20px; display: flex; flex-direction: column; gap: 20px; align-items: flex-start }
+.lab { position: relative; background: #fbfaf7; color: #161616; text-align: center; overflow: hidden }
+.lab .amr { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1; letter-spacing: .01em }
+.lab .alj { font-family: 'Cormorant Garamond', serif; font-weight: 500; color: #3a3a3a; line-height: 1 }
+.lab .nm { font-family: 'Readex Pro'; font-weight: 600; line-height: 1 }
+.lab .sm { font-family: 'Readex Pro'; font-weight: 400; line-height: 1.25; color: #222 }
+
+/* wraps ~97° of the round bottle, so it is wider than it looks */
+#mancera { width: 1700px; height: 1600px }
+#mancera .amr { font-size: 380px; margin-top: 250px }
+#mancera .alj { font-size: 118px; letter-spacing: .3em; margin-top: -6px; margin-right: -.3em }
+#mancera .nm { font-size: 128px; color: #9b4517; margin-top: 120px }
+#mancera .sm { font-size: 50px; position: absolute; left: 0; right: 0; bottom: 70px }
+
+#slz { width: 1100px; height: 1200px }
+#slz .amr { font-size: 300px; margin-top: 170px }
+#slz .alj { font-size: 96px; letter-spacing: .3em; margin-top: -4px; margin-right: -.3em }
+#slz .nm { font-size: 100px; color: #d9a21b; margin-top: 100px }
+#slz .sm { font-size: 42px; position: absolute; left: 0; right: 0; bottom: 64px }
+
+/* the white card every gold shop in Baghdad ties to a piece */
+#tag { width: 640px; height: 1000px; background: #fdfcf8; border-radius: 40px; position: relative; direction: rtl; text-align: center; color: #10204a; font-family: 'Readex Pro' }
+#tag { -webkit-mask: radial-gradient(circle at 50% 116px, transparent 46px, #000 47px); mask: radial-gradient(circle at 50% 116px, transparent 46px, #000 47px) }
+#tag .hole { position: absolute; left: 50%; top: 54px; width: 124px; height: 124px; margin-left: -62px; border-radius: 50%; border: 16px solid #d6c48a }
+#tag .k { font-size: 88px; font-weight: 600; color: #3d4868; line-height: 1.1 }
+#tag .v { font-family: 'Alexandria'; font-weight: 900; font-size: 190px; line-height: 1; direction: ltr }
+#tag .v small { font-size: 110px }
+#tag .rule { height: 6px; background: #10204a; opacity: .15; margin: 36px 60px }
+#tag .top { padding-top: 210px }
+</style></head>
+<body>
+<div class="lab" id="mancera">
+  <div class="amr">AMR</div><div class="alj">aljanabi</div>
+  <div class="nm">Mancera</div>
+  <div class="sm">eau de parfum<br/>35ml e 1.2 FL.OZ</div>
+</div>
+<div class="lab" id="slz">
+  <div class="amr">AMR</div><div class="alj">aljanabi</div>
+  <div class="nm">Slazenger Gold</div>
+  <div class="sm">eau de parfum<br/>35ml e 1.2 FL.OZ</div>
+</div>
+<div id="tag">
+  <div class="hole"></div>
+  <div class="top"><div class="k">العيار</div><div class="v">35<small>ml</small></div></div>
+  <div class="rule"></div>
+  <div class="k">المصنعية</div><div class="v">0</div>
+</div>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = '1' })</script>
+</body></html>
