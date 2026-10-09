@@ -29,7 +29,7 @@ own accent: amber for Amberful, black and gold for Slazenger Gold.
 The photos are the user's screenshots of his reels (about 500px wide, `photos/src/`), cropped, enlarged 2× with
 lanczos and lightly sharpened. Originals from him would make the real posts sharper.
 
-## v2 (current): apothecary collage (`collage.html` → `out/collage-*.jpg`, `node render.cjs collage.html`)
+## v2: apothecary collage (`collage.html` → `out/collage-*.jpg`, `node render.cjs collage.html`)
 
 The user's own handmade style (kit copied from `../ig-highlights`: paper, dark desk, grain, ruled card, tape, kraft
 tag, worn rubber stamp, Aref Ruqaa handwriting, Courier Prime typewriter), made to fit his story («معتقة يدوياً»):
@@ -39,3 +39,14 @@ tag, worn rubber stamp, Aref Ruqaa handwriting, Courier Prime typewriter), made 
 - Slazenger Gold on the dark desk: the big «94» jar print and the 35 ml bottle print joined by a drawn arrow and the
   note «نفس العطر.. بعبوة 35ml» (both labels read Slazenger Gold), the typed label, «ليش AMR؟» with the three bio
   lines, and a tag «35 ml / السعر بالدايركت» until the price is known.
+
+The user found the collage "too much for his style".
+
+## v3 (current): editorial (`editorial.html` → `out/editorial-*.jpg`, `node render.cjs editorial.html`)
+
+A magazine spread, the opposite of the AI template: flat paper (warm for Amberful, near-black for Slazenger Gold),
+one real photo bleeding off the page edge with an italic caption, the name huge in Cormorant Garamond (his logo's
+serif) with an accent italic, a hairline-ruled column of copy (notes or bio facts), the price as a big serif numeral,
+and a hairline footer (delivery, Karrada, «للطلب: دايركت», @amr.aljanabi). No gradients, glows, icons, boxes or pills.
+Slazenger Gold adds a small second picture of his «No. 94» jar, «نفس العطر.. بالقنينة الكبيرة», and keeps
+«السعر بالدايركت» until the price is known (`#slz-price`).
