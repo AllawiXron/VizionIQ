@@ -3,8 +3,11 @@
 A 25 s reel at 1080×1920 that sells the user's design packages. It replaces the DM-order reel (`../hf-dm-order-reel`),
 which the user rejected as AI-looking and boring. Why this one is built the way it is: `BRIEF.md`.
 
-`renders/unasked-reel-draft.mp4` is the draft with music and sound effects. The user on the draft (9 Oct): "thats a 10/10
-post!". Noor's voice is next (`VOICE-SCRIPT.md`); the picture is approved as it is.
+`renders/unasked-reel.mp4` is the posted version (H.264 CRF 18, 30 fps, AAC 192k, 25 s), with music and sound effects
+and no voice; `renders/unasked-reel-cover.jpg` is its cover (the frame at 4.9 s: all five ads stamped). The user on the
+draft (9 Oct): "thats a 10/10 post!", then chose to post it without Noor's voice. It is scheduled through Metricool for
+Friday 9 Oct 2026, 20:50 Baghdad time, with `caption.txt`. A voiced version can still be made later from
+`NOOR-AI-STUDIO.md` (for a repost or an ad).
 
 | Time | Scene | On screen | Noor (planned) |
 |---|---|---|---|
