@@ -34,4 +34,9 @@ Highlights can only be made from stories that were posted, so each story is post
 in the app: profile → New (+) → pick the stories → name → Edit cover → choose the cover image from the camera roll.
 `cta` goes into both «أعمالي» and «براندات». Remove the old «الأسعار» highlight.
 
+What went up (9 Oct, Metricool, Instagram stories): a first version in the reel's red/green/dark colours posted at
+12:00–12:09 (p1–p4, b0–b5), before the user's "use my brand colors" reached the session; it can't be removed through
+Metricool, so the user deletes those 10 in the app. The brand-colour set went up at 13:40–13:57 in this order:
+p1–p4 (13:40–43), b0–b5 (13:44–49), w1–w7 (13:50–56), cta (13:57).
+
 All designs shown are the user's concept work; the brand ads are unofficial and labelled so on every story.
