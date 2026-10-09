@@ -8,13 +8,9 @@
   :root {
     --mint: #d9efe6;
     --cyan: #62c6e9;
-    --cyan2: #19d2ff;
     --pill: #1769f5;
-    --green: #5ef0b4;
-    --red: #ff7a86;
     --white: #ffffff;
-    --soft: rgba(255, 255, 255, 0.8);
-    --dim: rgba(255, 255, 255, 0.55);
+    --soft: rgba(255, 255, 255, 0.82);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #000; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; font-family: "Readex Pro", sans-serif; }
@@ -23,101 +19,56 @@
     position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--white);
     background: radial-gradient(120% 85% at 100% 0%, #0c43a6 0%, #072a74 30%, #04184a 58%, #020d2e 100%);
   }
-  .slide::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  .slide::before { content: ""; position: absolute; inset: 0; pointer-events: none;
     background: repeating-linear-gradient(90deg, rgba(255,255,255,0.026) 0 2px, transparent 2px 10px); }
-  /* fine grain, so the big gradients don't band */
-  .slide::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 50; opacity: .5; mix-blend-mode: overlay;
+  .slide::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 50; opacity: .45; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
-  .slide > * { z-index: 5; }
-  .lineart { position: absolute; inset: 0; pointer-events: none; z-index: 2 !important; }
-  .glow { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 2 !important; }
+  .lineart { position: absolute; inset: 0; pointer-events: none; }
+  .glow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
 
   /* brand chrome */
-  .logo { position: absolute; left: 96px; top: 70px; width: 56px; z-index: 40 !important; }
-  .corner { position: absolute; z-index: 40 !important; width: 38px; height: 38px; border-radius: 6px; background: var(--mint); display: grid; place-items: center; }
+  .logo { position: absolute; left: 96px; top: 70px; width: 56px; z-index: 10; }
+  .corner { position: absolute; z-index: 10; width: 38px; height: 38px; border-radius: 6px; background: var(--mint); display: grid; place-items: center; }
   .corner.top { right: 108px; top: 78px; }
   .corner.bottom { right: 108px; bottom: 89px; }
-  .footer { position: absolute; left: 97px; bottom: 82px; display: flex; direction: ltr; z-index: 40 !important; text-shadow: 0 1px 8px rgba(2,12,40,0.6); }
+  .footer { position: absolute; left: 97px; bottom: 82px; display: flex; direction: ltr; z-index: 10; text-shadow: 0 1px 8px rgba(2,12,40,0.6); }
   .footer div { display: flex; flex-direction: column; gap: 6px; }
   .footer .lbl { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 17px; color: #d4e2ee; }
   .footer .val { font-weight: 300; font-size: 16px; color: #b9c9da; }
   .footer .val.mono { font-family: "IBM Plex Mono", monospace; font-weight: 400; letter-spacing: 0.04em; }
   .footer .c1 { width: 145px; } .footer .c2 { width: 252px; }
-  .pager { position: absolute; left: 0; right: 0; bottom: 40px; display: flex; justify-content: center; gap: 10px; z-index: 40 !important; }
-  .pager i { width: 8px; height: 8px; border-radius: 9px; background: rgba(255,255,255,.28); }
-  .pager i.on { width: 26px; background: var(--cyan); box-shadow: 0 0 12px rgba(98,198,233,.8); }
+  .page { position: absolute; left: 0; right: 0; bottom: 34px; text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 20px; color: rgba(255,255,255,.55); letter-spacing: .08em; z-index: 10; }
 
   /* type */
-  .rtl { direction: rtl; text-align: right; }
-  .kicker { position: absolute; right: 96px; direction: rtl; display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px 10px 22px; border-radius: 99px;
-    background: rgba(98,198,233,0.10); border: 1.5px solid rgba(98,198,233,0.42); font-size: 24px; font-weight: 500; color: var(--cyan); }
-  .kicker::before { content: ""; width: 10px; height: 10px; border-radius: 99px; background: var(--green); box-shadow: 0 0 0 5px rgba(94,240,180,.18), 0 0 16px var(--green); }
+  .center { position: absolute; left: 60px; right: 60px; text-align: center; direction: rtl; }
   .grad { background: linear-gradient(100deg, #e9fff7 0%, #9df0ff 38%, #4fc3ef 70%, #2f8cf0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .1em; }
-  .gradg { background: linear-gradient(100deg, #f2fff9 0%, #a8ffd9 45%, #46e6a8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .14em; }
-  .num { font-family: "Readex Pro"; direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .num { direction: ltr; unicode-bidi: isolate; display: inline-block; }
   .cyan { color: var(--cyan); }
-  .soft { color: var(--soft); }
 
-  /* glass cards */
-  .glass { position: absolute; border-radius: 30px; background: linear-gradient(160deg, rgba(120,160,230,0.20), rgba(60,90,170,0.08) 60%, rgba(40,70,150,0.12));
-    border: 1.5px solid rgba(255,255,255,0.13); box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 30px 60px rgba(0,0,20,0.35); }
-  .glass.hot { border-color: rgba(98,198,233,0.65); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 0 6px rgba(98,198,233,0.08), 0 0 60px rgba(47,140,240,0.35), 0 30px 60px rgba(0,0,20,0.4); }
+  /* the real chat, as in the original posts: black panel, white rounded border */
+  .shot { position: absolute; background: #000; border: 3px solid rgba(255,255,255,.92); border-radius: 34px; overflow: hidden;
+    box-shadow: 0 50px 100px rgba(0,0,10,0.6), 0 0 120px rgba(47,140,255,0.35); z-index: 5; }
+  .shot img { display: block; width: 100%; }
 
-  /* phone mockup with the real chat screenshot */
-  .phone { position: absolute; padding: 12px; border-radius: 58px; background: linear-gradient(150deg, #3a4767 0%, #121a30 40%, #05070d 100%);
-    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.14), 0 60px 110px rgba(0,0,0,0.6), 0 0 140px rgba(47,107,255,0.40); }
-  .phone .screen { position: relative; border-radius: 46px; overflow: hidden; background: #000; height: 100%; }
-  .phone .screen::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0) 30%); pointer-events: none; }
-  .phone .island { position: absolute; left: 50%; top: 14px; width: 104px; height: 30px; margin-left: -52px; border-radius: 20px; background: #000; z-index: 3; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
-  .dmbar { position: absolute; left: 0; right: 0; top: 52px; height: 74px; display: flex; align-items: center; gap: 12px; padding: 0 18px; direction: ltr; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .dmbar .back { font-size: 34px; color: #fff; font-weight: 300; margin-top: -4px; }
-  .dmbar .av { width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 50% 38%, #8c99b5 0 22%, transparent 23%), radial-gradient(circle at 50% 100%, #8c99b5 0 42%, transparent 43%), #3b4459; }
-  .dmbar b { display: block; font-size: 17px; font-weight: 600; direction: rtl; }
-  .dmbar small { display: block; font-size: 13px; color: rgba(255,255,255,.5); direction: rtl; }
+  /* selection box with handles + pixel cursor (the viZion pointer) */
+  .select { position: absolute; border: 2.5px solid #fff; z-index: 6; box-shadow: 0 0 0 1px rgba(0,0,0,.25), 0 0 40px rgba(98,198,233,.35); }
+  .select .h { position: absolute; width: 16px; height: 16px; background: #0b2a6e; border: 2.5px solid #fff; }
+  .select .tl { left: -9px; top: -9px; } .select .tr { right: -9px; top: -9px; }
+  .select .bl { left: -9px; bottom: -9px; } .select .br { right: -9px; bottom: -9px; }
+  .select .ml { left: -9px; top: calc(50% - 8px); } .select .mr { right: -9px; top: calc(50% - 8px); }
+  .cursor { position: absolute; width: 76px; z-index: 7; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.45)); }
 
-  /* a zoomed-in piece of the real chat, pulled out of the phone */
-  .zoom { position: absolute; background: #000; border-radius: 34px; padding: 14px; border: 2px solid rgba(98,198,233,0.75);
-    box-shadow: 0 0 0 8px rgba(98,198,233,0.10), 0 0 70px rgba(47,160,255,0.45), 0 50px 90px rgba(0,0,0,0.65); }
-  .zoom img { display: block; width: 100%; border-radius: 22px; }
-  .tag { position: absolute; direction: rtl; display: inline-flex; align-items: center; gap: 10px; padding: 9px 18px; border-radius: 14px; font-size: 20px; font-weight: 500;
-    background: #0b1f57; border: 1.5px solid rgba(98,198,233,0.5); color: #dff6ff; box-shadow: 0 12px 30px rgba(0,0,0,0.4); white-space: nowrap; }
-  .marker path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  /* offer pill */
+  .price { position: absolute; left: 130px; right: 130px; height: 176px; border-radius: 88px; direction: rtl; z-index: 5;
+    border: 3px solid rgba(255,255,255,.9); background: linear-gradient(180deg, rgba(23,105,245,.22), rgba(10,40,120,.25));
+    box-shadow: 0 0 0 10px rgba(98,198,233,.08), 0 0 90px rgba(47,140,255,.35); display: flex; align-items: center; justify-content: center; gap: 34px; }
 
-  .note { position: absolute; font-size: 17px; font-weight: 300; color: rgba(255,255,255,.42); direction: rtl; }
-
-  /* slide 4 rows */
-  .row { position: absolute; right: 96px; left: 96px; height: 138px; display: flex; align-items: center; gap: 26px; direction: rtl; padding: 0 28px; }
-  .row .ic { flex: none; width: 82px; height: 82px; border-radius: 24px; display: grid; place-items: center;
-    background: linear-gradient(160deg, rgba(98,198,233,0.28), rgba(23,105,245,0.18)); border: 1.5px solid rgba(98,198,233,0.5); box-shadow: 0 0 30px rgba(47,140,240,0.3); }
-  .row .ic svg { width: 44px; height: 44px; fill: none; stroke: #bff0ff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-  .row .t { font-size: 35px; font-weight: 600; line-height: 1.25; }
-  .row .d { font-size: 25px; font-weight: 300; color: var(--soft); margin-top: 6px; line-height: 1.35; }
-  .row .n { position: absolute; left: 30px; top: 50%; transform: translateY(-50%); font-family: "IBM Plex Mono", monospace; font-size: 22px; color: rgba(98,198,233,.55); letter-spacing: .05em; }
-
-  /* slide 2 before/after */
-  .ba { position: absolute; top: 262px; height: 372px; width: 432px; border-radius: 32px; direction: rtl; padding: 30px 34px 0; }
-  .ba .lb { display: inline-block; font-size: 22px; font-weight: 500; padding: 7px 16px; border-radius: 12px; }
-  .ba .big { font-size: 58px; font-weight: 700; margin-top: 22px; line-height: 1.1; white-space: nowrap; }
-  .ba .sm { font-size: 27px; font-weight: 400; margin-top: 12px; }
-  .ba svg.trend { position: absolute; left: 30px; right: 30px; bottom: 22px; width: calc(100% - 60px); height: 92px; }
-  .step { position: absolute; right: 96px; left: 96px; direction: rtl; display: flex; gap: 28px; align-items: flex-start; }
-  .step .k { flex: none; width: 96px; height: 96px; border-radius: 28px; display: grid; place-items: center; font-family: "IBM Plex Mono", monospace; font-size: 34px; font-weight: 500; color: #071a45;
-    background: linear-gradient(180deg, #8fe3f5 0%, #57c2e6 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,.6), 0 14px 34px rgba(30,140,210,.45); }
-  .step .t { font-size: 44px; font-weight: 600; line-height: 1.2; margin-top: 4px; }
-  .step .q { font-size: 26px; font-weight: 300; color: var(--soft); margin-top: 12px; line-height: 1.5; }
-  .step .q b { font-weight: 500; color: #dff6ff; }
-
-  /* slide 5 offer */
-  .cta { position: absolute; left: 150px; right: 150px; height: 96px; border-radius: 30px; direction: rtl;
-    background: linear-gradient(180deg, #8fe3f5 0%, #57c2e6 100%); border: 2px solid rgba(255,255,255,0.55);
-    box-shadow: inset 0 2px 0 rgba(255,255,255,0.6), 0 0 0 10px rgba(98,198,233,0.12), 0 24px 50px rgba(20,120,200,0.45);
-    color: #071a45; font-size: 38px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 16px; }
-  .sticker { position: absolute; width: 168px; height: 168px; border-radius: 50%; display: grid; place-items: center; text-align: center; direction: rtl;
-    background: radial-gradient(circle at 35% 30%, #ffffff, #d9efe6 55%, #a9e4d2); color: #071a45; font-weight: 700; line-height: 1.05;
-    box-shadow: 0 0 0 6px rgba(217,239,230,.18), 0 18px 40px rgba(0,0,0,.45), inset 0 -6px 0 rgba(0,0,0,.08); }
-  .proof { position: absolute; direction: rtl; display: inline-flex; align-items: center; gap: 14px; padding: 14px 22px; border-radius: 20px; font-size: 24px; font-weight: 500;
-    background: rgba(8,20,60,0.75); border: 1.5px solid rgba(255,255,255,0.12); }
-  .proof b { font-weight: 700; color: var(--cyan); }
+  /* list */
+  .li { position: absolute; right: 110px; left: 110px; direction: rtl; display: flex; gap: 26px; align-items: flex-start; }
+  .li .n { flex: none; width: 58px; height: 58px; border-radius: 50%; border: 2.5px solid var(--cyan); display: grid; place-items: center;
+    font-family: "IBM Plex Mono", monospace; font-size: 26px; font-weight: 500; color: var(--cyan); margin-top: 2px; }
+  .li .t { font-size: 36px; font-weight: 500; line-height: 1.3; }
+  .li .d { font-size: 26px; font-weight: 300; color: var(--soft); line-height: 1.4; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -132,15 +83,6 @@
     </symbol>
     <symbol id="arrow-ur" viewBox="0 0 24 24"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="#0b1d58" stroke-width="3" stroke-linecap="square" /></symbol>
     <symbol id="arrow-dr" viewBox="0 0 24 24"><path d="M7 7 L17 17 M17 9 V17 H9" fill="none" stroke="#0b1d58" stroke-width="3" stroke-linecap="square" /></symbol>
-    <linearGradient id="tube" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0" stop-color="#1f6fd6" />
-      <stop offset="0.5" stop-color="#4fcbed" />
-      <stop offset="1" stop-color="#bff6ff" />
-    </linearGradient>
-    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#3fb6f0" stop-opacity=".34" />
-      <stop offset="1" stop-color="#3fb6f0" stop-opacity="0" />
-    </linearGradient>
   </defs>
 </svg>
 
@@ -164,192 +106,68 @@
   </div>
 </template>
 
-<!-- ───────────── 1 · Hook: $70 → 1,475,000 ───────────── -->
+<!-- 1 · the result, the chat, a pointer. Nothing else. -->
 <section class="slide" id="s1">
-  <div class="glow" style="left:-160px;top:620px;width:620px;height:620px;background:rgba(40,120,255,.35)"></div>
-  <div class="glow" style="right:-120px;top:120px;width:560px;height:420px;background:rgba(60,200,255,.22)"></div>
-  <!-- rising results line behind everything -->
-  <svg class="lineart" viewBox="0 0 1080 1350" style="z-index:3!important">
-    <g stroke="rgba(150,190,255,.07)" stroke-width="1.5">
-      <path d="M0 640 H1080 M0 760 H1080 M0 880 H1080 M0 1000 H1080 M0 1120 H1080" />
-    </g>
-    <path d="M-20 1180 C 120 1170 170 1110 250 1120 C 330 1130 360 1040 450 1030 C 560 1018 590 900 700 880 C 800 860 840 720 930 690 C 990 670 1030 610 1100 560 L1100 1350 L-20 1350 Z" fill="url(#area)" />
-    <path d="M-20 1180 C 120 1170 170 1110 250 1120 C 330 1130 360 1040 450 1030 C 560 1018 590 900 700 880 C 800 860 840 720 930 690 C 990 670 1030 610 1100 560" fill="none" stroke="#5fd3ff" stroke-width="4" opacity=".55" style="filter:drop-shadow(0 0 10px #3fb6f0)" />
-  </svg>
-
-  <div class="kicker" style="top:160px">تجربة حقيقية من مشترك بـ viZion</div>
-  <div class="rtl" style="position:absolute;right:96px;left:80px;top:236px">
-    <div style="font-size:60px;font-weight:500;line-height:1.25">صرف <span class="num cyan" style="font-weight:700">$70</span> بس.. ورجعتله</div>
-    <div class="grad" style="font-size:112px;font-weight:700;line-height:1.2;margin-top:0;white-space:nowrap;filter:drop-shadow(0 6px 30px rgba(60,190,255,.35))">مليون و475 ألف</div>
-    <div style="font-size:31px;font-weight:300;color:var(--soft);margin-top:4px">بأول مرة طبّق بيها تعليمات <span class="cyan" style="font-weight:500">viZion</span></div>
+  <div class="glow" style="left:240px;top:560px;width:600px;height:600px;background:rgba(40,130,255,.38)"></div>
+  <div class="center" style="top:146px">
+    <div style="font-size:50px;font-weight:500;line-height:1.3">صرف <span class="num cyan" style="font-weight:700">$70</span> بس.. ورجعتله</div>
+    <div class="grad" style="font-size:132px;font-weight:700;line-height:1.12;white-space:nowrap;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">مليون و475 ألف</div>
+    <div style="font-size:40px;font-weight:400;line-height:1.3;margin-top:2px">بأول تطبيق لتعليمات <span class="cyan" style="font-weight:600">viZion</span>!</div>
   </div>
-
-  <div class="phone" style="left:100px;top:560px;width:340px;height:700px;transform:perspective(1700px) rotateY(18deg) rotateX(5deg) rotateZ(-3deg);-webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 90%);mask-image:linear-gradient(180deg,#000 62%,transparent 90%)">
-    <div class="screen">
-      <div class="island"></div>
-      <div class="dmbar"><span class="back">‹</span><span class="av"></span><div><b>مشترك viZion</b><small>رسالة حقيقية</small></div></div>
-      <img src="shots/dm-results.jpg" alt="" style="position:absolute;left:8px;top:140px;width:calc(100% - 16px)" />
-    </div>
+  <!-- dm-results at 534px wide: the numbers message is y 248–443, x 8–445 -->
+  <div class="shot" style="left:270px;top:476px;width:540px">
+    <img src="shots/dm-results.jpg" alt="" />
   </div>
-
-  <div class="zoom" style="left:404px;top:668px;width:584px;transform:rotate(-2.2deg)">
-    <img src="shots/dm-numbers.jpg" alt="" />
-    <svg class="marker" viewBox="0 0 538 230" style="position:absolute;left:14px;top:14px;width:calc(100% - 28px);height:auto;overflow:visible">
-      <path id="m1" d="" stroke="#5ef0b4" stroke-width="5" />
-      <path id="m2" d="" stroke="#62c6e9" stroke-width="5" />
-    </svg>
+  <div class="select" style="left:263px;top:711px;width:473px;height:229px">
+    <span class="h tl"></span><span class="h tr"></span><span class="h bl"></span><span class="h br"></span><span class="h ml"></span><span class="h mr"></span>
   </div>
-  <div class="tag" style="left:430px;top:626px;transform:rotate(-2.2deg)">🔍 من نفس الرسالة</div>
-
-  <div class="glass hot" style="right:96px;top:952px;width:440px;height:126px;border-radius:26px;direction:rtl;padding:18px 28px">
-    <div style="font-size:21px;font-weight:400;color:var(--soft)">ربح صافي بعد الكلفة والتوصيل</div>
-    <div style="font-size:50px;font-weight:700;line-height:1.15" class="gradg">900 ألف <span style="font-size:30px">دينار</span></div>
-  </div>
-
-  <div class="rtl" style="position:absolute;right:96px;top:1112px;font-size:26px;font-weight:500;color:#dff6ff;display:flex;align-items:center;gap:12px">
-    شنو الفرق اللي سوّاه؟ اسحب
-    <svg width="40" height="22" viewBox="0 0 40 22"><path d="M38 11 H4 M13 2 L3 11 L13 20" fill="none" stroke="#62c6e9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-  <div class="note" style="right:96px;top:1162px">* النتائج تختلف من مشروع لمشروع</div>
+  <svg class="cursor" style="left:694px;top:918px" viewBox="0 0 17 17"></svg>
 </section>
 
-<!-- ───────────── 2 · What changed ───────────── -->
+<!-- 2 · 230+ subscribers -->
 <section class="slide" id="s2">
-  <div class="glow" style="left:-100px;top:240px;width:560px;height:460px;background:rgba(40,160,255,.30)"></div>
-  <div class="kicker" style="top:160px">شنو اللي تغيّر بالضبط؟</div>
-
-  <!-- before (right) / after (left) -->
-  <div class="ba glass" style="right:96px">
-    <span class="lb" style="background:rgba(255,122,134,.14);color:#ffb3ba;border:1.5px solid rgba(255,122,134,.4)">قبل الكورس</span>
-    <div class="big" style="color:rgba(255,255,255,.88)">ضعف المبلغ</div>
-    <div class="sm" style="color:#ffb3ba">ويطلع خسران</div>
-    <svg class="trend" viewBox="0 0 372 92" preserveAspectRatio="none"><path d="M20 10 C 90 12 112 34 160 40 C 220 48 244 70 344 80" fill="none" stroke="#ff7a86" stroke-width="5" stroke-linecap="round"/><path d="M322 64 L346 80 L320 90" fill="none" stroke="#ff7a86" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="glow" style="left:160px;top:560px;width:760px;height:560px;background:rgba(40,130,255,.32)"></div>
+  <div style="position:absolute;right:110px;left:90px;top:176px;direction:rtl;text-align:right;font-size:47px;font-weight:500;line-height:1.6;white-space:nowrap">
+    <div>هاي تجربة مشترك من بين <span class="cyan num" style="font-weight:700">+230</span> مشترك</div>
+    <div>بـ <span class="cyan" style="font-weight:600">viZion</span>، بدأ من إعلانات خسرانة..</div>
+    <div class="grad" style="font-weight:600">وهسه صار يعرف وين تروح كل دينار</div>
   </div>
-  <div class="ba glass hot" style="left:96px">
-    <span class="lb" style="background:rgba(94,240,180,.14);color:#a8ffd9;border:1.5px solid rgba(94,240,180,.45)">بعد ما طبّق</span>
-    <div class="big"><span class="num">$70</span> <span style="font-size:34px;font-weight:400;color:var(--soft)">إعلان</span></div>
-    <div class="sm gradg" style="font-weight:700;font-size:34px">900 ألف ربح صافي</div>
-    <svg class="trend" viewBox="0 0 372 92" preserveAspectRatio="none"><path d="M20 84 C 90 82 112 58 160 52 C 220 45 244 20 344 10" fill="none" stroke="#5ef0b4" stroke-width="5" stroke-linecap="round"/><path d="M318 2 L346 10 L328 32" fill="none" stroke="#5ef0b4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-  <div style="position:absolute;left:503px;top:411px;width:74px;height:74px;border-radius:50%;background:#0a1f5e;border:2px solid rgba(98,198,233,.6);display:grid;place-items:center;box-shadow:0 0 30px rgba(47,140,240,.5)">
-    <svg width="34" height="22" viewBox="0 0 34 22"><path d="M32 11 H4 M12 3 L3 11 L12 19" fill="none" stroke="#62c6e9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-
-  <div class="rtl" style="position:absolute;right:96px;top:690px;font-size:58px;font-weight:600">والفرق <span class="grad">الوحيد</span>؟ شغلتين بس</div>
-
-  <div class="step" style="top:800px">
-    <div class="k">01</div>
-    <div>
-      <div class="t">غيّر بداية الفيديو</div>
-      <div class="q">أول ثواني من الإعلان، مثل ما بالكورس.</div>
-    </div>
-  </div>
-  <div class="step" style="top:950px">
-    <div class="k">02</div>
-    <div>
-      <div class="t">غيّر طريقة الرد على الرسائل</div>
-      <div class="q">«الرسائل صارت تجيني من ناس <b>تشتري</b>، مو بس يسألون ويختفون»</div>
-    </div>
-  </div>
-
-  <div class="glass rtl" style="right:96px;left:96px;top:1112px;height:88px;border-radius:24px;display:flex;align-items:center;gap:16px;padding:0 26px;font-size:25px;font-weight:400">
-    <span style="font-size:40px;line-height:1;color:var(--cyan);font-weight:700">“</span>
-    <span>وراح اشغل حملة ثانية على نفس الطريقة 🙏</span>
-    <span style="margin-right:auto;font-size:19px;color:var(--dim)">من رسالة المشترك</span>
-  </div>
-</section>
-
-<!-- ───────────── 3 · 230+ subscribers ───────────── -->
-<section class="slide" id="s3">
-  <div class="glow" style="right:-80px;top:160px;width:600px;height:420px;background:rgba(60,190,255,.25)"></div>
-  <div class="glow" style="left:120px;top:760px;width:760px;height:520px;background:rgba(30,100,255,.30)"></div>
-  <div class="rtl" style="position:absolute;right:96px;top:146px;display:flex;align-items:center;gap:26px">
-    <div class="grad num" style="font-size:150px;font-weight:700;line-height:1">+230</div>
-    <div style="font-size:34px;font-weight:500;line-height:1.3">مشترك<br /><span style="color:var(--soft);font-weight:300">بـ <span class="cyan" style="font-weight:500">viZion</span></span></div>
-  </div>
-  <div class="rtl" style="position:absolute;right:96px;left:96px;top:330px">
-    <div style="font-size:30px;font-weight:300;color:var(--soft)">هاي تجربة وحدة منهم..</div>
-    <div style="font-size:54px;font-weight:600;line-height:1.3;margin-top:10px">بدأ من إعلانات خسرانة..<br /><span class="grad">وهسه صار يعرف وين تروح كل دينار</span></div>
-  </div>
-
-  <div class="zoom" style="left:226px;top:580px;width:628px;padding:16px;transform:perspective(1800px) rotateX(5deg) rotateY(-5deg) rotateZ(1.2deg)">
+  <div class="shot" style="left:160px;top:520px;width:760px">
     <img src="shots/dm-testimonial.jpg" alt="" />
-    <svg class="marker" viewBox="0 0 748 623" style="position:absolute;left:16px;top:16px;width:calc(100% - 32px);height:auto;overflow:visible">
-      <path id="m3" d="" stroke="#5ef0b4" stroke-width="5" />
-      <path id="m4" d="" stroke="#5ef0b4" stroke-width="5" />
-    </svg>
-  </div>
-  <div class="tag" style="left:150px;top:1098px;transform:rotate(-2.5deg);font-size:24px;padding:12px 22px;border-color:rgba(94,240,180,.6)">
-    <span style="color:#a8ffd9">✓</span> «هسه اعرف ليش يربح وليش يخسر»
   </div>
 </section>
 
-<!-- ───────────── 4 · What changes in your business ───────────── -->
+<!-- 3 · booking is open -->
+<section class="slide" id="s3">
+  <div class="glow" style="left:200px;top:300px;width:680px;height:620px;background:rgba(40,130,255,.34)"></div>
+  <div class="center" style="top:170px">
+    <div class="grad" style="font-size:150px;font-weight:700;line-height:1.1;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">الحجز</div>
+    <div class="grad" style="font-size:150px;font-weight:700;line-height:1.1;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">مفتوح!</div>
+  </div>
+  <div class="center" style="top:568px;font-size:44px;font-weight:400;line-height:1.5">
+    اشترك هسه، وخلي كل دينار تصرفه<br />على الإعلان يرجعلك بربح
+  </div>
+  <div class="price" style="top:800px">
+    <span style="font-size:96px;font-weight:700;line-height:1" class="grad">49 ألف</span>
+    <span style="font-size:42px;font-weight:300;color:var(--soft)">بدل
+      <span style="position:relative;display:inline-block;font-weight:500;color:#fff">99 ألف<svg viewBox="0 0 100 30" preserveAspectRatio="none" style="position:absolute;left:-6%;top:18%;width:112%;height:70%;overflow:visible"><path d="M2 26 L98 6" stroke="#ff7a86" stroke-width="5" stroke-linecap="round"/></svg></span>
+    </span>
+  </div>
+  <div class="center" style="top:1010px;font-size:34px;font-weight:500;color:var(--mint)">اشتراك مدى الحياة</div>
+</section>
+
+<!-- 4 · what changes in your business -->
 <section class="slide" id="s4">
-  <div class="glow" style="right:-140px;top:140px;width:560px;height:380px;background:rgba(60,190,255,.22)"></div>
-  <div class="rtl" style="position:absolute;right:96px;left:96px;top:160px">
-    <div style="font-size:56px;font-weight:600;line-height:1.25">شنو يتغيّر بشغلك</div>
-    <div style="font-size:56px;font-weight:600;line-height:1.25">مع كورس <span class="grad">viZion</span>؟</div>
+  <div class="glow" style="right:-120px;top:120px;width:560px;height:400px;background:rgba(60,190,255,.20)"></div>
+  <div class="center" style="top:150px">
+    <div style="font-size:74px;font-weight:600;line-height:1.25">شنو يتغيّر بشغلك</div>
+    <div style="font-size:74px;font-weight:600;line-height:1.25">مع كورس <span class="grad">viZion</span>؟</div>
   </div>
-  <svg class="lineart" viewBox="0 0 1080 1350" style="z-index:3!important"><path d="M965 420 V1130" stroke="rgba(98,198,233,.35)" stroke-width="2" stroke-dasharray="4 10" /></svg>
-
-  <div class="row glass" style="top:372px">
-    <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3 L19 6 V11 C19 16 15.6 19.2 12 21 C8.4 19.2 5 16 5 11 V6 Z" /><path d="M8.8 12 L11.2 14.4 L15.4 9.8" /></svg></div>
-    <div><div class="t">بطّل تخسر فلوسك على إعلانات فاشلة</div><div class="d">تعرف قبل لا تصرف إذا الإعلان راح يربحك لو لا</div></div>
-    <span class="n">01</span>
-  </div>
-  <div class="row glass" style="top:528px">
-    <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 5.5 H20 V16 H10 L5.5 19.8 V16 H4 Z" /><path d="M8.6 10.8 L11 13.2 L15.4 8.8" /></svg></div>
-    <div><div class="t">الزبون اللي يسأل وفضولي يصير يشتري</div><div class="d">تعرف شنو تكتبله بالضبط حتى يطلب، مو يختفي</div></div>
-    <span class="n">02</span>
-  </div>
-  <div class="row glass" style="top:684px">
-    <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 7 L9 13 L13 9 L21 17" /><path d="M15 17 H21 V11" /></svg></div>
-    <div><div class="t">سعر الرسالة أرخص.. وطلبات أكثر</div><div class="d">تعرف وين الخلل بإعلانك وتصلحه بنفسك</div></div>
-    <span class="n">03</span>
-  </div>
-  <div class="row glass" style="top:840px">
-    <div class="ic"><svg viewBox="0 0 24 24"><path d="M3.5 8 L12 3.5 L20.5 8 V16 L12 20.5 L3.5 16 Z" /><path d="M3.5 8 L12 12.5 L20.5 8 M12 12.5 V20.5" /></svg></div>
-    <div><div class="t">الطلبات ما ترجع وتخسرك التوصيل</div><div class="d">تأكد الطلب صح وينزل الراجع لأقل حد</div></div>
-    <span class="n">04</span>
-  </div>
-  <div class="row glass hot" style="top:996px">
-    <div class="ic"><svg viewBox="0 0 24 24"><path d="M11 3 L12.9 8.1 L18 10 L12.9 11.9 L11 17 L9.1 11.9 L4 10 L9.1 8.1 Z" /><path d="M18.5 14.5 L19.3 16.7 L21.5 17.5 L19.3 18.3 L18.5 20.5 L17.7 18.3 L15.5 17.5 L17.7 16.7 Z" /></svg></div>
-    <div><div class="t">مستشار ذكي جوة إيدك 24 ساعة</div><div class="d">تسأله عن مشروعك بالضبط ويجاوبك بأرقامك</div></div>
-    <span class="n">05</span>
-  </div>
-</section>
-
-<!-- ───────────── 5 · Offer ───────────── -->
-<section class="slide" id="s5">
-  <div class="glow" style="left:180px;top:420px;width:720px;height:620px;background:rgba(40,150,255,.40)"></div>
-  <div class="kicker" style="top:168px;right:auto;left:50%;transform:translateX(-50%)">الحجز مفتوح!</div>
-  <div style="position:absolute;left:0;right:0;top:238px;text-align:center;direction:rtl">
-    <div style="font-size:60px;font-weight:600;line-height:1.25">اشترك هسه، وخلي كل دينار</div>
-    <div style="font-size:60px;font-weight:600;line-height:1.25">تصرفه على الإعلان <span class="grad">يرجعلك بربح</span></div>
-  </div>
-
-  <div class="glass hot" style="left:150px;right:150px;top:452px;height:440px;border-radius:40px"></div>
-  <div style="position:absolute;left:0;right:0;top:426px;display:flex;justify-content:center">
-    <div style="direction:rtl;padding:10px 26px;border-radius:14px;background:#1769f5;font-size:25px;font-weight:600;box-shadow:0 12px 30px rgba(23,105,245,.5)">اشتراك مدى الحياة</div>
-  </div>
-  <div style="position:absolute;left:0;right:0;top:786px;text-align:center;direction:rtl;font-size:34px;font-weight:300;color:var(--soft)">
-    فقط، بدل <span style="position:relative;display:inline-block;font-weight:500;color:rgba(255,255,255,.75)">99 ألف<svg viewBox="0 0 100 30" preserveAspectRatio="none" style="position:absolute;left:-6%;top:12%;width:112%;height:80%;overflow:visible"><path d="M2 24 L98 6" stroke="#ff7a86" stroke-width="5" stroke-linecap="round"/></svg></span>
-  </div>
-  <div style="position:absolute;left:0;right:0;top:520px;display:flex;justify-content:center;align-items:baseline;gap:18px;direction:rtl">
-    <span class="grad num" style="font-size:250px;font-weight:700;line-height:1;filter:drop-shadow(0 10px 40px rgba(60,190,255,.45))">49</span>
-    <span style="font-size:70px;font-weight:600">ألف</span>
-  </div>
-  <div class="sticker" style="left:104px;top:500px;transform:rotate(-12deg)"><div><div style="font-size:24px">خصم</div><div style="font-size:54px">50%</div></div></div>
-
-  <div class="cta" style="top:942px">
-    دزلنا «أريد أشترك» بالخاص
-    <svg width="40" height="24" viewBox="0 0 40 24"><path d="M38 12 H4 M13 3 L3 12 L13 21" fill="none" stroke="#071a45" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-  <div style="position:absolute;left:0;right:0;top:1058px;text-align:center;direction:rtl;font-size:25px;font-weight:300;color:var(--soft)">أو واتساب <span class="num" style="font-weight:500;color:#fff">07757851379</span></div>
-
-  <div class="proof" style="right:150px;top:1124px"><b class="num">+230</b> مشترك</div>
-  <div class="proof" style="left:150px;top:1124px"><b class="num">$70</b> ← <b>مليون و475 ألف</b> مبيعات</div>
+  <div class="li" style="top:420px"><span class="n">1</span><div><div class="t">بطّل تخسر فلوسك على إعلانات فاشلة</div><div class="d">تعرف قبل لا تصرف إذا الإعلان راح يربحك لو لا</div></div></div>
+  <div class="li" style="top:570px"><span class="n">2</span><div><div class="t">الزبون اللي يسأل وفضولي يصير يشتري</div><div class="d">تعرف شنو تكتبله بالضبط حتى يطلب، مو يختفي</div></div></div>
+  <div class="li" style="top:720px"><span class="n">3</span><div><div class="t">سعر الرسالة أرخص.. وطلبات أكثر</div><div class="d">تعرف وين الخلل بإعلانك وتصلحه بنفسك</div></div></div>
+  <div class="li" style="top:870px"><span class="n">4</span><div><div class="t">الطلبات ما ترجع وتخسرك التوصيل</div><div class="d">تأكد الطلب صح وينزل الراجع لأقل حد</div></div></div>
+  <div class="li" style="top:1020px"><span class="n">5</span><div><div class="t">مستشار ذكي جوة إيدك 24 ساعة</div><div class="d">تسأله عن مشروعك بالضبط ويجاوبك بأرقامك</div></div></div>
 </section>
 
 <script>
@@ -357,26 +175,24 @@
   const slides = [...document.querySelectorAll('.slide')];
   slides.forEach((s, i) => {
     s.prepend(tpl.content.cloneNode(true));
-    const pg = document.createElement('div'); pg.className = 'pager';
-    pg.innerHTML = slides.map((_, j) => `<i class="${j === i ? 'on' : ''}"></i>`).join('');
+    const pg = document.createElement('div'); pg.className = 'page'; pg.textContent = `${i + 1}/${slides.length}`;
     s.appendChild(pg);
   });
-
-  // hand-drawn marker strokes, in the coordinates of the screenshot each one sits on
-  const wob = (x1, x2, y, amp = 3) => `M${x1} ${y + 2} C ${x1 + (x2 - x1) * .3} ${y - amp}, ${x1 + (x2 - x1) * .7} ${y + amp}, ${x2} ${y - 1}`;
-  const ring = (cx, cy, rx, ry) => { let d = ''; for (let k = 0; k <= 48; k++) { const a = -2.6 + (k / 48) * Math.PI * 2.15, w = 1 + Math.sin(k * 1.7) * .018 + k * .0016;
-    d += (k ? ' L' : 'M') + (cx + Math.cos(a) * rx * w).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * w).toFixed(1); } return d; };
-  window.MARKS = { m1: '', m2: '', m3: '', m4: '' };
-  const setMarks = () => { for (const k in MARKS) { const el = document.getElementById(k); if (el) el.setAttribute('d', MARKS[k]); } };
-  window.setMarks = setMarks;
-  // dm-numbers at 538×230: «المبيعات: مليون و475 الف» y 126–156, «…900 الف» y 171–202 (text starts at x 31)
-  MARKS.m1 = ring(133, 141, 108, 26);
-  MARKS.m2 = wob(26, 134, 211);
-  // dm-testimonial at 748×623: «هسه اعرف» ends line 2 (y 397–433), «ليش يربح وليش يخسر» starts line 3 (y 451–491)
-  MARKS.m3 = wob(26, 142, 441);
-  MARKS.m4 = wob(318, 594, 499);
-  setMarks();
-
+  // Pixel-art pointer cursor (same as the advisor carousel).
+  const HAND = [
+    "......XX.........", ".....XooX........", ".....XooX........", ".....XooX........",
+    ".....XooXXX......", ".....XooXooXXX...", ".....XooXooXooXX.", "..XX.XooXooXooXoX",
+    ".XooXXooooooooXoX", ".XoooXooooooooooX", "..XoooooooooooooX", "...XooooooooooooX",
+    "...XoooooooooooX.", "....XooooooooooX.", "....XoooooooooX..", ".....XooooooooX..", ".....XXXXXXXXXX..",
+  ];
+  document.querySelectorAll('.cursor').forEach((svg) => {
+    let html = '';
+    HAND.forEach((row, y) => [...row].forEach((c, x) => {
+      if (c !== '.') html += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${c === 'X' ? '#000' : '#fff'}"/>`;
+    }));
+    svg.innerHTML = html;
+    svg.setAttribute('shape-rendering', 'crispEdges');
+  });
   Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode().catch(() => {}))])
     .then(() => { document.body.dataset.ready = '1'; });
 </script>
