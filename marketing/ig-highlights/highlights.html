@@ -64,7 +64,10 @@ body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
 .row { position:absolute; left:64px; right:64px; display:flex; justify-content:space-between; align-items:baseline; font:700 74px 'Aref Ruqaa'; color:var(--pen); white-space:nowrap }
 .row i { flex:1; margin:0 18px; border-bottom:5px dotted rgba(31,21,16,.32); transform:translateY(-14px) }
 .row .r { display:flex; align-items:baseline; gap:14px }
-.was { position:relative; font-size:.78em; color:rgba(31,21,16,.5) }
+.was { position:relative; font-size:.85em; color:rgba(31,21,16,.5) }
+.ul { position:relative }
+.ul svg { position:absolute; left:-10px; bottom:-18px; width:calc(100% + 20px); height:28px; overflow:visible }
+.ul path { fill:none; stroke:var(--oink); stroke-width:11; stroke-linecap:round }
 .was::after { content:''; position:absolute; left:-8px; right:-8px; top:52%; height:5px; background:var(--marker); border-radius:3px; transform:rotate(-9deg); opacity:.9 }
 .note { position:absolute; font:700 44px/1.35 'Aref Ruqaa'; color:rgba(31,21,16,.75); text-align:center }
 .step { position:absolute; left:60px; right:60px; display:flex; gap:26px; align-items:flex-start }
@@ -131,13 +134,12 @@ A.push(art('p1', 'paper', `
   <div class="sheet" style="left:100px; top:470px; width:880px; height:1100px; transform:rotate(-1.5deg)">
     <div class="ruled"></div>
     <div class="h" style="top:66px">الباقات</div>
-    <div class="row" style="top:250px"><span>٣ بوستات</span><i></i><span class="r"><span class="was">٤٢</span><span>٤٠ ألف</span></span></div>
+    <div class="row" style="top:250px"><span class="ul">٣ بوستات<svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 14 C 26 6, 62 20, 98 8" vector-effect="non-scaling-stroke"/></svg></span><i></i><span class="r"><span class="was">٤٢</span><span>٤٠ ألف</span></span></div>
     <div class="row" style="top:440px"><span>٥ بوستات</span><i></i><span class="r"><span class="was">٧٠</span><span>٦٥ ألف</span></span></div>
     <div class="row" style="top:630px"><span>باقة شهرية</span><i></i><span class="r"><span class="was">١٤٠</span><span>٩٠ ألف</span></span></div>
     <div class="note" style="right:70px; top:740px">٨ بوستات + ٤ ستوري، كل شهر</div>
     <div class="note" style="right:70px; top:930px; font-size:38px; color:var(--oink)">المشطوب = سعرها بالقطعة</div>
     <div class="stamp" style="left:40px; top:820px; transform:rotate(-10deg); font-size:62px">الأوفر</div>
-    <svg class="mk" width="880" height="1100" viewBox="0 0 880 1100"><path d="${loop(620, 290, 200, 78)}"/></svg>
   </div>${pin(515, 452)}
   ${legal(1610, 'دزّلي بالدايركت: «أريد ٣ بوستات»', true)}`));
 
@@ -176,7 +178,7 @@ A.push(art('p4', 'paper', `
   ${strip(250, 'شلون <b>تطلب</b>؟')}
   <div class="sheet" style="left:90px; top:450px; width:900px; height:1010px; transform:rotate(-1deg)">
     <div class="ruled"></div>
-    <div class="step" style="top:70px"><div class="n">١</div><div class="t">دزّلي «أريد ٣ بوستات»<small>واحچيلي عن محلك</small></div></div>
+    <div class="step" style="top:70px"><div class="n">١</div><div class="t">دزّلي «أريد ٣ بوستات»<small>واحچيلي عن مشروعك</small></div></div>
     <div class="step" style="top:300px"><div class="n">٢</div><div class="t">أرتبلك الفكرة<small>وتعرف كلشي قبل لا نبدي</small></div></div>
     <div class="step" style="top:530px"><div class="n">٣</div><div class="t">تدفع نص المبلغ ونبدي<small>والباقي من تستلم</small></div></div>
     <div class="step" style="top:760px"><div class="n">٤</div><div class="t">تستلم التصاميم<small>وعندك تعديلين مجاناً</small></div></div>
@@ -204,12 +206,12 @@ WORK.forEach(([src, bg, title, name], k) => {
 });
 
 // ── «براندات» ────────────────────────────────────────────────────────────────────────────────────────────────────
-const BR = [[270, 700, -6, 'pepsi'], [800, 690, 5, 'qi'], [540, 965, -2, 'iraqiairways'], [262, 1228, 4, 'asiacell'], [808, 1215, -5, 'talabat']];
+const BR = [[300, 765, -4, 'pepsi'], [780, 765, 4, 'qi'], [540, 1090, -1.5, 'iraqiairways'], [300, 1415, 3, 'asiacell'], [780, 1415, -3, 'talabat']];   // centres: two, one, two
 A.push(art('b0', 'orange', `
   ${strip(220, 'سوّيت إعلانات <b>لأكبر شركات</b>', 'cream', -1.2)}
-  ${strip(360, '<span style="font-size:50px">حتى تشوف شگدر أسوّي <b>لمحلك</b> 👇</span>', '', 1)}
-  ${BR.map(([cx, cy, r, s], k) => `<div class="print" style="left:${cx - 152}px; top:${cy - 188}px; width:304px; padding:10px; transform:rotate(${r}deg)"><img src="assets/work/${s}.jpg" alt=""></div>`).join('')}
-  ${legal(1470, `إعلانات غير رسمية · فكرة وتصميم ${HANDLE}`)}
+  ${strip(360, '<span style="font-size:50px">حتى تشوف شگدر أسوّي <b>لمشروعك</b> 👇</span>', '', 1)}
+  ${BR.map(([cx, cy, r, s], k) => `<div class="print" style="left:${cx - 170}px; top:${cy - 210}px; width:340px; padding:10px; transform:rotate(${r}deg)"><img src="assets/work/${s}.jpg" alt=""></div>`).join('')}
+  ${legal(1670, `إعلانات غير رسمية · فكرة وتصميم ${HANDLE}`)}
 `));
 const BRANDS = [
   ['pepsi', 'paper', 'ببسي', 'لأن العراقي يسمّي<br>كل كولا «ببسي»'],
