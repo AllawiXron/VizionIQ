@@ -1,7 +1,9 @@
 # allawi.psd highlights (Oct 2026): «الأسعار», «أعمالي», «براندات» + covers
 
 The new story highlights, made on 9 Oct 2026 before the «محد طلبها منه» reel (`../hf-unasked-reel`) went up, in the
-same handmade collage look: paper, tape, pins, kraft tags, red marker, rubber stamps, film grain. They replace the old
+same handmade collage look (paper, tape, pins, tags, marker, rubber stamps, film grain), but in the allawi.psd brand
+colours, as the user asked: paper `#ece3d4`, ink `#1f1510`, orange `#e2541b` / `#f07a2e`, cream `#fbf3e6`, orange-ink
+`#c2441a` for orange text on light paper; Alexandria 800/900 for the headlines. They replace the old
 «الأسعار» highlight (`../ig-offer`), whose prices were out of date. The user chose the three highlights, kept the other
 prices as they were, opened motion videos again ("price by message") and picked the collage look.
 
@@ -14,7 +16,7 @@ stamps' worn ink) and fonts don't load from `file://`. `out/overview.jpg` shows 
 | Highlight | Stories, in order |
 |---|---|
 | «الأسعار» | `p1` the bundles: ٣ بوستات ٤٠ ألف, ٥ بوستات ٦٥ ألف, باقة شهرية ٩٠ ألف (٨ بوستات + ٤ ستوري), each with its price bought one by one struck through (٤٢, ٧٠, ١٤٠); «الأوفر» stamp · `p2` single prices (بوست ١٤ ألف، ستوري ٧ آلاف، كاروسيل ٤٠، منيو أو فلاير ٤٠، لوگو ٧٠، هوية كاملة ٢٠٠ ألف، فيديو موشن: راسلني) · `p3` bigger monthly packages (المميزة ١٧٥ ألف, الكاملة ٢٥٠ ألف) · `p4` how to order, in four steps, with the rules (extra revision ٣ آلاف, same-day work: half again) |
-| «أعمالي» | `w1`–`w8`: صاج الريف (restaurant), مختبر الشفاء (lab), الفقمة (home appliances), مسواگ (online shop), سلة (online grocery), بَلي (taxi app), ورد · WARD (beauty identity), كاكتوس (handmade identity); each labelled «فكرة إعلان من تصميمي» · then `cta` |
+| «أعمالي» | `w1`–`w7`: صاج الريف (restaurant), مختبر الشفاء (lab), مسواگ (online shop), سلة (online grocery), بَلي (taxi app), ورد · WARD (beauty identity), كاكتوس (handmade identity); each labelled «فكرة إعلان من تصميمي» · then `cta`. The الفقمة (home appliances) story was taken out at the user's request. |
 | «براندات» | `b0` intro: the five ads stamped «محد طلبه», «إعلانات غير رسمية» · `b1`–`b5`: Pepsi, Qi Card, Iraqi Airways, Asiacell, talabat, each stamped, with the idea on a kraft tag and «إعلان غير رسمي» · then `cta` |
 | (both) | `cta`: «عجبك الشغل؟», the note «أريد ٣ بوستات», «٣ بوستات بـ٤٠ ألف بس», and an arrow down to the reply bar: «دزّلي من هنا» |
 
@@ -23,7 +25,7 @@ Key content sits between y 250 and 1680, clear of the story header and the reply
 ## Covers
 
 `c-prices` (a price tag), `c-work` (two prints), `c-brands` (a rubber stamp), `c-identity` (a pen nib, for the existing
-«هويات» highlight so the whole row matches): an ink icon on a torn cream disc on the reel's red cloth. Instagram crops
+«هويات» highlight so the whole row matches): an ink icon on a torn cream disc on brand orange. Instagram crops
 the centre circle. `preview` shows the row as it looks on the profile.
 
 ## Putting them up
