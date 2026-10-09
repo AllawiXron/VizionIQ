@@ -41,6 +41,19 @@ version: v1
 - Frames 2-6 are one continuous chat, so they are built as beats of one scene in `index.html` rather than separate
   sub-compositions; the `src` lines below point at the beat's block in `index.html`.
 
+## Review of the v1 draft (9 Oct)
+
+- The user, on the draft render (no voice): "its bad i actually dont like it, the ad feels like ai made it and its
+  boring and the i dont like those posts where its the samoon stuff i hate it".
+- Read as: the concept itself is rejected, not a beat. Causes found: a mocked-up phone UI (the most common template
+  ad); every move the same smooth slide, fade or zoom at one speed; 3–8 s of typing with nothing to feel; it explains
+  how to order instead of giving a reason to want it; the luxury-food posts (`rubu`, `lux`).
+- Banned from every version: `assets/work/rubu.jpg` and `assets/work/lux.jpg` (the samoon / Iraqi-food-as-luxury posts).
+- The reel the user loved (`../hf-dollar-reel`) is the opposite: handmade collage, paper, tape, marker, stop-motion on
+  twos, a voice telling a real Iraqi story. v2 starts from that world.
+- Superseded (9 Oct): the user asked for a reel that beats what other designers post, using the 2026 brand ads plus
+  the quzi and lab posts. That is a new film, built in `../hf-unasked-reel`. This project stays as the record of v1.
+
 ## Voiceover (Noor) — fitted to these beats
 
 1. 0.2 s «تريد تصاميم لمحلك؟»  2. 1.5 s «كلها تبدي برسالة وحدة.»  3. 8.6 s «تشوف نماذج من الشغل.. قبل لا تقرر.»

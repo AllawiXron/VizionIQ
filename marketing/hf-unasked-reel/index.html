@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>allawi.psd — محد طلبها منه (reel)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/00b30da798.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/b9f68601ff.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:500; font-display:block; src:url(assets/fonts/32d758561b.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:500; font-display:block; src:url(assets/fonts/0b17f11da9.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:600; font-display:block; src:url(assets/fonts/dda02519c2.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:600; font-display:block; src:url(assets/fonts/5344fa57ba.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/5ab42dd5a7.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/a39bac68c3.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Aref Ruqaa'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/0dd1a6b4b1.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Aref Ruqaa'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/4d199ea9c3.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Lalezar'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/34b60235da.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Lalezar'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/a7ab3bd3a9.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Reem Kufi'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/reemkufi700-arabic.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Reem Kufi'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/reemkufi700-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Playfair Display'; font-style:normal; font-weight:900; font-display:block; src:url(assets/fonts/48d1e9cdfb.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Abril Fatface'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/abril-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Anton'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/anton-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Bebas Neue'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/bebas-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Courier Prime'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/courierprime700-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+:root { --cream:#efe5d3; --ink:#2a2420; --red:#9a1015; --marker:#c4161c; --pen:#1f3a8a; --stamp:#d0161e }
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#0b0909; direction:rtl; font-family:'IBM Plex Sans Arabic' }
+.scene { position:absolute; inset:0; overflow:hidden; background:#0b0909 }
+.cam { position:absolute; inset:0; transform-origin:540px 960px }
+.bg { position:absolute; left:0; top:0; width:1080px; height:1920px }
+.ab { position:absolute }
+.shadow { filter:drop-shadow(0 18px 22px rgba(0,0,0,.45)) drop-shadow(0 3px 4px rgba(0,0,0,.35)) }
+
+/* a photo print of an ad: white lab border, a faint sheen */
+.print { position:absolute; width:468px; padding:14px; background:#f7f4ee; box-shadow:0 22px 34px rgba(0,0,0,.5), 0 3px 6px rgba(0,0,0,.35) }
+.print img { display:block; width:100%; aspect-ratio:4/5 }
+.print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)); pointer-events:none }
+.tape { position:absolute; height:50px; background:rgba(236,226,200,.74); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:4;
+  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+.pin { position:absolute; width:46px; height:46px; z-index:5 }
+
+/* the rubber stamp: double border, ink that skips (grain mask) */
+.stamp { position:absolute; padding:4px 30px 16px; border:9px double var(--stamp); border-radius:18px; color:var(--stamp); font:700 84px/1.3 'IBM Plex Sans Arabic';
+  white-space:nowrap; opacity:0; background:rgba(247,244,238,.8); box-shadow:0 0 0 4px rgba(247,244,238,.5);
+  -webkit-mask-image:url(assets/img/grain.png); mask-image:url(assets/img/grain.png); -webkit-mask-size:260px; mask-size:260px }
+
+/* the caption strips: torn paper with the line on it (they carry the voice for people watching muted) */
+.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; pointer-events:none }
+.strip span { display:inline-block; padding:16px 42px 26px; font:700 74px/1.25 'Reem Kufi'; color:#1d1a17; background:url(assets/img/newsprint.jpg) center/640px;
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.45)); white-space:nowrap;
+  clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
+.strip span.cream { background:#efe6d4 }
+.strip b { color:var(--marker); font-weight:700 }
+.strip .w { opacity:0; font-style:normal }
+
+/* marker strokes boil like hand-drawn animation: the displacement noise re-seeds 12 times a second */
+.mk { position:absolute; overflow:visible; pointer-events:none; filter:url(#boil) }
+.mk path { fill:none; stroke:var(--marker); stroke-width:10; stroke-linecap:round; stroke-linejoin:round; opacity:0 }
+.ruq { font-family:'Aref Ruqaa'; font-weight:700 }
+
+/* S1 */
+#fan { position:absolute; left:306px; top:600px; width:468px; height:584px }
+#fan .print { left:0; top:0 }
+#legal { position:absolute; left:0; right:0; top:1452px; text-align:center; font:500 28px 'IBM Plex Sans Arabic'; color:rgba(239,229,211,.82); opacity:0 }
+#legal b { font-weight:600; direction:ltr; unicode-bidi:isolate }
+#who { position:absolute; left:120px; top:1290px; width:300px; height:160px; transform-origin:60px 80px; opacity:0 }
+#who img { position:absolute; inset:0; width:100%; height:100% }
+#who div { position:absolute; left:84px; right:18px; top:34px; text-align:center; font:700 34px/1.2 'Aref Ruqaa'; color:#3a2a1c }
+#who div i { display:block; font:600 30px 'IBM Plex Sans Arabic'; font-style:normal; direction:ltr; color:#2a1f17 }
+
+/* S2: the Iraqi Airways ad comes apart into its layers */
+#stage { position:absolute; left:0; top:0; width:1080px; height:1920px; perspective:2300px; perspective-origin:540px 860px }
+#stack { position:absolute; left:216px; top:420px; width:648px; height:810px; transform-style:preserve-3d; transform-origin:324px 405px }
+.ly { position:absolute; inset:0; transform-style:preserve-3d }
+.ly img { position:absolute; inset:0; width:100%; height:100% }
+.ly.sheet { outline:2px solid rgba(255,255,255,.38); background:rgba(220,232,255,.06) }
+.ly .anc { position:absolute; width:2px; height:2px; left:0; top:50% }
+.lt { position:absolute; width:250px; height:106px; opacity:0 }
+.lt img { position:absolute; inset:0; width:100%; height:100% }
+.lt div { position:absolute; left:60px; right:12px; top:20px; text-align:center; font:700 34px/1.25 'Aref Ruqaa'; color:#3a2a1c; white-space:nowrap }
+#why { position:absolute; left:0; right:0; top:200px; text-align:center; font:700 200px/1 'Aref Ruqaa'; color:var(--marker); opacity:0;
+  filter:url(#boil) drop-shadow(0 8px 10px rgba(0,0,0,.4)) }
+
+/* S3: your shop */
+#blank { position:absolute; width:468px; padding:14px; background:#f7f4ee; box-shadow:0 22px 34px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
+#blank .in { aspect-ratio:4/5; background:#ebe3d3; position:relative }
+#blank .q { position:absolute; left:0; right:0; top:190px; text-align:center; font:700 92px/1.2 'Aref Ruqaa'; color:var(--marker); opacity:0; filter:url(#boil) }
+.ktag { position:absolute; width:300px; height:160px; opacity:0 }
+.ktag img { position:absolute; inset:0; width:100%; height:100% }
+.ktag div { position:absolute; left:80px; right:16px; top:36px; text-align:center; font:700 54px/1.2 'Aref Ruqaa'; color:#3a2a1c; white-space:nowrap }
+
+/* S4: the price */
+#sticky { position:absolute; left:250px; top:560px; width:580px; height:580px; background:linear-gradient(160deg, #ffe873, #f6d443 60%, #e9c22f);
+  box-shadow:0 26px 30px rgba(0,0,0,.45), inset 0 -18px 30px rgba(160,120,0,.18); transform-origin:290px 0 }
+#sticky div { position:absolute; left:30px; right:30px; top:150px; text-align:center; font:700 104px/1.35 'Aref Ruqaa'; color:#2c2a26 }
+#list { position:absolute; left:150px; top:470px; width:780px; height:975px }
+#list > img { position:absolute; inset:0; width:100%; height:100% }
+#list .h { position:absolute; left:0; right:0; top:58px; text-align:center; font:700 82px 'Aref Ruqaa'; color:var(--marker) }
+#list .row { position:absolute; left:70px; right:70px; height:150px; display:flex; justify-content:space-between; align-items:center; font:700 78px 'Aref Ruqaa'; color:var(--pen); white-space:nowrap }
+#list .row i { flex:1; margin:0 22px; border-bottom:5px dotted rgba(31,58,138,.55); transform:translateY(16px) }
+#list .row b { font-weight:700 }
+#list .sub2 { position:absolute; left:0; right:0; top:742px; text-align:center; font:700 52px 'Aref Ruqaa'; color:rgba(31,58,138,.85) }
+
+/* S5: the ask */
+#note { position:absolute; left:150px; top:560px; width:780px; height:330px; background:url(assets/img/slip.png) center/cover;
+  clip-path:polygon(0 4%, 7% 0, 16% 5%, 27% 1%, 39% 6%, 52% 0, 64% 5%, 77% 1%, 88% 6%, 100% 2%, 98% 50%, 100% 97%, 90% 93%, 78% 100%, 64% 94%, 50% 99%, 37% 93%, 24% 100%, 12% 94%, 0 98%, 2% 50%) }
+#note div { position:absolute; left:0; right:0; top:84px; text-align:center; font:700 124px/1.2 'Aref Ruqaa'; color:var(--pen) }
+#noteW { position:absolute; left:0; top:0; width:1080px; height:1920px }
+#rans2 { position:absolute; left:0; right:0; top:1010px; height:220px; transform:scale(.88); display:flex; justify-content:center; align-items:center; direction:ltr;
+  filter:drop-shadow(0 12px 14px rgba(0,0,0,.5)) drop-shadow(0 2px 3px rgba(0,0,0,.4)) }
+#handleTxt { position:absolute; left:0; right:0; top:1250px; text-align:center; font:500 38px 'IBM Plex Sans Arabic'; color:rgba(239,229,211,.78); direction:ltr; opacity:0 }
+#handleTxt b { font-weight:700; color:#efe5d3 }
+.rn { display:inline-block; line-height:1; padding:14px 12px 10px; margin:0 -2px; opacity:0 }
+
+/* film finish over everything */
+#fx, #grain, #vig, #flash, #leak { position:absolute; inset:0; pointer-events:none }
+#fx { overflow:hidden }
+#grain { background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.42 }
+#vig { background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%) }
+#flash { opacity:0; background:#f3e6d3 }
+#leak { opacity:0; mix-blend-mode:screen; background:radial-gradient(700px 900px at 85% 20%, rgba(255,170,90,.95), rgba(255,90,40,.45) 40%, rgba(255,60,20,0) 75%) }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence id="boilT" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1080" data-height="1920">
+
+      <!-- S1 (hook): five brand ads land as prints, fan out, and each gets stamped «محد طلبه» -->
+      <section class="scene clip" id="s1" data-start="0" data-duration="5" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/red.jpg" alt="" />
+          <div id="fan">
+            <div class="print" id="pPepsi"><img src="assets/work/pepsi.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-12deg)">محد طلبه</div></div>
+            <div class="print" id="pQi"><img src="assets/work/qi.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-8deg)">محد طلبه</div></div>
+            <div class="print" id="pIqa"><img src="assets/work/iraqiairways.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-14deg)">محد طلبه</div></div>
+            <div class="print" id="pAsia"><img src="assets/work/asiacell.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-6deg)">محد طلبه</div></div>
+            <div class="print" id="pTalabat"><img src="assets/work/talabat.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-11deg)">محد طلبه</div></div>
+          </div>
+          <div id="who" class="shadow"><img src="assets/img/tag.png" alt="" /><div>تصميم<i>@allawi.psd</i></div></div>
+          <div id="legal">إعلانات غير رسمية · فكرة وتصميم <b>@allawi.psd</b></div>
+        </div>
+        <div class="strip" id="st1a" style="top:250px"><span class="cream">سوّى إعلان لـ<b>ببسي</b>..</span></div>
+        <div class="strip" id="st1b" style="top:250px"><span class="cream">ولـ<b>كي كارد</b>..</span></div>
+        <div class="strip" id="st1c" style="top:250px"><span class="cream">و<b>للخطوط العراقية</b>..</span></div>
+        <div class="strip" id="st1d" style="top:250px"><span>ومحد <b>طلبها</b> منه!</span></div>
+      </section>
+
+      <!-- S2: why? so you can see what he can do for your shop (the ad comes apart into its real layers) -->
+      <section class="scene clip" id="s2" data-start="5" data-duration="5" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/dark.jpg" alt="" />
+          <div id="stage">
+            <div id="stack">
+              <div class="ly" id="lyBg"><img src="assets/layers/iqa/bg.jpg" alt="" /><i class="anc"></i></div>
+              <div class="ly sheet" id="lyPass"><img src="assets/layers/iqa/pass.png" alt="" /><i class="anc"></i></div>
+              <div class="ly sheet" id="lyTxt"><img src="assets/layers/iqa/txt.png" alt="" /><i class="anc"></i></div>
+              <div class="ly sheet" id="lyLogo"><img src="assets/layers/iqa/logo.png" alt="" /><i class="anc"></i></div>
+            </div>
+          </div>
+          <div class="lt shadow" id="lt0"><img src="assets/img/tag.png" alt="" /><div>الصورة</div></div>
+          <div class="lt shadow" id="lt1"><img src="assets/img/tag.png" alt="" /><div>التذكرة</div></div>
+          <div class="lt shadow" id="lt2"><img src="assets/img/tag.png" alt="" /><div>الخط</div></div>
+          <div class="lt shadow" id="lt3"><img src="assets/img/tag.png" alt="" /><div>الشعار</div></div>
+          <svg class="mk" id="leads" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+          <div id="why">ليش؟</div>
+        </div>
+        <div class="strip" id="st2" style="top:1290px"><span class="cream"><em class="w">حتى</em> <em class="w">تشوف..</em> <em class="w"><b>شيگدر</b></em> <em class="w">يسوّي</em> <em class="w">لمحلك</em></span></div>
+      </section>
+
+      <!-- S3: your restaurant, your clinic, any shop -->
+      <section class="scene clip" id="s3" data-start="10" data-duration="4" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/paper.jpg" alt="" />
+          <div class="print" id="pSaj" style="left:52px; top:420px"><img src="assets/work/saj.jpg" alt="" /></div>
+          <div class="print" id="pShifa" style="left:560px; top:520px"><img src="assets/work/shifa.jpg" alt="" /></div>
+          <div id="blank" style="left:306px; top:880px"><div class="in"><svg class="mk" id="blankDash" width="440" height="550" viewBox="0 0 440 550" style="left:0;top:0"></svg><div class="q">محلك؟</div></div></div>
+          <div class="tape" id="tp1" style="left:220px; top:398px; width:150px; transform:rotate(-8deg)"></div>
+          <div class="tape" id="tp2" style="left:720px; top:498px; width:150px; transform:rotate(6deg)"></div>
+          <div class="tape" id="tp3" style="left:470px; top:858px; width:150px; transform:rotate(-3deg)"></div>
+          <div class="ktag shadow" id="k1" style="left:20px; top:1000px; transform:rotate(-9deg)"><img src="assets/img/tag.png" alt="" /><div>مطعم</div></div>
+          <div class="ktag shadow" id="k2" style="left:650px; top:1090px; transform:rotate(7deg)"><img src="assets/img/tag.png" alt="" /><div>عيادة</div></div>
+          <svg class="mk" id="blankMk" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+        </div>
+        <div class="strip" id="st3" style="top:200px"><span class="cream"><em class="w">لمطعمك..</em> <em class="w">لعيادتك..</em> <em class="w">لأي <b>محل</b>.</em></span></div>
+      </section>
+
+      <!-- S4: the price, out loud (not «بالخاص») -->
+      <section class="scene clip" id="s4" data-start="14" data-duration="6" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/board.jpg" alt="" />
+          <div id="list" class="shadow">
+            <img src="assets/img/list.png" alt="" />
+            <div class="h">الأسعار</div>
+            <div class="row" id="r1" style="top:180px"><b>٣ بوستات</b><i></i><b>٤٠ ألف</b></div>
+            <div class="row" id="r2" style="top:350px"><b>٥ بوستات</b><i></i><b>٦٥ ألف</b></div>
+            <div class="row" id="r3" style="top:520px"><b>باقة شهرية</b><i></i><b>٩٠ ألف</b></div>
+            <div class="sub2" id="r4">٨ بوستات + ٤ ستوري</div>
+            <svg class="mk" id="listMk" width="780" height="975" viewBox="0 0 780 975" style="left:0;top:0"></svg>
+          </div>
+          <div id="sticky"><div>السعر..<br />بالخاص 🤫</div><svg class="mk" id="stickyX" width="580" height="580" viewBox="0 0 580 580" style="left:0;top:0"></svg></div>
+        </div>
+        <div class="strip" id="st4a" style="top:220px"><span class="cream">والسعر؟</span></div>
+        <div class="strip" id="st4b" style="top:220px"><span class="cream">مو <b>بالخاص</b>.. هنا 👇</span></div>
+      </section>
+
+      <!-- S5: the ask: send him «أريد ٣ بوستات» -->
+      <section class="scene clip" id="s5" data-start="20" data-duration="5" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/dark.jpg" alt="" />
+          <div id="noteW" class="shadow"><div id="note"><div>أريد ٣ بوستات</div></div></div>
+          <svg class="mk" id="planeMk" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+          <div id="rans2"></div>
+          <div id="handleTxt">instagram.com/<b>allawi.psd</b></div>
+        </div>
+        <div class="strip" id="st5" style="top:250px"><span class="cream">دزّله <b>بالدايركت</b> 👇</span></div>
+      </section>
+
+      <!-- film finish: grain re-seeded 12 times a second, vignette, a flash and a light leak on the cuts -->
+      <div id="fx" class="clip" data-start="0" data-duration="25" data-track-index="1">
+        <div id="leak"></div>
+        <div id="grain"></div>
+        <div id="vig"></div>
+        <div id="flash"></div>
+      </div>
+
+      <audio id="a-music" src="assets/music/bed.wav" data-start="0" data-duration="25" data-track-index="10" data-volume="0.5"></audio>
+      <audio id="a-hiss" src="assets/sfx/hiss.wav" data-start="0" data-duration="25" data-track-index="11" data-volume="0.12"></audio>
+      <audio id="a0-slap" src="assets/sfx/slap.wav" data-start="0.02" data-duration="0.3" data-track-index="12" data-volume="0.5"></audio>
+      <audio id="a1-tick" src="assets/sfx/tick.wav" data-start="0.35" data-duration="0.05" data-track-index="13" data-volume="0.4"></audio>
+      <audio id="a2-slap" src="assets/sfx/slap.wav" data-start="1.00" data-duration="0.3" data-track-index="14" data-volume="0.55"></audio>
+      <audio id="a3-slap" src="assets/sfx/slap.wav" data-start="2.00" data-duration="0.3" data-track-index="15" data-volume="0.55"></audio>
+      <audio id="a4-slap" src="assets/sfx/slap.wav" data-start="2.75" data-duration="0.3" data-track-index="16" data-volume="0.5"></audio>
+      <audio id="a5-slap" src="assets/sfx/slap.wav" data-start="3.00" data-duration="0.3" data-track-index="17" data-volume="0.55"></audio>
+      <audio id="a6-flutter" src="assets/sfx/flutter.wav" data-start="3.25" data-duration="0.9" data-track-index="18" data-volume="0.4"></audio>
+      <audio id="a7-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="3.30" data-duration="0.292" data-track-index="19" data-volume="0.2"></audio>
+      <audio id="a8-boom" src="assets/sfx/boom.wav" data-start="4.00" data-duration="2.2" data-track-index="20" data-volume="0.35"></audio>
+      <audio id="a9-thunk" src="assets/sfx/thunk.wav" data-start="4.00" data-duration="0.35" data-track-index="21" data-volume="0.85"></audio>
+      <audio id="a10-thunk" src="assets/sfx/thunk.wav" data-start="4.15" data-duration="0.35" data-track-index="22" data-volume="0.7"></audio>
+      <audio id="a11-thunk" src="assets/sfx/thunk.wav" data-start="4.30" data-duration="0.35" data-track-index="23" data-volume="0.7"></audio>
+      <audio id="a12-thunk" src="assets/sfx/thunk.wav" data-start="4.45" data-duration="0.35" data-track-index="24" data-volume="0.7"></audio>
+      <audio id="a13-thunk" src="assets/sfx/thunk.wav" data-start="4.60" data-duration="0.35" data-track-index="25" data-volume="0.75"></audio>
+      <audio id="a14-swipe" src="assets/sfx/swipe.wav" data-start="5.00" data-duration="0.42" data-track-index="26" data-volume="0.4"></audio>
+      <audio id="a15-marker" src="assets/sfx/marker.wav" data-start="5.10" data-duration="0.18" data-track-index="27" data-volume="0.4"></audio>
+      <audio id="a16-paper" src="assets/sfx/paper.wav" data-start="5.45" data-duration="0.55" data-track-index="28" data-volume="0.35"></audio>
+      <audio id="a17-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="6.00" data-duration="0.292" data-track-index="29" data-volume="0.3"></audio>
+      <audio id="a18-pop" src="assets/sfx/pop.wav" data-start="6.30" data-duration="0.16" data-track-index="30" data-volume="0.4"></audio>
+      <audio id="a19-pop" src="assets/sfx/pop.wav" data-start="6.55" data-duration="0.16" data-track-index="31" data-volume="0.4"></audio>
+      <audio id="a20-pop" src="assets/sfx/pop.wav" data-start="6.80" data-duration="0.16" data-track-index="32" data-volume="0.4"></audio>
+      <audio id="a21-pop" src="assets/sfx/pop.wav" data-start="7.05" data-duration="0.16" data-track-index="33" data-volume="0.4"></audio>
+      <audio id="a22-swish_soft" src="assets/sfx-kit/u_swish_soft.wav" data-start="8.00" data-duration="0.292" data-track-index="34" data-volume="0.25"></audio>
+      <audio id="a23-paper" src="assets/sfx/paper.wav" data-start="8.30" data-duration="0.55" data-track-index="35" data-volume="0.3"></audio>
+      <audio id="a24-whoosh_short" src="assets/sfx-kit/u_whoosh_short.wav" data-start="9.60" data-duration="0.632" data-track-index="36" data-volume="0.3"></audio>
+      <audio id="a25-slap" src="assets/sfx/slap.wav" data-start="10.00" data-duration="0.3" data-track-index="37" data-volume="0.5"></audio>
+      <audio id="a26-tick" src="assets/sfx/tick.wav" data-start="10.20" data-duration="0.05" data-track-index="38" data-volume="0.35"></audio>
+      <audio id="a27-pop" src="assets/sfx/pop.wav" data-start="10.35" data-duration="0.16" data-track-index="39" data-volume="0.35"></audio>
+      <audio id="a28-slap" src="assets/sfx/slap.wav" data-start="11.00" data-duration="0.3" data-track-index="40" data-volume="0.5"></audio>
+      <audio id="a29-tick" src="assets/sfx/tick.wav" data-start="11.20" data-duration="0.05" data-track-index="41" data-volume="0.35"></audio>
+      <audio id="a30-pop" src="assets/sfx/pop.wav" data-start="11.35" data-duration="0.16" data-track-index="42" data-volume="0.35"></audio>
+      <audio id="a31-slap" src="assets/sfx/slap.wav" data-start="12.00" data-duration="0.3" data-track-index="43" data-volume="0.5"></audio>
+      <audio id="a32-tick" src="assets/sfx/tick.wav" data-start="12.20" data-duration="0.05" data-track-index="44" data-volume="0.35"></audio>
+      <audio id="a33-scribble" src="assets/sfx/scribble.wav" data-start="12.30" data-duration="0.6" data-track-index="45" data-volume="0.35"></audio>
+      <audio id="a34-marker" src="assets/sfx/marker.wav" data-start="12.75" data-duration="0.18" data-track-index="46" data-volume="0.4"></audio>
+      <audio id="a35-slap" src="assets/sfx/slap.wav" data-start="14.00" data-duration="0.3" data-track-index="47" data-volume="0.5"></audio>
+      <audio id="a36-tick" src="assets/sfx/tick.wav" data-start="14.17" data-duration="0.05" data-track-index="48" data-volume="0.4"></audio>
+      <audio id="a37-marker" src="assets/sfx/marker.wav" data-start="15.00" data-duration="0.18" data-track-index="49" data-volume="0.45"></audio>
+      <audio id="a38-marker" src="assets/sfx/marker.wav" data-start="15.14" data-duration="0.18" data-track-index="50" data-volume="0.45"></audio>
+      <audio id="a39-rip" src="assets/sfx/rip.wav" data-start="15.75" data-duration="0.42" data-track-index="51" data-volume="0.6"></audio>
+      <audio id="a40-slap" src="assets/sfx/slap.wav" data-start="16.00" data-duration="0.3" data-track-index="52" data-volume="0.55"></audio>
+      <audio id="a41-tick" src="assets/sfx/tick.wav" data-start="16.17" data-duration="0.05" data-track-index="53" data-volume="0.4"></audio>
+      <audio id="a42-scribble" src="assets/sfx/scribble.wav" data-start="16.20" data-duration="0.6" data-track-index="54" data-volume="0.22"></audio>
+      <audio id="a43-scribble" src="assets/sfx/scribble.wav" data-start="16.45" data-duration="0.6" data-track-index="55" data-volume="0.22"></audio>
+      <audio id="a44-scribble" src="assets/sfx/scribble.wav" data-start="16.70" data-duration="0.6" data-track-index="56" data-volume="0.22"></audio>
+      <audio id="a45-scribble" src="assets/sfx/scribble.wav" data-start="16.95" data-duration="0.6" data-track-index="57" data-volume="0.22"></audio>
+      <audio id="a46-marker" src="assets/sfx/marker.wav" data-start="17.30" data-duration="0.18" data-track-index="58" data-volume="0.45"></audio>
+      <audio id="a47-slap" src="assets/sfx/slap.wav" data-start="20.00" data-duration="0.3" data-track-index="59" data-volume="0.55"></audio>
+      <audio id="a48-scribble" src="assets/sfx/scribble.wav" data-start="21.20" data-duration="0.6" data-track-index="60" data-volume="0.35"></audio>
+      <audio id="a49-tick" src="assets/sfx/tick.wav" data-start="22.00" data-duration="0.05" data-track-index="61" data-volume="0.3"></audio>
+      <audio id="a50-tick" src="assets/sfx/tick.wav" data-start="22.07" data-duration="0.05" data-track-index="62" data-volume="0.3"></audio>
+      <audio id="a51-tick" src="assets/sfx/tick.wav" data-start="22.14" data-duration="0.05" data-track-index="63" data-volume="0.3"></audio>
+      <audio id="a52-tick" src="assets/sfx/tick.wav" data-start="22.21" data-duration="0.05" data-track-index="64" data-volume="0.3"></audio>
+      <audio id="a53-tick" src="assets/sfx/tick.wav" data-start="22.28" data-duration="0.05" data-track-index="65" data-volume="0.3"></audio>
+      <audio id="a54-tick" src="assets/sfx/tick.wav" data-start="22.35" data-duration="0.05" data-track-index="66" data-volume="0.3"></audio>
+      <audio id="a55-tick" src="assets/sfx/tick.wav" data-start="22.42" data-duration="0.05" data-track-index="67" data-volume="0.3"></audio>
+      <audio id="a56-tick" src="assets/sfx/tick.wav" data-start="22.49" data-duration="0.05" data-track-index="68" data-volume="0.3"></audio>
+      <audio id="a57-tick" src="assets/sfx/tick.wav" data-start="22.56" data-duration="0.05" data-track-index="69" data-volume="0.3"></audio>
+      <audio id="a58-tick" src="assets/sfx/tick.wav" data-start="22.63" data-duration="0.05" data-track-index="70" data-volume="0.3"></audio>
+      <audio id="a59-tick" src="assets/sfx/tick.wav" data-start="22.70" data-duration="0.05" data-track-index="71" data-volume="0.3"></audio>
+      <audio id="a60-marker" src="assets/sfx/marker.wav" data-start="22.90" data-duration="0.18" data-track-index="72" data-volume="0.4"></audio>
+    </div>
+    <script>
+// The «محد طلبها منه» reel: one paused timeline, built after the fonts load, registered on window.__timelines.main.
+// The look is the dollar reel's analog collage: paper pieces move on twos (12 poses a second) and nudge a pixel or two
+// 12 times a second, marker lines boil, the camera itself glides. Times in seconds. The music ("Arab Nights", from
+// 12.0 s of the track) drops at 4.0 and hits every 2 s after; T keeps every cue the voice may move.
+(function () {
+  const D = 25;
+  const T = {
+    // S1 hook: prints land, fan out, stamps on the drop
+    land: [0, 1.0, 2.0, 2.75, 3.0], who: 0.35, fan: 3.25, stamps: [4.0, 4.15, 4.3, 4.45, 4.6], legal: 4.75,
+    st1: [0.1, 1.25, 2.25, 3.3],
+    // S2 the layers
+    s2: 5.0, why: 5.1, whyOut: 5.72, tilt: 5.45, explode: 6.0, labels: [6.3, 6.55, 6.8, 7.05], collapse: 8.0, flat: 8.3, out: 9.6,
+    st2: [5.8, 6.15, 6.6, 7.1, 7.5],
+    // S3 your shop
+    shop: [10.0, 11.0, 12.0], tape: [10.2, 11.2, 12.2], tags: [10.35, 11.35], q: 12.3, arrow: 12.75, st3: [10.1, 11.1, 12.1],
+    // S4 the price
+    sticky: 14.0, st4a: 14.1, st4b: 14.8, x: 15.0, rip: 15.75, list: 16.0, rows: [16.2, 16.45, 16.7, 16.95], circle: 17.3,
+    // S5 the ask
+    note: 20.0, st5: 20.1, write: 21.2, handle: 22.0, plane: 22.9,
+  };
+  const SCENES = [0, 5, 10, 14, 20];
+
+  // seeded randomness (deterministic)
+  function seeded(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  const rnd = seeded(40000);
+  const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const $ = (s) => document.querySelector(s);
+  const NS = 'http://www.w3.org/2000/svg';
+  const addPath = (svg, d, cls = '') => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); p.setAttribute('pathLength', '1'); if (cls) p.setAttribute('class', cls); svg.appendChild(p); return p; };
+  // a hand-drawn loop: an ellipse that overshoots its start, with a little wobble
+  const loopPath = (cx, cy, rx, ry, turns = 1.12, start = -2.4) => {
+    let d = '';
+    for (let k = 0; k <= 60; k++) {
+      const a = start + (k / 60) * Math.PI * 2 * turns, wob = 1 + (rnd() - 0.5) * 0.06 + k * 0.0012;
+      d += (k ? ' L' : 'M') + (cx + Math.cos(a) * rx * wob).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * wob).toFixed(1);
+    }
+    return d;
+  };
+  let pinN = 0;
+  const PIN = () => { const id = 'pg' + (pinN++); return `<svg viewBox="0 0 46 46"><defs><radialGradient id="${id}" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".42" stop-color="#c4161c"/><stop offset="1" stop-color="#5e0609"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#${id})"/><circle cx="21" cy="19" r="14" fill="none" stroke="#4a0507" stroke-opacity=".5" stroke-width="1"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`; };
+  const pin = (parent, x, y, id) => { const p = document.createElement('div'); p.className = 'pin'; p.id = id; p.style.left = x + 'px'; p.style.top = y + 'px'; p.innerHTML = PIN(); $(parent).appendChild(p); return p; };
+
+  // S5: @allawi.psd as a ransom note, every character cut from a different magazine
+  const RANS = [   // lowercase faces only, so l never reads as I
+    ['@', "400 118px 'Anton'", '#f4efe4', '#151312', -5, 4],
+    ['a', "900 118px 'Playfair Display'", '#b3121a', '#efe6d4', 4, -6],
+    ['l', "700 116px 'Courier Prime'", '#1d1a17', '#f6f3ec', -3, 2],
+    ['l', "900 120px 'Playfair Display'", '#f6f1e6', '#1f3a8a', 6, 8],
+    ['a', "700 112px 'Courier Prime'", '#1d1a17', '#e6d6a2', -6, -4],
+    ['w', "400 118px 'Abril Fatface'", '#1d1a17', 'url(assets/img/newsprint.jpg) 30% 40%/500px', 3, 6],
+    ['i', "900 122px 'Playfair Display'", '#f4efe4', '#151312', -4, -8],
+    ['.', "400 118px 'Abril Fatface'", '#f4efe4', '#1d1a17', 7, 24],
+    ['p', "400 120px 'Abril Fatface'", '#f6f1e6', '#b3121a', -5, 4],
+    ['s', "900 118px 'Playfair Display'", '#1d1a17', 'url(assets/img/newsprint.jpg) 70% 20%/500px', 4, -4],
+    ['d', "700 116px 'Courier Prime'", '#1d1a17', '#f6f3ec', -3, 6],
+  ];
+  const rans = $('#rans2');
+  RANS.forEach(([ch, font, col, bg, rot, dy], i) => {
+    const e = document.createElement('span');
+    e.className = 'rn jit'; e.id = 'rn' + i; e.textContent = ch;
+    e.style.font = font; e.style.color = col; e.style.background = bg; e.style.marginTop = dy + 'px';
+    e.dataset.rot = rot;
+    const j = () => (rnd() * 7).toFixed(1);   // scissor cuts: four straight-ish edges, never quite square
+    e.style.clipPath = `polygon(${j()}% ${j()}%, ${100 - j()}% ${j()}%, ${100 - j()}% ${100 - j()}%, ${j()}% ${100 - j()}%)`;
+    rans.appendChild(e);
+  });
+  document.querySelectorAll('.print, #blank, #who, .ktag, #sticky, #list, #note').forEach((e) => e.classList.add('jit'));
+
+  function build() {
+    // where each sheet's right edge lands in the exploded pose, worked out the way the browser does it (GSAP writes
+    // translate · rotate · rotateX · scale; #stage has perspective 2300px with its origin at 540,860). Labels sit in 2D
+    // beside those points, so they stay readable while the sheets are tilted.
+    const Z = [0, 150, 300, 450], POSE = { rotationX: 56, rotation: -28, scale: 0.78, x: 70, y: 70 };
+    const lys = ['#lyBg', '#lyPass', '#lyTxt', '#lyLogo'];
+    const project = (lx, ly, z) => {
+      const ax = POSE.rotationX * Math.PI / 180, az = POSE.rotation * Math.PI / 180;
+      const x0 = lx * POSE.scale, y0 = ly * POSE.scale;
+      const y1 = y0 * Math.cos(ax) - z * Math.sin(ax), z1 = y0 * Math.sin(ax) + z * Math.cos(ax);
+      const x2 = x0 * Math.cos(az) - y1 * Math.sin(az), y2 = x0 * Math.sin(az) + y1 * Math.cos(az);
+      const X = 540 + POSE.x + x2, Y = 420 + 405 + POSE.y + y2, f = 2300 / (2300 - z1);
+      return { x: 540 + (X - 540) * f, y: 860 + (Y - 860) * f };
+    };
+    const anc = Z.map((z) => project(324, 0, z));
+
+    const tl = gsap.timeline({ paused: true });
+    // stop-motion: a move is shot on twos, 12 poses a second, so pieces step instead of glide
+    const SM = (name, dur, fps = 12) => { const f = gsap.parseEase(name); const n = Math.max(1, Math.round(dur * fps)); return (p) => f(Math.round(p * n) / n); };
+    const draw = (sel, t, d, ease = 'power1.inOut') => {
+      tl.set(sel, { opacity: 0.92 }, t);
+      tl.fromTo(sel, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: SM(ease, d, 15), immediateRender: false }, t);
+    };
+    const slap = (sel, t, to, from = {}) => tl.fromTo(sel, { opacity: 0, scale: (to.scale || 1) * 1.28, rotation: (to.rotation || 0) - 7, ...from },
+      { opacity: 1, scale: to.scale || 1, rotation: to.rotation || 0, x: to.x || 0, y: to.y || 0, duration: 0.17, ease: SM('power3.out', 0.17, 24) }, t);
+    const tape = (sel, t) => { const r = gsap.getProperty(sel, 'rotation'); tl.fromTo(sel, { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, rotation: r, duration: 0.17, ease: SM('power2.out', 0.17) }, t); };
+    const pop = (sel, t, rot = 0) => tl.fromTo(sel, { opacity: 0, scale: 0.4, rotation: rot - 10 }, { opacity: 1, scale: 1, rotation: rot, duration: 0.25, ease: SM('back.out(2.4)', 0.25) }, t);
+    const strip = (sel, tIn, tOut) => {
+      tl.fromTo(sel, { opacity: 0, scale: 1.18, rotation: -3 }, { opacity: 1, scale: 1, rotation: -1.2, duration: 0.14, ease: SM('power3.out', 0.14, 24) }, tIn);
+      if (tOut) tl.set(sel, { opacity: 0 }, tOut);
+    };
+    const words = (sel, times) => document.querySelectorAll(sel + ' .w').forEach((w, k) =>
+      tl.fromTo(w, { opacity: 0, filter: 'blur(5px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out' }, times[k]));
+
+    // camera on every shot: a rack focus in (not on frame one of the hook), then a slow push with a little handheld drift
+    document.querySelectorAll('.scene').forEach((sc, i) => {
+      const t0 = +sc.dataset.start, d = +sc.dataset.duration, cam = sc.querySelector('.cam');
+      const dx = (rnd() - 0.5) * 30, dy = (rnd() - 0.5) * 24, r0 = (rnd() - 0.5) * 1.2;
+      tl.fromTo(cam, { scale: 1.04, x: -dx, y: -dy, rotation: r0 }, { scale: 1.1, x: dx, y: dy, rotation: -r0, duration: d, ease: 'sine.inOut' }, t0);
+      if (i > 0) tl.fromTo(cam, { filter: 'blur(14px)' }, { filter: 'blur(0px)', duration: 0.3, ease: 'power2.out', immediateRender: false }, t0);
+    });
+    SCENES.slice(1).forEach((t) => { tl.set('#flash', { opacity: 0.7 }, t); tl.set('#flash', { opacity: 0.25 }, t + 0.034); tl.set('#flash', { opacity: 0 }, t + 0.067); });
+    [4.0, 10.0, 16.0, 20.0].forEach((t) => { tl.fromTo('#leak', { opacity: 0 }, { opacity: 0.8, duration: 0.12, immediateRender: false }, t); tl.to('#leak', { opacity: 0, duration: 0.5, ease: 'power2.out' }, t + 0.12); });
+
+    // ── S1: the pile. Pepsi is already down on frame one; the others slam on top of it on the beat
+    const cards = ['#pPepsi', '#pQi', '#pIqa', '#pAsia', '#pTalabat'];
+    const PILE = [{ x: -8, y: -20, rotation: -5, scale: 1.2 }, { x: 34, y: 18, rotation: 6, scale: 1.18 }, { x: -30, y: 34, rotation: -3, scale: 1.18 },
+      { x: 42, y: -6, rotation: 9, scale: 1.16 }, { x: -38, y: 22, rotation: -8, scale: 1.16 }];
+    // dealt out into a loose collage so all five ads (and all five stamps) can be read; x/y are centre offsets from #fan's
+    // centre (540, 889), scale 0.62 makes each print about 290 px wide
+    const FAN = [[270, 700, -6], [800, 690, 5], [540, 965, -2], [262, 1228, 4], [808, 1215, -5]]
+      .map(([cx, cy, r]) => ({ x: cx - 540, y: cy - 889, rotation: r, scale: 0.62 }));
+    tl.fromTo('#pPepsi', { ...PILE[0], rotation: -8, opacity: 1 }, { ...PILE[0], duration: 0.34, ease: SM('back.out(2)', 0.34) }, 0);
+    cards.slice(1).forEach((c, k) => {
+      const t = T.land[k + 1];
+      gsap.set(c, { opacity: 0 });
+      slap(c, t, PILE[k + 1], { y: PILE[k + 1].y - 60 });
+      tl.fromTo('#fan', { y: 12 }, { y: 0, duration: 0.2, ease: SM('power2.out', 0.2, 24), immediateRender: false }, t + 0.1);   // the pile jolts
+    });
+    tl.fromTo('#who', { opacity: 0, scale: 1.25, rotation: -14 }, { opacity: 1, scale: 1, rotation: -9, duration: 0.17, ease: SM('power2.out', 0.17) }, T.who);
+    tl.to('#who', { x: -520, rotation: -30, duration: 0.3, ease: SM('power2.in', 0.3) }, T.fan);
+    cards.forEach((c, k) => tl.to(c, { ...FAN[k], duration: 0.42, ease: SM('power3.out', 0.42) }, T.fan + k * 0.03));
+    // the stamps come down on the drop, one card each
+    cards.forEach((c, k) => {
+      const t = T.stamps[k], st = $(c + ' .stamp'), r = parseFloat(st.style.transform.match(/-?[\d.]+/)[0]);
+      tl.fromTo(st, { opacity: 0, scale: 1.8, rotation: r }, { opacity: 0.92, scale: 1, rotation: r, duration: 0.09, ease: 'power4.in' }, t);
+      tl.fromTo(c, { scale: 0.6 }, { scale: 0.62, duration: 0.12, ease: SM('power2.out', 0.12, 24), immediateRender: false }, t + 0.09);
+    });
+    tl.fromTo('#s1 .cam', { y: 0 }, { y: 0, keyframes: [{ y: 14, duration: 0.04 }, { y: -8, duration: 0.05 }, { y: 0, duration: 0.08 }], immediateRender: false }, T.stamps[0]);
+    tl.fromTo('#legal', { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power1.out' }, T.legal);
+    tl.set('#st1a', { opacity: 1, rotation: -1.2 }, 0); tl.set('#st1a', { opacity: 0 }, T.st1[1]);   // the hook line is up on frame one
+     strip('#st1b', T.st1[1], T.st1[2]); strip('#st1c', T.st1[2], T.st1[3]); strip('#st1d', T.st1[3]);
+
+    // ── S2: «ليش؟», then the Iraqi Airways ad tilts back and comes apart into its real layers
+    tl.fromTo('#why', { opacity: 1, clipPath: 'inset(0 0 0 100%)' }, { opacity: 1, clipPath: 'inset(0 0 0 0%)', duration: 0.3, ease: SM('none', 0.3, 15) }, T.why);
+    tl.set('#why', { opacity: 0 }, T.whyOut);
+    tl.fromTo('#stack', { rotationX: 0, rotation: 0, scale: 1, x: 0, y: 0 }, { ...POSE, duration: 0.5, ease: SM('power2.inOut', 0.5) }, T.tilt);
+    lys.forEach((s, i) => tl.fromTo(s, { z: 0 }, { z: Z[i], duration: 0.4, ease: SM('back.out(1.4)', 0.4) }, T.explode + i * 0.06));
+    // labels: kraft tags beside each sheet, a thin marker line to its edge
+    const leads = $('#leads');
+    anc.forEach((a, i) => {
+      const lt = $('#lt' + i), tx = 812, ty = a.y - 53 + [40, 10, -10, -30][i];
+      lt.style.left = tx + 'px'; lt.style.top = ty + 'px';
+      const p = addPath(leads, `M${tx + 8} ${ty + 56} C ${tx - 30} ${ty + 60}, ${a.x + 50} ${a.y + 4}, ${a.x + 8} ${a.y}`, '');
+      p.style.strokeWidth = '6';
+      pop('#lt' + i, T.labels[i], [-6, 4, -3, 5][i]);
+      draw(p, T.labels[i] + 0.1, 0.22, 'power1.out');
+      tl.set([lt, p], { opacity: 0 }, T.collapse - 0.05);
+    });
+    lys.forEach((s, i) => tl.to(s, { z: 0, duration: 0.3, ease: SM('power3.in', 0.3) }, T.collapse));
+    tl.to('#stack', { rotationX: 0, rotation: 0, scale: 1, x: 0, y: 0, duration: 0.5, ease: SM('power2.inOut', 0.5) }, T.flat);
+    tl.to('#stack', { y: -1500, rotation: 10, duration: 0.36, ease: SM('power2.in', 0.36) }, T.out);
+    strip('#st2', T.st2[0]); words('#st2', T.st2);
+
+    // ── S3: your restaurant, your clinic, any shop
+    [['#pSaj', -6], ['#pShifa', 5], ['#blank', -2]].forEach(([s, r], k) => { gsap.set(s, { rotation: r, opacity: 0 }); slap(s, T.shop[k], { rotation: r }, { y: -60 }); });
+    ['#tp1', '#tp2', '#tp3'].forEach((s, k) => { gsap.set(s, { opacity: 0 }); tape(s, T.tape[k]); });
+    pop('#k1', T.tags[0], -9); pop('#k2', T.tags[1], 7);
+    tl.fromTo('#blank .q', { opacity: 1, clipPath: 'inset(0 0 0 100%)' }, { opacity: 1, clipPath: 'inset(0 0 0 0%)', duration: 0.4, ease: SM('none', 0.4, 15) }, T.q);
+    const bm = $('#blankMk'), bd = $('#blankDash');
+    const dash = addPath(bd, 'M28 28 L412 28 L412 522 L28 522 Z'); dash.style.strokeDasharray = '0.035 0.025'; dash.style.strokeWidth = '7';
+    tl.fromTo(dash, { opacity: 0 }, { opacity: 0.85, duration: 0.2, ease: SM('none', 0.2) }, T.q - 0.15);
+    draw(addPath(bm, 'M905 1290 C 930 1370, 880 1420, 806 1414 M840 1386 L802 1414 L846 1440'), T.arrow, 0.35);
+    strip('#st3', T.st3[0]); words('#st3', T.st3);
+
+    // ── S4: «السعر بالخاص 🤫» crossed out and ripped off; the real prices underneath
+    pin('#sticky', 268, -14, 'pinS'); pin('#list', 367, -16, 'pinL');
+    gsap.set('#sticky', { rotation: 3, opacity: 0 }); slap('#sticky', T.sticky, { rotation: 3 }, { y: -40 });
+    tl.fromTo('#pinS', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.12, ease: SM('power3.in', 0.12, 24) }, T.sticky + 0.17);
+    const sx = $('#stickyX');
+    draw(addPath(sx, 'M70 90 C 220 240, 360 380, 520 500'), T.x, 0.12, 'none');
+    draw(addPath(sx, 'M520 80 C 380 230, 220 390, 70 510'), T.x + 0.14, 0.12, 'none');
+    tl.to('#sticky', { x: -1500, y: -1100, rotation: -60, duration: 0.3, ease: SM('power2.in', 0.3, 24) }, T.rip);
+    tl.set('#sticky', { opacity: 0 }, T.rip + 0.32);
+    gsap.set('#list', { opacity: 0, rotation: -2 }); slap('#list', T.list, { rotation: -2 }, { y: -50 });
+    tl.fromTo('#pinL', { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.12, ease: SM('power3.in', 0.12, 24) }, T.list + 0.17);
+    ['#r1', '#r2', '#r3', '#r4'].forEach((s, k) => tl.fromTo(s, { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.3, ease: SM('none', 0.3, 15) }, T.rows[k]));
+    draw(addPath($('#listMk'), loopPath(560, 258, 190, 74)), T.circle, 0.45);
+    strip('#st4a', T.st4a, T.st4b); strip('#st4b', T.st4b);
+
+    // ── S5: the note, the handle cut out of magazines, a paper plane for the DM
+    gsap.set('#noteW', { rotation: -3, opacity: 0 }); slap('#noteW', T.note, { rotation: -3 }, { y: -50 });
+    tl.fromTo('#note div', { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.65, ease: SM('none', 0.65, 15) }, T.write);
+    tl.fromTo('#handleTxt', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power1.out' }, T.handle + 0.85);
+    RANS.forEach((r, i) => tl.fromTo('#rn' + i, { opacity: 0, scale: 1.4, rotation: r[4] - 10 }, { opacity: 1, scale: 1, rotation: r[4], duration: 0.12, ease: SM('back.out(2)', 0.12, 24) }, T.handle + i * 0.07));
+    const pm = $('#planeMk');
+    draw(addPath(pm, 'M150 520 L330 448 L262 612 L236 548 Z M236 548 L330 448'), T.plane, 0.4);
+    strip('#st5', T.st5);
+
+    // every frame: the grain moves; 12 times a second the marker lines boil and the paper pieces nudge
+    const film = { f: 0 };
+    const g = $('#grain'), boil = $('#boilT'), jit = [...document.querySelectorAll('.jit')];
+    tl.to(film, { f: D * 30, duration: D, ease: 'none', onUpdate: () => {
+      const n = Math.floor(film.f), k = Math.floor(n * 0.4);
+      g.style.backgroundPosition = `${Math.floor(hash(n) * 420)}px ${Math.floor(hash(n + 7) * 420)}px`;
+      boil.setAttribute('seed', String(k % 7 + 1));
+      jit.forEach((e, i) => { e.style.rotate = `${((hash(k * 31 + i * 7) - 0.5) * 0.7).toFixed(2)}deg`; e.style.translate = `${((hash(k * 17 + i * 3) - 0.5) * 2.4).toFixed(1)}px ${((hash(k * 13 + i * 5) - 0.5) * 2.4).toFixed(1)}px`; });
+    } }, 0);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines['main'] = tl;
+  }
+  document.fonts.ready.then(build);
+})();
+    </script>
+  </body>
+</html>

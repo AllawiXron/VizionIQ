@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>allawi.psd — محد طلبها منه (reel)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+/*FONTFACES*/
+:root { --cream:#efe5d3; --ink:#2a2420; --red:#9a1015; --marker:#c4161c; --pen:#1f3a8a; --stamp:#d0161e }
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#0b0909 }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#0b0909; direction:rtl; font-family:'IBM Plex Sans Arabic' }
+.scene { position:absolute; inset:0; overflow:hidden; background:#0b0909 }
+.cam { position:absolute; inset:0; transform-origin:540px 960px }
+.bg { position:absolute; left:0; top:0; width:1080px; height:1920px }
+.ab { position:absolute }
+.shadow { filter:drop-shadow(0 18px 22px rgba(0,0,0,.45)) drop-shadow(0 3px 4px rgba(0,0,0,.35)) }
+
+/* a photo print of an ad: white lab border, a faint sheen */
+.print { position:absolute; width:468px; padding:14px; background:#f7f4ee; box-shadow:0 22px 34px rgba(0,0,0,.5), 0 3px 6px rgba(0,0,0,.35) }
+.print img { display:block; width:100%; aspect-ratio:4/5 }
+.print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)); pointer-events:none }
+.tape { position:absolute; height:50px; background:rgba(236,226,200,.74); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:4;
+  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+.pin { position:absolute; width:46px; height:46px; z-index:5 }
+
+/* the rubber stamp: double border, ink that skips (grain mask) */
+.stamp { position:absolute; padding:4px 30px 16px; border:9px double var(--stamp); border-radius:18px; color:var(--stamp); font:700 84px/1.3 'IBM Plex Sans Arabic';
+  white-space:nowrap; opacity:0; background:rgba(247,244,238,.8); box-shadow:0 0 0 4px rgba(247,244,238,.5);
+  -webkit-mask-image:url(assets/img/grain.png); mask-image:url(assets/img/grain.png); -webkit-mask-size:260px; mask-size:260px }
+
+/* the caption strips: torn paper with the line on it (they carry the voice for people watching muted) */
+.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; pointer-events:none }
+.strip span { display:inline-block; padding:16px 42px 26px; font:700 74px/1.25 'Reem Kufi'; color:#1d1a17; background:url(assets/img/newsprint.jpg) center/640px;
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.45)); white-space:nowrap;
+  clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
+.strip span.cream { background:#efe6d4 }
+.strip b { color:var(--marker); font-weight:700 }
+.strip .w { opacity:0; font-style:normal }
+
+/* marker strokes boil like hand-drawn animation: the displacement noise re-seeds 12 times a second */
+.mk { position:absolute; overflow:visible; pointer-events:none; filter:url(#boil) }
+.mk path { fill:none; stroke:var(--marker); stroke-width:10; stroke-linecap:round; stroke-linejoin:round; opacity:0 }
+.ruq { font-family:'Aref Ruqaa'; font-weight:700 }
+
+/* S1 */
+#fan { position:absolute; left:306px; top:600px; width:468px; height:584px }
+#fan .print { left:0; top:0 }
+#legal { position:absolute; left:0; right:0; top:1452px; text-align:center; font:500 28px 'IBM Plex Sans Arabic'; color:rgba(239,229,211,.82); opacity:0 }
+#legal b { font-weight:600; direction:ltr; unicode-bidi:isolate }
+#who { position:absolute; left:120px; top:1290px; width:300px; height:160px; transform-origin:60px 80px; opacity:0 }
+#who img { position:absolute; inset:0; width:100%; height:100% }
+#who div { position:absolute; left:84px; right:18px; top:34px; text-align:center; font:700 34px/1.2 'Aref Ruqaa'; color:#3a2a1c }
+#who div i { display:block; font:600 30px 'IBM Plex Sans Arabic'; font-style:normal; direction:ltr; color:#2a1f17 }
+
+/* S2: the Iraqi Airways ad comes apart into its layers */
+#stage { position:absolute; left:0; top:0; width:1080px; height:1920px; perspective:2300px; perspective-origin:540px 860px }
+#stack { position:absolute; left:216px; top:420px; width:648px; height:810px; transform-style:preserve-3d; transform-origin:324px 405px }
+.ly { position:absolute; inset:0; transform-style:preserve-3d }
+.ly img { position:absolute; inset:0; width:100%; height:100% }
+.ly.sheet { outline:2px solid rgba(255,255,255,.38); background:rgba(220,232,255,.06) }
+.ly .anc { position:absolute; width:2px; height:2px; left:0; top:50% }
+.lt { position:absolute; width:250px; height:106px; opacity:0 }
+.lt img { position:absolute; inset:0; width:100%; height:100% }
+.lt div { position:absolute; left:60px; right:12px; top:20px; text-align:center; font:700 34px/1.25 'Aref Ruqaa'; color:#3a2a1c; white-space:nowrap }
+#why { position:absolute; left:0; right:0; top:200px; text-align:center; font:700 200px/1 'Aref Ruqaa'; color:var(--marker); opacity:0;
+  filter:url(#boil) drop-shadow(0 8px 10px rgba(0,0,0,.4)) }
+
+/* S3: your shop */
+#blank { position:absolute; width:468px; padding:14px; background:#f7f4ee; box-shadow:0 22px 34px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
+#blank .in { aspect-ratio:4/5; background:#ebe3d3; position:relative }
+#blank .q { position:absolute; left:0; right:0; top:190px; text-align:center; font:700 92px/1.2 'Aref Ruqaa'; color:var(--marker); opacity:0; filter:url(#boil) }
+.ktag { position:absolute; width:300px; height:160px; opacity:0 }
+.ktag img { position:absolute; inset:0; width:100%; height:100% }
+.ktag div { position:absolute; left:80px; right:16px; top:36px; text-align:center; font:700 54px/1.2 'Aref Ruqaa'; color:#3a2a1c; white-space:nowrap }
+
+/* S4: the price */
+#sticky { position:absolute; left:250px; top:560px; width:580px; height:580px; background:linear-gradient(160deg, #ffe873, #f6d443 60%, #e9c22f);
+  box-shadow:0 26px 30px rgba(0,0,0,.45), inset 0 -18px 30px rgba(160,120,0,.18); transform-origin:290px 0 }
+#sticky div { position:absolute; left:30px; right:30px; top:150px; text-align:center; font:700 104px/1.35 'Aref Ruqaa'; color:#2c2a26 }
+#list { position:absolute; left:150px; top:470px; width:780px; height:975px }
+#list > img { position:absolute; inset:0; width:100%; height:100% }
+#list .h { position:absolute; left:0; right:0; top:58px; text-align:center; font:700 82px 'Aref Ruqaa'; color:var(--marker) }
+#list .row { position:absolute; left:70px; right:70px; height:150px; display:flex; justify-content:space-between; align-items:center; font:700 78px 'Aref Ruqaa'; color:var(--pen); white-space:nowrap }
+#list .row i { flex:1; margin:0 22px; border-bottom:5px dotted rgba(31,58,138,.55); transform:translateY(16px) }
+#list .row b { font-weight:700 }
+#list .sub2 { position:absolute; left:0; right:0; top:742px; text-align:center; font:700 52px 'Aref Ruqaa'; color:rgba(31,58,138,.85) }
+
+/* S5: the ask */
+#note { position:absolute; left:150px; top:560px; width:780px; height:330px; background:url(assets/img/slip.png) center/cover;
+  clip-path:polygon(0 4%, 7% 0, 16% 5%, 27% 1%, 39% 6%, 52% 0, 64% 5%, 77% 1%, 88% 6%, 100% 2%, 98% 50%, 100% 97%, 90% 93%, 78% 100%, 64% 94%, 50% 99%, 37% 93%, 24% 100%, 12% 94%, 0 98%, 2% 50%) }
+#note div { position:absolute; left:0; right:0; top:84px; text-align:center; font:700 124px/1.2 'Aref Ruqaa'; color:var(--pen) }
+#noteW { position:absolute; left:0; top:0; width:1080px; height:1920px }
+#rans2 { position:absolute; left:0; right:0; top:1010px; height:220px; transform:scale(.88); display:flex; justify-content:center; align-items:center; direction:ltr;
+  filter:drop-shadow(0 12px 14px rgba(0,0,0,.5)) drop-shadow(0 2px 3px rgba(0,0,0,.4)) }
+#handleTxt { position:absolute; left:0; right:0; top:1250px; text-align:center; font:500 38px 'IBM Plex Sans Arabic'; color:rgba(239,229,211,.78); direction:ltr; opacity:0 }
+#handleTxt b { font-weight:700; color:#efe5d3 }
+.rn { display:inline-block; line-height:1; padding:14px 12px 10px; margin:0 -2px; opacity:0 }
+
+/* film finish over everything */
+#fx, #grain, #vig, #flash, #leak { position:absolute; inset:0; pointer-events:none }
+#fx { overflow:hidden }
+#grain { background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.42 }
+#vig { background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%) }
+#flash { opacity:0; background:#f3e6d3 }
+#leak { opacity:0; mix-blend-mode:screen; background:radial-gradient(700px 900px at 85% 20%, rgba(255,170,90,.95), rgba(255,90,40,.45) 40%, rgba(255,60,20,0) 75%) }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence id="boilT" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1080" data-height="1920">
+
+      <!-- S1 (hook): five brand ads land as prints, fan out, and each gets stamped «محد طلبه» -->
+      <section class="scene clip" id="s1" data-start="0" data-duration="5" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/red.jpg" alt="" />
+          <div id="fan">
+            <div class="print" id="pPepsi"><img src="assets/work/pepsi.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-12deg)">محد طلبه</div></div>
+            <div class="print" id="pQi"><img src="assets/work/qi.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-8deg)">محد طلبه</div></div>
+            <div class="print" id="pIqa"><img src="assets/work/iraqiairways.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-14deg)">محد طلبه</div></div>
+            <div class="print" id="pAsia"><img src="assets/work/asiacell.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-6deg)">محد طلبه</div></div>
+            <div class="print" id="pTalabat"><img src="assets/work/talabat.jpg" alt="" /><div class="stamp" style="left:48px; top:214px; transform:rotate(-11deg)">محد طلبه</div></div>
+          </div>
+          <div id="who" class="shadow"><img src="assets/img/tag.png" alt="" /><div>تصميم<i>@allawi.psd</i></div></div>
+          <div id="legal">إعلانات غير رسمية · فكرة وتصميم <b>@allawi.psd</b></div>
+        </div>
+        <div class="strip" id="st1a" style="top:250px"><span class="cream">سوّى إعلان لـ<b>ببسي</b>..</span></div>
+        <div class="strip" id="st1b" style="top:250px"><span class="cream">ولـ<b>كي كارد</b>..</span></div>
+        <div class="strip" id="st1c" style="top:250px"><span class="cream">و<b>للخطوط العراقية</b>..</span></div>
+        <div class="strip" id="st1d" style="top:250px"><span>ومحد <b>طلبها</b> منه!</span></div>
+      </section>
+
+      <!-- S2: why? so you can see what he can do for your shop (the ad comes apart into its real layers) -->
+      <section class="scene clip" id="s2" data-start="5" data-duration="5" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/dark.jpg" alt="" />
+          <div id="stage">
+            <div id="stack">
+              <div class="ly" id="lyBg"><img src="assets/layers/iqa/bg.jpg" alt="" /><i class="anc"></i></div>
+              <div class="ly sheet" id="lyPass"><img src="assets/layers/iqa/pass.png" alt="" /><i class="anc"></i></div>
+              <div class="ly sheet" id="lyTxt"><img src="assets/layers/iqa/txt.png" alt="" /><i class="anc"></i></div>
+              <div class="ly sheet" id="lyLogo"><img src="assets/layers/iqa/logo.png" alt="" /><i class="anc"></i></div>
+            </div>
+          </div>
+          <div class="lt shadow" id="lt0"><img src="assets/img/tag.png" alt="" /><div>الصورة</div></div>
+          <div class="lt shadow" id="lt1"><img src="assets/img/tag.png" alt="" /><div>التذكرة</div></div>
+          <div class="lt shadow" id="lt2"><img src="assets/img/tag.png" alt="" /><div>الخط</div></div>
+          <div class="lt shadow" id="lt3"><img src="assets/img/tag.png" alt="" /><div>الشعار</div></div>
+          <svg class="mk" id="leads" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+          <div id="why">ليش؟</div>
+        </div>
+        <div class="strip" id="st2" style="top:1290px"><span class="cream"><em class="w">حتى</em> <em class="w">تشوف..</em> <em class="w"><b>شيگدر</b></em> <em class="w">يسوّي</em> <em class="w">لمحلك</em></span></div>
+      </section>
+
+      <!-- S3: your restaurant, your clinic, any shop -->
+      <section class="scene clip" id="s3" data-start="10" data-duration="4" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/paper.jpg" alt="" />
+          <div class="print" id="pSaj" style="left:52px; top:420px"><img src="assets/work/saj.jpg" alt="" /></div>
+          <div class="print" id="pShifa" style="left:560px; top:520px"><img src="assets/work/shifa.jpg" alt="" /></div>
+          <div id="blank" style="left:306px; top:880px"><div class="in"><svg class="mk" id="blankDash" width="440" height="550" viewBox="0 0 440 550" style="left:0;top:0"></svg><div class="q">محلك؟</div></div></div>
+          <div class="tape" id="tp1" style="left:220px; top:398px; width:150px; transform:rotate(-8deg)"></div>
+          <div class="tape" id="tp2" style="left:720px; top:498px; width:150px; transform:rotate(6deg)"></div>
+          <div class="tape" id="tp3" style="left:470px; top:858px; width:150px; transform:rotate(-3deg)"></div>
+          <div class="ktag shadow" id="k1" style="left:20px; top:1000px; transform:rotate(-9deg)"><img src="assets/img/tag.png" alt="" /><div>مطعم</div></div>
+          <div class="ktag shadow" id="k2" style="left:650px; top:1090px; transform:rotate(7deg)"><img src="assets/img/tag.png" alt="" /><div>عيادة</div></div>
+          <svg class="mk" id="blankMk" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+        </div>
+        <div class="strip" id="st3" style="top:200px"><span class="cream"><em class="w">لمطعمك..</em> <em class="w">لعيادتك..</em> <em class="w">لأي <b>محل</b>.</em></span></div>
+      </section>
+
+      <!-- S4: the price, out loud (not «بالخاص») -->
+      <section class="scene clip" id="s4" data-start="14" data-duration="6" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/board.jpg" alt="" />
+          <div id="list" class="shadow">
+            <img src="assets/img/list.png" alt="" />
+            <div class="h">الأسعار</div>
+            <div class="row" id="r1" style="top:180px"><b>٣ بوستات</b><i></i><b>٤٠ ألف</b></div>
+            <div class="row" id="r2" style="top:350px"><b>٥ بوستات</b><i></i><b>٦٥ ألف</b></div>
+            <div class="row" id="r3" style="top:520px"><b>باقة شهرية</b><i></i><b>٩٠ ألف</b></div>
+            <div class="sub2" id="r4">٨ بوستات + ٤ ستوري</div>
+            <svg class="mk" id="listMk" width="780" height="975" viewBox="0 0 780 975" style="left:0;top:0"></svg>
+          </div>
+          <div id="sticky"><div>السعر..<br />بالخاص 🤫</div><svg class="mk" id="stickyX" width="580" height="580" viewBox="0 0 580 580" style="left:0;top:0"></svg></div>
+        </div>
+        <div class="strip" id="st4a" style="top:220px"><span class="cream">والسعر؟</span></div>
+        <div class="strip" id="st4b" style="top:220px"><span class="cream">مو <b>بالخاص</b>.. هنا 👇</span></div>
+      </section>
+
+      <!-- S5: the ask: send him «أريد ٣ بوستات» -->
+      <section class="scene clip" id="s5" data-start="20" data-duration="5" data-track-index="0">
+        <div class="cam">
+          <img class="bg" src="assets/img/dark.jpg" alt="" />
+          <div id="noteW" class="shadow"><div id="note"><div>أريد ٣ بوستات</div></div></div>
+          <svg class="mk" id="planeMk" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+          <div id="rans2"></div>
+          <div id="handleTxt">instagram.com/<b>allawi.psd</b></div>
+        </div>
+        <div class="strip" id="st5" style="top:250px"><span class="cream">دزّله <b>بالدايركت</b> 👇</span></div>
+      </section>
+
+      <!-- film finish: grain re-seeded 12 times a second, vignette, a flash and a light leak on the cuts -->
+      <div id="fx" class="clip" data-start="0" data-duration="25" data-track-index="1">
+        <div id="leak"></div>
+        <div id="grain"></div>
+        <div id="vig"></div>
+        <div id="flash"></div>
+      </div>
+
+<!--AUDIO-->
+    </div>
+    <script>
+/*TIMELINE*/
+    </script>
+  </body>
+</html>
