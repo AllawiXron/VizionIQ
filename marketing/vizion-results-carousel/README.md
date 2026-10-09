@@ -25,6 +25,14 @@ the first and last bubbles. The chats are now cut from inside the original frame
 navy corners and border arcs blackened, and the card has 22px of black padding. Slide 3 also says how to book:
 «للحجز دزلنا بالخاص، أو واتساب 07757851379».
 
+## v2.1: built for DMs
+
+After the user asked whether it would bring DMs: one keyword to send, «كورس», on the cover (a cyan pill under the
+chat) and as the big button on the last slide («دز كلمة «كورس» بالخاص» + «ونرسلك كل التفاصيل · أو واتساب»); the
+offer moved to the end so the post finishes on the price and the button (order: result, 230+, benefits, offer); the
+benefits slide ends with «اسحب وشوف السعر ←»; the cover says «كورس viZion» so new people know it's a course. No
+deadline on the price: the user gave none, so none is invented. The caption ends on the same keyword.
+
 ## v1
 
 The first, busier five-slide version (phone mockup, zoomed numbers, profit card, before/after slide, sticker and CTA
@@ -33,4 +41,4 @@ button) is kept in `out/v1/`; its source is in git history (commit 3670883).
 Every quote and number comes from the user's original slides; the chats are cropped from their full-resolution
 images (`shots/`), nothing in them is retyped or changed. `node render.cjs` renders `carousel.html` to
 `out/slide-1.jpg` … `slide-4.jpg`. The selection box on slide 1 is placed from the screenshot's measured layout
-(at 510px wide the numbers message is y 241–428, x 8–429). `caption.txt` is the post caption.
+(at 480px wide the numbers message is y 227–403, x 8–404). `caption.txt` is the post caption.

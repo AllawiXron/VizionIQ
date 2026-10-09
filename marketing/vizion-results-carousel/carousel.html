@@ -70,6 +70,16 @@
     font-family: "IBM Plex Mono", monospace; font-size: 26px; font-weight: 500; color: var(--cyan); margin-top: 2px; }
   .li .t { font-size: 38px; font-weight: 500; line-height: 1.3; }
   .li .d { font-size: 27px; font-weight: 300; color: var(--soft); line-height: 1.4; margin-top: 4px; }
+
+  /* the DM call to action */
+  .dmpill { direction: rtl; display: inline-flex; align-items: center; gap: 12px; padding: 12px 30px; border-radius: 99px; font-size: 32px; font-weight: 500; color: #071a45;
+    background: linear-gradient(180deg, #8fe3f5 0%, #57c2e6 100%); border: 2px solid rgba(255,255,255,.55);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.6), 0 0 0 8px rgba(98,198,233,.12), 0 18px 40px rgba(20,120,200,.45); }
+  .dmpill b { font-weight: 700; }
+  .cta { position: absolute; left: 150px; right: 150px; height: 100px; border-radius: 32px; direction: rtl; z-index: 6;
+    background: linear-gradient(180deg, #8fe3f5 0%, #57c2e6 100%); border: 2px solid rgba(255,255,255,0.55);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.6), 0 0 0 10px rgba(98,198,233,0.12), 0 24px 50px rgba(20,120,200,0.45);
+    color: #071a45; font-size: 42px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 18px; }
 </style>
 </head>
 <body>
@@ -107,22 +117,25 @@
   </div>
 </template>
 
-<!-- 1 · the result, the chat, a pointer. Nothing else. -->
+<!-- 1 · the result, the chat, a pointer, and what to send -->
 <section class="slide" id="s1">
-  <div class="glow" style="left:240px;top:560px;width:600px;height:600px;background:rgba(40,130,255,.38)"></div>
-  <div class="center" style="top:146px">
+  <div class="glow" style="left:240px;top:520px;width:600px;height:600px;background:rgba(40,130,255,.38)"></div>
+  <div class="center" style="top:136px">
     <div style="font-size:50px;font-weight:500;line-height:1.3">صرف <span class="num cyan" style="font-weight:700">$70</span> بس.. ورجعتله</div>
     <div><span class="grad" style="font-size:112px;font-weight:700;line-height:1.2;white-space:nowrap;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">مليون و475 ألف</span></div>
-    <div style="font-size:40px;font-weight:400;line-height:1.3;margin-top:2px">بأول تطبيق لتعليمات <span class="cyan" style="font-weight:600">viZion</span>!</div>
+    <div style="font-size:40px;font-weight:400;line-height:1.3;margin-top:2px">بأول تطبيق لتعليمات <span class="cyan" style="font-weight:600">كورس viZion</span>!</div>
   </div>
-  <!-- dm-results at 510px wide: the numbers message is y 241–428, x 8–429 -->
-  <div class="shot" style="left:260px;top:468px;width:560px">
+  <!-- dm-results at 480px wide: the numbers message is y 227–403, x 8–404 -->
+  <div class="shot" style="left:275px;top:430px;width:530px">
     <img src="shots/dm-results.jpg" alt="" />
   </div>
-  <div class="select" style="left:279px;top:720px;width:449px;height:215px">
+  <div class="select" style="left:294px;top:668px;width:424px;height:204px">
     <span class="h tl"></span><span class="h tr"></span><span class="h bl"></span><span class="h br"></span><span class="h ml"></span><span class="h mr"></span>
   </div>
-  <svg class="cursor" style="left:677px;top:906px" viewBox="0 0 17 17"></svg>
+  <svg class="cursor" style="left:667px;top:844px" viewBox="0 0 17 17"></svg>
+  <div style="position:absolute;left:0;right:0;top:1122px;display:flex;justify-content:center;z-index:8">
+    <div class="dmpill">دز كلمة <b>«كورس»</b> بالخاص <svg width="30" height="24" viewBox="0 0 24 20"><path d="M2 3 L22 3 L22 15 L9 15 L4 19 L4 15 L2 15 Z" fill="none" stroke="#071a45" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
+  </div>
 </section>
 
 <!-- 2 · 230+ subscribers -->
@@ -138,38 +151,45 @@
   </div>
 </section>
 
-<!-- 3 · booking is open -->
+<!-- 3 · what changes in your business -->
 <section class="slide" id="s3">
-  <div class="glow" style="left:200px;top:300px;width:680px;height:620px;background:rgba(40,130,255,.34)"></div>
-  <div class="center" style="top:170px">
-    <div><span class="grad" style="font-size:150px;font-weight:700;line-height:1.1;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">الحجز</span></div>
-    <div><span class="grad" style="font-size:150px;font-weight:700;line-height:1.1;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">مفتوح!</span></div>
-  </div>
-  <div class="center" style="top:568px;font-size:44px;font-weight:400;line-height:1.5">
-    اشترك هسه، وخلي كل دينار تصرفه<br />على الإعلان يرجعلك بربح
-  </div>
-  <div class="price" style="top:800px">
-    <span style="font-size:96px;font-weight:700;line-height:1" class="grad">49 ألف</span>
-    <span style="font-size:42px;font-weight:300;color:var(--soft)">بدل
-      <span style="position:relative;display:inline-block;font-weight:500;color:#fff">99 ألف<svg viewBox="0 0 100 30" preserveAspectRatio="none" style="position:absolute;left:-6%;top:18%;width:112%;height:70%;overflow:visible"><path d="M2 26 L98 6" stroke="#ff7a86" stroke-width="5" stroke-linecap="round"/></svg></span>
-    </span>
-  </div>
-  <div class="center" style="top:1006px;font-size:34px;font-weight:500;color:var(--mint)">اشتراك مدى الحياة</div>
-  <div class="center" style="top:1076px;font-size:27px;font-weight:300;color:var(--soft)">للحجز دزلنا بالخاص، أو واتساب <span class="num" style="font-weight:500;color:#fff">07757851379</span></div>
-</section>
-
-<!-- 4 · what changes in your business -->
-<section class="slide" id="s4">
   <div class="glow" style="right:-120px;top:120px;width:560px;height:400px;background:rgba(60,190,255,.20)"></div>
   <div class="center" style="top:150px">
     <div style="font-size:74px;font-weight:600;line-height:1.25">شنو يتغيّر بشغلك</div>
     <div style="font-size:74px;font-weight:600;line-height:1.25">مع كورس <span class="grad">viZion</span>؟</div>
   </div>
-  <div class="li" style="top:410px"><span class="n">1</span><div><div class="t">بطّل تخسر فلوسك على إعلانات فاشلة</div><div class="d">تعرف قبل لا تصرف إذا الإعلان راح يربحك لو لا</div></div></div>
-  <div class="li" style="top:566px"><span class="n">2</span><div><div class="t">الزبون اللي يسأل وفضولي يصير يشتري</div><div class="d">تعرف شنو تكتبله بالضبط حتى يطلب، مو يختفي</div></div></div>
-  <div class="li" style="top:722px"><span class="n">3</span><div><div class="t">سعر الرسالة أرخص.. وطلبات أكثر</div><div class="d">تعرف وين الخلل بإعلانك وتصلحه بنفسك</div></div></div>
-  <div class="li" style="top:878px"><span class="n">4</span><div><div class="t">الطلبات ما ترجع وتخسرك التوصيل</div><div class="d">تأكد الطلب صح وينزل الراجع لأقل حد</div></div></div>
-  <div class="li" style="top:1034px"><span class="n">5</span><div><div class="t">مستشار ذكي جوة إيدك 24 ساعة</div><div class="d">تسأله عن مشروعك بالضبط ويجاوبك بأرقامك</div></div></div>
+  <div class="li" style="top:400px"><span class="n">1</span><div><div class="t">بطّل تخسر فلوسك على إعلانات فاشلة</div><div class="d">تعرف قبل لا تصرف إذا الإعلان راح يربحك لو لا</div></div></div>
+  <div class="li" style="top:546px"><span class="n">2</span><div><div class="t">الزبون اللي يسأل وفضولي يصير يشتري</div><div class="d">تعرف شنو تكتبله بالضبط حتى يطلب، مو يختفي</div></div></div>
+  <div class="li" style="top:692px"><span class="n">3</span><div><div class="t">سعر الرسالة أرخص.. وطلبات أكثر</div><div class="d">تعرف وين الخلل بإعلانك وتصلحه بنفسك</div></div></div>
+  <div class="li" style="top:838px"><span class="n">4</span><div><div class="t">الطلبات ما ترجع وتخسرك التوصيل</div><div class="d">تأكد الطلب صح وينزل الراجع لأقل حد</div></div></div>
+  <div class="li" style="top:984px"><span class="n">5</span><div><div class="t">مستشار ذكي جوة إيدك 24 ساعة</div><div class="d">تسأله عن مشروعك بالضبط ويجاوبك بأرقامك</div></div></div>
+  <div style="position:absolute;right:110px;top:1140px;direction:rtl;display:flex;align-items:center;gap:12px;font-size:28px;font-weight:500;color:var(--cyan)">
+    اسحب وشوف السعر
+    <svg width="40" height="22" viewBox="0 0 40 22"><path d="M38 11 H4 M13 2 L3 11 L13 20" fill="none" stroke="#62c6e9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+<!-- 4 · booking is open: the price, and exactly what to send -->
+<section class="slide" id="s4">
+  <div class="glow" style="left:200px;top:300px;width:680px;height:620px;background:rgba(40,130,255,.34)"></div>
+  <div class="center" style="top:146px">
+    <div><span class="grad" style="font-size:140px;font-weight:700;line-height:1.1;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">الحجز</span></div>
+    <div><span class="grad" style="font-size:140px;font-weight:700;line-height:1.1;filter:drop-shadow(0 8px 34px rgba(60,190,255,.35))">مفتوح!</span></div>
+  </div>
+  <div class="center" style="top:492px;font-size:42px;font-weight:400;line-height:1.5">
+    اشترك هسه، وخلي كل دينار تصرفه<br />على الإعلان يرجعلك بربح
+  </div>
+  <div class="price" style="top:668px">
+    <span style="font-size:96px;font-weight:700;line-height:1" class="grad">49 ألف</span>
+    <span style="font-size:42px;font-weight:300;color:var(--soft)">بدل
+      <span style="position:relative;display:inline-block;font-weight:500;color:#fff">99 ألف<svg viewBox="0 0 100 30" preserveAspectRatio="none" style="position:absolute;left:-6%;top:18%;width:112%;height:70%;overflow:visible"><path d="M2 26 L98 6" stroke="#ff7a86" stroke-width="5" stroke-linecap="round"/></svg></span>
+    </span>
+  </div>
+  <div class="center" style="top:866px;font-size:34px;font-weight:500;color:var(--mint)">اشتراك مدى الحياة</div>
+  <div class="cta" style="top:944px">دز كلمة «كورس» بالخاص
+    <svg width="36" height="30" viewBox="0 0 24 20"><path d="M2 3 L22 3 L22 15 L9 15 L4 19 L4 15 L2 15 Z" fill="none" stroke="#071a45" stroke-width="2.2" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="center" style="top:1066px;font-size:26px;font-weight:300;color:var(--soft)">ونرسلك كل التفاصيل · أو واتساب <span class="num" style="font-weight:500;color:#fff">07757851379</span></div>
 </section>
 
 <script>
