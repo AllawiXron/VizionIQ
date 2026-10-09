@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>allawi.psd — highlights</title>
+<link rel="stylesheet" href="assets/fonts/fonts.css" />
+<style>
+:root { --cream:#efe5d3; --ink:#1d1a17; --marker:#c4161c; --pen:#1f3a8a; --stamp:#d0161e; --kraft:#3a2a1c }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:4600px }
+.art { position:relative; width:1080px; height:1920px; overflow:hidden; direction:rtl; font-family:'IBM Plex Sans Arabic'; background:#0b0909; flex:none }
+.bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover }
+.grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.42; pointer-events:none; z-index:20 }
+.vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.5) 100%); pointer-events:none; z-index:21 }
+.ab { position:absolute }
+.shadow { filter:drop-shadow(0 18px 22px rgba(0,0,0,.45)) drop-shadow(0 3px 4px rgba(0,0,0,.35)) }
+
+/* torn caption strip */
+.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8 }
+.strip span { display:inline-block; padding:16px 42px 26px; font:700 72px/1.25 'Reem Kufi'; color:var(--ink); background:url(assets/img/newsprint.jpg) center/640px;
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.45)); white-space:nowrap;
+  clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
+.strip span.cream { background:#efe6d4 }
+.strip span.sm { font-size:58px }
+.strip b { color:var(--marker); font-weight:700 }
+
+/* a photo print, tape, pins, kraft tags, rubber stamps */
+.print { position:absolute; padding:16px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.5), 0 3px 6px rgba(0,0,0,.35); z-index:3 }
+.print img { display:block; width:100%; aspect-ratio:4/5 }
+.print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)) }
+.tape { position:absolute; height:52px; background:rgba(236,226,200,.78); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:6;
+  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+.pin { position:absolute; width:50px; height:50px; z-index:7 }
+.ktag { position:absolute; width:380px; height:202px; z-index:7; filter:drop-shadow(0 12px 14px rgba(0,0,0,.45)) }
+.ktag img { position:absolute; inset:0; width:100%; height:100% }
+.ktag div { position:absolute; left:100px; right:20px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+  font:700 56px/1.15 'Aref Ruqaa'; color:var(--kraft) }
+.ktag div small { font:600 30px/1.3 'IBM Plex Sans Arabic'; color:#4a3826; margin-top:6px }
+.stamp { position:absolute; padding:4px 30px 16px; border:9px double var(--stamp); border-radius:18px; color:var(--stamp); font:700 84px/1.3 'IBM Plex Sans Arabic';
+  white-space:nowrap; background:rgba(247,244,238,.82); box-shadow:0 0 0 4px rgba(247,244,238,.5); z-index:8;
+  -webkit-mask-image:url(assets/img/grain.png); mask-image:url(assets/img/grain.png); -webkit-mask-size:260px; mask-size:260px }
+.legal { position:absolute; left:0; right:0; text-align:center; font:500 30px 'IBM Plex Sans Arabic'; color:rgba(239,229,211,.85); z-index:8 }
+.legal.dk { color:rgba(29,26,23,.7) }
+.legal b { direction:ltr; unicode-bidi:isolate; font-weight:600 }
+.mk { position:absolute; left:0; top:0; overflow:visible; z-index:9 }
+.mk path { fill:none; stroke:var(--marker); stroke-width:10; stroke-linecap:round; stroke-linejoin:round; opacity:.92 }
+.ruq { font-family:'Aref Ruqaa'; font-weight:700 }
+
+/* the notebook sheet for prices and steps */
+.sheet { position:absolute; z-index:3; filter:drop-shadow(0 22px 26px rgba(0,0,0,.45)) }
+.sheet > img { position:absolute; inset:0; width:100%; height:100% }
+.sheet .h { position:absolute; left:0; right:0; text-align:center; font:700 92px 'Aref Ruqaa'; color:var(--marker) }
+.row { position:absolute; left:64px; right:64px; display:flex; justify-content:space-between; align-items:baseline; font:700 74px 'Aref Ruqaa'; color:var(--pen); white-space:nowrap }
+.row i { flex:1; margin:0 18px; border-bottom:5px dotted rgba(31,58,138,.5); transform:translateY(-14px) }
+.row .r { display:flex; align-items:baseline; gap:14px }
+.was { position:relative; font-size:.78em; color:rgba(31,58,138,.62) }
+.was::after { content:''; position:absolute; left:-8px; right:-8px; top:52%; height:5px; background:var(--marker); border-radius:3px; transform:rotate(-9deg); opacity:.9 }
+.note { position:absolute; font:700 44px/1.35 'Aref Ruqaa'; color:rgba(31,58,138,.85); text-align:center }
+.step { position:absolute; left:60px; right:60px; display:flex; gap:26px; align-items:flex-start }
+.step .n { flex:none; width:96px; height:96px; border:7px solid var(--marker); border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font:700 60px/1 'Aref Ruqaa'; color:var(--marker); transform:rotate(-6deg) }
+.step .t { font:700 58px/1.3 'Aref Ruqaa'; color:var(--pen) }
+.step .t small { display:block; font:700 40px/1.35 'Aref Ruqaa'; color:rgba(31,58,138,.75) }
+.card { position:absolute; background:#f3ecdc; z-index:3; box-shadow:0 22px 30px rgba(0,0,0,.5); border-top:14px solid var(--marker) }
+.card .nm { position:absolute; right:56px; top:46px; font:700 86px 'Aref Ruqaa'; color:var(--ink) }
+.card .pr { position:absolute; left:56px; top:52px; font:700 82px 'Aref Ruqaa'; color:var(--marker) }
+.card .ds { position:absolute; right:56px; left:56px; top:190px; font:700 50px/1.45 'Aref Ruqaa'; color:var(--pen) }
+.card .sv { position:absolute; right:56px; bottom:40px; font:600 34px 'IBM Plex Sans Arabic'; color:#5a4a3a }
+.card .sv s { text-decoration-color:var(--marker); text-decoration-thickness:4px }
+
+/* the DM note and its arrow down to the reply bar */
+.dm { position:absolute; background:url(assets/img/slip.png) center/cover; z-index:4; filter:drop-shadow(0 18px 22px rgba(0,0,0,.5));
+  clip-path:polygon(0 4%, 7% 0, 16% 5%, 27% 1%, 39% 6%, 52% 0, 64% 5%, 77% 1%, 88% 6%, 100% 2%, 98% 50%, 100% 97%, 90% 93%, 78% 100%, 64% 94%, 50% 99%, 37% 93%, 24% 100%, 12% 94%, 0 98%, 2% 50%) }
+.dm div { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font:700 112px/1.2 'Aref Ruqaa'; color:var(--pen) }
+.down { position:absolute; left:0; right:0; text-align:center; font:700 64px 'Aref Ruqaa'; color:var(--cream); z-index:9; text-shadow:0 4px 14px rgba(0,0,0,.5) }
+
+/* highlight covers: a torn cream disc on red cloth with an ink icon */
+.disc { position:absolute; left:190px; top:610px; width:700px; height:700px; background:#efe6d4; z-index:3;
+  filter:drop-shadow(0 22px 26px rgba(0,0,0,.5)); clip-path:var(--tear) }
+.icon { position:absolute; left:290px; top:710px; width:500px; height:500px; z-index:4 }
+.icon * { fill:none; stroke:#1d1a17; stroke-width:30; stroke-linecap:round; stroke-linejoin:round }
+.icon .fill { fill:#1d1a17; stroke:none }
+.icon .red { fill:var(--marker); stroke:none }
+.icon .redl { stroke:var(--marker) }
+
+/* the profile preview */
+#preview { width:1600px; height:560px; background:#000 }
+#preview .ttl { position:absolute; left:70px; top:50px; font:500 30px 'IBM Plex Mono', monospace; letter-spacing:.12em; color:#8a8a8a; direction:ltr }
+#preview .hl { position:absolute; top:150px; width:300px; text-align:center }
+#preview .hl .c { width:250px; height:250px; margin:0 auto; border-radius:50%; border:6px solid #3a3a3a; padding:8px; background:#000 }
+#preview .hl .c div { width:100%; height:100%; border-radius:50%; background-size:110%; background-position:center }
+#preview .hl span { display:block; margin-top:26px; font:500 40px 'IBM Plex Sans Arabic'; color:#f2f2f2 }
+</style>
+</head>
+<body>
+<div id="arts"></div>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const AR = (s) => String(s).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[d]);
+let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+let pinN = 0;
+const PIN = () => { const id = 'pg' + (pinN++); return `<svg viewBox="0 0 46 46"><defs><radialGradient id="${id}" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".42" stop-color="#c4161c"/><stop offset="1" stop-color="#5e0609"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#${id})"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`; };
+const loop = (cx, cy, rx, ry) => { let d = ''; for (let k = 0; k <= 60; k++) { const a = -2.4 + (k / 60) * Math.PI * 2 * 1.12, w = 1 + (rnd() - 0.5) * 0.06 + k * 0.0012; d += (k ? ' L' : 'M') + (cx + Math.cos(a) * rx * w).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * w).toFixed(1); } return d; };
+const tear = () => { const p = []; for (let k = 0; k < 44; k++) { const a = (k / 44) * Math.PI * 2, r = 49 - rnd() * 2.4; p.push(`${(50 + Math.cos(a) * r).toFixed(1)}% ${(50 + Math.sin(a) * r).toFixed(1)}%`); } return `polygon(${p.join(', ')})`; };
+
+const art = (id, bg, html) => `<div class="art" id="${id}"><img class="bg" src="assets/img/${bg}.jpg" alt="">${html}<div class="grain"></div><div class="vig"></div></div>`;
+const strip = (top, html, cls = 'cream', rot = -1.2) => `<div class="strip" style="top:${top}px; transform:rotate(${rot}deg)"><span class="${cls}">${html}</span></div>`;
+const print = (src, x, y, w, rot, extra = '') => `<div class="print" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${rot}deg)"><img src="assets/work/${src}.jpg" alt="">${extra}</div>`;
+const tape = (x, y, w, rot) => `<div class="tape" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${rot}deg)"></div>`;
+const ktag = (x, y, rot, html, w = 380) => `<div class="ktag" style="left:${x}px; top:${y}px; width:${w}px; height:${Math.round(w * 0.532)}px; transform:rotate(${rot}deg)"><img src="assets/img/tag.png" alt=""><div>${html}</div></div>`;
+const pin = (x, y) => `<div class="pin" style="left:${x}px; top:${y}px">${PIN()}</div>`;
+const legal = (top, html, dk = false) => `<div class="legal${dk ? ' dk' : ''}" style="top:${top}px">${html}</div>`;
+const down = (top, txt) => `<div class="down" style="top:${top}px">${txt}</div><svg class="mk" width="1080" height="1920" viewBox="0 0 1080 1920"><path d="M540 ${top + 96} C 552 ${top + 150}, 528 ${top + 190}, 540 ${top + 236} M504 ${top + 200} L540 ${top + 240} L578 ${top + 198}"/></svg>`;
+const HANDLE = '<b>@allawi.psd</b>';
+const A = [];
+
+// ── «الأسعار» ────────────────────────────────────────────────────────────────────────────────────────────────────
+A.push(art('p1', 'board', `
+  ${strip(250, 'الأسعار.. <b>مو بالخاص</b> 😉')}
+  <div class="sheet" style="left:100px; top:470px; width:880px; height:1100px; transform:rotate(-1.5deg)">
+    <img src="assets/img/list.png" alt="">
+    <div class="h" style="top:66px">الباقات</div>
+    <div class="row" style="top:250px"><span>٣ بوستات</span><i></i><span class="r"><span class="was">٤٢</span><span>٤٠ ألف</span></span></div>
+    <div class="row" style="top:440px"><span>٥ بوستات</span><i></i><span class="r"><span class="was">٧٠</span><span>٦٥ ألف</span></span></div>
+    <div class="row" style="top:630px"><span>باقة شهرية</span><i></i><span class="r"><span class="was">١٤٠</span><span>٩٠ ألف</span></span></div>
+    <div class="note" style="right:70px; top:740px">٨ بوستات + ٤ ستوري، كل شهر</div>
+    <div class="note" style="right:70px; top:930px; font-size:38px; color:rgba(196,22,28,.85)">المشطوب = سعرها بالقطعة</div>
+    <div class="stamp" style="left:40px; top:820px; transform:rotate(-10deg); font-size:62px">الأوفر</div>
+    <svg class="mk" width="880" height="1100" viewBox="0 0 880 1100"><path d="${loop(620, 290, 200, 78)}"/></svg>
+  </div>${pin(515, 452)}
+  ${legal(1610, 'دزّلي بالدايركت: «أريد ٣ بوستات»')}`));
+
+A.push(art('p2', 'paper', `
+  ${strip(250, 'الأسعار.. <b>بالقطعة</b>', '')}
+  <div class="sheet" style="left:90px; top:450px; width:900px; height:1180px; transform:rotate(1.2deg)">
+    <img src="assets/img/slip.png" alt="">
+    <div class="row" style="top:80px"><span>بوست أو إعلان</span><i></i><span>١٤ ألف</span></div>
+    <div class="row" style="top:225px"><span>ستوري</span><i></i><span>٧ آلاف</span></div>
+    <div class="row" style="top:370px"><span>كاروسيل</span><i></i><span>٤٠ ألف</span></div>
+    <div class="note" style="right:70px; top:460px; font-size:36px">من ٥ إلى ٧ سلايدات</div>
+    <div class="row" style="top:540px"><span>منيو أو فلاير</span><i></i><span>٤٠ ألف</span></div>
+    <div class="row" style="top:685px"><span>لوگو</span><i></i><span>٧٠ ألف</span></div>
+    <div class="row" style="top:830px"><span>هوية كاملة</span><i></i><span>٢٠٠ ألف</span></div>
+    <div class="note" style="right:70px; top:920px; font-size:36px">لوگو، ألوان، خطوط وقوالب</div>
+    <div class="row" style="top:1010px; color:var(--marker)"><span>فيديو موشن</span><i style="border-color:rgba(196,22,28,.5)"></i><span style="font-size:52px">راسلني</span></div>
+  </div>
+  ${tape(420, 430, 240, -3)}
+  ${legal(1680, 'السعر حسب الفيديو للموشن · كلشي غيره ثابت', true)}`));
+
+A.push(art('p3', 'dark', `
+  ${strip(250, 'باقات <b>أكبر</b>.. كل شهر')}
+  <div class="card" style="left:90px; top:470px; width:900px; height:470px; transform:rotate(-1.6deg)">
+    <div class="nm">المميزة</div><div class="pr">١٧٥ ألف</div>
+    <div class="ds">١٢ بوست + ٨ ستوري + كاروسيل</div>
+    <div class="sv">بالقطعة <s>٢٦٤ ألف</s></div>
+  </div>${pin(518, 452)}
+  <div class="card" style="left:90px; top:1030px; width:900px; height:520px; transform:rotate(1.4deg)">
+    <div class="nm">الكاملة</div><div class="pr">٢٥٠ ألف</div>
+    <div class="ds">١٦ بوست + ١٢ ستوري + ٢ كاروسيل<br>+ خطة محتوى للشهر</div>
+    <div class="sv">بالقطعة <s>٣٨٨ ألف</s></div>
+  </div>${pin(518, 1012)}
+  ${legal(1620, 'والباقة الشهرية الأساسية: ٨ بوستات + ٤ ستوري بـ٩٠ ألف')}`));
+
+A.push(art('p4', 'red', `
+  ${strip(250, 'شلون <b>تطلب</b>؟')}
+  <div class="sheet" style="left:90px; top:450px; width:900px; height:1010px; transform:rotate(-1deg)">
+    <img src="assets/img/list.png" alt="">
+    <div class="step" style="top:70px"><div class="n">١</div><div class="t">دزّلي «أريد ٣ بوستات»<small>واحچيلي عن محلك</small></div></div>
+    <div class="step" style="top:300px"><div class="n">٢</div><div class="t">أرتبلك الفكرة<small>وتعرف كلشي قبل لا نبدي</small></div></div>
+    <div class="step" style="top:530px"><div class="n">٣</div><div class="t">تدفع نص المبلغ ونبدي<small>والباقي من تستلم</small></div></div>
+    <div class="step" style="top:760px"><div class="n">٤</div><div class="t">تستلم التصاميم<small>وعندك تعديلين مجاناً</small></div></div>
+  </div>${pin(515, 432)}
+  ${ktag(480, 1440, -5, '<span style="font-size:46px">تعديل إضافي ٣ آلاف</span><small style="font-size:27px">مستعجل (نفس اليوم): زيادة النص</small>', 540)}
+`));
+
+// ── «أعمالي» ─────────────────────────────────────────────────────────────────────────────────────────────────────
+const WORK = [
+  ['saj', 'paper', 'إعلان <b>لمطعم</b>', 'صاج الريف'],
+  ['shifa', 'board', 'إعلان <b>لمختبر</b>', 'مختبر الشفاء'],
+  ['faqma', 'dark', 'إعلان <b>لأجهزة منزلية</b>', 'الفقمة'],
+  ['miswag', 'red', 'إعلان <b>لمتجر أونلاين</b>', 'مسواگ'],
+  ['sala', 'paper', 'إعلان <b>لبقالة أونلاين</b>', 'سلة'],
+  ['baly', 'board', 'إعلان <b>لتطبيق تكسي</b>', 'بَلي'],
+  ['ward', 'dark', 'هوية <b>لبراند تجميل</b>', 'ورد · WARD'],
+  ['cactus', 'red', 'هوية <b>لمشروع هاند ميد</b>', 'كاكتوس'],
+];
+WORK.forEach(([src, bg, title, name], k) => {
+  const rot = [-2.5, 2, -1.5, 2.5][k % 4], light = bg === 'paper';
+  A.push(art('w' + (k + 1), bg, `
+    ${strip(250, title, light ? '' : 'cream', [-1.2, 1, -1.5, 1.2][k % 4])}
+    ${print(src, 150, 450, 780, rot)}
+    ${tape(420, 428, 240, rot - 2)}
+    ${ktag(k % 2 ? 560 : 60, 1300, k % 2 ? 6 : -7, name)}
+    ${legal(1620, `فكرة إعلان من تصميمي · ${HANDLE}`, light)}`));
+});
+
+// ── «براندات» ────────────────────────────────────────────────────────────────────────────────────────────────────
+const BR = [[270, 700, -6, 'pepsi'], [800, 690, 5, 'qi'], [540, 965, -2, 'iraqiairways'], [262, 1228, 4, 'asiacell'], [808, 1215, -5, 'talabat']];
+A.push(art('b0', 'red', `
+  ${strip(220, 'سوّيت إعلانات <b>لأكبر شركات</b>', 'cream', -1.2)}
+  ${strip(360, 'ومحد <b>طلبها</b> مني 😅', '', 1)}
+  ${BR.map(([cx, cy, r, s], k) => `<div class="print" style="left:${cx - 152}px; top:${cy - 188}px; width:304px; padding:10px; transform:rotate(${r}deg)"><img src="assets/work/${s}.jpg" alt=""><div class="stamp" style="left:12px; top:120px; font-size:46px; padding:2px 16px 8px; border-width:6px; transform:rotate(${[-12, -8, -14, -6, -11][k]}deg)">محد طلبه</div></div>`).join('')}
+  ${legal(1470, `إعلانات غير رسمية · فكرة وتصميم ${HANDLE}`)}
+  ${legal(1560, 'سوّيتها حتى تشوف شگدر أسوّي لمحلك 👇')}`));
+const BRANDS = [
+  ['pepsi', 'board', 'ببسي', 'لأن العراقي يسمّي<br>كل كولا «ببسي»'],
+  ['qi', 'dark', 'كي كارد', 'يوم الراتب..<br>بعيون الموظف'],
+  ['iraqiairways', 'paper', 'الخطوط العراقية', 'للمغترب<br>اللي مشتاق لبغداد'],
+  ['asiacell', 'red', 'آسيا سيل', 'لما تطفى الوطنية..<br>والنت يظل شغّال'],
+  ['talabat', 'board', 'طلبات', 'شعر علي بن الجهم..<br>وطلبك عالجسر'],
+];
+BRANDS.forEach(([src, bg, name, idea], k) => {
+  const rot = [-2, 2.2, -1.6, 1.8, -2.4][k], light = bg === 'paper';
+  A.push(art('b' + (k + 1), bg, `
+    ${strip(250, `إعلان <b>${name}</b>`, light ? '' : 'cream', k % 2 ? 1.2 : -1.2)}
+    ${print(src, 150, 450, 780, rot, `<div class="stamp" style="left:${k % 2 ? 470 : -70}px; top:-44px; font-size:60px; transform:rotate(${k % 2 ? 9 : -10}deg)">محد طلبه</div>`)}
+    ${tape(420, 428, 240, rot - 2)}
+    ${ktag(k % 2 ? 60 : 520, 1290, k % 2 ? -6 : 6, `<span style="font-size:44px; line-height:1.25">${idea}</span>`, 470)}
+    ${legal(1640, `إعلان غير رسمي · فكرة وتصميم ${HANDLE}`, light)}`));
+});
+
+// ── the last story of أعمالي and براندات: send me the order ───────────────────────────────────────────────────────
+A.push(art('cta', 'dark', `
+  ${strip(250, 'عجبك <b>الشغل</b>؟')}
+  <div class="dm" style="left:120px; top:560px; width:840px; height:340px; transform:rotate(-3deg)"><div>أريد ٣ بوستات</div></div>
+  <svg class="mk" width="1080" height="1920" viewBox="0 0 1080 1920"><path d="M120 500 L300 428 L232 592 L206 528 Z M206 528 L300 428"/></svg>
+  ${ktag(350, 990, -4, '٣ بوستات<small>بـ٤٠ ألف بس</small>', 420)}
+  ${legal(1260, `أو باقة شهرية بـ٩٠ ألف · ${HANDLE}`)}
+  ${down(1380, 'دزّلي من هنا')}`));
+
+// ── highlight covers ─────────────────────────────────────────────────────────────────────────────────────────────
+const ICON = {
+  // a price tag with its hole
+  prices: `<path d="M250 70 L430 70 L430 250 L240 440 L60 260 Z" transform="rotate(-8 250 250)"/><circle class="red" cx="372" cy="128" r="30" transform="rotate(-8 250 250)"/>`,
+  // two prints, one taped over the other
+  work: `<rect x="60" y="120" width="250" height="300" rx="6" transform="rotate(-10 185 270)"/><rect x="190" y="80" width="250" height="300" rx="6" transform="rotate(7 315 230)" style="fill:#efe6d4"/><path class="redl" d="M235 175 L395 175" transform="rotate(7 315 230)"/><path d="M230 330 L310 250 L360 300 L400 260" transform="rotate(7 315 230)" style="stroke-width:24"/>`,
+  // a rubber stamp
+  brands: `<path d="M195 70 Q 250 40 305 70 L 290 210 L 210 210 Z"/><rect x="110" y="215" width="280" height="80" rx="16"/><path d="M100 330 L400 330" class="redl" style="stroke-width:34"/><path d="M130 400 L370 400" class="redl" style="stroke-width:22; opacity:.7"/>`,
+  // a pen-tool nib with its hole
+  identity: `<path d="M250 60 L380 250 L310 420 L190 420 L120 250 Z"/><path d="M250 60 L250 250"/><circle class="red" cx="250" cy="270" r="30"/><path d="M175 440 L325 440"/>`,
+};
+[['c-prices', 'prices'], ['c-work', 'work'], ['c-brands', 'brands'], ['c-identity', 'identity']].forEach(([id, ic]) => {
+  A.push(`<div class="art" id="${id}"><img class="bg" src="assets/img/red.jpg" alt="">
+    <div class="disc" style="--tear:${tear()}"></div>
+    <svg class="icon" viewBox="0 0 500 500">${ICON[ic]}</svg>
+    ${tape(430, 590, 220, -6)}
+    <div class="grain"></div><div class="vig"></div></div>`);
+});
+
+// the profile row, from the rendered covers (render twice: this reads out/)
+A.push(`<div class="art" id="preview"><div class="ttl">HOW IT LOOKS ON YOUR PROFILE</div>
+  ${[['c-prices', 'الأسعار'], ['c-work', 'أعمالي'], ['c-brands', 'براندات'], ['c-identity', 'هويات']].map(([id, n], k) =>
+    `<div class="hl" style="right:${100 + k * 360}px"><div class="c"><div style="background-image:url(out/highlights-${id}.jpg)"></div></div><span>${n}</span></div>`).join('')}
+</div>`);
+
+$('#arts').outerHTML = A.join('\n');
+const imgs = [...document.images].map((i) => i.complete ? null : new Promise((r) => { i.onload = i.onerror = r; }));
+Promise.all([document.fonts.ready, ...imgs, document.fonts.load("700 72px 'Reem Kufi'", 'الأسعار'), document.fonts.load("700 74px 'Aref Ruqaa'", 'بوستات')])
+  .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
