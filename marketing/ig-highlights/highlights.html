@@ -191,7 +191,6 @@ const WORK = [
   ['miswag', 'ink', 'إعلان <b>لمتجر أونلاين</b>', 'مسواگ'],
   ['sala', 'paper', 'إعلان <b>لبقالة أونلاين</b>', 'سلة'],
   ['baly', 'orange', 'إعلان <b>لتطبيق تكسي</b>', 'بَلي'],
-  ['ward', 'ink', 'هوية <b>لبراند تجميل</b>', 'ورد · WARD'],
   ['cactus', 'paper', 'هوية <b>لمشروع هاند ميد</b>', 'كاكتوس'],
 ];
 WORK.forEach(([src, bg, title, name], k) => {
@@ -208,10 +207,10 @@ WORK.forEach(([src, bg, title, name], k) => {
 const BR = [[270, 700, -6, 'pepsi'], [800, 690, 5, 'qi'], [540, 965, -2, 'iraqiairways'], [262, 1228, 4, 'asiacell'], [808, 1215, -5, 'talabat']];
 A.push(art('b0', 'orange', `
   ${strip(220, 'سوّيت إعلانات <b>لأكبر شركات</b>', 'cream', -1.2)}
-  ${strip(360, 'ومحد <b>طلبها</b> مني 😅', '', 1)}
-  ${BR.map(([cx, cy, r, s], k) => `<div class="print" style="left:${cx - 152}px; top:${cy - 188}px; width:304px; padding:10px; transform:rotate(${r}deg)"><img src="assets/work/${s}.jpg" alt=""><div class="stamp" style="left:12px; top:120px; font-size:46px; padding:2px 16px 8px; border-width:6px; transform:rotate(${[-12, -8, -14, -6, -11][k]}deg)">محد طلبه</div></div>`).join('')}
+  ${strip(360, '<span style="font-size:50px">حتى تشوف شگدر أسوّي <b>لمحلك</b> 👇</span>', '', 1)}
+  ${BR.map(([cx, cy, r, s], k) => `<div class="print" style="left:${cx - 152}px; top:${cy - 188}px; width:304px; padding:10px; transform:rotate(${r}deg)"><img src="assets/work/${s}.jpg" alt=""></div>`).join('')}
   ${legal(1470, `إعلانات غير رسمية · فكرة وتصميم ${HANDLE}`)}
-  ${legal(1560, 'سوّيتها حتى تشوف شگدر أسوّي لمحلك 👇')}`));
+`));
 const BRANDS = [
   ['pepsi', 'paper', 'ببسي', 'لأن العراقي يسمّي<br>كل كولا «ببسي»'],
   ['qi', 'ink', 'كي كارد', 'يوم الراتب..<br>بعيون الموظف'],
@@ -219,14 +218,14 @@ const BRANDS = [
   ['asiacell', 'paper', 'آسيا سيل', 'لما تطفى الوطنية..<br>والنت يظل شغّال'],
   ['talabat', 'ink', 'طلبات', 'شعر علي بن الجهم..<br>وطلبك عالجسر'],
 ];
-BRANDS.forEach(([src, bg, name, idea], k) => {
+BRANDS.forEach(([src, bg, name], k) => {
   const rot = [-2, 2.2, -1.6, 1.8, -2.4][k], light = bg === 'paper';
   A.push(art('b' + (k + 1), bg, `
     ${strip(250, `إعلان <b>${name}</b>`, light ? '' : 'cream', k % 2 ? 1.2 : -1.2)}
-    ${print(src, 150, 450, 780, rot, `<div class="stamp" style="left:${k % 2 ? 470 : -70}px; top:-44px; font-size:60px; transform:rotate(${k % 2 ? 9 : -10}deg)">محد طلبه</div>`)}
+    ${print(src, 150, 450, 780, rot)}
     ${tape(420, 428, 240, rot - 2)}
-    ${ktag(k % 2 ? 60 : 520, 1290, k % 2 ? -6 : 6, `<span style="font-size:44px; line-height:1.25">${idea}</span>`, 470)}
-    ${legal(1640, `إعلان غير رسمي · فكرة وتصميم ${HANDLE}`, light)}`));
+    ${ktag(k % 2 ? 560 : 60, 1300, k % 2 ? 6 : -7, name)}
+    ${legal(1620, `إعلان غير رسمي · فكرة وتصميم ${HANDLE}`, light)}`));
 });
 
 // ── the last story of أعمالي and براندات: send me the order ───────────────────────────────────────────────────────

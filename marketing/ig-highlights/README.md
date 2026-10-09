@@ -16,8 +16,8 @@ stamps' worn ink) and fonts don't load from `file://`. `out/overview.jpg` shows 
 | Highlight | Stories, in order |
 |---|---|
 | «الأسعار» | `p1` the bundles: ٣ بوستات ٤٠ ألف, ٥ بوستات ٦٥ ألف, باقة شهرية ٩٠ ألف (٨ بوستات + ٤ ستوري), each with its price bought one by one struck through (٤٢, ٧٠, ١٤٠); «الأوفر» stamp · `p2` single prices (بوست ١٤ ألف، ستوري ٧ آلاف، كاروسيل ٤٠، منيو أو فلاير ٤٠، لوگو ٧٠، هوية كاملة ٢٠٠ ألف، فيديو موشن: راسلني) · `p3` bigger monthly packages (المميزة ١٧٥ ألف, الكاملة ٢٥٠ ألف) · `p4` how to order, in four steps, with the rules (extra revision ٣ آلاف, same-day work: half again) |
-| «أعمالي» | `w1`–`w7`: صاج الريف (restaurant), مختبر الشفاء (lab), مسواگ (online shop), سلة (online grocery), بَلي (taxi app), ورد · WARD (beauty identity), كاكتوس (handmade identity); each labelled «فكرة إعلان من تصميمي» · then `cta`. The الفقمة (home appliances) story was taken out at the user's request. |
-| «براندات» | `b0` intro: the five ads stamped «محد طلبه», «إعلانات غير رسمية» · `b1`–`b5`: Pepsi, Qi Card, Iraqi Airways, Asiacell, talabat, each stamped, with the idea on a kraft tag and «إعلان غير رسمي» · then `cta` |
+| «أعمالي» | `w1`–`w6`: صاج الريف (restaurant), مختبر الشفاء (lab), مسواگ (online shop), سلة (online grocery), بَلي (taxi app), كاكتوس (handmade identity); each labelled «فكرة إعلان من تصميمي» · then `cta`. The الفقمة (home appliances) and ورد · WARD (beauty identity) stories were taken out at the user's request. |
+| «براندات» | `b0` intro: «سوّيت إعلانات لأكبر شركات / حتى تشوف شگدر أسوّي لمحلك» over the five ads, «إعلانات غير رسمية» · `b1`–`b5`: Pepsi, Qi Card, Iraqi Airways, Asiacell, talabat, laid out like the work stories (print, tape, a tag with the name) and labelled «إعلان غير رسمي» · then `cta`. The user asked for no «محد طلبه» stamps here (the reel keeps them). |
 | (both) | `cta`: «عجبك الشغل؟», the note «أريد ٣ بوستات», «٣ بوستات بـ٤٠ ألف بس», and an arrow down to the reply bar: «دزّلي من هنا» |
 
 Key content sits between y 250 and 1680, clear of the story header and the reply bar.
@@ -37,6 +37,7 @@ in the app: profile → New (+) → pick the stories → name → Edit cover →
 What went up (9 Oct, Metricool, Instagram stories): a first version in the reel's red/green/dark colours posted at
 12:00–12:09 (p1–p4, b0–b5), before the user's "use my brand colors" reached the session; it can't be removed through
 Metricool, so the user deletes those 10 in the app. The brand-colour set went up at 13:40–13:57 in this order:
-p1–p4 (13:40–43), b0–b5 (13:44–49), w1–w7 (13:50–56), cta (13:57).
+p1–p4 (13:40–43), the work stories (13:50–56, WARD's held back as a draft), cta (13:57), and the stamp-free b0–b5 at
+14:00–14:05 (the stamped versions were held back as drafts before they posted).
 
 All designs shown are the user's concept work; the brand ads are unofficial and labelled so on every story.
