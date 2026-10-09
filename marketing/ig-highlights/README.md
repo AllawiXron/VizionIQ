@@ -45,6 +45,8 @@ whole set went up again from commit `a5ccf88`, one a minute, in highlight order:
 (14:39–44), b0–b5 (14:45–50), cta (14:51). cta posts last so it sits at the end of both «أعمالي» and «براندات»
 (highlights keep posting order). The old WARD draft (391927596) stays a draft and never publishes. At 14:36 the user lowered the logo, identity and
 bigger-package prices and flagged the ٣ بوستات underline running into the note under it, so p1–p4 were held as
-drafts, fixed, and re-posted after the rest of the set.
+drafts and fixed. Only w1 had gone out (14:39) when the user asked to start the whole set over, so every story was
+moved into one clean run in highlight order: p1–p4 (15:00–03), w1–w6 (15:04–09), b0–b5 (15:10–15), cta (15:16); the
+user deletes the 14:39 w1 in the app.
 
 All designs shown are the user's concept work; the brand ads are unofficial and labelled so on every story.
