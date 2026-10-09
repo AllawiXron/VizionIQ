@@ -90,6 +90,12 @@
       const typing = (ty.t >= T.typeA - 0.1 && ty.t < T.m1) || ty.t >= T.fill;
       caret.style.opacity = typing && Math.floor(ty.t * 4) % 2 === 0 ? 1 : 0;
     } }, 0);
+    // a slow push toward the input row while the order types on (1.08, the field stays inside x 0–1000), pulled back
+    // by the send press as the message rises
+    tl.fromTo('#zo', { scale: 1 }, { scale: 1.08, duration: T.typeB - T.typeA + 0.2, ease: 'sine.inOut', immediateRender: false }, T.typeA - 0.25);
+    tl.fromTo('#zi', { x: 0, y: 0 }, { x: 3.3, y: -52.6, duration: T.typeB - T.typeA + 0.2, ease: 'sine.inOut', immediateRender: false }, T.typeA - 0.25);
+    tl.to('#zo', { scale: 1, duration: 0.45, ease: 'power3.out' }, T.press);
+    tl.to('#zi', { x: 0, y: 0, duration: 0.45, ease: 'power3.out' }, T.press);
     tl.to('#send', { scale: 0.88, duration: 0.12, ease: 'power1.in' }, T.press);
     tl.to('#send', { scale: 1, duration: 0.5, ease: 'back.out(2)' }, T.press + 0.12);
     reveal('#m1', T.m1);
