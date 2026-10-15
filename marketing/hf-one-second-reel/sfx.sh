@@ -17,6 +17,7 @@ while IFS='|' read -r name src ss len; do
 done <<'LIST'
 data|Data Collect/Data Collect.wav
 select|Ui Sound Effects/Ui Granular, Button, Select.wav
+select2|Ui Sound Effects/Ui Granular, Button, Select   (9).wav
 click2|Clicks/Click 2.wav
 clickb|Clicks/Click_2.wav
 sweet|Pop/Sweet UI Open.wav

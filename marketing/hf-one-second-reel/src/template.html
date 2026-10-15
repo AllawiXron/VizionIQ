@@ -107,8 +107,11 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 .li svg.tick { flex:none; width:56px; height:52px; overflow:visible }
 .li svg.tick path { fill:none; stroke:var(--oink); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
 .li .tl { position:relative }
-.hlt { position:absolute; background:rgba(240,122,46,.42); z-index:-1; pointer-events:none;
-  clip-path:polygon(1% 18%, 30% 10%, 62% 16%, 99% 8%, 100% 86%, 70% 94%, 36% 88%, 0 95%) }
+.hlt { position:absolute; z-index:-1; pointer-events:none; background:0 0 / 100% 100% no-repeat }
+/* the highlighter pen and its shadow (two PNGs, so the shadow can move away as the pen lifts) */
+#pens { position:absolute; left:0; top:0; z-index:12 }
+.pen { position:absolute; width:402.5px; height:507.5px; opacity:0; transform-origin:52.5px 52.5px; pointer-events:none }
+.pen img { position:absolute; left:0; top:0; width:100%; display:block }
 #wall { position:absolute; left:0; top:0; z-index:3 }
 
 /* the wide shot's caption is drawn at screen size and scaled up, so it reads right when the camera pulls back */
@@ -185,7 +188,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
           <!-- the ask -->
           <div class="st on-paper" id="s9" style="left:5460px; top:10140px">
             <div class="strip" id="t9" style="top:520px"><span><span class="w">عجبك</span> <span class="w k">الشغل؟</span><img src="assets/props/clip-silver.png" alt="" style="right:40px; top:-64px; width:62px; transform:rotate(-10deg)" /></span></div>
-            <div class="tx big" style="top:690px; font-size:186px; color:var(--oink)"><span class="w" id="slam9" style="filter:url(#h3)">راسلني</span></div>
+            <div class="tx big" style="top:690px; font-size:186px; color:var(--oink)"><span class="w" id="slam9" style="filter:url(#h3)">راسلنا</span></div>
             <div class="tx ax t76" style="top:920px"><span class="w">بالدايركت..</span></div>
             <div class="tx ruq" style="top:1050px; font-size:62px; line-height:1.4; color:rgba(31,21,16,.78)"><span class="w">ونبدي</span> <span class="w">بمشروعك.</span></div>
             <svg class="mk" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="plane1" pathLength="1" d="M70 640 L214 584 L162 708 L142 656 Z M142 656 L214 584" /><path id="plane2" d="M58 724 C 36 796, 90 846, 156 856" style="stroke-dasharray:14 16; stroke-dashoffset:0; opacity:0" /></svg>

@@ -73,20 +73,29 @@ maybe look in pinterest".
   fibres along the tear (`tear()` in `src/timeline.js`). The mug and pencil frame the hook; clips and a pin hold the
   strips; tape, pins and a binder clip hold the prints on the wall; the labels are pinned.
 
+**v8 → v9 (15 Oct).** "make the highlight text better, because its just static highlighting, also instead of راسلني
+say راسلنا". The highlight on each of the three lines is now drawn by a highlighter pen (his own render, like the other
+props): it comes in from the lower right, lands on the key words, strokes right to left (each highlighted word bumps as
+the tip passes it), strokes back a little lower, then lifts off and leaves, its shadow drifting away as it lifts. The
+ink is real marker ink, drawn at its own size (`inkStroke()` in `src/timeline.js`): streaks along the stroke, darker
+edges, a blot where the tip lands, a chisel-cut end, two passes overlapping darker. Sounds: a soft whoosh as it comes
+in, a tick as it lands, his two «Ui Granular, Button, Select» for the two strokes. The ask says «راسلنا» on screen, in
+the voice script and in the caption.
+
 | Time | Camera | On screen |
 |---|---|---|
 | 0–4.7 | close on a paper sheet, easing back | «زبونك يقرّر / بثانية وحدة.», «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
 | 4.7–10.0 | down to a rust sheet | the phone, its feed flying past; torn strips «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
 | 10.0–11.6 | push in | the scroll stops on his quzi post, a heart; strip «إلا هيچ بوست.» |
 | 11.3–14.75 | across to the desk | «؟» disc with a ripple, «ليش؟» alone, a pause, then «بيه / ٣ شغلات» |
-| 14.75–25.0 | into the wall, three stops | Asiacell, Pepsi and lab prints among nine; a kraft tag, a tick, a handwritten line and a highlighter at each |
+| 14.75–25.0 | into the wall, three stops | Asiacell, Pepsi and lab prints among nine; a kraft tag, a tick, a handwritten line, and a highlighter pen that marks the key words |
 | 25.0–29.0 | pull back over the wall | all nine of his designs; strip «وهذا بالضبط اللي أسويه / لمشروعك.» with the unofficial-ads note |
 | 29.0–32.6 | dive into a rust sheet | four pinned labels «بوستات»، «ستوريات»، «منيو»، «شعار», then «وهوية كاملة.» slams in |
-| 32.6–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
+| 32.6–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلنا» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
 
 ## Build
 
-- `./sfx.sh` copies the 24 sounds this reel uses from the user's own pack (`../sfx-pack`; run its `fetch.sh` first)
+- `./sfx.sh` copies the 25 sounds this reel uses from the user's own pack (`../sfx-pack`; run its `fetch.sh` first)
   into `assets/sfx` (not committed); nine of them are single pops cut out of his two multi-pop files.
 - `assets/props/` holds the rendered props and tape (committed). To redo them: `props/props.py` in Blender 4.2, then
   `props/finish.py` (joins each shadow and object pass at one shadow strength); `props/tape.py` for the tape.

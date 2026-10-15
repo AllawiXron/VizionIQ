@@ -2,13 +2,13 @@
 workflow: general-video
 flow: automation
 storyboard: no
-message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: بوستات، ستوريات، منيو، شعار، وهوية كاملة. عجبك الشغل؟ راسلني بالدايركت."
+message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: بوستات، ستوريات، منيو، شعار، وهوية كاملة. عجبك الشغل؟ راسلنا بالدايركت."
 destination: instagram-reels
 aspect: 1080x1920
 language: ar-IQ
 audience: Iraqi shop, restaurant, clinic and small-brand owners scrolling Instagram
 length: 38s
-angle: the one-second scroll test, taught with the user's own designs, ending on «راسلني بالدايركت»
+angle: the one-second scroll test, taught with the user's own designs, ending on «راسلنا بالدايركت»
 voice: the user records it himself (VOICE-SCRIPT.md)
 ---
 
@@ -30,8 +30,8 @@ highlighted word, designs popping in and stacking. What we change, and why it sh
 - **What he makes, not what it costs.** v3–v7 said his bundle price out loud («٣ بوستات بـ٤٠ ألف»); in v8 the user
   asked for no prices, so the scene lists his services from his price highlight instead (بوستات، ستوريات، منيو، شعار،
   وهوية كاملة), and the caption lists them too.
-- **A DM ask, not "follow me".** «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.» (v3 asked for a keyword, «بوست»;
-  the user preferred a plain "DM me").
+- **A DM ask, not "follow me".** «عجبك الشغل؟ راسلنا بالدايركت.. ونبدي بمشروعك.» (v3 asked for a keyword, «بوست»;
+  the user preferred a plain "DM me"; v9 says «راسلنا», "DM us", at his request).
 - **38 s instead of 68 s,** at the reference's calm pace (v2 at 30 s was "rushed"; v3 at 45 s, the user asked for 38).
 
 ## Look (v4: his highlights, not "Claude motion")

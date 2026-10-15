@@ -33,6 +33,7 @@
     ['clip-silver', 5250, 6860, 70, 62], ['clip-orange', 5370, 6950, 70, 17],
   ];
   const TAPE_W = { t1: 160, t2: 145, t3: 170 };
+  const PEN_TIP = 52.5;   // where the highlighter's tip is in its PNG (px from the top left, at 3.5 px/mm)
   const POINTS = [
     { tag: 'آسيا سيل', sub: 'إعلان غير رسمي', tr: -8, line: '<span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-hl="1">بثانية</span>' },
     { tag: 'ببسي', sub: 'إعلان غير رسمي', tr: 7, line: '<span class="w">حجي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span>' },
@@ -43,7 +44,7 @@
     scroll: 4.9, slow: 9.25, stop: 10.1,
     t3a: 5.55, t3aw: [5.6, 5.88, 6.35], t3aOut: 7.82, t3b: 7.95, t3bw: [7.95, 8.25, 8.55, 8.85, 9.3], t4: 10.15, t4w: [10.2, 10.5, 10.75], heart: 10.45,
     ico: 11.95, why: 12.1, bih: 13.45, three: 13.7,
-    tags: [15.6, 19.1, 22.6], ticks: [15.75, 19.2, 22.7], l: [[15.9, 16.18, 16.46, 16.74], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.25, 20.6, 24.2],
+    tags: [15.6, 19.1, 22.6], ticks: [15.75, 19.2, 22.7], l: [[15.9, 16.18, 16.46, 16.74], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.15, 20.35, 23.85],
     t7: 26.1, t7w: [26.15, 26.43, 26.71, 26.99, 27.45, 27.85],
     sv: [29.6, 30.05, 30.5, 30.95], slam8: 31.45,
     t9: 33.2, t9w: [33.2, 33.5], slam9: 33.95, s9b: 34.6, plane: 34.85, s9c: [35.1, 35.38], btn: 35.8, cur: 36.0, click: 36.6, open: 36.7,
@@ -186,18 +187,66 @@
     el.style.backgroundColor = 'transparent';
   }
 
-  // ── the highlighter swipes: measured once the fonts are in (offsets ignore transforms)
+  // ── the highlighter: real marker ink, two passes per line (a stroke right to left over the key words, then a shorter
+  // one back, a little lower), drawn by a highlighter pen that comes in, presses and lifts away (his own render,
+  // props/props.py). The ink is drawn once at its own size: felt-tip streaks along the stroke, darker edges where the
+  // ink pools, a round blot where the tip lands, a chisel-cut end where it lifts, a little dry towards the end.
+  function inkStroke(W0, H0, seed, rtl) {
+    const S = 2, W = Math.round(W0 * S), H = Math.round(H0 * S), r = rand(seed);
+    const top = tearEdge(W, r, 0.08 * H, 0.012 * H), bot = tearEdge(W, r, 0.06 * H, 0.012 * H);
+    const rows = Float32Array.from({ length: H }, () => r() - 0.5);
+    const streak = rows.map((v, y) => 1 + 0.16 * (v + 0.5 * (rows[Math.max(0, y - 1)] + rows[Math.min(H - 1, y + 1)])));
+    const cap = 0.3 * H, slant = 0.45 * H;
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d'), img = ctx.createImageData(W, H), px = img.data;
+    for (let y = 0; y < H; y++) {
+      const yy = (y - H / 2) / (H / 2);
+      const capIn = cap * (1 - Math.sqrt(Math.max(0, 1 - yy * yy)));
+      for (let x = 0; x < W; x++) {
+        const u = rtl ? W - 1 - x : x, v = W - 1 - u;              // from where the tip lands / from where it lifts
+        const dT = y - top[x], dB = H - 1 - y - bot[x];
+        const dS = u - capIn, dF = v - slant * (rtl ? 1 - y / H : y / H);
+        const d = Math.min(dT, dB, dS, dF);
+        if (d < -1) continue;
+        const edge = Math.max(0, 1 - Math.min(dT, dB) / (3.5 * S));
+        const pool = Math.max(0, 1 - u / (9 * S));
+        const n = Math.abs((Math.sin(x * 0.37 + y * 12.9898 + seed) * 43758.5453) % 1);
+        const dry = v < 0.3 * W && n > 0.82 ? 0.55 : 1;
+        const a = Math.min(1, Math.max(0, d + 0.5)) * Math.min(0.92, 0.5 * streak[y] * (1 + 0.45 * edge) * (1 + 0.5 * pool) * dry);
+        const k = Math.min(1, edge * 0.7 + pool * 0.5);
+        const i4 = (y * W + x) * 4;
+        px[i4] = 240 - 14 * k; px[i4 + 1] = 122 - 38 * k; px[i4 + 2] = 46 - 19 * k; px[i4 + 3] = a * 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return cv.toDataURL('image/png');
+  }
+  const HL = [];
   function buildHighlights() {
-    $$('.li .tl').forEach((tlEl) => {
-      const ws = [...tlEl.querySelectorAll('[data-hl]')];
-      const l = Math.min(...ws.map((w) => w.offsetLeft)), r = Math.max(...ws.map((w) => w.offsetLeft + w.offsetWidth));
-      const h = document.createElement('div');
-      h.className = 'hlt';
-      h.style.left = (l - 10) + 'px';
-      h.style.width = (r - l + 20) + 'px';
-      h.style.top = (ws[0].offsetTop + ws[0].offsetHeight * 0.28) + 'px';
-      h.style.height = (ws[0].offsetHeight * 0.62) + 'px';
-      tlEl.appendChild(h);
+    const pens = document.createElement('div');
+    pens.id = 'pens';
+    world.appendChild(pens);
+    $$('.li').forEach((li, i) => {
+      const tlEl = li.querySelector('.tl'), ws = [...tlEl.querySelectorAll('[data-hl]')];
+      const l = Math.min(...ws.map((w) => w.offsetLeft)) - 16, r = Math.max(...ws.map((w) => w.offsetLeft + w.offsetWidth)) + 16;
+      const wh = ws[0].offsetHeight, top = ws[0].offsetTop + wh * 0.2, h = wh * 0.7, w = r - l, w2 = w * 0.74, dy2 = h * 0.16;
+      const band = (cls, y, ww, seed, rtl) => {
+        const d = document.createElement('div');
+        d.className = 'hlt ' + cls;
+        d.style.cssText = `left:${l}px; top:${y}px; width:${ww}px; height:${h}px; background-image:url(${inkStroke(ww, h, seed, rtl)})`;
+        tlEl.appendChild(d);
+        return d;
+      };
+      const g = { ws, l, w, w2, h, dy2, a: band('h1', top, w, 501 + i * 13, true), b: band('h2', top + dy2, w2, 777 + i * 17, false) };
+      // the pen, its tip on the right end of the band (the wall sits at the desk's origin)
+      const x = li.offsetLeft + tlEl.offsetLeft + l + w, y = li.offsetTop + tlEl.offsetTop + top + h / 2;
+      g.pen = document.createElement('div');
+      g.pen.className = 'pen';
+      g.pen.style.cssText = `left:${(x - PEN_TIP).toFixed(1)}px; top:${(y - PEN_TIP).toFixed(1)}px`;
+      g.pen.innerHTML = '<img class="psh" src="assets/props/highlighter-shadow.png" alt="" /><img src="assets/props/highlighter.png" alt="" />';
+      pens.appendChild(g.pen);
+      HL.push(g);
     });
   }
 
@@ -256,13 +305,39 @@
     words('#bih', [T.bih]);
     tl.fromTo('#three .w', { opacity: 0, scale: 1.18, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, T.three);
 
-    // ── the wall: at each of the three, the tag swings on its string, a tick, the line, a highlighter
+    // ── the wall: at each of the three, the tag swings on its string, a tick, the line, then the highlighter pen
     POINTS.forEach((p, i) => {
       tl.fromTo(`#k${i + 1}`, { opacity: 0, rotation: p.tr - 24 }, { opacity: 1, rotation: p.tr, duration: 0.6, ease: 'back.out(2.2)', transformOrigin: '10% 50%' }, T.tags[i]);
       tl.fromTo(`#l${i + 1} .tick path`, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, T.ticks[i]);
       words(`#l${i + 1}`, T.l[i]);
-      tl.fromTo(`#l${i + 1} .hlt`, { clipPath: 'polygon(100% 18%, 100% 10%, 100% 16%, 100% 8%, 100% 86%, 100% 94%, 100% 88%, 100% 95%)' },
-        { clipPath: 'polygon(1% 18%, 30% 10%, 62% 16%, 99% 8%, 100% 86%, 70% 94%, 36% 88%, 0 95%)', duration: 0.5, ease: 'power2.inOut' }, T.hls[i]);
+    });
+    // the pen comes in from the lower right (where the hand is), lands on the right end of the key words, strokes to the
+    // left (each word bumps as the tip passes it), strokes back a little lower, then lifts off and leaves; its shadow
+    // tightens as it touches the paper. Pen x is where the tip is: the middle of the ink's slanted leading edge.
+    const inv = (e) => (e < 0.5 ? Math.sqrt(e / 2) : 1 - Math.sqrt((1 - e) / 2));   // inverse of power1.inOut
+    HL.forEach((g, i) => {
+      const t0 = T.hls[i], s = g.h * 0.45, D1 = 0.6, D2 = 0.34, t2 = t0 + D1 + 0.06, tE = t2 + D2 + 0.04;
+      const sh = g.pen.querySelector('.psh'), lift = { x: -8, y: 40, opacity: 0.45 }, down = { x: 0, y: 0, opacity: 1 };
+      const poly1 = (p) => `polygon(${p}px 0px, ${g.w}px 0px, ${g.w}px ${g.h}px, ${p + s}px ${g.h}px)`;
+      const poly2 = (q) => `polygon(0px 0px, ${q}px 0px, ${q - s}px ${g.h}px, 0px ${g.h}px)`;
+      const xA = s / 2, xB = -g.w - s / 2, xC = g.w2 + s / 2 - g.w;
+      tl.set(g.pen, { opacity: 1 }, t0 - 0.45);
+      tl.fromTo(g.pen, { x: xA + 560, y: 470, scale: 1.06, rotation: 4 }, { x: xA, y: 0, scale: 1, rotation: 0, duration: 0.45, ease: 'power3.out' }, t0 - 0.45);
+      tl.fromTo(sh, lift, { ...down, duration: 0.45, ease: 'power3.out' }, t0 - 0.45);
+      tl.fromTo(g.a, { clipPath: poly1(g.w) }, { clipPath: poly1(-s), duration: D1, ease: 'power1.inOut' }, t0);
+      tl.fromTo(g.pen, { x: xA }, { x: xB, duration: D1, ease: 'power1.inOut' }, t0);
+      tl.fromTo(g.pen, { rotation: 0 }, { rotation: -3, duration: D1 / 2, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t0);
+      tl.fromTo(g.pen, { y: 0 }, { y: g.dy2, duration: 0.1, ease: 'power1.inOut' }, t0 + D1 - 0.02);
+      tl.fromTo(g.b, { clipPath: poly2(0) }, { clipPath: poly2(g.w2 + s), duration: D2, ease: 'power1.inOut' }, t2);
+      tl.fromTo(g.pen, { x: xB }, { x: xC, duration: D2, ease: 'power1.inOut' }, t2);
+      tl.fromTo(g.pen, { x: xC, y: g.dy2, scale: 1, rotation: 0 }, { x: xC + 620, y: g.dy2 + 540, scale: 1.06, rotation: 5, duration: 0.42, ease: 'power2.in' }, tE);
+      tl.fromTo(sh, down, { ...lift, duration: 0.42, ease: 'power2.in' }, tE);
+      tl.set(g.pen, { opacity: 0 }, tE + 0.42);
+      g.ws.forEach((w) => {
+        const c = w.offsetLeft + w.offsetWidth / 2 - g.l, t = t0 + D1 * inv(Math.min(1, Math.max(0, (g.w - c + s / 2) / (g.w + s))));
+        tl.to(w, { scale: 1.14, y: -5, duration: 0.12, ease: 'power2.out' }, t);
+        tl.to(w, { scale: 1, y: 0, duration: 0.38, ease: 'back.out(3)' }, t + 0.12);
+      });
     });
     strip('#t7', T.t7, -1.2, T.t7w);
 
@@ -276,7 +351,7 @@
     });
     slam('#slam8', '#h2s', T.slam8);
 
-    // ── the ask: «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.», a paper plane, the button opens into his handle
+    // ── the ask: «عجبك الشغل؟ راسلنا بالدايركت.. ونبدي بمشروعك.», a paper plane, the button opens into his handle
     strip('#t9', T.t9, -1.4, T.t9w);
     slam('#slam9', '#h3s', T.slam9);
     words('#s9 .ax', T.s9b);

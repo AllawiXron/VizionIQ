@@ -71,13 +71,15 @@ C += [(T['three'], 'mpop', 0.4)]                                        # «٣ �
 C += [(15.3 - 0.6, 'simple', 0.28), (18.85 - 0.6, 'simple', 0.26), (22.35 - 0.6, 'simple', 0.26)]   # the three prints
 C += [(t, 'click2', 0.38) for t in T['tags']]                          # tags swing in
 C += [(t, 'cinclick', 0.28) for t in T['ticks']]                       # ticks
-C += [(t, 'select', 0.33) for t in T['hls']]                           # highlighter swipes
+for t in T['hls']:                                                     # the highlighter pen (timing in src/timeline.js)
+    C += [(t - 0.45 - 0.45, 'smooth', 0.12), (t, 'cinclick', 0.16)]     # it comes in; its tip lands
+    C += [(t + 0.03, 'select', 0.33), (t + 0.66 + 0.02, 'select2', 0.22)]   # the stroke; the stroke back
 C += [(25.75 - 0.4, 'airy', 0.32)]                                      # the pull-back over the wall
 C += [(29.55 - 0.25, 'cinfast', 0.3)]                                   # the dive to the services sheet
 C += [(t + 0.32, 'cinclick', 0.18) for t in T['sv']]                   # each label's pin goes in
 C += [(T['slam8'] - 0.15, 'flick', 0.3), (T['slam8'] + 0.32, 'ppop3', 0.2)]   # «وهوية كاملة.» slams in
 C += [(33.1 - 0.7, 'fastwhoosh', 0.28)]                                 # down to the ask
-C += [(T['slam9'] - 0.15, 'flick', 0.35), (T['slam9'] + 0.32, 'ppop2', 0.16), (T['plane'] - 0.15, 'airy', 0.22)]   # «راسلني»; the plane
+C += [(T['slam9'] - 0.15, 'flick', 0.35), (T['slam9'] + 0.32, 'ppop2', 0.16), (T['plane'] - 0.15, 'airy', 0.22)]   # «راسلنا»; the plane
 C += [(T['btn'], 'mpop', 0.35), (T['click'], 'clickb', 0.6), (T['open'], 'sweet', 0.35)]   # the button, the click, it opens
 C.sort()
 

@@ -355,6 +355,73 @@ def mug(name):
     render(sc, name)
 
 
+# ── a highlighter pen, held at a slant with its chisel tip on the paper at the origin, the body out to the lower right
+# (where a right hand holds it). The reel moves it along each stroke, so its shadow is kept as a separate PNG (lifted:
+# shadow further away). Tip in the PNG: 52.5, 52.5 px at 3.5 px/mm.
+def highlighter(name):
+    sc = reset()
+    body = mat('body', '#f07a2e', rough=0.28, coat=0.45)
+    capm = mat('cap', '#e2541b', rough=0.28, coat=0.45)
+    white = mat('white', '#f4ece0', rough=0.32, coat=0.25)
+    felt = mat('felt', '#f2661a', rough=0.95)
+    piv = bpy.data.objects.new('piv', None)
+    sc.collection.objects.link(piv)
+
+    def part(o):
+        o.parent = piv
+        return o
+
+    def cyl(nm, m, r1, r2, x0, x1, segs=48):
+        bm = bmesh.new()
+        bmesh.ops.create_cone(bm, cap_ends=True, segments=segs, radius1=r1 * MM, radius2=r2 * MM, depth=(x1 - x0) * MM)
+        me = bpy.data.meshes.new(nm)
+        bm.to_mesh(me)
+        me.shade_smooth()
+        o = link(sc, me, nm, m)
+        o.rotation_euler = (0, math.radians(90), 0)
+        o.location = ((x0 + x1) / 2 * MM, 0, 0)
+        bv = o.modifiers.new('bv', 'BEVEL')
+        bv.width = 0.5 * MM
+        bv.segments = 3
+        return part(o)
+
+    # the chisel felt tip
+    bm = bmesh.new()
+    for v in ((0, -2.5, -1.2), (0, 2.5, -1.2), (2.6, -2.5, 1.2), (2.6, 2.5, 1.2), (8, -2.5, -1.2), (8, 2.5, -1.2), (8, -2.5, 1.2), (8, 2.5, 1.2)):
+        bm.verts.new(tuple(c * MM for c in v))
+    bmesh.ops.convex_hull(bm, input=bm.verts)
+    me = bpy.data.meshes.new('felt')
+    bm.to_mesh(me)
+    part(link(sc, me, 'felt', felt))
+    cyl('collar', white, 3.3, 6.2, 6.5, 17, 48)
+    cyl('body', body, 6.6, 6.6, 17, 104, 64)
+    cyl('cap', capm, 7.3, 7.3, 92, 127, 64)
+    bm = bmesh.new()
+    bmesh.ops.create_uvsphere(bm, u_segments=48, v_segments=24, radius=7.3 * MM)
+    me = bpy.data.meshes.new('dome')
+    bm.to_mesh(me)
+    me.shade_smooth()
+    d = part(link(sc, me, 'dome', capm))
+    d.location = (127 * MM, 0, 0)
+    d.scale = (0.45, 1, 1)
+    # the cap's clip, along its top
+    bm = bmesh.new()
+    bmesh.ops.create_cube(bm, size=1)
+    me = bpy.data.meshes.new('clip')
+    bm.to_mesh(me)
+    c = part(link(sc, me, 'clip', white))
+    c.scale = (30 * MM, 3.6 * MM, 1.4 * MM)
+    c.location = (111 * MM, 0, 8.2 * MM)
+    bv = c.modifiers.new('bv', 'BEVEL')
+    bv.width = 0.5 * MM
+    bv.segments = 3
+    # tilt it up 42 degrees about the tip, then turn it to point at the lower right
+    piv.rotation_euler = (0, math.radians(-42), math.radians(-35))
+    piv.location = (0, 0, 1.0 * MM)
+    camera(sc, 115, 145, 42.5, -57.5)
+    render(sc, name)
+
+
 JOBS = {
     'clip-silver': lambda: paperclip('clip-silver', (0.82, 0.82, 0.84, 1), True),
     'clip-orange': lambda: paperclip('clip-orange', '#e2541b', False),
@@ -364,6 +431,7 @@ JOBS = {
     'binder': lambda: binder('binder'),
     'pencil': lambda: pencil('pencil'),
     'mug': lambda: mug('mug'),
+    'highlighter': lambda: highlighter('highlighter'),
 }
 for k, f in JOBS.items():
     if not ONLY or k in ONLY:

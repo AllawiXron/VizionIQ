@@ -17,7 +17,7 @@ screen, so you can read along with the video: each line starts when its caption 
 | 22.85 | وسبب يخلّيه يطلب هسه. | to the lab print |
 | 26.15 | وهذا بالضبط اللي أسويه لمشروعك.. | the camera pulls back: the whole wall, nine of your designs |
 | 29.6 | بوستات.. ستوريات.. منيو.. شعار.. وهوية كاملة. | it dives into a rust sheet: one pinned label per word (29.6, 30.05, 30.5, 30.95), then «وهوية كاملة.» slams in at 31.45 |
-| 33.2 | عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك. | down to the last sheet: «راسلني» at 33.95, a paper plane, the button opens into @allawi.psd (ends 38.0) |
+| 33.2 | عجبك الشغل؟ راسلنا بالدايركت.. ونبدي بمشروعك. | down to the last sheet: «راسلنا» at 33.95, a paper plane, the button opens into @allawi.psd (ends 38.0) |
 
 Take your time: the video leaves a pause after every line, like the reference. After «ليش؟» stop for a full second
 before «بيه ثلاث شغلات»: the screen waits for you there.
