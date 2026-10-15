@@ -3,7 +3,7 @@
 A 30 s reel at 1080×1920 that turns viewers into DMs, cut in the editing style of a reference the user sent (a
 designer's 68 s voice-led reel). The user records the voice himself: `VOICE-SCRIPT.md`. Why: `BRIEF.md`.
 
-- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps).
+- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps, 4.4 MB).
 - `renders/one-second-reel-cover.jpg`: a cover frame.
 - `caption.txt`: the post caption (prices from his highlights; the unofficial-ads note and photo credits).
 
