@@ -81,6 +81,7 @@ ink is real marker ink, drawn at its own size (`inkStroke()` in `src/timeline.js
 edges, a blot where the tip lands, a chisel-cut end, two passes overlapping darker. Sounds: a soft whoosh as it comes
 in, a tick as it lands, his two «Ui Granular, Button, Select» for the two strokes. The ask says «راسلنا» on screen, in
 the voice script and in the caption.
+Then, at his request, «وهذا بالضبط اللي أسويه» became «… نسويه» to match.
 
 | Time | Camera | On screen |
 |---|---|---|
@@ -89,7 +90,7 @@ the voice script and in the caption.
 | 10.0–11.6 | push in | the scroll stops on his quzi post, a heart; strip «إلا هيچ بوست.» |
 | 11.3–14.75 | across to the desk | «؟» disc with a ripple, «ليش؟» alone, a pause, then «بيه / ٣ شغلات» |
 | 14.75–25.0 | into the wall, three stops | Asiacell, Pepsi and lab prints among nine; a kraft tag, a tick, a handwritten line, and a highlighter pen that marks the key words |
-| 25.0–29.0 | pull back over the wall | all nine of his designs; strip «وهذا بالضبط اللي أسويه / لمشروعك.» with the unofficial-ads note |
+| 25.0–29.0 | pull back over the wall | all nine of his designs; strip «وهذا بالضبط اللي نسويه / لمشروعك.» with the unofficial-ads note |
 | 29.0–32.6 | dive into a rust sheet | four pinned labels «بوستات»، «ستوريات»، «منيو»، «شعار», then «وهوية كاملة.» slams in |
 | 32.6–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلنا» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
 
