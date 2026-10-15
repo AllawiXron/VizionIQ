@@ -45,13 +45,18 @@ frame the camera lands on is already composed (text starts as it arrives); fewer
 light blur (at most 22 px); the hook is one sheet with a slow pull-back; the feed never stops until his post; the three
 points are three stops on a full wall of nine of his designs, and the pull-back reveals the whole wall.
 
+**v6 → v7 (15 Oct).** The user's own font, DG Sahabah (`../brand-fonts`), replaces Alexandria for every headline and
+caption (Aref Ruqaa stays for the handwriting); it has no «چ», so the screen says «هيج» and «حجي». «ليش؟» used to be
+followed by «٣ شغلات» 0.7 s later ("appears fast right after"): now «ليش؟» lands alone and hangs for 1.35 s with the
+disc pulsing, then «بيه», then «٣ شغلات» on its own beat (the move to the wall starts 0.35 s later to make room).
+
 | Time | Camera | On screen |
 |---|---|---|
 | 0–4.7 | close on a paper sheet, easing back | «زبونك يقرّر / بثانية وحدة.», «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
 | 4.7–10.0 | down to a rust sheet | the phone, its feed flying past; torn strips «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
 | 10.0–11.6 | push in | the scroll stops on his quzi post, a heart; strip «إلا هيچ بوست.» |
-| 11.6–14.4 | across to the desk | «؟» disc with a ripple, «ليش؟ بيه / ٣ شغلات» |
-| 14.4–25.0 | into the wall, three stops | Asiacell, Pepsi and lab prints among nine; a kraft tag, a tick, a handwritten line and a highlighter at each |
+| 11.3–14.75 | across to the desk | «؟» disc with a ripple, «ليش؟» alone, a pause, then «بيه / ٣ شغلات» |
+| 14.75–25.0 | into the wall, three stops | Asiacell, Pepsi and lab prints among nine; a kraft tag, a tick, a handwritten line and a highlighter at each |
 | 25.0–29.0 | pull back over the wall | all nine of his designs; strip «وهذا بالضبط اللي أسويه / لمشروعك.» with the unofficial-ads note |
 | 29.0–32.6 | dive into a rust sheet | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف» |
 | 32.6–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |

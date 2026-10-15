@@ -13,7 +13,7 @@
 :root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a }
 * { margin:0; padding:0; box-sizing:border-box }
 html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink) }
-#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); direction:rtl; font-family:'IBM Plex Sans Arabic' }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); direction:rtl; font-family:'IBM Plex Sans Arabic'; font-synthesis:none }
 #view { position:absolute; inset:0; overflow:hidden }
 #world { position:absolute; left:0; top:0; width:7000px; height:12400px; transform-origin:0 0 }
 .st { position:absolute; width:1080px; height:1920px }
@@ -35,9 +35,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 .tx { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap }
 .ln { display:block; position:relative }
 .w { display:inline-block; position:relative; opacity:0 }
-.ax { font-family:'Alexandria'; font-weight:800 }
+.ax { font-family:'DG Sahabah', 'Alexandria'; font-weight:400 }
 .t76 { font-size:76px; line-height:1.4 }
-.big { font-family:'Alexandria'; font-weight:900; font-size:176px; line-height:1.2 }
+.big { font-family:'DG Sahabah', 'Alexandria'; font-weight:400; font-size:176px; line-height:1.2 }
 .ruq { font-family:'Aref Ruqaa'; font-weight:700 }
 .on-paper { color:var(--ink) } .on-paper .k { color:var(--oink) }
 .on-ink { color:var(--cream) } .on-ink .k { color:var(--orange2) }
@@ -45,10 +45,10 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 
 /* torn caption strip, as on the highlights */
 .strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8; opacity:0 }
-.strip > span { display:inline-block; padding:18px 46px 30px; font:800 70px/1.35 'Alexandria'; color:var(--ink); background:var(--cream); white-space:nowrap;
+.strip > span { display:inline-block; padding:18px 46px 30px; font:400 70px/1.35 'DG Sahabah', 'Alexandria'; color:var(--ink); background:var(--cream); white-space:nowrap;
   filter:drop-shadow(0 10px 12px rgba(0,0,0,.4));
   clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
-.strip .k { color:var(--oink); font-weight:800 }
+.strip .k { color:var(--oink) }
 
 /* prints, tape, kraft tags */
 .print { position:absolute; width:520px; padding:14px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
@@ -116,7 +116,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 #btn { position:absolute; left:260px; top:1330px; width:560px; height:100px; border-radius:50px; background:var(--orange); opacity:0; overflow:hidden;
   box-shadow:0 16px 28px rgba(150,50,10,.35) }
 #btn svg { position:absolute; left:262px; top:30px; width:40px; height:40px; fill:none; stroke:var(--cream); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round }
-#btn .pl { position:absolute; right:75px; top:14px; font:800 50px/1.4 'Alexandria'; color:var(--cream); direction:ltr; white-space:nowrap; opacity:0 }
+#btn .pl { position:absolute; right:75px; top:14px; font:400 50px/1.4 'DG Sahabah', 'Alexandria'; color:var(--cream); direction:ltr; white-space:nowrap; opacity:0 }
 #cur { position:absolute; left:820px; top:1680px; width:64px; height:80px; opacity:0; filter:drop-shadow(0 6px 8px rgba(0,0,0,.3)) }
 #ripB { position:absolute; left:500px; top:1340px; width:80px; height:80px; border-radius:50%; border:3px solid var(--oink); opacity:0 }
     </style>
@@ -135,8 +135,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 
           <!-- the hook: one composed sheet; the camera starts close and eases back as the words arrive -->
           <div class="st on-paper" id="s1" style="left:5060px; top:290px">
-            <div class="tx" style="top:470px; font:900 122px/1.2 'Alexandria'"><span class="w">زبونك</span> <span class="w">يقرّر</span></div>
-            <div class="tx" style="top:610px; font:900 150px/1.2 'Alexandria'; color:var(--oink)"><span class="w">بثانية</span> <span class="w">وحدة.</span></div>
+            <div class="tx" style="top:470px; font:400 122px/1.2 'DG Sahabah', 'Alexandria'"><span class="w">زبونك</span> <span class="w">يقرّر</span></div>
+            <div class="tx" style="top:610px; font:400 150px/1.2 'DG Sahabah', 'Alexandria'; color:var(--oink)"><span class="w">بثانية</span> <span class="w">وحدة.</span></div>
             <div class="tx ax" style="top:910px; font-size:70px; line-height:1.4"><span class="ln"><span class="w">يوقف</span> <span class="w">على</span> <span class="w">بوستك..</span></span><span class="ln"><span class="w">لو</span> <span class="w k">يعبره.</span></span></div>
             <div id="bar"><i class="fill"></i><span class="lab">1s</span></div>
           </div>
@@ -145,16 +145,17 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
           <div class="st on-orange" id="s2" style="left:5060px; top:2740px">
             <div class="strip" id="t3a" style="top:290px"><span><span class="w">وأغلب</span> <span class="w">البوستات..</span> <span class="w k">تنعبر.</span></span></div>
             <div class="strip" id="t3b" style="top:290px"><span><span class="w">لأن</span> <span class="w">ما</span> <span class="w">بيها</span> <span class="w">شي</span> <span class="w k">يوقّفك.</span></span></div>
-            <div class="strip" id="t4" style="top:290px"><span><span class="w">إلا</span> <span class="w k">هيچ</span> <span class="w">بوست.</span></span></div>
+            <div class="strip" id="t4" style="top:290px"><span><span class="w">إلا</span> <span class="w k">هيج</span> <span class="w">بوست.</span></span></div>
             <div id="phoneW"><div id="phone"><div id="screen"><div id="island"></div><div id="sbar">9:41</div><div id="feedwin"><div id="feed"></div></div></div></div></div>
           </div>
 
           <!-- «ليش؟», on the desk itself -->
           <div class="st on-ink" id="s3" style="left:5060px; top:5140px">
-            <i class="rip" id="rip5" style="left:480px; top:640px"></i>
-            <div class="ico" id="ico5" style="left:480px; top:640px">؟</div>
-            <div class="tx ax t76" style="top:800px"><span class="w">ليش؟</span> <span class="w">بيه</span></div>
-            <div class="tx big" style="top:905px"><span class="w"><span class="k">٣</span> شغلات</span></div>
+            <i class="rip" id="rip5" style="left:480px; top:540px"></i>
+            <div class="ico" id="ico5" style="left:480px; top:540px">؟</div>
+            <div class="tx ax" id="why" style="top:690px; font-size:150px; line-height:1.2"><span class="w">ليش؟</span></div>
+            <div class="tx ax t76" id="bih" style="top:905px"><span class="w">بيه</span></div>
+            <div class="tx big" id="three" style="top:985px"><span class="w"><span class="k">٣</span> شغلات</span></div>
           </div>
 
           <!-- the wall of his work (filled in by the timeline script): nine prints, three of them with a handwritten line -->

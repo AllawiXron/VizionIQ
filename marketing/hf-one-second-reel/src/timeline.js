@@ -11,7 +11,7 @@
   };
   // [start, end, pose, roll at mid-move]
   const MOVES = [
-    [0.5, 4.5, 'S1', 0], [4.7, 5.9, 'S2', 1.5], [10.0, 10.8, 'S2z', 0], [11.6, 12.7, 'S3', -1.5], [14.4, 15.6, 'A', 1],
+    [0.5, 4.5, 'S1', 0], [4.7, 5.9, 'S2', 1.5], [10.0, 10.8, 'S2z', 0], [11.3, 12.3, 'S3', -1.5], [14.75, 15.85, 'A', 1],
     [18.3, 19.4, 'B', 0], [21.8, 22.9, 'C', 0], [25.0, 26.5, 'G', 0], [29.0, 30.1, 'H', 1.5], [32.6, 33.6, 'I', -1.5],
   ];
   // the sheets on the desk: centre x, centre y, width, height, field, rotation
@@ -27,15 +27,15 @@
   ];
   const POINTS = [
     { tag: 'آسيا سيل', sub: 'إعلان غير رسمي', tr: -8, line: '<span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-hl="1">بثانية</span>' },
-    { tag: 'ببسي', sub: 'إعلان غير رسمي', tr: 7, line: '<span class="w">حچي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span>' },
+    { tag: 'ببسي', sub: 'إعلان غير رسمي', tr: 7, line: '<span class="w">حجي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span>' },
     { tag: 'مختبر', sub: 'نموذج من شغلي', tr: -6, line: '<span class="w">وسبب</span> <span class="w">يخلّيه</span> <span class="w" data-hl="1">يطلب</span> <span class="w" data-hl="1">هسه</span>' },
   ];
   const T = {
     s1w: [0.0, 0.0, 0.6, 0.95, 2.3, 2.58, 2.86, 3.6, 3.88], bar: 2.4, fill: 2.7,
     scroll: 4.9, slow: 9.25, stop: 10.1,
     t3a: 5.55, t3aw: [5.6, 5.88, 6.35], t3aOut: 7.82, t3b: 7.95, t3bw: [7.95, 8.25, 8.55, 8.85, 9.3], t4: 10.15, t4w: [10.2, 10.5, 10.75], heart: 10.45,
-    ico: 12.15, s3w: [12.4, 12.7, 13.1],
-    tags: [15.3, 19.1, 22.6], ticks: [15.45, 19.2, 22.7], l: [[15.6, 15.88, 16.16, 16.44], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.0, 20.6, 24.2],
+    ico: 11.95, why: 12.1, bih: 13.45, three: 13.7,
+    tags: [15.6, 19.1, 22.6], ticks: [15.75, 19.2, 22.7], l: [[15.9, 16.18, 16.46, 16.74], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.25, 20.6, 24.2],
     t7: 26.1, t7w: [26.15, 26.43, 26.71, 26.99, 27.45, 27.85],
     s8: [29.6, 29.9], slam8: 30.45, s8sub: 31.1,
     t9: 33.2, t9w: [33.2, 33.5], slam9: 33.95, s9b: 34.6, plane: 34.85, s9c: [35.1, 35.38], btn: 35.8, cur: 36.0, click: 36.6, open: 36.7,
@@ -171,9 +171,12 @@
 
     // ── «ليش؟»
     tl.fromTo('#ico5', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2.2)' }, T.ico);
+    // «ليش؟» lands on its own and is left to hang for a beat (the disc keeps pulsing), then the answer comes in
     [0.2, 1.0].forEach((d) => { tl.set('#rip5', { opacity: 0.8, scale: 1 }, T.ico + d); tl.to('#rip5', { opacity: 0, scale: 2.4, duration: 0.8, ease: 'power2.out' }, T.ico + d); });
-    words('#s3 .t76', [T.s3w[0], T.s3w[1]]);
-    tl.fromTo('#s3 .big .w', { opacity: 0, scale: 1.12, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, T.s3w[2]);
+    tl.fromTo('#why .w', { opacity: 0, scale: 0.85, filter: 'blur(12px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.45, ease: 'back.out(1.6)' }, T.why);
+    tl.to('#why .w', { scale: 1.04, duration: T.bih - T.why - 0.45, ease: 'sine.inOut' }, T.why + 0.45);
+    words('#bih', [T.bih]);
+    tl.fromTo('#three .w', { opacity: 0, scale: 1.18, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, T.three);
 
     // ── the wall: at each of the three, the tag swings on its string, a tick, the line, a highlighter
     POINTS.forEach((p, i) => {

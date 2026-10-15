@@ -10,15 +10,19 @@ screen, so you can read along with the video: each line starts when its caption 
 | 5.6 | وأغلب البوستات.. تنعبر. | down to the phone; the feed is flying past |
 | 7.95 | لأن ما بيها شي يوقّفك. | the feed keeps flying |
 | 10.2 | إلا هيچ بوست. | the scroll stops on the quzi post, the camera pushes in, a heart |
-| 12.4 | ليش؟ بيه ثلاث شغلات: | across to «ليش؟» on the desk |
-| 15.6 | فكرة وحدة.. تنفهم بثانية. | into the wall of your work: the Asiacell print, «بثانية» highlighted |
+| 12.1 | ليش؟ | across to the desk: «ليش؟» alone, then a pause |
+| 13.45 | بيه ثلاث شغلات: | «بيه», then «٣ شغلات» lands at 13.7 |
+| 15.9 | فكرة وحدة.. تنفهم بثانية. | into the wall of your work: the Asiacell print, «بثانية» highlighted |
 | 19.35 | حچي بلهجة زبونك. | across the wall to the Pepsi print |
 | 22.85 | وسبب يخلّيه يطلب هسه. | to the lab print |
 | 26.15 | وهذا بالضبط اللي أسويه لمشروعك.. | the camera pulls back: the whole wall, nine of your designs |
 | 29.6 | ثلاث بوستات.. بأربعين ألف. | it dives into the price; «بـ ٤٠ ألف» lands at 30.45 |
 | 33.2 | عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك. | down to the last sheet: «راسلني» at 33.95, a paper plane, the button opens into @allawi.psd (ends 38.0) |
 
-Take your time: the video leaves a pause after every line, like the reference.
+Take your time: the video leaves a pause after every line, like the reference. After «ليش؟» stop for a full second
+before «بيه ثلاث شغلات»: the screen waits for you there.
+
+On screen, «هيچ» and «حچي» are written «هيج» and «حجي» (your font has no «چ»); say them as you normally would.
 
 ## Recording tips
 
