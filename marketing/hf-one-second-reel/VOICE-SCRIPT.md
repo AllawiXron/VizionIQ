@@ -3,21 +3,21 @@
 Read it in your normal voice, like you're telling a friend something you know, not like an ad. The words are also on
 screen, so you can read along with the video: each line starts when its caption appears.
 
-| Time | Say | On screen |
+| Time | Say | On screen (one continuous camera move, no cuts) |
 |---|---|---|
-| 0.0 | زبونك يقرّر بثانية وحدة.. | one word per beat, the colour flips: زبونك / يقرّر / بثانية / وحدة |
-| 2.2 | يوقف على بوستك.. لو يعبره. | the one-second bar fills («لو يعبره» at 3.7) |
-| 5.4 | وأغلب البوستات.. تنعبر. | whip-pan; a phone rises, the feed flies past |
+| 0.0 | زبونك يقرّر بثانية وحدة.. | the camera jumps sheet to sheet, one word on each: زبونك / يقرّر / بثانية / وحدة |
+| 2.35 | يوقف على بوستك.. لو يعبره. | down to the rust sheet; the one-second bar fills («لو يعبره» at 3.75) |
+| 5.5 | وأغلب البوستات.. تنعبر. | down to the phone; the feed flies past |
 | 7.6 | لأن ما بيها شي يوقّفك. | the feed keeps flying |
-| 10.3 | إلا هيچ بوست. | cut to brown: the scroll stops on the quzi post, a heart |
-| 12.5 | ليش؟ بيه ثلاث شغلات: | «؟», «٣ شغلات» |
-| 14.9 | فكرة وحدة.. تنفهم بثانية. | the Asiacell print; line 1, «بثانية» highlighted |
-| 18.3 | حچي بلهجة زبونك. | the Pepsi print; line 2 |
-| 21.7 | وسبب يخلّيه يطلب هسه. | the lab print; line 3 |
-| 25.1 | وهذا بالضبط اللي أسويه لمشروعك.. | whip-pan; your designs fly into a collage |
-| 28.85 | ثلاث بوستات.. بأربعين ألف. | «٣ بوستات», then «بـ ٤٠ ألف» lands at 29.7 |
-| 32.3 | عجبك الشغل؟ | «عجبك الشغل؟» |
-| 32.95 | راسلني بالدايركت.. ونبدي بمشروعك. | «راسلني» slams in, a paper plane, then the button opens into @allawi.psd (ends 38.0) |
+| 10.3 | إلا هيچ بوست. | the scroll stops on the quzi post, the camera pushes in, a heart |
+| 12.8 | ليش؟ بيه ثلاث شغلات: | across to the «؟» sheet |
+| 15.2 | فكرة وحدة.. تنفهم بثانية. | down to the Asiacell print; «بثانية» highlighted |
+| 18.5 | حچي بلهجة زبونك. | down to the Pepsi print |
+| 21.9 | وسبب يخلّيه يطلب هسه. | down to the lab print |
+| 25.4 | وهذا بالضبط اللي أسويه لمشروعك.. | the camera pulls back over the whole desk; your other designs land around |
+| 29.0 | ثلاث بوستات.. بأربعين ألف. | it dives into the price; «بـ ٤٠ ألف» lands at 29.75 |
+| 32.55 | عجبك الشغل؟ | down to the last sheet |
+| 33.15 | راسلني بالدايركت.. ونبدي بمشروعك. | «راسلني», a paper plane, the button opens into @allawi.psd (ends 38.0) |
 
 Take your time: the video leaves a pause after every line, like the reference.
 

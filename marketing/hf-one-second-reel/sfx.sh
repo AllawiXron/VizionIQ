@@ -17,6 +17,7 @@ sweet|Pop/Sweet UI Open.wav
 mpop|Pop/Meadia Pop.wav
 softpop|Pop/Slow And Smooth Pop.wav
 simple|Whooshes/Simple Whoosh.wav
+smooth|Whooshes/Smooth And Fast Whoosh.wav
 cinfast|Whooshes/Cinematic Fast Normal Whoosh.wav
 wclick|whoosh click.wav
 cinclick|Clicks/Cinematic Click.wav

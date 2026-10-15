@@ -32,21 +32,27 @@ taped prints with kraft tags; Aref Ruqaa handwriting; a highlighter and marker t
 The ending is «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.» with a hand-drawn paper plane and the button that opens
 into @allawi.psd.
 
-| Time | Scene | On screen |
+**v4 → v5 (15 Oct).** "make the video one-take". No cuts: the whole reel is laid out on one desk (the highlights'
+brown, with paper and rust sheets on it) and a single camera travels across it. `MOVES` in `src/timeline.js` lists every
+move; a move eases in and out, rolls a few degrees at its middle and blurs along its direction (an SVG blur on the whole
+frame, set from the camera's speed every frame), and holds drift in a little. Every station is a 1080×1920 box on the
+desk, so at camera scale 1 it fills the frame; the wide shot's caption is drawn at screen size and scaled up.
+
+| Time | Camera | On screen |
 |---|---|---|
-| 0–2.0 | paper/rust/brown flips | «زبونك» «يقرّر» «بثانية» «وحدة.», one word per beat |
-| 2.0–4.9 | rust | «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
-| 4.9–10.0 | paper | whip-pan; a tilted phone rises, the feed flies past; torn strips «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
-| 10.0–12.3 | brown | the scroll stops on his quzi post, a double-tap heart; strip «إلا هيچ بوست.»; zoom-through |
-| 12.3–14.4 | rust | «؟» disc with a ripple, «ليش؟ بيه / ٣ شغلات»; the disc opens into a circle reveal |
-| 14.4–24.6 | paper | Asiacell, Pepsi and lab prints (tape, kraft tag) swap above a handwritten list: «فكرة وحدة تنفهم بثانية», «حچي بلهجة زبونك», «وسبب يخلّيه يطلب هسه», a tick and a highlighter on each |
-| 24.6–28.6 | brown | whip-pan; seven prints fly into a collage under the strip «وهذا بالضبط اللي أسويه / لمشروعك.»; zoom-through |
-| 28.6–31.9 | rust | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف»; a dot opens into the last scene |
-| 31.9–38 | paper | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
+| 0–1.75 | quick pans across four sheets | «زبونك» «يقرّر» «بثانية» «وحدة.», one word on each |
+| 1.75–4.55 | down to a rust sheet | «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
+| 4.55–9.95 | down to a paper sheet | the phone slides in, the feed flies past; torn strips «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
+| 9.95–11.9 | push in | the scroll stops on his quzi post, a heart; strip «إلا هيچ بوست.» |
+| 11.9–14.2 | across to a rust sheet | «؟» disc with a ripple, «ليش؟ بيه / ٣ شغلات» |
+| 14.2–24.1 | down a long paper sheet, three stops | Asiacell, Pepsi and lab prints with kraft tags; a handwritten line, a tick and a highlighter at each |
+| 24.1–28.2 | pull back over the whole desk | his other four designs land around the sheet; strip «وهذا بالضبط اللي أسويه / لمشروعك.» |
+| 28.2–31.7 | dive into a rust sheet | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف» |
+| 31.7–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
 
 ## Build
 
-- `./sfx.sh` copies the 18 sounds this reel uses from the user's own pack (`../sfx-pack`; run its `fetch.sh` first)
+- `./sfx.sh` copies the 19 sounds this reel uses from the user's own pack (`../sfx-pack`; run its `fetch.sh` first)
   into `assets/sfx` (not committed).
 - `python3 build.py` writes `index.html` from `src/template.html` (layout, copy), `src/timeline.js` (motion; every cue
   is in its `T` table) and the sound cue list in `build.py`. Never edit `index.html` by hand.

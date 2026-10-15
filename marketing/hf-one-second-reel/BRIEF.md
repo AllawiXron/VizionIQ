@@ -41,6 +41,11 @@ as greige `#d5c9b5`, warm brown `#2e231c` and rust `#c8501b`; Alexandria 800/900
 taped prints with kraft tags; Aref Ruqaa for the handwritten list and notes; an orange highlighter and marker ticks.
 The motion stays the reference's: words out of a blur, whip-pans, circle reveals, zoom-throughs, sideways slams.
 
+## One take (v5)
+
+The user asked for the video "one-take": no cuts. Everything sits on one desk and a single camera travels across
+it (pans, a push-in, a pull-back over all his work, a dive), with motion blur on the moves. README has the move list.
+
 ## Sound
 
 Sound effects only from the user's pack (`sfx.sh`). No music (CLAUDE.md: ask the user for a track if a piece needs
