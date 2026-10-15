@@ -7,16 +7,15 @@
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
 /*FONTFACES*/
-/* One take: the whole reel is laid out on one big desk (his highlights' brown, with paper and rust sheets on it), and a
-   single camera travels across it without a cut: quick pans between the hook words, down to the phone, a push-in on the
-   stop, along his three prints, a pull-back over all his work, a dive into the price, down to the ask.
-   Every station is a 1080×1920 box placed on the desk, so at camera scale 1 it fills the frame exactly. */
+/* One take on one desk (his highlights' brown, paper and rust): a single camera travels across it without a cut.
+   Every frame the camera lands on is already composed: text starts as it arrives, never after an empty beat.
+   Stations are 1080×1920 boxes on the desk, so at camera scale 1 they fill the frame. */
 :root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a }
 * { margin:0; padding:0; box-sizing:border-box }
 html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink) }
 #root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); direction:rtl; font-family:'IBM Plex Sans Arabic' }
 #view { position:absolute; inset:0; overflow:hidden }
-#world { position:absolute; left:0; top:0; width:11200px; height:13200px; transform-origin:0 0 }
+#world { position:absolute; left:0; top:0; width:7000px; height:12400px; transform-origin:0 0 }
 .st { position:absolute; width:1080px; height:1920px }
 
 /* the desk and the sheets, with the highlights' fields and paper texture */
@@ -39,7 +38,6 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 .ax { font-family:'Alexandria'; font-weight:800 }
 .t76 { font-size:76px; line-height:1.4 }
 .big { font-family:'Alexandria'; font-weight:900; font-size:176px; line-height:1.2 }
-.hook { font-family:'Alexandria'; font-weight:900; font-size:124px; line-height:1.2; top:850px }
 .ruq { font-family:'Aref Ruqaa'; font-weight:700 }
 .on-paper { color:var(--ink) } .on-paper .k { color:var(--oink) }
 .on-ink { color:var(--cream) } .on-ink .k { color:var(--orange2) }
@@ -53,10 +51,10 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 .strip .k { color:var(--oink); font-weight:800 }
 
 /* prints, tape, kraft tags */
-.print { position:absolute; padding:14px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
+.print { position:absolute; width:520px; padding:14px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
 .print img { display:block; width:100%; aspect-ratio:4/5 }
 .print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)) }
-.tape { position:absolute; height:48px; background:rgba(236,226,200,.8); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:6;
+.tape { position:absolute; width:150px; height:48px; background:rgba(236,226,200,.8); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:6;
   clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
 .ktag { position:absolute; width:300px; height:160px; z-index:7; opacity:0; filter:drop-shadow(0 12px 14px rgba(0,0,0,.4)) }
 .ktag .tg { position:absolute; inset:0; background:var(--cream); clip-path:polygon(0 50%, 17% 0, 100% 0, 100% 100%, 17% 100%) }
@@ -65,16 +63,16 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
   font:700 50px/1.1 'Aref Ruqaa'; color:var(--ink) }
 .ktag div small { font:600 22px/1.3 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.7); margin-top:4px }
 
-/* the one-second bar */
-#bar { position:absolute; left:340px; top:1110px; width:400px; height:84px; border-radius:42px; background:rgba(31,21,16,.28); opacity:0;
-  box-shadow:inset 0 2px 6px rgba(31,21,16,.3) }
-#bar .fill { position:absolute; right:14px; top:14px; height:56px; width:372px; border-radius:28px; background:var(--cream) }
-#bar .lab { position:absolute; left:-110px; top:10px; font:700 48px/1.4 'Aref Ruqaa'; color:rgba(251,243,230,.85); direction:ltr }
+/* the one-second bar, on paper */
+#bar { position:absolute; left:340px; top:1200px; width:400px; height:76px; border-radius:38px; background:rgba(31,21,16,.12); opacity:0;
+  box-shadow:inset 0 2px 5px rgba(31,21,16,.18) }
+#bar .fill { position:absolute; right:12px; top:12px; height:52px; width:376px; border-radius:26px; background:var(--oink) }
+#bar .lab { position:absolute; left:-104px; top:4px; font:700 48px/1.4 'Aref Ruqaa'; color:rgba(31,21,16,.65); direction:ltr }
 
 /* the phone, lying on its sheet */
 #phoneW { position:absolute; left:290px; top:660px; width:500px; height:1030px; z-index:2 }
 #phone { position:absolute; inset:0; border-radius:80px; background:linear-gradient(140deg, #4a4a4e, #1d1d20 40%, #2b2b2f 75%, #121214);
-  box-shadow:0 60px 80px rgba(40,20,5,.4), 0 18px 26px rgba(40,20,5,.3) }
+  box-shadow:0 60px 80px rgba(40,20,5,.45), 0 18px 26px rgba(40,20,5,.35) }
 #phone::before { content:''; position:absolute; inset:4px; border-radius:76px; background:#050505 }
 #screen { position:absolute; inset:14px; border-radius:68px; overflow:hidden; background:#fff }
 #island { position:absolute; left:50%; top:16px; width:136px; height:40px; margin-left:-68px; border-radius:20px; background:#050505; z-index:6 }
@@ -96,24 +94,21 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 
 /* «؟»: a cream disc with a ripple */
 .ico { position:absolute; width:120px; height:120px; border-radius:50%; background:var(--cream); color:var(--oink); font:700 74px/116px 'Aref Ruqaa'; text-align:center;
-  box-shadow:0 14px 26px rgba(80,20,0,.3); opacity:0 }
+  box-shadow:0 14px 26px rgba(0,0,0,.35); opacity:0 }
 .rip { position:absolute; width:120px; height:120px; border-radius:50%; border:3px solid rgba(251,243,230,.8); opacity:0 }
 
-/* one handwritten line per print, with a marker tick and a highlighter on the key words */
-.li { position:absolute; left:80px; right:80px; top:1170px; z-index:1; display:flex; align-items:center; justify-content:center; gap:20px; height:120px;
-  font:700 78px/1 'Aref Ruqaa'; color:var(--ink); white-space:nowrap }
-.li svg.tick { flex:none; width:60px; height:56px; overflow:visible }
+/* a handwritten line under a print, with a marker tick and a highlighter on the key words */
+.li { position:absolute; width:900px; z-index:5; display:flex; align-items:center; justify-content:center; gap:18px; height:110px;
+  font:700 72px/1 'Aref Ruqaa'; color:var(--ink); white-space:nowrap }
+.li svg.tick { flex:none; width:56px; height:52px; overflow:visible }
 .li svg.tick path { fill:none; stroke:var(--oink); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
 .li .tl { position:relative }
 .hlt { position:absolute; background:rgba(240,122,46,.42); z-index:-1; pointer-events:none;
   clip-path:polygon(1% 18%, 30% 10%, 62% 16%, 99% 8%, 100% 86%, 70% 94%, 36% 88%, 0 95%) }
-.note { position:absolute; left:0; right:0; text-align:center; font:500 30px/1.4 'IBM Plex Sans Arabic'; opacity:0 }
-.on-paper .note { color:rgba(31,21,16,.62) }
-.on-ink .note { color:rgba(251,243,230,.72) }
+#wall { position:absolute; left:0; top:0; z-index:3 }
 
-/* the wide shot: the station is drawn at screen size and scaled up, so it reads right when the camera pulls back */
-#g { transform-origin:540px 960px }
-.xp { width:400px; padding:12px; opacity:0 }
+/* the wide shot's caption is drawn at screen size and scaled up, so it reads right when the camera pulls back */
+#g { transform-origin:540px 960px; z-index:9 }
 
 /* the ask */
 .mk { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; z-index:9 }
@@ -136,77 +131,49 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     <div id="root" data-composition-id="main" data-start="0" data-duration="38" data-width="1080" data-height="1920">
       <div id="view" class="clip" data-start="0" data-duration="38" data-track-index="0">
         <div id="world">
-          <!-- the desk and the sheets on it -->
-          <div class="bgc ink" style="left:0; top:0; width:11200px; height:13200px"></div>
+          <div class="bgc ink" style="left:0; top:0; width:7000px; height:12400px"></div>
 
-          <!-- hook: four words on four sheets; the camera jumps from one to the next -->
-          <div class="st on-paper" id="h1w" style="left:9660px; top:240px"><div class="tx hook"><span class="w">زبونك</span></div></div>
-          <div class="st on-orange" id="h2w" style="left:8360px; top:240px"><div class="tx hook"><span class="w">يقرّر</span></div></div>
-          <div class="st on-paper" id="h3w" style="left:7060px; top:240px"><div class="tx hook"><span class="w k">بثانية</span></div></div>
-          <div class="st on-ink" id="h4w" style="left:5760px; top:240px"><div class="tx hook"><span class="w">وحدة.</span></div></div>
-
-          <!-- one second -->
-          <div class="st on-orange" id="s2" style="left:5760px; top:2440px">
-            <div class="tx ax t76" style="top:800px"><span class="ln"><span class="w">يوقف</span> <span class="w">على</span> <span class="w">بوستك..</span></span><span class="ln"><span class="w">لو</span> <span class="w k">يعبره.</span></span></div>
+          <!-- the hook: one composed sheet; the camera starts close and eases back as the words arrive -->
+          <div class="st on-paper" id="s1" style="left:5060px; top:290px">
+            <div class="tx" style="top:470px; font:900 122px/1.2 'Alexandria'"><span class="w">زبونك</span> <span class="w">يقرّر</span></div>
+            <div class="tx" style="top:610px; font:900 150px/1.2 'Alexandria'; color:var(--oink)"><span class="w">بثانية</span> <span class="w">وحدة.</span></div>
+            <div class="tx ax" style="top:910px; font-size:70px; line-height:1.4"><span class="ln"><span class="w">يوقف</span> <span class="w">على</span> <span class="w">بوستك..</span></span><span class="ln"><span class="w">لو</span> <span class="w k">يعبره.</span></span></div>
             <div id="bar"><i class="fill"></i><span class="lab">1s</span></div>
           </div>
 
-          <!-- the feed: the phone on its sheet; the stop -->
-          <div class="st on-paper" id="s3" style="left:5760px; top:4740px">
+          <!-- the feed: the phone on its sheet, already scrolling when the camera gets there -->
+          <div class="st on-orange" id="s2" style="left:5060px; top:2740px">
             <div class="strip" id="t3a" style="top:290px"><span><span class="w">وأغلب</span> <span class="w">البوستات..</span> <span class="w k">تنعبر.</span></span></div>
             <div class="strip" id="t3b" style="top:290px"><span><span class="w">لأن</span> <span class="w">ما</span> <span class="w">بيها</span> <span class="w">شي</span> <span class="w k">يوقّفك.</span></span></div>
             <div class="strip" id="t4" style="top:290px"><span><span class="w">إلا</span> <span class="w k">هيچ</span> <span class="w">بوست.</span></span></div>
             <div id="phoneW"><div id="phone"><div id="screen"><div id="island"></div><div id="sbar">9:41</div><div id="feedwin"><div id="feed"></div></div></div></div></div>
           </div>
 
-          <!-- «ليش؟» -->
-          <div class="st on-orange" id="s5" style="left:4160px; top:4740px">
+          <!-- «ليش؟», on the desk itself -->
+          <div class="st on-ink" id="s3" style="left:5060px; top:5140px">
             <i class="rip" id="rip5" style="left:480px; top:640px"></i>
             <div class="ico" id="ico5" style="left:480px; top:640px">؟</div>
             <div class="tx ax t76" style="top:800px"><span class="w">ليش؟</span> <span class="w">بيه</span></div>
-            <div class="tx big" style="top:905px"><span class="w">٣ شغلات</span></div>
+            <div class="tx big" style="top:905px"><span class="w"><span class="k">٣</span> شغلات</span></div>
           </div>
 
-          <!-- the three things, one print each, down a long sheet -->
-          <div class="st on-paper" id="f1" style="left:4160px; top:6940px">
-            <div class="print" style="left:280px; top:250px; width:520px; transform:rotate(-2deg)"><img src="assets/work/asiacell.jpg" alt="" /></div>
-            <div class="tape" style="left:470px; top:226px; width:150px; transform:rotate(-4deg)"></div>
-            <div class="ktag" id="k1" style="left:150px; top:810px; transform:rotate(-8deg)"><i class="tg"></i><i class="hole"></i><div>آسيا سيل<small>إعلان غير رسمي</small></div></div>
-            <div class="li" id="l1"><svg class="tick" viewBox="0 0 54 50"><path pathLength="1" d="M5 26 L20 41 L49 7" /></svg><span class="tl"><span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-hl="1">بثانية</span></span></div>
-          </div>
-          <div class="st on-paper" id="f2" style="left:4160px; top:8840px">
-            <div class="print" style="left:280px; top:250px; width:520px; transform:rotate(2deg)"><img src="assets/work/pepsi.jpg" alt="" /></div>
-            <div class="tape" style="left:460px; top:228px; width:160px; transform:rotate(3deg)"></div>
-            <div class="ktag" id="k2" style="left:150px; top:810px; transform:rotate(7deg)"><i class="tg"></i><i class="hole"></i><div>ببسي<small>إعلان غير رسمي</small></div></div>
-            <div class="li" id="l2"><svg class="tick" viewBox="0 0 54 50"><path pathLength="1" d="M5 26 L20 41 L49 7" /></svg><span class="tl"><span class="w">حچي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span></span></div>
-          </div>
-          <div class="st on-paper" id="f3" style="left:4160px; top:10740px">
-            <div class="print" style="left:280px; top:250px; width:520px; transform:rotate(-1.5deg)"><img src="assets/work/shifa.jpg" alt="" /></div>
-            <div class="tape" style="left:466px; top:226px; width:150px; transform:rotate(-2deg)"></div>
-            <div class="ktag" id="k3" style="left:150px; top:810px; transform:rotate(-6deg)"><i class="tg"></i><i class="hole"></i><div>مختبر<small>نموذج من شغلي</small></div></div>
-            <div class="li" id="l3"><svg class="tick" viewBox="0 0 54 50"><path pathLength="1" d="M5 26 L20 41 L49 7" /></svg><span class="tl"><span class="w">وسبب</span> <span class="w">يخلّيه</span> <span class="w" data-hl="1">يطلب</span> <span class="w" data-hl="1">هسه</span></span></div>
-          </div>
+          <!-- the wall of his work (filled in by the timeline script): nine prints, three of them with a handwritten line -->
+          <div id="wall"></div>
 
-          <!-- the rest of his work, around the long sheet: they land as the camera pulls back -->
-          <div class="print xp" id="x1" style="left:3220px; top:7600px"><img src="assets/work/talabat.jpg" alt="" /></div>
-          <div class="print xp" id="x2" style="left:5800px; top:7700px"><img src="assets/work/qi.jpg" alt="" /></div>
-          <div class="print xp" id="x3" style="left:3180px; top:9300px"><img src="assets/work/iraqiairways.jpg" alt="" /></div>
-          <div class="print xp" id="x4" style="left:5820px; top:9650px"><img src="assets/work/saj.jpg" alt="" /></div>
-
-          <!-- the wide shot's caption, drawn at screen size and scaled to the pull-back -->
-          <div class="st on-ink" id="g" style="left:4260px; top:8340px">
-            <div class="strip" id="t7" style="top:200px"><span><span class="ln"><span class="w">وهذا</span> <span class="w">بالضبط</span> <span class="w">اللي</span> <span class="w">أسويه</span></span><span class="ln"><span class="w k">لمشروعك.</span></span><span class="ln" style="font:500 26px/1.6 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.62)"><span class="w">نماذج من شغلي · الإعلانات غير رسمية</span></span></span></div>
+          <!-- the wide shot's caption -->
+          <div class="st on-ink" id="g" style="left:2960px; top:5840px">
+            <div class="strip" id="t7" style="top:90px"><span><span class="ln"><span class="w">وهذا</span> <span class="w">بالضبط</span> <span class="w">اللي</span> <span class="w">أسويه</span></span><span class="ln"><span class="w k">لمشروعك.</span></span><span class="ln" style="font:500 26px/1.6 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.62)"><span class="w">نماذج من شغلي · الإعلانات غير رسمية</span></span></span></div>
           </div>
 
           <!-- the price -->
-          <div class="st on-orange" id="s8" style="left:6460px; top:8340px">
+          <div class="st on-orange" id="s8" style="left:5460px; top:7740px">
             <div class="tx ax t76" style="top:650px"><span class="w">٣</span> <span class="w">بوستات</span></div>
             <div class="tx big" style="top:820px; font-size:196px"><span class="w" id="slam8" style="filter:url(#h2)">بـ ٤٠ ألف</span></div>
             <div class="tx ruq" style="top:1110px; font-size:58px; line-height:1.4"><span class="w">يعني</span> <span class="w">البوست</span> <span class="w">تقريباً</span> <span class="w">بـ١٣</span> <span class="w">ألف</span></div>
           </div>
 
           <!-- the ask -->
-          <div class="st on-paper" id="s9" style="left:6460px; top:10640px">
+          <div class="st on-paper" id="s9" style="left:5460px; top:10140px">
             <div class="strip" id="t9" style="top:520px"><span><span class="w">عجبك</span> <span class="w k">الشغل؟</span></span></div>
             <div class="tx big" style="top:690px; font-size:186px; color:var(--oink)"><span class="w" id="slam9" style="filter:url(#h3)">راسلني</span></div>
             <div class="tx ax t76" style="top:920px"><span class="w">بالدايركت..</span></div>

@@ -44,7 +44,8 @@ The motion stays the reference's: words out of a blur, whip-pans, circle reveals
 ## One take (v5)
 
 The user asked for the video "one-take": no cuts. Everything sits on one desk and a single camera travels across
-it (pans, a push-in, a pull-back over all his work, a dive), with motion blur on the moves. README has the move list.
+it (pans, a push-in, a pull-back over a wall of all his work, a dive), with light motion blur on the moves. v5 was
+"bad and rushed in some clips"; v6 never lands on an empty frame and moves less, slower and softer (README).
 
 ## Sound
 

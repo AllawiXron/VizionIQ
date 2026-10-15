@@ -1,56 +1,73 @@
-// «ثانية وحدة» v5, one take: everything sits on one desk and a single camera travels across it, no cuts. One paused
-// timeline, built after the fonts load, registered on window.__timelines.main. Times in seconds; build.py's sound
-// cues follow T and MOVES.
+// «ثانية وحدة» v6, one take: everything sits on one desk and a single camera travels across it, no cuts. Every frame
+// it lands on is already composed (text starts as it arrives); moves are long, soft and lightly blurred. One paused
+// timeline, built after the fonts load, registered on window.__timelines.main. build.py's sound cues follow T and MOVES.
 (function () {
   const D = 38;
   // camera poses: the desk point at the centre of the frame, the scale, the roll (deg)
   const POSE = {
-    A1: [10200, 1200, 1, 0], A2: [8900, 1200, 1, 0], A3: [7600, 1200, 1, 0], A4: [6300, 1200, 1, 0],
-    B: [6300, 3400, 1, 0], C: [6300, 5700, 1, 0], D: [6300, 5700, 1.08, 0], E: [4700, 5700, 1, 0],
-    F1: [4700, 7900, 1, 0], F2: [4700, 9800, 1, 0], F3: [4700, 11700, 1, 0], G: [4800, 9300, 0.29, 0],
-    H: [7000, 9300, 1, 0], I: [7000, 11600, 1, 0],
+    S1t: [5600, 930, 1.07, 0], S1: [5600, 1250, 1, 0], S2: [5600, 3700, 1, 0], S2z: [5600, 3800, 1.08, 0], S3: [5600, 6100, 1, 0],
+    A: [4200, 6060, 1.05, 0], B: [3500, 7010, 1.05, 0], C: [2800, 7960, 1.05, 0], G: [3500, 6800, 0.47, 0],
+    H: [6000, 8700, 1, 0], I: [6000, 11100, 1, 0],
   };
-  // [start, end, pose, bank (deg of roll at mid-move)]
+  // [start, end, pose, roll at mid-move]
   const MOVES = [
-    [0.27, 0.45, 'A2', 0], [0.72, 0.9, 'A3', 0], [1.17, 1.35, 'A4', 0], [1.75, 2.35, 'B', 3], [4.55, 5.25, 'C', -3],
-    [9.95, 10.5, 'D', 0], [11.9, 12.6, 'E', 4], [14.2, 14.85, 'F1', -3], [17.55, 18.15, 'F2', 2], [20.95, 21.55, 'F3', -2],
-    [24.1, 25.4, 'G', 0], [28.2, 28.95, 'H', 3], [31.7, 32.35, 'I', -3],
+    [0.5, 4.5, 'S1', 0], [4.7, 5.9, 'S2', 1.5], [10.0, 10.8, 'S2z', 0], [11.6, 12.7, 'S3', -1.5], [14.4, 15.6, 'A', 1],
+    [18.3, 19.4, 'B', 0], [21.8, 22.9, 'C', 0], [25.0, 26.5, 'G', 0], [29.0, 30.1, 'H', 1.5], [32.6, 33.6, 'I', -1.5],
   ];
   // the sheets on the desk: centre x, centre y, width, height, field, rotation
   const SHEETS = [
-    [10200, 1200, 1300, 2300, 'paper', 1.5], [8900, 1200, 1300, 2300, 'orange', -2], [7600, 1200, 1300, 2300, 'paper', 2],
-    [6300, 3400, 1300, 2300, 'orange', -1.5], [6300, 5700, 1400, 2300, 'paper', 1], [4700, 9800, 1500, 6200, 'paper', 0.5],
-    [4700, 5700, 1300, 2300, 'orange', -3], [7000, 9300, 1300, 2300, 'orange', 2], [7000, 11600, 1300, 2300, 'paper', -1.5],
+    [5600, 1150, 1400, 2600, 'paper', 1], [5600, 3700, 1400, 2400, 'orange', -1.5], [3500, 6900, 2400, 3200, 'paper', 0.6],
+    [6000, 8700, 1400, 2400, 'orange', 2], [6000, 11100, 1400, 2400, 'paper', -1.5],
+  ];
+  // the wall: centre x, centre y, design, rotation, and which of the three points it carries (-1: none)
+  const WALL = [
+    [4200, 5950, 'asiacell', -2, 0], [3500, 5950, 'talabat', 2.5, -1], [2800, 5950, 'qi', -1.5, -1],
+    [4200, 6900, 'iraqiairways', 1.5, -1], [3500, 6900, 'pepsi', 2, 1], [2800, 6900, 'saj', -2.5, -1],
+    [4200, 7850, 'sala', -1, -1], [3500, 7850, 'miswag', 1.8, -1], [2800, 7850, 'shifa', -1.5, 2],
+  ];
+  const POINTS = [
+    { tag: 'آسيا سيل', sub: 'إعلان غير رسمي', tr: -8, line: '<span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-hl="1">بثانية</span>' },
+    { tag: 'ببسي', sub: 'إعلان غير رسمي', tr: 7, line: '<span class="w">حچي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span>' },
+    { tag: 'مختبر', sub: 'نموذج من شغلي', tr: -6, line: '<span class="w">وسبب</span> <span class="w">يخلّيه</span> <span class="w" data-hl="1">يطلب</span> <span class="w" data-hl="1">هسه</span>' },
   ];
   const T = {
-    hook: [0.05, 0.4, 0.85, 1.3],
-    s2w: [2.35, 2.63, 2.91, 3.75, 4.03], bar: 2.5, fill: 2.9,
-    rise: 5.05, t3a: 5.35, t3aw: [5.5, 5.78, 6.3], t3aOut: 7.3, t3b: 7.45, t3bw: [7.6, 7.88, 8.16, 8.44, 8.9],
-    flicks: [5.4, 6.4, 7.4, 8.45, 9.2], stop: 10.0, heart: 10.45, t4: 10.15, t4w: [10.3, 10.58, 10.86],
-    ico: 12.55, s5w: [12.8, 13.08, 13.45],
-    tags: [14.8, 18.1, 21.5], l1: [15.2, 15.48, 15.76, 16.04], l2: [18.5, 18.8, 19.1], l3: [21.9, 22.18, 22.46, 22.74], hls: [16.5, 19.9, 23.3],
-    xs: 24.55, t7: 25.25, t7w: [25.4, 25.68, 25.96, 26.24, 26.9, 27.4],
-    s8: [29.0, 29.28], slam8: 29.75, s8sub: 30.45,
-    t9: 32.4, t9w: [32.55, 32.83], slam9: 33.15, s9b: 33.85, plane: 34.2, s9c: [34.5, 34.78], btn: 35.4, cur: 35.7, click: 36.35, open: 36.45,
+    s1w: [0.0, 0.0, 0.6, 0.95, 2.3, 2.58, 2.86, 3.6, 3.88], bar: 2.4, fill: 2.7,
+    scroll: 4.9, slow: 9.25, stop: 10.1,
+    t3a: 5.55, t3aw: [5.6, 5.88, 6.35], t3aOut: 7.82, t3b: 7.95, t3bw: [7.95, 8.25, 8.55, 8.85, 9.3], t4: 10.15, t4w: [10.2, 10.5, 10.75], heart: 10.45,
+    ico: 12.15, s3w: [12.4, 12.7, 13.1],
+    tags: [15.3, 19.1, 22.6], ticks: [15.45, 19.2, 22.7], l: [[15.6, 15.88, 16.16, 16.44], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.0, 20.6, 24.2],
+    t7: 26.1, t7w: [26.15, 26.43, 26.71, 26.99, 27.45, 27.85],
+    s8: [29.6, 29.9], slam8: 30.45, s8sub: 31.1,
+    t9: 33.2, t9w: [33.2, 33.5], slam9: 33.95, s9b: 34.6, plane: 34.85, s9c: [35.1, 35.38], btn: 35.8, cur: 36.0, click: 36.6, open: 36.7,
   };
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
 
-  // ── the desk: lay the sheets under the stations
-  const world = $('#world'), firstStation = $('#h1w');
+  // ── the desk: sheets under everything, then the wall of prints
+  const world = $('#world'), firstStation = $('#s1');
   SHEETS.forEach(([cx, cy, w, h, kind, r]) => {
     const d = document.createElement('div');
     d.className = `bgc ${kind} sheet`;
     d.style.cssText = `left:${cx - w / 2}px; top:${cy - h / 2}px; width:${w}px; height:${h}px; transform:rotate(${r}deg)`;
     world.insertBefore(d, firstStation);
   });
+  $('#wall').innerHTML = WALL.map(([cx, cy, img, r, k]) => {
+    let h = `<div class="print" style="left:${cx - 260}px; top:${cy - 339}px; transform:rotate(${r}deg)"><img src="assets/work/${img}.jpg" alt="" /></div>
+      <div class="tape" style="left:${cx - 75}px; top:${cy - 362}px; transform:rotate(${(r * 1.6).toFixed(1)}deg)"></div>`;
+    if (k >= 0) {
+      const p = POINTS[k];
+      h += `<div class="ktag" id="k${k + 1}" style="left:${cx - 390}px; top:${cy + 140}px; transform:rotate(${p.tr}deg)"><i class="tg"></i><i class="hole"></i><div>${p.tag}<small>${p.sub}</small></div></div>
+        <div class="li on-paper" id="l${k + 1}" style="left:${cx - 450}px; top:${cy + 352}px"><svg class="tick" viewBox="0 0 54 50"><path pathLength="1" d="M5 26 L20 41 L49 7" /></svg><span class="tl">${p.line}</span></div>`;
+    }
+    return h;
+  }).join('');
 
-  // ── the camera: holds drift in a little; moves ease in and out, roll a little, and blur along their direction
-  const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+  // ── the camera: holds drift in a little; moves ease softly, roll a touch, and blur lightly along their direction
+  const ease = (p) => -(Math.cos(Math.PI * p) - 1) / 2;
   const drift = (P, dt) => [P[0], P[1], P[2] * (1 + 0.025 * Math.min(1, Math.max(0, dt) / 4)), P[3]];
   function cam(t) {
-    let prev = POSE.A1, prevEnd = 0;
+    let prev = POSE.S1t, prevEnd = 0;
     for (const [t0, t1, name, bank] of MOVES) {
       if (t < t0) return drift(prev, t - prevEnd);
       if (t <= t1) {
@@ -65,15 +82,15 @@
   function render(t) {
     const [x, y, s, r] = cam(t), [x0, y0, s0, r0] = cam(Math.max(0, t - 1 / 30));
     world.style.transform = `translate(540px, 960px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(5)}) translate(${(-x).toFixed(2)}px, ${(-y).toFixed(2)}px)`;
-    const zb = Math.abs(Math.log(s / s0)) * 130 + Math.abs(r - r0) * 5;
-    const bx = Math.min(55, Math.abs(x - x0) * s * 0.38 + zb), by = Math.min(55, Math.abs(y - y0) * s * 0.38 + zb);
-    if (bx < 0.4 && by < 0.4) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
+    const zb = Math.abs(Math.log(s / s0)) * 70 + Math.abs(r - r0) * 4;
+    const bx = Math.min(22, Math.abs(x - x0) * s * 0.2 + zb), by = Math.min(22, Math.abs(y - y0) * s * 0.2 + zb);
+    if (bx < 0.5 && by < 0.5) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
     else { camBlur.setAttribute('stdDeviation', `${bx.toFixed(2)} ${by.toFixed(2)}`); view.style.filter = 'url(#camf)'; }
     const n = Math.floor(t * 30);   // film grain moves every frame
     grain.style.backgroundPosition = `${Math.floor(hash(n) * 420)}px ${Math.floor(hash(n + 7) * 420)}px`;
   }
 
-  // ── the feed: eleven ordinary posts, then his quzi post
+  // ── the feed: eleven ordinary posts, then his quzi post; always moving, so none of them is ever read
   const ICON = {
     heart: 'M12 20.5 C 5 16, 2.5 12.5, 2.5 8.6 C 2.5 5.6, 4.8 3.5, 7.4 3.5 C 9.4 3.5, 11 4.6, 12 6.2 C 13 4.6, 14.6 3.5, 16.6 3.5 C 19.2 3.5, 21.5 5.6, 21.5 8.6 C 21.5 12.5, 19 16, 12 20.5 Z',
     comment: 'M20.5 11.5 A 8.5 8.5 0 0 1 8.2 19.1 L 3 20.5 L 4.4 15.6 A 8.5 8.5 0 1 1 20.5 11.5 Z',
@@ -86,8 +103,7 @@
     const c = PAL[k % PAL.length], r = 110 + Math.round(hash(k) * 80), cx = 120 + Math.round(hash(k + 1) * 230), cy = 150 + Math.round(hash(k + 2) * 200);
     return `<div style="position:absolute;inset:0;background:linear-gradient(160deg, ${c}, ${c}cc)"></div>
       <div style="position:absolute;left:${cx - r}px;top:${cy - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;background:rgba(255,255,255,.38)"></div>
-      <div style="position:absolute;right:44px;bottom:110px;width:${200 + Math.round(hash(k + 3) * 150)}px;height:34px;border-radius:8px;background:rgba(255,255,255,.7)"></div>
-      <div style="position:absolute;right:44px;bottom:62px;width:${120 + Math.round(hash(k + 4) * 120)}px;height:24px;border-radius:6px;background:rgba(255,255,255,.55)"></div>`;
+      <div style="position:absolute;right:44px;bottom:110px;width:${200 + Math.round(hash(k + 3) * 150)}px;height:34px;border-radius:8px;background:rgba(255,255,255,.7)"></div>`;
   };
   $('#feed').innerHTML = Array.from({ length: N + 1 }, (_, k) => `<div class="post">
       <div class="ph"><i class="av" style="background:${k === N ? 'linear-gradient(135deg,#f07a2e,#c2441a)' : `linear-gradient(135deg, ${PAL[(k + 3) % PAL.length]}, #9a9a9a)`}"></i><i class="nb" style="width:${110 + Math.round(hash(k + 9) * 80)}px"></i></div>
@@ -119,9 +135,9 @@
     const words = (sel, times) => $$(sel + ' .w').forEach((w, i) => tl.fromTo(w, { opacity: 0, x: -22, filter: 'blur(12px)' },
       { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.45, ease: 'power2.out' }, Array.isArray(times) ? times[i] : times + i * 0.28));
     const out = (sel, t, d = 0.25) => tl.to(sel, { opacity: 0, filter: 'blur(12px)', duration: d, ease: 'power1.in' }, t);
-    // a torn strip lands like a piece of paper, then its words come in
+    // a torn strip lands like a piece of paper, its first word with it
     const strip = (sel, t, r, ws) => {
-      tl.fromTo(sel, { opacity: 0, scale: 0.9, rotation: r - 4, y: -20 }, { opacity: 1, scale: 1, rotation: r, y: 0, duration: 0.32, ease: 'back.out(1.6)' }, t);
+      tl.fromTo(sel, { opacity: 0, scale: 0.92, rotation: r - 3, y: -16 }, { opacity: 1, scale: 1, rotation: r, y: 0, duration: 0.3, ease: 'back.out(1.5)' }, t);
       words(sel, ws);
     };
     // a big word slams in sideways with motion blur (its own SVG filter)
@@ -130,55 +146,43 @@
       tl.fromTo(f, { attr: { stdDeviation: '90 0' } }, { attr: { stdDeviation: '0 0' }, duration: 0.4, ease: 'power2.out' }, t);
     };
 
-    // ── hook: one word on each sheet as the camera lands on it
-    T.hook.forEach((t, i) => tl.fromTo(`#h${i + 1}w .w`, { opacity: 0, scale: 1.07, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power2.out' }, t));
+    // ── the hook: the first word is already half there on frame one
+    const hw = $$('#s1 .w');
+    // the first line is on screen from frame one (it is also the thumbnail), settling in; the rest arrives word by word
+    tl.fromTo(hw.slice(0, 2), { opacity: 0.7, scale: 1.04, filter: 'blur(3px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'power2.out' }, 0);
+    hw.slice(2).forEach((w, i) => tl.fromTo(w, { opacity: 0, x: -22, filter: 'blur(12px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.42, ease: 'power2.out' }, T.s1w[i + 2]));
+    tl.fromTo('#bar', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, T.bar);
+    tl.fromTo('#bar .fill', { clipPath: 'inset(0px 0px 0px 100% round 26px)' }, { clipPath: 'inset(0px 0px 0px 0% round 26px)', duration: 1.0, ease: 'none' }, T.fill);
 
-    // ── one second
-    words('#s2', T.s2w);
-    tl.fromTo('#bar', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, T.bar);
-    tl.fromTo('#bar .fill', { clipPath: 'inset(0px 0px 0px 100% round 28px)' }, { clipPath: 'inset(0px 0px 0px 0% round 28px)', duration: 1.0, ease: 'none' }, T.fill);
-
-    // ── the feed: the phone slides onto its sheet, the thumb keeps flicking, every post goes past
-    gsap.set('#phoneW', { transformPerspective: 1600 });
-    tl.fromTo('#phoneW', { y: 1150, rotationX: 30, rotationY: -20, rotation: 8, filter: 'blur(10px)' },
-      { y: 0, rotationX: 10, rotationY: -16, rotation: 5, filter: 'blur(0px)', duration: 0.85, ease: 'power3.out' }, T.rise);
-    tl.to('#phoneW', { rotationX: 7, rotationY: -10, rotation: 3, duration: T.stop - T.rise - 0.85, ease: 'none' }, T.rise + 0.85);
-    const tg = [-1550, -3150, -4750, -6350, YF];
-    T.flicks.forEach((t, i) => {
-      const last = i === T.flicks.length - 1, d = last ? T.stop - t : 0.9;
-      tl.to('#feed', { y: tg[i], duration: d, ease: last ? 'power3.out' : 'power2.out' }, t);
-      tl.fromTo('#vbs', { attr: { stdDeviation: '0 24' } }, { attr: { stdDeviation: last ? '0 0' : '0 2' }, duration: d, ease: 'power2.out' }, t);
-    });
+    // ── the feed: already scrolling as the camera comes down; it slows and stops on his post
+    gsap.set('#phoneW', { transformPerspective: 1600, rotationX: 10, rotationY: -16, rotation: 5 });
+    tl.to('#phoneW', { rotationX: 6, rotationY: -9, rotation: 3, duration: T.stop - 4.7, ease: 'none' }, 4.7);
+    tl.set('#vbs', { attr: { stdDeviation: '0 22' } }, T.scroll);
+    tl.fromTo('#feed', { y: 0 }, { y: YF + P, duration: T.slow - T.scroll, ease: 'none' }, T.scroll);
+    tl.to('#feed', { y: YF, duration: T.stop - T.slow, ease: 'power1.out' }, T.slow);
+    tl.to('#vbs', { attr: { stdDeviation: '0 0' }, duration: T.stop - T.slow, ease: 'power1.out' }, T.slow);
     strip('#t3a', T.t3a, -1.2, T.t3aw); out('#t3a', T.t3aOut);
-    strip('#t3b', T.t3b, 1, T.t3bw); out('#t3b', T.stop - 0.05, 0.2);
-
-    // ── the stop: the camera pushes in, the phone squares up, a double-tap heart
-    tl.to('#phoneW', { rotationX: 0, rotationY: 0, rotation: 0, scale: 1.1, y: -10, duration: 0.6, ease: 'power3.out' }, T.stop);
+    strip('#t3b', T.t3b, 1, T.t3bw); out('#t3b', T.stop - 0.12, 0.2);
+    tl.to('#phoneW', { rotationX: 0, rotationY: 0, rotation: 0, scale: 1.08, y: -10, duration: 0.7, ease: 'power3.out' }, T.stop);
     tl.fromTo('#bigHeart', { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1.12, duration: 0.25, ease: 'back.out(2)' }, T.heart);
     tl.to('#bigHeart', { scale: 1, duration: 0.2, ease: 'power2.out' }, T.heart + 0.25);
-    tl.to('#bigHeart', { opacity: 0, scale: 1.25, duration: 0.3, ease: 'power2.in' }, T.heart + 0.8);
+    tl.to('#bigHeart', { opacity: 0, scale: 1.25, duration: 0.3, ease: 'power2.in' }, T.heart + 0.85);
     strip('#t4', T.t4, -1.4, T.t4w);
 
     // ── «ليش؟»
     tl.fromTo('#ico5', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2.2)' }, T.ico);
     [0.2, 1.0].forEach((d) => { tl.set('#rip5', { opacity: 0.8, scale: 1 }, T.ico + d); tl.to('#rip5', { opacity: 0, scale: 2.4, duration: 0.8, ease: 'power2.out' }, T.ico + d); });
-    words('#s5 .t76', [T.s5w[0], T.s5w[1]]);
-    tl.fromTo('#s5 .big .w', { opacity: 0, scale: 1.12, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, T.s5w[2]);
+    words('#s3 .t76', [T.s3w[0], T.s3w[1]]);
+    tl.fromTo('#s3 .big .w', { opacity: 0, scale: 1.12, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, T.s3w[2]);
 
-    // ── the three things: the tag swings on its string, a tick, the line, a highlighter on the key words
-    const TR = [-8, 7, -6];
-    [['#l1', T.l1], ['#l2', T.l2], ['#l3', T.l3]].forEach(([l, ts], i) => {
-      tl.fromTo(`#k${i + 1}`, { opacity: 0, rotation: TR[i] - 24 }, { opacity: 1, rotation: TR[i], duration: 0.6, ease: 'back.out(2.2)', transformOrigin: '10% 50%' }, T.tags[i]);
-      tl.fromTo(`${l} .tick path`, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, ts[0] - 0.2);
-      words(l, ts);
-      tl.fromTo(`${l} .hlt`, { clipPath: 'polygon(100% 18%, 100% 10%, 100% 16%, 100% 8%, 100% 86%, 100% 94%, 100% 88%, 100% 95%)' },
+    // ── the wall: at each of the three, the tag swings on its string, a tick, the line, a highlighter
+    POINTS.forEach((p, i) => {
+      tl.fromTo(`#k${i + 1}`, { opacity: 0, rotation: p.tr - 24 }, { opacity: 1, rotation: p.tr, duration: 0.6, ease: 'back.out(2.2)', transformOrigin: '10% 50%' }, T.tags[i]);
+      tl.fromTo(`#l${i + 1} .tick path`, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, T.ticks[i]);
+      words(`#l${i + 1}`, T.l[i]);
+      tl.fromTo(`#l${i + 1} .hlt`, { clipPath: 'polygon(100% 18%, 100% 10%, 100% 16%, 100% 8%, 100% 86%, 100% 94%, 100% 88%, 100% 95%)' },
         { clipPath: 'polygon(1% 18%, 30% 10%, 62% 16%, 99% 8%, 100% 86%, 70% 94%, 36% 88%, 0 95%)', duration: 0.5, ease: 'power2.inOut' }, T.hls[i]);
     });
-
-    // ── the pull-back: the rest of his work lands around the sheet, the caption over it all
-    const XR = [-7, 6, 5, -4];
-    XR.forEach((r, i) => tl.fromTo(`#x${i + 1}`, { opacity: 0, scale: 1.4, rotation: r + 14, filter: 'blur(10px)' },
-      { opacity: 1, scale: 1, rotation: r, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, T.xs + i * 0.16));
     strip('#t7', T.t7, -1.2, T.t7w);
 
     // ── the price
@@ -195,7 +199,7 @@
     words('#s9 .ruq', T.s9c);
     gsap.set('#btn', { clipPath: 'inset(0px 230px 0px 230px round 50px)' });
     tl.fromTo('#btn', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, T.btn);
-    tl.fromTo('#cur', { opacity: 0, x: 0, y: 0 }, { opacity: 1, x: -285, y: -305, duration: 0.6, ease: 'power2.inOut' }, T.cur);
+    tl.fromTo('#cur', { opacity: 0, x: 0, y: 0 }, { opacity: 1, x: -285, y: -305, duration: 0.55, ease: 'power2.inOut' }, T.cur);
     tl.to('#cur', { scale: 0.85, duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.inOut' }, T.click);
     tl.set('#ripB', { opacity: 0.9, scale: 1 }, T.click);
     tl.to('#ripB', { opacity: 0, scale: 2.2, duration: 0.6, ease: 'power2.out' }, T.click);
@@ -203,7 +207,6 @@
     tl.to('#btn svg', { x: -197, duration: 0.5, ease: 'power3.inOut' }, T.open);
     tl.fromTo('#btn .pl', { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' }, T.open + 0.3);
     tl.to('#cur', { opacity: 0, x: -160, y: -120, duration: 0.4, ease: 'power2.in' }, T.open + 0.4);
-    tl.to('#btn', { scale: 1.04, duration: 0.6, yoyo: true, repeat: 1, ease: 'sine.inOut' }, T.open + 0.9);
 
     // ── the camera itself, driven by one clock so any frame can be rendered on its own
     const clock = { t: 0 };

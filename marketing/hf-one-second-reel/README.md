@@ -38,17 +38,23 @@ move; a move eases in and out, rolls a few degrees at its middle and blurs along
 frame, set from the camera's speed every frame), and holds drift in a little. Every station is a 1080×1920 box on the
 desk, so at camera scale 1 it fills the frame; the wide shot's caption is drawn at screen size and scaled up.
 
+**v5 → v6 (15 Oct).** "it looks so bad and rushed in some clips", still 38 s. A frame-by-frame pass on v5 found: the
+camera landing on empty sheets before the text started, strips showing blank, a choppy four-pan hook, every move
+smearing the frame, a sparse wide shot of tiny prints, and the placeholder posts readable in the phone. v6: every
+frame the camera lands on is already composed (text starts as it arrives); fewer, longer moves with a sine ease and a
+light blur (at most 22 px); the hook is one sheet with a slow pull-back; the feed never stops until his post; the three
+points are three stops on a full wall of nine of his designs, and the pull-back reveals the whole wall.
+
 | Time | Camera | On screen |
 |---|---|---|
-| 0–1.75 | quick pans across four sheets | «زبونك» «يقرّر» «بثانية» «وحدة.», one word on each |
-| 1.75–4.55 | down to a rust sheet | «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
-| 4.55–9.95 | down to a paper sheet | the phone slides in, the feed flies past; torn strips «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
-| 9.95–11.9 | push in | the scroll stops on his quzi post, a heart; strip «إلا هيچ بوست.» |
-| 11.9–14.2 | across to a rust sheet | «؟» disc with a ripple, «ليش؟ بيه / ٣ شغلات» |
-| 14.2–24.1 | down a long paper sheet, three stops | Asiacell, Pepsi and lab prints with kraft tags; a handwritten line, a tick and a highlighter at each |
-| 24.1–28.2 | pull back over the whole desk | his other four designs land around the sheet; strip «وهذا بالضبط اللي أسويه / لمشروعك.» |
-| 28.2–31.7 | dive into a rust sheet | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف» |
-| 31.7–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
+| 0–4.7 | close on a paper sheet, easing back | «زبونك يقرّر / بثانية وحدة.», «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
+| 4.7–10.0 | down to a rust sheet | the phone, its feed flying past; torn strips «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
+| 10.0–11.6 | push in | the scroll stops on his quzi post, a heart; strip «إلا هيچ بوست.» |
+| 11.6–14.4 | across to the desk | «؟» disc with a ripple, «ليش؟ بيه / ٣ شغلات» |
+| 14.4–25.0 | into the wall, three stops | Asiacell, Pepsi and lab prints among nine; a kraft tag, a tick, a handwritten line and a highlighter at each |
+| 25.0–29.0 | pull back over the wall | all nine of his designs; strip «وهذا بالضبط اللي أسويه / لمشروعك.» with the unofficial-ads note |
+| 29.0–32.6 | dive into a rust sheet | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف» |
+| 32.6–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
 
 ## Build
 
