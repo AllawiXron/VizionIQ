@@ -25,6 +25,11 @@ the first and last bubbles. The chats are now cut from inside the original frame
 navy corners and border arcs blackened, and the card has 22px of black padding. Slide 3 also says how to book:
 «للحجز دزلنا بالخاص، أو واتساب 07757851379».
 
+## v2.2: a plain "DM us"
+
+The user asked to drop the keyword: the cover pill says «للتفاصيل راسلنا بالخاص», the last slide's button «راسلنا
+بالخاص» (still with «ونرسلك كل التفاصيل · أو واتساب»), and the caption «راسلنا بالخاص ونرسلك كل التفاصيل».
+
 ## v2.1: built for DMs
 
 After the user asked whether it would bring DMs: one keyword to send, «كورس», on the cover (a cyan pill under the
