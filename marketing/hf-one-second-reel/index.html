@@ -34,16 +34,16 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 
 /* the desk and the sheets, with the highlights' fields and paper texture */
 .bgc { position:absolute }
-.bgc::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.3 }
+.bgc::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.2 }
 .bgc.paper { background:var(--paper) }
 .bgc.orange { background:radial-gradient(120% 80% at 50% 40%, var(--orange2), var(--orange) 55%, #c94612) }
-.bgc.orange::after { opacity:.4 }
+.bgc.orange::after { opacity:.26 }
 .bgc.ink { background:radial-gradient(120% 80% at 50% 40%, #2b1e16, var(--ink) 60%) }
 .bgc.ink::after { mix-blend-mode:screen; opacity:.1 }
 .sheet { box-shadow:0 30px 60px rgba(0,0,0,.5), 0 6px 12px rgba(0,0,0,.35) }
 #fx { position:absolute; inset:0; pointer-events:none; z-index:30 }
-#grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.32 }
-#vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.32) 100%) }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.07 }
+#vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 58%, rgba(0,0,0,.24) 100%) }
 
 /* text */
 .tx { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap }
@@ -52,36 +52,40 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 .ax { font-family:'DG Sahabah', 'Alexandria'; font-weight:400 }
 .t76 { font-size:76px; line-height:1.4 }
 .big { font-family:'DG Sahabah', 'Alexandria'; font-weight:400; font-size:176px; line-height:1.2 }
-.ruq { font-family:'Aref Ruqaa'; font-weight:700 }
+.ruq { font-family:'DG Sahabah', 'Alexandria'; font-weight:400 }
 .on-paper { color:var(--ink) } .on-paper .k { color:var(--oink) }
 .on-ink { color:var(--cream) } .on-ink .k { color:var(--orange2) }
 .on-orange { color:var(--cream) } .on-orange .k { color:var(--ink) }
 
 /* torn caption strip, as on the highlights */
 .strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8; opacity:0 }
-.strip > span { display:inline-block; padding:18px 46px 30px; font:400 70px/1.35 'DG Sahabah', 'Alexandria'; color:var(--ink); background:var(--cream); white-space:nowrap;
-  filter:drop-shadow(0 10px 12px rgba(0,0,0,.4));
-  clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
+.strip > span { position:relative; display:inline-block; padding:24px 56px 34px; font:400 70px/1.35 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap;
+  background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 10px 12px rgba(0,0,0,.36)) }
 .strip .k { color:var(--oink) }
+.lab8 { position:absolute; z-index:4; opacity:0 }
+.lab8 > span { position:relative; display:inline-block; padding:22px 50px 32px; font:400 78px/1.3 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap;
+  background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 12px 14px rgba(0,0,0,.38)) }
+.lab8 img, .strip img { position:absolute; pointer-events:none }
 
 /* prints, tape, kraft tags */
 .print { position:absolute; width:520px; padding:14px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
 .print img { display:block; width:100%; aspect-ratio:4/5 }
 .print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)) }
-.tape { position:absolute; width:150px; height:48px; background:rgba(236,226,200,.8); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:6;
-  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+.tape { position:absolute; height:52px; z-index:6; filter:drop-shadow(0 2px 3px rgba(0,0,0,.2)) }
+/* the desk props: his own renders (props/, Blender), each PNG carries its own soft shadow; 3.5 px per mm on the desk */
+.prop { position:absolute; display:block; pointer-events:none }
 .ktag { position:absolute; width:300px; height:160px; z-index:7; opacity:0; filter:drop-shadow(0 12px 14px rgba(0,0,0,.4)) }
 .ktag .tg { position:absolute; inset:0; background:var(--cream); clip-path:polygon(0 50%, 17% 0, 100% 0, 100% 100%, 17% 100%) }
 .ktag .hole { position:absolute; left:10%; top:50%; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%; background:var(--orange) }
 .ktag div { position:absolute; left:76px; right:16px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
-  font:700 50px/1.1 'Aref Ruqaa'; color:var(--ink) }
+  font:400 50px/1.15 'DG Sahabah', 'Alexandria'; color:var(--ink) }
 .ktag div small { font:600 22px/1.3 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.7); margin-top:4px }
 
 /* the one-second bar, on paper */
 #bar { position:absolute; left:340px; top:1200px; width:400px; height:76px; border-radius:38px; background:rgba(31,21,16,.12); opacity:0;
   box-shadow:inset 0 2px 5px rgba(31,21,16,.18) }
 #bar .fill { position:absolute; right:12px; top:12px; height:52px; width:376px; border-radius:26px; background:var(--oink) }
-#bar .lab { position:absolute; left:-104px; top:4px; font:700 48px/1.4 'Aref Ruqaa'; color:rgba(31,21,16,.65); direction:ltr }
+#bar .lab { position:absolute; left:-104px; top:4px; font:400 48px/1.4 'DG Sahabah', 'Alexandria'; color:rgba(31,21,16,.65); direction:ltr }
 
 /* the phone, lying on its sheet */
 #phoneW { position:absolute; left:290px; top:660px; width:500px; height:1030px; z-index:2 }
@@ -107,13 +111,13 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 #bigHeart path { fill:#fff }
 
 /* «؟»: a cream disc with a ripple */
-.ico { position:absolute; width:120px; height:120px; border-radius:50%; background:var(--cream); color:var(--oink); font:700 74px/116px 'Aref Ruqaa'; text-align:center;
+.ico { position:absolute; width:120px; height:120px; border-radius:50%; background:var(--cream); color:var(--oink); font:400 80px/120px 'DG Sahabah', 'Alexandria'; text-align:center;
   box-shadow:0 14px 26px rgba(0,0,0,.35); opacity:0 }
 .rip { position:absolute; width:120px; height:120px; border-radius:50%; border:3px solid rgba(251,243,230,.8); opacity:0 }
 
 /* a handwritten line under a print, with a marker tick and a highlighter on the key words */
 .li { position:absolute; width:900px; z-index:5; display:flex; align-items:center; justify-content:center; gap:18px; height:110px;
-  font:700 72px/1 'Aref Ruqaa'; color:var(--ink); white-space:nowrap }
+  font:400 74px/1 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap }
 .li svg.tick { flex:none; width:56px; height:52px; overflow:visible }
 .li svg.tick path { fill:none; stroke:var(--oink); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
 .li .tl { position:relative }
@@ -157,9 +161,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 
           <!-- the feed: the phone on its sheet, already scrolling when the camera gets there -->
           <div class="st on-orange" id="s2" style="left:5060px; top:2740px">
-            <div class="strip" id="t3a" style="top:290px"><span><span class="w">وأغلب</span> <span class="w">البوستات..</span> <span class="w k">تنعبر.</span></span></div>
-            <div class="strip" id="t3b" style="top:290px"><span><span class="w">لأن</span> <span class="w">ما</span> <span class="w">بيها</span> <span class="w">شي</span> <span class="w k">يوقّفك.</span></span></div>
-            <div class="strip" id="t4" style="top:290px"><span><span class="w">إلا</span> <span class="w k">هيج</span> <span class="w">بوست.</span></span></div>
+            <div class="strip" id="t3a" style="top:290px"><span><span class="w">وأغلب</span> <span class="w">البوستات..</span> <span class="w k">تنعبر.</span><img src="assets/props/clip-orange.png" alt="" style="right:46px; top:-62px; width:62px; transform:rotate(-7deg)" /></span></div>
+            <div class="strip" id="t3b" style="top:290px"><span><span class="w">لأن</span> <span class="w">ما</span> <span class="w">بيها</span> <span class="w">شي</span> <span class="w k">يوقّفك.</span><img src="assets/props/clip-silver.png" alt="" style="left:52px; top:-60px; width:62px; transform:rotate(9deg)" /></span></div>
+            <div class="strip" id="t4" style="top:290px"><span><span class="w">إلا</span> <span class="w k">هيج</span> <span class="w">بوست.</span><img src="assets/props/pin-orange.png" alt="" style="right:4px; top:-16px; width:84px" /></span></div>
             <div id="phoneW"><div id="phone"><div id="screen"><div id="island"></div><div id="sbar">9:41</div><div id="feedwin"><div id="feed"></div></div></div></div></div>
           </div>
 
@@ -172,6 +176,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
             <div class="tx big" id="three" style="top:985px"><span class="w"><span class="k">٣</span> شغلات</span></div>
           </div>
 
+          <!-- the desk props (filled in by the timeline script) -->
+          <div id="props"></div>
+
           <!-- the wall of his work (filled in by the timeline script): nine prints, three of them with a handwritten line -->
           <div id="wall"></div>
 
@@ -180,16 +187,18 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
             <div class="strip" id="t7" style="top:90px"><span><span class="ln"><span class="w">وهذا</span> <span class="w">بالضبط</span> <span class="w">اللي</span> <span class="w">أسويه</span></span><span class="ln"><span class="w k">لمشروعك.</span></span><span class="ln" style="font:500 26px/1.6 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.62)"><span class="w">نماذج من شغلي · الإعلانات غير رسمية</span></span></span></div>
           </div>
 
-          <!-- the price -->
+          <!-- what he makes (his services, from his price highlight; no prices): four torn labels pinned to the sheet, then «وهوية كاملة.» slams in -->
           <div class="st on-orange" id="s8" style="left:5460px; top:7740px">
-            <div class="tx ax t76" style="top:650px"><span class="w">٣</span> <span class="w">بوستات</span></div>
-            <div class="tx big" style="top:820px; font-size:196px"><span class="w" id="slam8" style="filter:url(#h2)">بـ ٤٠ ألف</span></div>
-            <div class="tx ruq" style="top:1110px; font-size:58px; line-height:1.4"><span class="w">يعني</span> <span class="w">البوست</span> <span class="w">تقريباً</span> <span class="w">بـ١٣</span> <span class="w">ألف</span></div>
+            <div class="lab8" id="lab1" style="left:730px; top:690px" data-r="-3"><span><span class="w">بوستات</span><img src="assets/props/pin-cream.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="lab8" id="lab2" style="left:340px; top:720px" data-r="2.5"><span><span class="w">ستوريات</span><img src="assets/props/pin-brown.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="lab8" id="lab3" style="left:725px; top:910px" data-r="2"><span><span class="w">منيو</span><img src="assets/props/pin-brown.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="lab8" id="lab4" style="left:355px; top:935px" data-r="-2.5"><span><span class="w">شعار</span><img src="assets/props/pin-cream.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="tx big" style="top:1150px; font-size:150px"><span class="w" id="slam8" style="filter:url(#h2)">وهوية <span class="k">كاملة.</span></span></div>
           </div>
 
           <!-- the ask -->
           <div class="st on-paper" id="s9" style="left:5460px; top:10140px">
-            <div class="strip" id="t9" style="top:520px"><span><span class="w">عجبك</span> <span class="w k">الشغل؟</span></span></div>
+            <div class="strip" id="t9" style="top:520px"><span><span class="w">عجبك</span> <span class="w k">الشغل؟</span><img src="assets/props/clip-silver.png" alt="" style="right:40px; top:-64px; width:62px; transform:rotate(-10deg)" /></span></div>
             <div class="tx big" style="top:690px; font-size:186px; color:var(--oink)"><span class="w" id="slam9" style="filter:url(#h3)">راسلني</span></div>
             <div class="tx ax t76" style="top:920px"><span class="w">بالدايركت..</span></div>
             <div class="tx ruq" style="top:1050px; font-size:62px; line-height:1.4; color:rgba(31,21,16,.78)"><span class="w">ونبدي</span> <span class="w">بمشروعك.</span></div>
@@ -202,47 +211,93 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
       </div>
       <div id="fx"><div id="grain"></div><div id="vig"></div></div>
 
-      <audio id="a0-uiclick" src="assets/sfx/uiclick.wav" data-start="0.00" data-duration="0.216" data-track-index="10" data-volume="0.4"></audio>
-      <audio id="a1-uiclick" src="assets/sfx/uiclick.wav" data-start="0.60" data-duration="0.216" data-track-index="11" data-volume="0.4"></audio>
-      <audio id="a2-uiclick" src="assets/sfx/uiclick.wav" data-start="0.95" data-duration="0.216" data-track-index="12" data-volume="0.4"></audio>
-      <audio id="a3-data" src="assets/sfx/data.wav" data-start="2.70" data-duration="1.003" data-track-index="13" data-volume="0.4"></audio>
-      <audio id="a4-smooth" src="assets/sfx/smooth.wav" data-start="4.65" data-duration="1.75" data-track-index="14" data-volume="0.28"></audio>
-      <audio id="a5-cinclick" src="assets/sfx/cinclick.wav" data-start="5.55" data-duration="0.094" data-track-index="15" data-volume="0.32"></audio>
-      <audio id="a6-cinclick" src="assets/sfx/cinclick.wav" data-start="7.95" data-duration="0.094" data-track-index="16" data-volume="0.32"></audio>
-      <audio id="a7-cinclick" src="assets/sfx/cinclick.wav" data-start="10.10" data-duration="0.094" data-track-index="17" data-volume="0.45"></audio>
-      <audio id="a8-softpop" src="assets/sfx/softpop.wav" data-start="10.15" data-duration="0.72" data-track-index="18" data-volume="0.3"></audio>
-      <audio id="a9-mpop" src="assets/sfx/mpop.wav" data-start="10.45" data-duration="1.25" data-track-index="19" data-volume="0.35"></audio>
-      <audio id="a10-mainwhoosh" src="assets/sfx/mainwhoosh.wav" data-start="11.00" data-duration="1.717" data-track-index="20" data-volume="0.3"></audio>
-      <audio id="a11-softpop" src="assets/sfx/softpop.wav" data-start="11.95" data-duration="0.72" data-track-index="21" data-volume="0.45"></audio>
-      <audio id="a12-mpop" src="assets/sfx/mpop.wav" data-start="13.70" data-duration="1.25" data-track-index="22" data-volume="0.4"></audio>
-      <audio id="a13-simple" src="assets/sfx/simple.wav" data-start="14.70" data-duration="1.531" data-track-index="23" data-volume="0.28"></audio>
-      <audio id="a14-click2" src="assets/sfx/click2.wav" data-start="15.60" data-duration="0.465" data-track-index="24" data-volume="0.38"></audio>
-      <audio id="a15-cinclick" src="assets/sfx/cinclick.wav" data-start="15.75" data-duration="0.094" data-track-index="25" data-volume="0.28"></audio>
-      <audio id="a16-select" src="assets/sfx/select.wav" data-start="17.25" data-duration="0.167" data-track-index="26" data-volume="0.33"></audio>
-      <audio id="a17-simple" src="assets/sfx/simple.wav" data-start="18.25" data-duration="1.531" data-track-index="27" data-volume="0.26"></audio>
-      <audio id="a18-click2" src="assets/sfx/click2.wav" data-start="19.10" data-duration="0.465" data-track-index="28" data-volume="0.38"></audio>
-      <audio id="a19-cinclick" src="assets/sfx/cinclick.wav" data-start="19.20" data-duration="0.094" data-track-index="29" data-volume="0.28"></audio>
-      <audio id="a20-select" src="assets/sfx/select.wav" data-start="20.60" data-duration="0.167" data-track-index="30" data-volume="0.33"></audio>
-      <audio id="a21-simple" src="assets/sfx/simple.wav" data-start="21.75" data-duration="1.531" data-track-index="31" data-volume="0.26"></audio>
-      <audio id="a22-click2" src="assets/sfx/click2.wav" data-start="22.60" data-duration="0.465" data-track-index="32" data-volume="0.38"></audio>
-      <audio id="a23-cinclick" src="assets/sfx/cinclick.wav" data-start="22.70" data-duration="0.094" data-track-index="33" data-volume="0.28"></audio>
-      <audio id="a24-select" src="assets/sfx/select.wav" data-start="24.20" data-duration="0.167" data-track-index="34" data-volume="0.33"></audio>
-      <audio id="a25-airy" src="assets/sfx/airy.wav" data-start="25.35" data-duration="1.957" data-track-index="35" data-volume="0.32"></audio>
-      <audio id="a26-cinclick" src="assets/sfx/cinclick.wav" data-start="26.10" data-duration="0.094" data-track-index="36" data-volume="0.32"></audio>
-      <audio id="a27-riser" src="assets/sfx/riser.wav" data-start="28.85" data-duration="2.228" data-track-index="37" data-volume="0.26"></audio>
-      <audio id="a28-cinfast" src="assets/sfx/cinfast.wav" data-start="29.30" data-duration="0.856" data-track-index="38" data-volume="0.3"></audio>
-      <audio id="a29-flick" src="assets/sfx/flick.wav" data-start="30.30" data-duration="0.552" data-track-index="39" data-volume="0.3"></audio>
-      <audio id="a30-money" src="assets/sfx/money.wav" data-start="30.45" data-duration="1.476" data-track-index="40" data-volume="0.45"></audio>
-      <audio id="a31-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="32.40" data-duration="2.616" data-track-index="41" data-volume="0.28"></audio>
-      <audio id="a32-cinclick" src="assets/sfx/cinclick.wav" data-start="33.20" data-duration="0.094" data-track-index="42" data-volume="0.32"></audio>
-      <audio id="a33-flick" src="assets/sfx/flick.wav" data-start="33.80" data-duration="0.552" data-track-index="43" data-volume="0.35"></audio>
-      <audio id="a34-airy" src="assets/sfx/airy.wav" data-start="34.70" data-duration="1.957" data-track-index="44" data-volume="0.22"></audio>
-      <audio id="a35-mpop" src="assets/sfx/mpop.wav" data-start="35.80" data-duration="1.25" data-track-index="45" data-volume="0.35"></audio>
-      <audio id="a36-clickb" src="assets/sfx/clickb.wav" data-start="36.60" data-duration="0.351" data-track-index="46" data-volume="0.6"></audio>
-      <audio id="a37-sweet" src="assets/sfx/sweet.wav" data-start="36.70" data-duration="1.076" data-track-index="47" data-volume="0.35"></audio>
+      <audio id="a0-ppop1" src="assets/sfx/ppop1.wav" data-start="0.62" data-duration="0.3" data-track-index="10" data-volume="0.22"></audio>
+      <audio id="a1-ppop2" src="assets/sfx/ppop2.wav" data-start="0.97" data-duration="0.4" data-track-index="11" data-volume="0.15"></audio>
+      <audio id="a2-npop1" src="assets/sfx/npop1.wav" data-start="2.32" data-duration="0.16" data-track-index="12" data-volume="0.3"></audio>
+      <audio id="a3-npop2" src="assets/sfx/npop2.wav" data-start="2.60" data-duration="0.18" data-track-index="13" data-volume="0.2"></audio>
+      <audio id="a4-data" src="assets/sfx/data.wav" data-start="2.70" data-duration="1.003" data-track-index="14" data-volume="0.4"></audio>
+      <audio id="a5-npop3" src="assets/sfx/npop3.wav" data-start="2.88" data-duration="0.17" data-track-index="15" data-volume="0.24"></audio>
+      <audio id="a6-npop4" src="assets/sfx/npop4.wav" data-start="3.62" data-duration="0.16" data-track-index="16" data-volume="0.22"></audio>
+      <audio id="a7-ppop3" src="assets/sfx/ppop3.wav" data-start="3.90" data-duration="0.38" data-track-index="17" data-volume="0.2"></audio>
+      <audio id="a8-smooth" src="assets/sfx/smooth.wav" data-start="4.65" data-duration="1.75" data-track-index="18" data-volume="0.28"></audio>
+      <audio id="a9-cinclick" src="assets/sfx/cinclick.wav" data-start="5.55" data-duration="0.094" data-track-index="19" data-volume="0.22"></audio>
+      <audio id="a10-npop5" src="assets/sfx/npop5.wav" data-start="5.62" data-duration="0.15" data-track-index="20" data-volume="0.3"></audio>
+      <audio id="a11-npop1" src="assets/sfx/npop1.wav" data-start="5.90" data-duration="0.16" data-track-index="21" data-volume="0.3"></audio>
+      <audio id="a12-ppop4" src="assets/sfx/ppop4.wav" data-start="6.37" data-duration="0.4" data-track-index="22" data-volume="0.15"></audio>
+      <audio id="a13-cinclick" src="assets/sfx/cinclick.wav" data-start="7.95" data-duration="0.094" data-track-index="23" data-volume="0.22"></audio>
+      <audio id="a14-npop2" src="assets/sfx/npop2.wav" data-start="7.97" data-duration="0.18" data-track-index="24" data-volume="0.2"></audio>
+      <audio id="a15-npop3" src="assets/sfx/npop3.wav" data-start="8.27" data-duration="0.17" data-track-index="25" data-volume="0.24"></audio>
+      <audio id="a16-npop4" src="assets/sfx/npop4.wav" data-start="8.57" data-duration="0.16" data-track-index="26" data-volume="0.22"></audio>
+      <audio id="a17-npop5" src="assets/sfx/npop5.wav" data-start="8.87" data-duration="0.15" data-track-index="27" data-volume="0.3"></audio>
+      <audio id="a18-ppop1" src="assets/sfx/ppop1.wav" data-start="9.32" data-duration="0.3" data-track-index="28" data-volume="0.22"></audio>
+      <audio id="a19-cinclick" src="assets/sfx/cinclick.wav" data-start="10.10" data-duration="0.094" data-track-index="29" data-volume="0.45"></audio>
+      <audio id="a20-npop1" src="assets/sfx/npop1.wav" data-start="10.22" data-duration="0.16" data-track-index="30" data-volume="0.3"></audio>
+      <audio id="a21-mpop" src="assets/sfx/mpop.wav" data-start="10.45" data-duration="1.25" data-track-index="31" data-volume="0.35"></audio>
+      <audio id="a22-ppop2" src="assets/sfx/ppop2.wav" data-start="10.52" data-duration="0.4" data-track-index="32" data-volume="0.15"></audio>
+      <audio id="a23-npop2" src="assets/sfx/npop2.wav" data-start="10.77" data-duration="0.18" data-track-index="33" data-volume="0.2"></audio>
+      <audio id="a24-mainwhoosh" src="assets/sfx/mainwhoosh.wav" data-start="11.00" data-duration="1.717" data-track-index="34" data-volume="0.3"></audio>
+      <audio id="a25-softpop" src="assets/sfx/softpop.wav" data-start="11.95" data-duration="0.72" data-track-index="35" data-volume="0.45"></audio>
+      <audio id="a26-ppop3" src="assets/sfx/ppop3.wav" data-start="12.12" data-duration="0.38" data-track-index="36" data-volume="0.2"></audio>
+      <audio id="a27-npop3" src="assets/sfx/npop3.wav" data-start="13.47" data-duration="0.17" data-track-index="37" data-volume="0.24"></audio>
+      <audio id="a28-mpop" src="assets/sfx/mpop.wav" data-start="13.70" data-duration="1.25" data-track-index="38" data-volume="0.4"></audio>
+      <audio id="a29-simple" src="assets/sfx/simple.wav" data-start="14.70" data-duration="1.531" data-track-index="39" data-volume="0.28"></audio>
+      <audio id="a30-click2" src="assets/sfx/click2.wav" data-start="15.60" data-duration="0.465" data-track-index="40" data-volume="0.38"></audio>
+      <audio id="a31-cinclick" src="assets/sfx/cinclick.wav" data-start="15.75" data-duration="0.094" data-track-index="41" data-volume="0.28"></audio>
+      <audio id="a32-npop4" src="assets/sfx/npop4.wav" data-start="15.92" data-duration="0.16" data-track-index="42" data-volume="0.22"></audio>
+      <audio id="a33-npop5" src="assets/sfx/npop5.wav" data-start="16.20" data-duration="0.15" data-track-index="43" data-volume="0.3"></audio>
+      <audio id="a34-npop1" src="assets/sfx/npop1.wav" data-start="16.48" data-duration="0.16" data-track-index="44" data-volume="0.3"></audio>
+      <audio id="a35-npop2" src="assets/sfx/npop2.wav" data-start="16.76" data-duration="0.18" data-track-index="45" data-volume="0.2"></audio>
+      <audio id="a36-select" src="assets/sfx/select.wav" data-start="17.25" data-duration="0.167" data-track-index="46" data-volume="0.33"></audio>
+      <audio id="a37-simple" src="assets/sfx/simple.wav" data-start="18.25" data-duration="1.531" data-track-index="47" data-volume="0.26"></audio>
+      <audio id="a38-click2" src="assets/sfx/click2.wav" data-start="19.10" data-duration="0.465" data-track-index="48" data-volume="0.38"></audio>
+      <audio id="a39-cinclick" src="assets/sfx/cinclick.wav" data-start="19.20" data-duration="0.094" data-track-index="49" data-volume="0.28"></audio>
+      <audio id="a40-npop3" src="assets/sfx/npop3.wav" data-start="19.37" data-duration="0.17" data-track-index="50" data-volume="0.24"></audio>
+      <audio id="a41-npop4" src="assets/sfx/npop4.wav" data-start="19.67" data-duration="0.16" data-track-index="51" data-volume="0.22"></audio>
+      <audio id="a42-npop5" src="assets/sfx/npop5.wav" data-start="19.97" data-duration="0.15" data-track-index="52" data-volume="0.3"></audio>
+      <audio id="a43-select" src="assets/sfx/select.wav" data-start="20.60" data-duration="0.167" data-track-index="53" data-volume="0.33"></audio>
+      <audio id="a44-simple" src="assets/sfx/simple.wav" data-start="21.75" data-duration="1.531" data-track-index="54" data-volume="0.26"></audio>
+      <audio id="a45-click2" src="assets/sfx/click2.wav" data-start="22.60" data-duration="0.465" data-track-index="55" data-volume="0.38"></audio>
+      <audio id="a46-cinclick" src="assets/sfx/cinclick.wav" data-start="22.70" data-duration="0.094" data-track-index="56" data-volume="0.28"></audio>
+      <audio id="a47-npop1" src="assets/sfx/npop1.wav" data-start="22.87" data-duration="0.16" data-track-index="57" data-volume="0.3"></audio>
+      <audio id="a48-npop2" src="assets/sfx/npop2.wav" data-start="23.15" data-duration="0.18" data-track-index="58" data-volume="0.2"></audio>
+      <audio id="a49-npop3" src="assets/sfx/npop3.wav" data-start="23.43" data-duration="0.17" data-track-index="59" data-volume="0.24"></audio>
+      <audio id="a50-npop4" src="assets/sfx/npop4.wav" data-start="23.71" data-duration="0.16" data-track-index="60" data-volume="0.22"></audio>
+      <audio id="a51-select" src="assets/sfx/select.wav" data-start="24.20" data-duration="0.167" data-track-index="61" data-volume="0.33"></audio>
+      <audio id="a52-airy" src="assets/sfx/airy.wav" data-start="25.35" data-duration="1.957" data-track-index="62" data-volume="0.32"></audio>
+      <audio id="a53-cinclick" src="assets/sfx/cinclick.wav" data-start="26.10" data-duration="0.094" data-track-index="63" data-volume="0.22"></audio>
+      <audio id="a54-npop5" src="assets/sfx/npop5.wav" data-start="26.17" data-duration="0.15" data-track-index="64" data-volume="0.3"></audio>
+      <audio id="a55-npop1" src="assets/sfx/npop1.wav" data-start="26.45" data-duration="0.16" data-track-index="65" data-volume="0.3"></audio>
+      <audio id="a56-npop2" src="assets/sfx/npop2.wav" data-start="26.73" data-duration="0.18" data-track-index="66" data-volume="0.2"></audio>
+      <audio id="a57-npop3" src="assets/sfx/npop3.wav" data-start="27.01" data-duration="0.17" data-track-index="67" data-volume="0.24"></audio>
+      <audio id="a58-ppop4" src="assets/sfx/ppop4.wav" data-start="27.47" data-duration="0.4" data-track-index="68" data-volume="0.15"></audio>
+      <audio id="a59-npop4" src="assets/sfx/npop4.wav" data-start="27.87" data-duration="0.16" data-track-index="69" data-volume="0.132"></audio>
+      <audio id="a60-cinfast" src="assets/sfx/cinfast.wav" data-start="29.30" data-duration="0.856" data-track-index="70" data-volume="0.3"></audio>
+      <audio id="a61-npop5" src="assets/sfx/npop5.wav" data-start="29.62" data-duration="0.15" data-track-index="71" data-volume="0.3"></audio>
+      <audio id="a62-cinclick" src="assets/sfx/cinclick.wav" data-start="29.92" data-duration="0.094" data-track-index="72" data-volume="0.18"></audio>
+      <audio id="a63-npop1" src="assets/sfx/npop1.wav" data-start="30.07" data-duration="0.16" data-track-index="73" data-volume="0.3"></audio>
+      <audio id="a64-cinclick" src="assets/sfx/cinclick.wav" data-start="30.37" data-duration="0.094" data-track-index="74" data-volume="0.18"></audio>
+      <audio id="a65-npop2" src="assets/sfx/npop2.wav" data-start="30.52" data-duration="0.18" data-track-index="75" data-volume="0.2"></audio>
+      <audio id="a66-cinclick" src="assets/sfx/cinclick.wav" data-start="30.82" data-duration="0.094" data-track-index="76" data-volume="0.18"></audio>
+      <audio id="a67-npop3" src="assets/sfx/npop3.wav" data-start="30.97" data-duration="0.17" data-track-index="77" data-volume="0.24"></audio>
+      <audio id="a68-cinclick" src="assets/sfx/cinclick.wav" data-start="31.27" data-duration="0.094" data-track-index="78" data-volume="0.18"></audio>
+      <audio id="a69-flick" src="assets/sfx/flick.wav" data-start="31.30" data-duration="0.552" data-track-index="79" data-volume="0.3"></audio>
+      <audio id="a70-ppop3" src="assets/sfx/ppop3.wav" data-start="31.77" data-duration="0.38" data-track-index="80" data-volume="0.2"></audio>
+      <audio id="a71-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="32.40" data-duration="2.616" data-track-index="81" data-volume="0.28"></audio>
+      <audio id="a72-cinclick" src="assets/sfx/cinclick.wav" data-start="33.20" data-duration="0.094" data-track-index="82" data-volume="0.22"></audio>
+      <audio id="a73-npop4" src="assets/sfx/npop4.wav" data-start="33.22" data-duration="0.16" data-track-index="83" data-volume="0.22"></audio>
+      <audio id="a74-ppop1" src="assets/sfx/ppop1.wav" data-start="33.52" data-duration="0.3" data-track-index="84" data-volume="0.22"></audio>
+      <audio id="a75-flick" src="assets/sfx/flick.wav" data-start="33.80" data-duration="0.552" data-track-index="85" data-volume="0.35"></audio>
+      <audio id="a76-ppop2" src="assets/sfx/ppop2.wav" data-start="34.27" data-duration="0.4" data-track-index="86" data-volume="0.16"></audio>
+      <audio id="a77-npop5" src="assets/sfx/npop5.wav" data-start="34.62" data-duration="0.15" data-track-index="87" data-volume="0.3"></audio>
+      <audio id="a78-airy" src="assets/sfx/airy.wav" data-start="34.70" data-duration="1.957" data-track-index="88" data-volume="0.22"></audio>
+      <audio id="a79-npop1" src="assets/sfx/npop1.wav" data-start="35.12" data-duration="0.16" data-track-index="89" data-volume="0.3"></audio>
+      <audio id="a80-npop2" src="assets/sfx/npop2.wav" data-start="35.40" data-duration="0.18" data-track-index="90" data-volume="0.2"></audio>
+      <audio id="a81-mpop" src="assets/sfx/mpop.wav" data-start="35.80" data-duration="1.25" data-track-index="91" data-volume="0.35"></audio>
+      <audio id="a82-clickb" src="assets/sfx/clickb.wav" data-start="36.60" data-duration="0.351" data-track-index="92" data-volume="0.6"></audio>
+      <audio id="a83-sweet" src="assets/sfx/sweet.wav" data-start="36.70" data-duration="1.076" data-track-index="93" data-volume="0.35"></audio>
     </div>
     <script>
-// «ثانية وحدة» v6, one take: everything sits on one desk and a single camera travels across it, no cuts. Every frame
+// «ثانية وحدة» v8, one take: everything sits on one desk and a single camera travels across it, no cuts. Every frame
 // it lands on is already composed (text starts as it arrives); moves are long, soft and lightly blurred. One paused
 // timeline, built after the fonts load, registered on window.__timelines.main. build.py's sound cues follow T and MOVES.
 (function () {
@@ -263,12 +318,20 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     [5600, 1150, 1400, 2600, 'paper', 1], [5600, 3700, 1400, 2400, 'orange', -1.5], [3500, 6900, 2400, 3200, 'paper', 0.6],
     [6000, 8700, 1400, 2400, 'orange', 2], [6000, 11100, 1400, 2400, 'paper', -1.5],
   ];
-  // the wall: centre x, centre y, design, rotation, and which of the three points it carries (-1: none)
+  // the wall: centre x, centre y, design, rotation, which of the three points it carries (-1: none), and what holds it
+  // up (t1–t3: a piece of masking tape; pin-*: a map pin; binder: a binder clip on its top edge)
   const WALL = [
-    [4200, 5950, 'asiacell', -2, 0], [3500, 5950, 'talabat', 2.5, -1], [2800, 5950, 'qi', -1.5, -1],
-    [4200, 6900, 'iraqiairways', 1.5, -1], [3500, 6900, 'pepsi', 2, 1], [2800, 6900, 'saj', -2.5, -1],
-    [4200, 7850, 'sala', -1, -1], [3500, 7850, 'miswag', 1.8, -1], [2800, 7850, 'shifa', -1.5, 2],
+    [4200, 5950, 'asiacell', -2, 0, 't1'], [3500, 5950, 'talabat', 2.5, -1, 'pin-brown'], [2800, 5950, 'qi', -1.5, -1, 't2'],
+    [4200, 6900, 'iraqiairways', 1.5, -1, 't3'], [3500, 6900, 'pepsi', 2, 1, 'binder'], [2800, 6900, 'saj', -2.5, -1, 'pin-orange'],
+    [4200, 7850, 'sala', -1, -1, 't2'], [3500, 7850, 'miswag', 1.8, -1, 'pin-cream'], [2800, 7850, 'shifa', -1.5, 2, 't1'],
   ];
+  // loose props on the desk: image, centre x, centre y, width (px), rotation. The mug and pencil frame the hook; two
+  // paper clips lie by «ليش؟».
+  const PROPS = [
+    ['mug', 6135, 2162, 560, 0], ['pencil', 5330, 2050, 735, -18],
+    ['clip-silver', 5250, 6860, 70, 62], ['clip-orange', 5370, 6950, 70, 17],
+  ];
+  const TAPE_W = { t1: 160, t2: 145, t3: 170 };
   const POINTS = [
     { tag: 'آسيا سيل', sub: 'إعلان غير رسمي', tr: -8, line: '<span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-hl="1">بثانية</span>' },
     { tag: 'ببسي', sub: 'إعلان غير رسمي', tr: 7, line: '<span class="w">حجي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span>' },
@@ -281,7 +344,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     ico: 11.95, why: 12.1, bih: 13.45, three: 13.7,
     tags: [15.6, 19.1, 22.6], ticks: [15.75, 19.2, 22.7], l: [[15.9, 16.18, 16.46, 16.74], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.25, 20.6, 24.2],
     t7: 26.1, t7w: [26.15, 26.43, 26.71, 26.99, 27.45, 27.85],
-    s8: [29.6, 29.9], slam8: 30.45, s8sub: 31.1,
+    sv: [29.6, 30.05, 30.5, 30.95], slam8: 31.45,
     t9: 33.2, t9w: [33.2, 33.5], slam9: 33.95, s9b: 34.6, plane: 34.85, s9c: [35.1, 35.38], btn: 35.8, cur: 36.0, click: 36.6, open: 36.7,
   };
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
@@ -296,9 +359,15 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     d.style.cssText = `left:${cx - w / 2}px; top:${cy - h / 2}px; width:${w}px; height:${h}px; transform:rotate(${r}deg)`;
     world.insertBefore(d, firstStation);
   });
-  $('#wall').innerHTML = WALL.map(([cx, cy, img, r, k]) => {
+  const holder = (cx, cy, r, how) => {
+    if (how[0] === 't') return `<img class="tape" src="assets/props/tape${how[1]}.png" alt="" style="left:${cx - TAPE_W[how] / 2}px; top:${cy - 364}px; width:${TAPE_W[how]}px; transform:rotate(${(r * 1.6).toFixed(1)}deg)" />`;
+    if (how === 'binder') return `<img class="prop" src="assets/props/binder.png" alt="" style="left:${cx - 101}px; top:${cy - 510}px; width:203px; z-index:6; transform:rotate(${r}deg)" />`;
+    return `<img class="prop" src="assets/props/${how}.png" alt="" style="left:${cx - 47}px; top:${cy - 347}px; width:84px; z-index:6" />`;
+  };
+  $('#props').innerHTML = PROPS.map(([img, cx, cy, w, r]) => `<img class="prop" src="assets/props/${img}.png" alt="" style="left:${cx - w / 2}px; top:${cy}px; width:${w}px; transform:translateY(-50%) rotate(${r}deg)" />`).join('');
+  $('#wall').innerHTML = WALL.map(([cx, cy, img, r, k, how]) => {
     let h = `<div class="print" style="left:${cx - 260}px; top:${cy - 339}px; transform:rotate(${r}deg)"><img src="assets/work/${img}.jpg" alt="" /></div>
-      <div class="tape" style="left:${cx - 75}px; top:${cy - 362}px; transform:rotate(${(r * 1.6).toFixed(1)}deg)"></div>`;
+      ${holder(cx, cy, r, how)}`;
     if (k >= 0) {
       const p = POINTS[k];
       h += `<div class="ktag" id="k${k + 1}" style="left:${cx - 390}px; top:${cy + 140}px; transform:rotate(${p.tr}deg)"><i class="tg"></i><i class="hole"></i><div>${p.tag}<small>${p.sub}</small></div></div>
@@ -322,7 +391,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     }
     return drift(prev, t - prevEnd);
   }
-  const view = $('#view'), camBlur = $('#cams'), grain = $('#grain');
+  const view = $('#view'), camBlur = $('#cams');
   function render(t) {
     const [x, y, s, r] = cam(t), [x0, y0, s0, r0] = cam(Math.max(0, t - 1 / 30));
     world.style.transform = `translate(540px, 960px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(5)}) translate(${(-x).toFixed(2)}px, ${(-y).toFixed(2)}px)`;
@@ -330,8 +399,6 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     const bx = Math.min(22, Math.abs(x - x0) * s * 0.2 + zb), by = Math.min(22, Math.abs(y - y0) * s * 0.2 + zb);
     if (bx < 0.5 && by < 0.5) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
     else { camBlur.setAttribute('stdDeviation', `${bx.toFixed(2)} ${by.toFixed(2)}`); view.style.filter = 'url(#camf)'; }
-    const n = Math.floor(t * 30);   // film grain moves every frame
-    grain.style.backgroundPosition = `${Math.floor(hash(n) * 420)}px ${Math.floor(hash(n + 7) * 420)}px`;
   }
 
   // ── the feed: eleven ordinary posts, then his quzi post; always moving, so none of them is ever read
@@ -356,6 +423,68 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
       <div class="pc"><i style="width:${60 + Math.round(hash(k + 5) * 25)}%"></i><i style="width:${30 + Math.round(hash(k + 6) * 25)}%"></i></div>
     </div>`).join('');
 
+  // ── torn paper: each strip and label gets its own piece, torn on all four sides with the paper's white core showing
+  // along the tear and a few loose fibres, drawn once at its own size (seeded, so every render is the same)
+  function rand(seed) {
+    return () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  function tearEdge(n, r, inset, amp) {
+    // fractal noise along an edge: wavelengths from 360 px down to 5 px, each octave a little weaker
+    const waves = [];
+    for (let o = 0, a = amp, L = 360; L > 4; o++, a *= 0.6, L /= 2) for (let j = 0; j < 2; j++) waves.push([a * (0.5 + r()), (2 * Math.PI) / (L * (0.7 + 0.6 * r())), r() * 6.283]);
+    const e = new Float32Array(n);
+    for (let i = 0; i < n; i++) { let v = 0; for (const [a, k, ph] of waves) v += a * Math.sin(k * i + ph); e[i] = inset + v; }
+    return e;
+  }
+  function tear(el, seed) {
+    const S = 2, W = el.offsetWidth * S, H = el.offsetHeight * S, r = rand(seed);
+    const top = tearEdge(W, r, 11 * S, 2.6 * S), bot = tearEdge(W, r, 12 * S, 2.6 * S), lft = tearEdge(H, r, 10 * S, 2.4 * S), rgt = tearEdge(H, r, 10 * S, 2.4 * S);
+    const bT = tearEdge(W, r, 3.2 * S, 1.3 * S), bB = tearEdge(W, r, 3.2 * S, 1.3 * S), bL = tearEdge(H, r, 2.8 * S, 1.2 * S), bR = tearEdge(H, r, 2.8 * S, 1.2 * S);
+    // a little mottling: value noise on a 26 px grid
+    const G = 26 * S, gw = Math.ceil(W / G) + 2, gh = Math.ceil(H / G) + 2, grid = Float32Array.from({ length: gw * gh }, () => r() - 0.5);
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d'), img = ctx.createImageData(W, H), px = img.data;
+    for (let y = 0; y < H; y++) {
+      const gy = y / G, y0 = Math.floor(gy), fy = gy - y0;
+      for (let x = 0; x < W; x++) {
+        const dt = y - top[x], db = H - 1 - y - bot[x], dl = x - lft[y], dr = W - 1 - x - rgt[y];
+        const d = Math.min(dt, db, dl, dr);
+        if (d < -1) continue;
+        let band = 0;
+        for (const [dd, bw] of [[dt, bT[x]], [db, bB[x]], [dl, bL[y]], [dr, bR[y]]]) band = Math.max(band, Math.min(1, Math.max(0, 1 - (dd - bw) / (1.5 * S))));
+        const n = (Math.sin(x * 12.9898 + y * 78.233) * 43758.5453) % 1, fib = Math.abs(n);
+        const gx = x / G, x0 = Math.floor(gx), fx = gx - x0, g = (i, j) => grid[(j % gh) * gw + (i % gw)];
+        const m = (g(x0, y0) * (1 - fx) + g(x0 + 1, y0) * fx) * (1 - fy) + (g(x0, y0 + 1) * (1 - fx) + g(x0 + 1, y0 + 1) * fx) * fy;
+        const k = 1 + m * 0.05 + (fib - 0.5) * 0.025;
+        const a = Math.min(1, Math.max(0, d + 0.5)) * (1 - band * (0.16 + 0.24 * fib));
+        const i4 = (y * W + x) * 4;
+        px[i4] = Math.min(255, 251 * k * (1 - band) + 255 * band);
+        px[i4 + 1] = Math.min(255, 243 * k * (1 - band) + 253 * band);
+        px[i4 + 2] = Math.min(255, 230 * k * (1 - band) + 248 * band);
+        px[i4 + 3] = a * 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    // loose fibres poking out of the tear
+    ctx.lineCap = 'round';
+    for (let i = 0, nH = Math.round((W + H) / S * 0.12); i < nH; i++) {
+      const side = Math.floor(r() * 4);
+      let x, y, ang;
+      if (side === 0) { x = r() * W; y = top[Math.floor(x)]; ang = -Math.PI / 2; }
+      else if (side === 1) { x = r() * W; y = H - 1 - bot[Math.floor(x)]; ang = Math.PI / 2; }
+      else if (side === 2) { y = r() * H; x = lft[Math.floor(y)]; ang = Math.PI; }
+      else { y = r() * H; x = W - 1 - rgt[Math.floor(y)]; ang = 0; }
+      ang += (r() - 0.5) * 1.6;
+      const L = (2 + r() * 6) * S;
+      ctx.strokeStyle = `rgba(255,253,248,${(0.35 + r() * 0.4).toFixed(2)})`;
+      ctx.lineWidth = (0.5 + r() * 0.5) * S;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(ang) * L, y + Math.sin(ang) * L); ctx.stroke();
+    }
+    el.style.backgroundImage = `url(${cv.toDataURL('image/png')})`;
+    el.style.backgroundColor = 'transparent';
+  }
+
   // ── the highlighter swipes: measured once the fonts are in (offsets ignore transforms)
   function buildHighlights() {
     $$('.li .tl').forEach((tlEl) => {
@@ -373,11 +502,15 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
 
   function build() {
     buildHighlights();
+    $$('.strip > span, .lab8 > span').forEach((el, i) => tear(el, 101 + i * 37));
     gsap.set('#g', { scale: 1 / POSE.G[2] });
     const tl = gsap.timeline({ paused: true });
-    // words come out of a blur, drifting in from the reading side
-    const words = (sel, times) => $$(sel + ' .w').forEach((w, i) => tl.fromTo(w, { opacity: 0, x: -22, filter: 'blur(12px)' },
-      { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.45, ease: 'power2.out' }, Array.isArray(times) ? times[i] : times + i * 0.28));
+    // words pop out of a blur, drifting in from the reading side (each with a pop from his pack: build.py)
+    const pop = (w, t) => {
+      tl.fromTo(w, { opacity: 0, x: -20, filter: 'blur(10px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out' }, t);
+      tl.fromTo(w, { scale: 0.78 }, { scale: 1, duration: 0.38, ease: 'back.out(2.4)' }, t);
+    };
+    const words = (sel, times) => $$(sel + ' .w').forEach((w, i) => pop(w, Array.isArray(times) ? times[i] : times + i * 0.28));
     const out = (sel, t, d = 0.25) => tl.to(sel, { opacity: 0, filter: 'blur(12px)', duration: d, ease: 'power1.in' }, t);
     // a torn strip lands like a piece of paper, its first word with it
     const strip = (sel, t, r, ws) => {
@@ -394,7 +527,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     const hw = $$('#s1 .w');
     // the first line is on screen from frame one (it is also the thumbnail), settling in; the rest arrives word by word
     tl.fromTo(hw.slice(0, 2), { opacity: 0.7, scale: 1.04, filter: 'blur(3px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'power2.out' }, 0);
-    hw.slice(2).forEach((w, i) => tl.fromTo(w, { opacity: 0, x: -22, filter: 'blur(12px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.42, ease: 'power2.out' }, T.s1w[i + 2]));
+    hw.slice(2).forEach((w, i) => pop(w, T.s1w[i + 2]));
     tl.fromTo('#bar', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, T.bar);
     tl.fromTo('#bar .fill', { clipPath: 'inset(0px 0px 0px 100% round 26px)' }, { clipPath: 'inset(0px 0px 0px 0% round 26px)', duration: 1.0, ease: 'none' }, T.fill);
 
@@ -432,10 +565,15 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     });
     strip('#t7', T.t7, -1.2, T.t7w);
 
-    // ── the price
-    words('#s8 .t76', T.s8);
+    // ── what he makes: each label is slapped on the sheet and pinned, then «وهوية كاملة.» slams in
+    $$('.lab8').forEach((el, i) => {
+      const r = +el.dataset.r, w = el.querySelector('.w'), pin = el.querySelector('img');
+      gsap.set(el, { xPercent: -50 });
+      tl.fromTo(el, { opacity: 0, scale: 0.62, rotation: r - 9, y: -14 }, { opacity: 1, scale: 1, rotation: r, y: 0, duration: 0.42, ease: 'back.out(2)' }, T.sv[i]);
+      tl.fromTo(w, { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.3, ease: 'power2.out' }, T.sv[i] + 0.04);
+      tl.fromTo(pin, { opacity: 0, scale: 1.6, y: -18 }, { opacity: 1, scale: 1, y: 0, duration: 0.22, ease: 'power3.in' }, T.sv[i] + 0.12);
+    });
     slam('#slam8', '#h2s', T.slam8);
-    words('#s8 .ruq', T.s8sub);
 
     // ── the ask: «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.», a paper plane, the button opens into his handle
     strip('#t9', T.t9, -1.4, T.t9w);

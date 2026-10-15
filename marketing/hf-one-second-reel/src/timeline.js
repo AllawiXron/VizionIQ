@@ -1,4 +1,4 @@
-// «ثانية وحدة» v6, one take: everything sits on one desk and a single camera travels across it, no cuts. Every frame
+// «ثانية وحدة» v8, one take: everything sits on one desk and a single camera travels across it, no cuts. Every frame
 // it lands on is already composed (text starts as it arrives); moves are long, soft and lightly blurred. One paused
 // timeline, built after the fonts load, registered on window.__timelines.main. build.py's sound cues follow T and MOVES.
 (function () {
@@ -19,12 +19,20 @@
     [5600, 1150, 1400, 2600, 'paper', 1], [5600, 3700, 1400, 2400, 'orange', -1.5], [3500, 6900, 2400, 3200, 'paper', 0.6],
     [6000, 8700, 1400, 2400, 'orange', 2], [6000, 11100, 1400, 2400, 'paper', -1.5],
   ];
-  // the wall: centre x, centre y, design, rotation, and which of the three points it carries (-1: none)
+  // the wall: centre x, centre y, design, rotation, which of the three points it carries (-1: none), and what holds it
+  // up (t1–t3: a piece of masking tape; pin-*: a map pin; binder: a binder clip on its top edge)
   const WALL = [
-    [4200, 5950, 'asiacell', -2, 0], [3500, 5950, 'talabat', 2.5, -1], [2800, 5950, 'qi', -1.5, -1],
-    [4200, 6900, 'iraqiairways', 1.5, -1], [3500, 6900, 'pepsi', 2, 1], [2800, 6900, 'saj', -2.5, -1],
-    [4200, 7850, 'sala', -1, -1], [3500, 7850, 'miswag', 1.8, -1], [2800, 7850, 'shifa', -1.5, 2],
+    [4200, 5950, 'asiacell', -2, 0, 't1'], [3500, 5950, 'talabat', 2.5, -1, 'pin-brown'], [2800, 5950, 'qi', -1.5, -1, 't2'],
+    [4200, 6900, 'iraqiairways', 1.5, -1, 't3'], [3500, 6900, 'pepsi', 2, 1, 'binder'], [2800, 6900, 'saj', -2.5, -1, 'pin-orange'],
+    [4200, 7850, 'sala', -1, -1, 't2'], [3500, 7850, 'miswag', 1.8, -1, 'pin-cream'], [2800, 7850, 'shifa', -1.5, 2, 't1'],
   ];
+  // loose props on the desk: image, centre x, centre y, width (px), rotation. The mug and pencil frame the hook; two
+  // paper clips lie by «ليش؟».
+  const PROPS = [
+    ['mug', 6135, 2162, 560, 0], ['pencil', 5330, 2050, 735, -18],
+    ['clip-silver', 5250, 6860, 70, 62], ['clip-orange', 5370, 6950, 70, 17],
+  ];
+  const TAPE_W = { t1: 160, t2: 145, t3: 170 };
   const POINTS = [
     { tag: 'آسيا سيل', sub: 'إعلان غير رسمي', tr: -8, line: '<span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-hl="1">بثانية</span>' },
     { tag: 'ببسي', sub: 'إعلان غير رسمي', tr: 7, line: '<span class="w">حجي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span>' },
@@ -37,7 +45,7 @@
     ico: 11.95, why: 12.1, bih: 13.45, three: 13.7,
     tags: [15.6, 19.1, 22.6], ticks: [15.75, 19.2, 22.7], l: [[15.9, 16.18, 16.46, 16.74], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.25, 20.6, 24.2],
     t7: 26.1, t7w: [26.15, 26.43, 26.71, 26.99, 27.45, 27.85],
-    s8: [29.6, 29.9], slam8: 30.45, s8sub: 31.1,
+    sv: [29.6, 30.05, 30.5, 30.95], slam8: 31.45,
     t9: 33.2, t9w: [33.2, 33.5], slam9: 33.95, s9b: 34.6, plane: 34.85, s9c: [35.1, 35.38], btn: 35.8, cur: 36.0, click: 36.6, open: 36.7,
   };
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
@@ -52,9 +60,15 @@
     d.style.cssText = `left:${cx - w / 2}px; top:${cy - h / 2}px; width:${w}px; height:${h}px; transform:rotate(${r}deg)`;
     world.insertBefore(d, firstStation);
   });
-  $('#wall').innerHTML = WALL.map(([cx, cy, img, r, k]) => {
+  const holder = (cx, cy, r, how) => {
+    if (how[0] === 't') return `<img class="tape" src="assets/props/tape${how[1]}.png" alt="" style="left:${cx - TAPE_W[how] / 2}px; top:${cy - 364}px; width:${TAPE_W[how]}px; transform:rotate(${(r * 1.6).toFixed(1)}deg)" />`;
+    if (how === 'binder') return `<img class="prop" src="assets/props/binder.png" alt="" style="left:${cx - 101}px; top:${cy - 510}px; width:203px; z-index:6; transform:rotate(${r}deg)" />`;
+    return `<img class="prop" src="assets/props/${how}.png" alt="" style="left:${cx - 47}px; top:${cy - 347}px; width:84px; z-index:6" />`;
+  };
+  $('#props').innerHTML = PROPS.map(([img, cx, cy, w, r]) => `<img class="prop" src="assets/props/${img}.png" alt="" style="left:${cx - w / 2}px; top:${cy}px; width:${w}px; transform:translateY(-50%) rotate(${r}deg)" />`).join('');
+  $('#wall').innerHTML = WALL.map(([cx, cy, img, r, k, how]) => {
     let h = `<div class="print" style="left:${cx - 260}px; top:${cy - 339}px; transform:rotate(${r}deg)"><img src="assets/work/${img}.jpg" alt="" /></div>
-      <div class="tape" style="left:${cx - 75}px; top:${cy - 362}px; transform:rotate(${(r * 1.6).toFixed(1)}deg)"></div>`;
+      ${holder(cx, cy, r, how)}`;
     if (k >= 0) {
       const p = POINTS[k];
       h += `<div class="ktag" id="k${k + 1}" style="left:${cx - 390}px; top:${cy + 140}px; transform:rotate(${p.tr}deg)"><i class="tg"></i><i class="hole"></i><div>${p.tag}<small>${p.sub}</small></div></div>
@@ -78,7 +92,7 @@
     }
     return drift(prev, t - prevEnd);
   }
-  const view = $('#view'), camBlur = $('#cams'), grain = $('#grain');
+  const view = $('#view'), camBlur = $('#cams');
   function render(t) {
     const [x, y, s, r] = cam(t), [x0, y0, s0, r0] = cam(Math.max(0, t - 1 / 30));
     world.style.transform = `translate(540px, 960px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(5)}) translate(${(-x).toFixed(2)}px, ${(-y).toFixed(2)}px)`;
@@ -86,8 +100,6 @@
     const bx = Math.min(22, Math.abs(x - x0) * s * 0.2 + zb), by = Math.min(22, Math.abs(y - y0) * s * 0.2 + zb);
     if (bx < 0.5 && by < 0.5) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
     else { camBlur.setAttribute('stdDeviation', `${bx.toFixed(2)} ${by.toFixed(2)}`); view.style.filter = 'url(#camf)'; }
-    const n = Math.floor(t * 30);   // film grain moves every frame
-    grain.style.backgroundPosition = `${Math.floor(hash(n) * 420)}px ${Math.floor(hash(n + 7) * 420)}px`;
   }
 
   // ── the feed: eleven ordinary posts, then his quzi post; always moving, so none of them is ever read
@@ -112,6 +124,68 @@
       <div class="pc"><i style="width:${60 + Math.round(hash(k + 5) * 25)}%"></i><i style="width:${30 + Math.round(hash(k + 6) * 25)}%"></i></div>
     </div>`).join('');
 
+  // ── torn paper: each strip and label gets its own piece, torn on all four sides with the paper's white core showing
+  // along the tear and a few loose fibres, drawn once at its own size (seeded, so every render is the same)
+  function rand(seed) {
+    return () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  function tearEdge(n, r, inset, amp) {
+    // fractal noise along an edge: wavelengths from 360 px down to 5 px, each octave a little weaker
+    const waves = [];
+    for (let o = 0, a = amp, L = 360; L > 4; o++, a *= 0.6, L /= 2) for (let j = 0; j < 2; j++) waves.push([a * (0.5 + r()), (2 * Math.PI) / (L * (0.7 + 0.6 * r())), r() * 6.283]);
+    const e = new Float32Array(n);
+    for (let i = 0; i < n; i++) { let v = 0; for (const [a, k, ph] of waves) v += a * Math.sin(k * i + ph); e[i] = inset + v; }
+    return e;
+  }
+  function tear(el, seed) {
+    const S = 2, W = el.offsetWidth * S, H = el.offsetHeight * S, r = rand(seed);
+    const top = tearEdge(W, r, 11 * S, 2.6 * S), bot = tearEdge(W, r, 12 * S, 2.6 * S), lft = tearEdge(H, r, 10 * S, 2.4 * S), rgt = tearEdge(H, r, 10 * S, 2.4 * S);
+    const bT = tearEdge(W, r, 3.2 * S, 1.3 * S), bB = tearEdge(W, r, 3.2 * S, 1.3 * S), bL = tearEdge(H, r, 2.8 * S, 1.2 * S), bR = tearEdge(H, r, 2.8 * S, 1.2 * S);
+    // a little mottling: value noise on a 26 px grid
+    const G = 26 * S, gw = Math.ceil(W / G) + 2, gh = Math.ceil(H / G) + 2, grid = Float32Array.from({ length: gw * gh }, () => r() - 0.5);
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d'), img = ctx.createImageData(W, H), px = img.data;
+    for (let y = 0; y < H; y++) {
+      const gy = y / G, y0 = Math.floor(gy), fy = gy - y0;
+      for (let x = 0; x < W; x++) {
+        const dt = y - top[x], db = H - 1 - y - bot[x], dl = x - lft[y], dr = W - 1 - x - rgt[y];
+        const d = Math.min(dt, db, dl, dr);
+        if (d < -1) continue;
+        let band = 0;
+        for (const [dd, bw] of [[dt, bT[x]], [db, bB[x]], [dl, bL[y]], [dr, bR[y]]]) band = Math.max(band, Math.min(1, Math.max(0, 1 - (dd - bw) / (1.5 * S))));
+        const n = (Math.sin(x * 12.9898 + y * 78.233) * 43758.5453) % 1, fib = Math.abs(n);
+        const gx = x / G, x0 = Math.floor(gx), fx = gx - x0, g = (i, j) => grid[(j % gh) * gw + (i % gw)];
+        const m = (g(x0, y0) * (1 - fx) + g(x0 + 1, y0) * fx) * (1 - fy) + (g(x0, y0 + 1) * (1 - fx) + g(x0 + 1, y0 + 1) * fx) * fy;
+        const k = 1 + m * 0.05 + (fib - 0.5) * 0.025;
+        const a = Math.min(1, Math.max(0, d + 0.5)) * (1 - band * (0.16 + 0.24 * fib));
+        const i4 = (y * W + x) * 4;
+        px[i4] = Math.min(255, 251 * k * (1 - band) + 255 * band);
+        px[i4 + 1] = Math.min(255, 243 * k * (1 - band) + 253 * band);
+        px[i4 + 2] = Math.min(255, 230 * k * (1 - band) + 248 * band);
+        px[i4 + 3] = a * 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    // loose fibres poking out of the tear
+    ctx.lineCap = 'round';
+    for (let i = 0, nH = Math.round((W + H) / S * 0.12); i < nH; i++) {
+      const side = Math.floor(r() * 4);
+      let x, y, ang;
+      if (side === 0) { x = r() * W; y = top[Math.floor(x)]; ang = -Math.PI / 2; }
+      else if (side === 1) { x = r() * W; y = H - 1 - bot[Math.floor(x)]; ang = Math.PI / 2; }
+      else if (side === 2) { y = r() * H; x = lft[Math.floor(y)]; ang = Math.PI; }
+      else { y = r() * H; x = W - 1 - rgt[Math.floor(y)]; ang = 0; }
+      ang += (r() - 0.5) * 1.6;
+      const L = (2 + r() * 6) * S;
+      ctx.strokeStyle = `rgba(255,253,248,${(0.35 + r() * 0.4).toFixed(2)})`;
+      ctx.lineWidth = (0.5 + r() * 0.5) * S;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(ang) * L, y + Math.sin(ang) * L); ctx.stroke();
+    }
+    el.style.backgroundImage = `url(${cv.toDataURL('image/png')})`;
+    el.style.backgroundColor = 'transparent';
+  }
+
   // ── the highlighter swipes: measured once the fonts are in (offsets ignore transforms)
   function buildHighlights() {
     $$('.li .tl').forEach((tlEl) => {
@@ -129,11 +203,15 @@
 
   function build() {
     buildHighlights();
+    $$('.strip > span, .lab8 > span').forEach((el, i) => tear(el, 101 + i * 37));
     gsap.set('#g', { scale: 1 / POSE.G[2] });
     const tl = gsap.timeline({ paused: true });
-    // words come out of a blur, drifting in from the reading side
-    const words = (sel, times) => $$(sel + ' .w').forEach((w, i) => tl.fromTo(w, { opacity: 0, x: -22, filter: 'blur(12px)' },
-      { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.45, ease: 'power2.out' }, Array.isArray(times) ? times[i] : times + i * 0.28));
+    // words pop out of a blur, drifting in from the reading side (each with a pop from his pack: build.py)
+    const pop = (w, t) => {
+      tl.fromTo(w, { opacity: 0, x: -20, filter: 'blur(10px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out' }, t);
+      tl.fromTo(w, { scale: 0.78 }, { scale: 1, duration: 0.38, ease: 'back.out(2.4)' }, t);
+    };
+    const words = (sel, times) => $$(sel + ' .w').forEach((w, i) => pop(w, Array.isArray(times) ? times[i] : times + i * 0.28));
     const out = (sel, t, d = 0.25) => tl.to(sel, { opacity: 0, filter: 'blur(12px)', duration: d, ease: 'power1.in' }, t);
     // a torn strip lands like a piece of paper, its first word with it
     const strip = (sel, t, r, ws) => {
@@ -150,7 +228,7 @@
     const hw = $$('#s1 .w');
     // the first line is on screen from frame one (it is also the thumbnail), settling in; the rest arrives word by word
     tl.fromTo(hw.slice(0, 2), { opacity: 0.7, scale: 1.04, filter: 'blur(3px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'power2.out' }, 0);
-    hw.slice(2).forEach((w, i) => tl.fromTo(w, { opacity: 0, x: -22, filter: 'blur(12px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.42, ease: 'power2.out' }, T.s1w[i + 2]));
+    hw.slice(2).forEach((w, i) => pop(w, T.s1w[i + 2]));
     tl.fromTo('#bar', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, T.bar);
     tl.fromTo('#bar .fill', { clipPath: 'inset(0px 0px 0px 100% round 26px)' }, { clipPath: 'inset(0px 0px 0px 0% round 26px)', duration: 1.0, ease: 'none' }, T.fill);
 
@@ -188,10 +266,15 @@
     });
     strip('#t7', T.t7, -1.2, T.t7w);
 
-    // ── the price
-    words('#s8 .t76', T.s8);
+    // ── what he makes: each label is slapped on the sheet and pinned, then «وهوية كاملة.» slams in
+    $$('.lab8').forEach((el, i) => {
+      const r = +el.dataset.r, w = el.querySelector('.w'), pin = el.querySelector('img');
+      gsap.set(el, { xPercent: -50 });
+      tl.fromTo(el, { opacity: 0, scale: 0.62, rotation: r - 9, y: -14 }, { opacity: 1, scale: 1, rotation: r, y: 0, duration: 0.42, ease: 'back.out(2)' }, T.sv[i]);
+      tl.fromTo(w, { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.3, ease: 'power2.out' }, T.sv[i] + 0.04);
+      tl.fromTo(pin, { opacity: 0, scale: 1.6, y: -18 }, { opacity: 1, scale: 1, y: 0, duration: 0.22, ease: 'power3.in' }, T.sv[i] + 0.12);
+    });
     slam('#slam8', '#h2s', T.slam8);
-    words('#s8 .ruq', T.s8sub);
 
     // ── the ask: «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.», a paper plane, the button opens into his handle
     strip('#t9', T.t9, -1.4, T.t9w);

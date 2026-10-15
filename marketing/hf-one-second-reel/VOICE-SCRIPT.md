@@ -16,13 +16,15 @@ screen, so you can read along with the video: each line starts when its caption 
 | 19.35 | حچي بلهجة زبونك. | across the wall to the Pepsi print |
 | 22.85 | وسبب يخلّيه يطلب هسه. | to the lab print |
 | 26.15 | وهذا بالضبط اللي أسويه لمشروعك.. | the camera pulls back: the whole wall, nine of your designs |
-| 29.6 | ثلاث بوستات.. بأربعين ألف. | it dives into the price; «بـ ٤٠ ألف» lands at 30.45 |
+| 29.6 | بوستات.. ستوريات.. منيو.. شعار.. وهوية كاملة. | it dives into a rust sheet: one pinned label per word (29.6, 30.05, 30.5, 30.95), then «وهوية كاملة.» slams in at 31.45 |
 | 33.2 | عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك. | down to the last sheet: «راسلني» at 33.95, a paper plane, the button opens into @allawi.psd (ends 38.0) |
 
 Take your time: the video leaves a pause after every line, like the reference. After «ليش؟» stop for a full second
 before «بيه ثلاث شغلات»: the screen waits for you there.
 
-On screen, «هيچ» and «حچي» are written «هيج» and «حجي» (your font has no «چ»); say them as you normally would.
+On screen, «هيچ» and «حچي» are written «هيج» and «حجي» (your font has no «چ»); say them as you normally would. The
+list of what you make says «شعار» on screen (the font has no «گ» for «لوگو»); say «لوگو» there if it sounds more like you.
+There are no prices in the video or the caption.
 
 ## Recording tips
 

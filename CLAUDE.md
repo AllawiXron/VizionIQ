@@ -15,10 +15,17 @@ sound from the sound pack on the cut). Prefer them to built-in or registry trans
 ## Look of reels and videos
 
 Use the look of the user's Instagram highlights (`marketing/ig-highlights`): paper `#ece3d4`, brown `#1f1510` and
-orange `#e2541b`→`#f07a2e` fields under the paper texture (multiply), film grain and a vignette; headlines and captions
-on torn cream strips; designs as taped prints with kraft tags; Aref Ruqaa for handwriting.
+orange `#e2541b`→`#f07a2e` fields under the paper texture (multiply), light film grain and a vignette; headlines and
+captions on torn cream strips; designs as taped prints with kraft tags.
 
 Font: the user's own DG Sahabah (`marketing/brand-fonts/DG-Sahabah-Reg.ttf`, one weight: set `font-weight:400` and
-`font-synthesis:none`) for all reel headlines and captions, with Alexandria only as a fallback (15 Oct). It has no «چ»:
-write «ج» on screen («هيج», «حجي»). Don't use flat cream + orange + near-black
-fields with clean UI pills: the user said that reads as "Claude motion" (15 Oct).
+`font-synthesis:none`) for all reel text, handwriting included (no Aref Ruqaa), with Alexandria only as a fallback (15 Oct).
+It has no «چ» or «گ»: write «ج» on screen («هيج», «حجي») and pick words without «گ» («شعار» for «لوگو»).
+
+Keep the grain light (overlay about .07, not moving every frame) and encode at about 10 Mbps: at .32 the user said the
+reel "looks grainy" (15 Oct). For "premium PNG" props, make them (Blender renders with real shadows, noise textures)
+rather than taking packs from Pinterest, which are mostly other people's paid or copyrighted work.
+
+No prices in reels unless the user asks for them (15 Oct).
+
+Don't use flat cream + orange + near-black fields with clean UI pills: the user said that reads as "Claude motion" (15 Oct).

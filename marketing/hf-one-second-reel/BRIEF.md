@@ -2,7 +2,7 @@
 workflow: general-video
 flow: automation
 storyboard: no
-message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: ٣ بوستات بـ٤٠ ألف. عجبك الشغل؟ راسلني بالدايركت."
+message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: بوستات، ستوريات، منيو، شعار، وهوية كاملة. عجبك الشغل؟ راسلني بالدايركت."
 destination: instagram-reels
 aspect: 1080x1920
 language: ar-IQ
@@ -27,7 +27,9 @@ highlighted word, designs popping in and stacking. What we change, and why it sh
   his design.
 - **Proof, not opinion.** The three things that stop a thumb (one idea, the customer's dialect, a reason to order now)
   build up as a list, each next to one of his own designs, with the key phrase selected.
-- **The price, out loud.** «٣ بوستات بـ٤٠ ألف», his current bundle price.
+- **What he makes, not what it costs.** v3–v7 said his bundle price out loud («٣ بوستات بـ٤٠ ألف»); in v8 the user
+  asked for no prices, so the scene lists his services from his price highlight instead (بوستات، ستوريات، منيو، شعار،
+  وهوية كاملة), and the caption lists them too.
 - **A DM ask, not "follow me".** «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.» (v3 asked for a keyword, «بوست»;
   the user preferred a plain "DM me").
 - **38 s instead of 68 s,** at the reference's calm pace (v2 at 30 s was "rushed"; v3 at 45 s, the user asked for 38).
@@ -40,6 +42,7 @@ brown `#1f1510` and the orange gradient, each under the paper texture (multiply)
 as greige `#d5c9b5`, warm brown `#2e231c` and rust `#c8501b`; Alexandria 800/900 on torn cream strips; his designs as
 taped prints with kraft tags; Aref Ruqaa for the handwritten list and notes; an orange highlighter and marker ticks.
 The motion stays the reference's: words out of a blur, whip-pans, circle reveals, zoom-throughs, sideways slams.
+v7–v8 set every word, the handwriting included, in his own DG Sahabah.
 
 ## One take (v5)
 
@@ -57,4 +60,4 @@ one). The effects sit low so his voice leads.
 - The posts in the feed are made-up placeholders (colour blocks, no names, no real shop).
 - Asiacell and Pepsi are his unofficial concept ads, labelled «إعلان غير رسمي · من شغلي» while on screen; the collage is
   labelled «نماذج من شغلي · الإعلانات غير رسمية». The lab and quzi posts are his sample designs.
-- The price is his own (bundle on the highlights: ٣ بوستات ٤٠ ألف).
+- The services are the ones on his price highlight (بوست، ستوري، كاروسيل، منيو أو فلاير، لوگو، هوية كاملة). No prices.

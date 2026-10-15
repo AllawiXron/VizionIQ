@@ -3,9 +3,9 @@
 A 38 s reel at 1080×1920 that turns viewers into DMs, cut in the editing style of a reference the user sent (a
 designer's 68 s voice-led reel). The user records the voice himself: `VOICE-SCRIPT.md`. Why: `BRIEF.md`.
 
-- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps, 6 Mbps, 30 MB).
+- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps, 10 Mbps).
 - `renders/one-second-reel-cover.jpg`: a cover frame.
-- `caption.txt`: the post caption (prices from his highlights; the unofficial-ads note and photo credits).
+- `caption.txt`: the post caption (his services, no prices; the unofficial-ads note and photo credits).
 
 **v1 → v2 (15 Oct).** The first cut (pills, marker circles, a cartoon phone feed, flash transitions, grain) was
 rejected: "it looks like ai slop … make it … as if it was made by an editor just like the video i sent you … learn from
@@ -46,9 +46,32 @@ light blur (at most 22 px); the hook is one sheet with a slow pull-back; the fee
 points are three stops on a full wall of nine of his designs, and the pull-back reveals the whole wall.
 
 **v6 → v7 (15 Oct).** The user's own font, DG Sahabah (`../brand-fonts`), replaces Alexandria for every headline and
-caption (Aref Ruqaa stays for the handwriting); it has no «چ», so the screen says «هيج» and «حجي». «ليش؟» used to be
+caption (Aref Ruqaa stayed for the handwriting until v8); it has no «چ», so the screen says «هيج» and «حجي». «ليش؟» used to be
 followed by «٣ شغلات» 0.7 s later ("appears fast right after"): now «ليش؟» lands alone and hangs for 1.35 s with the
 disc pulsing, then «بيه», then «٣ شغلات» on its own beat (the move to the wall starts 0.35 s later to make room).
+
+**v7 → v8 (15 Oct).** "make the handwritten lines DG Sahabah too, dont say the prices … use a sfx for each word pop
+up … look for it in the sfx google drive … it looks grainy, also please use some premium png stuff like png editing pack
+maybe look in pinterest".
+
+- **Font:** the handwritten lines, the kraft tags, «ونبدي بمشروعك.», the «؟» disc and the bar's "1s" are DG Sahabah
+  now; Aref Ruqaa is gone from the reel.
+- **No prices:** the price scene is now what he makes, from his price highlight: four torn labels pinned to the rust
+  sheet («بوستات»، «ستوريات»، «منيو»، «شعار»), then «وهوية كاملة.» slams in. The caption lists his services instead of
+  the bundles.
+- **A sound on every word:** his Drive folders hold the same 127 sounds as `../sfx-pack` (checked again 15 Oct), but
+  two of his pop files hold several pops each («Normal Pop»: five, «Premium And Smooth Pop»: four). `sfx.sh` cuts them
+  apart, and `build.py` puts one on every word as it pops up (the five plain pops in turn; the four smoother ones on the
+  coloured key words), read straight from the `T` table, so they stay on the words when the timing moves. Words now pop
+  (a small overshoot in scale) as well as coming out of the blur.
+- **Less grain:** the film grain went from .32 to .07 and no longer moves every frame; the paper texture is lighter
+  (.2, rust .26) and the vignette softer; the file is encoded at 10 Mbps instead of 6.
+- **Props instead of Pinterest PNGs:** PNG packs on Pinterest are mostly other people's paid or copyrighted packs, so
+  everything here is made for this reel: paper clips, map pins, a binder clip, a pencil and a mug of coffee rendered
+  top-down in Blender with real soft shadows (`props/props.py`, `props/finish.py`); masking tape made from noise
+  (`props/tape.py`); and real torn paper for every strip and label, drawn in the page at its own size, with the white
+  fibres along the tear (`tear()` in `src/timeline.js`). The mug and pencil frame the hook; clips and a pin hold the
+  strips; tape, pins and a binder clip hold the prints on the wall; the labels are pinned.
 
 | Time | Camera | On screen |
 |---|---|---|
@@ -58,13 +81,15 @@ disc pulsing, then «بيه», then «٣ شغلات» on its own beat (the move 
 | 11.3–14.75 | across to the desk | «؟» disc with a ripple, «ليش؟» alone, a pause, then «بيه / ٣ شغلات» |
 | 14.75–25.0 | into the wall, three stops | Asiacell, Pepsi and lab prints among nine; a kraft tag, a tick, a handwritten line and a highlighter at each |
 | 25.0–29.0 | pull back over the wall | all nine of his designs; strip «وهذا بالضبط اللي أسويه / لمشروعك.» with the unofficial-ads note |
-| 29.0–32.6 | dive into a rust sheet | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف» |
+| 29.0–32.6 | dive into a rust sheet | four pinned labels «بوستات»، «ستوريات»، «منيو»، «شعار», then «وهوية كاملة.» slams in |
 | 32.6–38 | down to the last sheet | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
 
 ## Build
 
-- `./sfx.sh` copies the 19 sounds this reel uses from the user's own pack (`../sfx-pack`; run its `fetch.sh` first)
-  into `assets/sfx` (not committed).
+- `./sfx.sh` copies the 24 sounds this reel uses from the user's own pack (`../sfx-pack`; run its `fetch.sh` first)
+  into `assets/sfx` (not committed); nine of them are single pops cut out of his two multi-pop files.
+- `assets/props/` holds the rendered props and tape (committed). To redo them: `props/props.py` in Blender 4.2, then
+  `props/finish.py` (joins each shadow and object pass at one shadow strength); `props/tape.py` for the tape.
 - `python3 build.py` writes `index.html` from `src/template.html` (layout, copy), `src/timeline.js` (motion; every cue
   is in its `T` table) and the sound cue list in `build.py`. Never edit `index.html` by hand.
 - `npx hyperframes@0.8.162 check`, then `render`. Set `HYPERFRAMES_BROWSER_PATH` to the headless shell on this machine.
@@ -77,6 +102,7 @@ matching sound cues in `build.py` to his words, and re-render. Keep the sound ef
 ## Credits and honesty
 
 - Sounds: only the user's own pack. No music.
+- Props, tape and torn paper: made for this reel (Blender renders and noise), no stock or Pinterest images.
 - The brand ads (Asiacell, Pepsi, Qi Card, Iraqi Airways, talabat) are his unofficial concepts and are labelled so on
   screen; photo credits are in `../brand-ads-2026/README.md`. Quzi and the lab are his sample designs.
 - The posts in the feed are plain made-up placeholders (colour blocks); they show no real shop.
