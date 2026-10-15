@@ -5,7 +5,7 @@ voice-led reel: flat colour fields, word-by-word captions, designs popping in), 
 hook is shown, not said; each point is proved on one of his designs; the price is out loud; and the ask is one word
 in the DM. Why it is built this way: `BRIEF.md`. The user records the voice himself: `VOICE-SCRIPT.md`.
 
-- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264 CRF 18, 30 fps).
+- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps, 13 MB).
 - `renders/one-second-reel-cover.jpg`: a cover frame.
 - `caption.txt`: the post caption (prices from his highlights; the unofficial-ads note).
 
