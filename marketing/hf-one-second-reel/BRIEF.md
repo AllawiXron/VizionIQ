@@ -7,7 +7,7 @@ destination: instagram-reels
 aspect: 1080x1920
 language: ar-IQ
 audience: Iraqi shop, restaurant, clinic and small-brand owners scrolling Instagram
-length: 30s
+length: 45s
 angle: the one-second scroll test, taught with the user's own designs, ending on a one-word DM keyword
 voice: the user records it himself (VOICE-SCRIPT.md)
 ---
@@ -30,7 +30,7 @@ highlighted word, designs popping in and stacking. What we change, and why it sh
 - **The price, out loud.** «٣ بوستات بـ٤٠ ألف», his current bundle price.
 - **A one-word DM keyword, not "follow me".** «دزّلي كلمة "بوست" بالدايركت»; in return he sends samples from the
   viewer's own field. One word is the easiest message there is to send, and the reply gives him a warm lead to quote.
-- **30 s instead of 68 s.**
+- **45 s instead of 68 s,** at the reference's calm pace (v2 at 30 s was "rushed").
 
 ## Look (v2, after the user rejected v1 as "ai slop")
 

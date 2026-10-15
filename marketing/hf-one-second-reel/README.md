@@ -1,9 +1,9 @@
 # «ثانية وحدة»: the allawi.psd sales reel, v3 (HyperFrames)
 
-A 30 s reel at 1080×1920 that turns viewers into DMs, cut in the editing style of a reference the user sent (a
+A 45 s reel at 1080×1920 that turns viewers into DMs, cut in the editing style of a reference the user sent (a
 designer's 68 s voice-led reel). The user records the voice himself: `VOICE-SCRIPT.md`. Why: `BRIEF.md`.
 
-- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps, 4.4 MB).
+- `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps).
 - `renders/one-second-reel-cover.jpg`: a cover frame.
 - `caption.txt`: the post caption (prices from his highlights; the unofficial-ads note and photo credits).
 
@@ -22,17 +22,20 @@ the video how they do the stuff like text, transitions". v2 copies the reference
 
 The user's flash clips (`../transitions-pack`) are not used here: the user asked for the reference's transitions.
 
+**v2 → v3 (15 Oct).** "it looks rushed". Re-paced to the reference: ~0.28 s between words (was 0.14), a pause after
+every line, scenes that hold 3–4 s, longer and softer moves; 30 s → 45 s with the same script.
+
 | Time | Scene | On screen |
 |---|---|---|
-| 0–1.6 | cream/orange flips | «زبونك» «يقرّر» «بثانية» «وحدة.», one word per beat |
-| 1.6–3.4 | black | «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
-| 3.4–7.6 | cream | whip-pan; a tilted phone rises, the feed flies past: «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
-| 7.6–8.8 | black | the scroll stops on his quzi post, a double-tap heart: «إلا هيچ بوست.»; zoom-through |
-| 8.8–9.7 | orange | «؟» icon with a ripple, «ليش؟ بيه / ٣ شغلات»; the icon opens into a circle reveal |
-| 9.7–19.4 | cream | Asiacell, Pepsi and lab ads swap above a list that builds: «فكرة وحدة تنفهم بثانية», «حچي بلهجة زبونك», «وسبب يخلّيه يطلب هسه», each key phrase selected |
-| 19.4–22 | black | whip-pan; seven of his designs fly into a collage: «وهذا بالضبط اللي أسويه / لمشروعك.»; zoom-through |
-| 22–24.4 | orange | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف»; a dot opens into the last scene |
-| 24.4–30 | cream | «دزّلي كلمة / «بوست» / بالدايركت..», «وأرسلك نماذج من شغلي بنفس مجالك»; a button, a click, «@allawi.psd» |
+| 0–2.1 | cream/orange flips | «زبونك» «يقرّر» «بثانية» «وحدة.», one word per beat |
+| 2.1–5.3 | black | «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
+| 5.3–11.2 | cream | whip-pan; a tilted phone rises, the feed flies past: «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
+| 11.2–13.7 | black | the scroll stops on his quzi post, a double-tap heart: «إلا هيچ بوست.»; zoom-through |
+| 13.7–16.2 | orange | «؟» icon with a ripple, «ليش؟ بيه / ٣ شغلات»; the icon opens into a circle reveal |
+| 16.2–28.8 | cream | Asiacell, Pepsi and lab ads swap above a list that builds: «فكرة وحدة تنفهم بثانية», «حچي بلهجة زبونك», «وسبب يخلّيه يطلب هسه», each key phrase selected |
+| 28.8–33.2 | black | whip-pan; seven of his designs fly into a collage: «وهذا بالضبط اللي أسويه / لمشروعك.»; zoom-through |
+| 33.2–36.9 | orange | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف»; a dot opens into the last scene |
+| 36.9–45 | cream | «دزّلي كلمة / «بوست» / بالدايركت..», «وأرسلك نماذج من شغلي بنفس مجالك»; a button, a click, «@allawi.psd» |
 
 ## Build
 
