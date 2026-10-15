@@ -2,13 +2,13 @@
 workflow: general-video
 flow: automation
 storyboard: no
-message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: ٣ بوستات بـ٤٠ ألف. دزّلي كلمة «بوست» بالدايركت."
+message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: ٣ بوستات بـ٤٠ ألف. عجبك الشغل؟ راسلني بالدايركت."
 destination: instagram-reels
 aspect: 1080x1920
 language: ar-IQ
 audience: Iraqi shop, restaurant, clinic and small-brand owners scrolling Instagram
-length: 45s
-angle: the one-second scroll test, taught with the user's own designs, ending on a one-word DM keyword
+length: 38s
+angle: the one-second scroll test, taught with the user's own designs, ending on «راسلني بالدايركت»
 voice: the user records it himself (VOICE-SCRIPT.md)
 ---
 
@@ -28,16 +28,18 @@ highlighted word, designs popping in and stacking. What we change, and why it sh
 - **Proof, not opinion.** The three things that stop a thumb (one idea, the customer's dialect, a reason to order now)
   build up as a list, each next to one of his own designs, with the key phrase selected.
 - **The price, out loud.** «٣ بوستات بـ٤٠ ألف», his current bundle price.
-- **A one-word DM keyword, not "follow me".** «دزّلي كلمة "بوست" بالدايركت»; in return he sends samples from the
-  viewer's own field. One word is the easiest message there is to send, and the reply gives him a warm lead to quote.
-- **45 s instead of 68 s,** at the reference's calm pace (v2 at 30 s was "rushed").
+- **A DM ask, not "follow me".** «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.» (v3 asked for a keyword, «بوست»;
+  the user preferred a plain "DM me").
+- **38 s instead of 68 s,** at the reference's calm pace (v2 at 30 s was "rushed"; v3 at 45 s, the user asked for 38).
 
-## Look (v2, after the user rejected v1 as "ai slop")
+## Look (v4: his highlights, not "Claude motion")
 
-Cut like the reference, studied frame by frame (README has the list): flat orange / cream / black fields that flip on the
-beat, IBM Plex Sans Arabic at the reference's sizes, words out of a blur with one key word in colour, sideways slams and
-whip-pans with motion blur, circle reveals from a dot, zoom-through exits, a text-selection highlight, soft card
-shadows, a cursor clicking a button that opens into his handle. No grain, no pills, no marker, no flash clips.
+v2–v3 used flat cream / orange / near-black fields; the user said the colours were not his and looked like "Claude
+motion", and pointed at his highlights (`../ig-highlights`). v4 uses the highlights' exact recipe: paper `#ece3d4`,
+brown `#1f1510` and the orange gradient, each under the paper texture (multiply), film grain and a vignette, which renders
+as greige `#d5c9b5`, warm brown `#2e231c` and rust `#c8501b`; Alexandria 800/900 on torn cream strips; his designs as
+taped prints with kraft tags; Aref Ruqaa for the handwritten list and notes; an orange highlighter and marker ticks.
+The motion stays the reference's: words out of a blur, whip-pans, circle reveals, zoom-throughs, sideways slams.
 
 ## Sound
 

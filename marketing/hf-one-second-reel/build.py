@@ -7,7 +7,7 @@ import os, wave
 
 here = os.path.dirname(os.path.abspath(__file__))
 P = lambda *a: os.path.join(here, *a)
-D = 45
+D = 38
 
 
 def dur(f):
@@ -20,22 +20,23 @@ sx = lambda n: f'assets/sfx/{n}.wav'
 # riser 1.6, mpop/softpop/click2/clickb 0.1. A whoosh on a cut starts at (cut - peak). Times follow T in src/timeline.js.
 C = []  # (time, sound, volume)
 C += [(t, 'uiclick', 0.6) for t in (0.0, 0.45, 0.9, 1.35)]             # hook: a tick on every word / colour flip
-C += [(3.0, 'data', 0.45)]                                              # the one-second bar fills
-C += [(5.3 - 0.7, 'fastwhoosh', 0.4), (5.3, 'airy', 0.28)]              # whip-pan; the phone rises
-C += [(round(t - 0.15, 2), 'flick', 0.14) for t in (5.7, 6.85, 8.0, 9.15, 10.3)]   # thumb flicks
-C += [(11.2, 'cinclick', 0.5), (11.7, 'mpop', 0.35)]                    # the stop; the double-tap heart
-C += [(13.35 - 0.05, 'cinfast', 0.38)]                                  # zoom-through
-C += [(13.75, 'softpop', 0.45), (15.8, 'wclick', 0.3)]                  # «؟» icon; it opens into the list
-C += [(16.3, 'mpop', 0.25)] + [(round(t - 0.1, 2), 'click2', 0.5) for t in (16.75, 20.95, 25.15)]   # first card; list dots
-C += [(t, 'select', 0.35) for t in (18.3, 22.3, 26.7)]                   # the selections
-C += [(20.45 - 0.6, 'simple', 0.28), (24.65 - 0.6, 'simple', 0.28)]     # card swaps
-C += [(28.8 - 0.8, 'mainwhoosh', 0.4), (29.0, 'softpop', 0.3)]          # whip-pan; the quzi post
-C += [(t, 'flick', 0.12) for t in (29.4, 29.72, 30.04)]                  # the collage flies in
-C += [(34.35 - 1.6, 'riser', 0.3), (32.85, 'cinfast', 0.35)]            # into the price; zoom-through
-C += [(34.2, 'flick', 0.3), (34.35, 'money', 0.45)]                     # «بـ ٤٠ ألف»
-C += [(36.75, 'wclick', 0.3)]                                           # the circle opens
-C += [(37.9, 'flick', 0.35)]                                            # «بوست»
-C += [(42.1, 'mpop', 0.35), (43.05, 'clickb', 0.6), (43.15, 'sweet', 0.35)]   # the button, the click, it opens
+C += [(2.85, 'data', 0.45)]                                             # the one-second bar fills
+C += [(4.9 - 0.7, 'fastwhoosh', 0.4), (5.0, 'airy', 0.28)]              # whip-pan; the phone rises
+C += [(round(t - 0.15, 2), 'flick', 0.14) for t in (5.3, 6.35, 7.4, 8.45, 9.2)]   # thumb flicks
+C += [(t, 'cinclick', 0.35) for t in (5.25, 7.45, 24.95, 32.15)]         # torn strips land
+C += [(10.0, 'cinclick', 0.45), (10.2, 'softpop', 0.3), (10.45, 'mpop', 0.35)]   # the stop; its strip; the heart
+C += [(11.95 - 0.05, 'cinfast', 0.38)]                                  # zoom-through
+C += [(12.3, 'softpop', 0.45), (14.0, 'wclick', 0.3)]                   # «؟» disc; it opens into the list
+C += [(t, 'mpop', 0.3) for t in (14.5, 17.9, 21.3)] + [(round(t + 0.5, 2), 'click2', 0.4) for t in (14.5, 17.9, 21.3)]   # prints; tags
+C += [(round(t - 0.2, 2), 'cinclick', 0.3) for t in (14.95, 18.35, 21.75)]   # ticks
+C += [(t, 'select', 0.35) for t in (16.2, 19.6, 23.0)]                   # highlighter swipes
+C += [(17.8 - 0.6, 'simple', 0.28), (21.2 - 0.6, 'simple', 0.28)]       # print swaps
+C += [(24.6 - 0.8, 'mainwhoosh', 0.4), (24.8, 'softpop', 0.3)]          # whip-pan; the quzi print
+C += [(t, 'flick', 0.12) for t in (25.2, 25.52, 25.84)]                  # the collage flies in
+C += [(29.7 - 1.6, 'riser', 0.3), (28.25, 'cinfast', 0.35)]             # into the price; zoom-through
+C += [(29.55, 'flick', 0.3), (29.7, 'money', 0.45)]                     # «بـ ٤٠ ألف»
+C += [(31.6, 'wclick', 0.3), (32.8, 'flick', 0.35), (33.85, 'airy', 0.25)]   # circle opens; «راسلني»; paper plane
+C += [(35.2, 'mpop', 0.35), (36.15, 'clickb', 0.6), (36.25, 'sweet', 0.35)]   # the button, the click, it opens
 C.sort()
 
 lines = []

@@ -7,52 +7,73 @@
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
 /*FONTFACES*/
-/* The editing grammar of the user's reference reel, in the allawi.psd colours: flat fields (orange / cream / black),
-   one calm Arabic face at moderate sizes, words out of a blur, the key word in colour, whip-pans with motion blur,
-   circle reveals from a dot, zoom-through exits, a text-selection highlight, soft card shadows. No grain, no boxes. */
-:root { --or:#e2541b; --cr:#f1ebe2; --bk:#111010; --ink:#1b1714; --dim:rgba(27,23,20,.62) }
+/* The look of his Instagram highlights (../ig-highlights): the same paper / brown / rust fields with the paper texture,
+   grain and vignette; Alexandria on torn paper strips; his designs as taped prints with kraft tags; Aref Ruqaa for the
+   handwritten bits. The motion is the reference reel's: words out of a blur, whip-pans, circle reveals, zoom-throughs. */
+:root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a }
 * { margin:0; padding:0; box-sizing:border-box }
-html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bk) }
-#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--bk); direction:rtl; font-family:'IBM Plex Sans Arabic' }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink) }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); direction:rtl; font-family:'IBM Plex Sans Arabic' }
 #stage { position:absolute; inset:0; overflow:hidden }
 .sc { position:absolute; inset:0; overflow:hidden; visibility:hidden; z-index:0 }
-.cr { background:var(--cr); color:var(--ink) }
-.or { background:var(--or); color:var(--cr) }
-.bk { background:var(--bk); color:var(--cr) }
-.k { color:var(--or) }                       /* the key word */
-.or .k { color:var(--bk) }
 
-/* text: centred lines, words as inline blocks so each can come out of a blur */
-.tx { position:absolute; left:60px; right:60px; text-align:center; white-space:nowrap }
+/* the fields, exactly as on the highlights */
+.bgc { position:absolute; inset:0 }
+.bgc::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.3 }
+.bgc.paper { background:var(--paper) }
+.bgc.orange { background:radial-gradient(120% 80% at 50% 40%, var(--orange2), var(--orange) 55%, #c94612) }
+.bgc.orange::after { opacity:.4 }
+.bgc.ink { background:radial-gradient(120% 80% at 50% 40%, #2b1e16, var(--ink) 60%) }
+.bgc.ink::after { mix-blend-mode:screen; opacity:.1 }
+#fx { position:absolute; inset:0; pointer-events:none; z-index:30 }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.32 }
+#vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.32) 100%) }
+
+/* text */
+.tx { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap }
 .ln { display:block; position:relative }
 .w { display:inline-block; position:relative; opacity:0 }
-.t64 { font-size:80px; font-weight:600; line-height:1.4 }
-.t48 { font-size:56px; font-weight:500; line-height:1.45 }
-.big { font-size:170px; font-weight:700; line-height:1.15 }
-.hook { font-size:122px; font-weight:700; line-height:1.2; top:850px }
+.ax { font-family:'Alexandria'; font-weight:800 }
+.t76 { font-size:76px; line-height:1.4 }
+.big { font-family:'Alexandria'; font-weight:900; font-size:176px; line-height:1.2 }
+.hook { font-family:'Alexandria'; font-weight:900; font-size:124px; line-height:1.2; top:850px }
+.ruq { font-family:'Aref Ruqaa'; font-weight:700 }
+.on-paper { color:var(--ink) } .on-paper .k { color:var(--oink) }
+.on-ink { color:var(--cream) } .on-ink .k { color:var(--orange2) }
+.on-orange { color:var(--cream) } .on-orange .k { color:var(--ink) }
 
-/* the text-selection highlight, like dragging a selection on a phone */
-.sel { position:absolute; pointer-events:none; z-index:-1 }
-.sel .bgx { position:absolute; inset:0; background:rgba(226,84,27,.24) }
-.bk .sel .bgx, .or .sel .bgx { background:rgba(241,235,226,.24) }
-.sel .a, .sel .b { position:absolute; width:5px; background:var(--or) }
-.sel .a { right:-3px; top:-.1em; bottom:0 }
-.sel .b { left:-3px; top:0; bottom:-.1em }
-.sel .a::after, .sel .b::after { content:''; position:absolute; left:-6px; width:17px; height:17px; border-radius:50%; background:var(--or) }
-.sel .a::after { top:-12px }
-.sel .b::after { bottom:-12px }
+/* torn caption strip, as on the highlights */
+.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8 }
+.strip > span { display:inline-block; padding:18px 46px 30px; font:800 70px/1.35 'Alexandria'; color:var(--ink); background:var(--cream); white-space:nowrap;
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.4));
+  clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
+.strip .k { color:var(--oink); font-weight:800 }
+.strip .ln + .ln { margin-top:2px }
+
+/* prints, tape, kraft tags */
+.print { position:absolute; padding:14px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3); opacity:0 }
+.print img { display:block; width:100%; aspect-ratio:4/5 }
+.print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)) }
+.tape { position:absolute; height:48px; background:rgba(236,226,200,.8); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:6; opacity:0;
+  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+.ktag { position:absolute; width:300px; height:160px; z-index:7; opacity:0; filter:drop-shadow(0 12px 14px rgba(0,0,0,.4)) }
+.ktag .tg { position:absolute; inset:0; background:var(--cream); clip-path:polygon(0 50%, 17% 0, 100% 0, 100% 100%, 17% 100%) }
+.ktag .hole { position:absolute; left:10%; top:50%; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%; background:var(--orange) }
+.ktag div { position:absolute; left:76px; right:16px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+  font:700 50px/1.1 'Aref Ruqaa'; color:var(--ink) }
+.ktag div small { font:600 22px/1.3 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.7); margin-top:4px }
 
 /* the one-second bar */
-#bar { position:absolute; left:340px; top:1100px; width:400px; height:84px; border-radius:42px; background:#262423; opacity:0;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.06), 0 18px 30px rgba(0,0,0,.4) }
-#bar .fill { position:absolute; right:14px; top:14px; height:56px; width:372px; border-radius:28px; background:var(--or) }
-#bar .lab { position:absolute; left:-118px; top:12px; font:600 44px/1.4 'IBM Plex Sans Arabic'; color:rgba(241,235,226,.55); direction:ltr }
+#bar { position:absolute; left:340px; top:1110px; width:400px; height:84px; border-radius:42px; background:rgba(31,21,16,.28); opacity:0;
+  box-shadow:inset 0 2px 6px rgba(31,21,16,.3) }
+#bar .fill { position:absolute; right:14px; top:14px; height:56px; width:372px; border-radius:28px; background:var(--cream) }
+#bar .lab { position:absolute; left:-110px; top:10px; font:700 48px/1.4 'Aref Ruqaa'; color:rgba(251,243,230,.85); direction:ltr }
 
 /* the phone */
-#phoneL { position:absolute; inset:0; visibility:hidden; pointer-events:none }
-#phoneW { position:absolute; left:290px; top:640px; width:500px; height:1030px }
+#phoneL { position:absolute; inset:0; visibility:hidden; pointer-events:none; z-index:2 }
+#phoneW { position:absolute; left:290px; top:660px; width:500px; height:1030px }
 #phone { position:absolute; inset:0; border-radius:80px; background:linear-gradient(140deg, #4a4a4e, #1d1d20 40%, #2b2b2f 75%, #121214);
-  box-shadow:0 70px 90px rgba(30,20,10,.32), 0 20px 30px rgba(30,20,10,.25) }
+  box-shadow:0 60px 80px rgba(40,20,5,.4), 0 18px 26px rgba(40,20,5,.3) }
 #phone::before { content:''; position:absolute; inset:4px; border-radius:76px; background:#050505 }
 #screen { position:absolute; inset:14px; border-radius:68px; overflow:hidden; background:#fff }
 #island { position:absolute; left:50%; top:16px; width:136px; height:40px; margin-left:-68px; border-radius:20px; background:#050505; z-index:6 }
@@ -72,130 +93,134 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bk) 
 #bigHeart { position:absolute; left:50%; top:50%; width:210px; height:210px; margin:-105px 0 0 -105px; opacity:0; z-index:3; filter:drop-shadow(0 8px 16px rgba(0,0,0,.3)) }
 #bigHeart path { fill:#fff }
 
-/* small round icon with a ripple, as in the reference */
-.ico { position:absolute; width:104px; height:104px; border-radius:50%; background:var(--cr); color:var(--or); font:700 58px/104px 'IBM Plex Sans Arabic'; text-align:center;
-  box-shadow:0 14px 26px rgba(80,20,0,.28); opacity:0 }
-.rip { position:absolute; width:104px; height:104px; border-radius:50%; border:3px solid rgba(241,235,226,.8); opacity:0 }
+/* «؟»: a torn cream disc with a ripple */
+.ico { position:absolute; width:120px; height:120px; border-radius:50%; background:var(--cream); color:var(--oink); font:700 74px/116px 'Aref Ruqaa'; text-align:center;
+  box-shadow:0 14px 26px rgba(80,20,0,.3); opacity:0 }
+.rip { position:absolute; width:120px; height:120px; border-radius:50%; border:3px solid rgba(251,243,230,.8); opacity:0 }
 
-/* cards: his designs, rounded, with a soft shadow */
-.card { position:absolute; border-radius:22px; overflow:hidden; opacity:0; box-shadow:0 34px 60px rgba(0,0,0,.22), 0 8px 16px rgba(0,0,0,.14) }
-.card img { display:block; width:100%; height:100% }
-.bk .card { box-shadow:0 34px 60px rgba(0,0,0,.6), 0 8px 16px rgba(0,0,0,.4) }
-.note { position:absolute; left:0; right:0; text-align:center; font:500 30px/1.4 'IBM Plex Sans Arabic'; opacity:0 }
-.cr .note { color:rgba(27,23,20,.45) }
-.bk .note, .or .note { color:rgba(241,235,226,.5) }
-
-/* the list */
-#list { position:absolute; left:150px; right:150px; top:1118px }
-.li { position:relative; display:flex; align-items:center; gap:22px; height:98px; font-size:62px; font-weight:600; white-space:nowrap }
-.li .dot { flex:none; width:44px; height:44px; border-radius:50%; background:var(--or); opacity:0; position:relative }
-.li .dot svg { position:absolute; left:10px; top:11px; width:24px; height:22px; fill:none; stroke:var(--cr); stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round }
+/* the list: handwritten lines with a marker tick and a highlighter on the key words */
+#list { position:absolute; left:100px; right:100px; top:1170px; z-index:1 }
+.li { position:relative; display:flex; align-items:center; gap:20px; height:110px; font:700 70px/1 'Aref Ruqaa'; color:var(--ink); white-space:nowrap }
+.li svg.tick { flex:none; width:54px; height:50px; overflow:visible }
+.li svg.tick path { fill:none; stroke:var(--oink); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
 .li .tl { position:relative }
+.hlt { position:absolute; background:rgba(240,122,46,.42); z-index:-1; pointer-events:none;
+  clip-path:polygon(1% 18%, 30% 10%, 62% 16%, 99% 8%, 100% 86%, 70% 94%, 36% 88%, 0 95%) }
+.note { position:absolute; left:0; right:0; text-align:center; font:500 30px/1.4 'IBM Plex Sans Arabic'; opacity:0 }
+.on-paper .note, .note.dk { color:rgba(31,21,16,.62) }
+.on-ink .note { color:rgba(251,243,230,.72) }
 
 /* the collage */
-#pile { position:absolute; left:0; top:0; width:1080px; height:1920px; transform-origin:540px 1000px }
-#pile .card { width:430px; height:538px; left:325px; top:731px }
+#pile { position:absolute; left:0; top:0; width:1080px; height:1920px; transform-origin:540px 1080px }
+#pile .print { width:360px; left:360px; top:840px; padding:10px }
 
 /* the ask */
-#btn { position:absolute; left:260px; top:1312px; width:560px; height:96px; border-radius:48px; background:var(--or); opacity:0; overflow:hidden;
-  box-shadow:0 16px 30px rgba(226,84,27,.35) }
-#btn svg { position:absolute; left:260px; top:28px; width:40px; height:40px; fill:none; stroke:var(--cr); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round }
-#btn .pl { position:absolute; right:44px; top:12px; font:600 50px/1.4 'IBM Plex Sans Arabic'; color:var(--cr); direction:ltr; white-space:nowrap; opacity:0 }
-#cur { position:absolute; left:820px; top:1660px; width:64px; height:80px; opacity:0; filter:drop-shadow(0 6px 8px rgba(0,0,0,.25)) }
-#ripB { position:absolute; left:500px; top:1320px; width:80px; height:80px; border-radius:50%; border:3px solid var(--or); opacity:0 }
+.mk { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; z-index:9 }
+.mk path { fill:none; stroke:var(--oink); stroke-width:9; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
+#btn { position:absolute; left:260px; top:1330px; width:560px; height:100px; border-radius:50px; background:var(--orange); opacity:0; overflow:hidden;
+  box-shadow:0 16px 28px rgba(150,50,10,.35) }
+#btn svg { position:absolute; left:262px; top:30px; width:40px; height:40px; fill:none; stroke:var(--cream); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round }
+#btn .pl { position:absolute; right:75px; top:14px; font:800 50px/1.4 'Alexandria'; color:var(--cream); direction:ltr; white-space:nowrap; opacity:0 }
+#cur { position:absolute; left:820px; top:1680px; width:64px; height:80px; opacity:0; filter:drop-shadow(0 6px 8px rgba(0,0,0,.3)) }
+#ripB { position:absolute; left:500px; top:1340px; width:80px; height:80px; border-radius:50%; border:3px solid var(--oink); opacity:0 }
     </style>
   </head>
   <body>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
       <filter id="vb" x="0" y="-10%" width="100%" height="120%"><feGaussianBlur id="vbs" stdDeviation="0 0" /></filter>
       <filter id="hw" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur id="hws" stdDeviation="0 0" /></filter>
-      <filter id="h1" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h1s" stdDeviation="0 0" /></filter>
       <filter id="h2" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h2s" stdDeviation="0 0" /></filter>
       <filter id="h3" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h3s" stdDeviation="0 0" /></filter>
     </svg>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="45" data-width="1080" data-height="1920">
-      <div id="stage" class="clip" data-start="0" data-duration="45" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="38" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="38" data-track-index="0">
 
-        <!-- hook: one word per beat, the field flips colour on every word -->
-        <div class="sc cr" id="h1w"><div class="tx hook"><span class="w">زبونك</span></div></div>
-        <div class="sc or" id="h2w"><div class="tx hook"><span class="w">يقرّر</span></div></div>
-        <div class="sc cr" id="h3w"><div class="tx hook"><span class="w k">بثانية</span></div></div>
-        <div class="sc or" id="h4w"><div class="tx hook"><span class="w">وحدة.</span></div></div>
+        <!-- hook: one word per beat, the field flips each time -->
+        <div class="sc on-paper" id="h1w"><div class="bgc paper"></div><div class="tx hook"><span class="w">زبونك</span></div></div>
+        <div class="sc on-orange" id="h2w"><div class="bgc orange"></div><div class="tx hook"><span class="w">يقرّر</span></div></div>
+        <div class="sc on-paper" id="h3w"><div class="bgc paper"></div><div class="tx hook"><span class="w k">بثانية</span></div></div>
+        <div class="sc on-ink" id="h4w"><div class="bgc ink"></div><div class="tx hook"><span class="w">وحدة.</span></div></div>
 
         <!-- one second: the bar fills while he says it -->
-        <div class="sc bk" id="s2">
-          <div class="tx t64" style="top:800px"><span class="ln"><span class="w">يوقف</span> <span class="w">على</span> <span class="w">بوستك..</span></span><span class="ln"><span class="w">لو</span> <span class="w k">يعبره.</span></span></div>
+        <div class="sc on-orange" id="s2"><div class="bgc orange"></div>
+          <div class="tx ax t76" style="top:800px"><span class="ln"><span class="w">يوقف</span> <span class="w">على</span> <span class="w">بوستك..</span></span><span class="ln"><span class="w">لو</span> <span class="w k">يعبره.</span></span></div>
           <div id="bar"><i class="fill"></i><span class="lab">1s</span></div>
         </div>
 
-        <!-- the feed (cream), then the stop (black) -->
-        <div class="sc cr" id="s3">
-          <div class="tx t64" id="t3a" style="top:300px"><span class="ln"><span class="w">وأغلب</span> <span class="w">البوستات..</span></span><span class="ln"><span class="w k">تنعبر.</span></span></div>
-          <div class="tx t64" id="t3b" style="top:300px"><span class="ln"><span class="w">لأن</span> <span class="w">ما</span> <span class="w">بيها</span> <span class="w">شي</span></span><span class="ln"><span class="w k">يوقّفك.</span></span></div>
+        <!-- the feed (paper), then the stop (brown) -->
+        <div class="sc on-paper" id="s3"><div class="bgc paper"></div>
+          <div class="strip" id="t3a" style="top:290px; transform:rotate(-1.2deg)"><span><span class="w">وأغلب</span> <span class="w">البوستات..</span> <span class="w k">تنعبر.</span></span></div>
+          <div class="strip" id="t3b" style="top:290px; transform:rotate(1deg)"><span><span class="w">لأن</span> <span class="w">ما</span> <span class="w">بيها</span> <span class="w">شي</span> <span class="w k">يوقّفك.</span></span></div>
         </div>
-        <div class="sc bk" id="s4">
-          <div class="tx t64" id="t4" style="top:330px"><span class="w">إلا</span> <span class="w k">هيچ</span> <span class="w">بوست.</span></div>
+        <div class="sc on-ink" id="s4"><div class="bgc ink"></div>
+          <div class="strip" id="t4" style="top:320px; transform:rotate(-1.4deg)"><span><span class="w">إلا</span> <span class="w k">هيچ</span> <span class="w">بوست.</span></span></div>
         </div>
         <div id="phoneL">
           <div id="phoneW"><div id="phone"><div id="screen"><div id="island"></div><div id="sbar">9:41</div><div id="feedwin"><div id="feed"></div></div></div></div></div>
         </div>
 
-        <!-- «ليش؟»: an icon with a ripple, then it opens into the next scene -->
-        <div class="sc or" id="s5">
-          <i class="rip" id="rip5" style="left:488px; top:660px"></i>
-          <div class="ico" id="ico5" style="left:488px; top:660px">؟</div>
-          <div class="tx t64" style="top:800px"><span class="w">ليش؟</span> <span class="w">بيه</span></div>
-          <div class="tx big" style="top:915px"><span class="w">٣ شغلات</span></div>
+        <!-- «ليش؟»: the disc pops with a ripple, then opens into the list -->
+        <div class="sc on-orange" id="s5"><div class="bgc orange"></div>
+          <i class="rip" id="rip5" style="left:480px; top:640px"></i>
+          <div class="ico" id="ico5" style="left:480px; top:640px">؟</div>
+          <div class="tx ax t76" style="top:800px"><span class="w">ليش؟</span> <span class="w">بيه</span></div>
+          <div class="tx big" style="top:905px"><span class="w">٣ شغلات</span></div>
         </div>
 
-        <!-- the three things: his designs swap above a list that builds up -->
-        <div class="sc cr" id="s6">
-          <div class="card" id="c1" style="left:270px; top:250px; width:540px; height:675px"><img src="assets/work/asiacell.jpg" alt="" /></div>
-          <div class="card" id="c2" style="left:270px; top:250px; width:540px; height:675px"><img src="assets/work/pepsi.jpg" alt="" /></div>
-          <div class="card" id="c3" style="left:270px; top:250px; width:540px; height:675px"><img src="assets/work/shifa.jpg" alt="" /></div>
-          <div class="note" id="n1" style="top:950px">إعلان غير رسمي · من شغلي</div>
-          <div class="note" id="n2" style="top:950px">إعلان غير رسمي · من شغلي</div>
-          <div class="note" id="n3" style="top:950px">نموذج من شغلي</div>
+        <!-- the three things: his designs as taped prints above a handwritten list -->
+        <div class="sc on-paper" id="s6"><div class="bgc paper"></div>
+          <div class="print" id="c1" style="left:280px; top:250px; width:520px; transform:rotate(-2deg)"><img src="assets/work/asiacell.jpg" alt="" /></div>
+          <div class="print" id="c2" style="left:280px; top:250px; width:520px; transform:rotate(2deg)"><img src="assets/work/pepsi.jpg" alt="" /></div>
+          <div class="print" id="c3" style="left:280px; top:250px; width:520px; transform:rotate(-1.5deg)"><img src="assets/work/shifa.jpg" alt="" /></div>
+          <div class="tape" id="tp1" style="left:470px; top:226px; width:150px; transform:rotate(-4deg)"></div>
+          <div class="tape" id="tp2" style="left:460px; top:228px; width:160px; transform:rotate(3deg)"></div>
+          <div class="tape" id="tp3" style="left:466px; top:226px; width:150px; transform:rotate(-2deg)"></div>
+          <div class="ktag" id="k1" style="left:150px; top:810px; transform:rotate(-8deg)"><i class="tg"></i><i class="hole"></i><div>آسيا سيل<small>إعلان غير رسمي</small></div></div>
+          <div class="ktag" id="k2" style="left:150px; top:810px; transform:rotate(7deg)"><i class="tg"></i><i class="hole"></i><div>ببسي<small>إعلان غير رسمي</small></div></div>
+          <div class="ktag" id="k3" style="left:150px; top:810px; transform:rotate(-6deg)"><i class="tg"></i><i class="hole"></i><div>مختبر<small>نموذج من شغلي</small></div></div>
           <div id="list">
-            <div class="li" id="l1"><i class="dot"><svg viewBox="0 0 24 22"><path d="M3 11 L9.5 17 L21 4" /></svg></i><span class="tl"><span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-sel="1">بثانية</span></span></div>
-            <div class="li" id="l2"><i class="dot"><svg viewBox="0 0 24 22"><path d="M3 11 L9.5 17 L21 4" /></svg></i><span class="tl"><span class="w">حچي</span> <span class="w" data-sel="1">بلهجة</span> <span class="w" data-sel="1">زبونك</span></span></div>
-            <div class="li" id="l3"><i class="dot"><svg viewBox="0 0 24 22"><path d="M3 11 L9.5 17 L21 4" /></svg></i><span class="tl"><span class="w">وسبب</span> <span class="w">يخلّيه</span> <span class="w" data-sel="1">يطلب</span> <span class="w" data-sel="1">هسه</span></span></div>
+            <div class="li" id="l1"><svg class="tick" viewBox="0 0 54 50"><path pathLength="1" d="M5 26 L20 41 L49 7" /></svg><span class="tl"><span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-hl="1">بثانية</span></span></div>
+            <div class="li" id="l2"><svg class="tick" viewBox="0 0 54 50"><path pathLength="1" d="M5 26 L20 41 L49 7" /></svg><span class="tl"><span class="w">حچي</span> <span class="w" data-hl="1">بلهجة</span> <span class="w" data-hl="1">زبونك</span></span></div>
+            <div class="li" id="l3"><svg class="tick" viewBox="0 0 54 50"><path pathLength="1" d="M5 26 L20 41 L49 7" /></svg><span class="tl"><span class="w">وسبب</span> <span class="w">يخلّيه</span> <span class="w" data-hl="1">يطلب</span> <span class="w" data-hl="1">هسه</span></span></div>
           </div>
         </div>
 
-        <!-- the collage: his work flies in and settles, then the camera goes through it -->
-        <div class="sc bk" id="s7">
+        <!-- the collage: his work flies in as prints and settles, then the camera goes through it -->
+        <div class="sc on-ink" id="s7"><div class="bgc ink"></div>
           <div id="pile">
-            <div class="card" id="q1"><img src="assets/work/talabat.jpg" alt="" /></div>
-            <div class="card" id="q2"><img src="assets/work/qi.jpg" alt="" /></div>
-            <div class="card" id="q3"><img src="assets/work/iraqiairways.jpg" alt="" /></div>
-            <div class="card" id="q4"><img src="assets/work/shifa.jpg" alt="" /></div>
-            <div class="card" id="q5"><img src="assets/work/asiacell.jpg" alt="" /></div>
-            <div class="card" id="q6"><img src="assets/work/pepsi.jpg" alt="" /></div>
-            <div class="card" id="q0"><img src="assets/work/saj.jpg" alt="" /></div>
+            <div class="print" id="q1"><img src="assets/work/talabat.jpg" alt="" /></div>
+            <div class="print" id="q2"><img src="assets/work/qi.jpg" alt="" /></div>
+            <div class="print" id="q3"><img src="assets/work/iraqiairways.jpg" alt="" /></div>
+            <div class="print" id="q4"><img src="assets/work/shifa.jpg" alt="" /></div>
+            <div class="print" id="q5"><img src="assets/work/asiacell.jpg" alt="" /></div>
+            <div class="print" id="q6"><img src="assets/work/pepsi.jpg" alt="" /></div>
+            <div class="print" id="q0"><img src="assets/work/saj.jpg" alt="" /></div>
           </div>
-          <div class="tx t64" id="t7" style="top:250px"><span class="ln"><span class="w">وهذا</span> <span class="w">بالضبط</span> <span class="w">اللي</span> <span class="w">أسويه</span></span><span class="ln"><span class="w k">لمشروعك.</span></span></div>
-          <div class="note" id="n7" style="top:1690px">نماذج من شغلي · الإعلانات غير رسمية</div>
+          <div class="strip" id="t7" style="top:250px; transform:rotate(-1.2deg)"><span><span class="ln"><span class="w">وهذا</span> <span class="w">بالضبط</span> <span class="w">اللي</span> <span class="w">أسويه</span></span><span class="ln"><span class="w k">لمشروعك.</span></span></span></div>
+          <div class="note" id="n7" style="top:1700px">@allawi.psd · نماذج من شغلي · الإعلانات غير رسمية</div>
         </div>
 
         <!-- the price -->
-        <div class="sc or" id="s8">
-          <div class="tx t64" style="top:700px"><span class="w">٣</span> <span class="w">بوستات</span></div>
-          <div class="tx big" style="top:808px; font-size:190px"><span class="w" id="slam8" style="filter:url(#h2)">بـ ٤٠ ألف</span></div>
-          <div class="tx t48" style="top:1062px; color:rgba(241,235,226,.86)"><span class="w">يعني</span> <span class="w">البوست</span> <span class="w">تقريباً</span> <span class="w">بـ١٣</span> <span class="w">ألف</span></div>
-          <i class="ico" id="dot8" style="left:528px; top:948px; width:24px; height:24px; border-radius:12px; box-shadow:none"></i>
+        <div class="sc on-orange" id="s8"><div class="bgc orange"></div>
+          <div class="tx ax t76" style="top:650px"><span class="w">٣</span> <span class="w">بوستات</span></div>
+          <div class="tx big" style="top:820px; font-size:196px"><span class="w" id="slam8" style="filter:url(#h2)">بـ ٤٠ ألف</span></div>
+          <div class="tx ruq" style="top:1110px; font-size:58px; line-height:1.4"><span class="w">يعني</span> <span class="w">البوست</span> <span class="w">تقريباً</span> <span class="w">بـ١٣</span> <span class="w">ألف</span></div>
+          <i class="ico" id="dot8" style="left:528px; top:948px; width:24px; height:24px; box-shadow:none"></i>
         </div>
 
-        <!-- the ask: one word in the DM -->
-        <div class="sc cr" id="s9">
-          <div class="tx t64" style="top:610px"><span class="w">دزّلي</span> <span class="w">كلمة</span></div>
-          <div class="tx big" style="top:718px; font-size:200px"><span class="w k" id="slam9" style="filter:url(#h3)">«بوست»</span></div>
-          <div class="tx t64" style="top:952px"><span class="w">بالدايركت..</span></div>
-          <div class="tx t48" style="top:1100px; color:var(--dim)"><span class="ln"><span class="w">وأرسلك</span> <span class="w">نماذج</span> <span class="w">من</span> <span class="w">شغلي</span></span><span class="ln"><span class="w">بنفس</span> <span class="w" style="color:var(--ink)">مجالك</span></span></div>
+        <!-- the ask: «راسلني بالدايركت» -->
+        <div class="sc on-paper" id="s9"><div class="bgc paper"></div>
+          <div class="strip" id="t9" style="top:520px; transform:rotate(-1.4deg)"><span><span class="w">عجبك</span> <span class="w k">الشغل؟</span></span></div>
+          <div class="tx big" style="top:690px; font-size:186px; color:var(--oink)"><span class="w" id="slam9" style="filter:url(#h3)">راسلني</span></div>
+          <div class="tx ax t76" style="top:920px"><span class="w">بالدايركت..</span></div>
+          <div class="tx ruq" style="top:1050px; font-size:62px; line-height:1.4; color:rgba(31,21,16,.78)"><span class="w">ونبدي</span> <span class="w">بمشروعك.</span></div>
+          <svg class="mk" id="plane" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="plane1" pathLength="1" d="M70 640 L214 584 L162 708 L142 656 Z M142 656 L214 584" /><path id="plane2" d="M58 724 C 36 796, 90 846, 156 856" style="stroke-dasharray:14 16; stroke-dashoffset:0; opacity:0" /></svg>
           <div id="btn"><svg viewBox="0 0 24 24"><path d="M5 19 L19 5 M8 5 H19 V16" /></svg><span class="pl">@allawi.psd</span></div>
           <i id="ripB"></i>
           <svg id="cur" viewBox="0 0 26 32"><path d="M2 2 L2 25 L8 19.5 L12.5 29.5 L17 27.5 L12.6 17.8 L21 17.8 Z" fill="#fff" stroke="#111" stroke-width="1.8" stroke-linejoin="round" /></svg>
         </div>
+
+        <div id="fx"><div id="grain"></div><div id="vig"></div></div>
       </div>
 
 <!--AUDIO-->

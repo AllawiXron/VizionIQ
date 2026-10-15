@@ -1,6 +1,6 @@
 # «ثانية وحدة»: the allawi.psd sales reel, v3 (HyperFrames)
 
-A 45 s reel at 1080×1920 that turns viewers into DMs, cut in the editing style of a reference the user sent (a
+A 38 s reel at 1080×1920 that turns viewers into DMs, cut in the editing style of a reference the user sent (a
 designer's 68 s voice-led reel). The user records the voice himself: `VOICE-SCRIPT.md`. Why: `BRIEF.md`.
 
 - `renders/one-second-reel.mp4`: the reel with sound effects, no voice and no music (H.264, 30 fps).
@@ -25,17 +25,24 @@ The user's flash clips (`../transitions-pack`) are not used here: the user asked
 **v2 → v3 (15 Oct).** "it looks rushed". Re-paced to the reference: ~0.28 s between words (was 0.14), a pause after
 every line, scenes that hold 3–4 s, longer and softer moves; 30 s → 45 s with the same script.
 
+**v3 → v4 (15 Oct).** "Make it 38 seconds", end on a plain "DM me" instead of a keyword, and use his own colours and the
+style of his highlights: the flat cream / orange / black looked like "Claude motion". v4 takes the highlights' recipe
+(`../ig-highlights`: paper, brown and orange fields under the paper texture, grain and vignette; torn Alexandria strips;
+taped prints with kraft tags; Aref Ruqaa handwriting; a highlighter and marker ticks) and keeps the reference's motion.
+The ending is «عجبك الشغل؟ راسلني بالدايركت.. ونبدي بمشروعك.» with a hand-drawn paper plane and the button that opens
+into @allawi.psd.
+
 | Time | Scene | On screen |
 |---|---|---|
-| 0–2.1 | cream/orange flips | «زبونك» «يقرّر» «بثانية» «وحدة.», one word per beat |
-| 2.1–5.3 | black | «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
-| 5.3–11.2 | cream | whip-pan; a tilted phone rises, the feed flies past: «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
-| 11.2–13.7 | black | the scroll stops on his quzi post, a double-tap heart: «إلا هيچ بوست.»; zoom-through |
-| 13.7–16.2 | orange | «؟» icon with a ripple, «ليش؟ بيه / ٣ شغلات»; the icon opens into a circle reveal |
-| 16.2–28.8 | cream | Asiacell, Pepsi and lab ads swap above a list that builds: «فكرة وحدة تنفهم بثانية», «حچي بلهجة زبونك», «وسبب يخلّيه يطلب هسه», each key phrase selected |
-| 28.8–33.2 | black | whip-pan; seven of his designs fly into a collage: «وهذا بالضبط اللي أسويه / لمشروعك.»; zoom-through |
-| 33.2–36.9 | orange | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف»; a dot opens into the last scene |
-| 36.9–45 | cream | «دزّلي كلمة / «بوست» / بالدايركت..», «وأرسلك نماذج من شغلي بنفس مجالك»; a button, a click, «@allawi.psd» |
+| 0–2.0 | paper/rust/brown flips | «زبونك» «يقرّر» «بثانية» «وحدة.», one word per beat |
+| 2.0–4.9 | rust | «يوقف على بوستك.. لو يعبره.», a one-second bar fills |
+| 4.9–10.0 | paper | whip-pan; a tilted phone rises, the feed flies past; torn strips «وأغلب البوستات.. تنعبر.», «لأن ما بيها شي يوقّفك.» |
+| 10.0–12.3 | brown | the scroll stops on his quzi post, a double-tap heart; strip «إلا هيچ بوست.»; zoom-through |
+| 12.3–14.4 | rust | «؟» disc with a ripple, «ليش؟ بيه / ٣ شغلات»; the disc opens into a circle reveal |
+| 14.4–24.6 | paper | Asiacell, Pepsi and lab prints (tape, kraft tag) swap above a handwritten list: «فكرة وحدة تنفهم بثانية», «حچي بلهجة زبونك», «وسبب يخلّيه يطلب هسه», a tick and a highlighter on each |
+| 24.6–28.6 | brown | whip-pan; seven prints fly into a collage under the strip «وهذا بالضبط اللي أسويه / لمشروعك.»; zoom-through |
+| 28.6–31.9 | rust | «٣ بوستات», «بـ ٤٠ ألف» slams in, «يعني البوست تقريباً بـ١٣ ألف»; a dot opens into the last scene |
+| 31.9–38 | paper | strip «عجبك الشغل؟», «راسلني» slams in, «بالدايركت..», «ونبدي بمشروعك.», a paper plane; a button, a click, «@allawi.psd» |
 
 ## Build
 
