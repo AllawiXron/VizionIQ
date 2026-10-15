@@ -25,6 +25,13 @@ the first and last bubbles. The chats are now cut from inside the original frame
 navy corners and border arcs blackened, and the card has 22px of black padding. Slide 3 also says how to book:
 «للحجز دزلنا بالخاص، أو واتساب 07757851379».
 
+## v2.3: the real logo
+
+The user sent their logo (`brand/vizion-logo.jpg`: a blue VZ with a yellow arrow, on black). `brand/trace.py` traces
+it into vector shapes (`brand/vizion-mark.json`: the whole mark, and its blue and yellow parts apart), and the slides
+now use those shapes instead of the hand-drawn VZ: the small mark top left (mint, one colour) and the large faint outline
+of the mark running off the top right corner. The footer's "instgram" is now "instagram".
+
 ## v2.2: a plain "DM us"
 
 The user asked to drop the keyword: the cover pill says «للتفاصيل راسلنا بالخاص», the last slide's button «راسلنا
