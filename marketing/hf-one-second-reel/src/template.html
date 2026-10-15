@@ -7,263 +7,196 @@
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
 /*FONTFACES*/
-:root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a }   /* the allawi.psd brand */
+/* The editing grammar of the user's reference reel, in the allawi.psd colours: flat fields (orange / cream / black),
+   one calm Arabic face at moderate sizes, words out of a blur, the key word in colour, whip-pans with motion blur,
+   circle reveals from a dot, zoom-through exits, a text-selection highlight, soft card shadows. No grain, no boxes. */
+:root { --or:#e2541b; --cr:#f1ebe2; --bk:#111010; --ink:#1b1714; --dim:rgba(27,23,20,.62) }
 * { margin:0; padding:0; box-sizing:border-box }
-html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink) }
-#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); direction:rtl; font-family:'IBM Plex Sans Arabic' }
-.scene, .layer { position:absolute; inset:0; overflow:hidden }
-.layer { overflow:visible }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--bk) }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--bk); direction:rtl; font-family:'IBM Plex Sans Arabic' }
+#stage { position:absolute; inset:0; overflow:hidden }
+.sc { position:absolute; inset:0; overflow:hidden; visibility:hidden; z-index:0 }
+.cr { background:var(--cr); color:var(--ink) }
+.or { background:var(--or); color:var(--cr) }
+.bk { background:var(--bk); color:var(--cr) }
+.k { color:var(--or) }                       /* the key word */
+.or .k { color:var(--bk) }
 
-/* flat colour fields, like the reference, with a little paper in them */
-.bg { position:absolute; inset:0 }
-.bg::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.22 }
-.bg.paper { background:var(--paper) }
-.bg.ink { background:radial-gradient(110% 70% at 50% 45%, #2e2119, var(--ink) 65%) }
-.bg.ink::after { mix-blend-mode:screen; opacity:.06 }
-.bg.orange { background:radial-gradient(110% 75% at 50% 42%, var(--orange2), var(--orange) 58%, #cc4613) }
+/* text: centred lines, words as inline blocks so each can come out of a blur */
+.tx { position:absolute; left:60px; right:60px; text-align:center; white-space:nowrap }
+.ln { display:block; position:relative }
+.w { display:inline-block; position:relative; opacity:0 }
+.t64 { font-size:80px; font-weight:600; line-height:1.4 }
+.t48 { font-size:56px; font-weight:500; line-height:1.45 }
+.big { font-size:170px; font-weight:700; line-height:1.15 }
+.hook { font-size:122px; font-weight:700; line-height:1.2; top:850px }
 
-/* captions: word by word, out of a blur; one word carries the colour */
-.cap { position:absolute; left:40px; right:40px; text-align:center; font-family:'Alexandria'; font-weight:800; line-height:1.25; white-space:nowrap }
-.cap .ln { display:block }
-.w { display:inline-block; opacity:0; font-style:normal }
-.cap .sm { font-size:72px }
-.cap .bg1 { font-size:150px; font-weight:900; line-height:1.2 }
-.on-ink { color:var(--cream) }
-.on-paper { color:var(--ink) }
-.on-orange { color:var(--cream) }
-.hl { color:var(--orange2) }
-.on-paper .hl { color:var(--orange) }
-.pill { display:inline-block; padding:0 .22em .08em; border-radius:.24em; background:var(--orange); color:var(--cream) }
-.pill.dark { background:var(--ink); color:var(--cream) }
-.pill.light { background:var(--cream); color:var(--ink) }
+/* the text-selection highlight, like dragging a selection on a phone */
+.sel { position:absolute; pointer-events:none; z-index:-1 }
+.sel .bgx { position:absolute; inset:0; background:rgba(226,84,27,.24) }
+.bk .sel .bgx, .or .sel .bgx { background:rgba(241,235,226,.24) }
+.sel .a, .sel .b { position:absolute; width:5px; background:var(--or) }
+.sel .a { right:-3px; top:-.1em; bottom:0 }
+.sel .b { left:-3px; top:0; bottom:-.1em }
+.sel .a::after, .sel .b::after { content:''; position:absolute; left:-6px; width:17px; height:17px; border-radius:50%; background:var(--or) }
+.sel .a::after { top:-12px }
+.sel .b::after { bottom:-12px }
 
-/* ── the phone ─────────────────────────────────────────── */
-#phone { position:absolute; left:250px; top:560px; width:580px; height:1180px; border-radius:86px; background:#0c0c0e;
-  box-shadow:0 0 0 3px #2c2c30, 0 50px 80px rgba(0,0,0,.45), 0 12px 24px rgba(0,0,0,.35); transform-origin:290px 590px }
-#phone::before { content:''; position:absolute; inset:-3px; border-radius:89px; border:2px solid rgba(255,255,255,.14); pointer-events:none }
-#screen { position:absolute; inset:16px; border-radius:70px; overflow:hidden; background:#fff; direction:rtl }
-#island { position:absolute; left:50%; top:18px; width:150px; height:42px; margin-left:-75px; border-radius:21px; background:#0c0c0e; z-index:6 }
-#sbar { position:absolute; left:0; right:0; top:0; height:64px; background:#fff; z-index:5; direction:ltr }
-#sbar .t { position:absolute; left:52px; top:20px; font:800 25px/1 'Alexandria'; color:#111 }
-#sbar .bat { position:absolute; right:44px; top:22px; width:40px; height:20px; border:2.5px solid #111; border-radius:6px }
-#sbar .bat::after { content:''; position:absolute; left:2px; top:2px; bottom:2px; width:24px; background:#111; border-radius:2px }
-#abar { position:absolute; left:0; right:0; top:64px; height:62px; background:#fff; z-index:5; border-bottom:1px solid #eee }
-#abar .lg { position:absolute; right:26px; top:16px; width:150px; height:30px; border-radius:8px; background:#ececec }
-#abar svg { position:absolute; top:15px; width:32px; height:32px; fill:none; stroke:#111; stroke-width:2 }
-#feedwin { position:absolute; left:0; right:0; top:126px; bottom:0; overflow:hidden }
-#feed { position:absolute; left:0; top:0; width:548px; filter:url(#vblur); will-change:transform }
-.post { position:relative; width:548px; height:833px; background:#fff }
-.ph { height:56px; display:flex; align-items:center; gap:12px; padding:0 14px }
-.av { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #c9c9c9, #9a9a9a); box-shadow:0 0 0 2px #fff, 0 0 0 4px #e6683c }
-.nb { width:150px; height:14px; border-radius:7px; background:#e2e2e2 }
-.ph .dots { margin-right:auto; width:30px; height:6px; background:radial-gradient(circle, #555 2.5px, transparent 3px) 0 0/10px 6px repeat-x }
-.pimg { position:relative; width:548px; height:685px; overflow:hidden }
+/* the one-second bar */
+#bar { position:absolute; left:340px; top:1100px; width:400px; height:84px; border-radius:42px; background:#262423; opacity:0;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.06), 0 18px 30px rgba(0,0,0,.4) }
+#bar .fill { position:absolute; right:14px; top:14px; height:56px; width:372px; border-radius:28px; background:var(--or) }
+#bar .lab { position:absolute; left:-118px; top:12px; font:600 44px/1.4 'IBM Plex Sans Arabic'; color:rgba(241,235,226,.55); direction:ltr }
+
+/* the phone */
+#phoneL { position:absolute; inset:0; visibility:hidden; pointer-events:none }
+#phoneW { position:absolute; left:290px; top:640px; width:500px; height:1030px }
+#phone { position:absolute; inset:0; border-radius:80px; background:linear-gradient(140deg, #4a4a4e, #1d1d20 40%, #2b2b2f 75%, #121214);
+  box-shadow:0 70px 90px rgba(30,20,10,.32), 0 20px 30px rgba(30,20,10,.25) }
+#phone::before { content:''; position:absolute; inset:4px; border-radius:76px; background:#050505 }
+#screen { position:absolute; inset:14px; border-radius:68px; overflow:hidden; background:#fff }
+#island { position:absolute; left:50%; top:16px; width:136px; height:40px; margin-left:-68px; border-radius:20px; background:#050505; z-index:6 }
+#sbar { position:absolute; left:0; right:0; top:0; height:62px; background:#fff; z-index:5; direction:ltr; font:600 24px/62px 'IBM Plex Sans Arabic'; padding-left:52px; color:#111 }
+#feedwin { position:absolute; left:0; right:0; top:62px; bottom:0; overflow:hidden }
+#feed { position:absolute; left:0; top:0; width:472px; filter:url(#vb) }
+.post { width:472px; height:742px; background:#fff }
+.ph { height:54px; display:flex; align-items:center; gap:12px; padding:0 14px }
+.av { width:34px; height:34px; border-radius:50% }
+.nb { height:13px; border-radius:7px; background:#e4e4e4 }
+.pimg { position:relative; width:472px; height:590px; overflow:hidden }
 .pimg img { display:block; width:100%; height:100% }
-.pa { height:52px; display:flex; align-items:center; gap:16px; padding:0 16px }
-.pa svg { width:30px; height:30px; fill:none; stroke:#1a1a1a; stroke-width:2; stroke-linejoin:round; stroke-linecap:round }
-.pa .bm { margin-right:auto }
-.pc { height:40px; padding:4px 16px 0 }
-.pc i { display:block; height:10px; border-radius:5px; background:#e6e6e6; margin-bottom:8px }
-#bigHeart { position:absolute; left:50%; top:50%; width:230px; height:230px; margin:-115px 0 0 -115px; opacity:0; z-index:3;
-  filter:drop-shadow(0 10px 18px rgba(0,0,0,.35)) }
+.pa { height:50px; display:flex; align-items:center; gap:16px; padding:0 16px }
+.pa svg { width:28px; height:28px; fill:none; stroke:#1a1a1a; stroke-width:2; stroke-linejoin:round; stroke-linecap:round }
+.pc { padding:2px 16px 0 }
+.pc i { display:block; height:10px; border-radius:5px; background:#e8e8e8; margin-bottom:8px }
+#bigHeart { position:absolute; left:50%; top:50%; width:210px; height:210px; margin:-105px 0 0 -105px; opacity:0; z-index:3; filter:drop-shadow(0 8px 16px rgba(0,0,0,.3)) }
 #bigHeart path { fill:#fff }
 
-/* the dull "typical" posts: made up for the reel, no names, no real shop */
-.dull { position:absolute; inset:0; overflow:hidden; font-family:'Lalezar'; text-align:center; direction:rtl; line-height:1.15 }
-.dull > * { position:absolute; left:0; right:0 }
-.dA { background:radial-gradient(circle at 50% 38%, #ff4141, #b3000f 70%) }
-.dA .burst { left:94px; right:auto; top:70px; width:360px; height:360px; background:#ffe600;
-  clip-path:polygon(50% 0,58% 17%,75% 7%,75% 25%,93% 25%,83% 42%,100% 50%,83% 58%,93% 75%,75% 75%,75% 93%,58% 83%,50% 100%,42% 83%,25% 93%,25% 75%,7% 75%,17% 58%,0 50%,17% 42%,7% 25%,25% 25%,25% 7%,42% 17%) }
-.dA .k { top:150px; font-size:62px; color:#b3000f }
-.dA .n { top:205px; font-size:150px; color:#b3000f }
-.dA .s { top:470px; font-size:54px; color:#fff; text-shadow:3px 3px 0 #000 }
-.dA .s2 { top:560px; font-size:44px; color:#ffe600 }
-.dB { background:#fff }
-.dB .c { left:144px; right:auto; top:80px; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle at 40% 35%, #f2f2f2, #bdbdbd) }
-.dB .k { top:370px; font-size:104px; color:#1565c0 }
-.dB .s { top:500px; font-size:52px; color:#333 }
-.dB .r { top:600px; display:flex; justify-content:center; gap:22px }
-.dB .r i { width:46px; height:46px; border-radius:50% }
-.dC { background:radial-gradient(#f5c54255 2px, transparent 3px) 0 0/34px 34px, linear-gradient(160deg, #6a1fa0, #2a0845) }
-.dC .k { top:120px; font-size:64px; color:#fff }
-.dC .n { top:220px; font-size:170px; color:#f5c542; text-shadow:0 6px 0 #8a5a00 }
-.dC .s { top:480px; font-size:50px; color:#fff }
-.dD { background:#1b9e4b }
-.dD .k { top:110px; font-size:104px; color:#ffe600; text-shadow:4px 4px 0 #0b4d22 }
-.dD .b { left:104px; right:auto; top:340px; width:340px; height:110px; border-radius:20px; background:#fff; color:#1b9e4b; font-size:64px; line-height:110px }
-.dD .s { top:520px; font-family:'Alexandria'; font-weight:800; font-size:40px; color:#fff; direction:ltr }
-.dE { background:#121212; box-shadow:inset 0 0 0 18px #121212, inset 0 0 0 24px #d4af37 }
-.dE .k { top:150px; font-size:120px; color:#d4af37 }
-.dE .s { top:330px; font-size:50px; color:#fff; padding:0 60px }
-.dE .s2 { top:520px; font-size:40px; color:#d4af37 }
-.dF { background:linear-gradient(#bfe6ff, #eef8ff) }
-.dF .fl { left:194px; right:auto; top:80px; width:160px; height:160px; border-radius:50%;
-  background:radial-gradient(circle, #ffd54f 0 26%, transparent 27%), radial-gradient(circle at 50% 12%, #f48fb1 0 22%, transparent 23%), radial-gradient(circle at 50% 88%, #f48fb1 0 22%, transparent 23%), radial-gradient(circle at 12% 50%, #f48fb1 0 22%, transparent 23%), radial-gradient(circle at 88% 50%, #f48fb1 0 22%, transparent 23%) }
-.dF .k { top:290px; font-size:116px; color:#1e3a8a }
-.dF .s { top:450px; font-size:46px; color:#333 }
+/* small round icon with a ripple, as in the reference */
+.ico { position:absolute; width:104px; height:104px; border-radius:50%; background:var(--cr); color:var(--or); font:700 58px/104px 'IBM Plex Sans Arabic'; text-align:center;
+  box-shadow:0 14px 26px rgba(80,20,0,.28); opacity:0 }
+.rip { position:absolute; width:104px; height:104px; border-radius:50%; border:3px solid rgba(241,235,226,.8); opacity:0 }
 
-/* ── the three rules ─────────────────────────────────── */
-.badge { position:absolute; left:474px; top:196px; width:132px; height:132px; border-radius:50%; font:900 80px/132px 'Alexandria'; text-align:center }
-.badge.o { background:var(--orange); color:var(--cream) }
-.badge.i { background:var(--ink); color:var(--cream) }
-.badge.c { background:var(--cream); color:var(--ink) }
-.stage { position:absolute; left:0; top:0; width:1080px; height:1920px; perspective:2200px; perspective-origin:540px 900px }
-.card { position:absolute; left:200px; top:560px; width:680px; height:850px; border-radius:24px;
-  box-shadow:0 40px 70px rgba(0,0,0,.42), 0 10px 20px rgba(0,0,0,.28) }
-.card img { display:block; width:100%; height:100%; border-radius:24px }
-.mk { position:absolute; left:0; top:0; overflow:visible; pointer-events:none }
-.mk path { fill:none; stroke:var(--orange2); stroke-width:11; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
-.mk.cream path { stroke:var(--cream) }
-.lab { position:absolute; left:0; right:0; top:1446px; text-align:center; font:500 30px/1.3 'IBM Plex Sans Arabic'; opacity:0 }
-.lab.on-ink, .lab.on-orange { color:rgba(251,243,230,.72) }
-.lab.on-paper { color:rgba(31,21,16,.62) }
+/* cards: his designs, rounded, with a soft shadow */
+.card { position:absolute; border-radius:22px; overflow:hidden; opacity:0; box-shadow:0 34px 60px rgba(0,0,0,.22), 0 8px 16px rgba(0,0,0,.14) }
+.card img { display:block; width:100%; height:100% }
+.bk .card { box-shadow:0 34px 60px rgba(0,0,0,.6), 0 8px 16px rgba(0,0,0,.4) }
+.note { position:absolute; left:0; right:0; text-align:center; font:500 30px/1.4 'IBM Plex Sans Arabic'; opacity:0 }
+.cr .note { color:rgba(27,23,20,.45) }
+.bk .note, .or .note { color:rgba(241,235,226,.5) }
 
-/* ── the stack and the price ─────────────────────────── */
-#pile { position:absolute; left:0; top:0; width:1080px; height:1920px; transform-origin:540px 885px }
-.pc2 { position:absolute; left:280px; top:560px; width:520px; height:650px; border-radius:18px; overflow:hidden; opacity:0;
-  box-shadow:0 30px 50px rgba(0,0,0,.5), 0 6px 12px rgba(0,0,0,.3) }
-.pc2 img { display:block; width:100%; height:100% }
-#dim { position:absolute; inset:0; background:rgba(20,13,9,.62); opacity:0 }
-#price { position:absolute; left:140px; top:760px; width:800px; height:450px; border-radius:46px; background:var(--cream); opacity:0;
-  box-shadow:0 40px 70px rgba(0,0,0,.5); text-align:center; font-family:'Alexandria'; font-weight:900; color:var(--ink) }
-#price .l1 { position:absolute; left:0; right:0; top:40px; font-size:112px; line-height:1.2 }
-#price .l2 { position:absolute; left:0; right:0; top:196px; font-size:182px; line-height:1.2; color:var(--orange) }
-#per { position:absolute; left:0; right:0; top:1262px; text-align:center; font:600 42px/1.3 'IBM Plex Sans Arabic'; color:rgba(251,243,230,.9); opacity:0 }
-#per b { color:var(--orange2); font-weight:700 }
+/* the list */
+#list { position:absolute; left:150px; right:150px; top:1118px }
+.li { position:relative; display:flex; align-items:center; gap:22px; height:98px; font-size:62px; font-weight:600; white-space:nowrap }
+.li .dot { flex:none; width:44px; height:44px; border-radius:50%; background:var(--or); opacity:0; position:relative }
+.li .dot svg { position:absolute; left:10px; top:11px; width:24px; height:22px; fill:none; stroke:var(--cr); stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round }
+.li .tl { position:relative }
 
-/* ── the ask ─────────────────────────────────────────── */
-#bar { position:absolute; left:80px; top:1076px; width:920px; height:124px; border-radius:62px; background:var(--cream); opacity:0;
-  box-shadow:0 24px 40px rgba(90,25,0,.35) }
-#bar .cam { position:absolute; right:14px; top:14px; width:96px; height:96px; border-radius:50%; background:var(--orange) }
-#bar .cam svg { position:absolute; left:24px; top:24px; width:48px; height:48px; fill:none; stroke:var(--cream); stroke-width:2.6 }
-#bar .ph2 { position:absolute; right:136px; top:30px; font:500 44px/1.4 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.38) }
-#bar .typed { position:absolute; right:136px; top:22px; font:800 52px/1.4 'Alexandria'; color:var(--ink) }
-#bar .typed i { font-style:normal; opacity:0 }
-#bar .caret { display:inline-block; width:4px; height:54px; margin-right:6px; vertical-align:middle; background:var(--orange) }
-#bar .send { position:absolute; left:40px; top:34px; font:800 42px/1.4 'Alexandria'; color:var(--oink) }
-.bub { position:absolute; opacity:0; font:700 50px/1.3 'Alexandria'; padding:22px 44px 28px; border-radius:46px; box-shadow:0 16px 30px rgba(90,25,0,.3) }
-#me { left:80px; top:610px; background:var(--ink); color:var(--cream); border-bottom-left-radius:12px }
-#him { right:80px; top:730px; width:640px; background:var(--cream); color:var(--ink); font:600 38px/1.35 'IBM Plex Sans Arabic'; padding:22px 30px 26px; border-bottom-right-radius:12px }
-#him b { font-weight:700 }
-#him .th { display:flex; gap:12px; margin-top:16px }
-#him .th img { width:114px; height:142px; border-radius:12px; object-fit:cover }
-#handle { position:absolute; left:0; right:0; top:1350px; text-align:center; opacity:0 }
-#handle span { display:inline-block; padding:14px 48px 22px; border-radius:60px; background:var(--ink); color:var(--cream); font:800 56px/1.3 'Alexandria'; direction:ltr }
-#handle span b { color:var(--orange2); font-weight:800 }
-#ring { position:absolute; left:50%; top:1350px; width:520px; height:100px; margin-left:-260px; border-radius:60px; border:4px solid var(--cream); opacity:0 }
+/* the collage */
+#pile { position:absolute; left:0; top:0; width:1080px; height:1920px; transform-origin:540px 1000px }
+#pile .card { width:430px; height:538px; left:325px; top:731px }
 
-/* film finish and the transition clips (the user's own; screen blend so only the light shows) */
-#fx { position:absolute; inset:0; pointer-events:none; z-index:40 }
-#grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.22 }
-#vig { position:absolute; inset:0; background:radial-gradient(120% 85% at 50% 50%, rgba(0,0,0,0) 60%, rgba(0,0,0,.35) 100%) }
-.tr { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; mix-blend-mode:screen; z-index:50; pointer-events:none }
+/* the ask */
+#btn { position:absolute; left:260px; top:1312px; width:560px; height:96px; border-radius:48px; background:var(--or); opacity:0; overflow:hidden;
+  box-shadow:0 16px 30px rgba(226,84,27,.35) }
+#btn svg { position:absolute; left:260px; top:28px; width:40px; height:40px; fill:none; stroke:var(--cr); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round }
+#btn .pl { position:absolute; right:44px; top:12px; font:600 50px/1.4 'IBM Plex Sans Arabic'; color:var(--cr); direction:ltr; white-space:nowrap; opacity:0 }
+#cur { position:absolute; left:820px; top:1660px; width:64px; height:80px; opacity:0; filter:drop-shadow(0 6px 8px rgba(0,0,0,.25)) }
+#ripB { position:absolute; left:500px; top:1320px; width:80px; height:80px; border-radius:50%; border:3px solid var(--or); opacity:0 }
     </style>
   </head>
   <body>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-      <filter id="vblur" x="0" y="-10%" width="100%" height="120%"><feGaussianBlur id="vb" stdDeviation="0 0" /></filter>
+      <filter id="vb" x="0" y="-10%" width="100%" height="120%"><feGaussianBlur id="vbs" stdDeviation="0 0" /></filter>
+      <filter id="hw" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur id="hws" stdDeviation="0 0" /></filter>
+      <filter id="h1" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h1s" stdDeviation="0 0" /></filter>
+      <filter id="h2" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h2s" stdDeviation="0 0" /></filter>
+      <filter id="h3" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h3s" stdDeviation="0 0" /></filter>
     </svg>
     <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="30" data-track-index="0">
 
-      <!-- S1–S3 backgrounds: ink, paper, orange; the phone and the captions ride on top -->
-      <section class="scene clip" id="s1" data-start="0" data-duration="3.4" data-track-index="0"><div class="bg ink"></div></section>
-      <section class="scene clip" id="s2" data-start="3.4" data-duration="4.2" data-track-index="0"><div class="bg paper"></div></section>
-      <section class="scene clip" id="s3" data-start="7.6" data-duration="2.2" data-track-index="0"><div class="bg orange"></div></section>
+        <!-- hook: one word per beat, the field flips colour on every word -->
+        <div class="sc cr" id="h1w"><div class="tx hook"><span class="w">زبونك</span></div></div>
+        <div class="sc or" id="h2w"><div class="tx hook"><span class="w">يقرّر</span></div></div>
+        <div class="sc cr" id="h3w"><div class="tx hook"><span class="w k">بثانية</span></div></div>
+        <div class="sc or" id="h4w"><div class="tx hook"><span class="w">وحدة.</span></div></div>
 
-      <!-- the phone: a feed that scrolls fast, then flicks dull posts away, then stops dead on his post -->
-      <div class="layer clip" id="phoneL" data-start="0" data-duration="9.8" data-track-index="1">
-        <div id="phone">
-          <div id="screen">
-            <div id="island"></div>
-            <div id="sbar"><span class="t">9:41</span><i class="bat"></i></div>
-            <div id="abar"><i class="lg"></i>
-              <svg style="left:24px" viewBox="0 0 24 24"><path d="M22 3 L2 10 L10 13 L13 21 Z M22 3 L10 13" stroke-linejoin="round" /></svg>
-              <svg style="left:74px" viewBox="0 0 24 24"><path d="M12 20.5 C 5 16, 2.5 12.5, 2.5 8.6 C 2.5 5.6, 4.8 3.5, 7.4 3.5 C 9.4 3.5, 11 4.6, 12 6.2 C 13 4.6, 14.6 3.5, 16.6 3.5 C 19.2 3.5, 21.5 5.6, 21.5 8.6 C 21.5 12.5, 19 16, 12 20.5 Z" /></svg>
-            </div>
-            <div id="feedwin"><div id="feed"></div></div>
+        <!-- one second: the bar fills while he says it -->
+        <div class="sc bk" id="s2">
+          <div class="tx t64" style="top:800px"><span class="ln"><span class="w">يوقف</span> <span class="w">على</span> <span class="w">بوستك..</span></span><span class="ln"><span class="w">لو</span> <span class="w k">يعبره.</span></span></div>
+          <div id="bar"><i class="fill"></i><span class="lab">1s</span></div>
+        </div>
+
+        <!-- the feed (cream), then the stop (black) -->
+        <div class="sc cr" id="s3">
+          <div class="tx t64" id="t3a" style="top:300px"><span class="ln"><span class="w">وأغلب</span> <span class="w">البوستات..</span></span><span class="ln"><span class="w k">تنعبر.</span></span></div>
+          <div class="tx t64" id="t3b" style="top:300px"><span class="ln"><span class="w">لأن</span> <span class="w">ما</span> <span class="w">بيها</span> <span class="w">شي</span></span><span class="ln"><span class="w k">يوقّفك.</span></span></div>
+        </div>
+        <div class="sc bk" id="s4">
+          <div class="tx t64" id="t4" style="top:330px"><span class="w">إلا</span> <span class="w k">هيچ</span> <span class="w">بوست.</span></div>
+        </div>
+        <div id="phoneL">
+          <div id="phoneW"><div id="phone"><div id="screen"><div id="island"></div><div id="sbar">9:41</div><div id="feedwin"><div id="feed"></div></div></div></div></div>
+        </div>
+
+        <!-- «ليش؟»: an icon with a ripple, then it opens into the next scene -->
+        <div class="sc or" id="s5">
+          <i class="rip" id="rip5" style="left:488px; top:660px"></i>
+          <div class="ico" id="ico5" style="left:488px; top:660px">؟</div>
+          <div class="tx t64" style="top:800px"><span class="w">ليش؟</span> <span class="w">بيه</span></div>
+          <div class="tx big" style="top:915px"><span class="w">٣ شغلات</span></div>
+        </div>
+
+        <!-- the three things: his designs swap above a list that builds up -->
+        <div class="sc cr" id="s6">
+          <div class="card" id="c1" style="left:270px; top:250px; width:540px; height:675px"><img src="assets/work/asiacell.jpg" alt="" /></div>
+          <div class="card" id="c2" style="left:270px; top:250px; width:540px; height:675px"><img src="assets/work/pepsi.jpg" alt="" /></div>
+          <div class="card" id="c3" style="left:270px; top:250px; width:540px; height:675px"><img src="assets/work/shifa.jpg" alt="" /></div>
+          <div class="note" id="n1" style="top:950px">إعلان غير رسمي · من شغلي</div>
+          <div class="note" id="n2" style="top:950px">إعلان غير رسمي · من شغلي</div>
+          <div class="note" id="n3" style="top:950px">نموذج من شغلي</div>
+          <div id="list">
+            <div class="li" id="l1"><i class="dot"><svg viewBox="0 0 24 22"><path d="M3 11 L9.5 17 L21 4" /></svg></i><span class="tl"><span class="w">فكرة</span> <span class="w">وحدة</span> <span class="w">تنفهم</span> <span class="w" data-sel="1">بثانية</span></span></div>
+            <div class="li" id="l2"><i class="dot"><svg viewBox="0 0 24 22"><path d="M3 11 L9.5 17 L21 4" /></svg></i><span class="tl"><span class="w">حچي</span> <span class="w" data-sel="1">بلهجة</span> <span class="w" data-sel="1">زبونك</span></span></div>
+            <div class="li" id="l3"><i class="dot"><svg viewBox="0 0 24 22"><path d="M3 11 L9.5 17 L21 4" /></svg></i><span class="tl"><span class="w">وسبب</span> <span class="w">يخلّيه</span> <span class="w" data-sel="1">يطلب</span> <span class="w" data-sel="1">هسه</span></span></div>
           </div>
         </div>
+
+        <!-- the collage: his work flies in and settles, then the camera goes through it -->
+        <div class="sc bk" id="s7">
+          <div id="pile">
+            <div class="card" id="q1"><img src="assets/work/talabat.jpg" alt="" /></div>
+            <div class="card" id="q2"><img src="assets/work/qi.jpg" alt="" /></div>
+            <div class="card" id="q3"><img src="assets/work/iraqiairways.jpg" alt="" /></div>
+            <div class="card" id="q4"><img src="assets/work/shifa.jpg" alt="" /></div>
+            <div class="card" id="q5"><img src="assets/work/asiacell.jpg" alt="" /></div>
+            <div class="card" id="q6"><img src="assets/work/pepsi.jpg" alt="" /></div>
+            <div class="card" id="q0"><img src="assets/work/saj.jpg" alt="" /></div>
+          </div>
+          <div class="tx t64" id="t7" style="top:250px"><span class="ln"><span class="w">وهذا</span> <span class="w">بالضبط</span> <span class="w">اللي</span> <span class="w">أسويه</span></span><span class="ln"><span class="w k">لمشروعك.</span></span></div>
+          <div class="note" id="n7" style="top:1690px">نماذج من شغلي · الإعلانات غير رسمية</div>
+        </div>
+
+        <!-- the price -->
+        <div class="sc or" id="s8">
+          <div class="tx t64" style="top:700px"><span class="w">٣</span> <span class="w">بوستات</span></div>
+          <div class="tx big" style="top:808px; font-size:190px"><span class="w" id="slam8" style="filter:url(#h2)">بـ ٤٠ ألف</span></div>
+          <div class="tx t48" style="top:1062px; color:rgba(241,235,226,.86)"><span class="w">يعني</span> <span class="w">البوست</span> <span class="w">تقريباً</span> <span class="w">بـ١٣</span> <span class="w">ألف</span></div>
+          <i class="ico" id="dot8" style="left:528px; top:948px; width:24px; height:24px; border-radius:12px; box-shadow:none"></i>
+        </div>
+
+        <!-- the ask: one word in the DM -->
+        <div class="sc cr" id="s9">
+          <div class="tx t64" style="top:610px"><span class="w">دزّلي</span> <span class="w">كلمة</span></div>
+          <div class="tx big" style="top:718px; font-size:200px"><span class="w k" id="slam9" style="filter:url(#h3)">«بوست»</span></div>
+          <div class="tx t64" style="top:952px"><span class="w">بالدايركت..</span></div>
+          <div class="tx t48" style="top:1100px; color:var(--dim)"><span class="ln"><span class="w">وأرسلك</span> <span class="w">نماذج</span> <span class="w">من</span> <span class="w">شغلي</span></span><span class="ln"><span class="w">بنفس</span> <span class="w" style="color:var(--ink)">مجالك</span></span></div>
+          <div id="btn"><svg viewBox="0 0 24 24"><path d="M5 19 L19 5 M8 5 H19 V16" /></svg><span class="pl">@allawi.psd</span></div>
+          <i id="ripB"></i>
+          <svg id="cur" viewBox="0 0 26 32"><path d="M2 2 L2 25 L8 19.5 L12.5 29.5 L17 27.5 L12.6 17.8 L21 17.8 Z" fill="#fff" stroke="#111" stroke-width="1.8" stroke-linejoin="round" /></svg>
+        </div>
       </div>
-
-      <div class="layer clip" id="caps1" data-start="0" data-duration="9.8" data-track-index="2">
-        <div class="cap on-ink" id="cA" style="top:196px"><span class="ln sm"><i class="w">زبونك</i> <i class="w">يقرّر</i> <i class="w">بـ</i></span><span class="ln bg1"><i class="w pill">ثانية وحدة</i></span></div>
-        <div class="cap on-ink" id="cB" style="top:270px; font-size:112px"><i class="w">يوقف..</i> <i class="w">لو</i> <i class="w hl">يعبر؟</i></div>
-        <div class="cap on-paper" id="cC" style="top:196px"><span class="ln sm"><i class="w">وأغلب</i> <i class="w">البوستات..</i></span><span class="ln bg1"><i class="w hl">تنعبر.</i></span></div>
-        <div class="cap on-paper" id="cD" style="top:196px"><span class="ln sm"><i class="w">لأن</i> <i class="w">ما</i> <i class="w">بيها</i> <i class="w">شي</i></span><span class="ln bg1"><i class="w hl">يوقّفك.</i></span></div>
-        <div class="cap on-orange" id="cE" style="top:250px; font-size:120px"><i class="w">إلا</i> <i class="w pill dark">هيچ</i> <i class="w">بوست.</i></div>
-        <div class="cap on-orange" id="cF" style="top:250px; font-size:104px"><i class="w">ليش؟</i> <i class="w">بيه</i> <i class="w pill dark">٣ شغلات</i></div>
-      </div>
-
-      <!-- the three rules, each on one of his designs, with the exact part circled -->
-      <section class="scene clip" id="r1" data-start="9.8" data-duration="3.2" data-track-index="0">
-        <div class="bg ink"></div>
-        <div class="badge o">١</div>
-        <div class="cap on-ink" id="cR1" style="top:372px; font-size:80px"><i class="w">فكرة</i> <i class="w">وحدة..</i> <i class="w">تنفهم</i> <i class="w hl">بثانية.</i></div>
-        <div class="stage"><div class="card" id="k1"><img src="assets/work/asiacell.jpg" alt="" /><svg class="mk" width="680" height="850" viewBox="0 0 680 850"><path id="m1" pathLength="1" /></svg></div></div>
-        <div class="lab on-ink">إعلان غير رسمي · من شغلي</div>
-      </section>
-      <section class="scene clip" id="r2" data-start="13" data-duration="3.2" data-track-index="0">
-        <div class="bg paper"></div>
-        <div class="badge i">٢</div>
-        <div class="cap on-paper" id="cR2" style="top:372px; font-size:84px"><i class="w">حچي</i> <i class="w hl">بلهجة</i> <i class="w">زبونك.</i></div>
-        <div class="stage"><div class="card" id="k2"><img src="assets/work/pepsi.jpg" alt="" /><svg class="mk" width="680" height="850" viewBox="0 0 680 850"><path id="m2" pathLength="1" /></svg></div></div>
-        <div class="lab on-paper">إعلان غير رسمي · من شغلي</div>
-      </section>
-      <section class="scene clip" id="r3" data-start="16.2" data-duration="3.2" data-track-index="0">
-        <div class="bg orange"></div>
-        <div class="badge c">٣</div>
-        <div class="cap on-orange" id="cR3" style="top:372px; font-size:80px"><i class="w">وسبب</i> <i class="w">يخلّيه</i> <i class="w pill dark">يطلب هسه</i></div>
-        <div class="stage"><div class="card" id="k3"><img src="assets/work/shifa.jpg" alt="" /><svg class="mk cream" width="680" height="850" viewBox="0 0 680 850"><path id="m3" pathLength="1" /></svg></div></div>
-        <div class="lab on-orange">نموذج من شغلي</div>
-      </section>
-
-      <!-- his designs stack up, then the price -->
-      <section class="scene clip" id="s5" data-start="19.4" data-duration="4.8" data-track-index="0">
-        <div class="bg ink"></div>
-        <div id="pile">
-          <div class="pc2" id="q0"><img src="assets/work/talabat.jpg" alt="" /></div>
-          <div class="pc2" id="q1"><img src="assets/work/qi.jpg" alt="" /></div>
-          <div class="pc2" id="q2"><img src="assets/work/iraqiairways.jpg" alt="" /></div>
-          <div class="pc2" id="q3"><img src="assets/work/shifa.jpg" alt="" /></div>
-          <div class="pc2" id="q4"><img src="assets/work/asiacell.jpg" alt="" /></div>
-          <div class="pc2" id="q5"><img src="assets/work/pepsi.jpg" alt="" /></div>
-          <div class="pc2" id="q6"><img src="assets/work/saj.jpg" alt="" /></div>
-        </div>
-        <div class="lab on-ink" id="pileLab" style="top:1424px">نماذج من شغلي · الإعلانات غير رسمية</div>
-        <div class="cap on-ink" id="cG" style="top:196px"><span class="ln sm"><i class="w">وهذا</i> <i class="w">بالضبط</i> <i class="w">اللي</i> <i class="w">أسويه</i></span><span class="ln bg1" style="font-size:132px"><i class="w hl">لمشروعك.</i></span></div>
-        <div id="dim"></div>
-        <div id="price"><div class="l1">٣ بوستات</div><div class="l2">بـ ٤٠ ألف</div></div>
-        <div id="per">يعني البوست تقريباً بـ<b>١٣ ألف</b></div>
-      </section>
-
-      <!-- the ask: one word in the DM -->
-      <section class="scene clip" id="s6" data-start="24.2" data-duration="5.8" data-track-index="0">
-        <div class="bg orange"></div>
-        <div class="cap on-orange" id="cH" style="top:170px"><span class="ln sm"><i class="w">دز</i> <i class="w">كلمة</i></span><span class="ln bg1" style="margin:8px 0 12px"><i class="w pill dark">«بوست»</i></span><span class="ln sm"><i class="w">بالدايركت</i></span></div>
-        <div class="bub" id="me">بوست</div>
-        <div class="bub" id="him">هلا! هاي <b>نماذج من شغلي</b> بنفس مجالك
-          <div class="th"><img src="assets/work/talabat.jpg" alt="" /><img src="assets/work/saj.jpg" alt="" /><img src="assets/work/qi.jpg" alt="" /><img src="assets/work/iraqiairways.jpg" alt="" /></div>
-        </div>
-        <div id="bar">
-          <div class="cam"><svg viewBox="0 0 24 24"><path d="M3 8 h4 l2 -3 h6 l2 3 h4 v11 h-18 z" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.6" /></svg></div>
-          <div class="ph2">رسالة...</div>
-          <div class="typed"><i>ب</i><i>و</i><i>س</i><i>ت</i><span class="caret"></span></div>
-          <div class="send">إرسال</div>
-        </div>
-        <div id="ring"></div>
-        <div id="handle"><span>@allawi<b>.psd</b></span></div>
-      </section>
-
-      <div class="layer clip" id="fx" data-start="0" data-duration="30" data-track-index="3"><div id="grain"></div><div id="vig"></div></div>
-
-      <!-- transitions: the user's flash clips, brightest frame on each cut -->
-      <video id="tr1" class="clip tr" src="assets/tr/flash16.mp4" muted playsinline data-start="3.12" data-duration="0.64" data-track-index="4"></video>
-      <video id="tr2" class="clip tr" src="assets/tr/premium.mp4" muted playsinline data-start="7.43" data-media-start="6.97" data-duration="0.34" data-track-index="4"></video>
-      <video id="tr3" class="clip tr" src="assets/tr/flash19.mp4" muted playsinline data-start="9.46" data-duration="0.76" data-track-index="4"></video>
-      <video id="tr4" class="clip tr" src="assets/tr/vip.mp4" muted playsinline data-start="13" data-duration="0.4" data-track-index="4"></video>
-      <video id="tr5" class="clip tr" src="assets/tr/vip.mp4" muted playsinline data-start="16.2" data-duration="0.4" data-track-index="5"></video>
-      <video id="tr6" class="clip tr" src="assets/tr/flash4.mp4" muted playsinline data-start="18.92" data-duration="0.76" data-track-index="4"></video>
-      <video id="tr7" class="clip tr" src="assets/tr/flash6.mp4" muted playsinline data-start="23.82" data-duration="0.8" data-track-index="4"></video>
 
 <!--AUDIO-->
     </div>

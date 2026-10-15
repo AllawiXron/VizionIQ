@@ -5,19 +5,19 @@ screen, so you can read along with the video: each line starts when its caption 
 
 | Time | Say | On screen |
 |---|---|---|
-| 0.0 | زبونك يقرّر بثانية وحدة.. | phone scrolling fast · «زبونك يقرّر بـ ثانية وحدة» |
-| 1.9 | يوقف على بوستك.. لو يعبره. | «يوقف.. لو يعبر؟» |
-| 3.5 | وأغلب البوستات.. تنعبر. | dull posts flicked past one by one |
-| 5.4 | لأن ما بيها شي يوقّفك. | «لأن ما بيها شي يوقّفك.» |
-| 7.6 | إلا هيچ بوست. | the scroll stops dead on the quzi post, a heart pops |
-| 8.7 | ليش؟ بيه ثلاث شغلات: | «ليش؟ بيه ٣ شغلات» |
-| 9.8 | فكرة وحدة.. تنفهم بثانية. | ١ · the Asiacell ad, headline circled |
-| 13.0 | حچي بلهجة زبونك. | ٢ · the Pepsi ad, «نگول ببسي» circled |
-| 16.2 | وسبب يخلّيه يطلب هسه. | ٣ · the lab ad, the «وفّر ١٥ ألف» badge circled |
-| 19.6 | وهذا بالضبط اللي أسويه لمشروعك.. | your designs fly in and stack |
-| 22.0 | ثلاث بوستات.. بأربعين ألف. | price card «٣ بوستات · ٤٠ ألف» |
-| 24.4 | دز كلمة «بوست» بالدايركت.. | «دز كلمة «بوست» بالدايركت», then «بوست» typed and sent in a DM bar |
-| 27.0 | وأرسلك نماذج من شغلي بنفس مجالك. | a reply with samples, @allawi.psd |
+| 0.0 | زبونك يقرّر بثانية وحدة.. | one word per beat, the colour flips: زبونك / يقرّر / بثانية / وحدة |
+| 1.7 | يوقف على بوستك.. لو يعبره. | the one-second bar fills |
+| 3.6 | وأغلب البوستات.. تنعبر. | whip-pan; a phone rises, the feed flies past |
+| 5.3 | لأن ما بيها شي يوقّفك. | the feed keeps flying |
+| 7.6 | إلا هيچ بوست. | cut to black: the scroll stops on the quzi post, a heart |
+| 8.8 | ليش؟ بيه ثلاث شغلات: | «؟» icon, «٣ شغلات» |
+| 10.1 | فكرة وحدة.. تنفهم بثانية. | the Asiacell ad; list line 1, «بثانية» gets selected |
+| 13.1 | حچي بلهجة زبونك. | the Pepsi ad; line 2 |
+| 16.3 | وسبب يخلّيه يطلب هسه. | the lab ad; line 3 |
+| 19.6 | وهذا بالضبط اللي أسويه لمشروعك.. | whip-pan; your designs fly into a collage |
+| 22.0 | ثلاث بوستات.. بأربعين ألف. | «٣ بوستات», then «بـ ٤٠ ألف» lands at 22.75 |
+| 24.5 | دزّلي كلمة «بوست» بالدايركت.. | «بوست» slams in at 25.0 |
+| 26.9 | وأرسلك نماذج من شغلي بنفس مجالك. | a button pops, gets clicked, opens into @allawi.psd |
 
 ## Recording tips
 

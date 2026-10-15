@@ -1,150 +1,202 @@
-// «ثانية وحدة»: one paused timeline, built after the fonts load, registered on window.__timelines.main.
-// Times in seconds; every cue the voice may move is in T, and build.py's sound cues follow the same numbers.
+// «ثانية وحدة» v2: the editing grammar of the user's reference reel. One paused timeline, built after the fonts load,
+// registered on window.__timelines.main. Times in seconds; build.py's sound cues follow the same numbers.
 (function () {
   const D = 30;
   const T = {
-    // S1 hook (ink): the feed scrolls fast under «زبونك يقرّر بـ ثانية وحدة»
-    cA: 0.1, cAout: 1.75, cB: 1.9, cBout: 3.25, settle: 3.25,
-    // S2 (paper): dull posts flicked away one by one
-    cC: 3.55, cCout: 5.25, cD: 5.4, cDout: 7.45, flicks: [4.2, 4.9, 5.6, 6.3], long: 6.95,
-    // S3 (orange): the scroll stops dead on his post, a double-tap heart
-    stop: 7.6, heart: 7.95, cE: 7.7, cEout: 8.55, cF: 8.7, cFout: 9.55, phoneOut: 9.45,
-    // the three rules
-    r: [9.8, 13.0, 16.2],
-    // S5 (ink): his designs stack up, then the price
-    pile: 19.55, cG: 19.9, cGout: 21.75, price: 22.1, per: 22.5,
-    // S6 (orange): «بوست» typed and sent, his reply, the handle
-    cH: 24.4, bar: 24.95, keys: [25.5, 25.62, 25.74, 25.86], send: 26.2, him: 26.9, handle: 28.1, rings: [28.6, 29.3],
+    hook: [0, 0.4, 0.8, 1.15],
+    s2w: [1.7, 1.86, 2.02, 2.4, 2.56], bar: 1.72, fill: 1.85,
+    whip1: 3.4,
+    rise: 3.45, t3a: [3.62, 3.8, 4.15], t3aOut: 5.15, t3b: [5.32, 5.46, 5.6, 5.74, 5.98],
+    flicks: [3.6, 4.4, 5.2, 6.0, 6.78], stop: 7.6, heart: 7.85, t4: [7.68, 7.82, 7.98], zoom1: 8.55,
+    ico: 8.8, s5w: [8.86, 9.0, 9.2], reveal1: 9.66,
+    cards: [10.0, 13.0, 16.2], l1: [10.1, 10.25, 10.4, 10.6], l2: [13.15, 13.35, 13.55], l3: [16.35, 16.5, 16.7, 16.85],
+    sels: [11.55, 14.45, 17.65],
+    whip2: 19.42, q0: 19.55, qs: 19.85, t7: [19.7, 19.86, 20.0, 20.14, 20.75], zoom2: 21.75,
+    s8: [22.05, 22.2], slam8: 22.75, s8sub: 23.25, reveal2: 24.15,
+    s9: [24.55, 24.72], slam9: 25.0, s9b: 25.7, s9c: 26.9, s9d: 27.6, btn: 28.1, cur: 28.3, click: 28.8, open: 28.9,
   };
-
-  function seeded(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  const rnd = seeded(1508);
+  const VIS = { h1w: [0, 0.4], h2w: [0.4, 0.8], h3w: [0.8, 1.15], h4w: [1.15, 1.6], s2: [1.6, 3.53], s3: [3.27, 7.6], phoneL: [3.4, 8.8],
+    s4: [7.6, 8.8], s5: [8.78, 10.0], s6: [9.66, 19.56], s7: [19.29, 22.0], s8: [22.0, 24.5], s9: [24.15, D] };
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
   const $ = (s) => document.querySelector(s);
-  // a hand-drawn loop: an ellipse that overshoots its start, with a little wobble
-  const loopPath = (cx, cy, rx, ry, turns = 1.14, start = -2.5) => {
-    let d = '';
-    for (let k = 0; k <= 64; k++) {
-      const a = start + (k / 64) * Math.PI * 2 * turns, wob = 1 + (rnd() - 0.5) * 0.05 + k * 0.0013;
-      d += (k ? ' L' : 'M') + (cx + Math.cos(a) * rx * wob).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * wob).toFixed(1);
-    }
-    return d;
-  };
+  const $$ = (s) => [...document.querySelectorAll(s)];
 
-  // ── the feed: 13 dull posts (made up for the reel), then his quzi post
+  // ── the feed: eleven ordinary posts, then his quzi post
   const ICON = {
     heart: 'M12 20.5 C 5 16, 2.5 12.5, 2.5 8.6 C 2.5 5.6, 4.8 3.5, 7.4 3.5 C 9.4 3.5, 11 4.6, 12 6.2 C 13 4.6, 14.6 3.5, 16.6 3.5 C 19.2 3.5, 21.5 5.6, 21.5 8.6 C 21.5 12.5, 19 16, 12 20.5 Z',
     comment: 'M20.5 11.5 A 8.5 8.5 0 0 1 8.2 19.1 L 3 20.5 L 4.4 15.6 A 8.5 8.5 0 1 1 20.5 11.5 Z',
     send: 'M22 3 L2 10 L10 13 L13 21 Z M22 3 L10 13',
-    save: 'M6 3 H18 V21 L12 16.5 L6 21 Z',
   };
-  const DULL = {
-    A: '<div class="dull dA"><i class="burst"></i><div class="k">خصم</div><div class="n">٢٠٪</div><div class="s">على جميع المنتجات</div><div class="s2">لفترة محدودة!!</div></div>',
-    B: '<div class="dull dB"><i class="c"></i><div class="k">تابعونا</div><div class="s">لكل جديد</div><div class="r"><i style="background:#3b5998"></i><i style="background:#e1306c"></i><i style="background:#25d366"></i></div></div>',
-    C: '<div class="dull dC"><div class="k">قريباً</div><div class="n">افتتاح</div><div class="s">انتظرونا</div></div>',
-    D: '<div class="dull dD"><div class="k">توصيل مجاني</div><div class="b">اطلب الآن</div><div class="s">07XX XXX XXXX</div></div>',
-    E: '<div class="dull dE"><div class="k">عرض خاص</div><div class="s">اشتري واحد واحصل على الثاني مجاناً</div><div class="s2">العرض ساري لنهاية الشهر</div></div>',
-    F: '<div class="dull dF"><i class="fl"></i><div class="k">جمعة مباركة</div><div class="s">تقبل الله طاعاتكم</div></div>',
+  const PAL = ['#d8cfc4', '#c3cfd9', '#e9d7b4', '#cbd8c4', '#e4c6c1', '#d2d0dc', '#f0e0cc', '#bcc8c0', '#e7cfd9', '#d6c6b0', '#c9d3e0'];
+  const N = 11, P = 742, YF = -N * P + 99;
+  const svg = (d) => `<svg viewBox="0 0 24 24"><path d="${d}" /></svg>`;
+  const generic = (k) => {
+    const c = PAL[k % PAL.length], r = 110 + Math.round(hash(k) * 80), cx = 120 + Math.round(hash(k + 1) * 230), cy = 150 + Math.round(hash(k + 2) * 200);
+    return `<div style="position:absolute;inset:0;background:linear-gradient(160deg, ${c}, ${c}cc)"></div>
+      <div style="position:absolute;left:${cx - r}px;top:${cy - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;background:rgba(255,255,255,.38)"></div>
+      <div style="position:absolute;right:44px;bottom:110px;width:${200 + Math.round(hash(k + 3) * 150)}px;height:34px;border-radius:8px;background:rgba(255,255,255,.7)"></div>
+      <div style="position:absolute;right:44px;bottom:62px;width:${120 + Math.round(hash(k + 4) * 120)}px;height:24px;border-radius:6px;background:rgba(255,255,255,.55)"></div>`;
   };
-  const ORDER = ['A', 'B', 'C', 'D', 'E', 'F', 'A', 'C', 'B', 'D', 'F', 'E', 'A', 'SAJ'];
-  const PH = 833, Y = (k) => -k * PH;
-  const svg = (d, id = '') => `<svg viewBox="0 0 24 24"${id ? ` id="${id}"` : ''}><path d="${d}" /></svg>`;
-  $('#feed').innerHTML = ORDER.map((o, k) => `<div class="post">
-      <div class="ph"><i class="av"></i><i class="nb" style="width:${120 + Math.round(hash(k) * 70)}px"></i><i class="dots"></i></div>
-      <div class="pimg">${o === 'SAJ' ? '<img src="assets/work/saj.jpg" alt="" /><svg id="bigHeart" viewBox="0 0 24 24"><path d="' + ICON.heart + '" /></svg>' : DULL[o]}</div>
-      <div class="pa">${svg(ICON.heart, o === 'SAJ' ? 'likeHeart0' : '')}${svg(ICON.comment)}${svg(ICON.send)}<span class="bm">${svg(ICON.save)}</span></div>
-      <div class="pc"><i style="width:${62 + Math.round(hash(k + 3) * 20)}%"></i><i style="width:${32 + Math.round(hash(k + 5) * 20)}%"></i></div>
+  $('#feed').innerHTML = Array.from({ length: N + 1 }, (_, k) => `<div class="post">
+      <div class="ph"><i class="av" style="background:${k === N ? 'linear-gradient(135deg,#f07a2e,#c2441a)' : `linear-gradient(135deg, ${PAL[(k + 3) % PAL.length]}, #9a9a9a)`}"></i><i class="nb" style="width:${110 + Math.round(hash(k + 9) * 80)}px"></i></div>
+      <div class="pimg">${k === N ? `<img src="assets/work/saj.jpg" alt="" /><svg id="bigHeart" viewBox="0 0 24 24"><path d="${ICON.heart}" /></svg>` : generic(k)}</div>
+      <div class="pa">${svg(ICON.heart)}${svg(ICON.comment)}${svg(ICON.send)}</div>
+      <div class="pc"><i style="width:${60 + Math.round(hash(k + 5) * 25)}%"></i><i style="width:${30 + Math.round(hash(k + 6) * 25)}%"></i></div>
     </div>`).join('');
 
+  // ── the selection highlights: measured once the fonts are in (offsets ignore transforms)
+  function buildSelections() {
+    $$('#list .tl').forEach((tlEl) => {
+      const ws = [...tlEl.querySelectorAll('[data-sel]')];
+      const l = Math.min(...ws.map((w) => w.offsetLeft)), r = Math.max(...ws.map((w) => w.offsetLeft + w.offsetWidth));
+      const s = document.createElement('div');
+      s.className = 'sel';
+      s.innerHTML = '<i class="bgx"></i><i class="a"></i><i class="b"></i>';
+      s.style.right = (tlEl.offsetWidth - r - 6) + 'px';
+      s.style.top = (ws[0].offsetTop + 8) + 'px';
+      s.style.height = (ws[0].offsetHeight - 8) + 'px';
+      s.style.width = (r - l + 12) + 'px';
+      s.dataset.w = String(r - l + 12);
+      tlEl.appendChild(s);
+    });
+  }
+
   function build() {
+    buildSelections();
     const tl = gsap.timeline({ paused: true });
-    const words = (sel, t, st = 0.075) => {
-      tl.fromTo(`${sel} .w`, { opacity: 0, y: 46, filter: 'blur(14px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out', stagger: st }, t);
-      tl.fromTo(`${sel} .pill`, { scale: 0.7 }, { scale: 1, duration: 0.45, ease: 'back.out(2.2)', stagger: st }, t + 0.06);
+    Object.entries(VIS).forEach(([id, [a, b]]) => {
+      tl.set('#' + id, { visibility: 'visible' }, a);
+      if (b < D) tl.set('#' + id, { visibility: 'hidden' }, b);
+    });
+    // words come out of a blur, drifting in from the reading side
+    const words = (sel, times) => $$(sel + ' .w').forEach((w, i) => tl.fromTo(w, { opacity: 0, x: -24, filter: 'blur(12px)' },
+      { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.32, ease: 'power2.out' }, Array.isArray(times) ? times[i] : times + i * 0.14));
+    const out = (sel, t, d = 0.18) => tl.to(sel, { opacity: 0, filter: 'blur(12px)', duration: d, ease: 'power1.in' }, t);
+    // a big word slams in sideways with motion blur (its own SVG filter)
+    const slam = (sel, f, t) => {
+      tl.fromTo(sel, { opacity: 0, x: -760, scale: 1.04 }, { opacity: 1, x: 0, scale: 1, duration: 0.3, ease: 'power3.out' }, t);
+      tl.fromTo(f, { attr: { stdDeviation: '90 0' } }, { attr: { stdDeviation: '0 0' }, duration: 0.3, ease: 'power2.out' }, t);
     };
-    const out = (sel, t) => tl.to(sel, { opacity: 0, y: -34, filter: 'blur(10px)', duration: 0.22, ease: 'power2.in' }, t);
-    const draw = (sel, t, dur = 0.5) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: dur, ease: 'power2.out' }, t);
-    const blur = (v, t, dur) => tl.to('#vb', { attr: { stdDeviation: `0 ${v}` }, duration: dur, ease: 'none' }, t);
+    // whip-pan: the old scene slides out left, the new one in from the right, both motion-blurred
+    const whip = (a, b, t) => {
+      const s = t - 0.13;
+      tl.set([a, b], { filter: 'url(#hw)' }, s);
+      tl.fromTo(b, { x: 1080 }, { x: 0, duration: 0.26, ease: 'power2.inOut' }, s);
+      tl.fromTo(a, { x: 0 }, { x: -1080, duration: 0.26, ease: 'power2.inOut' }, s);
+      tl.fromTo('#hws', { attr: { stdDeviation: '0 0' } }, { attr: { stdDeviation: '85 0' }, duration: 0.13, ease: 'power1.in' }, s);
+      tl.to('#hws', { attr: { stdDeviation: '0 0' }, duration: 0.13, ease: 'power1.out' }, t);
+      tl.set([a, b], { filter: 'none' }, t + 0.14);
+    };
+    // a circle opens from a point into the next scene
+    const reveal = (sel, x, y, r0, t, d = 0.32) => tl.fromTo(sel, { clipPath: `circle(${r0}px at ${x}px ${y}px)` },
+      { clipPath: `circle(1500px at ${x}px ${y}px)`, duration: d, ease: 'power2.in' }, t);
+    // the camera goes through: everything grows, blurs and goes
+    const through = (sels, t) => tl.to(sels, { scale: 2.3, opacity: 0, filter: 'blur(18px)', duration: 0.24, ease: 'power2.in' }, t);
 
-    // ── S1–S3: the phone
-    tl.fromTo('#phone', { y: 70 }, { y: 0, duration: 0.45, ease: 'power2.out' }, 0);
-    gsap.set('#feed', { y: 0 });
-    tl.to('#feed', { y: Y(4.6), duration: T.settle, ease: 'none' }, 0);   // fast thumb scroll from frame one
-    blur(16, 0, 0.12);
-    tl.to('#feed', { y: Y(5), duration: 0.35, ease: 'power2.out' }, T.settle);
-    blur(0, T.settle + 0.05, 0.2);
-    T.flicks.forEach((t, i) => {   // each dull post gets flicked away
-      tl.to('#feed', { y: Y(6 + i), duration: 0.3, ease: 'power3.inOut' }, t);
-      blur(12, t + 0.04, 0.1); blur(0, t + 0.16, 0.12);
+    // ── hook: one word per beat, the field flips each time
+    T.hook.forEach((t, i) => tl.fromTo(`#h${i + 1}w .w`, { opacity: 0, scale: 1.07, filter: 'blur(8px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.16, ease: 'power2.out' }, t));
+
+    // ── one second
+    words('#s2', T.s2w);
+    tl.fromTo('#bar', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, T.bar);
+    tl.fromTo('#bar .fill', { clipPath: 'inset(0px 0px 0px 100% round 28px)' }, { clipPath: 'inset(0px 0px 0px 0% round 28px)', duration: 1.0, ease: 'none' }, T.fill);
+    whip('#s2', '#s3', T.whip1);
+
+    // ── the feed: the phone rises tilted, the thumb keeps flicking, every post goes past
+    gsap.set('#phoneW', { transformPerspective: 1600 });
+    tl.fromTo('#phoneW', { y: 1150, rotationX: 30, rotationY: -20, rotation: 8, filter: 'blur(10px)' },
+      { y: 0, rotationX: 10, rotationY: -16, rotation: 5, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out' }, T.rise);
+    tl.to('#phoneW', { rotationX: 7, rotationY: -10, rotation: 3, duration: T.stop - T.rise - 0.6, ease: 'none' }, T.rise + 0.6);
+    const tg = [-1550, -3150, -4750, -6350, YF];
+    T.flicks.forEach((t, i) => {
+      const last = i === T.flicks.length - 1;
+      tl.to('#feed', { y: tg[i], duration: 0.8, ease: last ? 'power3.out' : 'power2.out' }, t);
+      tl.fromTo('#vbs', { attr: { stdDeviation: '0 26' } }, { attr: { stdDeviation: last ? '0 0' : '0 2' }, duration: 0.8, ease: 'power2.out' }, t);
     });
-    tl.to('#feed', { y: Y(13), duration: T.stop - T.long, ease: 'expo.inOut' }, T.long);   // the long flick… that stops dead on his post
-    blur(24, T.long + 0.12, 0.2); blur(0, T.stop - 0.12, 0.1);
-    tl.to('#phone', { scale: 1.08, duration: 0.1, ease: 'power2.out' }, T.stop);
-    tl.to('#phone', { scale: 1.04, duration: 0.4, ease: 'power2.inOut' }, T.stop + 0.1);
-    tl.fromTo('#bigHeart', { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1.15, duration: 0.22, ease: 'back.out(2)' }, T.heart);
-    tl.to('#bigHeart', { scale: 1, duration: 0.16, ease: 'power2.out' }, T.heart + 0.22);
-    tl.to('#bigHeart', { opacity: 0, scale: 1.3, duration: 0.25, ease: 'power2.in' }, T.heart + 0.65);
-    tl.set('#likeHeart0 path', { attr: { fill: '#ed4956', stroke: '#ed4956' } }, T.heart + 0.02);
-    tl.fromTo('#likeHeart0', { scale: 0.6 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, T.heart + 0.02);
-    tl.to('#phone', { scale: 1.5, y: -160, opacity: 0, duration: 0.35, ease: 'power2.in' }, T.phoneOut);
+    words('#t3a', T.t3a); out('#t3a', T.t3aOut);
+    words('#t3b', T.t3b);
 
-    words('#cA', T.cA); out('#cA', T.cAout);
-    words('#cB', T.cB); out('#cB', T.cBout);
-    words('#cC', T.cC); out('#cC', T.cCout);
-    words('#cD', T.cD); out('#cD', T.cDout);
-    words('#cE', T.cE, 0.1); out('#cE', T.cEout);
-    words('#cF', T.cF, 0.1); out('#cF', T.cFout);
+    // ── the stop: the field cuts to black, the phone squares up, a double-tap heart
+    tl.to('#phoneW', { rotationX: 0, rotationY: 0, rotation: 0, scale: 1.12, y: -10, duration: 0.4, ease: 'power3.out' }, T.stop);
+    tl.fromTo('#bigHeart', { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1.12, duration: 0.2, ease: 'back.out(2)' }, T.heart);
+    tl.to('#bigHeart', { scale: 1, duration: 0.14, ease: 'power2.out' }, T.heart + 0.2);
+    tl.to('#bigHeart', { opacity: 0, scale: 1.25, duration: 0.22, ease: 'power2.in' }, T.heart + 0.5);
+    words('#t4', T.t4);
+    through(['#phoneW', '#t4'], T.zoom1);
 
-    // ── the three rules: badge, line, his design pops in, the exact part gets circled
-    const LOOPS = [[355, 557, 318, 78], [192, 312, 194, 118], [384, 655, 78, 70]];
-    T.r.forEach((t, i) => {
-      const s = `#r${i + 1}`, rot = [-2, 2, -1.5][i];
-      tl.fromTo(`${s} .badge`, { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.42, ease: 'back.out(2)' }, t + 0.05);
-      words(`#cR${i + 1}`, t + 0.2, 0.09);
-      tl.fromTo(`#k${i + 1}`, { opacity: 0, y: 320, rotationX: 32, rotation: rot - 8, scale: 0.8 },
-        { opacity: 1, y: 0, rotationX: 0, rotation: rot, scale: 1, duration: 0.62, ease: 'back.out(1.3)' }, t + 0.12);
-      tl.to(`#k${i + 1}`, { scale: 1.045, y: -14, duration: 3.2 - 0.74, ease: 'none' }, t + 0.74);
-      tl.to(`${s} .lab`, { opacity: 1, duration: 0.3 }, t + 0.7);
-      $(`#m${i + 1}`).setAttribute('d', loopPath(...LOOPS[i]));
-      draw(`#m${i + 1}`, t + 1.05, 0.5);
+    // ── «ليش؟»: the icon pops with a ripple, then opens into the list
+    tl.fromTo('#ico5', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2.5)' }, T.ico);
+    tl.set('#rip5', { opacity: 0.8, scale: 1 }, T.ico + 0.15);
+    tl.to('#rip5', { opacity: 0, scale: 2.4, duration: 0.6, ease: 'power2.out' }, T.ico + 0.15);
+    words('#s5 .t64', [T.s5w[0], T.s5w[1]]);
+    tl.fromTo('#s5 .big .w', { opacity: 0, scale: 1.12, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'power3.out' }, T.s5w[2]);
+    out(['#s5 .t64', '#s5 .big'], T.reveal1 - 0.06, 0.14);
+    tl.to('#ico5', { scale: 3, duration: 0.2, ease: 'power2.in' }, T.reveal1);
+    reveal('#s6', 540, 712, 52, T.reveal1);
+
+    // ── the three things: the card swaps, the list builds, each key phrase gets selected
+    const cardIn = (c, t, fromX) => tl.fromTo(c, { opacity: 0, x: fromX, scale: fromX ? 1 : 0.92, y: fromX ? 0 : 40, filter: 'blur(14px)' },
+      { opacity: 1, x: 0, scale: 1, y: 0, filter: 'blur(0px)', duration: fromX ? 0.36 : 0.5, ease: 'power3.out' }, t);
+    const cardOut = (c, t) => tl.to(c, { opacity: 0, x: -620, filter: 'blur(14px)', duration: 0.3, ease: 'power2.in' }, t);
+    cardIn('#c1', T.cards[0], 0); cardOut('#c1', T.cards[1] - 0.05); cardIn('#c2', T.cards[1] + 0.05, 620);
+    cardOut('#c2', T.cards[2] - 0.05); cardIn('#c3', T.cards[2] + 0.05, 620);
+    ['#c1', '#c2', '#c3'].forEach((c, i) => tl.to(c, { scale: 1.03, duration: 2.6, ease: 'none' }, T.cards[i] + 0.4));
+    [['#n1', 0], ['#n2', 1], ['#n3', 2]].forEach(([n, i]) => {
+      tl.fromTo(n, { opacity: 0 }, { opacity: 1, duration: 0.3 }, T.cards[i] + 0.35);
+      if (i < 2) tl.to(n, { opacity: 0, duration: 0.15 }, T.cards[i + 1] - 0.1);
     });
-
-    // ── S5: the stack, then the price slams in
-    const PILE = [[-150, -60, -12], [160, -40, 10], [-120, 70, -6], [140, 90, 8], [-40, -20, -3], [60, 40, 5], [0, 10, -1]];
-    PILE.forEach(([x, y, r], i) => {
-      const from = [{ x: -1200, y: y - 200, rotation: r - 40 }, { x: 1200, y: y - 150, rotation: r + 40 }, { x: x, y: 1500, rotation: r - 20 }][i % 3];
-      tl.fromTo(`#q${i}`, { ...from, opacity: 1 }, { x, y, rotation: r, opacity: 1, duration: 0.42, ease: 'power3.out' }, T.pile + i * 0.16);
+    [['#l1', T.l1], ['#l2', T.l2], ['#l3', T.l3]].forEach(([l, ts], i) => {
+      tl.fromTo(`${l} .dot`, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.28, ease: 'back.out(2.5)' }, ts[0] - 0.05);
+      words(l, ts);
+      const s = $(`${l} .sel`);
+      const w = +s.dataset.w;
+      tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.05 }, T.sels[i]);
+      tl.fromTo(s.querySelector('.bgx'), { clipPath: 'inset(0px 0px 0px 100%)' }, { clipPath: 'inset(0px 0px 0px 0%)', duration: 0.35, ease: 'power2.inOut' }, T.sels[i]);
+      tl.fromTo(s.querySelector('.b'), { x: w }, { x: 0, duration: 0.35, ease: 'power2.inOut' }, T.sels[i]);
     });
-    tl.fromTo('#pile', { scale: 1 }, { scale: 1.05, duration: T.cGout - T.pile, ease: 'none' }, T.pile);
-    tl.to('#pileLab', { opacity: 1, duration: 0.3 }, T.pile + 1.2);
-    words('#cG', T.cG, 0.09); out('#cG', T.cGout); out('#pileLab', T.cGout);
-    tl.to('#pile', { scale: 0.86, y: -30, duration: 0.4, ease: 'power2.inOut' }, T.cGout + 0.05);
-    tl.to('#dim', { opacity: 1, duration: 0.3 }, T.cGout + 0.1);
-    tl.fromTo('#price', { opacity: 0, scale: 2.3, rotation: -12 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.25, ease: 'power3.in' }, T.price - 0.25);
-    tl.fromTo('#price', { y: 0 }, { y: 10, duration: 0.06, yoyo: true, repeat: 3, ease: 'none' }, T.price);
-    tl.to('#price', { scale: 1.03, duration: 1.8, ease: 'none' }, T.price + 0.3);
-    tl.fromTo('#per', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, T.per);
+    whip('#s6', '#s7', T.whip2);
 
-    // ── S6: one word in the DM
-    words('#cH', T.cH, 0.1);
-    tl.fromTo('#bar', { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.42, ease: 'power3.out' }, T.bar);
-    tl.set('#bar .ph2', { opacity: 0 }, T.keys[0] - 0.02);
-    T.keys.forEach((t, i) => tl.set(`#bar .typed i:nth-child(${i + 1})`, { opacity: 1 }, t));
-    for (let t = T.bar + 0.25, k = 0; t < T.send + 1.2; t += 0.27, k++) tl.set('#bar .caret', { opacity: k % 2 ? 1 : 0 }, t);
-    tl.set('#bar .typed i', { opacity: 0 }, T.send);
-    tl.set('#bar .ph2', { opacity: 1 }, T.send);
-    tl.fromTo('#me', { opacity: 0, y: 380, scale: 0.55, transformOrigin: '0% 100%' }, { opacity: 1, y: 0, scale: 1, duration: 0.38, ease: 'back.out(1.5)' }, T.send);
-    tl.fromTo('#him', { opacity: 0, y: 60, scale: 0.7, transformOrigin: '100% 100%' }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: 'back.out(1.4)' }, T.him);
-    tl.fromTo('#handle', { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.42, ease: 'back.out(2)' }, T.handle);
-    T.rings.forEach((t) => { tl.set('#ring', { opacity: 0.9, scale: 1 }, t); tl.to('#ring', { opacity: 0, scale: 1.35, duration: 0.7, ease: 'power2.out' }, t); });
+    // ── the collage: the quzi post first, then the rest fly in from the edges and settle
+    const PILE = { q1: [-262, -262, -8], q2: [262, -254, 7], q3: [-268, 262, 6], q4: [266, 270, -6], q5: [-150, 8, -3], q6: [150, -8, 4] };
+    gsap.set('#pile .card', { width: 384, height: 480, left: 348, top: 810 });
+    tl.fromTo('#q0', { opacity: 0, scale: 1.25, rotation: -2, filter: 'blur(14px)' }, { opacity: 1, scale: 1, rotation: -2, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, T.q0);
+    Object.entries(PILE).forEach(([id, [x, y, r]], i) => {
+      const m = Math.hypot(x, y) || 1;
+      tl.fromTo('#' + id, { opacity: 1, x: x + (x / m) * 1300, y: y + (y / m) * 1300, rotation: r * 4, filter: 'blur(16px)' },
+        { opacity: 1, x, y, rotation: r, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, T.qs + i * 0.09);
+    });
+    tl.fromTo('#pile', { scale: 1 }, { scale: 1.06, duration: T.zoom2 - T.q0, ease: 'none' }, T.q0);
+    words('#t7', T.t7);
+    tl.fromTo('#n7', { opacity: 0 }, { opacity: 1, duration: 0.3 }, T.qs + 0.7);
+    through(['#pile'], T.zoom2); out(['#t7', '#n7'], T.zoom2, 0.15);
 
-    // every frame the grain moves
-    const film = { f: 0 }, g = $('#grain');
-    tl.to(film, { f: D * 30, duration: D, ease: 'none', onUpdate: () => {
-      const n = Math.floor(film.f);
-      g.style.backgroundPosition = `${Math.floor(hash(n) * 420)}px ${Math.floor(hash(n + 7) * 420)}px`;
-    } }, 0);
+    // ── the price: «٣ بوستات», then the number slams in
+    words('#s8 .t64', T.s8);
+    slam('#slam8', '#h2s', T.slam8);
+    words('#s8 .t48', T.s8sub);
+    out(['#s8 .tx'], T.reveal2 - 0.1, 0.14);
+    tl.fromTo('#dot8', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.1 }, T.reveal2 - 0.04);
+    reveal('#s9', 540, 960, 12, T.reveal2 + 0.03, 0.3);
 
+    // ── the ask: one word in the DM, then the button opens into his handle
+    words('#s9 .t64:nth-of-type(1)', T.s9);
+    slam('#slam9', '#h3s', T.slam9);
+    words('#s9 .t64:nth-of-type(3)', T.s9b);
+    words('#s9 .t48 .ln:nth-child(1)', T.s9c);
+    words('#s9 .t48 .ln:nth-child(2)', T.s9d);
+    gsap.set('#btn', { clipPath: 'inset(0px 232px 0px 232px round 48px)' });
+    tl.fromTo('#btn', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.32, ease: 'back.out(2.2)' }, T.btn);
+    tl.fromTo('#cur', { opacity: 0, x: 0, y: 0 }, { opacity: 1, x: -285, y: -305, duration: 0.45, ease: 'power2.inOut' }, T.cur);
+    tl.to('#cur', { scale: 0.85, duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.inOut' }, T.click);
+    tl.set('#ripB', { opacity: 0.9, scale: 1 }, T.click);
+    tl.to('#ripB', { opacity: 0, scale: 2.2, duration: 0.5, ease: 'power2.out' }, T.click);
+    tl.fromTo('#btn', { clipPath: 'inset(0px 232px 0px 232px round 48px)' }, { clipPath: 'inset(0px 0px 0px 0px round 48px)', duration: 0.4, ease: 'power3.inOut' }, T.open);
+    tl.to('#btn svg', { x: -232, duration: 0.4, ease: 'power3.inOut' }, T.open);
+    tl.fromTo('#btn .pl', { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out' }, T.open + 0.22);
+    tl.to('#cur', { opacity: 0, x: -160, y: -120, duration: 0.3, ease: 'power2.in' }, T.open + 0.3);
+    tl.to('#btn', { scale: 1.04, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, T.open + 0.9);
+
+    tl.set({}, {}, D);
     window.__timelines = window.__timelines || {};
     window.__timelines['main'] = tl;
   }

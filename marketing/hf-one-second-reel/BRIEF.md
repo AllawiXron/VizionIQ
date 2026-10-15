@@ -2,7 +2,7 @@
 workflow: general-video
 flow: automation
 storyboard: no
-message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: ٣ بوستات بـ٤٠ ألف. دز كلمة «بوست» بالدايركت."
+message: "زبونك يقرّر بثانية وحدة. هذا اللي يوقّفه، وأسويه لمشروعك: ٣ بوستات بـ٤٠ ألف. دزّلي كلمة «بوست» بالدايركت."
 destination: instagram-reels
 aspect: 1080x1920
 language: ar-IQ
@@ -23,31 +23,30 @@ voice over by myself".
 What we keep from the reference: a voice that teaches one idea, clean flat colour fields, word-by-word captions with a
 highlighted word, designs popping in and stacking. What we change, and why it should work better:
 
-- **A hook you can see, in the first second.** A phone feed scrolls fast under «زبونك يقرّر بـ ثانية وحدة». The reel
-  shows the problem instead of describing it: dull posts get flicked past, then the scroll stops dead on his design.
+- **The problem shown, not described.** A one-second bar fills; a phone feed flies past, then the scroll stops dead on
+  his design.
 - **Proof, not opinion.** The three things that stop a thumb (one idea, the customer's dialect, a reason to order now)
-  are each shown on one of his own designs, with a marker circle on the exact part.
+  build up as a list, each next to one of his own designs, with the key phrase selected.
 - **The price, out loud.** «٣ بوستات بـ٤٠ ألف», his current bundle price.
-- **A one-word DM keyword, not "follow me".** «دز كلمة "بوست" بالدايركت»; in return he sends samples from the
+- **A one-word DM keyword, not "follow me".** «دزّلي كلمة "بوست" بالدايركت»; in return he sends samples from the
   viewer's own field. One word is the easiest message there is to send, and the reply gives him a warm lead to quote.
 - **30 s instead of 68 s.**
 
-## Look
+## Look (v2, after the user rejected v1 as "ai slop")
 
-The allawi.psd brand instead of the reference's blue: paper `#ece3d4`, ink `#1f1510`, orange `#e2541b` / `#f07a2e`,
-cream `#fbf3e6`. Alexandria 800/900 for captions, IBM Plex Sans Arabic for small text, Lalezar only on the dull
-"typical" posts in the feed. A light paper grain over everything. Alexandria draws the final ي of «دزّلي» without
-its dots (the «لي» after ز), so the last caption says «دز كلمة».
+Cut like the reference, studied frame by frame (README has the list): flat orange / cream / black fields that flip on the
+beat, IBM Plex Sans Arabic at the reference's sizes, words out of a blur with one key word in colour, sideways slams and
+whip-pans with motion blur, circle reveals from a dot, zoom-through exits, a text-selection highlight, soft card
+shadows, a cursor clicking a button that opens into his handle. No grain, no pills, no marker, no flash clips.
 
-## Sound and transitions
+## Sound
 
-- Sound effects only from the user's pack (`../sfx-pack`, `sfx.sh` copies the chosen ones into `assets/sfx/`).
-- Transitions: the user's flash clips (`../transitions-pack`), screen-blended over the cuts, muted, with a pack sound.
-- No music (CLAUDE.md: ask the user for a track if a piece needs one). The sound effects sit low so his voice leads.
+Sound effects only from the user's pack (`sfx.sh`). No music (CLAUDE.md: ask the user for a track if a piece needs
+one). The effects sit low so his voice leads.
 
 ## Honesty
 
-- The dull posts in the feed are made up for the reel (generic offers, no names, no real shop).
-- Asiacell and Pepsi are his unofficial concept ads, labelled «إعلان غير رسمي · من شغلي» while on screen. The lab and
-  quzi posts are his sample designs, labelled «نموذج من شغلي».
+- The posts in the feed are made-up placeholders (colour blocks, no names, no real shop).
+- Asiacell and Pepsi are his unofficial concept ads, labelled «إعلان غير رسمي · من شغلي» while on screen; the collage is
+  labelled «نماذج من شغلي · الإعلانات غير رسمية». The lab and quzi posts are his sample designs.
 - The price is his own (bundle on the highlights: ٣ بوستات ٤٠ ألف).
