@@ -1,11 +1,15 @@
 import type { Block, CourseChapter, Lesson } from "./types";
 import { chapter1 } from "./chapter1.js";
 import { chapter2 } from "./chapter2.js";
+import { chapter3 } from "./chapter3.js";
 import { chapter4 } from "./chapter4.js";
+import { chapter5 } from "./chapter5.js";
 import { chapter6 } from "./chapter6.js";
+import { chapter7 } from "./chapter7.js";
 import { chapter8 } from "./chapter8.js";
 import { chapter9 } from "./chapter9.js";
 import { chapter10 } from "./chapter10.js";
+import { chapter11 } from "./chapter11.js";
 
 export type { Block, CourseChapter, Lesson } from "./types";
 
@@ -13,11 +17,15 @@ export type { Block, CourseChapter, Lesson } from "./types";
 export const courseChapters: Record<string, CourseChapter> = {
   chapter1,
   chapter2,
+  chapter3,
   chapter4,
+  chapter5,
   chapter6,
+  chapter7,
   chapter8,
   chapter9,
   chapter10,
+  chapter11,
 };
 
 function blockText(b: Block): string {
