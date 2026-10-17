@@ -16,6 +16,15 @@ How it got here (the user asked for an honest opinion and wants first place):
 - The star of Shamash from four wedges with pixel rays: read as the ✦ sparkle that AI tools use. Dropped at once.
 - Also tried earlier: «dissolve» and «growth» (still in `marks.js`).
 
+**Round 3 (current, waiting for the user's yes): «بوابة عشتار.. بوابة العراق الرقمية».** The user turned the
+tablet down ("looks like an app icon", "the idea itself") and asked for exactly what the brief says, but better. The
+Ishtar Gate (`concepts.js`, `gate3`): two tall towers and a lower wall with stepped Mesopotamian crenellations, and an
+open arch framed by two nested gold arches, which are both the gate's recessed arches and signal waves. A gate is the
+state's digital gateway (every service passes through it); open and connected; the stepped crenellations read as
+pixels. `concepts.html` → `node render-concepts.cjs` → `out/concept-gate.png`. Also drawn this round and dropped
+before showing: a pixel-brick gate (read as an "M" or a server rack), the two rivers meeting (a slingshot) and the
+Malwiya as rising tiers (a Christmas tree).
+
 **Colours:** أزرق بابل `#17357D`, حبر الليل `#0C1B40`, ذهب عشتار `#C99A2E` (accent, used sparingly), الطين `#ECE2D0`.
 **Type:** Readex Pro for headings, IBM Plex Sans Arabic for text (both SIL OFL; files in `fonts/`).
 
