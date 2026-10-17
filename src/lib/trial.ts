@@ -46,13 +46,13 @@ export const TRIAL_STAGES: { id: TrialStage; label: string }[] = [
 ];
 
 /** The problems, in the merchant's words, each opening one playbook. */
-export const TRIAL_PROBLEMS: { id: string; icon: string; label: string }[] = [
-  { id: "ghosting", icon: "👻", label: "يسألون «بيش؟» وبعدين يختفون" },
-  { id: "message-cost", icon: "💸", label: "الرسالة غالية والإعلان ياكل فلوسي" },
-  { id: "returns", icon: "📦", label: "الطلبات ترجع وأدفع التوصيل" },
-  { id: "more-sales", icon: "📈", label: "أريد أبيع أكثر بدون ما أزيد الإعلان" },
-  { id: "scale", icon: "🎯", label: "ما أعرف إعلاني رابح لو لا" },
-  { id: "product", icon: "🔎", label: "ما أعرف شنو أبيع" },
+export const TRIAL_PROBLEMS: { id: string; label: string }[] = [
+  { id: "ghosting", label: "يسألون «بيش؟» وبعدين يختفون" },
+  { id: "message-cost", label: "الرسالة غالية والإعلان ياكل فلوسي" },
+  { id: "returns", label: "الطلبات ترجع وأدفع التوصيل" },
+  { id: "more-sales", label: "أريد أبيع أكثر بدون ما أزيد الإعلان" },
+  { id: "scale", label: "ما أعرف إعلاني رابح لو لا" },
+  { id: "product", label: "ما أعرف شنو أبيع" },
 ];
 
 /** The course's own defaults (same as the playbook calculators). */

@@ -5,7 +5,7 @@ import { collapseMotion, overlayMotion } from "../lib/motion";
 import { useOriginSheet } from "../lib/origin";
 import { getAllValidCodes, normalizeCode, isFreeTrialUser } from "./LockScreen";
 import { OfferPrice, SubscribeButton } from "./OfferPrice";
-import { PLAN_INCLUDES } from "../lib/offer";
+import { PLAN_INCLUDES, STUDENT_COUNT } from "../lib/offer";
 
 interface FreeTrialPaywallModalProps {
   isOpen: boolean;
@@ -35,7 +35,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
 
     const trimmed = inputCode.trim();
     if (!trimmed) {
-      setError("الرجاء إدخال رمز الوصول المدفوع الخاص بك.");
+      setError("اكتب الرمز اللي استلمته بعد الاشتراك.");
       return;
     }
 
@@ -44,15 +44,15 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
 
     // Check if code is valid and NOT another free code
     if (validCodes.includes(normalized) && !isFreeTrialUser(normalized)) {
-      setSuccess("تم التوثيق بنجاح! جاري فتح الكورس بالكامل والمنظومة التشغيلية...");
+      setSuccess("الرمز صحيح، دا ينفتح الكورس كامل...");
       setTimeout(() => {
         onUpgradeSuccess(trimmed);
         onClose();
       }, 1200);
     } else if (isFreeTrialUser(normalized)) {
-      setError("الرمز المدخل هو رمز نسخة تجريبية. رجاءً إدخال رمز الحساب الكامل.");
+      setError("هذا رمز التجربة. اكتب رمز الاشتراك الكامل.");
     } else {
-      setError("رمز الوصول المدخل غير صحيح أو غير مسجل في النظام.");
+      setError("الرمز غلط أو مو مفعّل. تأكد منه، أو راسلنا عالواتساب.");
     }
   };
 
@@ -77,9 +77,9 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               </div>
               <div className="min-w-0">
                 <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-wider block truncate">
-                  ترقية الحساب • Upgrade Access
+                  الاشتراك الكامل
                 </span>
-                <span className="text-xs sm:text-sm font-bold text-white truncate block">النسخة المدفوعة الكاملة</span>
+                <span className="text-xs sm:text-sm font-bold text-white truncate block">كلشي مفتوح، مدى الحياة</span>
               </div>
             </div>
 
@@ -97,7 +97,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             <div className="text-center space-y-2">
               <div className="vz-eyebrow text-[10px] sm:text-xs">
                 <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-vz-accent" />
-                <span>تدفع مرة وحدة • مدى الحياة • بدون رسوم شهرية</span>
+                <span>{STUDENT_COUNT} مشترك · تدفع مرة وحدة · مدى الحياة</span>
               </div>
               <h3 className="text-base sm:text-2xl font-black text-white leading-tight">
                 {title}

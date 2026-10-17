@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { NumberField } from "./ui/NumberField";
 import React, { useState } from "react";
 import { Calculator, TrendingUp, DollarSign, PieChart, ShieldAlert, Layers, ArrowRight, CheckCircle2, RefreshCw, BarChart3, HelpCircle, Lock, Crown } from "lucide-react";
 import { isFreeTrialUser } from "./LockScreen";
@@ -29,7 +30,7 @@ export default function AdvancedCalculatorSuite() {
     shippingCostIQD: 4000,
     sellingPriceIQD: 38000,
     deliveryRatePct: 88,
-    exchangeRate: 1530
+    exchangeRate: 1490
   });
 
   // ROAS Calculations
@@ -44,7 +45,7 @@ export default function AdvancedCalculatorSuite() {
   const totalCostsIQD = totalSpendIQD + productTotalIQD + shippingTotalIQD;
   const netProfitIQD = revenueIQD - totalCostsIQD;
   const roasVal = totalSpendIQD > 0 ? (revenueIQD / totalSpendIQD).toFixed(2) : "0";
-  const cpaUSD = orders > 0 ? (roasInputs.budgetUSD / orders).toFixed(2) : "0";
+  const cpaIQD = orders > 0 ? Math.round(totalSpendIQD / orders) : 0;
 
   // 2. LTV Calculator State
   const [ltvInputs, setLtvInputs] = useState({
@@ -96,40 +97,38 @@ export default function AdvancedCalculatorSuite() {
   const monthlySavingsIQD = savedReturnsCount * (returnRateInputs.returnShippingFeeIQD + returnRateInputs.itemSellingPriceIQD * 0.15); // Saved shipping + unrecoverable repackaging
 
   return (
-    <div className="vizion-calculator-suite glass-subtle border rounded-4xl p-6 md:p-10 space-y-8 text-right">
+    <div className="vizion-calculator-suite glass-subtle border rounded-3xl sm:rounded-4xl p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 text-right">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="inline-flex justify-center items-center gap-2 w-full py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-sm py-3.5 font-bold mb-2">
+          <div className="vz-eyebrow text-xs mb-2">
             <Calculator className="w-3.5 h-3.5" />
-            <span>منظومة الحسابات المالية المتقدمة • 9 حواسب متفاعلة</span>
+            <span>6 حاسبات</span>
           </div>
-          <h3 className="text-2xl md:text-3xl font-black text-white">
-            جناح الآلات الحاسبة واختبار السيناريوهات المالي
-          </h3>
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">احسبها قبل لا تقرر</h3>
         </div>
-        <p className="text-xs md:text-sm text-white/60 max-w-md">
-          اختر الأداة واضبط السلايدرات لمعرفة الرياضيات الصافية لبزنسك وتجنب اتخاذ قرارات مبنية على التخمين.
+        <p className="text-xs md:text-sm text-white/60 max-w-md leading-relaxed">
+          اختار الحاسبة وغيّر الأرقام حسب مشروعك، والنتيجة تتحدث وياك مباشرة.
         </p>
       </div>
 
       {/* Tabs Navigation */}
-      <div className="vizion-calculator-tabs flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+      <div className="vizion-calculator-tabs -mx-4 px-4 sm:mx-0 sm:px-0 flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
         {[
-          { id: "roas", label: "أرباح ROAS الصافية", icon: TrendingUp },
-          { id: "ltv", label: "القيمة العمرية LTV", icon: DollarSign },
-          { id: "scaling", label: "محاكي التوسع الإعلاني", icon: BarChart3 },
-          { id: "breakeven", label: "نقطة التعادل Break-Even", icon: PieChart },
-          { id: "margin", label: "مطور الهوامش 50/30/20", icon: Layers },
-          { id: "returns", label: "أثر خفض المرتجع", icon: ShieldAlert }
+          { id: "roas", label: "ربح الحملة", icon: TrendingUp },
+          { id: "ltv", label: "قيمة الزبون", icon: DollarSign },
+          { id: "scaling", label: "إذا زدت الميزانية", icon: BarChart3 },
+          { id: "breakeven", label: "نقطة التعادل", icon: PieChart },
+          { id: "margin", label: "تقسيم السعر 50/30/20", icon: Layers },
+          { id: "returns", label: "أثر تقليل الراجع", icon: ShieldAlert }
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
             <button               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ isActive ? "bg-vz-blue text-white border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
+              className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer border ${ isActive ? "bg-vz-blue text-white border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 font-black" : "bg-white/5 text-white/70 hover:text-white border-white/10 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
             >
               <Icon className="w-4 h-4" />
               <span>{tab.label}</span>
@@ -146,74 +145,43 @@ export default function AdvancedCalculatorSuite() {
           <div className="lg:col-span-7 order-2 lg:order-1 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h4 className="text-lg font-bold text-vz-accent flex items-center gap-2">
               <Calculator className="w-5 h-5" />
-              <span>مدخلات الحملة والتكاليف بالدينار والـ $</span>
+              <span>أرقام الحملة (الإعلان بالدولار، والباقي بالدينار)</span>
             </h4>
 
             <div className="grid grid-cols-1 gap-y-5 gap-4">
               <div className="space-y-2">
-                <label className="text-xs text-white/70 block font-medium">الميزانية اليومية الإعلانية ($)</label>
-                <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  value={roasInputs.budgetUSD}
-                  onChange={(e) => setRoasInputs({ ...roasInputs, budgetUSD: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">$</span>
+                <label className="text-xs text-white/70 block font-medium">ميزانية الإعلان باليوم</label>
+                <div className="w-full">
+  <NumberField className="w-full" value={roasInputs.budgetUSD} onChange={(v) => setRoasInputs({ ...roasInputs, budgetUSD: v })} unit="$" step={5} />
 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs text-white/70 block font-medium">نسبة النقر CTR (%)</label>
-                <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="0.1"
-                  value={roasInputs.ctr}
-                  onChange={(e) => setRoasInputs({ ...roasInputs, ctr: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                <label className="text-xs text-white/70 block font-medium">نسبة النقر (CTR)</label>
+                <div className="w-full">
+  <NumberField className="w-full" value={roasInputs.ctr} onChange={(v) => setRoasInputs({ ...roasInputs, ctr: v })} unit="%" min={0} max={100} step={0.1} />
 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs text-white/70 block font-medium">تكلفة الشراء للقطعة (د.ع)</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="500"
-                  value={roasInputs.productCostIQD}
-                  onChange={(e) => setRoasInputs({ ...roasInputs, productCostIQD: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/70 block font-medium">كلفة القطعة عليك</label>
+                <NumberField className="w-full" value={roasInputs.productCostIQD} onChange={(v) => setRoasInputs({ ...roasInputs, productCostIQD: v })} unit="د.ع" step={500} />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs text-white/70 block font-medium">سعر بيع القطعة للزبون (د.ع)</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="1000"
-                  value={roasInputs.sellingPriceIQD}
-                  onChange={(e) => setRoasInputs({ ...roasInputs, sellingPriceIQD: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/70 block font-medium">سعر البيع للزبون</label>
+                <NumberField className="w-full" value={roasInputs.sellingPriceIQD} onChange={(v) => setRoasInputs({ ...roasInputs, sellingPriceIQD: v })} unit="د.ع" step={1000} />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs text-white/70 block font-medium">أجور التوصيل للمحافظات (د.ع)</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="500"
-                  value={roasInputs.shippingCostIQD}
-                  onChange={(e) => setRoasInputs({ ...roasInputs, shippingCostIQD: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/70 block font-medium">كروة التوصيل</label>
+                <NumberField className="w-full" value={roasInputs.shippingCostIQD} onChange={(v) => setRoasInputs({ ...roasInputs, shippingCostIQD: v })} unit="د.ع" step={500} />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs text-white/70 block font-medium">نسبة الاستلام والنجاح (%)</label>
-                <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  value={roasInputs.deliveryRatePct}
-                  onChange={(e) => setRoasInputs({ ...roasInputs, deliveryRatePct: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl px-3 py-2 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                <label className="text-xs text-white/70 block font-medium">نسبة الطلبات الواصلة</label>
+                <div className="w-full">
+  <NumberField className="w-full" value={roasInputs.deliveryRatePct} onChange={(v) => setRoasInputs({ ...roasInputs, deliveryRatePct: v })} unit="%" min={0} max={100} step={1} />
 </div>
               </div>
             </div>
@@ -222,33 +190,33 @@ export default function AdvancedCalculatorSuite() {
           {/* Dynamic Results Display */}
           <div className="lg:col-span-5 order-1 lg:order-2 sticky top-4 glass border rounded-3xl p-6 space-y-6">
             <h4 className="text-vz-accent font-black text-sm uppercase tracking-wider border-b border-white/10 pb-3">
-              نتائج الرياضيات الصافية اليومية
+              النتيجة باليوم
             </h4>
 
             <div className="grid grid-cols-1 gap-y-5 gap-4">
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
-                <span className="text-[10px] text-white/60 block font-bold">العائد الإعلاني ROAS</span>
+                <span className="text-[10px] text-white/60 block font-bold">كل دولار إعلان يرجع (ROAS)</span>
                 <span className={`text-3xl font-mono font-black ${Number(roasVal) >= 3 ? "text-emerald-400" : Number(roasVal) >= 2 ? "text-vz-accent" : "text-red-400"}`}>
                   {roasVal}x
                 </span>
               </div>
 
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
-                <span className="text-[10px] text-white/60 block font-bold">كلفة الطلب CPA</span>
+                <span className="text-[10px] text-white/60 block font-bold">كلفة الطلب من الإعلان</span>
                 <span className="text-3xl font-mono font-black text-vz-accent">
-                  ${cpaUSD}
+                  {cpaIQD.toLocaleString("en-US")} <span className="text-xs text-white/70">د.ع</span>
                 </span>
               </div>
 
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
-                <span className="text-[10px] text-white/60 block font-bold">إجمالي الطلبات الفردية</span>
+                <span className="text-[10px] text-white/60 block font-bold">الطلبات الواصلة من الكلية</span>
                 <span className="text-2xl font-mono font-black text-white">
                   {deliveredOrders} / {orders} <span className="text-xs text-white/70">طلب</span>
                 </span>
               </div>
 
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
-                <span className="text-[10px] text-white/60 block font-bold">الإيرادات المجمعة</span>
+                <span className="text-[10px] text-white/60 block font-bold">الفلوس اللي تدخل</span>
                 <span className="text-xl font-mono font-black text-emerald-400">
                   {revenueIQD.toLocaleString()} <span className="text-[10px]">د.ع</span>
                 </span>
@@ -261,12 +229,12 @@ export default function AdvancedCalculatorSuite() {
                 ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
                 : "bg-red-950/40 border-red-500/40 text-red-300"
             }`}>
-              <span className="text-xs font-bold block">صافي الربح اليومي الخالص (بعد كل التكاليف):</span>
+              <span className="text-xs font-bold block">صافي الربح باليوم بعد كل المصاريف</span>
               <span className="text-3xl font-mono font-black tracking-tight">
                 {netProfitIQD.toLocaleString()} د.ع
               </span>
               <span className="text-[10px] block opacity-80 dir-rtl">
-                {netProfitIQD >= 0 ? "✅ خطة مربحة وجاهزة للتنفيذ" : "⚠️ خطة خاسرة بسبب ارتفاع كلفة الإعلان أو انخفاض الهامش"}
+                {netProfitIQD >= 0 ? "الحملة رابحة بهالأرقام" : "الحملة خسرانة: كلفة الإعلان عالية أو الهامش قليل"}
               </span>
             </div>
           </div>
@@ -282,67 +250,52 @@ export default function AdvancedCalculatorSuite() {
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
-              <h4 className="text-xl font-black text-white">حاسبة LTV مقفلة في النسخة التجريبية</h4>
+              <h4 className="text-xl font-black text-white">حاسبة قيمة الزبون مقفولة بالتجربة</h4>
               <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
-                حاسبة القيمة العمرية وهوامش إعادة الشراء متاحة فقط للحسابات الكاملة. ترقية حسابك تتيح لك الوصول الفوري لجميع الـ 9 حواسب مئوية وتجارية.
+                تعرف بيها شكد يسوى الزبون اللي يرجع يشتري منك. تنفتح ويا الاشتراك الكامل.
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
               className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Crown className="w-4 h-4 text-white" />
-              <span>فتح حاسبة LTV وجميع الأدوات الآن ⚡</span>
+              <span>افتح الحاسبة</span>
             </button>
           </div>
         ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
-          <h4 className="text-xl font-bold text-vz-accent">حاسبة القيمة العمرية للعميل (Customer Lifetime Value - LTV)</h4>
+          <h4 className="text-xl font-bold text-vz-accent">شكد يسوى الزبون الواحد على المدى (LTV)</h4>
           <p className="text-xs md:text-sm text-white/70">
-            احسب كم القيمة المالية الإجمالية التي يدفعها لك الزبون العراقي على مدار علاقتهم ببراندك عند نجاح تطبيق استراتيجية إعادة الشراء.
+            الزبون اللي يرجع يشتري يسوى أكثر من أول طلب. هنا شكد يطلعلك ربح منه على المدى.
           </p>
 
           <div className="grid grid-cols-1 gap-y-5 gap-6 pt-4">
             <div className="space-y-4">
               <div>
-                <label className="text-xs text-white/80 block mb-1">متوسط قيمة الطلب الواحد AOV (د.ع)</label>
-                <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="1000"
-                  value={ltvInputs.aovIQD}
-                  onChange={(e) => setLtvInputs({ ...ltvInputs, aovIQD: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+                <label className="text-xs text-white/80 block mb-1">معدل قيمة الطلب</label>
+                <div className="w-full">
+  <NumberField className="w-full" value={ltvInputs.aovIQD} onChange={(v) => setLtvInputs({ ...ltvInputs, aovIQD: v })} unit="د.ع" step={1000} />
 </div>
               </div>
 
               <div>
-                <label className="text-xs text-white/80 block mb-1">عدد مرات الشراء سنوياً للزبون الواحد</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="0.1"
-                  value={ltvInputs.purchaseFreqPerYear}
-                  onChange={(e) => setLtvInputs({ ...ltvInputs, purchaseFreqPerYear: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/80 block mb-1">كم مرة يشتري الزبون بالسنة</label>
+                <NumberField className="w-full" value={ltvInputs.purchaseFreqPerYear} onChange={(v) => setLtvInputs({ ...ltvInputs, purchaseFreqPerYear: v })} unit="مرة" step={1} />
               </div>
 
               <div>
-                <label className="text-xs text-white/80 block mb-1">مدة ولاء الزبون بالسنوات</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  value={ltvInputs.lifespanYears}
-                  onChange={(e) => setLtvInputs({ ...ltvInputs, lifespanYears: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/80 block mb-1">كم سنة يبقى يشتري منك</label>
+                <NumberField className="w-full" value={ltvInputs.lifespanYears} onChange={(v) => setLtvInputs({ ...ltvInputs, lifespanYears: v })} unit="سنة" step={1} />
               </div>
             </div>
 
             <div className="glass border rounded-3xl p-6 flex flex-col justify-between text-center space-y-4">
-              <span className="text-xs text-white/60 font-bold uppercase tracking-wider">القيمة العمرية الصافية LTV</span>
+              <span className="text-xs text-white/60 font-bold uppercase tracking-wider">ربحك من الزبون الواحد على المدى</span>
               <span className="text-4xl md:text-5xl font-mono font-black text-emerald-400 drop-shadow-md">
                 {ltvValueIQD.toLocaleString()} <span className="text-base text-white/70">د.ع</span>
               </span>
               <p className="text-xs text-white/70 leading-relaxed">
-                معنى هذا الرقم: تكدر صرف حتى <span className="text-vz-accent font-bold">{(ltvValueIQD * 0.25).toLocaleString()} د.ع</span> للاستحواذ على هذا الزبون المرة الأولى، وستظل مربحاً جداً بفضل إعادة الشراء!
+                يعني تكدر تصرف لحد <span className="text-vz-accent font-bold">{(ltvValueIQD * 0.25).toLocaleString()} د.ع</span> إعلان حتى تجيب هالزبون أول مرة، وتبقى رابح من رجعته.
               </p>
             </div>
           </div>
@@ -358,46 +311,38 @@ export default function AdvancedCalculatorSuite() {
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
-              <h4 className="text-xl font-black text-white">محاكي التوسع الإعلاني مقفل في النسخة التجريبية</h4>
+              <h4 className="text-xl font-black text-white">حاسبة زيادة الميزانية مقفولة بالتجربة</h4>
               <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
-                محاكي مضاعفة الميزانية والتوقع المالي لحملات فيسبوك وانستغرام متاح فقط للحسابات المسجلة بالكامل.
+                تشوف بيها شنو يصير بربحك إذا زدت ميزانية الإعلان. تنفتح ويا الاشتراك الكامل.
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
               className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Crown className="w-4 h-4 text-white" />
-              <span>ترقية الحساب وفتح محاكي التوسع الآن ⚡</span>
+              <span>افتح الحاسبة</span>
             </button>
           </div>
         ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
-          <h4 className="text-xl font-bold text-vz-accent">محاكي ومحسّن التوسع الإعلاني (Scaling Simulator)</h4>
+          <h4 className="text-xl font-bold text-vz-accent">إذا زدت الميزانية، شنو يصير بربحك؟</h4>
           <p className="text-xs md:text-sm text-white/70">
-            "ماذا يحدث لأرباحي الصافية إذا قمت بمضاعفة صرف الإعلانات بنسبة {scalePct}%؟"
+            إذا زدت صرف الإعلان {scalePct}%، الطلبات ما تزيد بنفس النسبة لأن الإعلان يغلى شوية كل ما تكبّر. هنا الحسبة الواقعية.
           </p>
 
           <div className="space-y-3">
             <div className="flex justify-between items-center text-xs font-bold text-white/80">
-              <span>نسبة زيادة المصرف الإعلاني: +{scalePct}%</span>
-              <span>المصرف الجديد: ${scaledSpendUSD.toFixed(0)} / يومياً</span>
+              <span>الزيادة بالميزانية: +{scalePct}%</span>
+              <span>الميزانية الجديدة: {scaledSpendUSD.toFixed(0)}$ باليوم</span>
             </div>
-            <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-              min="20"
-              max="300"
-              step="10"
-              value={scalePct}
-              onChange={(e) => setScalePct(Number(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+            <div className="w-full">
+  <NumberField className="w-full" value={scalePct} onChange={(v) => setScalePct(v)} unit="%" step={5} />
 </div>
           </div>
 
           <div className="grid grid-cols-1 gap-y-5 gap-4 pt-4">
             <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
-              <span className="text-[10px] text-white/60 block font-bold">الطلبات اليومية المتوقعة</span>
+              <span className="text-[10px] text-white/60 block font-bold">الطلبات الواصلة باليوم</span>
               <span className="text-3xl font-mono font-black text-white">{scaledDelivered} طلب</span>
             </div>
             <div className="bg-white/5 border border-white/10 p-4 rounded-2xl text-center">
@@ -405,7 +350,7 @@ export default function AdvancedCalculatorSuite() {
               <span className="text-2xl font-mono font-black text-emerald-400">{scaledRevenueIQD.toLocaleString()} د.ع</span>
             </div>
             <div className={`border p-4 rounded-2xl text-center ${scaledProfitIQD >= 0 ? "bg-emerald-950/40 border-emerald-500/40" : "bg-red-950/40 border-red-500/40"}`}>
-              <span className="text-[10px] text-white/60 block font-bold">صافي الأرباح المتوقعة</span>
+              <span className="text-[10px] text-white/60 block font-bold">صافي الربح باليوم</span>
               <span className="text-2xl font-mono font-black text-white">{scaledProfitIQD.toLocaleString()} د.ع</span>
             </div>
           </div>
@@ -421,55 +366,44 @@ export default function AdvancedCalculatorSuite() {
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
-              <h4 className="text-xl font-black text-white">حاسبة نقطة التعادل مقفلة في النسخة التجريبية</h4>
+              <h4 className="text-xl font-black text-white">حاسبة نقطة التعادل مقفولة بالتجربة</h4>
               <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
-                حاسبة تحديد عدد التوصيلات المطلوبة لتغطية المصاريف الثابتة متاح للحسابات الكاملة.
+                تعرف بيها كم طلب لازم تبيع بالشهر حتى تغطي مصاريفك الثابتة. تنفتح ويا الاشتراك الكامل.
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
               className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Crown className="w-4 h-4 text-white" />
-              <span>ترقية الحساب وفتح الآلة الحاسبة ⚡</span>
+              <span>افتح الحاسبة</span>
             </button>
           </div>
         ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
-          <h4 className="text-xl font-bold text-vz-accent">حاسبة نقطة التعادل الشهرية (Break-Even Orders)</h4>
+          <h4 className="text-xl font-bold text-vz-accent">كم طلب لازم تبيع بالشهر حتى ما تخسر؟</h4>
           <p className="text-xs md:text-sm text-white/70">
-            كم عدد الطلبات الواجب بيعها وتسليمها شهرياً لتغطي كافة التكاليف الثابتة (رواتب، إيجار، اشتراكات، إعلانات) وتصل لـ 0$ خسارة؟
+            المصاريف الثابتة (رواتب، إيجار، اشتراكات) تندفع حتى لو ما بعت شي. هنا كم طلب واصل تحتاج حتى تغطيها.
           </p>
 
           <div className="grid grid-cols-1 gap-y-5 gap-6">
             <div className="space-y-4">
               <div>
-                <label className="text-xs text-white/80 block mb-1">إجمالي المصاريف الثابتة شهرياً (د.ع)</label>
-                <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="50000"
-                  value={breakEvenInputs.fixedCostsIQD}
-                  onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, fixedCostsIQD: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+                <label className="text-xs text-white/80 block mb-1">مصاريفك الثابتة بالشهر</label>
+                <div className="w-full">
+  <NumberField className="w-full" value={breakEvenInputs.fixedCostsIQD} onChange={(v) => setBreakEvenInputs({ ...breakEvenInputs, fixedCostsIQD: v })} unit="د.ع" step={10000} />
 </div>
               </div>
 
               <div>
-                <label className="text-xs text-white/80 block mb-1">ربح القطعة الواحدة قبل المصاريف الثابتة (د.ع)</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  step="1000"
-                  value={breakEvenInputs.unitContributionMarginIQD}
-                  onChange={(e) => setBreakEvenInputs({ ...breakEvenInputs, unitContributionMarginIQD: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/80 block mb-1">ربح الطلب الواحد بعد الإعلان والتوصيل</label>
+                <NumberField className="w-full" value={breakEvenInputs.unitContributionMarginIQD} onChange={(v) => setBreakEvenInputs({ ...breakEvenInputs, unitContributionMarginIQD: v })} unit="د.ع" step={500} />
               </div>
             </div>
 
             <div className="glass border rounded-3xl p-6 text-center flex flex-col justify-center space-y-3">
-              <span className="text-xs text-white/60 font-bold uppercase">عدد الطلبات المطلوبة لنقطة التعادل</span>
-              <span className="text-5xl font-mono font-black text-vz-accent">{breakEvenOrdersRequired} <span className="text-base text-white/60">طلب/شهرياً</span></span>
-              <span className="text-xs text-white/70">أي بمعدل حوالي {Math.ceil(breakEvenOrdersRequired / 30)} طلبات يومياً.</span>
+              <span className="text-xs text-white/60 font-bold uppercase">الطلبات اللي تحتاجها بالشهر</span>
+              <span className="text-5xl font-mono font-black text-vz-accent">{breakEvenOrdersRequired} <span className="text-base text-white/60">طلب بالشهر</span></span>
+              <span className="text-xs text-white/70">يعني تقريباً {Math.ceil(breakEvenOrdersRequired / 30)} طلب باليوم. أي طلب فوق هذا ربح.</span>
             </div>
           </div>
         </div>
@@ -484,48 +418,43 @@ export default function AdvancedCalculatorSuite() {
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
-              <h4 className="text-xl font-black text-white">مطور الهوامش 50/30/20 مقفل في النسخة التجريبية</h4>
+              <h4 className="text-xl font-black text-white">حاسبة تقسيم السعر مقفولة بالتجربة</h4>
               <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
-                أداة تقسيم الهوامش وحساب كلفة الشراء والإعلانات وصافي الربح ممتلكات كاملة.
+                تقسم بيها سعر البيع على الكلفة والإعلان والربح. تنفتح ويا الاشتراك الكامل.
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
               className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Crown className="w-4 h-4 text-white" />
-              <span>ترقية الحساب والوصول الفوري ⚡</span>
+              <span>افتح الحاسبة</span>
             </button>
           </div>
         ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
-          <h4 className="text-xl font-bold text-vz-accent">مطور ومحسّن الهوامش المالية (قاعدة 50/30/20)</h4>
+          <h4 className="text-xl font-bold text-vz-accent">تقسيم السعر: قاعدة 50/30/20</h4>
           <p className="text-xs md:text-sm text-white/70">
-            أدخل سعر البيع المستهدف لترى كيف يجب توزيع الميزانية بين كلفة المنتج والتوصيل والإعلانات والصافي.
+            اكتب سعر البيع، وتطلعلك الحدود: شكد تكدر تصرف على المنتج والتوصيل، وشكد على الإعلان، وشكد يبقالك ربح.
           </p>
 
           <div className="space-y-2">
-            <label className="text-xs text-white/80 block">سعر البيع المستهدف للزبون (د.ع)</label>
-            <input type="number" inputMode="numeric" pattern="[0-9]*"
-              step="1000"
-              value={marginSellingPrice}
-              onChange={(e) => setMarginSellingPrice(Number(e.target.value))}
-              className="w-full max-w-xs bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
+            <label className="text-xs text-white/80 block">سعر البيع للزبون</label>
+            <NumberField className="w-full" value={marginSellingPrice} onChange={(v) => setMarginSellingPrice(v)} unit="د.ع" step={1000} />
           </div>
 
           <div className="grid grid-cols-1 gap-y-5 gap-4 pt-2">
             <div className="bg-slate-900/40 border border-white/14 p-5 rounded-2xl text-center">
-              <span className="text-xs font-bold text-slate-200 block mb-1">50% كلفة الشراء والتغليف والتوصيل</span>
+              <span className="text-xs font-bold text-slate-200 block mb-1">50% المنتج والتغليف والتوصيل</span>
               <span className="text-2xl font-mono font-black text-white">{targetCogs.toLocaleString()} د.ع</span>
             </div>
 
             <div className="bg-slate-900/40 border border-white/14 p-5 rounded-2xl text-center">
-              <span className="text-xs font-bold text-vz-accent block mb-1">30% حد الأقصى لكلفة الإعلان (CPA)</span>
+              <span className="text-xs font-bold text-vz-accent block mb-1">30% أعلى كلفة إعلان للطلب</span>
               <span className="text-2xl font-mono font-black text-white">{targetAds.toLocaleString()} د.ع</span>
             </div>
 
             <div className="bg-emerald-950/40 border border-emerald-500/30 p-5 rounded-2xl text-center">
-              <span className="text-xs font-bold text-emerald-300 block mb-1">20% صافي أرباح خالص لك</span>
+              <span className="text-xs font-bold text-emerald-300 block mb-1">20% ربحك الصافي</span>
               <span className="text-2xl font-mono font-black text-emerald-400">{targetNetProfit.toLocaleString()} د.ع</span>
             </div>
           </div>
@@ -541,65 +470,52 @@ export default function AdvancedCalculatorSuite() {
               <Lock className="w-7 h-7" />
             </div>
             <div className="space-y-2 max-w-md mx-auto">
-              <h4 className="text-xl font-black text-white">حاسبة أثر خفض المرتجع مقفلة في النسخة التجريبية</h4>
+              <h4 className="text-xl font-black text-white">حاسبة الراجع مقفولة بالتجربة</h4>
               <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
-                احسب المبالغ المستردة عند خفض المرتجع لـ 6%. متاح في الاشتراك الكامل.
+                تحسب بيها شكد ترجعلك فلوس إذا قللت الراجع. تنفتح ويا الاشتراك الكامل.
               </p>
             </div>
             <button               onClick={triggerUpgradeModal}
               className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Crown className="w-4 h-4 text-white" />
-              <span>ترقية الحساب وفتح الحسبة الآن ⚡</span>
+              <span>افتح الحاسبة</span>
             </button>
           </div>
         ) : (
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
-          <h4 className="text-xl font-bold text-vz-accent">حاسبة أثر خفض المرتجع على الأرباح الصافية</h4>
+          <h4 className="text-xl font-bold text-vz-accent">إذا قللت الراجع، شكد ترجعلك فلوس؟</h4>
           <p className="text-xs md:text-sm text-white/70">
-            اكتشف كم من الأموال المهدورة تكدر استعادتها فوراً عند تطبيق تكتيكات المكالمة الذهبية وتقليص المرتجع.
+            بمكالمة التأكيد والفحص كدام المندوب ينزل الراجع. هنا شكد يرجعلك بالشهر.
           </p>
 
           <div className="grid grid-cols-1 gap-y-5 gap-6">
             <div className="space-y-4">
               <div>
-                <label className="text-xs text-white/80 block mb-1">إجمالي الطلبات التوصيل الشهرية</label>
-                <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  value={returnRateInputs.monthlyOrders}
-                  onChange={(e) => setReturnRateInputs({ ...returnRateInputs, monthlyOrders: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                <label className="text-xs text-white/80 block mb-1">طلباتك بالشهر</label>
+                <div className="w-full">
+  <NumberField className="w-full" value={returnRateInputs.monthlyOrders} onChange={(v) => setReturnRateInputs({ ...returnRateInputs, monthlyOrders: v })} unit="طلب" step={10} />
 </div>
               </div>
 
               <div>
-                <label className="text-xs text-white/80 block mb-1">نسبة المرتجع الحالية (%)</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  value={returnRateInputs.currentReturnRatePct}
-                  onChange={(e) => setReturnRateInputs({ ...returnRateInputs, currentReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/80 block mb-1">نسبة الراجع هسه</label>
+                <NumberField className="w-full" value={returnRateInputs.currentReturnRatePct} onChange={(v) => setReturnRateInputs({ ...returnRateInputs, currentReturnRatePct: v })} unit="%" min={0} max={100} step={1} />
               </div>
 
               <div>
-                <label className="text-xs text-white/80 block mb-1">النسبة المستهدفة بعد تطبيق الدليل (%)</label>
-                <input type="number" inputMode="numeric" pattern="[0-9]*"
-                  value={returnRateInputs.targetReturnRatePct}
-                  onChange={(e) => setReturnRateInputs({ ...returnRateInputs, targetReturnRatePct: Number(e.target.value) })}
-                  className="w-full bg-black/35 border border-white/15 rounded-xl p-3 text-white font-mono text-sm text-left dir-ltr min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                />
+                <label className="text-xs text-white/80 block mb-1">النسبة اللي تريد توصلها</label>
+                <NumberField className="w-full" value={returnRateInputs.targetReturnRatePct} onChange={(v) => setReturnRateInputs({ ...returnRateInputs, targetReturnRatePct: v })} unit="%" min={0} max={100} step={1} />
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-emerald-950/60 to-[#040e33] border border-emerald-500/40 rounded-3xl p-6 text-center flex flex-col justify-center space-y-4">
-              <span className="text-xs text-emerald-300 font-bold uppercase">الأرباح المكتسبة والأموال الموفرة شهرياً</span>
+              <span className="text-xs text-emerald-300 font-bold uppercase">اللي يرجعلك بالشهر</span>
               <span className="text-4xl md:text-5xl font-mono font-black text-emerald-400">
                 {monthlySavingsIQD.toLocaleString()} <span className="text-base text-white/70">د.ع</span>
               </span>
               <p className="text-xs text-white/70">
-                تقليص المرتجع يمنع ضياع <span className="text-vz-accent font-bold">{savedReturnsCount} توصيلات</span> مهدورة شهرياً ويعيدها لأرباحك المباشرة!
+                يعني <span className="text-vz-accent font-bold">{savedReturnsCount} طلب</span> أقل يرجع بالشهر، وكروتها وخسارتها تبقى بجيبك.
               </p>
             </div>
           </div>

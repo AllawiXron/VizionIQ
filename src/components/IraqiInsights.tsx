@@ -82,15 +82,15 @@ export default function IraqiInsights() {
   };
 
   const categories = [
-    { id: "all", label: "🎯 الكل", color: "from-white/10 to-white/10" },
-    { id: "ads", label: "📣 الإعلانات", color: "from-white/10 to-white/15" },
-    { id: "sales", label: "💬 المبيعات", color: "from-emerald-500/20 to-emerald-600/30" },
-    { id: "pricing", label: "💰 التسعير", color: "from-white/10 to-white/15" },
-    { id: "content", label: "🎬 المحتوى", color: "from-white/10 to-white/15" },
-    { id: "customers", label: "👥 الزبائن", color: "from-white/10 to-white/15" },
-    { id: "profits", label: "📈 الأرباح", color: "from-white/10 to-white/15" },
-    { id: "mistakes", label: "⚠️ الأخطاء الشائعة", color: "from-red-500/20 to-red-600/30" },
-    { id: "newbies", label: "🌱 المشاريع الجديدة", color: "from-white/10 to-white/15" }
+    { id: "all", label: "الكل", color: "from-white/10 to-white/10" },
+    { id: "ads", label: "الإعلانات", color: "from-white/10 to-white/15" },
+    { id: "sales", label: "المبيعات", color: "from-emerald-500/20 to-emerald-600/30" },
+    { id: "pricing", label: "التسعير", color: "from-white/10 to-white/15" },
+    { id: "content", label: "المحتوى", color: "from-white/10 to-white/15" },
+    { id: "customers", label: "الزبائن", color: "from-white/10 to-white/15" },
+    { id: "profits", label: "الأرباح", color: "from-white/10 to-white/15" },
+    { id: "mistakes", label: "الأخطاء الشائعة", color: "from-red-500/20 to-red-600/30" },
+    { id: "newbies", label: "المشاريع الجديدة", color: "from-white/10 to-white/15" }
   ];
 
   // Filter insights based on Search and Category
@@ -257,7 +257,7 @@ export default function IraqiInsights() {
                         {insight.lesson}
                       </p>
                       <div className="pt-1">
-                        <span className="text-xs font-black text-vz-accent block mb-2">🔒 الحل والخطوات العملية المحمية لهذا الموقف</span>
+                        <span className="text-xs font-black text-vz-accent block mb-2">الحل والخطوات العملية المحمية لهذا الموقف</span>
                         <button                           onClick={(e) => {
                             e.stopPropagation();
                             triggerUpgradeModal();
@@ -265,7 +265,7 @@ export default function IraqiInsights() {
                           className="btn btn-primary px-4 py-2 rounded-xl text-white font-black text-xs inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                         >
                           <Crown className="w-3.5 h-3.5" />
-                          <span>ترقية الحساب وكشف الحل الفوري ⚡</span>
+                          <span>افتح الدرس كامل</span>
                         </button>
                       </div>
                     </div>
@@ -301,7 +301,7 @@ export default function IraqiInsights() {
                   title="نعم، لقد واجهت هذا الموقف في مشروعي سابقاً"
                 >
                   <ThumbsUp className="w-3.5 h-3.5 text-vz-accent" />
-                  <span className="text-xs">والله هاي صارت وياي! 🙋‍♂️</span>
+                  <span className="text-xs">والله هاي صارت وياي!</span>
                   <span className="font-mono text-[11px] text-emerald-400 font-black bg-black/40 px-2 py-0.5 rounded-full border border-white/5">
                     {voteCount}
                   </span>
@@ -333,7 +333,6 @@ export default function IraqiInsights() {
 
       {filteredInsights.length === 0 && (
         <div className="text-center py-20 glass to-black/40 border rounded-4xl space-y-4">
-          <span className="text-6xl block drop-shadow-lg">🔍🏜️</span>
           <h4 className="text-lg font-black text-white">لم نجد أي حقيقة تطابق بحثك</h4>
           <p className="text-sm text-white/70 max-w-sm mx-auto leading-relaxed">
             جرب كتابة كلمات مختلفة مثل 'إعلان'، 'سعر'، 'مرتجع'، أو اختر تبويب تصنيف آخر أعلاه.
@@ -386,7 +385,7 @@ export default function IraqiInsights() {
 
             <div className="space-y-6 pt-2 relative z-10">
               <span className="inline-block px-4 py-1.5 text-xs font-black bg-gradient-to-r from-white/10 to-white/3 text-vz-accent border border-white/18 rounded-xl shadow-lg">
-                📁 {randomInsight.categoryLabel}
+                {randomInsight.categoryLabel}
               </span>
 
               <p className="text-xl md:text-3xl font-black text-white leading-relaxed drop-shadow-lg pr-4 border-r-2 border-white/27">

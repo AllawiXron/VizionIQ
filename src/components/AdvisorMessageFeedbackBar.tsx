@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 
 export const IRAQI_MARKET_FEEDBACK_REASONS = [
-  { id: "generic_iraqi", label: "عام وغير مخصص للسوق العراقي", icon: "🇮🇶" },
-  { id: "pricing_delivery", label: "الحسبة بالدينار أو كروة التوصيل غير دقيقة", icon: "💰" },
-  { id: "script_unconvincing", label: "السكريبت غير مقنع للزبون العراقي", icon: "💬" },
-  { id: "need_more_steps", label: "أريد خطوات وتفاصيل عملية أكثر", icon: "⚡" },
-  { id: "unrelated", label: "مو مرتبط بسؤالي المباشر", icon: "🎯" },
+  { id: "generic_iraqi", label: "عام وغير مخصص للسوق العراقي" },
+  { id: "pricing_delivery", label: "الحسبة بالدينار أو كروة التوصيل غير دقيقة" },
+  { id: "script_unconvincing", label: "السكريبت غير مقنع للزبون العراقي" },
+  { id: "need_more_steps", label: "أريد خطوات وتفاصيل عملية أكثر" },
+  { id: "unrelated", label: "مو مرتبط بسؤالي المباشر" },
 ];
 
 export interface MessageFeedbackData {
@@ -172,7 +172,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
         <div className="mt-2 p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-[11px] sm:text-xs flex items-center justify-between gap-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>عاشت إيدك! تم تسجيل تقييمك لمساعدتنا في تطوير المستشار للسوق العراقي 👍</span>
+            <span>عاشت إيدك! تم تسجيل تقييمك لمساعدتنا في تطوير المستشار للسوق العراقي</span>
           </div>
         </div>
       )}
@@ -210,7 +210,6 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
                       : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-300 hover:text-white"
                   }`}
                 >
-                  <span className="text-sm shrink-0">{r.icon}</span>
                   <span className="leading-snug">{r.label}</span>
                 </button>
               );
@@ -269,7 +268,6 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
       {currentRating === "unhelpful" && !isPickerExpanded && (
         <div className="mt-2 p-2 rounded-xl bg-rose-950/30 border border-rose-500/30 text-rose-200 text-[11px] sm:text-xs flex items-center justify-between gap-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-1.5">
-            <span className="text-rose-400">✍️</span>
             <span>
               تم تسجيل ملاحظتك {currentReason ? `(${currentReason})` : ""}. سنعمل على تحسين جودة الإجابة!
             </span>

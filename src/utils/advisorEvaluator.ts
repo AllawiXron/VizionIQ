@@ -172,7 +172,7 @@ export const ADVISOR_EVALUATION_DATASET: AdvisorTestCase[] = [
     requiresClarificationQuestion: false,
     requiresConcreteAction: true,
     sampleGoldAnswer:
-      "تدلل يا غالي، هذا السكريبت العراقي المباشر والمجرب لتجاوز اعتراض السعر:\n💬 **السكريبت الجاهز للنسخ:**\n«هلا بيك عيوني.. حقك تقارن طبعاً وكل الهلا بيك. بس حبيت أوضحلك نقطة مهمة: منتجنا هو النسخة الأصلية 100% ويجي وياه ضمان استبدال حقيقي لمدة 6 أشهر، وتكدر تفحص القطعة وتجربها بيد المندوب قبل ما تدفع أي دينار. إذا ما عجبتك الجودة تكدر ترجعها وما تدفع فلس واحد. تحب نثبتلك الحجز ويا بكج الهدايا اليوم؟»",
+      "تدلل يا غالي، هذا السكريبت العراقي المباشر والمجرب لتجاوز اعتراض السعر:\n**السكريبت الجاهز للنسخ:**\n«هلا بيك عيوني.. حقك تقارن طبعاً وكل الهلا بيك. بس حبيت أوضحلك نقطة مهمة: منتجنا هو النسخة الأصلية 100% ويجي وياه ضمان استبدال حقيقي لمدة 6 أشهر، وتكدر تفحص القطعة وتجربها بيد المندوب قبل ما تدفع أي دينار. إذا ما عجبتك الجودة تكدر ترجعها وما تدفع فلس واحد. تحب نثبتلك الحجز ويا بكج الهدايا اليوم؟»",
   },
 
   // 7. Ambiguous questions that should trigger clarification
@@ -284,7 +284,7 @@ export function evaluateAdvisorResponse(
 
   // 3. Concrete Next Action Criterion
   const hasNumberedList = /\b[1-3]\./.test(responseText) || text.includes("أول خطوة") || text.includes("خطوات") || text.includes("طبق");
-  const hasScriptOrSop = text.includes("سكريبت") || text.includes("«") || text.includes("💬") || text.includes("الحل") || text.includes("معادلة");
+  const hasScriptOrSop = text.includes("سكريبت") || text.includes("«") || text.includes("") || text.includes("الحل") || text.includes("معادلة");
   const hasConcreteAction = !testCase.requiresConcreteAction || hasNumberedList || hasScriptOrSop;
   const concreteActionScore = hasConcreteAction ? 100 : 40;
 

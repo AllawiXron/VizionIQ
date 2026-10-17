@@ -11,6 +11,7 @@ import { isFreeTrialUser } from "./LockScreen";
 import { TRIAL_PROBLEMS, diagnose, iqd, useTrialProfile } from "../lib/trial";
 import { FULL_PRICE, OFFER_LAST_DAY, deadlineLabel, offerState, thousands } from "../lib/offer";
 import { SubscribeButton } from "./OfferPrice";
+import { TopicIcon } from "./ui/TopicIcon";
 
 interface HomeViewProps {
   userCode: string;
@@ -76,7 +77,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-10 sm:space-y-14 text-right">
       {/* Greeting */}
       <motion.div {...rise(0.05)} className="space-y-2 sm:space-y-3">
-        <p className="text-sm sm:text-base font-bold text-vz-accent">{started ? "هلا بيك مرة ثانية 👋" : "أهلاً بيك بـ فيزيون 👋"}</p>
+        <p className="text-sm sm:text-base font-bold text-vz-accent">{started ? "هلا بيك مرة ثانية" : "أهلاً بيك بـ فيزيون"}</p>
         <h1 className="text-[1.75rem] sm:text-5xl font-black text-white tracking-tight leading-tight">
           {finished ? "خلصت الكورس كله، عاشت إيدك" : started ? "كمّل من وين ما وكفت" : "ابدأ من هنا، خطوة وحدة كل مرة"}
         </h1>
@@ -106,7 +107,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
             {next && !finished ? (
               <>
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <span className="text-3xl sm:text-4xl leading-none shrink-0" aria-hidden="true">{next.icon}</span>
+                  <TopicIcon kind="chapter" id={next.id} size="lg" />
                   <div className="min-w-0">
                     <p className="text-xs sm:text-sm text-white/55 font-bold">
                       الفصل {nextIndex + 1} من {total}
@@ -134,7 +135,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
               </>
             ) : (
               <div className="space-y-4">
-                <h2 className="text-xl sm:text-3xl font-black text-white leading-snug">خلصت كل الفصول الـ {total} 🎉</h2>
+                <h2 className="text-xl sm:text-3xl font-black text-white leading-snug">خلصت كل الفصول الـ {total}</h2>
                 <p className="text-sm sm:text-base text-white/60">هسة استخدم الأدوات والمستشار على مشروعك كل أسبوع.</p>
                 <button onClick={() => onNavigate({ view: "chapters" })} className={`btn btn-glass min-h-[50px] px-6 rounded-full text-sm ${focusRing}`}>
                   كل الفصول
@@ -184,7 +185,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
                 onClick={() => onNavigate({ view: "solution", id: pb.id })}
                 className={`group w-full h-full text-right glass glass-interactive rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex md:flex-col items-start gap-3.5 cursor-pointer ${focusRing}`}
               >
-                <span className="text-2xl sm:text-3xl leading-none shrink-0" aria-hidden="true">{pb.icon}</span>
+                <TopicIcon kind="playbook" id={pb.id} size="sm" />
                 <span className="flex-1 min-w-0 space-y-1">
                   <span className="block text-sm sm:text-base font-black text-white leading-snug">«{pb.problem}»</span>
                   <span className="hidden md:inline-flex items-center gap-1 pt-2 text-xs font-bold text-white/70 group-hover:text-white transition-colors">

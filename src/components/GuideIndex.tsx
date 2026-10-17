@@ -9,6 +9,7 @@ import { PageHeader } from "./ui/PageHeader";
 import { upcomingSeasons } from "./guide/GuideTools";
 import { isFreeTrialUser } from "./LockScreen";
 import { LockChip } from "./TrialLock";
+import { TopicIcon } from "./ui/TopicIcon";
 
 interface GuideIndexProps {
   userCode: string;
@@ -64,7 +65,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
                 className={`group w-full h-full text-right glass glass-interactive rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col gap-3 cursor-pointer ${focusRing}`}
               >
                 <div className="flex items-start gap-3.5">
-                  <span className="text-3xl leading-none shrink-0" aria-hidden="true">{m.icon}</span>
+                  <TopicIcon kind="guide" id={m.id} />
                   <div className="min-w-0 space-y-1.5">
                     <h2 className="text-base sm:text-lg font-black text-white leading-snug">{m.title}</h2>
                     {isTrial && <LockChip label="بالتجربة: أول جزء بس" />}

@@ -22,6 +22,7 @@ import { setChapterDone, setLastChapter, stageOf, useCourseProgress } from "../l
 import type { Route } from "../lib/route";
 
 import FadeInUp from "./FadeInUp";
+import { TopicIcon } from "./ui/TopicIcon";
 
 // Interactive Tools
 const RoiCalculator = React.lazy(() => import("./RoiCalculator"));
@@ -119,7 +120,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           )}
         </div>
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight flex items-start gap-3">
-          <span aria-hidden="true" className="shrink-0">{chapter.icon}</span>
+          <TopicIcon kind="chapter" id={chapter.id} size="lg" className="mt-0.5" />
           <span>{chapter.title}</span>
         </h1>
         <p className="text-sm sm:text-lg text-white/60 leading-relaxed max-w-3xl">{chapter.description}</p>
@@ -172,7 +173,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                         {isLockedSection && (
                           <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-vz-accent border border-white/18 text-[10px] sm:text-xs font-black flex items-center gap-1">
                             <Lock className="w-3 h-3 text-vz-accent" />
-                            <span>محتوى مقفول (نسخة تجريبية)</span>
+                            <span>مقفول بالتجربة</span>
                           </span>
                         )}
                       </h4>
@@ -211,17 +212,17 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                             </div>
                             <div className="space-y-1">
                               <h5 className="text-sm sm:text-base font-black text-white">
-                                الخطوات المضبوطة للتطبيق محميّة
+                                باقي الدرس ينفتح ويا الاشتراك
                               </h5>
                               <p className="text-xs text-white/70 max-w-lg mx-auto font-light">
-                                هذا الجزء بي الخطوات المضبوطة حتى توكف الراجع وتزيد مبيعاتك. ينفتحلك فوراً بالنسخة المدفوعة.
+                                هنا الشرح الكامل ويا الأمثلة والخطوات بالترتيب.
                               </p>
                             </div>
                             <button                               onClick={triggerUpgradeModal}
                               className="btn btn-primary px-5 py-2.5 rounded-xl text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                             >
                               <Crown className="w-4 h-4 text-white" />
-                              <span>افتح هذا القسم وكمل الكورس هسة ⚡</span>
+                              <span>افتح الكورس كامل</span>
                             </button>
                           </div>
                         </div>
@@ -252,7 +253,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               <div className="glass-subtle border border-emerald-500/30 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-8 space-y-4 h-full">
                 <h4 className="text-sm sm:text-base font-bold text-emerald-400 flex items-center gap-2">
                   <CheckSquare className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>خطوات الشغل (شلون تطبق):</span>
+                  <span>شلون تطبقها</span>
                 </h4>
                 <div className="space-y-2.5 sm:space-y-3">
                   {detailedData.actionSteps?.map((st) => (
@@ -273,15 +274,15 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               <div className="glass-subtle border border-red-500/30 rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-8 space-y-4 h-full">
                 <h4 className="text-sm sm:text-base font-bold text-red-400 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>أغلاط دير بالك توكع بيها:</span>
+                  <span>أغلاط لا توكع بيها</span>
                 </h4>
                 <div className="space-y-2.5 sm:space-y-3">
                   {detailedData.commonMistakes?.map((m, idx) => (
                     <div key={idx} className="bg-red-950/20 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-red-500/20 space-y-1">
-                      <span className="text-xs font-bold text-red-300 block">⚠️ {m.mistake}</span>
+                      <span className="text-xs font-bold text-red-300 block">{m.mistake}</span>
                       <p className="text-xs text-white/60">{m.whyItFails}</p>
                       <div className="text-[11px] text-emerald-400 font-bold pt-1 border-t border-white/5">
-                        💡 الحل: {m.fix}
+                        الحل: {m.fix}
                       </div>
                     </div>
                   ))}
@@ -305,7 +306,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
             {isFreeTrial && (
               <span className="px-3 py-1 rounded-full bg-white/10 text-vz-accent border border-white/18 text-xs font-bold flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5 text-vz-accent" />
-                <span>نسخة مجانية للتجربة</span>
+                <span>بالتجربة: أول مثال بس</span>
               </span>
             )}
           </h3>
@@ -322,7 +323,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                         <p className="fluid-prose text-white/85 font-normal max-readable-prose">{sec.content}</p>
                         {sec.examples && (
                           <div className="bg-black/40 p-5 rounded-2xl space-y-2 border border-white/5">
-                            <span className="text-xs sm:text-sm font-bold text-vz-accent block">أمثلة حقيقية من سوكنا:</span>
+                            <span className="text-xs sm:text-sm font-bold text-vz-accent block">أمثلة من السوق العراقي:</span>
                             <ul className="list-disc list-inside text-xs sm:text-sm text-white/80 space-y-1.5 leading-relaxed">
                               {sec.examples.map((ex, eidx) => (
                                 <li key={eidx}>{ex}</li>
@@ -337,15 +338,15 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                         <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/10 text-vz-accent">
                           <Crown className="w-5 h-5" />
                         </div>
-                        <h5 className="text-sm font-black text-white">التفاصيل والأمثلة العميقة مقفولة هسة</h5>
+                        <h5 className="text-sm font-black text-white">باقي الأمثلة تنفتح ويا الاشتراك</h5>
                         <p className="text-xs text-white/70 max-w-md mx-auto">
-                          اشترك بالحساب المدفوع حتى تفتح كل الأمثلة العملية وخطط الشغل.
+                          كل مثال بيه أرقام وخطوات تطبقها على مشروعك.
                         </p>
                         <button                           onClick={triggerUpgradeModal}
                           className="btn btn-primary px-5 py-2.5 rounded-xl text-white font-black text-xs inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                         >
                           <KeyRound className="w-4 h-4 text-white" />
-                          <span>رقي حسابك وافتح كل التفاصيل ⚡</span>
+                          <span>افتح الكورس كامل</span>
                         </button>
                       </div>
                     )}
@@ -400,16 +401,16 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                       <Lock className="w-5 h-5" />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-base font-black text-white">الأرقام المضبوطة وتفاصيل الشغل مقفولة</h4>
+                      <h4 className="text-base font-black text-white">أرقام القصة وتفاصيلها تنفتح ويا الاشتراك</h4>
                       <p className="text-xs text-white/70 max-w-lg mx-auto">
-                        شوف شلون صعدنا مبيعات مشروع {relatedCaseStudy.businessName} بـ {relatedCaseStudy.city} وقللنا الراجع. تنفتحلك من تشترك بالحساب الكامل.
+                        قصة مشروع {relatedCaseStudy.businessName} بـ {relatedCaseStudy.city}: شنو غيّر، وشلون تغيرت أرقامه.
                       </p>
                     </div>
                     <button                       onClick={triggerUpgradeModal}
                       className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <Crown className="w-4 h-4 text-white" />
-                      <span>افتح القصة والأرقام كاملة هسة ⚡</span>
+                      <span>افتح القصة كاملة</span>
                     </button>
                   </div>
                 )}
@@ -425,7 +426,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
       {activeTab === "swipe" && (
         <div className="glass-subtle border rounded-2xl sm:rounded-4xl p-4 sm:p-8 md:p-12 space-y-6 sm:space-y-8 max-w-5xl mx-auto animate-fade-in">
           <h3 className="text-xl sm:text-2xl font-black text-vz-accent flex items-center justify-between">
-            <span>رسائل جاهزة للنسخ تفيدك بهذا الفصل:</span>
+            <span>رسائل جاهزة لهذا الفصل</span>
             {isFreeTrial && <span className="text-xs text-vz-accent font-normal">بعض الرسائل مقفولة</span>}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -443,11 +444,11 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                     ) : (
                       <div className="p-4 rounded-xl glass border text-center space-y-2">
                         <Lock className="w-5 h-5 text-vz-accent mx-auto" />
-                        <p className="text-xs text-white/80 font-bold">الرسائل الاحترافية مقفولة هسة</p>
+                        <p className="text-xs text-white/80 font-bold">باقي الرسائل تنفتح ويا الاشتراك</p>
                         <button                           onClick={triggerUpgradeModal}
                           className="btn btn-primary px-4 py-2 rounded-lg text-white font-black text-xs min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                         >
-                          افتح وانسخ كل الرسائل ⚡
+                          افتح كل الرسائل
                         </button>
                       </div>
                     )}
@@ -470,29 +471,29 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               <div className="space-y-2 max-w-xl mx-auto">
                 <h3 className="text-xl sm:text-2xl font-black text-white">الأدوات والحاسبات مال هذا الفصل مقفولة</h3>
                 <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
-                  هاي الأدوات تحسبلك شكد تربح صافي، وشكد تكلفك الرسالة، وتختبرلك رسائل الواتساب. تنفتحلك بالكامل بالنسخة المدفوعة.
+                  حاسبات الربح وكلفة الرسالة وتجربة الردود، كلها بالدينار.
                 </p>
               </div>
               <button                 onClick={triggerUpgradeModal}
                 className="btn btn-primary px-8 py-3.5 rounded-2xl text-white font-black text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <KeyRound className="w-5 h-5 text-white" />
-                <span>افتح كل الأدوات والحاسبات هسة ⚡</span>
+                <span>افتح كل الأدوات</span>
               </button>
             </div>
           ) : (
             <>
-              {id === "chapter1" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><RoiCalculator /></React.Suspense>}
-              {id === "chapter2" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><ScriptSimulator /></React.Suspense>}
-              {id === "chapter3" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdvancedCalculatorSuite /></React.Suspense>}
-              {id === "chapter4" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdSimulator /></React.Suspense>}
-              {id === "chapter5" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdSimulator /></React.Suspense>}
-              {id === "chapter7" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><ScriptSimulator /></React.Suspense>}
-              {id === "chapter10" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdvancedCalculatorSuite /></React.Suspense>}
-              {id === "chapter11" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><ThirtyDayPlan /></React.Suspense>}
+              {id === "chapter1" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><RoiCalculator /></React.Suspense>}
+              {id === "chapter2" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><ScriptSimulator /></React.Suspense>}
+              {id === "chapter3" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><AdvancedCalculatorSuite /></React.Suspense>}
+              {id === "chapter4" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><AdSimulator /></React.Suspense>}
+              {id === "chapter5" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><AdSimulator /></React.Suspense>}
+              {id === "chapter7" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><ScriptSimulator /></React.Suspense>}
+              {id === "chapter10" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><AdvancedCalculatorSuite /></React.Suspense>}
+              {id === "chapter11" && <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><ThirtyDayPlan /></React.Suspense>}
               
               {!["chapter1", "chapter2", "chapter3", "chapter4", "chapter5", "chapter7", "chapter10", "chapter11"].includes(id) && (
-                <React.Suspense fallback={<div className="p-4 text-center text-white/70">جاري التحميل...</div>}><AdvancedCalculatorSuite /></React.Suspense>
+                <React.Suspense fallback={<div className="p-4 text-center text-white/70">دا يحمّل...</div>}><AdvancedCalculatorSuite /></React.Suspense>
               )}
             </>
           )}
@@ -505,7 +506,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           onClick={() => onNavigate({ view: "solution", id: playbook.id })}
           className={`group mt-10 sm:mt-14 w-full text-right glass-elevated glass-edge rounded-3xl p-5 sm:p-7 flex items-center gap-4 cursor-pointer ${focusRing}`}
         >
-          <span className="text-3xl sm:text-4xl leading-none shrink-0" aria-hidden="true">{playbook.icon}</span>
+          <TopicIcon kind="playbook" id={playbook.id} size="lg" />
           <span className="flex-1 min-w-0 space-y-1">
             <span className="block text-xs sm:text-sm font-bold text-vz-accent">طبّق هذا الفصل على مشروعك</span>
             <span className="block text-base sm:text-xl font-black text-white leading-snug">{playbook.title}</span>

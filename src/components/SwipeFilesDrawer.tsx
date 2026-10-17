@@ -131,12 +131,12 @@ export default function SwipeFilesDrawer() {
                       {sf.content}
                     </p>
                     <div className="pt-1">
-                      <span className="text-xs font-black text-vz-accent block mb-2">🔒 سكريبت سوايب مدفوع ومحمي بالكامل</span>
+                      <span className="text-xs font-black text-vz-accent block mb-2">سكريبت سوايب مدفوع ومحمي بالكامل</span>
                       <button                         onClick={triggerUpgradeModal}
                         className="btn btn-primary px-4 py-2 rounded-xl text-white font-black text-xs inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <Crown className="w-3.5 h-3.5" />
-                        <span>ترقية الحساب ونسخ السكريبت ⚡</span>
+                        <span>افتح الرسالة</span>
                       </button>
                     </div>
                   </div>
@@ -152,7 +152,7 @@ export default function SwipeFilesDrawer() {
                     {copiedId === sf.id ? (
                       <>
                         <Check className="w-4 h-4" />
-                        <span>تم النسخ بنجاح!</span>
+                        <span>انتسخت</span>
                       </>
                     ) : (
                       <>

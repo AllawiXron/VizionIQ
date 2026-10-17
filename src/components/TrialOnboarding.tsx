@@ -17,8 +17,9 @@ import {
   diagnose, iqd, saveTrialProfile, useTrialProfile,
   type TrialProfile, type TrialStage,
 } from "../lib/trial";
-import { PLAN_INCLUDES } from "../lib/offer";
+import { PLAN_INCLUDES, STUDENT_COUNT } from "../lib/offer";
 import { OfferPrice, SubscribeButton } from "./OfferPrice";
+import { TopicIcon } from "./ui/TopicIcon";
 
 interface TrialOnboardingProps {
   isOpen: boolean;
@@ -212,11 +213,12 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                   {step === "intro" && (
                     <div className="space-y-6 pt-4">
                       <div className="space-y-3">
-                        <p className="text-sm font-bold text-vz-accent">أهلاً بيك بـ viZion 👋</p>
+                        <p className="text-sm font-bold text-vz-accent">أهلاً بيك بـ viZion</p>
                         <h2 className="text-[1.7rem] sm:text-4xl font-black leading-tight">قبل لا تبدي، خلي نشوف مشروعك بدقيقة وحدة</h2>
                         <p className="text-sm sm:text-base text-white/65 leading-relaxed">
                           هنا مو فيديوهات طويلة ولا قناة تلكرام. تكتب أرقامك، وتعرف بالضبط وين تروح فلوسك وشنو تسوي بعدين.
                         </p>
+                        <p className="text-xs text-white/45">{STUDENT_COUNT} مشترك يستخدمون المنصة لحد هسه.</p>
                       </div>
                       <ul className="space-y-2.5">
                         {[
@@ -280,7 +282,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                   {step === "problem" && (
                     <div className="space-y-5 pt-2">
                       <div className="space-y-1.5">
-                        <h2 className="text-2xl sm:text-3xl font-black leading-tight">شنو أكثر شي يوجعك هسه؟</h2>
+                        <h2 className="text-2xl sm:text-3xl font-black leading-tight">شنو أكبر مشكلة تواجهك هسه؟</h2>
                         <p className="text-sm text-white/55">اختار وحدة، الأقرب لحالتك.</p>
                       </div>
                       <div className="grid gap-2.5">
@@ -296,7 +298,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                               problem === p.id ? "bg-vz-blue/30 border-vz-blue-light" : "bg-white/[0.04] border-white/10 hover:bg-white/[0.08]"
                             }`}
                           >
-                            <span className="text-2xl leading-none shrink-0" aria-hidden="true">{p.icon}</span>
+                            <TopicIcon kind="playbook" id={p.id} size="sm" />
                             <span className="flex-1 text-sm sm:text-base font-bold text-white leading-snug">{p.label}</span>
                             {problem === p.id && <Check className="w-5 h-5 text-white shrink-0" strokeWidth={3} />}
                           </button>
@@ -523,7 +525,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
       {/* The solution waiting for them */}
       <section className="glass rounded-3xl p-5 space-y-4">
         <div className="flex items-start gap-3">
-          <span className="text-3xl leading-none shrink-0" aria-hidden="true">{pb.icon}</span>
+          <TopicIcon kind="playbook" id={pb.id} />
           <div className="min-w-0 space-y-1">
             <p className="text-xs font-bold text-vz-accent">حل مشكلتك جاهز بالمنصة{problem ? `: «${problem.label}»` : ""}</p>
             <h3 className="text-base sm:text-lg font-black leading-snug">{pb.title}</h3>
@@ -555,7 +557,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
 
       {/* A real member */}
       <section className="glass-subtle rounded-3xl p-5 space-y-2">
-        <p className="text-[11px] font-bold text-white/45">رسالة من مشترك</p>
+        <p className="text-[11px] font-bold text-white/45">رسالة من واحد من {STUDENT_COUNT} مشترك</p>
         <p className="text-base sm:text-lg font-black leading-snug">«استاذ والله دامشي حسب الخطة بالضبط»</p>
         <p className="text-sm text-white/65 leading-relaxed">صرف 70$ على الإعلان، وباع بمليون و475 ألف.</p>
       </section>
@@ -564,7 +566,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
       <section className="glass-elevated glass-edge rounded-3xl p-5 sm:p-6 space-y-4">
         <div className="space-y-1">
           <h3 className="text-lg sm:text-xl font-black">افتح الحل كامل، وطبّقه من اليوم</h3>
-          <p className="text-xs sm:text-sm text-white/60">اشتراك واحد يفتح كلشي، مو بس هالحل.</p>
+          <p className="text-xs sm:text-sm text-white/60">اشتراك واحد يفتح كلشي، مو بس هالحل. وياك {STUDENT_COUNT} مشترك لحد هسه.</p>
         </div>
         <OfferPrice size="md" />
         <ul className="space-y-2 text-sm text-white/85">

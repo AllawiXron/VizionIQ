@@ -19,8 +19,10 @@ export default function ThirtyDayPlan() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length === 30) {
-          setTasks(parsed);
+        if (Array.isArray(parsed)) {
+          // Keep only which days are ticked; the text always comes from the current plan.
+          const done = new Set(parsed.filter((t: DayTask) => t && t.completed).map((t: DayTask) => t.day));
+          setTasks(defaultDays.map((item) => ({ ...item, completed: done.has(item.day) })));
           return;
         }
       } catch (e) {
@@ -49,7 +51,7 @@ export default function ThirtyDayPlan() {
   };
 
   const handleReset = () => {
-    if (window.confirm("هل أنت متأكد من رغبتك في إعادة ضبط تقدم خطة الـ ٣٠ يوماً كلياً؟")) {
+    if (window.confirm("متأكد تريد تمسح تقدمك بالخطة وتبدي من جديد؟")) {
       const resetTasks = tasks.map(t => ({ ...t, completed: false }));
       setTasks(resetTasks);
       localStorage.setItem("sales_guide_30day_progress", JSON.stringify(resetTasks));
@@ -86,8 +88,8 @@ export default function ThirtyDayPlan() {
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base sm:text-lg md:text-xl font-black text-white">📅 امشِ على خطة يومية واضحة مصممة حتى تساعدك توصل لأول 100 طلب بمشروعك</h3>
-            <p className="text-[10px] sm:text-xs text-white/70 mt-1">توقف عن العشوائية في العمل! اتبع هذا المسار اليومي المؤسس على واقع السوق العراقي</p>
+            <h3 className="text-base sm:text-lg md:text-xl font-black text-white">خطة 30 يوم لأول 100 طلب</h3>
+            <p className="text-[10px] sm:text-xs text-white/70 mt-1">كل يوم مهمة وحدة واضحة. علّم اليوم من تخلصه، وتقدمك ينحفظ.</p>
           </div>
         </div>
 
@@ -96,7 +98,7 @@ export default function ThirtyDayPlan() {
           className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white/70 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>إعادة تصفير الخطة</span>
+          <span>ابدي من جديد</span>
         </button>
       </div>
 
@@ -108,9 +110,9 @@ export default function ThirtyDayPlan() {
           <div className="flex justify-between items-center text-xs font-bold text-white">
             <span className="flex items-center gap-1.5 text-vz-accent">
               <Award className="w-4 h-4" />
-              معدل الإنجاز الإجمالي: {progressPercent}%
+              خلصت {progressPercent}%
             </span>
-            <span className="font-mono text-white/60">{completedCount} من أصل ٣٠ يوماً منجزة</span>
+            <span className="font-mono text-white/60">{completedCount} من 30 يوم</span>
           </div>
 
           {/* Progress bar container */}
@@ -124,18 +126,18 @@ export default function ThirtyDayPlan() {
 
         <div className="flex items-center gap-3 bg-white/5 border border-white/5 px-4 py-2.5 rounded-xl">
           <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-lg">
-            {progressPercent === 100 ? "🏆" : progressPercent >= 70 ? "🔥" : progressPercent >= 30 ? "🚀" : "🌱"}
+            {progressPercent === 100 ? "" : progressPercent >= 70 ? "" : progressPercent >= 30 ? "" : ""}
           </div>
           <div>
-            <span className="text-xs font-bold text-white block">مستوى الإمبراطورية الحالي:</span>
+            <span className="text-xs font-bold text-white block">وين وصلت:</span>
             <span className="text-[11px] text-vz-accent font-medium block">
               {progressPercent === 100
-                ? "خبير مبيعات معتمد - جاهز للانطلاق والتحليق!"
+                ? "خلصت الخطة كلها"
                 : progressPercent >= 70
-                ? "مستوى تشغيل متقدم ومبيعات ممتازة"
+                ? "مرحلة التكبير"
                 : progressPercent >= 30
-                ? "مستوى تأسيس وإعلانات نشطة"
-                : "تأسيس ودراسة السوق الأولى"}
+                ? "مرحلة الإعلان والتأكيد"
+                : "مرحلة التأسيس"}
             </span>
           </div>
         </div>
@@ -150,8 +152,8 @@ export default function ThirtyDayPlan() {
           >
             {w === 1 && "الأسبوع الأول: التأسيس والدراسة"}
             {w === 2 && "الأسبوع الثاني: الإعلانات والتأكيد"}
-            {w === 3 && "الأسبوع الثالث: التوسع والأتمتة"}
-            {w === 4 && "الأسبوع الرابع: القيادة والأرباح الصافية"}
+            {w === 3 && "الأسبوع الثالث: التوصيل والثقة"}
+            {w === 4 && "الأسبوع الرابع: التكبير والربح الصافي"}
           </button>
         ))}
       </div>
@@ -161,7 +163,7 @@ export default function ThirtyDayPlan() {
         
         {/* Days grid layout (6 columns) */}
         <div className="lg:col-span-7 space-y-4">
-          <span className="text-xs font-semibold text-white/60 block mr-1">📅 اضغط على اليوم للاطلاع وتعديل الحالة:</span>
+          <span className="text-xs font-semibold text-white/60 block mr-1">اضغط على اليوم حتى تشوف مهمته:</span>
           
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {filteredTasks.map(t => {
@@ -220,13 +222,13 @@ export default function ThirtyDayPlan() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center border-b border-white/5 pb-3">
                   <span className="text-xs bg-white/5 text-vz-accent border border-white/14 px-2.5 py-1 rounded-full font-bold">
-                    جدول أعمال اليوم {selectedTask.day}
+                    اليوم {selectedTask.day}
                   </span>
 
                   <button                     onClick={() => handleToggleComplete(selectedTask.day)}
                     className={`px-3 py-1 text-xs rounded-lg font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 ${ selectedTask.completed ? "bg-emerald-500/10 border-emerald-500 text-emerald-400" : "bg-white/5 border-white/10 hover:bg-white/10 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    {selectedTask.completed ? "مكتمل" : "تعليم كمنجز"}
+                    {selectedTask.completed ? "خلصته" : "علّم إنه خلص"}
                   </button>
                 </div>
 
@@ -236,12 +238,12 @@ export default function ThirtyDayPlan() {
 
                 <div className="space-y-2.5 text-xs text-white/80 leading-relaxed">
                   <div className="p-3 bg-black/40 rounded-xl border border-white/5">
-                    <span className="text-vz-accent font-bold block mb-1">🎯 المهمة المطلوبة:</span>
+                    <span className="text-vz-accent font-bold block mb-1">المهمة:</span>
                     <p className="font-medium text-white/90">{selectedTask.task}</p>
                   </div>
 
                   <div className="p-3 bg-black/20 rounded-xl border border-white/5">
-                    <span className="text-white/70 font-bold block mb-1">💡 نصيحة التنفيذ:</span>
+                    <span className="text-white/70 font-bold block mb-1">نصيحة:</span>
                     <p className="font-light text-white/70">{selectedTask.details}</p>
                   </div>
                 </div>
@@ -250,12 +252,12 @@ export default function ThirtyDayPlan() {
               {/* Progress tips footer */}
               <div className="border-t border-white/5 pt-3 flex items-center gap-2 text-[11px] text-white/60 mt-4">
                 <Zap className="w-4 h-4 text-vz-accent shrink-0" />
-                <span>نفّذ المهام يوماً بيوم والتزام الصبر للوصول للهدف.</span>
+                <span>مهمة وحدة باليوم تكفي. المهم ما توكف.</span>
               </div>
             </div>
           ) : (
             <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-8 flex items-center justify-center text-center h-full">
-              <span className="text-xs text-white/60">رجاءً تحديد يوم من الجدول لاستعراض تفاصيله الإدارية.</span>
+              <span className="text-xs text-white/60">اختار يوم من الجدول حتى تشوف مهمته.</span>
             </div>
           )}
         </div>

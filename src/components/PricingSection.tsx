@@ -6,8 +6,8 @@
 import React from "react";
 import { motion } from "motion/react";
 import { WordsReveal } from "./ui/Motion";
-import { CheckCircle2, ShieldCheck, Clock, KeyRound, Sparkles, TrendingUp } from "lucide-react";
-import { PLAN_INCLUDES } from "../lib/offer";
+import { CheckCircle2, ShieldCheck, Clock, KeyRound, Sparkles, TrendingUp, Users } from "lucide-react";
+import { PLAN_INCLUDES, STUDENT_COUNT } from "../lib/offer";
 import { OfferPrice, SubscribeButton } from "./OfferPrice";
 
 interface PricingSectionProps {
@@ -85,6 +85,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
         </motion.div>
 
         <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-white/75">
+          <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+            <Users className="w-4 h-4 text-vz-accent" />
+            <span>{STUDENT_COUNT} مشترك لحد هسه</span>
+          </span>
           <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>بدون رسوم مخفية ولا اشتراك شهري</span>

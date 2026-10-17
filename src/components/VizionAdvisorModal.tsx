@@ -127,7 +127,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
   {
     id: "ads",
     title: "ضعف الإعلانات وهدر الميزانية",
-    icon: "🎯",
+    icon: "",
     description: "حلول مشاكل فيسبوك وتيك توك وانستغرام آدز بالسوق العراقي",
     options: [
       {
@@ -168,7 +168,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
   {
     id: "whatsapp_sales",
     title: "اعتراضات المبيعات وإغلاق الصفقات",
-    icon: "💬",
+    icon: "",
     description: "سكريبتات الردود وإقناع الزبون العراقي المتردد",
     options: [
       {
@@ -209,7 +209,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
   {
     id: "delivery_returns",
     title: "تقليل الراجع ومشاكل التوصيل",
-    icon: "📦",
+    icon: "",
     description: "خفض نسبة الإرجاع إلى أقل من 10% وتأكيد الطلبات",
     options: [
       {
@@ -239,7 +239,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
   {
     id: "pricing_finance",
     title: "التسعير وحساب الهيكل المالي",
-    icon: "🧮",
+    icon: "",
     description: "معادلات حساب الكلف والأرباح الصافية بالدينار العراقي",
     options: [
       {
@@ -273,41 +273,41 @@ const SCRIPT_OBJECTIONS = [
   {
     id: "expensive",
     label: "السعر غالي",
-    icon: "💸",
+    icon: "",
     promptContext: "الزبون يرى أن السعر مرتفع ومبالغ فيه"
   },
   {
     id: "think_later",
     label: "بعدين أردلك خبر",
-    icon: "⏳",
+    icon: "",
     promptContext: "الزبون يراح ويقول استشير أو أردلك خبر لاحقاً"
   },
   {
     id: "cheaper_elsewhere",
     label: "شفته أرخص بصفحة ثانية",
-    icon: "🔍",
+    icon: "",
     promptContext: "الزبون يقارن بصفحة أخرى تبيع منتجاً مشابهاً أو مقلداً بسعر أقل"
   },
   {
     id: "quality_fear",
     label: "خايف من الجودة والتوصيل",
-    icon: "🛡️",
+    icon: "",
     promptContext: "الزبون يخاف أن تكون البضاعة غير مطابقة للصورة أو رديئة"
   },
   {
     id: "confirm_call",
     label: "مكالمة تأكيد قبل التوصيل",
-    icon: "📞",
+    icon: "",
     promptContext: "مكالمة سريعة لتأكيد العنوان والجدية قبل تسليم الطلب لشركة التوصيل"
   }
 ];
 
 const SCRIPT_NICHES = [
-  { id: "general", label: "عام / استهلاكي", icon: "🛍️" },
-  { id: "fashion", label: "أزياء وملابس", icon: "👗" },
-  { id: "beauty", label: "تجميل وعناية", icon: "💄" },
-  { id: "electronics", label: "إلكترونيات وأجهزة", icon: "📱" },
-  { id: "home", label: "منزل ومطبخ", icon: "🏠" }
+  { id: "general", label: "عام / استهلاكي", icon: "" },
+  { id: "fashion", label: "أزياء وملابس", icon: "" },
+  { id: "beauty", label: "تجميل وعناية", icon: "" },
+  { id: "electronics", label: "إلكترونيات وأجهزة", icon: "" },
+  { id: "home", label: "منزل ومطبخ", icon: "" }
 ];
 
 // Helper to get or create a unique device ID
@@ -875,7 +875,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       localStorage.setItem(planKey, JSON.stringify(updated));
       const target = updated.find((t) => t.id === taskId);
       if (target?.completed) {
-        showToast("success", "أحسنت! أتممت هذه المهمة 🎯", target.task);
+        showToast("success", "أحسنت! أتممت هذه المهمة", target.task);
       }
     } catch (e) {
       console.warn("Failed to update plan task:", e);
@@ -1053,8 +1053,8 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       showToast(
         "success",
         rating === "helpful"
-          ? "شكراً لتقييمك! سعداء بأن الإجابة أفادتك بالسوق العراقي 👍"
-          : "شكراً لملاحظتك! سنعمل على تطوير الإجابات لواقع التجارة بالعراق ✍️"
+          ? "شكراً لتقييمك! سعداء بأن الإجابة أفادتك بالسوق العراقي"
+          : "شكراً لملاحظتك! سنعمل على تطوير الإجابات لواقع التجارة بالعراق"
       );
     }
   };
@@ -1072,7 +1072,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       }
       return updated;
     });
-    showToast("success", "تمت إعادة تعيين التقييم، تكدر تقيم من جديد 🔄");
+    showToast("success", "تمت إعادة تعيين التقييم، تكدر تقيم من جديد");
   };
 
   const [vipUpgradeInput, setVipUpgradeInput] = useState("");
@@ -1317,10 +1317,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       isDivider: true,
       topicId: newTopicId,
       suggestions: [
-        "🎯 تشخيص ضعف نتائج الإعلانات",
-        "💬 سكريبت الرد على 'السعر غالي'",
-        "📦 خطة تقليل نسبة الراجع للمحافظات",
-        "🧮 معادلة تسعير المنتج لضمان الأرباح"
+        "تشخيص ضعف نتائج الإعلانات",
+        "سكريبت الرد على 'السعر غالي'",
+        "خطة تقليل نسبة الراجع للمحافظات",
+        "معادلة تسعير المنتج لضمان الأرباح"
       ]
     };
 
@@ -1347,10 +1347,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     handleSendMessage(
       prompt,
       [
-        "📅 حوّلها إلى خطة 7 أيام",
-        "💬 اكتبلي السكربت العراقي",
-        "🧮 احسب صافي الربح",
-        "📖 افتح الفصل المرتبط"
+        "حوّلها إلى خطة 7 أيام",
+        "اكتبلي السكربت العراقي",
+        "احسب صافي الربح",
+        "افتح الفصل المرتبط"
       ],
       {
         topicContext: `تشخيص مشروع: ${profile.productOrService || profile.businessType}`,
@@ -1379,7 +1379,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     // Automatically hide suggestions when a message is sent
     setIsSuggestionsOpen(false);
 
-    // Support quick trigger from suggestions: "⚡ ابدأ تشخيص مشروعي الشامل"
+    // Support quick trigger from suggestions: "ابدأ تشخيص مشروعي الشامل"
     if (text.includes("ابدأ تشخيص مشروعي") || text.includes("شخّص مشروعي")) {
       setActiveTab("business_diagnostic");
       return;
@@ -1516,7 +1516,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         profileUpdate: learnedSummary.length ? learnedSummary : undefined,
         partialError: outcome.error || (outcome.truncated || outcome.cut ? "الجواب طويل وانقطع بالنص. اضغط 'جواب جديد' أو اسألني 'كمّل'." : undefined),
       });
-      if (learnedSummary.length) showToast("saved", "حدّثت ملف مشروعك 🧠", learnedSummary.join(" • "));
+      if (learnedSummary.length) showToast("saved", "حدّثت ملف مشروعك", learnedSummary.join(" • "));
       setLastFailedPrompt(null);
       trackEvent("advisor_answer_completed", { topicId, requestId: outcome.requestId || clientRequestId });
     } catch (err: any) {
@@ -1551,7 +1551,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         topicId,
         isError: true,
         failedPrompt: { text, presetSuggestions },
-        suggestions: ["🎯 تشخيص ضعف إعلاناتي", "📦 خطة تقليل الراجع بالمحافظات", "💬 سكريبت مبيعات الواتساب"],
+        suggestions: ["تشخيص ضعف إعلاناتي", "خطة تقليل الراجع بالمحافظات", "سكريبت مبيعات الواتساب"],
       };
       setMessages((prev) => prev.map((m) => (m.id === botId ? errorMessage : m)));
       setLastFailedPrompt({ text, presetSuggestions, errorText });
@@ -1575,10 +1575,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     () => ({
       onChapter: (chId: string) => answerDepsRef.current.onNavigateToSection?.(chId),
       onTool: (tId: string, cat?: string) => answerDepsRef.current.onNavigateTool?.(tId, cat),
-      onCopy: () => answerDepsRef.current.showToast("copy", "انتسخت الرسالة 📋", "الصقها للزبون بالواتساب"),
+      onCopy: () => answerDepsRef.current.showToast("copy", "انتسخت الرسالة", "الصقها للزبون بالواتساب"),
       onSaveProfile: (p: BusinessProfile) => {
         answerDepsRef.current.mergeBusinessProfile(p);
-        answerDepsRef.current.showToast("saved", "انحفظت الأرقام بملف مشروعك 🧠");
+        answerDepsRef.current.showToast("saved", "انحفظت الأرقام بملف مشروعك");
       },
       addTask: (task: string, topicId?: string) => answerDepsRef.current.addTask(task, topicId),
     }),
@@ -1606,7 +1606,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const handleAddTaskToPlan = (task: string, topicId?: string) => {
     const result = addRecommendationTo7DayPlanStorage({ title: task.slice(0, 90), details: task, topicId }, userCode);
     if (result.success) {
-      showToast("plan", "انضافت لخطتك ✅", "تلگاها بتبويب 'خطتي'");
+      showToast("plan", "انضافت لخطتك", "تلگاها بتبويب 'خطتي'");
       refreshSavedData();
       return true;
     }
@@ -1839,7 +1839,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <span className="text-xs font-bold text-vz-accent block mb-1">الاشتراك الشهري المباشر</span>
                       <h4 className="text-lg sm:text-2xl font-black text-white">المستشار الذكي (Vizion AI)</h4>
                       <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full inline-block mt-1">
-                        فقط 466 د.ع باليوم! (أقل من سعر استكان شاي ☕)
+                        فقط 466 د.ع باليوم! (أقل من سعر استكان شاي)
                       </span>
                     </div>
 
@@ -1863,7 +1863,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   {/* Features Checklist */}
                   <div className="space-y-2.5">
                     <span className="text-xs font-black text-white/90 block border-b border-white/10 pb-1.5">
-                      ✨ شنو ينفتحلك فوراً بعد الاشتراك؟
+                      شنو ينفتحلك فوراً بعد الاشتراك؟
                     </span>
                     <ul className="space-y-2 text-xs sm:text-sm text-white/90">
                       <li className="flex items-start gap-2">
@@ -1898,7 +1898,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-[0.97] transition cursor-pointer min-h-[50px]"
                     >
                       <Sparkles className="w-5 h-5 text-vz-accent animate-pulse" />
-                      <span>اشترك الآن عبر الواتساب (14,000 د.ع / شهرياً) 💬</span>
+                      <span>اشترك الآن عبر الواتساب (14,000 د.ع / شهرياً)</span>
                     </a>
                     <p className="text-[11px] text-center text-white/60">
                       تواصل مباشر مع الدعم عبر الواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
@@ -2044,7 +2044,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     profile={businessProfile}
                     onSave={(p) => {
                       saveBusinessProfile(p);
-                      showToast("saved", "انحفظ ملف مشروعك 🧠", "المستشار راح يستعمله بكل جواب");
+                      showToast("saved", "انحفظ ملف مشروعك", "المستشار راح يستعمله بكل جواب");
                     }}
                     onAskAdvisor={(prompt) => {
                       setActiveTab("chat");
@@ -2086,7 +2086,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           onClick={() => setSelectedDiagCat(cat.id)}
                           className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col gap-1 ${ selectedDiagCat === cat.id ? "glass border-white/35 shadow-lg md:shadow-black/40 shadow-xl/15 ring-1 ring-white/60" : "glass-subtle border-white/10 hover:border-white/25 text-white/80" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                         >
-                          <span className="text-xl">{cat.icon}</span>
                           <span className="text-xs font-bold text-white line-clamp-1">{cat.title}</span>
                         </button>
                       ))}
@@ -2096,7 +2095,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-vz-accent flex items-center gap-1">
-                          <span>{currentDiag.icon}</span>
                           <span>اختر الحالة الدقيقة لمشروعك:</span>
                         </span>
                         <span className="text-[11px] text-white/70 font-mono">
@@ -2144,7 +2142,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <FileText className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
-                          مولّد سكريبتات إغلاق الصفقات بالسوق العراقي 💬
+                          مولّد سكريبتات إغلاق الصفقات بالسوق العراقي
                         </h4>
                       </div>
                       <p className="text-xs text-white/70">
@@ -2165,7 +2163,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             onClick={() => setSelectedObjection(obj.id)}
                             className={`p-3 rounded-xl border text-right transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2.5 ${ selectedObjection === obj.id ? "glass-subtle border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "glass-subtle border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                           >
-                            <span className="text-lg">{obj.icon}</span>
                             <span className="text-xs">{obj.label}</span>
                           </button>
                         ))}
@@ -2185,7 +2182,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             onClick={() => setSelectedNiche(niche.id)}
                             className={`p-2.5 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex flex-col items-center gap-1 ${ selectedNiche === niche.id ? "glass-subtle border-white/35 shadow-lg md:shadow-black/40 shadow-xl/20 text-white font-bold" : "glass-subtle border-white/10 hover:border-white/25 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                           >
-                            <span className="text-base">{niche.icon}</span>
                             <span className="text-[11px]">{niche.label}</span>
                           </button>
                         ))}
@@ -2214,7 +2210,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       className="btn btn-primary w-full py-3.5 rounded-xl text-white font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <Sparkles className="w-4 h-4" />
-                      <span>توليد السكريبت العراقي الآن ⚡</span>
+                      <span>توليد السكريبت العراقي الآن</span>
                     </button>
                   </div>
                 )}
@@ -2253,7 +2249,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <div className="flex items-center gap-2">
                           <Calendar className="w-5 h-5 text-vz-accent" />
                           <h3 className="text-sm sm:text-base font-black text-white">
-                            📅 خطة الـ 7 أيام التنفيذية
+                            خطة الـ 7 أيام التنفيذية
                           </h3>
                         </div>
                         <span className="text-xs text-white/70 font-mono">
@@ -2346,7 +2342,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <div className="flex items-center gap-2">
                           <Bookmark className="w-5 h-5 text-vz-accent" />
                           <h3 className="text-sm sm:text-base font-black text-white">
-                            📌 التوصيات والسكريبتات المحفوظة
+                            التوصيات والسكريبتات المحفوظة
                           </h3>
                         </div>
                         <span className="text-xs text-white/70 font-mono">
@@ -2377,7 +2373,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   </h4>
                                   {rec.relevanceReason && (
                                     <p className="text-[11px] text-vz-accent/90 font-medium">
-                                      💡 {rec.relevanceReason}
+                                      {rec.relevanceReason}
                                     </p>
                                   )}
                                   <span className="text-[9px] text-white/60 font-mono">
@@ -2398,11 +2394,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               {rec.scriptText && (
                                 <div className="p-3 rounded-lg bg-black/30 border border-white/14 text-white/90 text-xs space-y-2">
                                   <div className="flex items-center justify-between text-[10px] text-vz-accent font-bold">
-                                    <span>💬 نص السكريبت الجاهز للزبون:</span>
+                                    <span>نص السكريبت الجاهز للزبون:</span>
                                     <button 
                                       onClick={() => {
                                         navigator.clipboard.writeText(rec.scriptText || "");
-                                        showToast("copy", "تم نسخ السكريبت بنجاح 📋", "تكدر لصقه مباشرة في محادثة الواتساب");
+                                        showToast("copy", "تم نسخ السكريبت بنجاح", "تكدر لصقه مباشرة في محادثة الواتساب");
                                       }}
                                       className="px-2 py-0.5 rounded bg-white/10 hover:bg-vz-blue text-vz-accent hover:text-white transition-colors flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                     >
@@ -2615,7 +2611,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                               type="button"
                                               onClick={() => {
                                                 setRestoredText(msg.failedPrompt!.text);
-                                                showToast("copy", "تم استرجاع السؤال للتعديل ✏️");
+                                                showToast("copy", "تم استرجاع السؤال للتعديل");
                                               }}
                                               className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-rose-100 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.97] transition min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                               title="استرجاع السؤال للتعديل عليه"
@@ -2685,7 +2681,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                               }}
                                               onCopyFull={() => {
                                                 handleCopy(msg.id, msg.text);
-                                                showToast("copy", "تم نسخ الرد بالكامل بنجاح 📋");
+                                                showToast("copy", "تم نسخ الرد بالكامل بنجاح");
                                               }}
                                               isFullCopied={copiedId === msg.id}
                                             />
@@ -2719,7 +2715,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           onClearFeedback={() => handleClearFeedback(msg.id)}
                                           onCopy={() => {
                                             handleCopy(msg.id, msg.text);
-                                            showToast("copy", "تم نسخ الرد بالكامل بنجاح 📋");
+                                            showToast("copy", "تم نسخ الرد بالكامل بنجاح");
                                           }}
                                           isCopied={copiedId === msg.id}
                                           timestamp={msg.timestamp}

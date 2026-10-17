@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-react";
 import { EASE_OUT, SPRING, allowBlur } from "../lib/motion";
 import { Magnetic } from "./ui/Motion";
-import { FULL_PRICE, OFFER_LAST_DAY, offerState } from "../lib/offer";
+import { FULL_PRICE, OFFER_LAST_DAY, STUDENT_COUNT, offerState } from "../lib/offer";
 
 /** The shared free-trial code (any code containing "free" is a trial). */
 export const TRIAL_CODE = "free#1";
@@ -210,7 +210,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     if (e) e.preventDefault();
     const password = codeOverride ?? passwordInput;
     if (!password.trim()) {
-      setError("الرجاء إدخال رمز الوصول للمتابعة.");
+      setError("اكتب رمز الدخول.");
       triggerShake();
       return;
     }
@@ -234,7 +234,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         }, 800);
       } else {
         setIsLoading(false);
-        setError("رمز الوصول المدخل غير صحيح أو تم إلغاؤه! رجاءً التحقق وإعادة المحاولة.");
+        setError("الرمز غلط أو مو مفعّل. تأكد منه وجرب مرة ثانية.");
         triggerShake();
       }
     }, 1200);
@@ -306,7 +306,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               فيزيون • Vizion
             </motion.h1>
             <motion.p {...rise(0.38)} className="text-white/55 text-xs sm:text-sm md:text-base font-medium mx-auto">
-              نظام التشغيل والتحكم المالي للمشاريع الإلكترونية بالعراق
+              كورس ومنصة للتجارة الإلكترونية بالعراق
             </motion.p>
           </div>
 
@@ -314,7 +314,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
           <motion.form {...rise(0.45)} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div className="space-y-2">
               <label className="text-xs text-white/50 font-semibold tracking-wider block mr-1">
-                رمز التحقق الفردي
+                رمز الدخول
               </label>
               
               <div className="relative">
@@ -322,7 +322,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
                   type={showPassword ? "text" : "password"}
                   value={passwordInput}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="أدخل رمز الوصول هنا..."
+                  placeholder="اكتب رمزك هنا"
                   className="vz-field w-full h-12 sm:h-[52px] pr-4 pl-12 rounded-2xl text-white text-center text-base sm:text-lg font-mono tracking-wider min-h-[44px]"
                   disabled={isLoading || isSuccess}
                 />
@@ -370,17 +370,17 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               {isLoading ? (
                 <motion.div key="loading" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <span className="w-4 h-4 border-2 border-[#040e33] border-t-transparent rounded-full animate-spin" />
-                  <span>جاري التحقق من الصلاحية...</span>
+                  <span>دا نتأكد من الرمز...</span>
                 </motion.div>
               ) : isSuccess ? (
                 <motion.div key="success" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-white" />
-                  <span>تم التوثيق! جاري فتح الدليل...</span>
+                  <span>تمام، دا تنفتح المنصة...</span>
                 </motion.div>
               ) : (
                 <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-white" />
-                  دخول للدليل المالي
+                  دخول
                 </motion.span>
               )}
               </AnimatePresence>
@@ -413,7 +413,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             <div className="glass-subtle rounded-2xl p-3.5 text-right flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <span className="block text-[11px] font-bold text-white/60">الاشتراك الكامل، مدى الحياة</span>
-                <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار</span>
+                <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار · {STUDENT_COUNT} مشترك</span>
               </div>
               <div className="text-left shrink-0">
                 <span className="block text-base font-black text-white font-mono leading-tight">{offer.price.toLocaleString("en-US")} <span className="text-[10px] font-bold text-white/60">د.ع</span></span>
@@ -431,7 +431,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
 
       {/* Footer copyright */}
       <motion.div {...rise(0.7)} className="relative text-center z-10 text-[10px] sm:text-[11px] text-white/30 tracking-wider mt-5 sm:mt-7 pb-2 safe-area-bottom">
-        © 2026 فيزيون • Vizion. جميع الحقوق محفوظة للنخبة المسجلة.
+        © 2026 viZion
       </motion.div>
     </div>
   );

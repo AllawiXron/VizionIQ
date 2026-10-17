@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { NumberField } from "./ui/NumberField";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SPRING_SNAPPY, collapseMotion, viewSwapMotion } from "../lib/motion";
@@ -15,6 +16,7 @@ import {
   DollarSign,
   AlertTriangle,
   UserCheck,
+  Check,
   BookOpen,
   CheckCircle2,
   Percent,
@@ -374,19 +376,19 @@ export default function VizionGrowthSuite() {
           <div className="glass-elevated glass-edge p-5 sm:p-7 rounded-3xl sm:rounded-4xl space-y-3 text-center relative overflow-hidden my-4 z-20 animate-fade-in">
             <div className="vz-eyebrow text-xs sm:text-sm">
               <Lock className="w-4 h-4 text-vz-accent" />
-              <span>نسخة مجانية للتجربة (Free Trial Mode)</span>
+              <span>إنت بالتجربة المجانية</span>
             </div>
             <h3 className="text-lg sm:text-2xl font-black text-white leading-tight">
-              إنت هسة دتستعرض الأدوات بنسخة المعاينة
+              الأدوات تنفتح ويا الاشتراك الكامل
             </h3>
             <p className="text-xs sm:text-sm text-white/80 max-w-2xl mx-auto font-light leading-relaxed">
-              أدوات النظام الـ 13 مقفولة جزئياً بهذي النسخة. رقي حسابك حتى تفتح كل الأدوات وتكدر تدخل أرقامك وتحلل حملاتك وتحسب أرباحك الصافية بالضبط.
+              بالتجربة تشوف شنو تسوي كل أداة. بالاشتراك تدخل أرقامك وتطلعلك النتيجة.
             </p>
             <button               onClick={triggerUpgradeModal}
               className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Crown className="w-4 h-4 text-white" />
-              <span>افتح المنظومة كاملة ورقي حسابك هسة ⚡</span>
+              <span>افتح كل الأدوات</span>
             </button>
           </div>
         )}
@@ -414,7 +416,6 @@ export default function VizionGrowthSuite() {
               className="vz-chip shrink-0 text-xs sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
               {isActive && <ChipPill layoutId="suite-category-pill" />}
-              <span>{cat.icon}</span>
               <span>{cat.label}</span>
               <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-black/10 text-white font-black' : 'bg-white/10 text-white/60'}`}>
                 {count}
@@ -499,7 +500,7 @@ export default function VizionGrowthSuite() {
         <div className="hidden lg:flex lg:col-span-4 glass glass-edge rounded-4xl p-5 md:p-6 flex-col space-y-4 h-[750px] overflow-hidden relative">
                     <div className="flex items-center justify-between border-b border-white/[0.07] pb-4 px-1">
             <span className="text-[12px] font-bold text-white/55 uppercase tracking-widest">
-              ⚙️ حقيبة الأدوات ({filteredToolTabs.length}):
+              الأدوات ({filteredToolTabs.length}):
             </span>
             {selectedCategory !== "all" && (
               <button                 onClick={() => setSelectedCategory("all")}
@@ -575,26 +576,26 @@ export default function VizionGrowthSuite() {
                 <div className="space-y-3 max-w-xl">
                   <div className="vz-eyebrow text-xs sm:text-sm">
                     <Crown className="w-4 h-4 text-vz-accent" />
-                    <span>الأدوات مقفولة لحساب المعاينة المجانية (free#1)</span>
+                    <span>مقفولة بالتجربة</span>
                   </div>
                   
                   <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                    أداة "{toolTabs.find(t => t.id === activeTab)?.label}" ما متوفرة بالنسخة المجانية
+                    أداة «{toolTabs.find(t => t.id === activeTab)?.label}» تنفتح ويا الاشتراك
                   </h3>
                   
                   <p className="text-xs md:text-sm text-white/80 font-light leading-relaxed">
-                    كل الأدوات الـ 13 والحاسبات مقفولة هسة. حتى تكدر تدخل أرقامك وتحلل حملاتك وتحسب أرباحك الصافية بالضبط، رقي حسابك وافتح كلشي.
+                    تدخل أرقامك وتطلعلك النتيجة بالدينار، والـ 13 أداة كلها تنفتح بنفس الاشتراك.
                   </p>
                 </div>
 
                 <div className="w-full max-w-md glass-subtle rounded-3xl p-5 space-y-3 text-right">
                   <span className="text-xs font-black text-vz-accent block border-b border-white/10 pb-2">
-                    مميزات الأدوات الكاملة:
+                    من الأدوات:
                   </span>
                   <div className="grid grid-cols-1 gap-y-5 gap-2.5 text-xs text-white/80">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
-                      <span>مقييم سلامة البزنس مالتك</span>
+                      <span>فحص مشروعك</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
@@ -614,7 +615,7 @@ export default function VizionGrowthSuite() {
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
-                      <span>كاشف تسرب الفلوس المرتجعة</span>
+                      <span>خسارة الطلبات الراجعة</span>
                     </div>
                   </div>
                 </div>
@@ -623,7 +624,7 @@ export default function VizionGrowthSuite() {
                   className="btn btn-primary px-8 py-4 rounded-2xl text-white font-black text-sm md:text-base inline-flex items-center gap-3 group min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   <Crown className="w-5 h-5 text-white transition-transform" />
-                  <span>افتح الـ 13 أداة ورقي حسابك هسة ⚡</span>
+                  <span>افتح كل الأدوات</span>
                 </button>
               </div>
             ) : (
@@ -633,10 +634,9 @@ export default function VizionGrowthSuite() {
             {activeTab === "diagnostics" && (
               <div className="space-y-6 text-right">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">🩺</span>
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">فحص سلامة وربحية مشروعك</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مقيِّم البزنس المتكامل</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">ربحك ووين تضيع فلوسك</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">فحص مشروعك</h3>
                   </div>
                 </div>
 
@@ -646,79 +646,43 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">عدد الطلبات بالشهر (اللي تدزها):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t1MonthlyOrders}
-                      onChange={(e) => setT1MonthlyOrders(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+                    <label className="text-xs font-bold text-white/80 block">عدد الطلبات بالشهر (اللي تدزها)</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t1MonthlyOrders} onChange={(v) => setT1MonthlyOrders(v)} unit="طلب" step={10} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">سعر البيع للزبون (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t1SellingPrice}
-                      onChange={(e) => setT1SellingPrice(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">سعر البيع للزبون</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t1SellingPrice} onChange={(v) => setT1SellingPrice(v)} unit="د.ع" step={1000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t1ProductCost}
-                      onChange={(e) => setT1ProductCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t1ProductCost} onChange={(v) => setT1ProductCost(v)} unit="د.ع" step={500} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">سعر الرسالة بالإعلان (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t1MessageCost}
-                      onChange={(e) => setT1MessageCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">سعر الرسالة بالإعلان</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t1MessageCost} onChange={(v) => setT1MessageCost(v)} unit="د.ع" step={250} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">نسبة الراجع المتوقعة (%):</label>
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                        min="0"
-                        max="80"
-                        value={t1ReturnRate}
-                        onChange={(e) => setT1ReturnRate(Number(e.target.value))}
-                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                    <label className="text-xs font-bold text-white/80 block">نسبة الراجع المتوقعة</label>
+                    <div className="w-full">
+                      <div className="w-full">
+  <NumberField className="w-full" value={t1ReturnRate} onChange={(v) => setT1ReturnRate(v)} unit="%" min={0} max={80} step={1} />
 </div>
-                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t1ReturnRate}%</span>
                     </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد من الرسايل تصير طلبات (%):</label>
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                        min="1"
-                        max="50"
-                        value={t1ConversionRate}
-                        onChange={(e) => setT1ConversionRate(Number(e.target.value))}
-                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد من الرسايل تصير طلبات</label>
+                    <div className="w-full">
+                      <div className="w-full">
+  <NumberField className="w-full" value={t1ConversionRate} onChange={(v) => setT1ConversionRate(v)} unit="%" min={1} max={50} step={1} />
 </div>
-                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t1ConversionRate}%</span>
                     </div>
                   </div>
                 </div>
@@ -739,11 +703,10 @@ export default function VizionGrowthSuite() {
           navigator.clipboard.writeText(`تقرير التشخيص:
 الإيرادات: ${diagResult.totalRevenue.toLocaleString()} د.ع
 الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`);
-          alert('تم النسخ!');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة 📋</button>
+          alert('انتسخ');
+        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة</button>
       </div>
                     <h4 className="text-sm font-black text-vz-accent flex items-center gap-2 border-b border-white/5 pb-2">
-                      <span>📊</span>
                       <span>تقرير فحص الأداء والربح:</span>
                     </h4>
                     
@@ -774,25 +737,21 @@ export default function VizionGrowthSuite() {
                       <ul className="space-y-1.5 text-[11px] text-white/70 leading-relaxed">
                         {t1ReturnRate > 20 && (
                           <li className="flex items-start gap-1.5 text-red-300">
-                            <span>❌</span>
                             <span><strong>الراجع دياكل أرباحك:</strong> نسبة المرتجع عندك ({t1ReturnRate}%) عالية وتخسرك أجور التوصيل وفلوس إعلانات. لازم تأكد طلباتك بالتلفون وتدز فيديوهات للزبون.</span>
                           </li>
                         )}
                         {t1ConversionRate < 10 && (
                           <li className="flex items-start gap-1.5 text-red-300">
-                            <span>❌</span>
                             <span><strong>الرد عالخاص ضعيف:</strong> بس ({t1ConversionRate}%) يشترون من الرسايل. هذا معناه إعلانك يجذب ناس بس تتفرج أو ردك عالخاص يحتاج تعديل سريع.</span>
                           </li>
                         )}
                         {t1SellingPrice - t1ProductCost < 15000 && (
                           <li className="flex items-start gap-1.5 text-red-300">
-                            <span>❌</span>
                             <span><strong>الربح قليل:</strong> الفرق بين سعر الشراء والبيع قليل وما يغطي كروة التوصيل والإعلانات.</span>
                           </li>
                         )}
                         {t1ReturnRate <= 20 && t1ConversionRate >= 10 && t1SellingPrice - t1ProductCost >= 15000 && (
                           <li className="flex items-start gap-1.5 text-emerald-300">
-                            <span>✔</span>
                             <span><strong>شغلك ممتاز:</strong> الأرقام دتكول مشروعك قوي. ركز هسه على زيادة فلوس الإعلان شوية شوية حتى تضاعف مبيعاتك.</span>
                           </li>
                         )}
@@ -801,7 +760,7 @@ export default function VizionGrowthSuite() {
 
                     {/* Future Potential Projection */}
                     <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
-                      <strong>💰 فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت الراجع لـ <strong>10%</strong> وصعدت قفل الطلبات لـ <strong>15%</strong>، راح يطفر ربحك الصافي من <span className="font-mono text-white underline">{Math.round(diagResult.netProfit).toLocaleString()} دينار</span> إلى <strong className="text-emerald-400 font-mono underline">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>! وهيج تزيد أرباحك بدون ما تصرف إعلانات أكثر.
+                      <strong>فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت الراجع لـ <strong>10%</strong> وصعدت قفل الطلبات لـ <strong>15%</strong>، راح يطفر ربحك الصافي من <span className="font-mono text-white underline">{Math.round(diagResult.netProfit).toLocaleString()} دينار</span> إلى <strong className="text-emerald-400 font-mono underline">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>! وهيج تزيد أرباحك بدون ما تصرف إعلانات أكثر.
                     </div>
                   </div>
                 )}
@@ -812,7 +771,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "campaign-advisor" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">🤖</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">بدل ما تخمن وتخسر فلوسك</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مستشار الإعلانات الذكي</h3>
@@ -825,44 +783,25 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد صارف عالإعلان (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t2Spend}
-                      onChange={(e) => setT2Spend(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد صارف عالإعلان</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t2Spend} onChange={(v) => setT2Spend(v)} unit="د.ع" step={5000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد رسايل اجتك:</label>
-                    <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t2Messages}
-                      onChange={(e) => setT2Messages(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
+                    <label className="text-xs font-bold text-white/80 block">شكد رسايل اجتك</label>
+                    <NumberField className="w-full" value={t2Messages} onChange={(v) => setT2Messages(v)} unit="رسالة" step={10} />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها:</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t2Confirmed}
-                      onChange={(e) => setT2Confirmed(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t2Confirmed} onChange={(v) => setT2Confirmed(v)} unit="طلب" step={1} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">الطلبات اللي استلموها الزبائن فعلياً:</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t2Delivered}
-                      onChange={(e) => setT2Delivered(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">رسالة</span>
+                    <label className="text-xs font-bold text-white/80 block">الطلبات اللي استلموها الزبائن فعلياً</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t2Delivered} onChange={(v) => setT2Delivered(v)} unit="طلب" step={1} />
 </div>
                   </div>
                 </div>
@@ -879,7 +818,7 @@ export default function VizionGrowthSuite() {
                 {t2ShowAnalysis && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                      <h4 className="text-sm font-black text-vz-accent">🔍 النتيجة والتحليل الفني:</h4>
+                      <h4 className="text-sm font-black text-vz-accent">النتيجة والتحليل الفني:</h4>
                       <span className="text-xs text-white/60 font-mono">سعر الرسالة عندك: {getAdAnalysis().costPerMsg.toLocaleString()} دينار</span>
                     </div>
 
@@ -889,16 +828,15 @@ export default function VizionGrowthSuite() {
 
                     {getAdAnalysis().warning && (
                       <p className="text-xs text-red-300 bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                        ⚠️ <strong>ملاحظة هامة:</strong> {getAdAnalysis().warning}
+                        <strong>ملاحظة هامة:</strong> {getAdAnalysis().warning}
                       </p>
                     )}
 
                     <div className="space-y-2">
-                      <span className="text-xs font-bold text-vz-accent block">🛠️ الخطوات والتعديلات المطلوبة فوراً:</span>
+                      <span className="text-xs font-bold text-vz-accent block">الخطوات والتعديلات المطلوبة فوراً:</span>
                       <ul className="space-y-2 text-xs text-white/80">
                         {getAdAnalysis().recommendations.map((rec, i) => (
                           <li key={i} className="flex items-start gap-2">
-                            <span className="text-vz-accent shrink-0 mt-0.5">✔</span>
                             <span>{rec}</span>
                           </li>
                         ))}
@@ -913,7 +851,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "competitors" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">🔍</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">افهم السوك وحلل اللي ينافسوك</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">محلل استراتيجية المنافسين</h3>
@@ -926,7 +863,7 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">اسم بيج المنافس (اختياري):</label>
+                    <label className="text-xs font-bold text-white/80 block">اسم بيج المنافس (اختياري)</label>
                     <input                       type="text"
                       placeholder="مثال: بيج الهدايا الفخمة"
                       value={t3Name}
@@ -935,7 +872,7 @@ export default function VizionGrowthSuite() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">مجال أو فئة بضاعته:</label>
+                    <label className="text-xs font-bold text-white/80 block">مجال أو فئة بضاعته</label>
                     <select                       value={t3Niche}
                       onChange={(e) => setT3Niche(e.target.value)}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -960,22 +897,22 @@ export default function VizionGrowthSuite() {
                 {t3ShowAnalysis && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
                     <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">
-                      📋 خطة التغلب على {t3Name || "هذا البيج"}:
+                      خطة التغلب على {t3Name || "هذا البيج"}:
                     </h4>
 
                     <div className="space-y-3 text-xs text-white/80">
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10">
-                        <strong className="text-red-300">🔴 نقطة ضعفهم الشائعة:</strong>
+                        <strong className="text-red-300">نقطة ضعفهم الشائعة:</strong>
                         <p className="mt-1 text-white/70 leading-relaxed font-light">{getCompetitorTactics().weakness}</p>
                       </div>
 
                       <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
-                        <strong className="text-emerald-300">🟢 فرصتك حتى تتميز:</strong>
+                        <strong className="text-emerald-300">فرصتك حتى تتميز:</strong>
                         <p className="mt-1 text-white/70 leading-relaxed font-light">{getCompetitorTactics().opportunity}</p>
                       </div>
 
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                        <strong className="text-vz-accent">🎯 البداية (الخطاف) المقترحة لإعلانك الجاي:</strong>
+                        <strong className="text-vz-accent">البداية (الخطاف) المقترحة لإعلانك الجاي:</strong>
                         <p className="mt-1 text-white/90 italic leading-relaxed font-bold">"{getCompetitorTactics().hook}"</p>
                       </div>
                     </div>
@@ -988,7 +925,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "message-diagnoser" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">💬</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">تجيك رسايل هواي وماكو طلبات؟</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">محلل جودة ونسبة الرسايل</h3>
@@ -1001,22 +937,13 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل كلياً:</label>
-                    <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t4Messages}
-                      onChange={(e) => setT4Messages(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
+                    <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل كلياً</label>
+                    <NumberField className="w-full" value={t4Messages} onChange={(v) => setT4Messages(v)} unit="رسالة" step={10} />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها بنجاح:</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t4Orders}
-                      onChange={(e) => setT4Orders(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها بنجاح</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t4Orders} onChange={(v) => setT4Orders(v)} unit="طلب" step={1} />
 </div>
                   </div>
                 </div>
@@ -1037,27 +964,25 @@ export default function VizionGrowthSuite() {
           navigator.clipboard.writeText(`تقرير المحادثات:
 معدل الإغلاق: ${((t4Orders / t4Messages) * 100).toFixed(1)}%
 `);
-          alert('تم النسخ!');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة 📋</button>
+          alert('انتسخ');
+        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة</button>
       </div>
                     {/* Diagnostic Score Card */}
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                      <h4 className="text-sm font-black text-vz-accent">📝 نتيجة غلق الصفقات:</h4>
+                      <h4 className="text-sm font-black text-vz-accent">نتيجة غلق الصفقات:</h4>
                       <span className="text-xs text-white/70 font-mono">نسبة التحويل: {((t4Orders / t4Messages) * 100).toFixed(1)}%</span>
                     </div>
 
                     {((t4Orders / t4Messages) * 100) < 5 ? (
                       <div className="space-y-3">
                         <div className="p-3.5 rounded-xl bg-red-500/5 border border-red-500/10 text-xs text-red-300">
-                          ⚠️ <strong>وضع كلش تعبان:</strong> نسبة التحويل أقل من 5%. الزبائن يدخلون ويطلعون بدون ما تبيع شي.
+                          <strong>وضع كلش تعبان:</strong> نسبة التحويل أقل من 5%. الزبائن يدخلون ويطلعون بدون ما تبيع شي.
                         </div>
                         <ul className="space-y-2 text-xs text-white/80">
                           <li className="flex items-start gap-1.5">
-                            <span>❌</span>
                             <span><strong>إعلانك بي مبالغة:</strong> يجوز الإعلان مبين بي سعر رخيص كلش أو منتج غير شكل، ومن يطب الزبون وينصدم بالسعر الحقيقي يشرد.</span>
                           </li>
                           <li className="flex items-start gap-1.5">
-                            <span>❌</span>
                             <span><strong>الرد الآلي والناشف:</strong> تدز كليشة جاهزة شطولها للزبون. سولف وياهم بأسلوب حلو ورتب الحجي.</span>
                           </li>
                         </ul>
@@ -1065,18 +990,17 @@ export default function VizionGrowthSuite() {
                     ) : ((t4Orders / t4Messages) * 100) < 12 ? (
                       <div className="space-y-3">
                         <div className="p-3.5 rounded-xl bg-white/3 border border-white/5 text-xs text-vz-accent">
-                          ⚠️ <strong>أداءك متوسط:</strong> اكو ناس مهتمة صدك، بس دتطير نص البيعات لأن ما دتتابع الزبون عدل لو تتردد بالعرض.
+                          <strong>أداءك متوسط:</strong> اكو ناس مهتمة صدك، بس دتطير نص البيعات لأن ما دتتابع الزبون عدل لو تتردد بالعرض.
                         </div>
                         <ul className="space-y-2 text-xs text-white/80">
                           <li className="flex items-start gap-1.5">
-                            <span>✔</span>
                             <span><strong>شغل البصمة الصوتية:</strong> جرب دز بصمة دافية وقصيرة تشرح بيها التوصيل. هذا راح يحول الزبون المتردد لمشتري أكيد.</span>
                           </li>
                         </ul>
                       </div>
                     ) : (
                       <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
-                        🎉 <strong>شغلك فول وممتاز!</strong> نسبة قفل الطلبات عابرة الـ 12% وهاي من أحسن النسب بالسوك. ركز هسة تزيد ميزانية إعلانك حتى تجيب رسايل أكثر وتضاعف شغلك.
+                        <strong>شغلك فول وممتاز!</strong> نسبة قفل الطلبات عابرة الـ 12% وهاي من أحسن النسب بالسوك. ركز هسة تزيد ميزانية إعلانك حتى تجيب رسايل أكثر وتضاعف شغلك.
                       </div>
                     )}
                   </div>
@@ -1088,7 +1012,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "pricing-calculator" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">💰</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">احسب فلوسك صح قبل لا تشغل الإعلان</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">حاسبة التسعير والربح الصافي</h3>
@@ -1101,66 +1024,39 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة (جملة - دينار):</label>
-                    <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t5Cost}
-                      onChange={(e) => setT5Cost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
+                    <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة</label>
+                    <NumberField className="w-full" value={t5Cost} onChange={(v) => setT5Cost(v)} unit="د.ع" step={500} />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد ناوي تبيعها للزبون (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t5Price}
-                      onChange={(e) => setT5Price(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد ناوي تبيعها للزبون</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t5Price} onChange={(v) => setT5Price(v)} unit="د.ع" step={1000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد كروة التوصيل (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t5Shipping}
-                      onChange={(e) => setT5Shipping(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد كروة التوصيل</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t5Shipping} onChange={(v) => setT5Shipping(v)} unit="د.ع" step={500} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد كلفك الطلب من الإعلان (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t5AdCost}
-                      onChange={(e) => setT5AdCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد كلفك الطلب من الإعلان</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t5AdCost} onChange={(v) => setT5AdCost(v)} unit="د.ع" step={500} />
 </div>
                   </div>
                   <div className="space-y-1.5 sm:col-span-2">
-                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع نسبة الراجع (%):</label>
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                        min="0"
-                        max="80"
-                        value={t5ReturnRate}
-                        onChange={(e) => setT5ReturnRate(Number(e.target.value))}
-                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع نسبة الراجع</label>
+                    <div className="w-full">
+                      <div className="w-full">
+  <NumberField className="w-full" value={t5ReturnRate} onChange={(v) => setT5ReturnRate(v)} unit="%" min={0} max={80} step={1} />
 </div>
-                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t5ReturnRate}%</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                  <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">📊 حساب الأرباح والخسائر للقطعة:</h4>
+                  <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">حساب الأرباح والخسائر للقطعة:</h4>
 
                   {/* Math calculation */}
                   {(() => {
@@ -1198,11 +1094,11 @@ export default function VizionGrowthSuite() {
 
                         {netProfitReal <= 0 ? (
                           <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-[11px] text-red-300">
-                            ⚠️ <strong>تنبيه دتخسر!</strong> بهالأسعار ونسبة الراجع مالتك، إنت دتخسر فعلياً من كل طلب دزه. صعد سعرك أو نزل كلفة الإعلان والراجع بسرعة.
+                            <strong>تنبيه دتخسر!</strong> بهالأسعار ونسبة الراجع مالتك، إنت دتخسر فعلياً من كل طلب دزه. صعد سعرك أو نزل كلفة الإعلان والراجع بسرعة.
                           </div>
                         ) : (
                           <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-[11px] text-emerald-300">
-                            ✔ <strong>تسعيرك بطل وآمن!</strong> أرباحك الصافية زينة بعد ما شلنا كل الخسائر والراجع. مشروعك هسة جاهز يكبر ويصعد.
+                            <strong>تسعيرك بطل وآمن!</strong> أرباحك الصافية زينة بعد ما شلنا كل الخسائر والراجع. مشروعك هسة جاهز يكبر ويصعد.
                           </div>
                         )}
                       </div>
@@ -1216,7 +1112,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "customer-types" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">👥</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">ردود جاهزة تضمنلك البيعة</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">أنواع الزبائن وشلون ترد عليهم</h3>
@@ -1232,27 +1127,27 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setActiveCustomer("ghoster")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "ghoster" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    👻 يسأل (ببيش؟) ويختفي
+                    يسأل (ببيش؟) ويختفي
                   </button>
                   <button                     onClick={() => setActiveCustomer("bargainer")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "bargainer" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    💵 (أريد خصم)
+                    (أريد خصم)
                   </button>
                   <button                     onClick={() => setActiveCustomer("hesitant")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "hesitant" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    🧐 الزبون المتردد
+                    الزبون المتردد
                   </button>
                   <button                     onClick={() => setActiveCustomer("delayed")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "delayed" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    ⏳ (أرجعلك بعدين)
+                    (أرجعلك بعدين)
                   </button>
                   <button                     onClick={() => setActiveCustomer("comparer")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "comparer" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    ⚖️ يقارن ويا البقية
+                    يقارن ويا البقية
                   </button>
                 </div>
 
@@ -1261,14 +1156,14 @@ export default function VizionGrowthSuite() {
                   {activeCustomer === "ghoster" && (
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
-                        <span className="text-red-400 font-bold block">👻 اللي يسأل عن السعر ويشرد:</span>
+                        <span className="text-red-400 font-bold block">اللي يسأل عن السعر ويشرد:</span>
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحس ردك آلي ومجرد فضول ديدور.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-vz-accent">شلون تحلها:</strong> لا تنطي السعر وتسكت. اشرح قيمة العرض، وكوله تكدر تفحص المنتج عند الباب حتى يرتاح ويطمئن.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
                           "يا هلا بيك عيني الغالي.. بخصوص العطر، سعره ويا التوصيل والضمان هو 35 ألف بس. والميزة يمنا: المندوب من يوصلك تكدر تفتح الطلب وتفحص وتتأكد بنفسك، وإذا ما عجبك ترجعه بدون ما تدفع أي شي! كم قطعة حاب نثبتلك عيني؟"
                         </p>
@@ -1279,14 +1174,14 @@ export default function VizionGrowthSuite() {
                   {activeCustomer === "bargainer" && (
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
-                        <span className="text-red-400 font-bold block">💵 اللي يكول (أكو خصم عيني؟ أريده أرخص):</span>
+                        <span className="text-red-400 font-bold block">اللي يكول (أكو خصم عيني؟ أريده أرخص):</span>
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحب يحس نفسه حصل شغلة زينة وبسعر أرخص.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-vz-accent">شلون تحلها:</strong> لا تكوله "لا" قبل. انطيه عرض ثاني أو هدية (مثل توصيل مجاني للقطعتين) بدل ما تنزل سعر المنتج.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
                           "عيني فدوة لكلبك السعر قفل لأن البضاعة أصلية ومكفولة، بس لعيونك.. إذا تاخذ قطعتين اليوم، راح نلغي كروة التوصيل ويصير التوصيل مجاني! أو نهديك هدية حلوة وياها. تحب العرض الذهبي؟"
                         </p>
@@ -1297,14 +1192,14 @@ export default function VizionGrowthSuite() {
                   {activeCustomer === "hesitant" && (
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
-                        <span className="text-red-400 font-bold block">🧐 الزبون المتردد / يخاف من النصب:</span>
+                        <span className="text-red-400 font-bold block">الزبون المتردد / يخاف من النصب:</span>
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ مضروب بوري قبل من بيجات وهمية وميأمن.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-vz-accent">شلون تحلها:</strong> شيل الخوف منه من تنطيه كفالة وتخليه يفحص كدام المندوب قبل ما يستلم.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
                           "حقك عيني تخاف السوك هاليومين يخوف.. لهذا إحنا وفرنا ميزة الفحص. تفتح الكارتون وتجرب بيدك، وبضمان 6 أشهر من متجرنا. حاب نسجلك حجز اليوم عيني؟"
                         </p>
@@ -1315,14 +1210,14 @@ export default function VizionGrowthSuite() {
                   {activeCustomer === "delayed" && (
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
-                        <span className="text-red-400 font-bold block">⏳ اللي يكول (أفكر وأرجعلك / من أستلم الراتب):</span>
+                        <span className="text-red-400 font-bold block">اللي يكول (أفكر وأرجعلك / من أستلم الراتب):</span>
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحتاج حافز قوي حتى يبطل تردد ويقرر يشتري.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-vz-accent">شلون تحلها:</strong> حسسه إن الكمية حتخلص أو انطيه عرض إنو تدز الطلب يوم راتبه.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
                           "خذ راحتك عيني الغالي.. بس حتى ما يفوتك العرض، بقت عدنا آخر 3 قطع، إذا حاب نحجزلك قطعة ونخلي التوصيل يوم راتبك الجاي حتى تستلمها براحتك، تآمرنا أمر؟"
                         </p>
@@ -1333,14 +1228,14 @@ export default function VizionGrowthSuite() {
                   {activeCustomer === "comparer" && (
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
-                        <span className="text-red-400 font-bold block">⚖️ اللي يقارن (شفت بيج ثاني يبيعه أرخص):</span>
+                        <span className="text-red-400 font-bold block">اللي يقارن (شفت بيج ثاني يبيعه أرخص):</span>
                         <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يريد يبرر فرق السعر حتى يرتاح نفسياً.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-vz-accent">شلون تحلها:</strong> لا تهاجم المنافسين. بس وضحله ليش إنت أغلى (جودة خامة، ضمان، خدمات ما بعد البيع).
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">💬 الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
                           "أهلاً بيك أخي.. فعلاً تلكه أنواع أرخص بالإنترنت، بس الفرق عيني بالخامة والضمان. البضاعة الرخيصة تسويلك مشاكل ومحد يجاوبك بعدين. ويانا إنت تشتري راحة بالك وضمان حقيقي، وتجربة فحص براحتك. يسوى تجرب الأصلي لو لا عيني؟"
                         </p>
@@ -1355,7 +1250,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "ads-library" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">📚</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">إعلانات محلية جابت مبيعات قوية</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مكتبة الإعلانات الناجحة</h3>
@@ -1368,7 +1262,6 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <span className="text-2xl">🎬</span>
                     <h4 className="text-xs font-black text-white">١. إعلان ملابس (بداية قوية)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
                       فيديو يبدي بشخص يلزم قميص ويصب عليه مي حتى يثبت للناس إن القميص ما يتبكع.
@@ -1379,7 +1272,6 @@ export default function VizionGrowthSuite() {
                   </div>
 
                   <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <span className="text-2xl">🎥</span>
                     <h4 className="text-xs font-black text-white">٢. إعلان عطور (تجربة حقيقية)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
                       تصوير عادي لشخص يفوت للمكتب وأصدقائه يسألوه متفاجئين من ريحة عطره الطيبة.
@@ -1390,7 +1282,6 @@ export default function VizionGrowthSuite() {
                   </div>
 
                   <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <span className="text-2xl">📦</span>
                     <h4 className="text-xs font-black text-white">٣. إعلان هدايا (يلعب عالعاطفة)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
                       فيديو مرتب لإيدين تفتح علبة خشبية فخمة محفور عليها اسم بأسلوب مريح وتصوير حلو.
@@ -1407,7 +1298,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "product-evaluator" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">📦</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">لا تروج لمنتج يفشل بعدين</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مقيِّم المنتجات قبل ما تشغل إعلان</h3>
@@ -1489,15 +1379,15 @@ export default function VizionGrowthSuite() {
 
                           {score >= 75 ? (
                             <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-emerald-300 leading-relaxed font-light">
-                              🎉 <strong>منتجك بطل وجاهز!</strong> بي كل الشغلات اللي تنجحه بسرعة. نصيحة ابدي صور فيديوهاتك وشغل حملتك فوراً ولا تتردد.
+                              <strong>منتجك بطل وجاهز!</strong> بي كل الشغلات اللي تنجحه بسرعة. نصيحة ابدي صور فيديوهاتك وشغل حملتك فوراً ولا تتردد.
                             </div>
                           ) : score >= 50 ? (
                             <div className="p-3 bg-white/3 rounded-xl border border-white/5 text-vz-accent leading-relaxed font-light">
-                              ⚠️ <strong>جاهزية نص ونص:</strong> المنتج زين بس بي شوية مشاكل (مثل ربحه قليل أو متروس بالسوك). حاول ترتب سعرك أو تسوي عرض مميز حتى تتجنب الخسارة.
+                              <strong>جاهزية نص ونص:</strong> المنتج زين بس بي شوية مشاكل (مثل ربحه قليل أو متروس بالسوك). حاول ترتب سعرك أو تسوي عرض مميز حتى تتجنب الخسارة.
                             </div>
                           ) : (
                             <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-red-300 leading-relaxed font-light">
-                              ❌ <strong>مخاطرة جبيرة!</strong> هذا المنتج ممكن يطير ميزانيتك لأن ربحه قليل أو صعب تتوصيله. لا تصرف فلوس إعلان عليه إلا إذا حليت هاي المشاكل وصورت فيديوهاتك بيدك.
+                              <strong>مخاطرة جبيرة!</strong> هذا المنتج ممكن يطير ميزانيتك لأن ربحه قليل أو صعب تتوصيله. لا تصرف فلوس إعلان عليه إلا إذا حليت هاي المشاكل وصورت فيديوهاتك بيدك.
                             </div>
                           )}
                         </div>
@@ -1512,7 +1402,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "profit-leak" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">📉</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">وين دتطير فلوسك؟</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">كاشف تسرب الأرباح</h3>
@@ -1525,41 +1414,23 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">الطلبات الكلية اللي تدزها بالشهر:</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t9Orders}
-                      onChange={(e) => setT9Orders(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">طلب</span>
+                    <label className="text-xs font-bold text-white/80 block">الطلبات الكلية اللي تدزها بالشهر</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t9Orders} onChange={(v) => setT9Orders(v)} unit="طلب" step={10} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">كروة التوصيل للراجع (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t9ReturnFee}
-                      onChange={(e) => setT9ReturnFee(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">كروة التوصيل للراجع</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t9ReturnFee} onChange={(v) => setT9ReturnFee(v)} unit="د.ع" step={500} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع الراجع (%):</label>
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                        min="0"
-                        max="80"
-                        value={t9ReturnRate}
-                        onChange={(e) => setT9ReturnRate(Number(e.target.value))}
-                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع الراجع</label>
+                    <div className="w-full">
+                      <div className="w-full">
+  <NumberField className="w-full" value={t9ReturnRate} onChange={(v) => setT9ReturnRate(v)} unit="%" min={0} max={80} step={1} />
 </div>
-                      <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-12 text-left">{t9ReturnRate}%</span>
                     </div>
                   </div>
                 </div>
@@ -1573,7 +1444,7 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-red-400 border-b border-white/5 pb-2">🚨 حجم تسرب الفلوس من مبيعاتك:</h4>
+                      <h4 className="text-xs font-black text-red-400 border-b border-white/5 pb-2">حجم تسرب الفلوس من مبيعاتك:</h4>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
@@ -1603,7 +1474,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "roadmap" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">🎯</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">ابني شغلك خطوة بخطوة</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مخطط شلون توصل لأول 100 طلب</h3>
@@ -1642,7 +1512,7 @@ export default function VizionGrowthSuite() {
                           <span className="text-xs leading-relaxed font-light">{d.title}</span>
                         </div>
                         <span className={`text-xs font-mono font-bold shrink-0 w-6 text-left ${isChecked ? "text-emerald-400" : "text-white/10"}`}>
-                          {isChecked ? "✔" : "☐"}
+                          {isChecked ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : null}
                         </span>
                       </div>
                     );
@@ -1661,7 +1531,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "sales-blocker" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">🧠</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">اعرف وين الخلل بـ 5 دقايق</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">ليش ما دتجيني مبيعات زينة؟</h3>
@@ -1718,39 +1587,39 @@ export default function VizionGrowthSuite() {
 
                 {t11ShowResult && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down text-xs">
-                    <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">🩺 تقرير الخلل وين صاير بمشروعك:</h4>
+                    <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">تقرير الخلل وين صاير بمشروعك:</h4>
 
                     {t11CTR === "low" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
-                        <strong>🚨 الخلل الأول: إعلانك ممل وما بي بداية قوية</strong>
+                        <strong>الخلل الأول: إعلانك ممل وما بي بداية قوية</strong>
                         <p className="text-white/70 leading-relaxed font-light">الفيديو مالتك تعبان وكلفة الرسالة راح تكون غالية لأن الناس تعبر إعلانك وما تباوعله. الحل: ارجع صور المنتج بيدك بكاميرا تلفون وبين فائدته بأول 3 ثواني.</p>
                       </div>
                     )}
 
                     {t11Messages === "low" && t11CTR !== "low" && (
                       <div className="p-3 bg-white/3 rounded-xl border border-white/5 space-y-1 text-vz-accent">
-                        <strong>🚨 الخلل الثاني: الاستهداف غلط أو الفلوس قليلة</strong>
+                        <strong>الخلل الثاني: الاستهداف غلط أو الفلوس قليلة</strong>
                         <p className="text-white/70 leading-relaxed font-light">المشكلة مو بالفيديو، المشكلة بفلوس الإعلان قليلة أو دتستهدف غلط بمدير الإعلانات. الحل: شغل حملة رسائل مفتوحة وبدون ما تحدد اهتمامات معقدة وخلي الفيسبوك يدورلك عالزباين.</p>
                       </div>
                     )}
 
                     {t11Speed === "slow" && t11Messages === "high" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
-                        <strong>🚨 الخلل الثالث: دتأخر بالرد وأسلوبك ناشف</strong>
+                        <strong>الخلل الثالث: دتأخر بالرد وأسلوبك ناشف</strong>
                         <p className="text-white/70 leading-relaxed font-light">دتخسر 80% من مبيعاتك لأنك تعوف الزبون ينتظر ساعات لحد ما يطير واهسه. الحل: استخدم 'البصمة الصوتية الدافية' وجاوب خلال 15 دقيقة كحد أقصى.</p>
                       </div>
                     )}
 
                     {t11Delivery === "low" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
-                        <strong>🚨 الخلل الرابع: ما دتأكد الطلبات زين</strong>
+                        <strong>الخلل الرابع: ما دتأكد الطلبات زين</strong>
                         <p className="text-white/70 leading-relaxed font-light">إنت دتطلع طلبيات عشوائية وبدون ما تخابرهم وتأكد عليهم، فهالشي يخلي المندوب يسجلها راجع وتخسر كروة. الحل: خابر أكد الطلب فوراً ودز فيديو للواتساب يبين تجهيز طلبهم.</p>
                       </div>
                     )}
 
                     {t11CTR === "high" && t11Messages === "high" && t11Speed === "fast" && t11Delivery === "high" && (
                       <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 space-y-1 text-emerald-300">
-                        <strong>🎉 مشروعك لوز وشغلك مضبوط!</strong>
+                        <strong>مشروعك لوز وشغلك مضبوط!</strong>
                         <p className="text-white/70 leading-relaxed font-light">كل الشغل ديشتغل تمام. ننصحك هسه تزيد ميزانية الإعلان شوية شوية وتجيب منتجات جديدة حتى تضاعف أرباحك.</p>
                       </div>
                     )}
@@ -1763,7 +1632,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "forecaster" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">📈</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">توقع النتائج قبل لا تصرف وتخسر</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">متوقع المبيعات والأرباح الإعلانية</h3>
@@ -1776,39 +1644,22 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد ناوي تصرف عالحملة (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t12Budget}
-                      onChange={(e) => setT12Budget(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد ناوي تصرف عالحملة</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t12Budget} onChange={(v) => setT12Budget(v)} unit="د.ع" step={10000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع سعر الرسالة (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t12MsgCost}
-                      onChange={(e) => setT12MsgCost(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع سعر الرسالة</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t12MsgCost} onChange={(v) => setT12MsgCost(v)} unit="د.ع" step={250} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد نسبة الرسايل اللي تصير طلبات (%):</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد نسبة الرسايل اللي تصير طلبات</label>
                     <div className="flex items-center gap-2">
-                      <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                        min="1"
-                        max="30"
-                        value={t12ConvRate}
-                        onChange={(e) => setT12ConvRate(Number(e.target.value))}
-                        className="w-full accent-slate-200 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                      />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">%</span>
+                      <div className="w-full">
+  <NumberField className="w-full" value={t12ConvRate} onChange={(v) => setT12ConvRate(v)} unit="%" min={1} max={100} step={1} />
 </div>
                       <span className="text-xs font-mono font-bold text-vz-accent shrink-0 w-10 text-left">{t12ConvRate}%</span>
                     </div>
@@ -1822,7 +1673,7 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">📋 نتائج توقع أرباح الحملة:</h4>
+                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">نتائج توقع أرباح الحملة:</h4>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
@@ -1848,7 +1699,6 @@ export default function VizionGrowthSuite() {
             {activeTab === "budget-planner" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <span className="text-3xl">💵</span>
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">لا تصرف فلوسك مخربط</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مخطط ميزانية الإعلان والفلوس</h3>
@@ -1861,25 +1711,15 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">صافي الربح اللي تريد تطلعه بالشهر (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t13TargetProfit}
-                      onChange={(e) => setT13TargetProfit(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">صافي الربح اللي تريد تطلعه بالشهر</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t13TargetProfit} onChange={(v) => setT13TargetProfit(v)} unit="د.ع" step={50000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">هامش ربح القطعة الصافي (قبل لا تحسب الإعلان) (دينار):</label>
-                    <div className="relative flex items-center">
-  <input type="number" inputMode="numeric" pattern="[0-9]*"
-                      value={t13ProfitMargin}
-                      onChange={(e) => setT13ProfitMargin(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-left focus:border-white/35 outline-none font-mono min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                    />
-  <span className="absolute left-3 text-xs font-bold text-white/60 pointer-events-none">دينار</span>
+                    <label className="text-xs font-bold text-white/80 block">هامش ربح القطعة الصافي (قبل لا تحسب الإعلان)</label>
+                    <div className="w-full">
+  <NumberField className="w-full" value={t13ProfitMargin} onChange={(v) => setT13ProfitMargin(v)} unit="د.ع" step={500} />
 </div>
                   </div>
                 </div>
@@ -1890,7 +1730,7 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">📋 الخطة المالية المقترحة لهدفك:</h4>
+                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">الخطة المالية المقترحة لهدفك:</h4>
                       
                       <div className="grid grid-cols-1 gap-y-5 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
@@ -1922,10 +1762,6 @@ export default function VizionGrowthSuite() {
           </AnimatePresence>
 
           {/* Golden Footer branding for Vizion OS */}
-          <div className="mt-8 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] text-white/45">
-            <span>نظام فيزيون المتكامل • Vizion OS</span>
-            <span>بيانات مضبوطة وحاسبات شغالة 100%</span>
-          </div>
           
         </div>
         

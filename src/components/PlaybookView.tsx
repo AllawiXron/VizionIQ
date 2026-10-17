@@ -13,6 +13,7 @@ import type { Route } from "../lib/route";
 import { PlaybookCalculator } from "./playbook/PlaybookCalculator";
 import { isFreeTrialUser } from "./LockScreen";
 import { TrialLock } from "./TrialLock";
+import { TopicGlyph } from "./ui/TopicIcon";
 
 interface PlaybookViewProps {
   key?: string;
@@ -105,7 +106,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
       {/* Title */}
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
         <p className="text-sm sm:text-base text-white/60 leading-relaxed">
-          <span className="text-2xl ml-2 align-middle" aria-hidden="true">{pb.icon}</span>«{pb.problem}»
+          «{pb.problem}»
         </p>
         <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight">{pb.title}</h1>
         <p className="text-sm sm:text-lg text-white/70 leading-relaxed">{pb.promise}</p>
@@ -344,7 +345,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
               if (!gm) return null;
               return (
                 <button key={gid} onClick={() => onNavigate({ view: "guideModule", id: gid })} className={`btn btn-glass px-3.5 min-h-[40px] rounded-full text-xs gap-1.5 ${focusRing}`}>
-                  <span aria-hidden="true">{gm.icon}</span>
+                  <TopicGlyph kind="guide" id={gm.id} className="w-3.5 h-3.5" />
                   الدليل العراقي: {gm.title.split(":")[0]}
                 </button>
               );

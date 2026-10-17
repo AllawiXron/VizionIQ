@@ -109,8 +109,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
   // Check if response contains an applicable script
   const hasScript = Boolean(
     scriptText ||
-    responseText.includes("💬") ||
-    responseText.includes("📞") ||
+    responseText.includes("") ||
+    responseText.includes("") ||
     responseText.includes("السكربت") ||
     responseText.includes("السكريبت")
   );
@@ -129,7 +129,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "تم نسخ السكريبت بنجاح! 📋",
+        "تم نسخ السكريبت بنجاح!",
         "تكدر الآن لصقه وإرساله للزبون مباشرة."
       );
     }
@@ -148,7 +148,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "تم نسخ نص الإجابة كاملاً 📋",
+        "تم نسخ نص الإجابة كاملاً",
         "تم حفظ محتوى التوصية في الحافظة."
       );
     }
@@ -181,7 +181,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       if (onShowToast) {
         onShowToast(
           "saved",
-          "تم حفظ التوصية بنجاح 💾",
+          "تم حفظ التوصية بنجاح",
           "تمت إضافة هذه التوصية إلى سجل توصياتك المحفوظة للرجوع إليها بأي وقت."
         );
       }
@@ -212,7 +212,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       if (onShowToast) {
         onShowToast(
           "plan",
-          "تمت الإضافة لخطة 7 أيام 📅",
+          "تمت الإضافة لخطة 7 أيام",
           "ستظهر هذه المهمة ضمن خطتك التنفيذية الأسبوعية لمتابعة إنجازها."
         );
       }
@@ -226,7 +226,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "navigate",
-        `جاري فتح ${effectiveToolTitle} 🛠️`,
+        `جاري فتح ${effectiveToolTitle}`,
         "تم حفظ جلسة المستشار الذكي وتكدر العودة إليها في أي وقت."
       );
     }
@@ -243,7 +243,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "navigate",
-        `جاري فتح ${effectiveChapterTitle} 📖`,
+        `جاري فتح ${effectiveChapterTitle}`,
         "تم حفظ محادثتك مع المستشار الذكي تلقائياً."
       );
     }

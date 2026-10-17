@@ -10,6 +10,7 @@ import type { Route } from "../lib/route";
 import { GuideToolView } from "./guide/GuideTools";
 import { isFreeTrialUser } from "./LockScreen";
 import { TrialLock } from "./TrialLock";
+import { TopicIcon } from "./ui/TopicIcon";
 
 interface GuideModuleViewProps {
   key?: string;
@@ -44,7 +45,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
 
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-3 sm:space-y-4 mb-8">
         <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight flex items-start gap-3">
-          <span aria-hidden="true" className="shrink-0">{m.icon}</span>
+          <TopicIcon kind="guide" id={m.id} size="lg" className="mt-0.5" />
           <span>{m.title}</span>
         </h1>
         <p className="text-sm sm:text-lg text-white/65 leading-relaxed">{m.subtitle}</p>
@@ -213,7 +214,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
             onClick={() => onNavigate({ view: "guideModule", id: nextModule.id })}
             className={`group w-full text-right glass-elevated glass-edge rounded-3xl p-5 sm:p-6 flex items-center gap-4 cursor-pointer ${focusRing}`}
           >
-            <span className="text-3xl leading-none shrink-0" aria-hidden="true">{nextModule.icon}</span>
+            <TopicIcon kind="guide" id={nextModule.id} />
             <span className="flex-1 min-w-0">
               <span className="block text-xs font-bold text-vz-accent">الوحدة الجاية</span>
               <span className="block text-base sm:text-lg font-black text-white leading-snug">{nextModule.title}</span>

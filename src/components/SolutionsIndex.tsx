@@ -8,6 +8,7 @@ import type { Route } from "../lib/route";
 import { PageHeader } from "./ui/PageHeader";
 import { isFreeTrialUser } from "./LockScreen";
 import { LockChip } from "./TrialLock";
+import { TopicIcon } from "./ui/TopicIcon";
 
 interface SolutionsIndexProps {
   userCode: string;
@@ -45,7 +46,7 @@ export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexP
                 className={`group w-full h-full text-right glass glass-interactive rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col gap-4 cursor-pointer ${focusRing}`}
               >
                 <div className="flex items-start gap-3.5">
-                  <span className="text-3xl leading-none shrink-0" aria-hidden="true">{pb.icon}</span>
+                  <TopicIcon kind="playbook" id={pb.id} />
                   <div className="min-w-0 space-y-1.5">
                     <p className="text-sm sm:text-base text-white/60 leading-relaxed">«{pb.problem}»</p>
                     <h2 className="text-base sm:text-lg font-black text-white leading-snug">{pb.title}</h2>

@@ -29,16 +29,16 @@ export default function ScriptSimulator() {
       {/* Header */}
       <div className="border-b border-white/10 pb-4 mb-6">
         <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-          💬 تدرب على التعامل مع الزبائن وتجرب أكثر من طريقة حتى تعرف أي أسلوب يجيب طلبات أكثر
+          مكالمات جاهزة حسب نوع الزبون
         </h3>
-        <p className="text-xs text-white/70 mt-1">اضغط على نوع المشتري بالجانب لتعلم كيف تحول المتردد والمشوش لعميل حقيقي يدفع كاش بلهجة عراقية محببة</p>
+        <p className="text-xs text-white/70 mt-1">اختار نوع الزبون، واقرا المكالمة كاملة: شلون تبدي، شنو تكول، وشلون تثبت الطلب.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Side: Selectors (4 Columns) */}
         <div className="lg:col-span-4 space-y-3">
-          <span className="text-xs font-semibold text-vz-accent block">👤 حدد نمط زبونك بالاتصال:</span>
+          <span className="text-xs font-semibold text-vz-accent block">نوع الزبون:</span>
           {phoneScripts.map((script, idx) => (
             <button               key={idx}
               onClick={() => {
@@ -59,10 +59,10 @@ export default function ScriptSimulator() {
           <div className="p-4 bg-white/3 border border-white/9 rounded-xl mt-4">
             <span className="text-xs font-bold text-vz-accent flex items-center gap-1.5 mb-1">
               <Star className="w-3.5 h-3.5 fill-slate-200" />
-              القاعدة المليونية للـ COD:
+              قاعدة الدفع عند الاستلام:
             </span>
             <p className="text-[11px] text-white/70 leading-relaxed">
-              الاتصال السريع بالزبون (في غضون ٣٠ دقيقة بحد أقصى) يزيد من نسبة استلام الطرود بمعدل ٢٥٪ عن المرتجع المتأخر.
+              اتصل بالزبون خلال 30 دقيقة من الطلب. كل ما تأخرت، زاد احتمال يرفض الطلب.
             </p>
           </div>
         </div>
@@ -83,12 +83,12 @@ export default function ScriptSimulator() {
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-300">تم النسخ!</span>
+                  <span className="text-emerald-300">انتسخت</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5" />
-                  <span>نسخ النص الكامل</span>
+                  <span>انسخ المكالمة</span>
                 </>
               )}
             </button>
@@ -113,13 +113,13 @@ export default function ScriptSimulator() {
                         : "bg-slate-700 text-white"
                     }`}
                   >
-                    {isAgent ? "🎧" : "👤"}
+                    {isAgent ? "" : ""}
                   </div>
 
                   {/* Speech Bubble */}
                   <div className="space-y-1">
                     <span className="text-[9px] text-white/60 block">
-                      {isAgent ? "مسؤول تأكيد الطلبات" : "الزبون العراقي"}
+                      {isAgent ? "إنت" : "الزبون"}
                     </span>
                     <div
                       className={`p-3 rounded-2xl text-xs leading-relaxed ${
@@ -140,7 +140,7 @@ export default function ScriptSimulator() {
           <div className="p-4 bg-white/3 border border-white/9 rounded-xl">
             <h5 className="text-xs font-bold text-vz-accent flex items-center gap-1.5 mb-1">
               <Star className="w-3.5 h-3.5 text-vz-accent" />
-              💡 نصيحة الخبير الذهبية:
+              نصيحة:
             </h5>
             <p className="text-xs text-white/70 leading-relaxed font-light">
               {activeScript.tip || activeScript.goldenOutcome}
