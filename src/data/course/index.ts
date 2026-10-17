@@ -4,6 +4,7 @@ import { chapter2 } from "./chapter2.js";
 import { chapter4 } from "./chapter4.js";
 import { chapter6 } from "./chapter6.js";
 import { chapter8 } from "./chapter8.js";
+import { chapter9 } from "./chapter9.js";
 import { chapter10 } from "./chapter10.js";
 
 export type { Block, CourseChapter, Lesson } from "./types";
@@ -15,6 +16,7 @@ export const courseChapters: Record<string, CourseChapter> = {
   chapter4,
   chapter6,
   chapter8,
+  chapter9,
   chapter10,
 };
 
