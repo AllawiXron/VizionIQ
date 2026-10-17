@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="fonts/fonts.css">
+<style>body{margin:0;background:#efe6d6;display:flex;gap:40px;padding:40px;font-family:'Readex Pro'}
+.c{background:#fff;padding:30px;border-radius:12px;text-align:center}.d{background:#0d1f4f}
+.c div{margin-top:10px;font-size:22px}</style></head><body>
+<script src="marks.js"></script>
+<script>
+for (const n of ['dissolve','morph','growth']) {
+  for (const [cls, c] of [['c',{ink:'#16337a',accent:'#c99a2e'}],['c d',{ink:'#efe6d6',accent:'#e2b54a'}]]) {
+    document.write(`<div class="${cls}">${markSVG(n,c,260)}<div style="color:${cls==='c'?'#000':'#fff'}">${n}</div></div>`);
+  }
+}
+</script></body></html>
