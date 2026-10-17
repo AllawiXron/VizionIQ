@@ -34,3 +34,8 @@ Don't use flat cream + orange + near-black fields with clean UI pills: the user 
 
 When the user sends a lead's message and asks what to reply, follow `marketing/vizion-sales-brief.md` (offer, price,
 who it fits, payment, reply rules). No need to read code for this.
+
+## allawi.psd design page
+
+For anything about the @allawi.psd graphic design and reels page (lead replies, pitches, captions, design and reel
+work), follow `marketing/allawi-psd-brief.md`. For lead replies and captions there's no need to read code.
