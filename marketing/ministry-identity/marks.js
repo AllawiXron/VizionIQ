@@ -64,4 +64,4 @@ function markSVG(name, c, size = 300, extra = '') {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="${size}" height="${size}" ${extra}>${MARKS[name](c)}</svg>`;
 }
 
-if (typeof module !== 'undefined') module.exports = { MARKS, markSVG };
+// Loaded by the pages with a <script> tag (the repo's package.json is "type": "module", so require() won't see these).
