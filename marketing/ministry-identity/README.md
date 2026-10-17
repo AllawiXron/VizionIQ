@@ -37,5 +37,14 @@ Malwiya as rising tiers (a Christmas tree).
 - `out/svg/`: the gate as SVG (blue, clay on night, black with white arches) to open in Illustrator.
 - `shot.cjs page.html out.png [w h]`: a screenshot of any page, for quick looks.
 
-Still to do: applications (letterhead, business card, ID badge, social posts, signage), the website concept (home and
-one inner page), the PowerPoint and the ZIP for the form.
+- `applications.html` → slides 7–10: stationery (letterhead, envelope, business card), employee ID and lanyard, the app
+  splash and icon, social posts and a story, the building sign and a wayfinding totem.
+  `node render.cjs applications.html 7`.
+- `website.html` → slides 11–12: the homepage (desktop in a browser, and mobile) and a mobile flow (a service page and
+  request tracking) with the design principles. `node render.cjs website.html 11`.
+- `out/ministry-identity-proposal.pdf`: slides 1–12 in one file.
+
+Names, phone numbers, IDs and the `example.gov.iq` addresses are placeholders, and the QR-like squares are decoration,
+not working codes. The services on the website are illustrations, not the ministry's real list.
+
+Still to do: the PowerPoint, the concept write-up for the form, and the ZIP.
