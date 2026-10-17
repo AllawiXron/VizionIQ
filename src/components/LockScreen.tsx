@@ -405,9 +405,9 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               className={`btn btn-glass w-full min-h-[52px] rounded-2xl px-4 text-sm font-black gap-2 ${focusRing}`}
             >
               <Sparkles className="w-4 h-4 text-emerald-300" />
-              <span>جرّب المنصة ببلاش، بدون رمز</span>
+              <span>جرّب الكورس المجاني</span>
             </button>
-            <p className="text-[11px] text-white/45 leading-relaxed">دقيقة وحدة: تعرف ربحك الحقيقي بالطلب، وتشوف حل مشكلتك.</p>
+            <p className="text-[11px] text-white/45 leading-relaxed">بدون رمز: تقرا أول درس، وتعرف ربحك الحقيقي من كل طلب.</p>
 
             {/* The one plan */}
             <div className="glass-subtle rounded-2xl p-3.5 text-right flex items-center justify-between gap-3">

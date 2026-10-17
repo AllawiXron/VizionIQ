@@ -64,7 +64,7 @@ export function subscribeMessage(extraLines: string[] = [], now: Date = new Date
   const priceLine = state.active
     ? `أريد أشترك بالكورس الكامل بـ ${thousands(state.price)} (عرض لحد ${OFFER_LAST_DAY}).`
     : `أريد أشترك بالكورس الكامل بـ ${thousands(state.price)}.`;
-  return ["هلا، جربت منصة viZion.", ...extraLines, priceLine].join("\n");
+  return ["هلا، جربت كورس viZion المجاني.", ...extraLines, priceLine].join("\n");
 }
 
 export function whatsappLink(message: string): string {
