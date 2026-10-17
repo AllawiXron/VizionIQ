@@ -22,7 +22,7 @@ Look: the viZion colours instead of the reference's green. There's a blue spotli
 in navy and the answer in white. The tag is a navy rounded square with the real VZ mark in blue and yellow (shapes from
 `../vizion-results-carousel/brand/vizion-mark.json`, exported to `mark.js`). Light grain (.07, shifting every 0.2 s)
 and a vignette sit on top. Text is DG Sahabah. The name "viZion" alone is in Readex Pro (as on the viZion posts),
-because DG Sahabah's "v" reads as "u". The footer reads «تعلّم · طبّق · بيع» and «كورس viZion · راسلنا
+because DG Sahabah's "v" reads as "u". The footer reads «تسويق · مبيعات · أرباح» and «كورس viZion · راسلنا
 بالخاص». Everything stays inside the Reels safe area.
 
 Sound: one whoosh from the user's pack per half swing, peaking as the tag passes the middle and panned the way it
