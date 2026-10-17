@@ -16,7 +16,7 @@ How it got here (the user asked for an honest opinion and wants first place):
 - The star of Shamash from four wedges with pixel rays: read as the ✦ sparkle that AI tools use. Dropped at once.
 - Also tried earlier: «dissolve» and «growth» (still in `marks.js`).
 
-**Round 3 (current, waiting for the user's yes): «بوابة عشتار.. بوابة العراق الرقمية».** The user turned the
+**Round 3 (current, the user loves it): «بوابة عشتار.. بوابة العراق الرقمية».** The user turned the
 tablet down ("looks like an app icon", "the idea itself") and asked for exactly what the brief says, but better. The
 Ishtar Gate (`concepts.js`, `gate3`): two tall towers and a lower wall with stepped Mesopotamian crenellations, and an
 open arch framed by two nested gold arches, which are both the gate's recessed arches and signal waves. A gate is the
@@ -28,10 +28,13 @@ Malwiya as rising tiers (a Christmas tree).
 **Colours:** أزرق بابل `#17357D`, حبر الليل `#0C1B40`, ذهب عشتار `#C99A2E` (accent, used sparingly), الطين `#ECE2D0`.
 **Type:** Readex Pro for headings, IBM Plex Sans Arabic for text (both SIL OFL; files in `fonts/`).
 
-- `marks.js`: the marks in code. `MARKS.tab` (`tabletMark`) is the chosen one; `morph`, `dissolve` and `growth` are v1.
-- `identity.html`: the slides (1920×1080, PowerPoint-ready): cover, the idea, logo versions, colour and type,
-  construction. `node render.cjs` renders `out/slide-1..5.png` (`NODE_PATH=/opt/node-tools/node_modules`).
-- `out/svg/`: the logo as SVG (blue tablet, clay tablet, black) to open in Illustrator.
+- `marks.js`: the gate (`gate`, proportions in `GATE`), `markSVG`, and the patterns from it: `crenelBand` (a row of
+  stepped merlons, for borders) and `archTile` (nested arches, for large fields). The tablet and the cuneiform grid
+  are in git history (commits 2048851 and f51f9c4).
+- `concepts.js` / `concepts.html`: round 3's presentation board (`node render-concepts.cjs` → `out/concept-gate.png`).
+- `identity.html`: the slides (1920×1080, PowerPoint-ready): cover, the idea, logo versions, construction, colour and
+  type, patterns. `node render.cjs` renders `out/slide-1..6.png` (`NODE_PATH=/opt/node-tools/node_modules`).
+- `out/svg/`: the gate as SVG (blue, clay on night, black with white arches) to open in Illustrator.
 - `shot.cjs page.html out.png [w h]`: a screenshot of any page, for quick looks.
 
 Still to do: applications (letterhead, business card, ID badge, social posts, signage), the website concept (home and

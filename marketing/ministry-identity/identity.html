@@ -9,98 +9,100 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #777; font-family: "IBM Plex Sans Arabic", sans-serif; color: var(--ink); }
   .slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; background: var(--white); margin-bottom: 40px; }
-  .h { font-family: "Readex Pro", sans-serif; }
+  .bgpat { position: absolute; inset: 0; }
   .tag { position: absolute; top: 64px; right: 96px; font-size: 22px; letter-spacing: .5px; opacity: .7; }
   .num { position: absolute; top: 64px; left: 96px; font: 500 22px "Readex Pro"; opacity: .5; direction: ltr; }
   .title { position: absolute; top: 120px; right: 96px; font: 600 64px/1.2 "Readex Pro"; }
+  .dark { background: var(--night); color: var(--white); }
 
   /* lockups */
   .lock { display: flex; align-items: center; gap: 44px; white-space: nowrap; }
   .lock .rule { width: 2px; align-self: stretch; background: currentColor; opacity: .25; }
   .lock .t1 { font: 400 26px "Readex Pro"; letter-spacing: .3px; opacity: .8; }
-  .lock .t2 { font: 600 58px/1.25 "Readex Pro"; margin: 4px 0 8px; }
-  .lock .t3 { font: 400 22px "Readex Pro"; direction: ltr; text-align: right; letter-spacing: .6px; opacity: .75; }
-  .stack { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .lock .t2 { font: 600 58px/1.25 "Readex Pro"; margin: 4px 0 14px; }
+  .lock .t3 { font: 400 19px "Readex Pro"; direction: ltr; text-align: right; letter-spacing: .5px; opacity: .75; }
+  .stack { display: flex; flex-direction: column; align-items: center; text-align: center; white-space: nowrap; }
   .stack .t1 { font: 400 24px "Readex Pro"; opacity: .8; margin-top: 34px; }
-  .stack .t2 { font: 600 34px/1.3 "Readex Pro"; margin: 6px 0 8px; }
-  .stack .t3 { font: 400 13px "Readex Pro"; direction: ltr; letter-spacing: .6px; opacity: .75; white-space: nowrap; }
+  .stack .t2 { font: 600 40px/1.3 "Readex Pro"; margin: 6px 0 16px; }
+  .stack .t3 { font: 400 15px "Readex Pro"; direction: ltr; letter-spacing: .6px; opacity: .75; }
 
   /* 1 cover */
-  #s1 { background: var(--clay); }
-  #s1 .lock { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--night); }
+  #s1 .stack { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%); }
+  #s1 .stack .t2 { font-size: 64px; } #s1 .stack .t1 { font-size: 30px; margin-top: 56px; } #s1 .stack .t3 { font-size: 21px; }
   #s1 .foot { position: absolute; bottom: 64px; right: 96px; left: 96px; display: flex; justify-content: space-between; font-size: 22px; opacity: .65; }
 
   /* 2 idea */
-  #s2 .big { position: absolute; top: 250px; left: 150px; }
-  #s2 .pts { position: absolute; top: 300px; right: 96px; width: 980px; }
-  #s2 .pt { display: flex; gap: 34px; align-items: flex-start; margin-bottom: 46px; }
-  #s2 .pt .ic { width: 200px; flex: none; height: 96px; display: flex; align-items: center; justify-content: flex-end; }
+  #s2 .big { position: absolute; top: 300px; left: 120px; }
+  #s2 .pts { position: absolute; top: 280px; right: 96px; width: 980px; }
+  #s2 .pt { margin-bottom: 40px; padding-right: 34px; position: relative; }
+  #s2 .pt::before { content: ""; position: absolute; right: 0; top: 16px; width: 14px; height: 14px; background: var(--gold); }
   #s2 .pt h3 { font: 600 38px "Readex Pro"; } #s2 .pt p { font-size: 25px; line-height: 1.7; opacity: .8; margin-top: 6px; }
-  #s2 .note { position: absolute; bottom: 80px; right: 96px; left: 96px; font-size: 27px; line-height: 1.8; padding-top: 30px; border-top: 2px solid rgba(12,27,64,.12); }
+  #s2 .note { position: absolute; bottom: 74px; right: 96px; left: 96px; font-size: 27px; line-height: 1.8; padding-top: 28px; border-top: 2px solid rgba(12,27,64,.12); }
   #s2 .note b { font-weight: 500; color: var(--blue); }
 
   /* 3 versions */
   #s3 .grid { position: absolute; top: 250px; right: 96px; left: 96px; bottom: 96px; display: grid; grid-template-columns: 1.55fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 28px; }
-  #s3 .cell { border-radius: 18px; display: flex; align-items: center; justify-content: center; position: relative; }
+  #s3 .cell { border-radius: 18px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
   #s3 .cell .cap { position: absolute; bottom: 18px; right: 24px; font-size: 19px; opacity: .6; }
-  #s3 .cell .lock { gap: 28px; } #s3 .cell .lock .t2 { font-size: 32px; } #s3 .cell .lock .t1 { font-size: 18px; } #s3 .cell .lock .t3 { font-size: 12.5px; }
+  #s3 .cell .lock { gap: 28px; } #s3 .cell .lock .t2 { font-size: 32px; } #s3 .cell .lock .t1 { font-size: 18px; } #s3 .cell .lock .t3 { font-size: 11px; }
+  #s3 .cell .stack .t2 { font-size: 30px; } #s3 .cell .stack .t1 { font-size: 18px; margin-top: 26px; } #s3 .cell .stack .t3 { font-size: 11px; }
 
-  /* 4 colour + type */
-  #s4 .sw { position: absolute; top: 250px; right: 96px; width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  #s4 .chip { height: 300px; border-radius: 18px; padding: 30px; display: flex; flex-direction: column; justify-content: flex-end; }
-  #s4 .chip b { font: 600 32px "Readex Pro"; } #s4 .chip span { font-size: 21px; opacity: .85; margin-top: 6px; line-height: 1.5; }
-  #s4 .chip code { font: 500 20px "Readex Pro"; direction: ltr; text-align: right; opacity: .8; margin-top: 10px; }
-  #s4 .type { position: absolute; top: 250px; left: 96px; width: 780px; }
-  #s4 .type .f { padding: 30px 0; border-bottom: 2px solid rgba(12,27,64,.1); }
-  #s4 .type .f small { font-size: 20px; opacity: .6; display: block; margin-bottom: 8px; }
-  #s4 .type .big { font: 600 92px/1.2 "Readex Pro"; color: var(--blue); }
-  #s4 .type .lat { font: 400 30px "Readex Pro"; direction: ltr; text-align: right; opacity: .8; }
-  #s4 .type .body { font: 400 27px/1.8 "IBM Plex Sans Arabic"; }
+  /* 4 construction */
+  #s4 .con { position: absolute; top: 230px; right: 150px; }
+  #s4 .txt { position: absolute; top: 330px; left: 110px; width: 820px; font-size: 27px; line-height: 1.85; }
+  #s4 .txt li { margin-bottom: 18px; list-style: none; padding-right: 30px; position: relative; }
+  #s4 .txt li::before { content: ""; position: absolute; right: 0; top: 18px; width: 12px; height: 12px; background: var(--gold); }
 
-  /* 5 construction */
-  #s5 { background: var(--night); color: var(--white); }
-  #s5 .con { position: absolute; top: 230px; right: 200px; }
-  #s5 .txt { position: absolute; top: 320px; left: 110px; width: 820px; font-size: 27px; line-height: 1.85; }
-  #s5 .txt li { margin-bottom: 18px; list-style: none; padding-right: 30px; position: relative; }
-  #s5 .txt li::before { content: ""; position: absolute; right: 0; top: 18px; width: 12px; height: 12px; background: var(--gold); }
+  /* 5 colour + type */
+  #s5 .sw { position: absolute; top: 250px; right: 96px; width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  #s5 .chip { height: 300px; border-radius: 18px; padding: 30px; display: flex; flex-direction: column; justify-content: flex-end; }
+  #s5 .chip b { font: 600 32px "Readex Pro"; } #s5 .chip span { font-size: 21px; opacity: .85; margin-top: 6px; line-height: 1.5; }
+  #s5 .chip code { font: 500 20px "Readex Pro"; direction: ltr; text-align: right; opacity: .8; margin-top: 10px; }
+  #s5 .type { position: absolute; top: 250px; left: 96px; width: 780px; }
+  #s5 .type .f { padding: 30px 0; border-bottom: 2px solid rgba(12,27,64,.1); }
+  #s5 .type .f small { font-size: 20px; opacity: .6; display: block; margin-bottom: 8px; }
+  #s5 .type .big { font: 600 92px/1.2 "Readex Pro"; color: var(--blue); }
+  #s5 .type .lat { font: 400 30px "Readex Pro"; direction: ltr; text-align: right; opacity: .8; }
+  #s5 .type .body { font: 400 27px/1.8 "IBM Plex Sans Arabic"; }
+
+  /* 6 pattern */
+  #s6 .p { position: absolute; border-radius: 18px; overflow: hidden; }
+  #s6 .cap { position: absolute; font-size: 22px; opacity: .7; }
 </style>
 </head>
 <body>
 <script src="marks.js"></script>
 <script>
 const C = { blue: '#17357d', night: '#0c1b40', gold: '#c99a2e', clay: '#ece2d0', white: '#fbf8f2' };
-const ON_LIGHT = { field: C.blue, ink: C.white, accent: C.gold };   // the tablet in Babylon blue, the writing in white
-const ON_DARK = { field: C.clay, ink: C.night, accent: C.gold };    // a clay tablet on night blue
+const ON_LIGHT = { ink: C.blue, accent: C.gold, bg: C.white };
+const ON_CLAY = { ink: C.blue, accent: C.gold, bg: C.clay };
+const ON_DARK = { ink: C.clay, accent: C.gold, bg: C.night };
 const NAME = { t1: 'جمهورية العراق', t2: 'وزارة الاقتصاد الرقمي والحوكمة', t3: 'MINISTRY OF DIGITAL ECONOMY AND GOVERNANCE' };
-const lock = (c, size = 230) =>
-  `<div class="lock">${markSVG('tab', c, size)}<div class="rule"></div>
-   <div><div class="t1">${NAME.t1}</div><div class="t2">${NAME.t2}</div><div class="t3">${NAME.t3}</div></div></div>`;
-const stack = (c, size = 200) =>
-  `<div class="stack">${markSVG('tab', c, size)}<div class="t1">${NAME.t1}</div><div class="t2">${NAME.t2}</div><div class="t3">${NAME.t3}</div></div>`;
-// one line of the tablet on its own, for the idea slide
-const line = (inner, w, h = 60) => `<svg viewBox="0 0 ${w} ${h}" width="${w * 1.6}" height="${h * 1.6}">${inner}</svg>`;
+const names = () => `<div class="t1">${NAME.t1}</div><div class="t2">${NAME.t2}</div><div class="t3">${NAME.t3}</div>`;
+const lock = (c, size = 200) => `<div class="lock">${markSVG('gate', c, size)}<div class="rule"></div><div>${names()}</div></div>`;
+const stack = (c, size = 200) => `<div class="stack">${markSVG('gate', c, size)}${names()}</div>`;
+// a full-slide pattern layer
+const pat = (def, id, op = 1) => `<svg class="bgpat" width="1920" height="1080"><defs>${def}</defs><rect width="1920" height="1080" fill="url(#${id})" opacity="${op}"/></svg>`;
 </script>
 
 <!-- 1: cover -->
-<section class="slide" id="s1">
-  <script>document.write(lock(ON_LIGHT, 250))</script>
-  <div class="foot"><span>مقترح الهوية البصرية</span><span class="h" style="direction:ltr">2026</span></div>
+<section class="slide dark" id="s1">
+  <script>document.write(pat(archTile(C.clay, 1, 150), 'arch-ece2d0', .05))</script>
+  <script>document.write(stack(ON_DARK, 330))</script>
+  <div class="foot"><span>مقترح الهوية البصرية</span><span style="direction:ltr;font-family:'Readex Pro'">2026</span></div>
 </section>
 
 <!-- 2: the idea -->
 <section class="slide" id="s2">
   <div class="tag">الفكرة</div><div class="num">02</div>
-  <div class="title">اللوح الطيني.. أول شاشة في التاريخ</div>
-  <div class="big"><script>document.write(markSVG('tab', ON_LIGHT, 520))</script></div>
+  <div class="title">بوابة عشتار.. بوابة العراق الرقمية</div>
+  <div class="big"><script>document.write(markSVG('gate', ON_LIGHT, 470))</script></div>
   <div class="pts">
-    <div class="pt"><div class="ic"><script>document.write(line(hWedge(2, 30, 28, 40, C.blue) + hWedge(48, 30, 28, 40, C.blue) + vWedge(104, 7, 28, 46, C.blue), 120))</script></div>
-      <div><h3>اللوح والمسمار</h3><p>على أرض العراق وُلدت الكتابة، وأول ما كُتب على الألواح الطينية كان سجلّات: أرقام، وحسابات، وعقود. أي أول «بيانات» وأول إدارة موثّقة في التاريخ.</p></div></div>
-    <div class="pt"><div class="ic"><script>document.write(line([0, 1, 2].map(i => sq(2 + i * 36, 16, 28, C.blue, 3)).join(''), 104))</script></div>
-      <div><h3>السطر الرقمي</h3><p>السطر الثالث يُكتب بالبكسلات: نفس اللوح، ونفس فكرة السجلّ الموثّق، لكنه صار رقمياً. اللوح الطيني والشاشة فكرة واحدة يفصل بينهما خمسة آلاف سنة.</p></div></div>
-    <div class="pt"><div class="ic"><script>document.write(line(`<rect x="2" y="9" width="8" height="42" rx="2" fill="${C.gold}"/>`, 12))</script></div>
-      <div><h3>المؤشّر الذهبي</h3><p>مؤشّر الكتابة في نهاية السطر (من اليسار، كما ينتهي السطر العربي): القصة لم تنتهِ، والعراق يكتب الآن فصله الرقمي.</p></div></div>
+    <div class="pt"><h3>البوابة</h3><p>بوابة عشتار في بابل أشهر مدخل في تاريخ العراق. واليوم الوزارة هي بوابة الدولة الرقمية: منها تمرّ الخدمات الحكومية إلى المواطن، ومنها يدخل العراق إلى الاقتصاد الرقمي.</p></div>
+    <div class="pt"><h3>الأقواس الذهبية</h3><p>قوسان متداخلان حول المدخل، مثل الأقواس المتراجعة في البوابة الحقيقية، وهما أيضاً موجات الاتصال: دولة مفتوحة، ومتصلة، وشفافة.</p></div>
+    <div class="pt"><h3>الشرفات المدرّجة</h3><p>الشرفات المدرّجة فوق الأبراج من العمارة الرافدينية، ودرجاتها المربّعة تشبه البكسلات: أصالة بابلية بروح رقمية.</p></div>
   </div>
-  <div class="note">الشعار يجمع رسالة الوزارة في شكل واحد: <b>الاقتصاد الرقمي</b> (الشاشة والبكسل)، و<b>الحوكمة</b> (السجلّ الموثّق والواضح)، و<b>الهوية العراقية</b> (اللوح المسماري)، و<b>الابتكار</b> (المؤشّر الذي يكتب القادم).</div>
+  <div class="note">الشعار يحمل رسالة الوزارة كاملة: <b>الهوية العراقية</b> (البوابة)، و<b>الاقتصاد الرقمي</b> (البوابة الرقمية والبكسل)، و<b>الحوكمة</b> (بناء منظّم ومدخل مفتوح للجميع)، و<b>الابتكار</b> (موجات الاتصال).</div>
 </section>
 
 <!-- 3: versions -->
@@ -108,23 +110,46 @@ const line = (inner, w, h = 60) => `<svg viewBox="0 0 ${w} ${h}" width="${w * 1.
   <div class="tag">الشعار</div><div class="num">03</div>
   <div class="title">نسخ الشعار</div>
   <div class="grid">
-    <div class="cell" style="background:#fff;color:var(--night)"><script>document.write(lock(ON_LIGHT, 150))</script><div class="cap">الأساسي</div></div>
-    <div class="cell" style="background:var(--clay);color:var(--night);grid-row:span 2"><script>document.write(stack(ON_LIGHT, 210))</script><div class="cap">العمودي</div></div>
-    <div class="cell" style="background:var(--night)"><div style="width:220px;height:220px;border-radius:50px;background:var(--clay);display:flex;align-items:center;justify-content:center"><script>document.write(markSVG('tab', ON_LIGHT, 170))</script></div><div class="cap" style="color:#fff">أيقونة التطبيق</div></div>
-    <div class="cell" style="background:var(--night);color:var(--white)"><script>document.write(lock(ON_DARK, 150))</script><div class="cap">على خلفية داكنة</div></div>
-    <div class="cell" style="background:#fff"><script>document.write(markSVG('tab', { field: '#111', ink: '#fff', accent: '#fff' }, 210))</script><div class="cap">لون واحد (للختم والطباعة)</div></div>
+    <div class="cell" style="background:#fff;color:var(--night)"><script>document.write(lock({ ...ON_LIGHT, bg: '#fff' }, 130))</script><div class="cap">الأساسي</div></div>
+    <div class="cell" style="background:var(--clay);color:var(--night);grid-row:span 2"><script>document.write(stack(ON_CLAY, 190))</script><div class="cap">العمودي</div></div>
+    <div class="cell" style="background:var(--night)"><div style="width:220px;height:220px;border-radius:50px;background:var(--blue);display:flex;align-items:center;justify-content:center"><script>document.write(markSVG('gate', { ink: C.clay, accent: C.gold, bg: C.blue }, 130))</script></div><div class="cap" style="color:#fff">أيقونة التطبيق</div></div>
+    <div class="cell" style="background:var(--night);color:var(--white)"><script>document.write(lock(ON_DARK, 130))</script><div class="cap">على خلفية داكنة</div></div>
+    <div class="cell" style="background:#fff"><script>document.write(markSVG('gate', { ink: '#111', accent: '#fff', bg: '#fff' }, 190))</script><div class="cap">لون واحد (للختم والطباعة)</div></div>
   </div>
 </section>
 
-<!-- 4: colour and type -->
-<section class="slide" id="s4">
-  <div class="tag">الألوان والخطوط</div><div class="num">04</div>
+<!-- 4: construction -->
+<section class="slide dark" id="s4">
+  <div class="tag">البناء</div><div class="num">04</div>
+  <div class="title">بناء الشعار</div>
+  <div class="con"><svg viewBox="2 0 296 300" width="640" height="648" id="con"></svg></div>
+  <ul class="txt">
+    <li>البرجان بنفس العرض، والجدار بينهما بعرض برجين ونصف، والبرجان أعلى من الجدار حتى يقرأ الشكل كبوابة من أول نظرة.</li>
+    <li>المدخل والقوسان الذهبيان من مركز واحد (النقطة الذهبية)، والمسافة بين كل قوس والذي يليه ثابتة.</li>
+    <li>كل شرفة ثلاث درجات بنسب ثابتة، على الأبراج وعلى الجدار.</li>
+    <li>فاصل رفيع بين البرجين والجدار يعطي البوابة عمقاً، ويبقى واضحاً حتى بالطباعة بلون واحد.</li>
+  </ul>
+  <script>
+    let g = gate(ON_DARK);
+    const L = (x1, y1, x2, y2, col = '#fbf8f2', op = .35, dash = '') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-opacity="${op}" stroke-width=".8" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`;
+    for (const x of [24, 80, 220, 276]) g += L(x, 8, x, 292);                      // towers and wall
+    for (const y of [GATE.tTop, GATE.wTop, GATE.G]) g += L(8, y, 292, y);
+    g += L(8, GATE.oy, 292, GATE.oy, '#c99a2e', .9, '3 3');                         // the spring line
+    for (const r of [GATE.r0, ...GATE.rings]) g += `<circle cx="150" cy="${GATE.oy}" r="${r}" fill="none" stroke="#fbf8f2" stroke-opacity=".3" stroke-width=".8" stroke-dasharray="2 3"/>`;
+    g += `<circle cx="150" cy="${GATE.oy}" r="3.5" fill="#c99a2e"/>`;
+    document.getElementById('con').innerHTML = g;
+  </script>
+</section>
+
+<!-- 5: colour and type -->
+<section class="slide" id="s5">
+  <div class="tag">الألوان والخطوط</div><div class="num">05</div>
   <div class="title">الألوان والخطوط</div>
   <div class="sw">
-    <div class="chip" style="background:var(--blue);color:#fff"><b>أزرق بابل</b><span>من طابوق بوابة عشتار. الثقة والاستقرار، ولون الشاشة.</span><code>#17357D</code></div>
+    <div class="chip" style="background:var(--blue);color:#fff"><b>أزرق بابل</b><span>لون الطابوق المزجّج في بوابة عشتار. الثقة والاستقرار.</span><code>#17357D</code></div>
     <div class="chip" style="background:var(--night);color:#fff"><b>حبر الليل</b><span>للنصوص والخلفيات الرسمية.</span><code>#0C1B40</code></div>
-    <div class="chip" style="background:var(--gold);color:var(--night)"><b>ذهب عشتار</b><span>لون المؤشّر: القيمة والإنجاز. يُستعمل بقلّة.</span><code>#C99A2E</code></div>
-    <div class="chip" style="background:var(--clay);color:var(--night)"><b>الطين</b><span>لون الألواح الطينية. خلفية دافئة للمطبوعات.</span><code>#ECE2D0</code></div>
+    <div class="chip" style="background:var(--gold);color:var(--night)"><b>ذهب عشتار</b><span>لون الأقواس: القيمة والاتصال. يُستعمل بقلّة.</span><code>#C99A2E</code></div>
+    <div class="chip" style="background:var(--clay);color:var(--night)"><b>الطين</b><span>لون الطين الرافديني. خلفية دافئة للمطبوعات.</span><code>#ECE2D0</code></div>
   </div>
   <div class="type">
     <div class="f"><small>العناوين: Readex Pro</small><div class="big">اقتصاد رقمي</div><div class="lat">Digital Economy · 0123456789</div></div>
@@ -133,24 +158,16 @@ const line = (inner, w, h = 60) => `<svg viewBox="0 0 ${w} ${h}" width="${w * 1.
   </div>
 </section>
 
-<!-- 5: construction -->
-<section class="slide" id="s5">
-  <div class="tag" style="color:var(--white)">البناء</div><div class="num" style="color:var(--white)">05</div>
-  <div class="title" style="color:var(--white)">بناء الشعار</div>
-  <div class="con"><svg viewBox="40 12 220 276" width="520" height="652" id="con"></svg></div>
-  <ul class="txt">
-    <li>اللوح بنسبة ٣ : ٤ تقريباً، بزوايا ناعمة مثل حواف الطين، وهي نفس هيئة شاشة الهاتف.</li>
-    <li>ثلاثة سطور متساوية المسافات (الخطوط الذهبية المتقطّعة)، وهامش داخلي ثابت من كل الجهات.</li>
-    <li>البكسل بنفس ارتفاع رأس المسمار، فيُقرأ السطر الرقمي كامتداد للكتابة المسمارية. والمؤشّر أطول بمرّة ونصف.</li>
-    <li>الشكل الخارجي بسيط وواضح، فيبقى الشعار مقروءاً من أيقونة صغيرة إلى لوحة على واجهة مبنى. ومساحة الأمان حوله تساوي الهامش الداخلي.</li>
-  </ul>
-  <script>
-    let g = MARKS.tab(ON_DARK);
-    const guide = (x1, y1, x2, y2, col, op, dash = '') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-opacity="${op}" stroke-width=".8" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`;
-    for (const cy of [100, 150, 200]) g += guide(48, cy, 252, cy, '#c99a2e', .9, '3 3');
-    for (const x of [92, 208]) g += guide(x, 20, x, 280, '#fbf8f2', .35);          // the inner margin
-    document.getElementById('con').innerHTML = g;
-  </script>
+<!-- 6: patterns -->
+<section class="slide" id="s6">
+  <div class="tag">العناصر الرسومية</div><div class="num">06</div>
+  <div class="title">النقوش</div>
+  <div class="p" style="top:250px;right:96px;width:840px;height:560px;background:var(--night)"><script>document.write(`<svg width="840" height="560"><defs>${archTile(C.clay, .18, 140)}</defs><rect width="840" height="560" fill="url(#arch-ece2d0)"/></svg>`)</script></div>
+  <div class="cap" style="top:830px;right:96px">نقش الأقواس: للأغلفة والخلفيات الكبيرة</div>
+  <div class="p" style="top:250px;left:96px;width:840px;height:260px;background:var(--blue)"><script>document.write(`<svg width="840" height="260"><defs>${crenelBand(C.clay, 46)}</defs><rect y="${260 - 46 * 0.9}" width="840" height="${46 * 0.9}" fill="url(#cren-ece2d0)"/></svg>`)</script></div>
+  <div class="cap" style="top:530px;left:96px;width:840px">شريط الشرفات: للحواف والفواصل (أعلى الورق الرسمي، أسفل الشاشات)</div>
+  <div class="p" style="top:610px;left:96px;width:840px;height:200px;background:var(--clay)"><script>document.write(`<svg width="840" height="200"><defs>${archTile(C.blue, .9, 100)}</defs><rect width="840" height="200" fill="url(#arch-17357d)"/></svg>`)</script></div>
+  <div class="cap" style="top:830px;left:96px;width:840px">نقش الأقواس بالأزرق على الطين</div>
 </section>
 </body>
 </html>

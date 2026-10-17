@@ -1,92 +1,55 @@
-// The ministry's mark, drawn in code: cuneiform wedges (the first written records) turning into data.
-// Every function returns SVG markup in a 300x300 box. `c` = { ink, accent }.
+// The ministry's mark: the Ishtar Gate as Iraq's digital gateway (the user's pick, round 3).
+// Two tall towers and a lower wall with stepped Mesopotamian crenellations, and an open arch framed by two nested gold
+// arches: the gate's recessed arches, and signal waves. Earlier rounds (cuneiform grid, clay tablet) are in git history.
+// `c` = { ink (the gate), accent (the arches), bg (the ground it sits on: fills the doorway and the seams) }.
 
-// A horizontal cuneiform wedge: a triangular head on the left, a tapering tail to the right.
-function hWedge(x, cy, h, len, ink) {
-  const hw = h * 0.95, t0 = h * 0.16, t1 = h * 0.07, tx = x + hw * 0.62;
-  return `<path fill="${ink}" d="M${x} ${cy - h / 2} L${x + hw} ${cy} L${x} ${cy + h / 2} Z"/>` +
-    (len > hw * 0.62 ? `<path fill="${ink}" d="M${tx} ${cy - t0} L${x + len} ${cy - t1} L${x + len} ${cy + t1} L${tx} ${cy + t0} Z"/>` : '');
+const GATE = { G: 262, tTop: 40, wTop: 104, tw: 56, ww: 70, oy: 182, r0: 27, rings: [42, 57], sw: 9 };
+
+// a stepped merlon (three steps), centred on cx, standing on y
+function merlon(cx, y, w, fill) {
+  const h = w * 0.3;
+  return [[w, 0], [w * 0.62, 1], [w * 0.26, 2]]
+    .map(([mw, k]) => `<rect x="${cx - mw / 2}" y="${y - (k + 1) * h}" width="${mw}" height="${h + 0.5}" fill="${fill}"/>`).join('');
 }
 
-// A vertical cuneiform wedge: the head on top, the tail running down.
-function vWedge(cx, y, w, len, ink) {
-  const hh = w * 0.95, t0 = w * 0.16, t1 = w * 0.07, ty = y + hh * 0.62;
-  return `<path fill="${ink}" d="M${cx - w / 2} ${y} L${cx + w / 2} ${y} L${cx} ${y + hh} Z"/>` +
-    `<path fill="${ink}" d="M${cx - t0} ${ty} L${cx - t1} ${y + len} L${cx + t1} ${y + len} L${cx + t0} ${ty} Z"/>`;
-}
+// the arch path (open at the bottom), radius r, spring line at GATE.oy
+const archPath = (r, ox = 150) => `M${ox - r} ${GATE.G} V${GATE.oy} A${r} ${r} 0 0 1 ${ox + r} ${GATE.oy} V${GATE.G}`;
 
-// The same wedge head drawn in pixels: a stepped triangle on a 5x5 grid, as wide as the real head (the moment the record turns digital).
-function pxWedge(x, cy, h, ink) {
-  const u = h / 5, gap = u * 0.14, rows = [[0, 4], [0, 4], [1, 3], [1, 3], [2, 2]];   // per column: first and last row filled
+function gate(c, o = {}) {
+  const g = { ...GATE, ...o };
+  const wl = 150 - g.ww, wr = 150 + g.ww, tl = [wl - g.tw, wl], tr = [wr, wr + g.tw];
   let s = '';
-  rows.forEach(([a, b], col) => {
-    for (let r = a; r <= b; r++) s += `<rect x="${x + col * u + gap / 2}" y="${cy - h / 2 + r * u + gap / 2}" width="${u - gap}" height="${u - gap}" fill="${ink}"/>`;
-  });
+  s += `<rect x="${tl[0]}" y="${g.tTop}" width="${g.tw}" height="${g.G - g.tTop}" fill="${c.ink}"/>`;
+  s += `<rect x="${tr[0]}" y="${g.tTop}" width="${g.tw}" height="${g.G - g.tTop}" fill="${c.ink}"/>`;
+  s += `<rect x="${wl}" y="${g.wTop}" width="${wr - wl}" height="${g.G - g.wTop}" fill="${c.ink}"/>`;
+  for (const t of [tl, tr]) { const m = (t[1] - t[0]) / 4; s += merlon(t[0] + m, g.tTop, m * 1.7, c.ink) + merlon(t[1] - m, g.tTop, m * 1.7, c.ink); }
+  const step = (wr - wl) / 4;
+  for (let i = 0; i < 4; i++) s += merlon(wl + step * (i + 0.5), g.wTop, step * 0.82, c.ink);
+  for (const x of [wl, wr]) s += `<rect x="${x - 1.6}" y="${g.tTop - 12}" width="3.2" height="${g.G - g.tTop + 12}" fill="${c.bg}"/>`;  // seams: the towers stand out
+  g.rings.slice().reverse().forEach((r) => { s += `<path d="${archPath(r)}" fill="none" stroke="${c.accent}" stroke-width="${g.sw}"/>`; });
+  s += `<path d="${archPath(g.r0)} V${g.G + 1} H${150 - g.r0} Z" fill="${c.bg}"/>`;   // the doorway (1px past the ground, no hairline)
   return s;
 }
 
-const sq = (x, y, s, fill, r = 0) => `<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="${r}" fill="${fill}"/>`;
+const MARKS = { gate };
+const VIEW = { gate: [22, 20, 256, 244] };   // the gate's own box (x, y, w, h)
 
-const MARKS = {
-  // A: three rows of wedges; each row dissolves further into pixels
-  dissolve(c) {
-    let s = '';
-    s += hWedge(20, 60, 64, 260, c.ink);
-    s += hWedge(20, 150, 64, 140, c.ink) + sq(184, 137, 26, c.ink) + sq(234, 137, 26, c.ink);
-    s += hWedge(20, 240, 64, 0.01, c.ink) + sq(98, 222, 36, c.ink) + sq(150, 222, 36, c.ink) + sq(202, 222, 36, c.ink) + sq(254, 222, 36, c.accent);
-    return s;
-  },
-  // B (chosen): a 3x3 grid read left to right like a cuneiform line: a full wedge, then the wedge's head in pixels,
-  // then a pixel. The top right pixel is gold: the new value the old record turns into.
-  morph(c) {
-    let s = '';
-    for (let r = 0; r < 3; r++) {
-      const cy = 60 + r * 90;
-      s += hWedge(12, cy, 62, 96, c.ink);
-      s += pxWedge(128, cy, 62, c.ink);
-      s += sq(226, cy - 31, 62, r === 0 ? c.accent : c.ink, 5);
-    }
-    return s;
-  },
-  // C: vertical wedges standing as a rising bar chart; the last one ends in a gold pixel
-  growth(c) {
-    let s = '';
-    const xs = [48, 116, 184, 252], tops = [168, 124, 80, 36], w = 54;
-    xs.forEach((x, i) => {
-      if (i < 3) s += vWedge(x, tops[i], w, 270 - tops[i], c.ink);
-      else s += sq(x - w / 2, tops[i], w, c.accent, 3) + vWedge(x, tops[i] + w + 12, w, 270 - tops[i] - w - 12, c.ink);
-    });
-    return s;
-  },
-};
-
-// The chosen mark (v5): the clay tablet as the first screen. A tablet (a soft rounded rectangle) with two lines of
-// cuneiform; the third line is pixels ending in a gold text cursor on the left, where an Arabic line ends: the record
-// is still being written, now digitally. `c` = { field (the tablet), ink (the writing), accent (the cursor) }.
-function tabletMark(c, o = {}) {
-  const X = o.x ?? 62, Y = o.y ?? 34, W = o.w ?? 176, H = o.h ?? 232, R = o.r ?? 44;
-  const left = X + 30, right = X + W - 30, rows = o.rows ?? [100, 150, 200], h = o.wh ?? 28;
-  let s = `<rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="${R}" fill="${c.field}"/>`;
-  const hw = (x, cy, len) => hWedge(x, cy, h, len, c.ink);
-  const vw = (cx, cy, len) => vWedge(cx, cy - len / 2, h, len, c.ink);
-  // line 1: horizontal, horizontal, vertical
-  s += hw(left, rows[0], 40) + hw(left + 46, rows[0], 40) + vw(right - 13, rows[0], 46);
-  // line 2: vertical, horizontal, horizontal
-  s += vw(left + 13, rows[1], 46) + hw(left + 34, rows[1], 40) + hw(left + 80, rows[1], 36);
-  // line 3: pixels from the right, then the cursor where the line ends (on the left, as in Arabic)
-  // (three pixels as tall as a wedge head, so line 3 ends on the same inner margin as lines 1 and 2)
-  const p = o.p ?? h, g = o.g ?? 8;
-  for (let i = 0; i < 3; i++) s += sq(right - p - i * (p + g), rows[2] - p / 2, p, c.ink, 3);
-  s += `<rect x="${right - 3 * (p + g) - 8}" y="${rows[2] - 21}" width="8" height="42" rx="2" fill="${c.accent}"/>`;
-  return s;
-}
-MARKS.tab = (c) => tabletMark(c);
-
-// the tablet is portrait, so its SVG is cropped to the tablet; `size` is the height
-const VIEW = { tab: [62, 34, 176, 232] };
+// `size` is the height in px
 function markSVG(name, c, size = 300, extra = '') {
   const [x, y, w, h] = VIEW[name] || [0, 0, 300, 300];
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}" width="${size * w / h}" height="${size}" ${extra}>${MARKS[name](c)}</svg>`;
+}
+
+// Patterns from the mark, as SVG <pattern> tiles.
+// crenellation band: a row of stepped merlons (for borders and dividers)
+function crenelBand(fill, w = 40) {
+  return `<pattern id="cren-${fill.slice(1)}" width="${w}" height="${w * 0.9}" patternUnits="userSpaceOnUse">${merlon(w / 2, w * 0.9, w * 0.82, fill)}</pattern>`;
+}
+// arches: nested arches in a grid (for large fields: covers, backgrounds)
+function archTile(stroke, op = 1, s = 120) {
+  const a = (r, ox, oy) => `M${ox - r} ${oy + r * 0.9} V${oy} A${r} ${r} 0 0 1 ${ox + r} ${oy} V${oy + r * 0.9}`;
+  const one = (ox, oy) => [s * 0.36, s * 0.24, s * 0.12].map((r) => `<path d="${a(r, ox, oy)}" fill="none" stroke="${stroke}" stroke-opacity="${op}" stroke-width="${s * 0.03}"/>`).join('');
+  return `<pattern id="arch-${stroke.slice(1)}" width="${s}" height="${s * 0.8}" patternUnits="userSpaceOnUse">${one(s / 2, s * 0.42)}</pattern>`;
 }
 
 // Loaded by the pages with a <script> tag (the repo's package.json is "type": "module", so require() won't see these).
