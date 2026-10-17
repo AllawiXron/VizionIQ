@@ -8,6 +8,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-react";
 import { EASE_OUT, SPRING, allowBlur } from "../lib/motion";
 import { Magnetic } from "./ui/Motion";
+import { FULL_PRICE, OFFER_LAST_DAY, STUDENT_COUNT, offerState } from "../lib/offer";
+
+/** The shared free-trial code (any code containing "free" is a trial). */
+export const TRIAL_CODE = "free#1";
 
 // 1. HARDCODED CODES LIST:
 // You can directly edit, add, or remove passwords in this array!
@@ -138,12 +142,13 @@ interface LockScreenProps {
 }
 
 export default function LockScreen({ onSuccess }: LockScreenProps) {
-  const [password, setPassword] = useState("");
+  const [passwordInput, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [shake, setShake] = useState(false);
+  const offer = offerState();
 
   // Synchronize hardcoded default codes with localStorage on component mount
   useEffect(() => {
@@ -201,10 +206,11 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     return getAllValidCodes();
   };
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = (e?: React.FormEvent, codeOverride?: string) => {
     if (e) e.preventDefault();
+    const password = codeOverride ?? passwordInput;
     if (!password.trim()) {
-      setError("الرجاء إدخال رمز الوصول للمتابعة.");
+      setError("اكتب رمز الدخول.");
       triggerShake();
       return;
     }
@@ -228,7 +234,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         }, 800);
       } else {
         setIsLoading(false);
-        setError("رمز الوصول المدخل غير صحيح أو تم إلغاؤه! رجاءً التحقق وإعادة المحاولة.");
+        setError("الرمز غلط أو مو مفعّل. تأكد منه وجرب مرة ثانية.");
         triggerShake();
       }
     }, 1200);
@@ -300,7 +306,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               فيزيون • Vizion
             </motion.h1>
             <motion.p {...rise(0.38)} className="text-white/55 text-xs sm:text-sm md:text-base font-medium mx-auto">
-              نظام التشغيل والتحكم المالي للمشاريع الإلكترونية بالعراق
+              كورس ومنصة للتجارة الإلكترونية بالعراق
             </motion.p>
           </div>
 
@@ -308,15 +314,15 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
           <motion.form {...rise(0.45)} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div className="space-y-2">
               <label className="text-xs text-white/50 font-semibold tracking-wider block mr-1">
-                رمز التحقق الفردي
+                رمز الدخول
               </label>
               
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  value={password}
+                  value={passwordInput}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="أدخل رمز الوصول هنا..."
+                  placeholder="اكتب رمزك هنا"
                   className="vz-field w-full h-12 sm:h-[52px] pr-4 pl-12 rounded-2xl text-white text-center text-base sm:text-lg font-mono tracking-wider min-h-[44px]"
                   disabled={isLoading || isSuccess}
                 />
@@ -364,17 +370,17 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               {isLoading ? (
                 <motion.div key="loading" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <span className="w-4 h-4 border-2 border-[#040e33] border-t-transparent rounded-full animate-spin" />
-                  <span>جاري التحقق من الصلاحية...</span>
+                  <span>دا نتأكد من الرمز...</span>
                 </motion.div>
               ) : isSuccess ? (
                 <motion.div key="success" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-white" />
-                  <span>تم التوثيق! جاري فتح الدليل...</span>
+                  <span>تمام، دا تنفتح المنصة...</span>
                 </motion.div>
               ) : (
                 <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-white" />
-                  دخول للدليل المالي
+                  دخول
                 </motion.span>
               )}
               </AnimatePresence>
@@ -382,39 +388,40 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             </Magnetic>
           </motion.form>
 
-          {/* Quick Free Trial Access Link & Pricing Info */}
+          {/* One tap into the free trial, then the one price */}
           <motion.div {...rise(0.55)} className="pt-4 text-center space-y-3">
+            <div className="flex items-center gap-3 text-[11px] text-white/40" aria-hidden="true">
+              <span className="flex-1 h-px bg-white/10" />
+              <span>ما عندك رمز؟</span>
+              <span className="flex-1 h-px bg-white/10" />
+            </div>
             <button
               type="button"
+              disabled={isLoading || isSuccess}
               onClick={() => {
-                setPassword("free#1");
-                setError(null);
+                setPassword(TRIAL_CODE);
+                handleSubmit(undefined, TRIAL_CODE);
               }}
-              className={`btn btn-glass w-full rounded-2xl px-3 py-2 text-xs font-bold flex-wrap gap-1.5 sm:gap-2 ${focusRing}`}
+              className={`btn btn-glass w-full min-h-[52px] rounded-2xl px-4 text-sm font-black gap-2 ${focusRing}`}
             >
-              <span>✨ جرب النسخة التجريبية بالرمز:</span>
-              <span className="font-mono text-emerald-300 font-extrabold underline underline-offset-4 decoration-emerald-300/40">free#1</span>
+              <Sparkles className="w-4 h-4 text-emerald-300" />
+              <span>جرّب الكورس المجاني</span>
             </button>
+            <p className="text-[11px] text-white/45 leading-relaxed">بدون رمز: تقرا أول درس، وتعرف ربحك الحقيقي من كل طلب.</p>
 
-            {/* Lifetime Pricing Tiers Banner */}
-            <div className="glass-subtle rounded-2xl p-3 text-right space-y-2.5 text-xs">
-              <div className="flex flex-wrap items-center justify-between gap-1 border-b border-white/[0.07] pb-2 text-[11px]">
-                <span className="font-bold text-white/80 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 opacity-70" />
-                  <span>باقات الاشتراك لمرة واحدة مدى الحياة:</span>
-                </span>
-                <span className="text-emerald-300 font-bold text-[10px]">بدون اشتراك شهري</span>
+            {/* The one plan */}
+            <div className="glass-subtle rounded-2xl p-3.5 text-right flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <span className="block text-[11px] font-bold text-white/60">الاشتراك الكامل، مدى الحياة</span>
+                <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار · {STUDENT_COUNT} مشترك</span>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] text-white/85">
-                <div className="bg-white/[0.035] p-2.5 rounded-xl border border-white/[0.06]">
-                  <span className="font-black block text-white text-[11px]">🔹 الاعتيادي: 29,000 د.ع</span>
-                  <span className="text-white/50 font-light block mt-0.5">الكورس + المنصة + أدوات البيع</span>
-                </div>
-                <div className="bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-2.5 rounded-xl border border-white/[0.12]">
-                  <span className="font-black block text-white text-[11px]">👑 VIP النخبة: 49,000 د.ع</span>
-                  <span className="text-white/55 font-light block mt-0.5">متابعة مباشرة + مراجعة إعلانات + مستشار ذكي</span>
-                </div>
+              <div className="text-left shrink-0">
+                <span className="block text-base font-black text-white font-mono leading-tight">{offer.price.toLocaleString("en-US")} <span className="text-[10px] font-bold text-white/60">د.ع</span></span>
+                {offer.active && (
+                  <span className="block text-[10px] text-white/45">
+                    <span className="line-through font-mono">{FULL_PRICE.toLocaleString("en-US")}</span> · لحد {OFFER_LAST_DAY}
+                  </span>
+                )}
               </div>
             </div>
           </motion.div>
@@ -424,7 +431,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
 
       {/* Footer copyright */}
       <motion.div {...rise(0.7)} className="relative text-center z-10 text-[10px] sm:text-[11px] text-white/30 tracking-wider mt-5 sm:mt-7 pb-2 safe-area-bottom">
-        © 2026 فيزيون • Vizion. جميع الحقوق محفوظة للنخبة المسجلة.
+        © 2026 viZion
       </motion.div>
     </div>
   );

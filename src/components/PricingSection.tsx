@@ -3,389 +3,101 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
-import { CountUp, Magnetic, WordsReveal } from "./ui/Motion";
-import { 
-  Crown, 
-  Sparkles, 
-  CheckCircle2, 
-  Zap, 
-  ShieldCheck, 
-  ArrowRight, 
-  Bot, 
-  Target, 
-  MessageSquare, 
-  TrendingUp, 
-  UserCheck, 
-  Star, 
-  Flame, 
-  Clock, 
-  Lock, 
-  HelpCircle,
-  PhoneCall,
-  BadgeCheck
-} from "lucide-react";
+import { WordsReveal } from "./ui/Motion";
+import { CheckCircle2, ShieldCheck, Clock, KeyRound, Sparkles, TrendingUp, Users } from "lucide-react";
+import { PLAN_INCLUDES, STUDENT_COUNT } from "../lib/offer";
+import { OfferPrice, SubscribeButton } from "./OfferPrice";
 
 interface PricingSectionProps {
-  onSelectPlan?: (planType: "standard" | "vip") => void;
   onOpenUpgradeModal?: () => void;
 }
 
-export const PricingSection: React.FC<PricingSectionProps> = ({
-  onSelectPlan,
-  onOpenUpgradeModal
-}) => {
-  const [selectedPlan, setSelectedPlan] = useState<"standard" | "vip">("vip");
-
-  const handleChoose = (plan: "standard" | "vip") => {
-    setSelectedPlan(plan);
-    if (onSelectPlan) {
-      onSelectPlan(plan);
-    } else if (onOpenUpgradeModal) {
-      onOpenUpgradeModal();
-    } else {
-      // Trigger global modal event if available
-      window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
-    }
+/** The one plan, shown under Home for trial members. */
+export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeModal }) => {
+  const openCodeEntry = () => {
+    if (onOpenUpgradeModal) onOpenUpgradeModal();
+    else window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
   };
 
   return (
-    <section id="pricing-section" className="py-8 sm:py-16 md:py-20 relative overflow-hidden text-right">
-      {/* Background Glow Highlights - Optimized Radial Gradients */}
+    <section id="pricing-section" className="py-8 sm:py-16 relative overflow-hidden text-right">
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[800px] h-[300px] sm:h-[800px] bg-[radial-gradient(circle_at_center,rgba(72,128,255,0.135)_0%,rgba(72,128,255,0.044)_40%,transparent_70%)] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(72,128,255,0.094)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute top-10 left-10 w-48 sm:w-96 h-48 sm:h-96 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.12)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 space-y-8 sm:space-y-12">
-        
-        {/* SECTION HEADER & PSYCHOLOGICAL HEADLINE */}
-        <div className="text-center space-y-3 sm:space-y-4 max-w-3xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="vz-eyebrow text-xs sm:text-sm"
-          >
+      <div className="max-w-3xl mx-auto px-3 sm:px-6 relative z-10 space-y-6 sm:space-y-8">
+        <div className="text-center space-y-3 sm:space-y-4">
+          <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="vz-eyebrow text-xs sm:text-sm">
             <Sparkles className="w-4 h-4 opacity-80" />
-            <span>اشتراك مرة وحدة مدى الحياة • وبدون أي اشتراك شهري</span>
+            <span>اشتراك واحد • تدفع مرة وحدة • مدى الحياة</span>
           </motion.div>
-
           <WordsReveal
             delay={0.1}
-            className="text-xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight px-2"
-            segments={["اختار الباقة اللي تناسب شغلك وانضم للـ ", { text: "1% الأوائل بالسوق", className: "vz-silver-text" }]}
+            className="text-xl sm:text-4xl font-black text-white leading-tight tracking-tight px-2"
+            segments={["افتح كلشي، و", { text: "طبّقه على مشروعك", className: "vz-silver-text" }]}
           />
-
-          <motion.p 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-xs sm:text-base text-white/55 leading-relaxed font-light px-2 mx-auto"
-          >
-            عدنا باقتين للاشتراك، وكل وحدة مصممة لهدف معين. تدفع مرة وحدة بس وتضمن وصولك الكامل ومدى الحياة لكل تحديثات وخطط الكورس والمنصة.
-          </motion.p>
-        </div>
-
-        {/* VALUE ANCHORING / PSYCHOLOGICAL COMPARISON BANNER */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="glass rounded-3xl p-4 sm:p-6 relative overflow-hidden group"
-        >
-
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 relative z-10">
-            <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
-              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_26px_-12px_rgba(47,107,255,0.6)]">
-                <div className="w-full h-full rounded-2xl flex items-center justify-center text-white">
-                  <TrendingUp className="w-5 h-5 sm:w-7 sm:h-7" />
-                </div>
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-xs sm:text-base font-black text-white flex items-center gap-2 flex-wrap">
-                  <span>ليش هذا الاشتراك يعتبر أوفر استثمار لمشروعك؟</span>
-                  <span className="text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-full font-bold shadow-sm">
-                    حسبة الأرباح
-                  </span>
-                </h4>
-                <p className="text-[11px] sm:text-xs text-white/75 font-light leading-relaxed">
-                  خسارة إعلان واحد فاشل ويا كروة الراجع تكلفك أكثر من <span className="text-red-400 font-bold underline decoration-red-400/50">150,000 دينار</span>. بينما اشتراكك ويانا راح يرجعلك فلوسه أضعاف من أول 3 طلبات تبيعها صح وبدون خسائر!
-                </p>
-              </div>
-            </div>
-
-            <div className="w-full md:w-auto shrink-0 flex items-center justify-center gap-2 sm:gap-3 bg-white/5 hover:bg-white/10 px-3.5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/15 text-[11px] sm:text-xs text-vz-accent font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-inner">
-              <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0" />
-              <span>تدفع مرة وحدة • وينفتحلك الحساب مدى الحياة</span>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* PRICING CARDS GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto">
-          
-          {/* TIER 1: STANDARD SUBSCRIPTION */}
-          <motion.div 
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            whileHover={{ y: -4 }}
-            className={`rounded-3xl sm:rounded-4xl flex flex-col justify-between p-5 sm:p-8 relative glass glass-interactive ${
-              selectedPlan === "standard" 
-                ? "!border-white/30" 
-                : ""
-            }`}
-          >
-            <div>
-              {/* Card Header */}
-              <div className="flex items-start justify-between border-b border-white/10 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
-                <div>
-                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-vz-accent bg-white/5 px-2.5 py-0.5 sm:py-1 rounded-full mb-2 border border-white/14 shadow-sm">
-                    <CheckCircle2 className="w-3 h-3 text-vz-accent" />
-                    <span>الأساس المضبوط لأصحاب المشاريع</span>
-                  </div>
-                  <h3 className="text-lg sm:text-2xl font-black text-white">الاشتراك العادي</h3>
-                  <p className="text-[11px] sm:text-xs text-white/60 font-light mt-0.5">يشمل الكورس كامل ويا أدوات المنصة</p>
-                </div>
-                
-                <div className="text-left shrink-0">
-                  <div className="text-2xl sm:text-4xl font-black text-white font-mono tracking-tight"><CountUp value={29000} /></div>
-                  <div className="text-[11px] sm:text-xs font-bold text-vz-accent">دينار</div>
-                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full inline-block mt-0.5">مدى الحياة</span>
-                </div>
-              </div>
-
-              {/* What You Learn Bullet Points */}
-              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                <span className="text-[11px] sm:text-xs font-black text-white/90 uppercase tracking-wider block border-b border-white/10 pb-2">
-                  📚 شنو راح تتعلم وتستفاد من المنصة؟
-                </span>
-
-                <ul className="space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm text-white/85">
-                  <li className="flex items-start gap-2.5 sm:gap-3 p-2 rounded-xl hover:bg-white/[0.03] transition-colors">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400 shadow-sm">
-                      <Target className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-white font-bold">إعلانات تجيب أرباح:</strong> تعلم شلون تسوي إعلانات مضبوطة تجيب مبيعات حقيقية وتزيد طلباتك.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 p-2 rounded-xl hover:bg-white/[0.03] transition-colors">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400 shadow-sm">
-                      <TrendingUp className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-white font-bold">تنزيل سعر الرسالة:</strong> شلون تنزل سعر الرسالة مالت الإعلان لأقل شي وبنفس الوقت تجيب زبائن يشترون.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 p-2 rounded-xl hover:bg-white/[0.03] transition-colors">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400 shadow-sm">
-                      <UserCheck className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-white font-bold">استهداف الزبون الصح:</strong> شلون توصل للناس الجادة اللي تريد تشتري صدك وتستبعد الفئات اللي ما منها فايدة.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 p-2 rounded-xl hover:bg-white/[0.03] transition-colors">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400 shadow-sm">
-                      <MessageSquare className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-white font-bold">تحويل الرسايل لطلبات:</strong> شلون تبعد الفضوليين اللي بس يسألون ويغلسون، وتقفل البيعة ويا الزبون.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 p-2 rounded-xl hover:bg-white/[0.03] transition-colors">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400 shadow-sm">
-                      <Zap className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-white font-bold">أدوات جاهزة لشغلك:</strong> ينفتحلك كلشي تحتاجه مثل فحص الإعلانات، طرق الرد عالزبائن، وحاسبة الأرباح والخسائر.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <button               onClick={() => handleChoose("standard")}
-              className="btn btn-glass w-full py-3.5 sm:py-4 rounded-2xl text-white font-bold text-xs sm:text-base gap-2 group min-h-[48px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-            >
-              <span>اشترك هسة بالباقة العادية (29,000 دينار)</span>
-              <ArrowRight className="w-4 h-4 transform rotate-180 group-hover:-translate-x-1 transition-transform" />
-            </button>
-          </motion.div>
-
-          {/* TIER 2: VIP SUBSCRIPTION (FEATURED / POPULAR) */}
-          <motion.div 
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            whileHover={{ y: -4 }}
-            className="rounded-3xl sm:rounded-4xl flex flex-col justify-between p-5 sm:p-8 relative glass-elevated glass-edge glass-interactive overflow-hidden"
-          >
-            {/* Ambient Inner Crown Glow */}
-
-            {/* TOP POPULAR BADGE */}
-            <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black text-[11px] sm:text-xs py-1.5 sm:py-2 text-center tracking-wider flex items-center justify-center gap-1.5 z-[2]">
-              <Flame className="w-3.5 h-3.5 fill-white" />
-              <span>الباقة الكاملة • VIP</span>
-            </div>
-
-            <div className="pt-5 sm:pt-6">
-              {/* Card Header */}
-              <div className="flex items-start justify-between border-b border-white/16 pb-4 sm:pb-6 mb-4 sm:mb-6 gap-3">
-                <div>
-                  <div className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-white bg-vz-blue px-2.5 py-0.5 rounded-full mb-2">
-                    <Crown className="w-3 h-3 fill-white" />
-                    <span>اشتراك الـ VIP</span>
-                  </div>
-                  <h3 className="text-lg sm:text-3xl font-black text-white flex items-center gap-2">
-                    <span>اشتراك VIP</span>
-                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white/70" />
-                  </h3>
-                  <p className="text-[11px] sm:text-xs text-vz-accent/90 font-bold mt-0.5 leading-relaxed">إذا تريد نتيجة سريعة وبدون أخطاء وتوجيه خطوة بخطوة</p>
-                </div>
-
-                <div className="text-left shrink-0">
-                  <div className="text-2xl sm:text-5xl font-black text-white font-mono tracking-tight"><CountUp value={49000} /></div>
-                  <div className="text-[11px] sm:text-xs font-bold text-vz-accent">دينار</div>
-                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-black bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-full inline-block mt-0.5 shadow-sm">مدى الحياة</span>
-                </div>
-              </div>
-
-              {/* VIP Perks */}
-              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                <div className="glass-subtle p-2.5 sm:p-3 rounded-2xl flex items-center gap-2 text-[11px] sm:text-xs text-white/85 font-bold">
-                  <BadgeCheck className="w-4 h-4 sm:w-5 sm:h-5 text-vz-accent shrink-0" />
-                  <span>يشمل كل ميزات الباقة العادية بالكامل + المميزات الجوا:</span>
-                </div>
-
-                <ul className="space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm text-white">
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
-                      <Crown className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-vz-accent font-bold">متابعة مباشرة وياي من تطبق:</strong> أتابعك خطوة بخطوة حتى ما تغلط وتضمن أحسن نتيجة لشغلك.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
-                      <Target className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-vz-accent font-bold">مراجعة إعلاناتك:</strong> أشيك إعلاناتك وطريقة شغلك وأنطيك التعديلات المضبوطة حتى تربح.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
-                      <PhoneCall className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-vz-accent font-bold">أجاوب كل أسئلتك أول بأول:</strong> أجاوب على كل استفساراتك بشكل مباشر وبدون أي تأخير.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
-                      <Zap className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-vz-accent font-bold">أوكف وياك قبل لا تصرف:</strong> أساعدك تختار المنتج، وترتب الزبائن والعروض قبل لا تصرف أي فلس.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3 bg-white/[0.06] hover:bg-white/10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/10 transition-all motion-reduce:transition-none motion-reduce:transform-none shadow-sm">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-white/12 border border-white/27 flex items-center justify-center shrink-0 mt-0.5 text-vz-accent shadow-sm">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                    </div>
-                    <span><strong className="text-vz-accent font-bold">خطة مخصصة لشغلك:</strong> أرتبلك خطة تمشي عليها تناسب مشروعك إنت بالذات، مو مجرد حجي عام.</span>
-                  </li>
-
-                  <li className="flex items-start gap-2.5 sm:gap-3.5 bg-gradient-to-r from-white/12 via-white/8 to-[#040e33] p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-white/32 md:shadow-[0_4px_20px_rgba(0,0,0,0.33)] shadow-xl relative overflow-hidden">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gradient-to-br from-vz-blue-light to-vz-blue flex items-center justify-center shrink-0 mt-0.5 text-white font-black shadow-md">
-                      <Bot className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-vz-accent font-black block text-xs sm:text-sm flex items-center gap-1.5">
-                        مستشار فيزيون
-                      </span>
-                      <span className="text-white/90 text-[11px] sm:text-xs font-light leading-relaxed block mt-0.5">
-                        مستشار داخل الكورس يساعدك ترتب أسئلتك، تفهم أرقامك، وتاخذ خطوة عملية مناسبة لشغلك.
-                      </span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* VIP CTA Button */}
-            <Magnetic className="w-full" strength={0.12} max={5} reach={10}>
-            <button
-              onClick={() => handleChoose("vip")}
-              className="btn btn-primary w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl text-white font-black text-xs sm:text-base flex items-center justify-center gap-2 group relative overflow-hidden min-h-[50px] min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            >
-              <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-white transition-transform" />
-              <span>انضم لاشتراك الـ VIP هسة واضمن نتائجك (49,000 دينار)</span>
-            </button>
-            </Magnetic>
-          </motion.div>
-
-        </div>
-
-        {/* STANDALONE AI ADVISOR SUBSCRIPTION CARD */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-5xl mx-auto glass border-2 rounded-3xl p-5 sm:p-8 relative overflow-hidden text-right"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-            <div className="space-y-3 flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/18 text-xs font-black text-vz-accent">
-                <Bot className="w-4 h-4 text-vz-accent" />
-                <span>اشتراك خاص بالمستشار الذكي (Vizion AI)</span>
-              </div>
-              <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
-                تريد المستشار الذكي فقط؟ اشترك بـ <span className="text-vz-accent">14,000 دينار عراقي / شهرياً</span>
-              </h3>
-              <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed">
-                احصل على خبير إعلانات ومبيعات يعمل بذكاء اصطناعي 24/7 في هاتفك لتشخيص هدر الإعلانات، توليد سكريبتات الواتساب، وحساب أرباحك بالدينار العراقي (فقط 466 د.ع باليوم!).
-              </p>
-            </div>
-
-            <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-3">
-              <div className="text-center">
-                <span className="text-3xl sm:text-4xl font-black text-vz-accent font-mono block">14,000</span>
-                <span className="text-xs font-bold text-vz-accent">د.ع / شهرياً</span>
-              </div>
-              <a 
-                href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl hover:scale-[1.02] active:scale-[0.97] transition cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-vz-accent" />
-                <span>اشترك الآن عبر الواتساب (07757851379) 💬</span>
-              </a>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* GUARANTEE & TRUST FOOTER */}
-        <div className="max-w-3xl mx-auto pt-8 text-center space-y-4 border-t border-white/10">
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-white/80">
-            <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>حساب يتفعل فوراً</span>
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-              <Clock className="w-4 h-4 text-vz-accent" />
-              <span>حساب يبقى الك طول العمر</span>
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-              <Star className="w-4 h-4 text-vz-accent fill-vz-accent" />
-              <span>تقييم 4.7/5 من أكثر من 73 مشترك</span>
-            </span>
-          </div>
-
-          <p className="text-[11px] text-white/70 font-light leading-relaxed">
-            أول ما تكمل اشتراكك، راح تستلم كود الدخول مالتك مباشرة حتى تفتح كل الكورس وأدوات المنصة بدون أي رسوم مخفية.
+          <p className="text-xs sm:text-base text-white/55 leading-relaxed px-2">
+            مو فيديوهات طويلة ولا قناة تلكرام: منصة تقرا بيها خطوة، تحسب أرقامك، وتنسخ الرسائل الجاهزة لمشروعك.
           </p>
         </div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="rounded-3xl sm:rounded-4xl p-5 sm:p-8 relative glass-elevated glass-edge overflow-hidden space-y-6"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-white/14 pb-5">
+            <div className="space-y-1">
+              <h3 className="text-xl sm:text-3xl font-black text-white">الاشتراك الكامل</h3>
+              <p className="text-xs sm:text-sm text-white/60">كل الكورس وكل أدوات المنصة، بسعر واحد.</p>
+            </div>
+            <OfferPrice size="lg" />
+          </div>
+
+          <ul className="space-y-3 text-sm text-white/90">
+            {PLAN_INCLUDES.map((item) => (
+              <li key={item} className="flex items-start gap-2.5">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="glass-subtle rounded-2xl p-4 flex items-start gap-3">
+            <TrendingUp className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
+            <p className="text-xs sm:text-sm text-white/75 leading-relaxed">
+              إعلان واحد بدون خطة، ويا كروة الطلبات الراجعة، ممكن يكلفك أكثر من سعر الاشتراك كله. الفرق إنك هنا تتعلمها مرة وحدة وتبقى وياك.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <SubscribeButton />
+            <button
+              type="button"
+              onClick={openCodeEntry}
+              className="btn btn-ghost w-full min-h-[44px] rounded-2xl text-xs sm:text-sm gap-1.5 text-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            >
+              <KeyRound className="w-4 h-4" />
+              اشتركت وعندك الرمز؟ افتح حسابك
+            </button>
+          </div>
+        </motion.div>
+
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-white/75">
+          <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+            <Users className="w-4 h-4 text-vz-accent" />
+            <span>{STUDENT_COUNT} مشترك لحد هسه</span>
+          </span>
+          <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span>بدون رسوم مخفية ولا اشتراك شهري</span>
+          </span>
+          <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+            <Clock className="w-4 h-4 text-vz-accent" />
+            <span>الحساب يبقى الك، وكل التحديثات الجاية ببلاش</span>
+          </span>
+        </div>
       </div>
     </section>
   );

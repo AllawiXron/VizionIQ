@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>AMR aljanabi — editorial</title>
+<link rel="stylesheet" href="kit/fonts/fonts.css" />
+<link rel="stylesheet" href="fonts/fonts.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #222; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+
+  /* a magazine page: flat paper, one photo, type and hairlines. Nothing else. */
+  .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: 'IBM Plex Sans Arabic'; }
+  .post::after { content: ''; position: absolute; inset: 0; background: url(kit/img/grain.png) repeat; background-size: 420px; mix-blend-mode: multiply; opacity: .10; pointer-events: none; }
+
+  .top { position: absolute; left: 64px; right: 64px; top: 44px; height: 44px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); }
+  .top .w { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; letter-spacing: .02em; direction: ltr; }
+  .top .w small { font-size: 15px; font-weight: 600; letter-spacing: .4em; margin-left: 10px; }
+  .top .r { font-size: 18px; font-weight: 500; letter-spacing: .02em; direction: rtl; color: var(--soft); }
+
+  .photo { position: absolute; top: 112px; width: 610px; height: 1000px; overflow: hidden; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.03); }
+  .cap { position: absolute; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: var(--soft); direction: ltr; }
+
+  .col { position: absolute; top: 132px; width: 350px; direction: rtl; text-align: right; }
+  .no { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; letter-spacing: .28em; direction: ltr; text-align: right; color: var(--soft); }
+  .name { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 128px; line-height: .86; letter-spacing: -.01em; direction: ltr; text-align: right; margin-top: 26px; }
+  .name i { font-weight: 500; color: var(--accent); }
+  .ar { font-size: 25px; font-weight: 600; margin-top: 22px; }
+  .lead { font-size: 25px; font-weight: 300; line-height: 1.6; margin-top: 18px; color: var(--ink2); }
+  .hr { height: 1px; background: var(--line); margin: 32px 0 26px; }
+  .k { font-size: 16px; font-weight: 600; letter-spacing: .06em; color: var(--accent); }
+  .v { font-size: 22px; font-weight: 400; line-height: 1.5; margin: 2px 0 16px; }
+  .price { display: flex; align-items: baseline; justify-content: flex-start; gap: 12px; margin-top: 10px; }
+  .price .n { font-family: 'Cormorant Garamond', serif; font-size: 150px; font-weight: 500; line-height: .8; direction: ltr; }
+  .price .u { font-size: 26px; font-weight: 500; }
+  .sub { font-size: 18px; font-weight: 400; color: var(--soft); margin-top: 12px; }
+
+  .foot { position: absolute; left: 64px; right: 64px; bottom: 50px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; direction: rtl; }
+  .foot span { font-size: 19px; font-weight: 500; }
+  .foot b { font-weight: 600; color: var(--accent); }
+  .foot .h { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; letter-spacing: .04em; direction: ltr; color: var(--soft); }
+
+  #amberful  { --paper: #f1ebe1; --ink: #1c1510; --ink2: #3a2e25; --soft: rgba(28,21,16,.55); --line: rgba(28,21,16,.28); --accent: #a2501b; }
+  #slazenger { --paper: #111110; --ink: #f1ede4; --ink2: rgba(241,237,228,.85); --soft: rgba(241,237,228,.55); --line: rgba(241,237,228,.25); --accent: #cfae62; }
+  #slazenger::after { mix-blend-mode: screen; opacity: .06; }
+</style>
+</head>
+<body>
+
+<!-- 1 · Amberful — photo bleeds off the left edge, the copy column on the right -->
+<section class="post" id="amberful">
+  <div class="top"><span class="w">AMR<small>aljanabi</small></span><span class="r">عطور مطابقة ومعتّقة يدوياً</span></div>
+
+  <div class="photo" style="left:0"><img src="photos/mancera.jpg" alt="" style="object-position:55% 45%" /></div>
+  <div class="cap" style="left:64px;top:1124px">Mancera Amberful — category S, 35 ml</div>
+
+  <div class="col" style="right:64px">
+    <div class="no">No. S — 35 ML</div>
+    <div class="name">Amber<br/><i>ful</i></div>
+    <div class="ar">أمبرفل · بأعلى تطابق في فئة S</div>
+    <div class="lead">فخامة العنبر بلمسة حيوية،<br/>وانتعاش يكسر الروتين.</div>
+    <div class="hr"></div>
+    <div class="k">الافتتاحية</div><div class="v">يوزو، برغموت، فلفل وردي، جوزة الطيب</div>
+    <div class="k">القلب</div><div class="v">بنفسج، باتشولي، خشب العنبر</div>
+    <div class="k">القاعدة</div><div class="v">عنبر، خشب الأرز، طحلب السنديان</div>
+    <div class="hr" style="margin:14px 0 26px"></div>
+    <div class="price"><span class="n">20</span><span class="u">ألف دينار</span></div>
+    <div class="sub">عبوة 35ml · eau de parfum</div>
+  </div>
+
+  <div class="foot"><span>التوصيل لكل المحافظات <b>5,000</b> · بغداد، كرادة داخل · للطلب: دايركت</span><span class="h">@amr.aljanabi</span></div>
+</section>
+
+<!-- 2 · Slazenger Gold — the dark page of the spread, photo bleeds off the right edge -->
+<section class="post" id="slazenger">
+  <div class="top"><span class="w">AMR<small>aljanabi</small></span><span class="r">عطور مطابقة ومعتّقة يدوياً</span></div>
+
+  <div class="photo" style="right:0"><img src="photos/slazenger.jpg" alt="" style="object-position:50% 40%" /></div>
+  <div class="cap" style="right:64px;top:1124px">Slazenger Gold — eau de parfum, 35 ml</div>
+
+  <div class="col" style="left:64px">
+    <div class="no">35 ML — EAU DE PARFUM</div>
+    <div class="name" style="font-size:94px">Slazenger<br/><i>Gold</i></div>
+    <div class="ar">سلازنجر ذهبي</div>
+    <div class="lead">بدائل نخبوية لأشهر<br/>الماركات العالمية.</div>
+    <div class="hr"></div>
+    <div class="k">الزيوت</div><div class="v">زيوت عطرية فرنسية وسويسرية</div>
+    <div class="k">التعتيق</div><div class="v">معتّق يدوياً لضمان الجودة والثبات</div>
+    <div class="k">العبوة</div><div class="v">35ml · eau de parfum</div>
+    <div class="hr" style="margin:14px 0 26px"></div>
+    <div class="price" id="slz-price"><span class="u" style="font-size:34px;font-weight:600">السعر بالدايركت</span></div>
+  </div>
+
+  <!-- a small second picture, as magazines do: his big «94» jar with the same name on the label -->
+  <div class="ab" style="position:absolute;left:64px;top:930px;width:178px;height:246px;overflow:hidden"><img src="photos/94-red.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block" /></div>
+  <div style="position:absolute;left:262px;top:1062px;width:150px;direction:rtl;text-align:right">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;direction:ltr;text-align:right;color:var(--accent)">No. 94</div>
+    <div style="font-size:19px;font-weight:400;line-height:1.45;color:var(--soft);margin-top:4px">نفس العطر..<br/>بالقنينة الكبيرة</div>
+  </div>
+
+  <div class="foot"><span>التوصيل لكل المحافظات <b>5,000</b> · بغداد، كرادة داخل · للطلب: دايركت</span><span class="h">@amr.aljanabi</span></div>
+</section>
+
+<script>
+  Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode().catch(() => {}))])
+    .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

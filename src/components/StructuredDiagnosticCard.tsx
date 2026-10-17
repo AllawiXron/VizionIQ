@@ -58,7 +58,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
     navigator.clipboard.writeText(script);
     setCopiedScript(true);
     if (onShowToast) {
-      onShowToast("copy", "تم نسخ السكربت بنجاح! 📋", "تكدر الآن إرساله للزبون مباشرة.");
+      onShowToast("copy", "تم نسخ السكربت بنجاح!", "تكدر الآن إرساله للزبون مباشرة.");
     }
     setTimeout(() => setCopiedScript(false), 2000);
   };
@@ -214,15 +214,15 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         recommendedToolTitle={data.recommendedChapterOrTool?.toolTitle}
         followUpActions={[
           {
-            label: "📅 حوّلها إلى خطة 7 أيام",
+            label: "حوّلها إلى خطة 7 أيام",
             prompt: "حوّل هذا التشخيص إلى خطة تنفيذية يومية مفصلة لمدة 7 أيام بالتسلسل.",
           },
           {
-            label: "💬 اكتبلي السكربت العراقي",
+            label: "اكتبلي السكربت العراقي",
             prompt: "اكتبلي سكريبت محادثة واتساب كامل وموسع للرد على الزبون العراقي لهذه الحالة بالتحديد.",
           },
           {
-            label: "🧮 احسب صافي الربح",
+            label: "احسب صافي الربح",
             prompt: "احسبلي صافي الأرباح بالتفصيل بعد خصم كلفة التوصيل 5000 بغداد و7000 محافظات وكلفة الإعلانات ونسبة راجع 15%.",
           },
         ]}

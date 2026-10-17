@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<link rel="stylesheet" href="../identity-concepts/fonts/fonts.css" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<!-- «٣ أخطاء تخلي إعلانك يبين رخيص»: a tips carousel for @allawi.psd in the page's own colours (paper, ink, orange).
+     Each mistake shows the same made-up burger shop's ad done cheaply and done properly, side by side.
+     6 slides at 1080x1350. -->
+<style>
+:root { --paper:#ece3d4; --ink:#1f1510; --ink-soft:rgba(31,21,16,.62); --orange:#e2541b; --cream:#fbf3e6; --bad:#c62828; --good:#2e7d4f }
+* { box-sizing:border-box; margin:0; padding:0 }
+body { background:#333; display:flex; flex-direction:column; gap:40px; padding:40px; align-items:center }
+.slide { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; background:var(--paper); color:var(--ink); font-family:'Readex Pro' }
+.slide::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.35; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .25 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E") }
+.top { position:absolute; top:52px; left:64px; right:64px; display:flex; justify-content:space-between; align-items:center; font:500 24px 'Readex Pro' }
+.top .h { direction:ltr; font:500 24px 'IBM Plex Mono'; letter-spacing:.02em; color:var(--ink-soft) }
+.pill { display:inline-block; padding:8px 22px 12px; border-radius:999px; background:var(--orange); color:#fff; font:600 30px 'Readex Pro' }
+.title { position:absolute; top:140px; left:64px; right:64px; font:700 72px/1.35 'Readex Pro' }
+.title em { font-style:normal; color:var(--orange) }
+.pair { position:absolute; top:285px; left:64px; right:64px; display:flex; justify-content:space-between }
+.col { width:460px; display:flex; flex-direction:column; align-items:center; gap:22px }
+.verdict { display:flex; align-items:center; gap:12px; font:700 34px 'Readex Pro' }
+.verdict svg { width:44px; height:44px }
+.bad .verdict { color:var(--bad) }
+.good .verdict { color:var(--good) }
+.ad { position:relative; width:460px; height:575px; overflow:hidden; border-radius:22px; box-shadow:0 22px 44px rgba(60,35,15,.22), 0 2px 6px rgba(60,35,15,.12) }
+.fix { position:absolute; left:64px; right:64px; bottom:118px; padding:30px 36px 34px; background:var(--cream); border-radius:24px; border-right:10px solid var(--orange);
+  box-shadow:0 10px 30px rgba(60,35,15,.08) }
+.fix b { display:block; font:700 30px 'Readex Pro'; color:var(--orange); margin-bottom:8px }
+.fix p { font:400 33px/1.6 'Readex Pro' }
+.foot { position:absolute; bottom:48px; left:64px; right:64px; display:flex; justify-content:space-between; align-items:center; font:500 24px 'Readex Pro'; color:var(--ink-soft) }
+.foot .h { direction:ltr; font:500 22px 'IBM Plex Mono' }
+.dots { display:flex; gap:10px }
+.dots b { width:11px; height:11px; border-radius:50%; background:var(--ink); opacity:.2 }
+.dots b.on { opacity:1; background:var(--orange) }
+
+/* ---- the good ads: one tidy template for the made-up shop «برگر ليل» ---- */
+.g { background:#111 center/cover no-repeat; color:#fff; font-family:'Readex Pro' }
+.g::before { content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,.62) 0%, rgba(0,0,0,.15) 34%, rgba(0,0,0,0) 55%, rgba(0,0,0,.45) 100%) }
+.g > * { position:absolute; z-index:1 }
+.g .brand { top:26px; right:28px; display:flex; align-items:center; gap:9px; font:600 19px 'Readex Pro'; letter-spacing:.01em }
+.g .brand i { width:20px; height:20px; border-radius:6px; background:var(--orange) }
+.g .hl { top:66px; right:28px; left:28px; font:700 44px/1.3 'Readex Pro' }
+.g .chip { top:186px; right:28px; padding:6px 18px 9px; border-radius:999px; background:var(--orange); font:600 22px 'Readex Pro' }
+.g .cta { bottom:24px; right:28px; left:28px; display:flex; justify-content:space-between; align-items:center; font:500 17px 'Readex Pro'; opacity:.92 }
+.g .cta span:last-child { direction:ltr; font:500 15px 'IBM Plex Mono' }
+
+/* ---- bad ad 1: everything at once ---- */
+.b1 { background:radial-gradient(circle at 50% 45%, #ffe94d 0%, #ffcc00 40%, #ff3d00 100%); text-align:center; color:#c40000; font-family:'Alexandria' }
+.b1 > * { position:absolute; left:0; right:0 }
+.b1 .t1 { top:8px; font:900 46px/1.1 'Lalezar'; color:#fff; -webkit-text-stroke:2px #c40000; text-shadow:3px 3px 0 #8a0000 }
+.b1 .t2 { top:62px; font:800 20px 'Alexandria'; color:#111 }
+.b1 .ph { top:92px; left:120px; width:220px; height:190px; background:url(photo/burger.jpg) 50% 45%/cover; border:6px solid #fff; box-shadow:0 0 0 3px #c40000 }
+.b1 .star { top:96px; left:16px; right:auto; width:118px; height:118px; display:flex; align-items:center; justify-content:center; text-align:center;
+  background:#c40000; color:#ffe94d; font:900 24px/1.05 'Alexandria';
+  clip-path:polygon(50% 0,61% 13%,77% 6%,79% 23%,95% 25%,88% 40%,100% 50%,88% 60%,95% 75%,79% 77%,77% 94%,61% 87%,50% 100%,39% 87%,23% 94%,21% 77%,5% 75%,12% 60%,0 50%,12% 40%,5% 25%,21% 23%,23% 6%,39% 13%) }
+.b1 .new { top:110px; left:auto; right:14px; width:96px; padding:6px 0; background:#00a2ff; color:#fff; font:800 17px 'Alexandria'; transform:rotate(10deg); border:2px dashed #fff }
+.b1 .menu { top:292px; left:18px; right:18px; display:grid; grid-template-columns:1fr 1fr; gap:3px 10px; font:700 17.5px/1.3 'Alexandria'; color:#111 }
+.b1 .menu span b { color:#c40000 }
+.b1 .del { top:398px; font:900 22px 'Alexandria'; color:#fff; background:#c40000; padding:4px 0 7px }
+.b1 .tel { top:440px; font:800 17px 'Alexandria'; color:#111 }
+.b1 .addr { top:467px; font:600 14.5px 'Alexandria'; color:#222 }
+.b1 .hrs { top:490px; font:600 14.5px 'Alexandria'; color:#222 }
+.b1 .soc { top:514px; font:700 14px 'Alexandria'; color:#0b4fff }
+.b1 .go { top:537px; font:900 24px 'Lalezar'; color:#fff; background:#111; padding:2px 0 5px }
+
+/* ---- bad ad 2: five fonts, eight colours, every effect ---- */
+.b2 { background:linear-gradient(135deg, #7b1fa2 0%, #e91e63 30%, #ff9800 55%, #00bcd4 80%, #4caf50 100%); text-align:center }
+.b2 > * { position:absolute; left:0; right:0 }
+.b2 .t1 { top:18px; font:400 72px/1.1 'Lalezar'; background:linear-gradient(#fff200, #ff1744); -webkit-background-clip:text; background-clip:text; color:transparent;
+  -webkit-text-stroke:2.5px #000; filter:drop-shadow(0 0 10px #00e5ff) drop-shadow(4px 4px 0 #3d0066) }
+.b2 .t2 { top:110px; font:700 40px 'Aref Ruqaa'; color:#00ff6a; -webkit-text-stroke:1px #003300; text-shadow:0 0 12px #fff, 3px 3px 0 #000 }
+.b2 .ph { top:178px; left:95px; width:270px; height:230px; border-radius:50%; background:url(photo/burger.jpg) 50% 48%/150% auto; border:8px solid #ffea00; box-shadow:0 0 0 5px #d500f9, 0 0 30px 8px #fff }
+.b2 .price { top:420px; font:700 50px 'Reem Kufi Fun'; color:#ff00c8; -webkit-text-stroke:1.5px #fff; text-shadow:5px 5px 0 #1a237e }
+.b2 .go { top:494px; left:100px; right:100px; padding:8px 0 14px; border-radius:14px; font:700 34px 'Amiri'; color:#00e5ff; text-shadow:2px 2px 0 #000;
+  background:linear-gradient(#ff6d00, #d50000); border:4px outset #ffab40 }
+
+/* ---- bad ad 3: the good layout, a bad photo ---- */
+.b3 { background-image:url(photo/burger-bad.jpg) }
+
+/* cover */
+#s1 .title { top:150px; font:700 98px/1.3 'Readex Pro' }
+#s1 .title .n { font:700 150px/1 'Readex Pro'; color:var(--orange); display:block; margin-bottom:6px }
+#s1 .sub { position:absolute; top:575px; left:64px; right:64px; font:400 36px 'Readex Pro'; color:var(--ink-soft) }
+#s1 .cards { position:absolute; top:690px; left:0; right:0; height:560px }
+#s1 .cards .ad { position:absolute; width:400px; height:500px }
+#s1 .cards .c1 { right:110px; top:20px; transform:rotate(5deg) }
+#s1 .cards .c2 { left:110px; top:40px; transform:rotate(-4deg) }
+#s1 .stamp { position:absolute; z-index:3; width:120px; height:120px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px rgba(0,0,0,.25) }
+#s1 .stamp svg { width:66px; height:66px }
+#s1 .save { position:absolute; bottom:48px; right:64px; display:flex; align-items:center; gap:12px; font:600 28px 'Readex Pro' }
+#s1 .swipe { position:absolute; bottom:48px; left:64px; display:flex; align-items:center; gap:12px; font:600 28px 'Readex Pro'; color:var(--orange) }
+
+/* checklist */
+#s5 .title { top:150px }
+.checks { position:absolute; top:400px; left:64px; right:64px; display:flex; flex-direction:column; gap:28px }
+.check { display:flex; align-items:center; gap:30px; padding:34px 36px; background:var(--cream); border-radius:24px; box-shadow:0 10px 30px rgba(60,35,15,.08) }
+.check .box { flex:none; width:72px; height:72px; border-radius:18px; border:4px solid var(--orange); display:flex; align-items:center; justify-content:center }
+.check .box svg { width:46px; height:46px }
+.check p { font:600 42px/1.4 'Readex Pro' }
+.check small { display:block; font:400 28px/1.5 'Readex Pro'; color:var(--ink-soft); margin-top:4px }
+#s5 .done { position:absolute; bottom:130px; left:64px; right:64px; text-align:center; font:600 36px 'Readex Pro' }
+#s5 .done em { font-style:normal; color:var(--orange) }
+
+/* call to action */
+#s6 { background:var(--ink); color:var(--cream) }
+#s6::after { opacity:.12; mix-blend-mode:screen }
+#s6 .title { top:170px; text-align:center; font:700 84px/1.35 'Readex Pro' }
+#s6 .title em { color:var(--orange) }
+#s6 .works { position:absolute; top:560px; left:64px; right:64px; display:grid; grid-template-columns:repeat(3, 1fr); gap:20px }
+#s6 .works img { width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:18px; display:block }
+#s6 .dm { position:absolute; bottom:150px; left:0; right:0; display:flex; justify-content:center }
+#s6 .dm span { padding:20px 56px 26px; border-radius:999px; background:var(--orange); color:#fff; font:700 44px 'Readex Pro' }
+#s6 .handle { position:absolute; bottom:70px; left:0; right:0; text-align:center; direction:ltr; font:500 30px 'IBM Plex Mono'; color:rgba(251,243,230,.75) }
+[data-mistake] .title { top:136px; font-size:70px; white-space:nowrap }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <g id="i-x"><circle cx="24" cy="24" r="22" fill="currentColor" /><path d="M16 16 L32 32 M32 16 L16 32" stroke="#fff" stroke-width="5" stroke-linecap="round" /></g>
+  <g id="i-ok"><circle cx="24" cy="24" r="22" fill="currentColor" /><path d="M14 25 L21 32 L34 17" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></g>
+  <g id="i-tick"><path d="M8 25 L19 36 L40 12" fill="none" stroke="#e2541b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /></g>
+</defs></svg>
+
+<!-- 1. cover -->
+<div class="slide" id="s1">
+  <div class="top"><span class="pill" style="font-size:24px; padding:6px 20px 10px">نصائح تصميم</span><span class="h">allawi.psd</span></div>
+  <div class="title"><span class="n">٣ أخطاء</span>تخلي إعلانك<br>يبين <em>رخيص</em></div>
+  <div class="sub">وشلون تصلحها بدون ما تصرف فلس زايد</div>
+  <div class="cards">
+    <div class="ad c1" data-ad="b1"></div>
+    <div class="ad c2" data-ad="g1"></div>
+    <div class="stamp" style="right:70px; top:0; background:var(--bad); color:var(--bad)"><svg viewBox="0 0 48 48"><use href="#i-x" /></svg></div>
+    <div class="stamp" style="left:70px; top:10px; background:var(--good); color:var(--good)"><svg viewBox="0 0 48 48"><use href="#i-ok" /></svg></div>
+  </div>
+  <div class="save"><svg viewBox="0 0 24 24" width="34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M6 3 H18 V21 L12 16.5 L6 21 Z" /></svg>احفظه وارجعله</div>
+  <div class="swipe"><svg viewBox="0 0 60 24" width="56" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 H54 M44 3 L55 12 L44 21" /></svg>اسحب</div>
+</div>
+
+<!-- 2-4. the three mistakes -->
+<div class="slide" id="s2" data-mistake="1"
+  data-title="تحشي <em>كلشي</em> بإعلان واحد"
+  data-fix="رسالة وحدة واضحة بكل إعلان. العنوان والأرقام والمنيو مكانهم الكابشن والبايو، مو التصميم."
+  data-bad="b1" data-good="g1"></div>
+<div class="slide" id="s3" data-mistake="2"
+  data-title="خطوط وألوان <em>هواية</em>"
+  data-fix="خط واحد أو اثنين بالكثير، ولونين أو ثلاثة من هوية البراند. بلا ظل وتوهج وإطارات على كل كلمة."
+  data-bad="b2" data-good="g2"></div>
+<div class="slide" id="s4" data-mistake="3"
+  data-title="صورة <em>معتمة</em> أو مسحوبة"
+  data-fix="المنتج هو البطل. صوّره بضوء حلو (قرب الشباك يكفي)، ولا تمط الصورة أبداً: قص منها بدال ما تسحبها."
+  data-bad="b3" data-good="g3"></div>
+
+<!-- 5. checklist -->
+<div class="slide" id="s5">
+  <div class="top"><span class="pill">الخلاصة</span><span class="h">allawi.psd</span></div>
+  <div class="title">قبل ما تنشر إعلانك،<br>اسأل نفسك:</div>
+  <div class="checks">
+    <div class="check"><div class="box"><svg viewBox="0 0 48 48"><use href="#i-tick" /></svg></div><p>اكو رسالة وحدة واضحة؟<small>إذا تحتاج تشرح، الإعلان مزدحم</small></p></div>
+    <div class="check"><div class="box"><svg viewBox="0 0 48 48"><use href="#i-tick" /></svg></div><p>خطين وألوان البراند بس؟<small>كل شي زايد يضيّع العين</small></p></div>
+    <div class="check"><div class="box"><svg viewBox="0 0 48 48"><use href="#i-tick" /></svg></div><p>الصورة واضحة ومو مسحوبة؟<small>صورة حلوة تبيع قبل أي كلمة</small></p></div>
+  </div>
+  <div class="done">إذا الجواب «إي» على الثلاثة… <em>إعلانك جاهز</em></div>
+  <div class="foot"><span class="h">@allawi.psd</span><span class="dots"><b></b><b></b><b></b><b class="on"></b></span></div>
+</div>
+
+<!-- 6. call to action -->
+<div class="slide" id="s6">
+  <div class="title">تريد إعلانك يبين<br><em>احترافي</em> من أول نظرة؟</div>
+  <div class="works">
+    <img src="../ig-brand-posts/works/baly.jpg" /><img src="../ig-brand-posts/works/sala.jpg" /><img src="../ig-brand-posts/works/faqma.jpg" />
+  </div>
+  <div class="dm"><span>راسلني على الخاص</span></div>
+  <div class="handle">@allawi.psd</div>
+</div>
+
+<script>
+// the example ads
+const GOOD = {
+  g1: { photo: 'photo/burger.jpg', hl: 'برگر الكلاسيك', chip: '٧,٠٠٠ د.ع' },
+  g2: { photo: 'photo/burger.jpg', hl: 'طعم يرجعك<br>مرة ثانية', chip: 'اطلب هسه' },
+  g3: { photo: 'photo/burger.jpg', hl: 'جربت<br>برگر ليل؟', chip: 'توصيل لكل بغداد' },
+};
+const good = (k, photo) => {
+  const a = GOOD[k] || GOOD.g3;
+  return `<div class="ad g ${k}" style="background-image:url(${photo || a.photo})">
+    <div class="brand"><i></i>برگر ليل</div><div class="hl">${a.hl}</div><div class="chip">${a.chip}</div>
+    <div class="cta"><span>اطلب هسه · توصيل لكل بغداد</span><span>@burgerlayl</span></div></div>`;
+};
+const BAD = {
+  b1: `<div class="ad b1">
+    <div class="t1">عروض ناريـــة 🔥🔥🔥</div>
+    <div class="t2">برگر ليل .. أطيب برگر ببغداد والعراق!!</div>
+    <div class="ph"></div>
+    <div class="star">خصم<br>٢٠٪</div>
+    <div class="new">جديد!!</div>
+    <div class="menu"><span>برگر لحم <b>٥٠٠٠</b></span><span>برگر دجاج <b>٤٥٠٠</b></span><span>دبل برگر <b>٨٠٠٠</b></span><span>وجبة عائلية <b>٢٠٠٠٠</b></span><span>بطاطا كبير <b>١٥٠٠</b></span><span>ببسي <b>٧٥٠</b></span></div>
+    <div class="del">توصيل مجاني لكل مناطق بغداد 🚗🚗</div>
+    <div class="tel">📞 ٠٧٧٠ ××× ×××× &nbsp;-&nbsp; ٠٧٨٠ ××× ××××</div>
+    <div class="addr">📍 بغداد - المنصور - شارع ١٤ رمضان - قرب الإشارة الضوئية</div>
+    <div class="hrs">⏰ مفتوح يومياً من ١٠ الصبح لحد ٢ بالليل</div>
+    <div class="soc">انستا / فيس / تيك توك / سناب: burgerlayl</div>
+    <div class="go">اطلب الآن!!! ☎️</div></div>`,
+  b2: `<div class="ad b2">
+    <div class="t1">برگر ليل</div>
+    <div class="t2">أطيب برگر بالعالم</div>
+    <div class="ph"></div>
+    <div class="price">٧٠٠٠ دينار فقط</div>
+    <div class="go">اطلب الآن</div></div>`,
+  b3: null,
+};
+const icon = (id) => `<svg viewBox="0 0 48 48"><use href="#${id}" /></svg>`;
+document.querySelectorAll('[data-ad]').forEach((el) => {
+  const k = el.dataset.ad;
+  el.outerHTML = (k[0] === 'b' ? BAD[k] : good(k)).replace('class="ad', `class="ad ${el.className.replace('ad', '').trim()}`);
+});
+document.querySelectorAll('[data-mistake]').forEach((s) => {
+  const n = +s.dataset.mistake;
+  const ar = '٠١٢٣٤٥٦٧٨٩';
+  const bad = s.dataset.bad === 'b3' ? good('g3', 'photo/burger-bad.jpg').replace('class="ad g g3"', 'class="ad g b3"') : BAD[s.dataset.bad];
+  s.innerHTML = `
+    <div class="top"><span class="pill">الخطأ ${ar[n]}</span><span class="h">${ar[n]} / ٣</span></div>
+    <div class="title">${s.dataset.title}</div>
+    <div class="pair">
+      <div class="col bad">${bad}<div class="verdict">${icon('i-x')}يبين رخيص</div></div>
+      <div class="col good">${good(s.dataset.good)}<div class="verdict">${icon('i-ok')}يبين احترافي</div></div>
+    </div>
+    <div class="fix"><b>الحل</b><p>${s.dataset.fix}</p></div>
+    <div class="foot"><span class="h">@allawi.psd</span><span class="dots">${[1, 2, 3, 4].map((i) => `<b class="${i === n ? 'on' : ''}"></b>`).join('')}</span></div>`;
+});
+Promise.all([
+  document.fonts.load("700 72px 'Readex Pro'", 'تحشي كلشي بإعلان'),
+  document.fonts.load("400 33px 'Readex Pro'", 'رسالة وحدة'),
+  document.fonts.load("600 30px 'Readex Pro'", 'الخطأ'),
+  document.fonts.load("500 24px 'IBM Plex Mono'", 'allawi.psd'),
+  document.fonts.load("400 72px 'Lalezar'", 'برگر ليل عروض'),
+  document.fonts.load("900 24px 'Alexandria'", 'خصم'),
+  document.fonts.load("800 17px 'Alexandria'", 'برگر'),
+  document.fonts.load("700 40px 'Aref Ruqaa'", 'أطيب برگر'),
+  document.fonts.load("700 50px 'Reem Kufi Fun'", 'دينار فقط'),
+  document.fonts.load("700 34px 'Amiri'", 'اطلب الآن'),
+  ...['photo/burger.jpg', 'photo/burger-bad.jpg', '../ig-brand-posts/works/baly.jpg', '../ig-brand-posts/works/sala.jpg', '../ig-brand-posts/works/faqma.jpg']
+    .map((src) => new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = src; })),
+]).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>

@@ -29,22 +29,22 @@ interface BusinessDiagnosticStepperProps {
 }
 
 const BUSINESS_TYPES = [
-  { id: "fashion", label: "ملابس وأزياء وأحذية", icon: "👗" },
-  { id: "cosmetics", label: "تجميل، عناية وعطور", icon: "💄" },
-  { id: "electronics", label: "إلكترونيات واكسسوارات", icon: "📱" },
-  { id: "home", label: "منزل، مطبخ وديكور", icon: "🏠" },
-  { id: "supplements", label: "مكملات وصحة ولياقة", icon: "💊" },
-  { id: "watches_accessories", label: "ساعات وهدايا واكسسوارات", icon: "⌚" },
-  { id: "services", label: "خدمات / دورات / رقمية", icon: "💡" },
-  { id: "other", label: "مجال تجاري آخر", icon: "📦" },
+  { id: "fashion", label: "ملابس وأزياء وأحذية", icon: "" },
+  { id: "cosmetics", label: "تجميل، عناية وعطور", icon: "" },
+  { id: "electronics", label: "إلكترونيات واكسسوارات", icon: "" },
+  { id: "home", label: "منزل، مطبخ وديكور", icon: "" },
+  { id: "supplements", label: "مكملات وصحة ولياقة", icon: "" },
+  { id: "watches_accessories", label: "ساعات وهدايا واكسسوارات", icon: "" },
+  { id: "services", label: "خدمات / دورات / رقمية", icon: "" },
+  { id: "other", label: "مجال تجاري آخر", icon: "" },
 ];
 
 const SALES_CHANNELS = [
-  { id: "instagram", label: "انستغرام ديركت (Instagram)", icon: "📸" },
-  { id: "facebook", label: "فيسبوك ماسنجر (Facebook)", icon: "💬" },
-  { id: "whatsapp", label: "واتساب بزنس (WhatsApp)", icon: "🟢" },
-  { id: "website", label: "متجر إلكتروني / صفحة هبوط", icon: "🌐" },
-  { id: "multi", label: "قنوات متعددة بالتوازي", icon: "🔄" },
+  { id: "instagram", label: "انستغرام ديركت (Instagram)", icon: "" },
+  { id: "facebook", label: "فيسبوك ماسنجر (Facebook)", icon: "" },
+  { id: "whatsapp", label: "واتساب بزنس (WhatsApp)", icon: "" },
+  { id: "website", label: "متجر إلكتروني / صفحة هبوط", icon: "" },
+  { id: "multi", label: "قنوات متعددة بالتوازي", icon: "" },
 ];
 
 const DELIVERY_AREAS = [
@@ -60,37 +60,37 @@ const MAIN_PROBLEMS = [
     id: "high_cpa",
     title: "رسائل كثيرة لكن ماكو مبيعات (ضعف الإغلاق)",
     desc: "الزبائن يستفسرون عن السعر ويختفون دون تأكيد الطلب.",
-    icon: "🎯",
+    icon: "",
   },
   {
     id: "ad_cost",
     title: "كلفة الرسالة بالإعلانات مرتفعة جداً (CPA عالي)",
     desc: "الإعلانات تستهلك الميزانية بدون نتائج كافية.",
-    icon: "💸",
+    icon: "",
   },
   {
     id: "high_returns",
     title: "نسبة المرتجعات والراجع عالية بالمحافظات",
     desc: "الطلبات تخرج وتعود راجعة بنسبة تتجاوز 20%-30%.",
-    icon: "🚚",
+    icon: "",
   },
   {
     id: "low_margin",
     title: "هامش الربح ضعيف بعد خصم التوصيل والإعلانات",
     desc: "مبيعات موجودة لكن صافي الربح الحقيقي في نهاية الشهر قليل.",
-    icon: "📉",
+    icon: "",
   },
   {
     id: "scaling",
     title: "صعوبة التوسع وزيادة الميزانية الإعلانية",
     desc: "كلما أرفع الميزانية تخرب النتائج وترتفع التكلفة.",
-    icon: "🚀",
+    icon: "",
   },
   {
     id: "other_problem",
     title: "تحدي آخر يحتاج استشارة مخصصة",
     desc: "أريد تشخيصاً شاملاً لجميع أجزاء مشروعي.",
-    icon: "💡",
+    icon: "",
   },
 ];
 
@@ -325,7 +325,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                       {isSelected && (
                         <CheckCircle2 className="w-4 h-4 text-vz-accent absolute top-2 right-2" />
                       )}
-                      <span className="text-xl">{type.icon}</span>
                       <span className="text-xs font-semibold">{type.label}</span>
                     </button>
                   );
@@ -371,7 +370,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                       className={`p-3 rounded-xl border text-right transition flex items-center gap-2.5 ${ isSelected ? "bg-white/8 border-white/35 text-vz-accent" : "bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700" } min-h-[44px] min-w-[44px] flex items-center justify-between active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className="text-lg">{ch.icon}</span>
                         <span className="text-xs font-medium">{ch.label}</span>
                       </div>
                       {isSelected && <CheckCircle2 className="w-4 h-4 text-vz-accent shrink-0" />}
@@ -464,7 +462,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400 leading-relaxed">
-                  💡 <strong>ملاحظة وفرضيات الحساب:</strong> هذا الهامش الإجمالي قبل خصم أجور التوصيل (5K-7K د.ع)، كلفة الإعلانات (CPA)، ونسبة المرتجعات.
+                  <strong>ملاحظة وفرضيات الحساب:</strong> هذا الهامش الإجمالي قبل خصم أجور التوصيل (5K-7K د.ع)، كلفة الإعلانات (CPA)، ونسبة المرتجعات.
                 </p>
               </div>
             )}
@@ -583,7 +581,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                     onClick={() => setMainProblem(prob.title)}
                     className={`p-3 rounded-xl border text-right transition flex items-start gap-2.5 ${ mainProblem === prob.title ? "bg-white/8 border-white/35 text-vz-accent" : "bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    <span className="text-xl mt-0.5">{prob.icon}</span>
                     <div>
                       <div className="text-xs font-bold">{prob.title}</div>
                       <div className="text-[11px] text-slate-400 mt-0.5">{prob.desc}</div>

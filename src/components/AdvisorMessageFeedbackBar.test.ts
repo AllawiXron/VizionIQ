@@ -12,11 +12,10 @@ describe("Advisor Iraqi Market Feedback System", () => {
     expect(labels).toContain("مو مرتبط بسؤالي المباشر");
   });
 
-  it("should have icons and identifiers for each feedback reason", () => {
+  it("should have an identifier and a label for each feedback reason", () => {
     IRAQI_MARKET_FEEDBACK_REASONS.forEach((reason) => {
       expect(reason.id).toBeDefined();
       expect(reason.label).toBeTruthy();
-      expect(reason.icon).toBeTruthy();
     });
   });
 });

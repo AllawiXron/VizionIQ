@@ -113,14 +113,14 @@ export default function CaseStudySection() {
                       <div className="space-y-1 max-w-md mx-auto">
                         <h4 className="text-base sm:text-lg font-black text-white">تفاصيل دراسة الحالة والأرقام التنفيذية مغلقة</h4>
                         <p className="text-xs text-white/70 leading-relaxed font-light">
-                          يتضمن تفكيك حالة {cs.businessName} في {cs.city} الخطاف الإعلاني الفائز وسكريبت الواتساب الذي رفع المبيعات. متاح لحسابات الكورس الكاملة.
+                          قصة {cs.businessName} بـ {cs.city}: بداية الإعلان اللي اشتغلت، ورسالة الواتساب اللي رفعت الطلبات. تنفتح ويا الاشتراك الكامل.
                         </p>
                       </div>
                       <button                         onClick={triggerUpgradeModal}
                         className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <Lock className="w-4 h-4 text-white" />
-                        <span>فتح دراسة الحالة كاملة مع السكريبتات ⚡</span>
+                        <span>فتح دراسة الحالة كاملة مع السكريبتات</span>
                       </button>
                     </div>
                   ) : (
@@ -155,12 +155,12 @@ export default function CaseStudySection() {
                   {/* Problem & Psychology */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-red-950/20 border border-red-500/20 p-4 rounded-2xl space-y-1">
-                      <span className="text-xs font-bold text-red-400 block">⚠️ التحدي والمشكلة السابقة:</span>
+                      <span className="text-xs font-bold text-red-400 block">التحدي والمشكلة السابقة:</span>
                       <p className="text-xs text-white/80 leading-relaxed">{cs.theProblem}</p>
                     </div>
 
                     <div className="bg-emerald-950/20 border border-emerald-500/20 p-4 rounded-2xl space-y-1">
-                      <span className="text-xs font-bold text-emerald-400 block">💡 السيكولوجية والحل المطبق:</span>
+                      <span className="text-xs font-bold text-emerald-400 block">السيكولوجية والحل المطبق:</span>
                       <p className="text-xs text-white/80 leading-relaxed">{cs.thePsychology}</p>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ export default function CaseStudySection() {
 
                   {/* Ad Creative Hook */}
                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-1">
-                    <span className="text-xs font-bold text-vz-accent block">🎬 الخطاف الإعلاني الفائز (Hook):</span>
+                    <span className="text-xs font-bold text-vz-accent block">الخطاف الإعلاني الفائز (Hook):</span>
                     <p className="text-xs text-white/80 font-mono leading-relaxed">{cs.adCreativeHook}</p>
                   </div>
 
@@ -198,7 +198,7 @@ export default function CaseStudySection() {
                         {copiedScript === cs.id ? (
                           <>
                             <Check className="w-3.5 h-3.5" />
-                            <span>تم النسخ!</span>
+                            <span>انتسخت</span>
                           </>
                         ) : (
                           <>
@@ -213,7 +213,7 @@ export default function CaseStudySection() {
 
                   {/* Key Learnings */}
                   <div className="space-y-2 pt-2 border-t border-white/10">
-                    <span className="text-xs font-bold text-white block">📌 أهم الدروس المستفادة:</span>
+                    <span className="text-xs font-bold text-white block">أهم الدروس المستفادة:</span>
                     <ul className="list-disc list-inside text-xs text-white/70 space-y-1">
                       {cs.keyLearnings.map((item, idx) => (
                         <li key={idx}>{item}</li>

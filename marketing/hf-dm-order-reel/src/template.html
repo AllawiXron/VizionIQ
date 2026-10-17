@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+/*FONTFACES*/
+      :root {
+        --paper: #ece3d4;
+        --ink: #1f1510;
+        --orange: #e2541b;
+        --orange-2: #f07a2e;
+        --cream: #fbf3e6;
+        --muted: rgba(31, 21, 16, 0.62);
+        --orange-ink: #c2441a; /* the brand orange, one step deeper, for orange words on paper (3:1 and up) */
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; direction: rtl; font-family: 'IBM Plex Sans Arabic', sans-serif; color: var(--ink); }
+      .layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+      /* background: brand paper, a slow orange glow, moving grain */
+      #bg { background: var(--paper); }
+      #bg .paper { position: absolute; inset: 0; background: url(assets/img/paper.jpg) center / cover; opacity: 0.28; mix-blend-mode: multiply; }
+      #glow { position: absolute; left: 90px; top: 520px; width: 900px; height: 900px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(240, 122, 46, 0.30) 0%, rgba(240, 122, 46, 0.12) 42%, rgba(240, 122, 46, 0) 70%); }
+      #grain { position: absolute; inset: 0; background: url(assets/img/grain.png) 0 0 / 512px 512px; opacity: 0.14; mix-blend-mode: multiply; }
+
+      /* ── b01 hook ─────────────────────────────────────────────── */
+      #hookcam { position: absolute; inset: 0; transform-origin: 500px 238px; }
+      .post { position: absolute; width: 500px; height: 625px; border-radius: 18px; object-fit: cover;
+        box-shadow: 0 30px 60px rgba(31, 21, 16, 0.32), 0 6px 14px rgba(31, 21, 16, 0.22); border: 8px solid var(--cream); }
+      #pL { left: 40px; top: 470px; }
+      #pR { left: 480px; top: 470px; }
+      #pC { left: 260px; top: 400px; }
+      .notif { position: absolute; left: 70px; top: 150px; width: 860px; height: 176px; border-radius: 44px;
+        background: rgba(251, 243, 230, 0.97); box-shadow: 0 22px 50px rgba(31, 21, 16, 0.25);
+        display: flex; align-items: center; gap: 26px; padding: 0 34px; }
+      .avatar { flex: none; width: 104px; height: 104px; border-radius: 50%; background: var(--orange); color: var(--cream);
+        display: flex; align-items: center; justify-content: center; font: 900 50px/1 'Alexandria'; padding-bottom: 6px; }
+      .notif .txt { flex: 1; min-width: 0; }
+      .notif .top { display: flex; justify-content: space-between; align-items: baseline; }
+      .notif .who { font: 600 40px/1.25 'IBM Plex Sans Arabic'; direction: ltr; }
+      .notif .when { font: 400 30px/1 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .notif .body { font: 500 40px/1.35 'IBM Plex Sans Arabic'; margin-top: 4px; }
+      .hl { position: absolute; left: 60px; right: 60px; top: 1170px; text-align: center; }
+      .hl .l1 { font: 800 92px/1.25 'Alexandria'; }
+      .hl .l2 { font: 900 132px/1.2 'Alexandria'; margin-top: 4px; }
+      .hl .w { display: inline-block; }
+      .acc { color: var(--orange-ink); }
+
+      /* ── the chat (b02-b06) ──────────────────────────────────── */
+      #world, #zo, #zi { position: absolute; inset: 0; transform-origin: 540px 960px; }
+      #card { position: absolute; left: 50px; top: 150px; width: 890px; height: 1350px; border-radius: 60px; overflow: hidden;
+        background: var(--cream); box-shadow: 0 40px 90px rgba(31, 21, 16, 0.28), 0 8px 20px rgba(31, 21, 16, 0.14); }
+      .hdr { position: absolute; left: 0; right: 0; top: 0; height: 150px; display: flex; align-items: center; gap: 22px;
+        padding: 0 34px; border-bottom: 3px solid rgba(31, 21, 16, 0.08); background: var(--cream); z-index: 3; }
+      .hdr .back { width: 40px; height: 40px; flex: none; }
+      .hdr .avatar { width: 92px; height: 92px; font-size: 44px; }
+      .hdr .who { flex: 1; }
+      .hdr .name { font: 600 42px/1.2 'IBM Plex Sans Arabic'; direction: ltr; text-align: right; }
+      .hdr .sub { font: 400 30px/1.3 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .hdr .sub b { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--orange); margin-left: 10px; vertical-align: 2px; }
+      .hdr .icons { display: flex; gap: 30px; }
+      .hdr .icons svg { width: 50px; height: 50px; }
+
+      #vp { position: absolute; left: 0; right: 0; top: 150px; bottom: 160px; overflow: hidden; }
+      #stack { position: absolute; left: 0; right: 0; top: 0; padding: 26px 30px 30px; display: flex; flex-direction: column; gap: 20px; }
+      .intro { text-align: center; padding: 26px 0 30px; }
+      .intro .avatar { width: 150px; height: 150px; font-size: 72px; margin: 0 auto 16px; }
+      .intro .name { font: 600 44px/1.2 'IBM Plex Sans Arabic'; direction: ltr; }
+      .intro .sub { font: 400 32px/1.45 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .msg { display: flex; flex-direction: column; }
+      .msg.me { align-items: flex-start; }      /* RTL: start = right */
+      .msg.them { align-items: flex-end; }      /* RTL: end = left */
+      .bub { max-width: 650px; padding: 22px 34px 24px; border-radius: 46px; font: 500 44px/1.42 'IBM Plex Sans Arabic'; }
+      .me .bub { background: var(--orange); color: var(--cream); border-bottom-right-radius: 14px; }
+      .them .bub { background: var(--paper); color: var(--ink); border-bottom-left-radius: 14px; }
+      .msg .meta { font: 400 28px/1.6 'IBM Plex Sans Arabic'; color: var(--muted); padding: 4px 18px 0; }
+      .shot { width: 560px; height: 700px; border-radius: 34px; overflow: hidden; border-bottom-left-radius: 14px;
+        box-shadow: 0 10px 24px rgba(31, 21, 16, 0.16); }
+      .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .album { background: var(--paper); border-radius: 40px; border-bottom-left-radius: 14px; padding: 14px; }
+      .album .mini { display: grid; grid-template-columns: repeat(3, 150px); grid-auto-rows: 188px; gap: 8px; }
+      .album .mini img { width: 150px; height: 188px; object-fit: cover; border-radius: 14px; display: block; }
+      .album .cap { font: 500 40px/1.4 'IBM Plex Sans Arabic'; padding: 12px 14px 4px; }
+      .dots { position: absolute; display: flex; gap: 12px; padding: 30px 34px; border-radius: 46px; border-bottom-left-radius: 14px;
+        background: var(--paper); opacity: 0; }
+      .dots i { display: block; width: 18px; height: 18px; border-radius: 50%; background: rgba(31, 21, 16, 0.45); }
+
+      .inbar { position: absolute; left: 0; right: 0; bottom: 0; height: 160px; background: var(--cream);
+        border-top: 3px solid rgba(31, 21, 16, 0.06); z-index: 3; }
+      .field { position: absolute; right: 28px; left: 156px; top: 28px; height: 104px; border-radius: 52px; background: var(--paper);
+        display: flex; align-items: center; padding: 0 38px; overflow: hidden; }
+      #ftext { font: 500 44px/1 'IBM Plex Sans Arabic'; white-space: nowrap; }
+      #caret { display: inline-block; width: 4px; height: 52px; background: var(--orange); margin-right: 6px; }
+      #ph { position: absolute; right: 38px; font: 400 42px/1 'IBM Plex Sans Arabic'; color: rgba(31, 21, 16, 0.62); }
+      #send { position: absolute; left: 28px; top: 26px; width: 108px; height: 108px; border-radius: 50%; background: var(--orange);
+        display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(226, 84, 27, 0.35); }
+      #send svg { width: 54px; height: 54px; margin-right: 6px; }
+      .ring { position: absolute; left: 28px; top: 26px; width: 108px; height: 108px; border-radius: 50%; border: 6px solid var(--orange); opacity: 0; }
+
+      /* b06 quick replies */
+      #chips { position: absolute; left: 0; right: 0; bottom: 160px; height: 470px; padding: 40px 30px 22px; z-index: 2;
+        display: flex; flex-direction: column; justify-content: flex-end; gap: 18px;
+        background: linear-gradient(to top, var(--cream) 78%, rgba(251, 243, 230, 0)); opacity: 0; }
+      .chip { position: relative; display: flex; align-items: center; justify-content: space-between; height: 118px; padding: 0 40px;
+        border-radius: 59px; border: 5px solid var(--orange); background: var(--cream); }
+      .chip .k { font: 600 46px/1.1 'IBM Plex Sans Arabic'; }
+      .chip .k small { display: block; font: 400 28px/1.3 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .chip .p { font: 900 46px/1 'Alexandria'; color: var(--orange); }
+      .chip .rip { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+        border: 6px solid var(--orange); opacity: 0; }
+
+      /* overlays inside the card */
+      .scrim { position: absolute; inset: 0; background: rgba(31, 21, 16, 0.88); opacity: 0; z-index: 4; }
+      #grid { position: absolute; inset: 0; z-index: 5; }
+      #grid .ttl { position: absolute; left: 30px; right: 30px; top: 70px; text-align: center; color: var(--cream); font: 800 54px/1.3 'Alexandria'; opacity: 0; }
+      .tile { position: absolute; width: 254px; }
+      .tile .ph { width: 254px; height: 318px; border-radius: 22px; overflow: hidden; box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35); }
+      .tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .tile .lab { margin-top: 12px; text-align: center; font: 600 32px/1.3 'IBM Plex Sans Arabic'; color: var(--cream); }
+      .tile .hi { position: absolute; left: -9px; top: -9px; width: 272px; height: 336px; border-radius: 28px; border: 7px solid var(--orange-2); opacity: 0; }
+
+      #rcpt { position: absolute; inset: 0; z-index: 6; }
+      .slot { position: absolute; left: 55px; width: 780px; top: 64px; height: 40px; border-radius: 20px; background: #0f0a08;
+        box-shadow: inset 0 -6px 0 rgba(255, 255, 255, 0.08), 0 10px 26px rgba(0, 0, 0, 0.4); }
+      .feed { position: absolute; left: 95px; width: 700px; top: 84px; height: 1250px; overflow: hidden; }
+      .paperslip { position: absolute; left: 0; top: 0; width: 700px; background: var(--cream); color: var(--ink);
+        padding: 64px 56px 220px; text-align: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); }
+      .paperslip .brand { font: 900 66px/1.1 'Alexandria'; direction: ltr; }
+      .paperslip .k1 { font: 500 34px/1.5 'IBM Plex Sans Arabic'; color: var(--muted); margin-top: 8px; }
+      .rule { height: 0; border-top: 4px dotted rgba(31, 21, 16, 0.35); margin: 34px 0; }
+      .row { display: flex; justify-content: space-between; align-items: baseline; font: 500 40px/1.5 'IBM Plex Sans Arabic'; margin: 8px 0; }
+      .row .n { font: 600 42px/1.5 'IBM Plex Sans Arabic'; position: relative; }
+      .row .n.old { color: var(--muted); }
+      .row .n.cut { color: var(--orange); }
+      .strike { position: absolute; left: -10px; right: -10px; top: 50%; height: 30px; margin-top: -15px; overflow: visible; opacity: 0; }
+      .tot-l { font: 600 40px/1.4 'IBM Plex Sans Arabic'; }
+      .tot { display: flex; justify-content: center; align-items: baseline; gap: 18px; margin-top: 4px; }
+      #total { display: inline-block; font: 900 136px/1.1 'Alexandria'; font-variant-numeric: tabular-nums; transform-origin: 50% 70%; min-width: 470px; }
+      .tot .cur { font: 800 52px/1 'Alexandria'; }
+      .thanks { font: 500 36px/1.5 'IBM Plex Sans Arabic'; color: var(--muted); }
+      .stamp { position: absolute; left: 150px; bottom: 70px; padding: 12px 32px 18px; border: 8px double var(--orange); border-radius: 22px;
+        color: var(--orange); font: 900 62px/1.1 'Alexandria'; white-space: nowrap; mix-blend-mode: multiply; filter: url(#stampF); opacity: 0; }
+
+      /* b06 headline, outside the card */
+      #cta { position: absolute; left: 60px; right: 60px; top: 120px; text-align: center; }
+      #cta .a { font: 900 112px/1.15 'Alexandria'; }
+      #cta .b { font: 800 66px/1.3 'Alexandria'; }
+      #cta .w { display: inline-block; opacity: 0; }
+      #arrow { position: absolute; left: 70px; top: 196px; width: 150px; height: 210px; overflow: visible; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <filter id="stampF" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="5" result="n" />
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.8" result="m" />
+        <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
+        <feDisplacementMap in="s" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="31" data-width="1080" data-height="1920">
+      <div id="bg" class="clip layer" data-start="0" data-duration="31" data-track-index="0">
+        <div class="paper"></div>
+        <div id="glow"></div>
+        <div id="grain"></div>
+      </div>
+
+      <!-- b01 hook: three finished posts slam down, a DM notification drops -->
+      <div id="hook" class="clip layer" data-start="0" data-duration="3.2" data-track-index="1">
+        <div id="hookcam" data-layout-allow-overlap>
+          <img class="post" id="pL" src="assets/work/rubu.jpg" alt="" />
+          <img class="post" id="pR" src="assets/work/lux.jpg" alt="" />
+          <img class="post" id="pC" src="assets/work/saj.jpg" alt="" />
+          <div class="notif" id="notif">
+            <div class="avatar">a.</div>
+            <div class="txt">
+              <div class="top"><span class="who">allawi.psd</span><span class="when">الآن</span></div>
+              <div class="body">تصاميمك جاهزة ✅ ٣ بوستات</div>
+            </div>
+          </div>
+          <div class="hl" id="hl">
+            <div class="l1"><span class="w">كل</span> <span class="w">هذا..</span></div>
+            <div class="l2"><span class="w">برسالة</span> <span class="w acc">وحدة.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- b02-b06: one DM with allawi.psd, from the customer's side -->
+      <div id="chat" class="clip layer" data-start="0" data-duration="31" data-track-index="2">
+        <div id="world">
+          <div id="zo">
+            <div id="zi">
+              <div id="card">
+                <div class="hdr">
+                  <svg class="back" viewBox="0 0 24 24" fill="none" stroke="#1f1510" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+                  <div class="avatar">a.</div>
+                  <div class="who">
+                    <div class="name">allawi.psd</div>
+                    <div class="sub"><b></b>مصمم إعلانات · نشط الآن</div>
+                  </div>
+                  <div class="icons">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#1f1510" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#1f1510" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="2.5" /><path d="M15.5 10.5l6-3.5v10l-6-3.5z" /></svg>
+                  </div>
+                </div>
+
+                <div id="vp">
+                  <div id="stack" data-layout-allow-overflow>
+                    <div class="intro" id="m0">
+                      <div class="avatar">a.</div>
+                      <div class="name">allawi.psd</div>
+                      <div class="sub">تصاميم سوشيال ميديا · هويات · موشن</div>
+                    </div>
+                    <div class="msg me" id="m1"><div class="bub">هلو 👋 عندي مطعم، أريد ٣ بوستات</div><div class="meta">تم الإرسال</div></div>
+                    <div class="msg them" id="m2"><div class="bub">تدلل 🌹 هاي نماذج من شغلي:</div></div>
+                    <div class="msg them" id="m3"><div class="shot"><img src="assets/work/saj.jpg" alt="" /></div></div>
+                    <div class="msg them" id="m4"><div class="shot"><img src="assets/work/rubu.jpg" alt="" /></div></div>
+                    <div class="msg them" id="m5"><div class="shot"><img src="assets/work/lux.jpg" alt="" /></div><div class="meta">نماذج من شغلي</div></div>
+                    <div class="msg me" id="m6"><div class="bub">وتسوي لغير المطاعم؟</div></div>
+                    <div class="msg them" id="m7">
+                      <div class="album">
+                        <div class="mini">
+                          <img src="assets/work/shifa.jpg" alt="" /><img src="assets/work/faqma.jpg" alt="" /><img src="assets/work/miswag.jpg" alt="" />
+                          <img src="assets/work/ward.jpg" alt="" /><img src="assets/work/cactus.jpg" alt="" /><img src="assets/work/sala.jpg" alt="" />
+                        </div>
+                        <div class="cap">أكيد، لكل مجال 👌</div>
+                      </div>
+                    </div>
+                    <div class="msg me" id="m8"><div class="bub">يا سلام 😍 شكد؟</div></div>
+                    <div class="msg them" id="m9"><div class="bub">٣ بوستات بـ ٤٠ ألف بس 🌹</div></div>
+                  </div>
+                  <div class="dots" id="dots"><i></i><i></i><i></i></div>
+                </div>
+
+                <div id="chips">
+                  <div class="chip" id="c1"><div class="k">٣ بوستات</div><div class="p">٤٠ ألف</div><div class="rip"></div></div>
+                  <div class="chip" id="c2"><div class="k">٥ بوستات</div><div class="p">٦٥ ألف</div></div>
+                  <div class="chip" id="c3"><div class="k">باقة شهرية<small>٨ بوستات + ٤ ستوري</small></div><div class="p">٩٠ ألف</div></div>
+                </div>
+
+                <div class="inbar">
+                  <div class="field"><span id="ftext"></span><span id="caret"></span><span id="ph">اكتب رسالة…</span></div>
+                  <div class="ring" id="ring1"></div>
+                  <div class="ring" id="ring2"></div>
+                  <div id="send">
+                    <svg viewBox="0 0 24 24" fill="#fbf3e6"><path d="M2.6 11.2L20.4 3.1c.7-.3 1.4.4 1.1 1.1l-8.1 17.8c-.3.7-1.4.6-1.5-.2l-1.4-6.3a1 1 0 0 0-.7-.7L3.4 13.4c-.8-.2-.9-1.2-.2-1.5z" /></svg>
+                  </div>
+                </div>
+
+                <!-- b04: the album opens into a grid over the chat -->
+                <div class="scrim" id="scrim"></div>
+                <div id="grid">
+                  <div class="ttl" id="gttl">نماذج من شغلي · لكل مجال</div>
+                  <div class="tile" id="t0"><div class="ph"><img src="assets/work/shifa.jpg" alt="" /></div><div class="lab">عيادة</div><div class="hi"></div></div>
+                  <div class="tile" id="t1"><div class="ph"><img src="assets/work/faqma.jpg" alt="" /></div><div class="lab">أجهزة</div><div class="hi"></div></div>
+                  <div class="tile" id="t2"><div class="ph"><img src="assets/work/miswag.jpg" alt="" /></div><div class="lab">متجر</div><div class="hi"></div></div>
+                  <div class="tile" id="t3"><div class="ph"><img src="assets/work/ward.jpg" alt="" /></div><div class="lab">تجميل</div><div class="hi"></div></div>
+                  <div class="tile" id="t4"><div class="ph"><img src="assets/work/cactus.jpg" alt="" /></div><div class="lab">هاند ميد</div><div class="hi"></div></div>
+                  <div class="tile" id="t5"><div class="ph"><img src="assets/work/sala.jpg" alt="" /></div><div class="lab">بقالة</div><div class="hi"></div></div>
+                </div>
+
+                <!-- b05: the receipt prints out of a slot -->
+                <div id="rcpt" data-layout-allow-overflow>
+                  <div class="feed">
+                    <div class="paperslip" id="slip">
+                      <div class="brand">allawi.psd</div>
+                      <div class="k1">طلبية جديدة</div>
+                      <div class="rule"></div>
+                      <div class="row"><span>تصميم بوست سوشيال ميديا</span><span class="n">×٣</span></div>
+                      <div class="row"><span>السعر</span><span class="n old">٤٢٬٠٠٠<svg class="strike" viewBox="0 0 240 30" preserveAspectRatio="none"><path id="strk" d="M4 20 Q 60 8 120 15 T 236 10" fill="none" stroke="#e2541b" stroke-width="7" stroke-linecap="round" /></svg></span></div>
+                      <div class="row"><span>خصم الباقة</span><span class="n cut">−٢٬٠٠٠</span></div>
+                      <div class="rule"></div>
+                      <div class="tot-l">المجموع</div>
+                      <div class="tot"><span id="total">٠</span><span class="cur">د.ع</span></div>
+                      <div class="rule"></div>
+                      <div class="thanks">شكراً لثقتك 🌹</div>
+                      <div class="stamp" id="stamp">تم الطلب ✓</div>
+                    </div>
+                  </div>
+                  <div class="slot" id="slot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- b06 headline -->
+        <div id="cta">
+          <div class="a"><span class="w">دورك..</span></div>
+          <div class="b"><span class="w">دزّلي</span> <span class="w acc">وحدة</span> <span class="w">منهن</span></div>
+        </div>
+        <svg id="arrow" viewBox="0 0 150 210" fill="none" stroke="#e2541b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+          <path id="arr1" d="M118 8 C 40 40, 20 110, 70 178" />
+          <path id="arr2" d="M34 150 L 72 184 L 104 142" />
+        </svg>
+      </div>
+<!--AUDIO-->
+    </div>
+    <script>
+/*TIMELINE*/
+    </script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import {
   AlertTriangle, ArrowRight, BookOpen, Bot, Check, CheckCircle2, Clock, Copy,
@@ -11,6 +11,10 @@ import { EASE_OUT } from "../lib/motion";
 import { togglePlanDay, usePlaybookPlans } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { PlaybookCalculator } from "./playbook/PlaybookCalculator";
+import { isFreeTrialUser } from "./LockScreen";
+import { TrialLock } from "./TrialLock";
+import { TopicGlyph } from "./ui/TopicIcon";
+import { CopyButton } from "./ui/CopyButton";
 
 interface PlaybookViewProps {
   key?: string;
@@ -22,6 +26,12 @@ interface PlaybookViewProps {
 }
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
+
+const TRIAL_SECTIONS = [
+  { id: "pb-numbers", label: "الأرقام", icon: Gauge },
+  { id: "pb-causes", label: "الأسباب", icon: Search },
+  { id: "pb-locked", label: "الحل الكامل", icon: ListChecks },
+];
 
 const SECTIONS = [
   { id: "pb-numbers", label: "الأرقام", icon: Gauge },
@@ -44,37 +54,15 @@ function SectionTitle({ id, icon: Icon, children, sub }: { id: string; icon: Rea
   );
 }
 
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      // Older browsers: fall back to a hidden textarea.
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-    }
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
-  };
-  return (
-    <button onClick={copy} className={`btn btn-glass px-3.5 min-h-[36px] rounded-full text-xs gap-1.5 shrink-0 ${focusRing}`} aria-live="polite">
-      {copied ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
-      <span>{copied ? "انتسخت" : "انسخ"}</span>
-    </button>
-  );
-}
-
 /** One playbook: diagnose with numbers, fix in order, copy the messages, follow the 7-day plan. */
 export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, onOpenTool }: PlaybookViewProps) {
   const pb = playbooksList.find((p) => p.id === id) ?? playbooksList[0];
   const plans = usePlaybookPlans(userCode);
   const ticked = new Set(plans[pb.id] ?? []);
   const planPercent = Math.round((ticked.size / pb.plan.length) * 100);
+  // Trial members can diagnose (numbers, causes); the fix itself is the paid part.
+  const isTrial = isFreeTrialUser(userCode);
+  const sections = isTrial ? TRIAL_SECTIONS : SECTIONS;
 
   const jump = (sectionId: string) => {
     const el = document.getElementById(sectionId);
@@ -94,7 +82,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
       {/* Title */}
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
         <p className="text-sm sm:text-base text-white/60 leading-relaxed">
-          <span className="text-2xl ml-2 align-middle" aria-hidden="true">{pb.icon}</span>«{pb.problem}»
+          «{pb.problem}»
         </p>
         <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight">{pb.title}</h1>
         <p className="text-sm sm:text-lg text-white/70 leading-relaxed">{pb.promise}</p>
@@ -108,7 +96,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
       {/* In-page sections */}
       <nav aria-label="أقسام الحل" className="sticky top-[4.5rem] sm:top-[4.75rem] z-20 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 sm:mb-10">
         <div className="flex items-center gap-1 p-1 rounded-full glass-floating overflow-x-auto no-scrollbar w-full sm:w-fit">
-          {SECTIONS.map((s) => (
+          {sections.map((s) => (
             <button
               key={s.id}
               onClick={() => jump(s.id)}
@@ -161,12 +149,29 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
                   {c.cause}
                 </h3>
                 <p className="text-xs sm:text-sm text-white/60 leading-relaxed"><span className="font-bold text-white/75">العلامة: </span>{c.signs}</p>
-                <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed pr-3 border-r-2 border-emerald-400/60"><span className="font-bold text-emerald-300">الحل: </span>{c.fix}</p>
+                {isTrial ? (
+                  <p className="text-xs sm:text-sm text-white/45 leading-relaxed pr-3 border-r-2 border-white/15 inline-flex items-center gap-1.5"><span className="font-bold text-white/60">الحل:</span> مقفول بالتجربة</p>
+                ) : (
+                  <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed pr-3 border-r-2 border-emerald-400/60"><span className="font-bold text-emerald-300">الحل: </span>{c.fix}</p>
+                )}
               </div>
             ))}
           </div>
         </section>
 
+        {isTrial ? (
+          <TrialLock
+            id="pb-locked"
+            title="الحل كامل، خطوة بخطوة"
+            desc={`عرفت إذا هاي مشكلتك وليش تصير. الحل نفسه هنا: ${pb.steps.length} خطوات بالترتيب، ${pb.scripts.length} رسائل جاهزة تنسخها، مثال بالأرقام، وخطة 7 أيام.`}
+            items={[
+              ...pb.steps.map((st, i) => `خطوة ${i + 1}: ${st.title}`),
+              ...pb.scripts.slice(0, 3).map((sc) => (sc.title.startsWith("رسالة") ? sc.title : `رسالة جاهزة: ${sc.title}`)),
+              "خطة 7 أيام تعلّم عليها كل يوم",
+            ]}
+          />
+        ) : (
+        <>
         {/* Steps */}
         <section>
           <SectionTitle id="pb-steps" icon={ListChecks} sub="طبقها بالترتيب. كل خطوة تبني على اللي قبلها.">الحل خطوة بخطوة</SectionTitle>
@@ -288,6 +293,9 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
           </div>
         </section>
 
+        </>
+        )}
+
         {/* Related */}
         <section className="glass rounded-3xl p-5 sm:p-7 space-y-5">
           <h2 className="text-base sm:text-lg font-black text-white">كمّل من هنا</h2>
@@ -313,7 +321,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
               if (!gm) return null;
               return (
                 <button key={gid} onClick={() => onNavigate({ view: "guideModule", id: gid })} className={`btn btn-glass px-3.5 min-h-[40px] rounded-full text-xs gap-1.5 ${focusRing}`}>
-                  <span aria-hidden="true">{gm.icon}</span>
+                  <TopicGlyph kind="guide" id={gm.id} className="w-3.5 h-3.5" />
                   الدليل العراقي: {gm.title.split(":")[0]}
                 </button>
               );

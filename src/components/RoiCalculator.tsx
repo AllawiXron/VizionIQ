@@ -3,362 +3,148 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
-import { Calculator, DollarSign, ArrowRightLeft, TrendingUp, Info } from "lucide-react";
-import { CalculatorInputs, CalculatorResults } from "../types";
+import React, { useMemo, useState } from "react";
+import { Calculator, Megaphone, Package, TrendingDown, TrendingUp } from "lucide-react";
+import { NumberField } from "./ui/NumberField";
 
+const fmt = (n: number) => `⁦${Math.round(n).toLocaleString("en-US")}⁩`;
+
+/**
+ * A test campaign before spending: the ad budget in dollars (that is how Meta
+ * bills), everything else in dinars, and the result as money in or out.
+ */
 export default function RoiCalculator() {
-  const [currency, setCurrency] = useState<"USD" | "IQD">("USD");
-  const exchangeRate = 1450; // 1 USD = 1450 IQD
+  const [budgetUsd, setBudgetUsd] = useState(100);
+  const [rate, setRate] = useState(1490);
+  const [cpm, setCpm] = useState(2.5);
+  const [ctr, setCtr] = useState(2);
+  const [orderPct, setOrderPct] = useState(2);
+  const [price, setPrice] = useState(35000);
+  const [cost, setCost] = useState(12000);
+  const [delivery, setDelivery] = useState(5000);
+  const [deliveredPct, setDeliveredPct] = useState(80);
+  const [returnFee, setReturnFee] = useState(5000);
 
-  const [inputs, setInputs] = useState<CalculatorInputs>({
-    budget: 300,
-    cpm: 2.5,
-    ctr: 2.1,
-    cvr: 1.5,
-    productCost: 6,
-    shippingCost: 3.5,
-    sellingPrice: 25,
-    deliveryRate: 70
-  });
+  const r = useMemo(() => {
+    const spend = budgetUsd * rate;
+    const impressions = cpm > 0 ? (budgetUsd / cpm) * 1000 : 0;
+    const clicks = impressions * (ctr / 100);
+    const orders = clicks * (orderPct / 100);
+    const delivered = orders * (deliveredPct / 100);
+    const returned = orders - delivered;
+    const revenue = delivered * price;
+    const goods = delivered * cost;
+    const shipping = delivered * delivery;
+    const returns = returned * returnFee;
+    const net = revenue - spend - goods - shipping - returns;
+    const cpa = orders > 0 ? spend / orders : 0;
+    // Before ads, what one order (delivered or not) leaves on average.
+    const maxCpa = (deliveredPct / 100) * (price - cost - delivery) - (1 - deliveredPct / 100) * returnFee;
+    return { spend, impressions, clicks, orders, delivered, returned, revenue, goods, shipping, returns, net, cpa, maxCpa, roi: spend > 0 ? (net / spend) * 100 : 0 };
+  }, [budgetUsd, rate, cpm, ctr, orderPct, price, cost, delivery, deliveredPct, returnFee]);
 
-  const [results, setResults] = useState<CalculatorResults>({
-    impressions: 0,
-    clicks: 0,
-    orders: 0,
-    deliveredOrders: 0,
-    cpc: 0,
-    cpa: 0,
-    totalSpend: 0,
-    productSourcingCost: 0,
-    shippingCostTotal: 0,
-    revenue: 0,
-    netProfit: 0,
-    roi: 0
-  });
-
-  const handleInputChange = (key: keyof CalculatorInputs, value: number) => {
-    setInputs(prev => ({
-      ...prev,
-      [key]: value
-    }));
-  };
-
-  // Convert values based on current active currency selection
-  const formatValue = (value: number, isCurrency: boolean = true) => {
-    if (!isCurrency) return value.toLocaleString("ar-IQ");
-    if (currency === "IQD") {
-      return (value * exchangeRate).toLocaleString("ar-IQ") + " د.ع";
-    }
-    return "$" + value.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  };
-
-  useEffect(() => {
-    const budget = inputs.budget;
-    const cpm = inputs.cpm;
-    const ctr = inputs.ctr / 100;
-    const cvr = inputs.cvr / 100;
-    const productCost = inputs.productCost;
-    const shippingCost = inputs.shippingCost;
-    const sellingPrice = inputs.sellingPrice;
-    const deliveryRate = inputs.deliveryRate / 100;
-
-    // 1. Calculate Impressions (Budget / CPM * 1000)
-    const impressions = cpm > 0 ? (budget / cpm) * 1000 : 0;
-
-    // 2. Calculate Clicks (Impressions * CTR)
-    const clicks = impressions * ctr;
-
-    // 3. Calculate Orders (Clicks * CVR)
-    const orders = Math.floor(clicks * cvr);
-
-    // 4. Delivered Orders (Orders * Delivery Success Rate)
-    const deliveredOrders = Math.floor(orders * deliveryRate);
-
-    // 5. Cost Per Click (CPC) (Budget / Clicks)
-    const cpc = clicks > 0 ? budget / clicks : 0;
-
-    // 6. Cost Per Order (CPA) (Budget / Orders)
-    const cpa = orders > 0 ? budget / orders : 0;
-
-    // 7. Costs breakdown
-    const productSourcingCost = deliveredOrders * productCost;
-    // In Iraq, failed delivery still costs shipping, usually a return penalty of around $1.5
-    const failedOrders = orders - deliveredOrders;
-    const returnCostPenalty = 1.5; // average return penalty per package in Iraq
-    const shippingCostTotal = (deliveredOrders * shippingCost) + (failedOrders * returnCostPenalty);
-
-    // 8. Total revenue (Delivered * Selling Price)
-    const revenue = deliveredOrders * sellingPrice;
-
-    // 9. Net Profit
-    const netProfit = revenue - budget - productSourcingCost - shippingCostTotal;
-
-    // 10. ROI / ROAS
-    const roi = budget > 0 ? (netProfit / budget) * 100 : 0;
-
-    setResults({
-      impressions: Math.round(impressions),
-      clicks: Math.round(clicks),
-      orders,
-      deliveredOrders,
-      cpc,
-      cpa,
-      totalSpend: budget,
-      productSourcingCost,
-      shippingCostTotal,
-      revenue,
-      netProfit,
-      roi
-    });
-  }, [inputs]);
+  const winning = r.net >= 0;
 
   return (
-    <div className="vizion-roi-calculator w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-3.5 sm:p-6 md:p-8 relative overflow-hidden" id="roi-calculator">
-      {/* Glow */}
-
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-white/10 pb-5">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/9 flex-shrink-0">
-            <Calculator className="w-5 h-5 text-vz-accent" />
-          </div>
-          <div>
-            <h3 className="text-base sm:text-lg md:text-xl font-black text-white leading-tight">📊 احسب أرباحك وخسائرك المتوقعة قبل ما تطلق الحملة وتعرف إذا تستاهل تصرف عليها أو لا</h3>
-            <p className="text-[10px] sm:text-xs text-white/70 mt-1">أدخل تكاليف منتجك والتوصيل والترويج مسبقاً، واحمِ رأس مالك من الحملات الفاشلة في السوق العراقي</p>
-          </div>
+    <div className="vizion-roi-calculator w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-4 sm:p-6 md:p-8 space-y-6 text-right" id="roi-calculator">
+      <div className="flex items-start gap-3 border-b border-white/10 pb-5">
+        <span className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
+          <Calculator className="w-5 h-5 text-vz-accent" />
+        </span>
+        <div className="space-y-1">
+          <h3 className="text-base sm:text-xl font-black text-white leading-snug">حاسبة الحملة التجريبية</h3>
+          <p className="text-xs sm:text-sm text-white/60 leading-relaxed">قبل لا تصرف على إعلان، حط أرقامك وشوف الحملة تطلع رابحة لو خسرانة، ووين تروح الفلوس.</p>
         </div>
-
-        {/* Currency Switcher */}
-        <button           onClick={() => setCurrency(currency === "USD" ? "IQD" : "USD")}
-          className="flex items-center gap-2 px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[11px] sm:text-xs text-vz-accent transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer font-medium w-full sm:w-auto justify-center min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-        >
-          <ArrowRightLeft className="w-3.5 h-3.5" />
-          <span>تغيير العملة: {currency === "USD" ? "الدينار العراقي (IQD)" : "الدولار الأمريكي ($)"}</span>
-        </button>
       </div>
 
-      {/* Grid Inputs & Results */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-        
-        {/* Inputs (5 Columns) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8">
+        {/* Inputs */}
         <div className="lg:col-span-5 space-y-4">
-          <h4 className="text-sm font-semibold text-vz-accent flex items-center gap-2 mb-2">
-            ⚙️ مدخلات حملتك التجريبية ({currency === "USD" ? "بالدولار" : "بالدينار العراقي"})
-          </h4>
-
-          {/* Input: Budget */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">الميزانية الإعلانية الإجمالية</span>
-              <span className="text-vz-accent font-mono">{formatValue(inputs.budget)}</span>
+          <section className="glass-subtle rounded-2xl p-4 space-y-4">
+            <h4 className="text-sm font-black text-white flex items-center gap-2"><Megaphone className="w-4 h-4 text-vz-accent" /> الإعلان</h4>
+            <div className="grid grid-cols-2 gap-3">
+              <NumberField label="ميزانية الحملة" unit="$" value={budgetUsd} onChange={setBudgetUsd} step={10} />
+              <NumberField label="سعر الدولار" unit="د.ع" value={rate} onChange={setRate} step={10} />
+              <NumberField label="كلفة الألف ظهور" unit="$" value={cpm} onChange={setCpm} step={0.1} hint="CPM من مدير الإعلانات" />
+              <NumberField label="نسبة النقر" unit="%" value={ctr} onChange={setCtr} max={100} step={0.1} hint="CTR" />
             </div>
-            <input               type="range"
-              min="50"
-              max="2000"
-              step="10"
-              value={inputs.budget}
-              onChange={(e) => handleInputChange("budget", parseFloat(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
+            <NumberField label="من كل 100 واحد يدوس عالإعلان، كم يطلب؟" unit="%" value={orderPct} onChange={setOrderPct} max={100} step={0.5} />
+          </section>
 
-          {/* Input: CPM */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">تكلفة الألف ظهور (CPM)</span>
-              <span className="text-vz-accent font-mono">{formatValue(inputs.cpm)}</span>
+          <section className="glass-subtle rounded-2xl p-4 space-y-4">
+            <h4 className="text-sm font-black text-white flex items-center gap-2"><Package className="w-4 h-4 text-vz-accent" /> المنتج والتوصيل</h4>
+            <div className="grid grid-cols-2 gap-3">
+              <NumberField label="سعر البيع" unit="د.ع" value={price} onChange={setPrice} step={1000} />
+              <NumberField label="كلفة المنتج" unit="د.ع" value={cost} onChange={setCost} step={500} />
+              <NumberField label="التوصيل" unit="د.ع" value={delivery} onChange={setDelivery} step={500} />
+              <NumberField label="كلفة الطلب الراجع" unit="د.ع" value={returnFee} onChange={setReturnFee} step={500} />
             </div>
-            <input               type="range"
-              min="0.5"
-              max="10"
-              step="0.1"
-              value={inputs.cpm}
-              onChange={(e) => handleInputChange("cpm", parseFloat(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
-
-          {/* Input: CTR */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">نسبة النقر إلى الظهور (CTR)</span>
-              <span className="text-vz-accent font-mono">{inputs.ctr}%</span>
-            </div>
-            <input               type="range"
-              min="0.2"
-              max="5"
-              step="0.1"
-              value={inputs.ctr}
-              onChange={(e) => handleInputChange("ctr", parseFloat(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
-
-          {/* Input: CVR */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">معدل التحويل للمتجر (CVR)</span>
-              <span className="text-vz-accent font-mono">{inputs.cvr}%</span>
-            </div>
-            <input               type="range"
-              min="0.1"
-              max="6"
-              step="0.1"
-              value={inputs.cvr}
-              onChange={(e) => handleInputChange("cvr", parseFloat(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
-
-          {/* Input: Product Cost */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">تكلفة شراء السلعة (سعر الجملة)</span>
-              <span className="text-vz-accent font-mono">{formatValue(inputs.productCost)}</span>
-            </div>
-            <input               type="range"
-              min="1"
-              max="100"
-              step="0.5"
-              value={inputs.productCost}
-              onChange={(e) => handleInputChange("productCost", parseFloat(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
-
-          {/* Input: Shipping Cost */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">تكلفة التوصيل وتوصيل الطلب الفردي</span>
-              <span className="text-vz-accent font-mono">{formatValue(inputs.shippingCost)}</span>
-            </div>
-            <input               type="range"
-              min="1"
-              max="15"
-              step="0.5"
-              value={inputs.shippingCost}
-              onChange={(e) => handleInputChange("shippingCost", parseFloat(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
-
-          {/* Input: Selling Price */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">سعر بيع السلعة النهائي للزبون</span>
-              <span className="text-vz-accent font-mono">{formatValue(inputs.sellingPrice)}</span>
-            </div>
-            <input               type="range"
-              min="5"
-              max="200"
-              step="1"
-              value={inputs.sellingPrice}
-              onChange={(e) => handleInputChange("sellingPrice", parseFloat(e.target.value))}
-              className="w-full accent-slate-200 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
-
-          {/* Input: Delivery Rate */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-white/70 font-medium">نسبة نجاح التسليم والاستلام (Delivery Success)</span>
-              <span className="text-emerald-400 font-bold">{inputs.deliveryRate}%</span>
-            </div>
-            <input               type="range"
-              min="20"
-              max="95"
-              step="1"
-              value={inputs.deliveryRate}
-              onChange={(e) => handleInputChange("deliveryRate", parseFloat(e.target.value))}
-              className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-white/10 rounded-lg min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            />
-          </div>
+            <NumberField label="من كل 100 طلب، كم يستلم الزبون فعلاً؟" unit="%" value={deliveredPct} onChange={setDeliveredPct} max={100} step={1} />
+          </section>
         </div>
 
-        {/* Results (7 Columns) */}
-        <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
-          
-          {/* Main Profit Card */}
-          <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 sm:p-6 relative overflow-hidden flex flex-col justify-between min-h-[160px]">
-            <div className="absolute top-0 left-0 w-2 h-full gold-gradient-bg" />
-            
-            <div className="flex justify-between items-start flex-wrap gap-2">
-              <div>
-                <span className="text-xs text-white/70 block font-semibold uppercase tracking-wider">صافي الأرباح المتوقعة</span>
-                <span className={`text-3xl sm:text-4xl md:text-5xl font-black mt-2 inline-block tracking-tight ${results.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                  {formatValue(results.netProfit)}
-                </span>
+        {/* Results */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className={`rounded-2xl p-5 sm:p-6 border ${winning ? "bg-emerald-400/[0.06] border-emerald-400/25" : "bg-red-500/[0.07] border-red-400/25"}`}>
+            <div className="flex items-start justify-between gap-3 flex-wrap">
+              <div className="space-y-1">
+                <p className="text-xs sm:text-sm font-bold text-white/70">صافي الحملة بعد كل المصاريف</p>
+                <p className={`text-3xl sm:text-5xl font-black font-mono tracking-tight ${winning ? "text-emerald-300" : "text-red-300"}`}>
+                  {fmt(r.net)} <span className="text-sm sm:text-base font-sans font-bold text-white/60">د.ع</span>
+                </p>
               </div>
-              <div className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0 ${results.netProfit >= 0 ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-red-300"}`}>
-                <TrendingUp className="w-3.5 h-3.5" />
-                <span>العائد ROI: {results.roi.toFixed(1)}%</span>
-              </div>
+              <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${winning ? "bg-emerald-400/15 text-emerald-200" : "bg-red-500/15 text-red-200"}`}>
+                {winning ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+                {winning ? "الحملة رابحة" : "الحملة خسرانة"} · العائد {Math.round(r.roi)}%
+              </span>
             </div>
-
-            <p className="text-xs text-white/60 mt-4 flex items-center gap-1.5 border-t border-white/5 pt-3">
-              <Info className="w-3.5 h-3.5 text-vz-accent shrink-0" />
-              <span>* تم خصم {formatValue(results.shippingCostTotal)} مصاريف توصيل وتسوية طرود مرتجعة (بمعدل غرامة $1.5 للطلب المسترجع).</span>
+            <p className="text-xs sm:text-sm text-white/65 leading-relaxed mt-3">
+              {r.orders < 1
+                ? "بهالأرقام الحملة ما تجيب ولا طلب. زيد الميزانية أو حسّن نسبة النقر."
+                : r.cpa <= r.maxCpa
+                  ? <>كل طلب يكلفك إعلان <span className="font-mono font-bold text-white">{fmt(r.cpa)}</span> د.ع، وتكدر تتحمل لحد <span className="font-mono font-bold text-white">{fmt(r.maxCpa)}</span> د.ع وتبقى رابح.</>
+                  : r.maxCpa <= 0
+                    ? "حتى لو الإعلان ببلاش، هالسعر ما يغطي الكلفة والتوصيل والراجع. ارفع السعر أو قلل الكلفة قبل لا تعلن."
+                    : <>كل طلب يكلفك إعلان <span className="font-mono font-bold text-white">{fmt(r.cpa)}</span> د.ع، والحد اللي تتحمله <span className="font-mono font-bold text-white">{fmt(r.maxCpa)}</span> د.ع. لازم ترفع نسبة الطلب أو تقلل الراجع.</>}
             </p>
           </div>
 
-          {/* Quick Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            
-            <div className="bg-white/5 border border-white/5 rounded-xl p-3.5 text-center">
-              <span className="text-[11px] text-white/70 block font-semibold">إجمالي عدد النقرات</span>
-              <span className="text-lg font-bold text-white mt-1 block font-mono">{results.clicks.toLocaleString("ar-IQ")}</span>
-              <span className="text-[10px] text-white/45 block mt-0.5">تكلفة النقرة CPC: {formatValue(results.cpc)}</span>
-            </div>
-
-            <div className="bg-white/5 border border-white/5 rounded-xl p-3.5 text-center">
-              <span className="text-[11px] text-white/70 block font-semibold">الطلبات الكلية بالمتجر</span>
-              <span className="text-lg font-bold text-vz-accent mt-1 block font-mono">{results.orders} طلب</span>
-              <span className="text-[10px] text-white/45 block mt-0.5">تكلفة الاستحواذ CPA: {formatValue(results.cpa)}</span>
-            </div>
-
-            <div className="bg-white/5 border border-white/5 rounded-xl p-3.5 text-center col-span-2 sm:col-span-1">
-              <span className="text-[11px] text-white/70 block font-semibold">الطرود المستلمة فعلياً</span>
-              <span className="text-lg font-bold text-emerald-400 mt-1 block font-mono">{results.deliveredOrders} طلب</span>
-              <span className="text-[10px] text-emerald-400/70 block mt-0.5">نسبة استلام: {inputs.deliveryRate}%</span>
-            </div>
-
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            {[
+              { label: "ظهور", value: r.impressions },
+              { label: "نقرة", value: r.clicks },
+              { label: "طلب", value: r.orders },
+              { label: "طلب واصل", value: r.delivered },
+            ].map((s) => (
+              <div key={s.label} className="glass-subtle rounded-2xl p-3.5 text-center space-y-0.5">
+                <p className="text-lg sm:text-xl font-black font-mono text-white">{fmt(s.value)}</p>
+                <p className="text-[11px] sm:text-xs text-white/55">{s.label}</p>
+              </div>
+            ))}
           </div>
 
-          {/* Details Cost Breakdown Sheet */}
-          <div className="bg-white/[0.01] border border-white/5 rounded-xl p-4 space-y-3 text-xs">
-            <h5 className="text-xs font-bold text-vz-accent border-b border-white/5 pb-2">📊 قائمة الدخل والتدفق المالي المتوقع:</h5>
-            
-            <div className="flex justify-between">
-              <span className="text-white/60">إجمالي المبيعات والإيرادات (Revenue):</span>
-              <span className="text-emerald-400 font-bold font-mono">{formatValue(results.revenue)}</span>
-            </div>
-
-            <div className="flex justify-between">
-              <span className="text-white/60">تكلفة الترويج الإعلاني (Facebook Ads Spend):</span>
-              <span className="text-red-400 font-medium font-mono">-{formatValue(results.totalSpend)}</span>
-            </div>
-
-            <div className="flex justify-between">
-              <span className="text-white/60">تكلفة شراء المنتجات المستلمة (Sourcing Cost):</span>
-              <span className="text-red-400 font-medium font-mono">-{formatValue(results.productSourcingCost)}</span>
-            </div>
-
-            <div className="flex justify-between">
-              <span className="text-white/60">كلفة التوصيل لشركات التوصيل + غرامة المرتجعات:</span>
-              <span className="text-red-400 font-medium font-mono">-{formatValue(results.shippingCostTotal)}</span>
-            </div>
-
-            <div className="flex justify-between border-t border-white/5 pt-2 font-bold">
-              <span className="text-vz-accent">الربح الصافي النهائي (Net Income):</span>
-              <span className={`font-mono text-sm ${results.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                {formatValue(results.netProfit)}
-              </span>
-            </div>
+          <div className="glass-subtle rounded-2xl overflow-hidden">
+            <p className="px-4 py-3 text-xs sm:text-sm font-black text-white border-b border-white/[0.07]">وين تروح الفلوس</p>
+            <ul className="divide-y divide-white/[0.06] text-sm">
+              {[
+                { label: `الفلوس اللي تدخل (${fmt(r.delivered)} طلب واصل)`, value: r.revenue, plus: true },
+                { label: `الإعلان (${fmt(budgetUsd)}$)`, value: -r.spend },
+                { label: "كلفة البضاعة الواصلة", value: -r.goods },
+                { label: "توصيل الطلبات الواصلة", value: -r.shipping },
+                { label: `الطلبات الراجعة (${fmt(r.returned)})`, value: -r.returns },
+              ].map((row) => (
+                <li key={row.label} className="flex items-center justify-between gap-3 px-4 py-3">
+                  <span className="text-white/75">{row.label}</span>
+                  <span className={`font-mono font-bold shrink-0 ${row.plus ? "text-emerald-300" : "text-red-300/90"}`}>{fmt(row.value)}</span>
+                </li>
+              ))}
+              <li className="flex items-center justify-between gap-3 px-4 py-3.5 bg-white/[0.04]">
+                <span className="font-black text-white">الصافي</span>
+                <span className={`font-mono font-black text-base ${winning ? "text-emerald-300" : "text-red-300"}`}>{fmt(r.net)}</span>
+              </li>
+            </ul>
           </div>
-
         </div>
-
       </div>
     </div>
   );

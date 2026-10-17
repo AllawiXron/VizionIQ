@@ -51,7 +51,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({ isOpen, on
 
             <div className="relative p-6 sm:p-8 space-y-6 text-right">
               <div className="space-y-2 pt-2">
-                <p className="text-sm font-bold text-vz-accent">أهلاً بيك بـ فيزيون 👋</p>
+                <p className="text-sm font-bold text-vz-accent">أهلاً بيك بـ فيزيون</p>
                 <h2 id="welcome-title" className="text-2xl sm:text-3xl font-black leading-tight">الطريقة بسيطة</h2>
                 <p className="text-sm text-white/60 leading-relaxed">ثلاث خطوات، وكرر عليها لكل فصل:</p>
               </div>

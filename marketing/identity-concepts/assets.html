@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>Label and card artwork (masks for the photo mockups)</title>
+<link rel="stylesheet" href="fonts/fonts.css" />
+<script src="marks.js"></script>
+<!-- Every piece is drawn in white on transparent: photo/mockups.py uses it as a mask and gives it ink or gold foil. -->
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: transparent; display: flex; flex-direction: column; gap: 30px; align-items: flex-start; padding: 20px; color: #fff; font-family: 'Readex Pro'; }
+  .a { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; }
+  .sc { font-family: 'Cormorant Garamond'; font-weight: 600; letter-spacing: 0.5em; padding-left: 0.5em; }
+  .pf { font-family: 'Playfair Display'; font-weight: 500; letter-spacing: 0.5em; padding-left: 0.5em; }
+  .rule { width: 46%; height: 1.5px; background: #fff; margin: 14px 0; }
+</style>
+</head>
+<body>
+<!-- NADA: a bottle label (portrait) -->
+<div class="a" id="nada-label" style="width:300px; height:400px">
+  <div data-nada="88"></div>
+  <div class="sc" style="font-size:24px; margin-top:4px">NADA</div>
+  <div class="rule"></div>
+  <div style="font-size:24px; font-weight:400; direction:rtl">سيروم الندى</div>
+  <div class="sc" style="font-size:15px; margin-top:4px">DEW SERUM</div>
+  <div style="font-size:14px; font-weight:300; margin-top:16px; letter-spacing:0.1em">30 ml · 1 fl.oz</div>
+</div>
+<!-- NADA: the pump bottle's label (wider) -->
+<div class="a" id="nada-label-wide" style="width:520px; height:420px">
+  <div data-nada="104"></div>
+  <div class="sc" style="font-size:28px; margin-top:6px">NADA</div>
+  <div class="rule" style="width:30%"></div>
+  <div style="font-size:28px; font-weight:400; direction:rtl">كريم الجسم واليدين</div>
+  <div class="sc" style="font-size:17px; margin-top:6px">HAND &amp; BODY CREAM</div>
+  <div style="font-size:16px; font-weight:300; margin-top:14px; letter-spacing:0.1em">250 ml</div>
+</div>
+<!-- NADA: jar / tube / pump labels for the towel photo -->
+<div class="a" id="nada-mini" style="width:260px; height:300px">
+  <div data-nada="86"></div>
+  <div class="sc" style="font-size:22px; margin-top:4px">NADA</div>
+  <div style="font-size:18px; font-weight:300; margin-top:14px; direction:rtl" data-text>كريم الترطيب</div>
+</div>
+<!-- NADA: business card front (landscape) -->
+<div class="a" id="nada-card" style="width:700px; height:400px">
+  <div data-nada="150"></div>
+  <div class="sc" style="font-size:32px; margin-top:8px">NADA</div>
+</div>
+
+<!-- WARD: the logotype (for the products) -->
+<div class="a" id="ward-label" style="width:300px; height:330px">
+  <div style="width:270px; height:135px" data-ward></div>
+  <div class="pf" style="font-size:22px; margin-top:8px">WARD</div>
+  <div class="rule" style="width:30%"></div>
+  <div style="font-size:19px; font-weight:300; direction:rtl" data-text>غسول ماء الورد</div>
+</div>
+<!-- WARD: business card front and back (portrait, 55 × 85 mm) -->
+<div class="a" id="ward-card-front" style="width:550px; height:850px">
+  <div style="width:440px; height:220px" data-ward></div>
+  <div class="pf" style="font-size:34px; margin-top:20px">WARD</div>
+</div>
+<div class="a" id="ward-card-back" style="width:550px; height:850px; justify-content:space-between; padding:90px 60px">
+  <div style="width:120px; height:120px" data-rose></div>
+  <div style="text-align:center; direction:rtl">
+    <div style="font: 700 54px 'Aref Ruqaa'">سارة علي</div>
+    <div style="font-size:24px; font-weight:300; margin-top:4px">خبيرة مكياج</div>
+    <div class="rule" style="width:120px; margin:30px auto"></div>
+    <div style="font-size:24px; font-weight:300; line-height:1.9; direction:ltr">07XX XXX XXXX<br />@ward.beauty</div>
+  </div>
+  <div class="pf" style="font-size:22px">WARD</div>
+</div>
+
+<script>
+  // the wordmark is measured on a canvas, so its font must be loaded first
+  Promise.all([document.fonts.load("300 100px 'IBM Plex Sans Arabic'", 'ندى\u066E'), document.fonts.load("400 100px 'IBM Plex Sans Arabic'", 'ندى\u066E'), document.fonts.ready]).then(() => {
+    document.querySelectorAll('[data-nada]').forEach((el) => el.append(nadaWordmark({ family: "'IBM Plex Sans Arabic'", weight: +el.dataset.nada < 110 ? 400 : 300, size: +el.dataset.nada * 1.15, ink: '#fff', glint: 'rgba(0,0,0,0)', scale: 2.6 })));
+    document.querySelectorAll('[data-ward]').forEach((el) => (el.innerHTML = wardWordmark({ ink: '#fff', stroke: 6 })));
+    document.querySelectorAll('[data-rose]').forEach((el) => (el.innerHTML = wardRose({ ink: '#fff', stroke: 6 })));
+    setTimeout(() => (document.body.dataset.ready = '1'), 200);
+  });
+</script>
+</body>
+</html>

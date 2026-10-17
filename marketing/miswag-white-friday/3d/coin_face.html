@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="fonts/src.css" />
+<!-- The coin's face as a height map (white = raised), in the manner of the 1932 Iraqi riyal's reverse:
+     beaded rim, «المملكة العراقية» round the top, the value in the middle, a laurel wreath, the year.
+     Screenshot #face (1024×1024) -> coin_height.png for coin.py. -->
+<style>
+  * { margin: 0; padding: 0; }
+  body { background: #000; }
+  #face { width: 1024px; height: 1024px; display: block; filter: blur(1.1px); }
+  text { fill: #fff; }
+</style>
+</head>
+<body>
+<svg id="face" viewBox="0 0 1000 1000">
+  <defs>
+    <path id="top" d="M 170 500 A 330 330 0 0 1 830 500" />
+    <g id="leaf"><ellipse cx="0" cy="0" rx="13" ry="30" fill="#fff" /></g>
+  </defs>
+  <rect width="1000" height="1000" fill="#000" />
+  <circle cx="500" cy="500" r="500" fill="#fff" />
+  <circle cx="500" cy="500" r="462" fill="#000" />
+  <g id="beads"></g>
+  <text font-family="Readex Pro" font-weight="600" font-size="76" letter-spacing="2" direction="rtl"><textPath href="#top" startOffset="50%" text-anchor="middle">المملكة العراقية</textPath></text>
+  <text x="500" y="590" text-anchor="middle" font-family="Aref Ruqaa" font-weight="700" font-size="250" direction="rtl">ريال</text>
+  <text x="500" y="790" text-anchor="middle" font-family="Readex Pro" font-weight="600" font-size="82">١٩٣٢</text>
+  <g id="wreath"></g>
+</svg>
+<script>
+  const NS = 'http://www.w3.org/2000/svg';
+  const beads = document.getElementById('beads');
+  for (let i = 0; i < 120; i++) {
+    const a = (i / 120) * Math.PI * 2, c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', 500 + Math.cos(a) * 432); c.setAttribute('cy', 500 + Math.sin(a) * 432); c.setAttribute('r', 7); c.setAttribute('fill', '#fff');
+    beads.appendChild(c);
+  }
+  // two laurel branches curving up either side of the value
+  const wr = document.getElementById('wreath');
+  for (const side of [-1, 1]) {
+    const stem = document.createElementNS(NS, 'path'), pts = [];
+    for (let i = 0; i <= 40; i++) { const a = Math.PI / 2 + side * (0.42 + i * 0.022); pts.push([500 + Math.cos(a) * 300, 500 + Math.sin(a) * 300]); }
+    stem.setAttribute('d', 'M' + pts.map((p) => p.join(' ')).join(' L'));
+    stem.setAttribute('fill', 'none'); stem.setAttribute('stroke', '#fff'); stem.setAttribute('stroke-width', 9); stem.setAttribute('stroke-linecap', 'round');
+    wr.appendChild(stem);
+    for (let i = 0; i < 9; i++) {
+      const a = Math.PI / 2 + side * (0.48 + i * 0.1), x = 500 + Math.cos(a) * 300, y = 500 + Math.sin(a) * 300, tang = (a * 180) / Math.PI + (side > 0 ? 0 : 180);
+      for (const o of [-1, 1]) {
+        const u = document.createElementNS(NS, 'use');
+        u.setAttribute('href', '#leaf');
+        u.setAttribute('transform', `translate(${x + Math.cos(a) * o * 26} ${y + Math.sin(a) * o * 26}) rotate(${tang + o * 28 * side})`);
+        wr.appendChild(u);
+      }
+    }
+  }
+</script>
+</body>
+</html>

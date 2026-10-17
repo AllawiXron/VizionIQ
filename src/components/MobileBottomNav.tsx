@@ -169,7 +169,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Crown className="w-4 h-4 text-white" /></span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-black text-white">افتح الكورس كامل</span>
-                    <span className="block text-[11px] text-white/55 truncate">إنت بالنسخة التجريبية</span>
+                    <span className="block text-[11px] text-white/55 truncate">إنت بالتجربة المجانية</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>

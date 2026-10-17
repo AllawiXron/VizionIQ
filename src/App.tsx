@@ -29,6 +29,7 @@ import { MobileBottomNav } from "./components/MobileBottomNav";
 const FreeTrialPaywallModal = React.lazy(() => import("./components/FreeTrialPaywallModal").then(module => ({ default: module.FreeTrialPaywallModal })));
 const PricingSection = React.lazy(() => import("./components/PricingSection").then(module => ({ default: module.PricingSection })));
 const WelcomeIntroModal = React.lazy(() => import("./components/WelcomeIntroModal").then(module => ({ default: module.WelcomeIntroModal })));
+const TrialOnboarding = React.lazy(() => import("./components/TrialOnboarding").then(module => ({ default: module.TrialOnboarding })));
 import { SensoryProvider } from "./components/SensoryProvider";
 import { useMobileKeyboard } from "./hooks/useMobileKeyboard";
 
@@ -58,6 +59,7 @@ export default function App() {
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
+  const [isTrialOnboardingOpen, setIsTrialOnboardingOpen] = useState(false);
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
   const routeKey = routeToHash(route);
 
@@ -72,10 +74,12 @@ export default function App() {
     const handleOpenVip = () => setIsAdvisorOpen(true);
     const handleOpenUpgrade = () => setIsUpgradeModalOpen(true);
     const handleOpenWelcome = () => setIsWelcomeModalOpen(true);
+    const handleOpenTrialOnboarding = () => setIsTrialOnboardingOpen(true);
 
     window.addEventListener("open-vip-advisor", handleOpenVip);
     window.addEventListener("open-upgrade-modal", handleOpenUpgrade);
     window.addEventListener("open-welcome-intro", handleOpenWelcome);
+    window.addEventListener("open-trial-onboarding", handleOpenTrialOnboarding);
 
     // Execute immediate sign-out request
     const signoutVersion = SIGNOUT_VERSION;
@@ -97,7 +101,9 @@ export default function App() {
       // Check if welcome intro was already shown
       const welcomeSeen = localStorage.getItem(`sales_guide_welcome_seen_${sessionCode}`);
       if (!welcomeSeen) {
-        setIsWelcomeModalOpen(true);
+        // Trial members start with the one-minute check on their own project.
+        if (isFreeTrialUser(sessionCode)) setIsTrialOnboardingOpen(true);
+        else setIsWelcomeModalOpen(true);
       }
     } else {
       setIsLoggedIn(false);
@@ -108,6 +114,7 @@ export default function App() {
       window.removeEventListener("open-vip-advisor", handleOpenVip);
       window.removeEventListener("open-upgrade-modal", handleOpenUpgrade);
       window.removeEventListener("open-welcome-intro", handleOpenWelcome);
+      window.removeEventListener("open-trial-onboarding", handleOpenTrialOnboarding);
     };
   }, []);
 
@@ -116,7 +123,8 @@ export default function App() {
     localStorage.setItem("sales_guide_user_code", validCode);
     setIsLoggedIn(true);
     setUserCode(validCode);
-    setIsWelcomeModalOpen(true);
+    if (isFreeTrialUser(validCode)) setIsTrialOnboardingOpen(true);
+    else setIsWelcomeModalOpen(true);
     navigate({ view: "home" });
     window.scrollTo({ top: 0 });
   };
@@ -130,6 +138,7 @@ export default function App() {
     setIsAdvisorOpen(false);
     setIsUpgradeModalOpen(false);
     setIsWelcomeModalOpen(false);
+    setIsTrialOnboardingOpen(false);
     setIsMobileMoreOpen(false);
     window.scrollTo({ top: 0 });
   };
@@ -157,7 +166,7 @@ export default function App() {
 
   // iOS-style depth: while a sheet is open, the page behind it recedes slightly.
   // Desktop/tablet only (phones show most sheets full-screen anyway).
-  const isSheetOpen = isAdvisorOpen || isUpgradeModalOpen || isWelcomeModalOpen || isAdminOpen;
+  const isSheetOpen = isAdvisorOpen || isUpgradeModalOpen || isWelcomeModalOpen || isTrialOnboardingOpen || isAdminOpen;
   const [stageEnabled] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches);
   // Rack focus, like an app launching on iOS: the page pushes in toward the
   // control that opened the sheet (and settles back from the same point).
@@ -338,9 +347,21 @@ export default function App() {
           navigate({ view: "chapter", id: "chapter1" });
         }}
       /></React.Suspense>
+
+      {/* TRIAL: ONE-MINUTE CHECK ON THEIR OWN NUMBERS */}
+      <React.Suspense fallback={null}><TrialOnboarding
+        isOpen={isTrialOnboardingOpen}
+        onClose={() => {
+          setIsTrialOnboardingOpen(false);
+          if (userCode) {
+            localStorage.setItem(`sales_guide_welcome_seen_${userCode}`, "true");
+          }
+        }}
+        onNavigate={navigate}
+      /></React.Suspense>
     </>
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  ), [isAdminOpen, isAdvisorOpen, isUpgradeModalOpen, isWelcomeModalOpen, userCode]);
+  ), [isAdminOpen, isAdvisorOpen, isUpgradeModalOpen, isWelcomeModalOpen, isTrialOnboardingOpen, userCode]);
 
   return (
     <SensoryProvider>
@@ -400,7 +421,7 @@ export default function App() {
 
       {/* FIXED MOBILE BOTTOM NAVIGATION BAR (Hidden during modals or intro) */}
       <AnimatePresence>
-      {!isWelcomeModalOpen && !isAdvisorOpen && !isAdminOpen && !isUpgradeModalOpen && (
+      {!isWelcomeModalOpen && !isTrialOnboardingOpen && !isAdvisorOpen && !isAdminOpen && !isUpgradeModalOpen && (
         <MobileBottomNav
           key="mobile-bottom-nav"
           activeView={route.view}

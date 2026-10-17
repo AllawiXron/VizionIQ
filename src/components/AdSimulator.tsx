@@ -4,13 +4,13 @@
  */
 
 import React, { useState } from "react";
-import { Facebook, Instagram, Share2, Heart, MessageCircle, MoreHorizontal, Send, Bookmark, Volume2 } from "lucide-react";
+import { Facebook, Instagram, Share2, Heart, MessageCircle, MoreHorizontal, Send, Bookmark, Volume2, ThumbsUp } from "lucide-react";
 
 type PlatformType = "facebook" | "instagram" | "tiktok";
 
 export default function AdSimulator() {
   const [platform, setPlatform] = useState<PlatformType>("facebook");
-  const [adText, setAdText] = useState("شباك سيارتك يلم تراب والحر يحرق الكشنات؟ 🚗☀️ الحل الأسرع بالعراق وصل! مظلة السيارة العازلة للحرارة والأشعة فوق البنفسجية.\n\n✅ تحمي سيارتك وتبرد الكابينة بـ ٣ دقائق بس.\n✅ توصيل سريع لجميع المحافظات والدفع عند الاستلام!\n\n👇 اطلبها هسة بخصم ٢٥٪ لفترة محدودة!");
+  const [adText, setAdText] = useState("شباك سيارتك يلم تراب والحر يحرق الكشنات؟ الحل الأسرع بالعراق وصل! مظلة السيارة العازلة للحرارة والأشعة فوق البنفسجية.\n\nتحمي سيارتك وتبرد الكابينة بـ ٣ دقائق بس.\nتوصيل سريع لجميع المحافظات والدفع عند الاستلام!\n\nاطلبها هسة بخصم ٢٥٪ لفترة محدودة!");
   const [headline, setHeadline] = useState("مظلة السيارة العازلة للحرارة — فحص قبل الدفع");
   const [cta, setCta] = useState("اطلب الآن - توصيل سريع");
 
@@ -21,7 +21,7 @@ export default function AdSimulator() {
       {/* Header */}
       <div className="border-b border-white/10 pb-4 mb-6">
         <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-          🎬 جرب إعلانك وشوف شكله وتأثيره قبل لا تصرف أي دينار على الترويج
+          جرب إعلانك وشوف شكله وتأثيره قبل لا تصرف أي دينار على الترويج
         </h3>
         <p className="text-xs text-white/70 mt-1">اختبر مظهر إعلانك على فيسبوك، انستغرام وتيك توك محلياً وتأكد من جاذبيته للجمهور العراقي</p>
       </div>
@@ -30,41 +30,41 @@ export default function AdSimulator() {
         
         {/* Left Side: Customization Controls (5 Columns) */}
         <div className="lg:col-span-5 space-y-4">
-          <span className="text-xs font-semibold text-vz-accent block">⚙️ خيارات الإعلان والتعديل</span>
+          <span className="text-xs font-semibold text-vz-accent block">خيارات الإعلان والتعديل</span>
 
           {/* Preset Formulas */}
           <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/5">
-            <span className="text-[10px] text-vz-accent font-bold block">💡 صيغ كتابة إعلانية عراقية ناجحة (اضغط للتجربة):</span>
+            <span className="text-[10px] text-vz-accent font-bold block">صيغ كتابة إعلانية عراقية ناجحة (اضغط للتجربة):</span>
             <div className="grid grid-cols-3 gap-1.5">
               <button                 onClick={() => {
-                  setHeadline("مقاوم لتراب وعواصف بغداد والجنوب! 🚗🌪️");
-                  setAdText("تعبت من غسيل سيارتك كل يوم والتراب يغطيها الصبح؟ 🚗🌪️ عواصف تراب العراق ما ترحم، والحل صار بيدك! غلاف السيارة النانو عازل للغبار والمطر بنسبة 100%.\n\n✅ يحمي الصبغ من الخدوش وأشعة الشمس الحارقة.\n✅ تفصال خاص لكل موديل سيارة (صالون، جيب، بيك اب).\n\n👇 اطلب الحين وافحص خامته وجودته بنفسك قبل ما تدفع للمندوب!");
+                  setHeadline("مقاوم لتراب وعواصف بغداد والجنوب!");
+                  setAdText("تعبت من غسيل سيارتك كل يوم والتراب يغطيها الصبح؟ عواصف تراب العراق ما ترحم، والحل صار بيدك! غلاف السيارة النانو عازل للغبار والمطر بنسبة 100%.\n\nيحمي الصبغ من الخدوش وأشعة الشمس الحارقة.\nتفصال خاص لكل موديل سيارة (صالون، جيب، بيك اب).\n\nاطلب الحين وافحص خامته وجودته بنفسك قبل ما تدفع للمندوب!");
                   setCta("اطلب الآن - توصيل سريع");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="صيغة حل مشكلة الغبار العراقي"
               >
-                🌪️ مشكلة الغبار
+                مشكلة الغبار
               </button>
               <button                 onClick={() => {
-                  setHeadline("من اليوم ماكو كشخة تخرب بسبب الكشنات! ✨🧥");
-                  setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ 🤦‍♂️ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\n✅ حجمها صغير ومثالية لكشنات وزوايا السيارة.\n✅ تعبئة USB يدوم لأسابيع.\n✅ التوصيل لباب بيتك مجاني هذا الأسبوع!\n\n👇 اضغط على 'اطلب الآن' واحصل عليها بخصم خاص اليوم!");
+                  setHeadline("من اليوم ماكو كشخة تخرب بسبب الكشنات!");
+                  setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\nحجمها صغير ومثالية لكشنات وزوايا السيارة.\nتعبئة USB يدوم لأسابيع.\nالتوصيل لباب بيتك مجاني هذا الأسبوع!\n\nاضغط على 'اطلب الآن' واحصل عليها بخصم خاص اليوم!");
                   setCta("تسوق الآن");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="صيغة الكشخة وتفادي الغبار"
               >
-                ✨ كشخة الملابس
+                كشخة الملابس
               </button>
               <button                 onClick={() => {
-                  setHeadline("اشتري وحدة الك والثانية لبيت أبوك مجاناً! 🎁");
-                  setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة! 🏡☀️\n\n✅ يشتغل من شمس الصيف الحارة ويشتغل تلقائياً بالليل.\n✅ خامة قوية ومقاومة للأمطار وعواصف الغبار.\n✅ توصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف فقط!\n\n👇 العرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
+                  setHeadline("اشتري وحدة الك والثانية لبيت أبوك مجاناً!");
+                  setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة!\n\nيشتغل من شمس الصيف الحارة ويشتغل تلقائياً بالليل.\nخامة قوية ومقاومة للأمطار وعواصف الغبار.\nتوصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف فقط!\n\nالعرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
                   setCta("اشتري قطعتين والتوصيل مجاني");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="صيغة عرض الكرم العراقي"
               >
-                🎁 الكرم العائلي
+                الكرم العائلي
               </button>
             </div>
           </div>
@@ -86,7 +86,6 @@ export default function AdSimulator() {
             <button               onClick={() => setPlatform("tiktok")}
               className={`py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ platform === "tiktok" ? "bg-black/40 border-cyan-400 text-cyan-300 md:shadow-[0_0_10px_rgba(0,0,0,0.44)] shadow-xl" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
             >
-              <span className="font-bold">🎵</span>
               <span>تيك توك</span>
             </button>
           </div>
@@ -143,7 +142,7 @@ export default function AdSimulator() {
                       سوق الرافدين الإلكتروني
                       <span className="text-[#1877F2] text-[10px]">● ممول</span>
                     </h5>
-                    <span className="text-[10px] text-white/70">الآن · 🌐</span>
+                    <span className="text-[10px] text-white/70">الآن ·</span>
                   </div>
                 </div>
                 <button className="text-white/60 hover:text-white min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
@@ -162,7 +161,6 @@ export default function AdSimulator() {
                 {/* Simulated product visual overlay */}
                 <div className="z-10 text-center p-4">
                   <span className="text-[10px] bg-white/10 text-vz-accent border border-white/18 px-2 py-0.5 rounded-full font-bold">خصم ٢٥٪ - الدفع عند الاستلام</span>
-                  <div className="text-4xl my-2">🚗🛡️☀️</div>
                   <h6 className="text-sm font-bold text-white tracking-wide">مظلة الزجاج الذكية للسيارات</h6>
                   <p className="text-[10px] text-white/60 mt-1">المظهر الأصلي المضمون في العراق</p>
                 </div>
@@ -182,7 +180,7 @@ export default function AdSimulator() {
               {/* Social actions */}
               <div className="p-3 flex justify-around items-center border-t border-white/5 text-white/60">
                 <button className="flex items-center gap-1.5 hover:text-[#1877F2] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
-                  <span>👍</span>
+                  <ThumbsUp className="w-4 h-4" />
                   <span>أعجبني</span>
                 </button>
                 <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
@@ -224,15 +222,13 @@ export default function AdSimulator() {
                 
                 {/* Simulated Product layout */}
                 <div className="z-10 text-center p-6 space-y-3">
-                  <div className="text-5xl">📦✨🚙</div>
                   <h6 className="text-base font-black text-white">{headline}</h6>
-                  <p className="text-xs text-vz-accent font-bold">التوصيل متوفر لكافة المحافظات العراقية 🇮🇶</p>
+                  <p className="text-xs text-vz-accent font-bold">التوصيل متوفر لكافة المحافظات العراقية</p>
                 </div>
 
                 {/* Simulated Shop CTA Overlay at the bottom */}
                 <div className="absolute bottom-0 inset-x-0 h-10 bg-[#3897f0] hover:bg-[#1372d0] flex justify-between items-center px-4 transition-colors z-10 cursor-pointer">
                   <span className="font-bold text-[11px] text-white">{cta}</span>
-                  <span className="text-white font-bold text-sm">➔</span>
                 </div>
               </div>
 
@@ -270,14 +266,12 @@ export default function AdSimulator() {
 
               {/* Immersive Video/Content Background */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/90 z-0 flex flex-col items-center justify-center p-6 text-center">
-                <div className="text-6xl animate-pulse mb-4">🚀🎥🔥</div>
                 <h6 className="text-lg font-bold max-w-[80%] text-white">{headline}</h6>
                 <p className="text-xs text-cyan-400 font-medium mt-1">#تسوق_بالعراق #مبيعات_اونلاين</p>
                 
                 {/* Call to action floating ribbon */}
                 <div className="absolute bottom-32 inset-x-4 bg-cyan-500 hover:bg-cyan-600 p-3 rounded-lg flex justify-between items-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer shadow-lg shadow-black/40 z-10">
                   <span className="font-bold text-black text-xs">{cta}</span>
-                  <span className="text-black font-extrabold">⚡</span>
                 </div>
               </div>
 

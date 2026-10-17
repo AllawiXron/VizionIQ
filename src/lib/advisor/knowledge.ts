@@ -4,7 +4,8 @@
  * ranked against the merchant's question, so answers are grounded in what
  * the course actually teaches (and can point to the right chapter).
  */
-import { chaptersDetailedMap, chaptersList, phoneScripts } from "../../data/chaptersData.js";
+import { chaptersList, phoneScripts } from "../../data/chaptersData.js";
+import { courseChapters, lessonText } from "../../data/course/index.js";
 import { caseStudiesList } from "../../data/caseStudiesData.js";
 import { insightsList } from "../../data/insightsData.js";
 import { swipeFilesList } from "../../data/swipeFilesData.js";
@@ -118,45 +119,36 @@ function chapterLabel(id: string) {
 
 function buildChunks(): KnowledgeChunk[] {
   const chunks: KnowledgeChunk[] = [];
-  for (const [id, ch] of Object.entries(chaptersDetailedMap)) {
+  for (const [id, ch] of Object.entries(courseChapters)) {
     const label = chapterLabel(id);
-    ch.coreFramework?.sections?.forEach((s, i) =>
+    ch.lessons.forEach((l, i) =>
       chunks.push({
-        id: `${id}-core-${i}`,
+        id: `${id}-lesson-${i}`,
         chapterId: id,
-        source: `${label} — ${s.heading}`,
-        text: clip([s.content, s.keyTakeaway && `الخلاصة: ${s.keyTakeaway}`, ...(s.bulletPoints ?? []).map((b) => `• ${b}`)].filter(Boolean).join("\n")),
+        source: `${label} — ${l.title}`,
+        text: clip(`${lessonText(l)}\nالخلاصة: ${l.takeaway}`),
       })
     );
-    ch.deepDive?.sections?.forEach((s, i) =>
+    chunks.push({
+      id: `${id}-practice`,
+      chapterId: id,
+      source: `${label} — طبّق على مشروعك`,
+      text: clip(ch.practice.tasks.map((t, i) => `${i + 1}. ${t.title}: ${t.detail} (تطلع بـ: ${t.output})`).join("\n")),
+    });
+    ch.templates.forEach((t, i) =>
       chunks.push({
-        id: `${id}-deep-${i}`,
+        id: `${id}-template-${i}`,
         chapterId: id,
-        source: `${label} — ${s.heading}`,
-        text: clip([s.content, ...(s.examples ?? []).map((e) => `مثال: ${e}`)].join("\n")),
+        source: `${label} — جاهز للنسخ: ${t.title}`,
+        text: clip([`متى: ${t.when}`, t.text, t.note].filter(Boolean).join("\n")),
       })
     );
-    if (ch.actionSteps?.length)
-      chunks.push({
-        id: `${id}-steps`,
-        chapterId: id,
-        source: `${label} — خطوات التطبيق`,
-        text: clip(ch.actionSteps.map((a) => `${a.step}. ${a.title} (${a.timeframe}): ${a.description}`).join("\n")),
-      });
-    if (ch.commonMistakes?.length)
-      chunks.push({
-        id: `${id}-mistakes`,
-        chapterId: id,
-        source: `${label} — أخطاء شائعة`,
-        text: clip(ch.commonMistakes.map((m) => `✗ ${m.mistake} — ليش يفشل: ${m.whyItFails} — الحل: ${m.fix}`).join("\n")),
-      });
-    if (ch.advancedTactics?.length)
-      chunks.push({
-        id: `${id}-tactics`,
-        chapterId: id,
-        source: `${label} — تكتيكات متقدمة`,
-        text: clip(ch.advancedTactics.map((t) => `${t.title}: ${t.description} (الأثر: ${t.impact})`).join("\n")),
-      });
+    chunks.push({
+      id: `${id}-mistakes`,
+      chapterId: id,
+      source: `${label} — أغلاط شائعة`,
+      text: clip(ch.mistakes.map((m) => `غلط: ${m.mistake} — ليش: ${m.why} — الحل: ${m.fix}`).join("\n")),
+    });
   }
   for (const c of caseStudiesList) {
     chunks.push({

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>Demo page (made up) — Instagram profile mock</title>
+<link rel="stylesheet" href="fonts/src.css" />
+<!-- A made-up café page drawn like an Instagram profile screenshot, with the usual problems
+     (no visual identity, no highlight covers, no prices, a bio that says nothing), to demo the review story. -->
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1080px; background: #fff; color: #000; font-family: "Readex Pro", sans-serif; direction: rtl; }
+  .shot { position: relative; width: 1080px; height: 2340px; overflow: hidden; background: #fff; }
+  .status { height: 110px; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; direction: ltr; font-weight: 600; font-size: 38px; }
+  .status .r { display: flex; gap: 16px; align-items: center; }
+  .status .r i { display: block; background: #000; border-radius: 3px; }
+  .bar { height: 120px; display: flex; align-items: center; justify-content: space-between; padding: 0 44px; }
+  .bar b { font-weight: 700; font-size: 46px; direction: ltr; }
+  .bar svg { width: 54px; height: 54px; }
+  .top { display: flex; align-items: center; gap: 56px; padding: 28px 44px 0; }
+  .av { width: 210px; height: 210px; border-radius: 50%; flex: none; background: radial-gradient(circle at 40% 35%, #fff59a, #f4d21f 55%, #d9b200); display: grid; place-items: center; color: #3d7a12; font-weight: 700; font-size: 40px; box-shadow: inset 0 0 0 6px #fff, 0 0 0 4px #ddd; }
+  .stats { flex: 1; display: flex; justify-content: space-around; text-align: center; }
+  .stats b { display: block; font-weight: 700; font-size: 44px; }
+  .stats span { font-size: 34px; }
+  .bio { padding: 26px 44px 0; font-size: 36px; line-height: 1.5; }
+  .bio b { font-weight: 700; display: block; }
+  .bio .cat { color: #737373; display: block; }
+  .btns { display: flex; gap: 14px; padding: 30px 44px 0; }
+  .btns div { flex: 1; height: 86px; border-radius: 18px; background: #efefef; display: grid; place-items: center; font-weight: 600; font-size: 34px; }
+  .btns .f { background: #0095f6; color: #fff; }
+  .hl { display: flex; gap: 40px; padding: 44px 44px 0; }
+  .hl div { text-align: center; font-size: 30px; }
+  .hl i { display: block; width: 150px; height: 150px; border-radius: 50%; box-shadow: inset 0 0 0 5px #fff, 0 0 0 3px #dbdbdb; margin-bottom: 12px; }
+  .tabs { margin-top: 44px; height: 110px; display: flex; border-bottom: 1px solid #dbdbdb; }
+  .tabs div { flex: 1; display: grid; place-items: center; }
+  .tabs div:first-child { box-shadow: inset 0 -3px 0 #000; }
+  .tabs svg { width: 56px; height: 56px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+  .grid > div { height: 478px; position: relative; overflow: hidden; display: grid; place-items: center; text-align: center; }
+</style>
+</head>
+<body>
+<div class="shot" id="shot">
+  <div class="status"><span>9:41</span><span class="r"><i style="width:44px;height:22px"></i><i style="width:30px;height:22px"></i><i style="width:62px;height:28px;border-radius:7px"></i></span></div>
+  <div class="bar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7" /></svg>
+    <b>demo.cafe</b>
+    <svg viewBox="0 0 24 24" fill="#000"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
+  </div>
+  <div class="top">
+    <div class="av">ليمونة</div>
+    <div class="stats"><div><b>٨٤</b><span>منشورات</span></div><div><b>١٬٢٠٣</b><span>متابعين</span></div><div><b>٩٨</b><span>يتابع</span></div></div>
+  </div>
+  <div class="bio"><b>كافيه ليمونة</b><span class="cat">مقهى</span>أطيب قهوة وعصير بالمنطقة<br />تعالوا جربونا</div>
+  <div class="btns"><div class="f">متابعة</div><div>مراسلة</div><div>جهة اتصال</div></div>
+  <div class="hl">
+    <div><i style="background:linear-gradient(135deg,#8a5a3b,#d6a77a)"></i>جديد</div>
+    <div><i style="background:linear-gradient(135deg,#2c2c2c,#777)"></i>١</div>
+    <div><i style="background:linear-gradient(135deg,#ff5f6d,#ffc371)"></i>٢</div>
+    <div><i style="background:linear-gradient(135deg,#43cea2,#185a9d)"></i>ستوري</div>
+    <div><i style="background:linear-gradient(135deg,#c9c9c9,#efefef)"></i>.</div>
+  </div>
+  <div class="tabs">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M3 15h18M9 3v18M15 3v18" /></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M10 8.5v7l6-3.5z" fill="#999" /></svg></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="10" r="3" /><path d="M6 19c1.5-3 3.5-4 6-4s4.5 1 6 4" /></svg></div>
+  </div>
+  <!-- every post in a different colour and font: no identity -->
+  <div class="grid">
+    <div style="background:#e8141b; color:#ffe600; font-weight:700; font-size:92px; line-height:1.1">عرض!!!<br /><span style="font-size:54px; color:#fff">٥٠٠٠ دينار</span></div>
+    <div style="background:radial-gradient(circle at 50% 60%, #c48a5a 0 120px, #6b3b1f 121px 150px, #2b160b 151px)"><span style="position:absolute; bottom:26px; right:22px; color:#fff; font-size:26px">قهوتنا</span></div>
+    <div style="background:linear-gradient(160deg,#a43cc4,#ff7ac1); color:#3cff7a; font-family:'Aref Ruqaa'; font-weight:700; font-size:80px">جمعة مباركة</div>
+    <div style="background:#fff; color:#111; font-family:'Instrument Serif'; font-size:86px; box-shadow:inset 0 0 0 2px #eee">افتتاح<br /><span style="display:block; width:150px; height:150px; margin:18px auto 0; border-radius:50%; background:#1e73ff"></span></div>
+    <div style="background:#111; color:#39ff14; font-weight:700; font-size:84px; text-shadow:0 0 18px #39ff14">خصم ٢٠٪</div>
+    <div style="background:#e5ddd5; display:block; padding:40px 26px; text-align:right"><p style="background:#dcf8c6; border-radius:14px; padding:14px 18px; font-size:30px; margin-bottom:16px; width:78%">شكد سعر الكابتشينو؟</p><p style="background:#fff; border-radius:14px; padding:14px 18px; font-size:30px; width:70%; margin-right:auto">٣ آلاف حبيبي</p></div>
+    <div style="background:#ff8a00; color:#fff; font-family:'Aref Ruqaa'; font-weight:700; font-size:76px">قهوتك علينا</div>
+    <div style="background:#1747d6; color:#fff; font-weight:700; font-size:78px; text-shadow:6px 6px 0 #000">اطلب هسة</div>
+    <div style="background:radial-gradient(circle at 50% 55%, #f3efe9 0 110px, #d8d2c8 111px 150px, #9fa6ad 151px)"></div>
+  </div>
+</div>
+</body>
+</html>

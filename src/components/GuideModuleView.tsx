@@ -8,6 +8,9 @@ import { EASE_OUT } from "../lib/motion";
 import { togglePlanDay, usePlaybookPlans } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { GuideToolView } from "./guide/GuideTools";
+import { isFreeTrialUser } from "./LockScreen";
+import { TrialLock } from "./TrialLock";
+import { TopicIcon } from "./ui/TopicIcon";
 
 interface GuideModuleViewProps {
   key?: string;
@@ -26,6 +29,9 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
   const ticked = new Set(plans[planKey] ?? []);
   const index = guideModules.indexOf(m);
   const nextModule = guideModules[index + 1] ?? null;
+  // Trial members read the numbers and the first section of each module.
+  const isTrial = isFreeTrialUser(userCode);
+  const sections = isTrial ? m.sections.slice(0, 1) : m.sections;
 
   return (
     <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 text-right">
@@ -39,7 +45,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
 
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-3 sm:space-y-4 mb-8">
         <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight flex items-start gap-3">
-          <span aria-hidden="true" className="shrink-0">{m.icon}</span>
+          <TopicIcon kind="guide" id={m.id} size="lg" className="mt-0.5" />
           <span>{m.title}</span>
         </h1>
         <p className="text-sm sm:text-lg text-white/65 leading-relaxed">{m.subtitle}</p>
@@ -56,7 +62,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
       </motion.div>
 
       <div className="space-y-10 sm:space-y-14">
-        {m.sections.map((sec) => (
+        {sections.map((sec) => (
           <section key={sec.heading} className="space-y-4">
             <h2 className="text-lg sm:text-2xl font-black text-white">{sec.heading}</h2>
             {sec.body.map((p) => (
@@ -107,6 +113,19 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
           </section>
         ))}
 
+        {isTrial ? (
+          <TrialLock
+            title="باقي الوحدة مقفول بالتجربة"
+            desc={`قريت أول جزء. الباقي فيه التفاصيل والجداول${m.tool ? "، أداة تحسبلك بأرقامك" : ""}، و${m.checklist.length} خطوات تطبقها هالأسبوع.`}
+            items={[
+              ...m.sections.slice(1).map((sec) => sec.heading),
+              ...(m.tool ? ["أداة الحساب مال هالوحدة"] : []),
+              `طبّقها هالأسبوع: ${m.checklist.length} خطوات`,
+            ]}
+            cta="افتح الدليل كامل"
+          />
+        ) : (
+        <>
         {m.tool && <GuideToolView tool={m.tool} />}
 
         {/* Checklist */}
@@ -136,6 +155,9 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
             })}
           </ul>
         </section>
+
+        </>
+        )}
 
         {/* Related */}
         {(m.relatedPlaybooks.length > 0 || m.relatedChapters.length > 0) && (
@@ -167,6 +189,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
         )}
 
         {/* Sources */}
+        {!isTrial && (
         <section className="space-y-3">
           <h2 className="text-sm sm:text-base font-black text-white/80">المصادر</h2>
           <p className="text-xs text-white/45 leading-relaxed">
@@ -184,13 +207,14 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
             ))}
           </ol>
         </section>
+        )}
 
         {nextModule && (
           <button
             onClick={() => onNavigate({ view: "guideModule", id: nextModule.id })}
             className={`group w-full text-right glass-elevated glass-edge rounded-3xl p-5 sm:p-6 flex items-center gap-4 cursor-pointer ${focusRing}`}
           >
-            <span className="text-3xl leading-none shrink-0" aria-hidden="true">{nextModule.icon}</span>
+            <TopicIcon kind="guide" id={nextModule.id} />
             <span className="flex-1 min-w-0">
               <span className="block text-xs font-bold text-vz-accent">الوحدة الجاية</span>
               <span className="block text-base sm:text-lg font-black text-white leading-snug">{nextModule.title}</span>

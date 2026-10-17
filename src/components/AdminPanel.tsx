@@ -229,13 +229,13 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "codes" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {activeTab === "codes" && <motion.span layoutId="admin-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />}
-            <span className="relative">📋 الأكواد</span>
+            <span className="relative">الأكواد</span>
           </button>
           <button             onClick={() => setActiveTab("add")}
             className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "add" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {activeTab === "add" && <motion.span layoutId="admin-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />}
-            <span className="relative">➕ إضافة مشترِ</span>
+            <span className="relative">إضافة مشترِ</span>
           </button>
           <button             onClick={() => {
               setActiveTab("analytics_eval");
@@ -272,7 +272,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   className="btn btn-primary px-4 py-2 text-white font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shrink-0 min-h-[44px] flex items-center justify-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   <FileSpreadsheet className="w-3.5 h-3.5" />
-                  <span>تحميل ملف JSON كامل ⚡</span>
+                  <span>تحميل ملف JSON كامل</span>
                 </a>
               </div>
 
@@ -341,7 +341,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           {activeTab === "add" && (
             <form onSubmit={handleCreateCode} className="space-y-4 animate-fade-in">
               <div className="p-4 bg-white/3 border border-white/9 rounded-xl mb-2 text-xs text-vz-accent leading-relaxed">
-                💡 تكدر توليد كود دخول ذهبي تلقائي للمشتركين الذين اشتروا الدليل يدوياً أو ترغب بمنحهم وصولاً خاصاً.
+                تكدر توليد كود دخول ذهبي تلقائي للمشتركين الذين اشتروا الدليل يدوياً أو ترغب بمنحهم وصولاً خاصاً.
               </div>
 
               {/* Input Buyer Name */}
@@ -369,13 +369,13 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
               {/* Error / Success feedback */}
               {errorMessage && (
                 <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-xs text-red-300">
-                  ⚠️ {errorMessage}
+                  {errorMessage}
                 </div>
               )}
 
               {successMessage && (
                 <div className="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-xs text-emerald-300">
-                  🎉 {successMessage}
+                  {successMessage}
                 </div>
               )}
 
@@ -548,7 +548,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                     ) : (
                       <>
                         <Play className="w-3.5 h-3.5 fill-current" />
-                        <span>تشغيل فحص الجودة الآلي ⚡</span>
+                        <span>تشغيل فحص الجودة الآلي</span>
                       </>
                     )}
                   </button>

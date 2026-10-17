@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../fonts/src.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#plate { width: 1000px; height: 330px; position: relative; border-radius: 26px; overflow: hidden;
+  background: linear-gradient(180deg, #e9ebee 0%, #c9cdd2 48%, #dfe2e6 52%, #b9bec4 100%); color: #1d2430; font-family: "Alexandria"; }
+#plate::before { content:""; position:absolute; inset:0; opacity:.35; mix-blend-mode: multiply;
+  background: repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0 1px, transparent 1px 3px); }
+#plate .rim { position:absolute; inset:14px; border: 3px solid rgba(30,36,48,.55); border-radius: 16px; }
+#plate .rivet { position:absolute; width:26px; height:26px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #fff, #8d939b 60%, #5d636b); }
+#plate .row { position:absolute; left:70px; right:70px; white-space:nowrap; display:flex; justify-content:space-between; align-items:baseline; direction:rtl; }
+#plate .brand { top: 52px; font-weight: 800; font-size: 76px; line-height: 1.1; letter-spacing: 0; }
+#plate .brand small { font-family:"IBM Plex Mono"; font-weight:600; font-size: 30px; letter-spacing:.2em; direction:ltr; }
+#plate .spec { top: 196px; font-weight: 600; font-size: 40px; line-height: 1.2; }
+#plate .spec b { font-weight: 800; color: #b3121c; }
+</style></head><body>
+<div id="plate">
+  <div class="rim"></div>
+  <i class="rivet" style="left:30px;top:30px"></i><i class="rivet" style="right:30px;top:30px"></i>
+  <i class="rivet" style="left:30px;bottom:30px"></i><i class="rivet" style="right:30px;bottom:30px"></i>
+  <div class="row brand"><span>مبردة الفقمة</span><small>MODEL 1983</small></div>
+  <div class="row spec"><span>قوة التبريد: <b>كلش</b></span><span>الضمان: <b>طول الصيف</b></span></div>
+</div>
+</body></html>

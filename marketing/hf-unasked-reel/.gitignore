@@ -1,0 +1,10 @@
+renders/*
+!renders/unasked-reel.mp4
+!renders/unasked-reel-cover.jpg
+assets/sfx-kit/
+assets/music/
+snapshots/
+node_modules/
+.hyperframes/
+.media/
+assets/sfx-drive/

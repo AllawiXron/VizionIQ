@@ -7,6 +7,9 @@ import { usePlaybookPlans } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { PageHeader } from "./ui/PageHeader";
 import { upcomingSeasons } from "./guide/GuideTools";
+import { isFreeTrialUser } from "./LockScreen";
+import { LockChip } from "./TrialLock";
+import { TopicIcon } from "./ui/TopicIcon";
 
 interface GuideIndexProps {
   userCode: string;
@@ -18,6 +21,7 @@ const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-wh
 /** The Iraq Guide: researched modules on how online selling works in Iraq. */
 export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
   const plans = usePlaybookPlans(userCode);
+  const isTrial = isFreeTrialUser(userCode);
   const next = upcomingSeasons(new Date(), 2);
 
   return (
@@ -61,9 +65,10 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
                 className={`group w-full h-full text-right glass glass-interactive rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col gap-3 cursor-pointer ${focusRing}`}
               >
                 <div className="flex items-start gap-3.5">
-                  <span className="text-3xl leading-none shrink-0" aria-hidden="true">{m.icon}</span>
+                  <TopicIcon kind="guide" id={m.id} />
                   <div className="min-w-0 space-y-1.5">
                     <h2 className="text-base sm:text-lg font-black text-white leading-snug">{m.title}</h2>
+                    {isTrial && <LockChip label="بالتجربة: أول جزء بس" />}
                     <p className="text-xs sm:text-sm text-white/55 leading-relaxed line-clamp-2">{m.subtitle}</p>
                   </div>
                 </div>

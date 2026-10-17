@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>Cosmetics identity concepts (NADA, WARD)</title>
+<link rel="stylesheet" href="fonts/fonts.css" />
+<script src="marks.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #222; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+  .s { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'IBM Plex Sans Arabic', 'Readex Pro', sans-serif; }
+  .grain { position: absolute; inset: 0; z-index: 40; pointer-events: none; background: url(img/grain.png); background-size: 320px; mix-blend-mode: soft-light; opacity: 0.35; }
+  .full { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .abs { position: absolute; }
+  .ar { direction: rtl; }
+  .cen { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; }
+
+  /* the frame: small caps in the four corners */
+  .cap { position: absolute; z-index: 30; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 19px; letter-spacing: 0.32em; text-transform: uppercase; }
+  .cap.tl { top: 52px; left: 60px; } .cap.tr { top: 52px; right: 60px; } .cap.bl { bottom: 50px; left: 60px; } .cap.br { bottom: 50px; right: 60px; }
+  .ward .cap { font-family: 'Playfair Display', serif; font-weight: 500; font-size: 17px; }
+  .note { position: absolute; z-index: 30; font-size: 26px; font-weight: 300; line-height: 1.7; }
+  .note em { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic; letter-spacing: 0.02em; display: block; opacity: 0.75; direction: ltr; }
+  .ward .note em { font-family: 'Playfair Display', serif; font-size: 21px; }
+
+  /* bento brand board */
+  .bento { position: absolute; left: 44px; right: 44px; top: 112px; bottom: 100px; display: grid; gap: 16px; }
+  .tile { position: relative; border-radius: 18px; overflow: hidden; }
+  .tile > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .lbl { position: absolute; left: 20px; bottom: 16px; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 15px; letter-spacing: 0.28em; text-transform: uppercase; }
+  .ward .lbl { font-family: 'Playfair Display', serif; font-weight: 500; font-size: 13px; }
+  .chip { display: flex; justify-content: space-between; align-items: flex-end; padding: 14px 18px; font-size: 17px; }
+  .chip b { font-weight: 500; direction: rtl; }
+  .chip span { font-family: 'Cormorant Garamond', serif; font-weight: 600; letter-spacing: 0.12em; font-size: 16px; }
+  .ward .chip span { font-family: 'Playfair Display', serif; font-size: 14px; }
+  .guide { stroke-width: 1; fill: none; }
+</style>
+</head>
+<body>
+
+<!-- ============================ NADA ============================ -->
+<section class="s" id="nada-1" style="color:#4a3029">
+  <img class="full" src="img/mock-nada-droppers.jpg" />
+  <div class="abs" style="inset:0 0 auto 0; height:260px; background:linear-gradient(rgba(240,236,230,0.55), rgba(240,236,230,0))"></div>
+  <span class="cap tl">Nada</span><span class="cap tr">Brand identity</span>
+  <div class="abs ar" style="z-index:30; top:120px; right:60px; text-align:right">
+    <div style="font-size:52px; font-weight:300; line-height:1.3">هوية بصرية</div>
+    <div style="font-size:28px; font-weight:300; opacity:0.8">لعلامة عناية بالبشرة</div>
+  </div>
+  <span class="cap bl" style="color:#f6efe6">allawi.psd</span><span class="cap br" style="color:#f6efe6">01</span>
+</section>
+
+<section class="s" id="nada-2" style="background: radial-gradient(80% 60% at 50% 42%, #f1dbd3, #e8c7be 60%, #dfb7ab); color:#4a3029">
+  <span class="cap tl">Nada</span><span class="cap tr">The logo</span>
+  <div class="cen" style="top:400px"><div id="n2-word"></div>
+    <div style="font-family:'Cormorant Garamond'; font-weight:500; font-size:46px; letter-spacing:0.7em; padding-left:0.7em; margin-top:34px">NADA</div>
+    <div style="font-size:19px; font-weight:400; letter-spacing:0.5em; padding-left:0.5em; margin-top:14px; opacity:0.7">SKINCARE</div>
+  </div>
+  <div class="note ar" style="left:0; right:0; bottom:120px; text-align:center; font-size:24px; opacity:0.85">بشرة مثل ندى الصباح</div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">02</span>
+  <div class="grain"></div>
+</section>
+
+<section class="s" id="nada-3" style="background:#4a3029; color:#f6efe6">
+  <span class="cap tl">Nada</span><span class="cap tr">The idea</span>
+  <div class="cen" style="top:330px"><div id="n3-word"></div></div>
+  <svg id="n3-guides" class="abs" width="1080" height="1350" style="inset:0; z-index:5"></svg>
+  <div class="note ar" style="right:80px; left:80px; bottom:150px; text-align:center">
+    نقطة النون صارت <b style="font-weight:500">قطرة ندى</b>، تلمع مثل بشرة مرطّبة الصبح
+    <em>The dot of the nūn becomes a drop of morning dew.</em>
+  </div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">03</span>
+  <div class="grain" style="mix-blend-mode:overlay; opacity:0.25"></div>
+</section>
+
+<section class="s" id="nada-4" style="color:#4a3029">
+  <img class="full" src="img/mock-nada-pump.jpg" />
+  <span class="cap tl">Nada</span><span class="cap tr">Packaging</span>
+  <div class="note ar" style="left:60px; top:118px; text-align:right; font-size:30px">كريم الجسم واليدين<em style="text-align:right">Hand &amp; body cream, 250 ml</em></div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">04</span>
+</section>
+
+<section class="s" id="nada-5" style="background:#f3ebe2; color:#4a3029">
+  <span class="cap tl">Nada</span><span class="cap tr">Brand board</span>
+  <div class="bento" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1.25fr 1fr 1fr">
+    <div class="tile" style="grid-column: span 2"><img src="img/mock-nada-shelf.jpg" style="object-position:50% 60%" /></div>
+    <div class="tile" style="background:#e8c7be; display:grid; place-items:center" id="n5-seal"></div>
+    <div class="tile" style="display:grid; grid-template-rows: 1.5fr 1fr 1fr 1fr">
+      <div class="chip" style="background:#e8c7be"><span>E8C7BE</span><b>وردي البشرة</b></div>
+      <div class="chip" style="background:#4a3029; color:#f6efe6"><span>4A3029</span><b>كاكاو</b></div>
+      <div class="chip" style="background:#c98b7a; color:#fff6f0"><span>C98B7A</span><b>طين وردي</b></div>
+      <div class="chip" style="background:#a9b5a0; color:#26301f"><span>A9B5A0</span><b>ورق أخضر</b></div>
+    </div>
+    <div class="tile" style="grid-column: span 2"><img src="img/mock-nada-card.jpg" style="object-position:38% 40%" /></div>
+    <div class="tile" style="background:#fbf7f1; padding:26px 24px">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; direction:ltr">
+        <span style="font-family:'Cormorant Garamond'; font-weight:500; font-size:84px; line-height:1">Aa</span>
+        <span style="font-weight:300; font-size:80px; line-height:1">أب</span></div>
+      <div style="font-family:'Cormorant Garamond'; font-weight:600; font-size:15px; letter-spacing:0.22em; margin-top:18px">CORMORANT GARAMOND</div>
+      <div style="font-size:15px; font-weight:400; margin-top:4px; direction:rtl; text-align:right">IBM Plex Sans Arabic · خفيف</div>
+    </div>
+    <div class="tile" id="n5-pattern" style="background:#e8c7be"></div>
+    <div class="tile" style="background: radial-gradient(70% 70% at 50% 40%, #f3ddd5, #e8c7be); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px">
+      <div style="font-size:34px; font-weight:300; text-align:center; line-height:1.4; direction:rtl">ابدي يومچ<br />بلمسة ندى</div>
+      <div id="n5-post-word"></div>
+      <span class="lbl" style="left:auto; right:18px; letter-spacing:0.1em">@nada.skincare</span>
+    </div>
+  </div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">05</span>
+  <div class="grain"></div>
+</section>
+
+<!-- ============================ WARD ============================ -->
+<section class="s ward" id="ward-1" style="color:#5e1624">
+  <img class="full" src="img/mock-ward-products.jpg" />
+  <span class="cap tl">Ward</span><span class="cap tr">Brand identity</span>
+  <div class="abs ar" style="z-index:30; top:118px; left:60px; text-align:right">
+    <div style="font-size:52px; font-weight:300; line-height:1.3">هوية بصرية</div>
+    <div style="font-size:28px; font-weight:300; opacity:0.8">لعلامة مكياج وعناية</div>
+  </div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">01</span>
+</section>
+
+<section class="s ward" id="ward-2" style="background: radial-gradient(80% 60% at 50% 42%, #7a2133, #5e1624 55%, #3f0d17); color:#d9b77a">
+  <span class="cap tl">Ward</span><span class="cap tr">The logo</span>
+  <div class="cen" style="top:340px"><div style="width:720px; height:360px" id="w2-word"></div>
+    <svg width="520" height="60" style="margin-top:30px" id="w2-latin"></svg>
+    <div style="font-size:18px; font-weight:400; letter-spacing:0.5em; padding-left:0.5em; margin-top:8px; opacity:0.75">BEAUTY</div>
+  </div>
+  <div class="note ar" style="left:0; right:0; bottom:120px; text-align:center; font-size:24px; color:#e6d2b5; opacity:0.85">جمالچ، بلمسة ورد</div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">02</span>
+  <div class="grain" style="mix-blend-mode:overlay; opacity:0.3"></div>
+</section>
+
+<section class="s ward" id="ward-3" style="background:#eadbc8; color:#5e1624">
+  <span class="cap tl">Ward</span><span class="cap tr">The idea</span>
+  <div class="abs" style="left:190px; top:210px; width:700px; height:700px" id="w3-rose"></div>
+  <div class="note ar" style="right:80px; left:80px; bottom:150px; text-align:center">
+    راس الواو صار <b style="font-weight:500">وردة تتفتح</b>، وذيله صار الساق والورقة
+    <em>The wāw blooms: its head a rose bud, its tail the stem and a leaf.</em>
+  </div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">03</span>
+  <div class="grain"></div>
+</section>
+
+<section class="s ward" id="ward-4" style="color:#5e1624">
+  <img class="full" src="img/mock-ward-cards.jpg" />
+  <span class="cap tl">Ward</span><span class="cap tr">Stationery</span>
+  <div class="note ar" style="right:60px; top:118px; text-align:right; font-size:30px">كارت العمل، طباعة ذهبية<em>Business card, gold foil on black</em></div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">04</span>
+</section>
+
+<section class="s ward" id="ward-5" style="background:#efe3d3; color:#5e1624">
+  <span class="cap tl">Ward</span><span class="cap tr">Brand board</span>
+  <div class="bento" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1.25fr 1fr 1fr">
+    <div class="tile" style="grid-row: span 2"><img src="img/mock-ward-products.jpg" style="object-position:20% 55%; transform:scale(1.6); transform-origin:20% 55%" /></div>
+    <div class="tile" style="grid-column: span 2; background: radial-gradient(80% 80% at 50% 40%, #7a2133, #5e1624 60%, #45101a); display:grid; place-items:center"><div style="width:470px; height:235px" id="w5-word"></div></div>
+    <div class="tile" style="display:grid; grid-template-rows: 1.5fr 1fr 1fr 1fr">
+      <div class="chip" style="background:#5e1624; color:#eadbc8"><span>5E1624</span><b>نبيذي</b></div>
+      <div class="chip" style="background:#b23a4e; color:#fbeee4"><span>B23A4E</span><b>أحمر وردي</b></div>
+      <div class="chip" style="background:#cc9f63; color:#3a1a12"><span>CC9F63</span><b>ذهبي</b></div>
+      <div class="chip" style="background:#1b1416; color:#eadbc8"><span>1B1416</span><b>أسود</b></div>
+    </div>
+    <div class="tile" id="w5-pattern" style="background:#5e1624"></div>
+    <div class="tile" style="background:#fbf5ee; padding:26px 24px">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; direction:ltr">
+        <span style="font-family:'Playfair Display'; font-weight:500; font-size:80px; line-height:1">Aa</span>
+        <span style="font-family:'Amiri'; font-weight:700; font-size:78px; line-height:1">أب</span></div>
+      <div style="font-family:'Playfair Display'; font-weight:500; font-size:14px; letter-spacing:0.22em; margin-top:22px">PLAYFAIR DISPLAY</div>
+      <div style="font-size:15px; font-weight:400; margin-top:4px; direction:rtl; text-align:right">Amiri · أميري</div>
+    </div>
+    <div class="tile" style="background:#1b1416; display:grid; place-items:center">
+      <div style="width:150px; height:150px; border-radius:36px; background: linear-gradient(145deg, #7a2133, #5e1624); display:grid; place-items:center; box-shadow:0 18px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.15)"><div style="width:120px; height:120px" id="w5-icon"></div></div>
+      <span class="lbl" style="color:#d9b77a">App icon</span></div>
+    <div class="tile" style="background: radial-gradient(70% 70% at 50% 35%, #8d2236, #5e1624); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:#ead6b8">
+      <div style="width:90px; height:90px" id="w5-post-rose"></div>
+      <div style="font-family:'Amiri'; font-weight:700; font-size:40px; line-height:1.3; text-align:center; direction:rtl">مجموعة الورد<br />وصلت</div>
+      <span class="lbl" style="left:auto; right:18px; letter-spacing:0.1em; color:#d9b77a">@ward.beauty</span>
+    </div>
+  </div>
+  <span class="cap bl">allawi.psd</span><span class="cap br">05</span>
+  <div class="grain"></div>
+</section>
+
+<script>
+const FONTS = ["300 100px 'IBM Plex Sans Arabic'", "400 100px 'IBM Plex Sans Arabic'"];
+Promise.all([...FONTS.map((f) => document.fonts.load(f, 'ندىٮ')), document.fonts.ready]).then(() => {
+  const nada = (o) => nadaWordmark({ family: "'IBM Plex Sans Arabic'", weight: 300, scale: 2.6, ...o });
+
+  // NADA 2: the logo
+  document.getElementById('n2-word').append(nada({ size: 260, ink: '#4a3029', glint: '#e8c7be' }));
+
+  // NADA 3: the word, very large, with its construction drawn over it
+  const w3 = nada({ size: 400, ink: '#f6efe6', glint: '#4a3029' });
+  document.getElementById('n3-word').append(w3);
+  requestAnimationFrame(() => {
+    const s = document.getElementById('nada-3').getBoundingClientRect();
+    const drop = w3.querySelector('div').getBoundingClientRect(), word = w3.getBoundingClientRect();
+    const dx = drop.left - s.left, dy = drop.top - s.top, dw = drop.width, dh = drop.height;
+    const cx = dx + dw / 2, cy = dy + dh * (34 / 52), r = dw * 0.5;
+    const top = word.top - s.top, bot = word.bottom - s.top, wl = word.left - s.left, wr = word.right - s.left;
+    const c = 'rgba(246,239,230,0.38)', gold = '#d6a98f';
+    document.getElementById('n3-guides').innerHTML = `
+      <g class="guide" stroke="${c}">
+        <line x1="40" x2="1040" y1="${dy}" y2="${dy}" /><line x1="40" x2="1040" y1="${cy}" y2="${cy}" />
+        <line x1="40" x2="1040" y1="${bot - (bot - top) * 0.18}" y2="${bot - (bot - top) * 0.18}" />
+        <line x1="${cx}" x2="${cx}" y1="200" y2="1060" />
+        <circle cx="${cx}" cy="${cy}" r="${r}" stroke="${gold}" stroke-width="1.5" /><circle cx="${cx}" cy="${cy}" r="${r * 1.9}" />
+        <rect x="${wl}" y="${dy}" width="${wr - wl}" height="${bot - dy}" stroke-dasharray="4 6" />
+      </g>
+      <g font-family="Cormorant Garamond" font-style="italic" font-size="20" fill="${gold}">
+        <text x="${cx + r * 1.9 + 14}" y="${cy - 8}">dew</text>
+        <text x="48" y="${dy - 10}">1.3 : 1</text>
+        <text x="48" y="${bot - (bot - top) * 0.18 - 10}">baseline</text>
+      </g>`;
+  });
+
+  // NADA 5: seal, pattern, post
+  document.getElementById('n5-seal').innerHTML = `<svg viewBox="0 0 300 300" width="250" height="250">
+      <defs><path id="ring" d="M150 150 m-104 0 a104 104 0 1 1 208 0 a104 104 0 1 1 -208 0" /></defs>
+      <circle cx="150" cy="150" r="128" fill="none" stroke="#4a3029" stroke-width="1.5" /><circle cx="150" cy="150" r="80" fill="none" stroke="#4a3029" stroke-width="1" />
+      <text font-family="Cormorant Garamond" font-weight="600" font-size="19" letter-spacing="7.2" fill="#4a3029"><textPath href="#ring">NADA · SKINCARE · BAGHDAD · نَدى ·</textPath></text>
+      <g transform="translate(126 112) scale(1.2)">${nadaDrop({ ink: '#4a3029', glint: '#e8c7be' }).replace('<svg ', '<svg width="40" height="52" ')}</g></svg>
+    <span class="lbl">Seal / sticker</span>`;
+  let pat = '';
+  for (let y = 0; y < 7; y++) for (let x = 0; x < 9; x++) {
+    const px = x * 44 + (y % 2) * 22 - 10, py = y * 50 - 10;
+    pat += `<g transform="translate(${px} ${py}) scale(0.42)">${nadaDrop({ ink: (x + y) % 5 === 0 ? '#4a3029' : '#c98b7a', glint: '#e8c7be' }).replace('<svg ', '<svg width="40" height="52" ')}</g>`;
+  }
+  document.getElementById('n5-pattern').innerHTML = `<svg width="100%" height="100%">${pat}</svg><span class="lbl" style="background:#e8c7be; padding:4px 8px; border-radius:6px; left:14px">Pattern</span>`;
+  document.getElementById('n5-post-word').append(nada({ size: 70, ink: '#4a3029', glint: '#e8c7be' }));
+
+  // WARD 2: gold foil logotype
+  document.getElementById('w2-word').innerHTML = wardWordmark({ gold: true, stroke: 4.6 });
+  document.getElementById('w2-latin').innerHTML = `<defs>${goldDefs('wl')}</defs><text x="260" y="44" text-anchor="middle" font-family="Playfair Display" font-weight="500" font-size="40" letter-spacing="26" fill="url(#wl)">WARD</text>`;
+
+  // WARD 3: the rose wāw with its construction
+  const g = '#b23a4e';
+  document.getElementById('w3-rose').innerHTML = wardRose({ ink: '#5e1624', stroke: 3.4 }).replace('<svg ', '<svg width="700" height="700" ').replace('</svg>', `
+    <g fill="none" stroke="${g}" stroke-width="0.45" opacity="0.8">
+      <circle cx="119" cy="58" r="13" /><circle cx="119.5" cy="66" r="34" /><circle cx="119.5" cy="66" r="47" stroke-dasharray="1.5 2" />
+      <line x1="40" x2="190" y1="99" y2="99" /><line x1="40" x2="190" y1="33" y2="33" /><line x1="119.5" x2="119.5" y1="10" y2="190" />
+      <path d="M120 99 C 125 128, 113 160, 52 176" stroke-dasharray="1.5 2" transform="translate(4 -3)" />
+      <line x1="112" y1="146" x2="168" y2="118" />
+    </g>
+    <g font-family="Playfair Display" font-style="italic" font-size="5.6" fill="${g}">
+      <text x="170" y="40">bud</text><text x="62" y="186">stem = the wāw's tail</text><text x="166" y="113">leaf</text>
+    </g></svg>`);
+
+  // WARD 5
+  document.getElementById('w5-word').innerHTML = wardWordmark({ gold: true, stroke: 5 });
+  document.getElementById('w5-icon').innerHTML = wardRose({ gold: true, stroke: 6 });
+  document.getElementById('w5-post-rose').innerHTML = wardRose({ gold: true, stroke: 6 });
+  let rp = '';
+  for (let y = 0; y < 5; y++) for (let x = 0; x < 5; x++) rp += `<g transform="translate(${x * 74 + (y % 2) * 37 - 30} ${y * 74 - 20}) scale(0.42)">${wardRose({ gold: true, stroke: 5 }).replace('<svg ', '<svg width="200" height="200" ')}</g>`;
+  document.getElementById('w5-pattern').innerHTML = `<svg width="100%" height="100%">${rp}</svg><span class="lbl" style="color:#d9b77a">Pattern</span>`;
+
+  setTimeout(() => (document.body.dataset.ready = '1'), 300);
+});
+</script>
+</body>
+</html>

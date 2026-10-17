@@ -1,0 +1,9 @@
+renders/*
+!renders/one-second-reel.mp4
+!renders/one-second-reel-cover.jpg
+assets/sfx/
+assets/tr/
+snapshots/
+node_modules/
+.hyperframes/
+.media/

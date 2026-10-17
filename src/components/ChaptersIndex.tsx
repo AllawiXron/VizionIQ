@@ -2,10 +2,14 @@ import React from "react";
 import { motion } from "motion/react";
 import { ArrowLeft, BookOpen, Check, Clock } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
+import { courseChapters, chapterMinutes } from "../data/course";
 import { EASE_OUT } from "../lib/motion";
 import { CHAPTER_STAGES, nextChapterId, useCourseProgress } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { PageHeader } from "./ui/PageHeader";
+import { isFreeTrialUser } from "./LockScreen";
+import { isTrialChapter } from "../lib/trial";
+import { LockChip } from "./TrialLock";
 
 interface ChaptersIndexProps {
   userCode: string;
@@ -14,8 +18,6 @@ interface ChaptersIndexProps {
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-/** Short reading time ("25 دقيقة قراءة مكثفة" → "25 دقيقة"). */
-const shortTime = (readTime?: string) => readTime?.match(/\d+\s*دقيقة/)?.[0] ?? readTime ?? "";
 
 /** The course as a simple ordered list: four stages, one row per chapter. */
 export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexProps) {
@@ -23,6 +25,7 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
   const done = new Set(progress.done);
   const nextId = nextChapterId(progress);
   const doneCount = chaptersList.filter((c) => done.has(c.id)).length;
+  const isTrial = isFreeTrialUser(userCode);
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
@@ -80,12 +83,17 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
                               {progress.last === id ? "وكفت هنا" : "الجاي"}
                             </span>
                           )}
+                          {isTrial && (isTrialChapter(id) ? (
+                            <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300">مفتوح بالتجربة</span>
+                          ) : (
+                            <LockChip />
+                          ))}
                         </span>
                         <span className="block text-xs sm:text-sm text-white/50 mt-1 line-clamp-1">{chapter.subtitle}</span>
                       </span>
                       <span className="hidden sm:flex items-center gap-1 text-[11px] text-white/45 font-mono shrink-0">
                         <Clock className="w-3.5 h-3.5" />
-                        {shortTime(chapter.readTime)}
+                        {courseChapters[chapter.id] ? `${chapterMinutes(courseChapters[chapter.id])} دقيقة` : ""}
                       </span>
                       <ArrowLeft className="w-4 h-4 text-white/40 shrink-0 transition-transform duration-300 group-hover:-translate-x-1 group-hover:text-white/80" />
                       <span className="sr-only">{isDone ? "(مكتمل)" : ""}</span>

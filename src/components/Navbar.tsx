@@ -113,7 +113,7 @@ export default function Navbar({
                 <span className="text-white/45 text-[10px] sm:text-xs font-bold font-mono tracking-[0.18em]">VIZION</span>
               </span>
               <span className="text-[9px] text-white/50 font-normal hidden sm:inline-block tracking-wide mt-1">
-                منظومة التجارة والنمو
+                كورس التجارة الإلكترونية
               </span>
             </div>
           </motion.button>
@@ -150,7 +150,7 @@ export default function Navbar({
             <button
               onClick={onLogout}
               className={`btn btn-ghost px-2.5 xl:px-3 text-xs whitespace-nowrap text-white/55 hover:!text-red-300 ${focusRing}`}
-              title="خروج وقفل الدليل"
+              title="خروج"
             >
               <LogOut className="w-4 h-4" />
               <span className="hidden xl:inline">خروج</span>
@@ -161,10 +161,10 @@ export default function Navbar({
               <button
                 onClick={onOpenUpgrade}
                 className={`btn btn-glass px-3.5 text-xs rounded-full whitespace-nowrap ${focusRing}`}
-                title="اضغط للترقية إلى الحساب الكامل"
+                title="الاشتراك الكامل"
               >
                 <Crown className="w-3.5 h-3.5" />
-                <span>ترقية الكورس</span>
+                <span>اشترك</span>
               </button>
             ) : null}
 
@@ -174,7 +174,7 @@ export default function Navbar({
                 <button
                   onClick={onOpenAdvisor}
                   className={`btn btn-primary px-4 text-xs rounded-full whitespace-nowrap ${focusRing}`}
-                  title="المستشار الرقمي المباشر الذكي"
+                  title="مستشار فيزيون"
                 >
                   <Bot className="w-4 h-4" />
                   <span>اسأل المستشار</span>

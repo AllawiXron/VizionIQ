@@ -1,0 +1,17 @@
+{
+  "name": "vizioniq-tiktok",
+  "private": true,
+  "description": "Short Islamic reminder videos (TikTok / Reels), made with Remotion",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.532",
+    "@remotion/cli": "4.0.532",
+    "@remotion/renderer": "^4.0.532",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.532"
+  }
+}

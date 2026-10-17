@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>AMR aljanabi — rich product ads</title>
+<link rel="stylesheet" href="kit/fonts/fonts.css" />
+<link rel="stylesheet" href="fonts/fonts.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #222; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+
+  /* v4 (clean product ad) + what the big houses add on top: the name huge behind the bottle,
+     the real ingredients floating in front and behind it, a key light, and depth of field */
+  .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--ink); font-family: 'IBM Plex Sans Arabic';
+    background: radial-gradient(60% 50% at 34% 52%, var(--c1) 0%, var(--c2) 52%, var(--c3) 100%); }
+  .post::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(38% 30% at 33% 46%, rgba(255,240,205,.55), rgba(255,240,205,0) 70%); }
+  .post::after { content: ''; position: absolute; inset: 0; background: url(kit/img/grain.png) repeat; background-size: 380px; mix-blend-mode: overlay; opacity: .22; pointer-events: none; z-index: 40; }
+  .vig { position: absolute; inset: 0; z-index: 30; pointer-events: none; box-shadow: inset 0 0 220px rgba(40,12,0,.35); }
+
+  .giant { position: absolute; left: 0; right: 0; top: 118px; z-index: 3; text-align: center; font-family: 'Alexandria'; font-weight: 900;
+    line-height: .8; letter-spacing: -.02em; direction: ltr; white-space: nowrap; color: var(--giant); }
+
+  .over { position: absolute; right: 64px; top: 372px; z-index: 10; font-family: 'Alexandria'; font-weight: 800; font-size: 30px; letter-spacing: .42em; direction: ltr; margin-right: -.42em; }
+
+  .hand { position: absolute; z-index: 6; filter: drop-shadow(34px 44px 46px rgba(40,10,0,.34)) drop-shadow(6px 10px 14px rgba(40,10,0,.2)); }
+  .prop { position: absolute; filter: drop-shadow(14px 20px 18px rgba(40,10,0,.3)); }
+  .back { z-index: 2; }  .mid { z-index: 4; }  .front { z-index: 7; }  .fg { z-index: 25; }
+
+  .logo { position: absolute; left: 64px; top: 52px; font-family: 'Cormorant Garamond', serif; line-height: 1; z-index: 10; direction: ltr; }
+  .logo .a { font-size: 42px; font-weight: 700; }
+  .logo .b { font-size: 14px; font-weight: 600; letter-spacing: .5em; margin-top: 1px; }
+  .tagtop { position: absolute; right: 64px; top: 64px; font-size: 21px; font-weight: 600; z-index: 10; direction: rtl; opacity: .85; }
+
+  .col { position: absolute; right: 64px; width: 410px; top: 432px; direction: rtl; text-align: right; z-index: 10; }
+  .pill { display: inline-block; font-size: 19px; font-weight: 600; padding: 7px 18px 8px; border: 2px solid var(--line2); border-radius: 40px; }
+  .pill span { direction: ltr; unicode-bidi: isolate; font-weight: 700; }
+  .hl { font-family: 'Alexandria'; font-weight: 800; font-size: 52px; line-height: 1.28; margin-top: 18px; }
+  .notes { margin-top: 30px; }
+  .notes .r { display: flex; align-items: center; gap: 16px; padding: 10px 0; border-top: 2px solid var(--line); }
+  .notes .r:last-child { border-bottom: 2px solid var(--line); }
+  .chip { flex: none; width: 66px; height: 66px; border-radius: 50%; overflow: hidden; box-shadow: 0 6px 14px rgba(40,10,0,.25), 0 0 0 3px var(--ring); }
+  .chip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .chip.ic { display: grid; place-items: center; background: var(--ink); }
+  .chip.ic svg { width: 34px; height: 34px; fill: var(--c1); }
+  .notes .k { font-size: 18px; font-weight: 700; opacity: .7; line-height: 1.2; }
+  .notes .v { font-size: 23px; font-weight: 600; line-height: 1.35; }
+
+  .price { position: absolute; right: 64px; bottom: 132px; z-index: 10; direction: rtl; display: flex; align-items: flex-end; gap: 16px; }
+  .price .n { font-family: 'Alexandria'; font-weight: 900; font-size: 196px; line-height: .78; letter-spacing: -.02em; direction: ltr; }
+  .price .u { padding-bottom: 6px; }
+  .price .u b { display: block; font-family: 'Alexandria'; font-weight: 800; font-size: 46px; line-height: 1.1; }
+  .price .u small { display: block; font-size: 21px; font-weight: 600; opacity: .78; margin-top: 4px; }
+
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 92px; z-index: 20; background: var(--ink); color: var(--bar);
+    display: flex; justify-content: space-around; align-items: center; direction: rtl; padding: 0 36px; }
+  .bar .i { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 600; }
+  .bar svg { width: 30px; height: 30px; fill: var(--c1); flex: none; }
+  .bar .sep { width: 2px; height: 34px; background: rgba(255,255,255,.18); }
+
+  #amberful  { --c1: #ffb760; --c2: #dc7c2a; --c3: #8c3a0e; --ink: #2a1206; --giant: #fff0d6; --bar: #ffe9c9;
+               --line: rgba(42,18,6,.22); --line2: rgba(42,18,6,.4); --ring: rgba(255,240,214,.85); }
+  #slazenger { --c1: #ffe08a; --c2: #e2b443; --c3: #8d6412; --ink: #241a05; --giant: #fff7dc; --bar: #fff1c4;
+               --line: rgba(36,26,5,.22); --line2: rgba(36,26,5,.4); --ring: rgba(255,247,220,.85); }
+
+  /* out-of-focus lights: discs with a brighter rim, like a fast lens shot against gold */
+  .orb { position: absolute; border-radius: 50%; mix-blend-mode: screen; pointer-events: none;
+    background: radial-gradient(circle, rgba(255,248,215,.55) 0%, rgba(255,240,190,.45) 58%, rgba(255,250,225,.9) 70%, rgba(255,240,190,0) 74%); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 5h12v10H2zM14 8h4.5l3.5 4v3h-8zM6.5 19.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm11 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2s-7 8-7 12.5a7 7 0 0 0 14 0C19 10 12 2 12 2z"/></symbol>
+  <symbol id="i-glass" viewBox="0 0 24 24"><path d="M6 2h12v3c0 3-2.6 5.2-4.6 7 2 1.8 4.6 4 4.6 7v3H6v-3c0-3 2.6-5.2 4.6-7C8.6 10.2 6 8 6 5z"/></symbol>
+  <symbol id="i-bottle" viewBox="0 0 24 24"><path d="M9 1h6v4H9zM10 5h4v2h2.5A2.5 2.5 0 0 1 19 9.5v11a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 5 20.5v-11A2.5 2.5 0 0 1 7.5 7H10z"/></symbol>
+</svg>
+
+<!-- 1 · Amberful -->
+<section class="post" id="amberful">
+  <div class="logo"><div class="a">AMR</div><div class="b">aljanabi</div></div>
+  <div class="tagtop">عطور مطابقة ومعتّقة يدوياً</div>
+
+  <div class="giant" data-fit="1000" style="top:196px">AMBERFUL</div>
+
+  <!-- behind the bottle: a yuzu out of focus, a few peppercorns -->
+  <img class="prop back" src="ing/yuzu_a.png" alt="" style="left:-96px;top:520px;width:270px;transform:rotate(-14deg);filter:blur(4px) drop-shadow(14px 20px 18px rgba(40,10,0,.3))" />
+  <img class="prop mid" src="ing/pc5.png" alt="" style="left:470px;top:350px;width:40px;transform:rotate(30deg);filter:blur(1.5px)" />
+  <img class="prop mid" src="ing/pc3.png" alt="" style="left:132px;top:404px;width:34px;transform:rotate(-40deg);filter:blur(1.5px)" />
+
+  <img class="hand" src="cut/mancera-soft.png" alt="" style="left:-104px;top:-96px;height:1360px" />
+
+  <!-- in front: peppercorns, the amber stone, a second yuzu close to the lens -->
+  <img class="prop front" src="ing/pc2.png" alt="" style="left:536px;top:610px;width:58px;transform:rotate(12deg)" />
+  <img class="prop front" src="ing/pc6.png" alt="" style="left:556px;top:770px;width:40px;transform:rotate(-24deg)" />
+  <img class="prop front" src="ing/pc4.png" alt="" style="left:64px;top:790px;width:62px;transform:rotate(50deg)" />
+  <img class="prop front" src="ing/pc7.png" alt="" style="left:30px;top:990px;width:46px;transform:rotate(-8deg)" />
+  <img class="prop fg" src="ing/amber.png" alt="" style="left:-70px;top:1010px;width:330px;transform:rotate(-10deg);filter:drop-shadow(18px 26px 22px rgba(40,10,0,.4))" />
+  <img class="prop fg" src="ing/pc3.png" alt="" style="left:452px;top:1150px;width:96px;transform:rotate(18deg);filter:blur(5px)" />
+
+  <div class="col">
+    <div class="pill">بأعلى تطابق لـ <span>Mancera Amberful</span></div>
+    <div class="hl">فخامة العنبر..<br/>وانتعاش يكسر<br/>الروتين</div>
+    <div class="notes">
+      <div class="r"><span class="chip"><img src="ing/chip-yuzu.jpg" alt="" /></span><div><div class="k">الافتتاحية</div><div class="v">يوزو · برغموت · فلفل وردي</div></div></div>
+      <div class="r"><span class="chip"><img src="ing/chip-violet.jpg" alt="" /></span><div><div class="k">القلب</div><div class="v">بنفسج · باتشولي · خشب العنبر</div></div></div>
+      <div class="r"><span class="chip"><img src="ing/chip-amber.jpg" alt="" /></span><div><div class="k">القاعدة</div><div class="v">عنبر · خشب الأرز · طحلب السنديان</div></div></div>
+    </div>
+  </div>
+
+  <div class="price"><span class="n">20</span><span class="u"><b>ألف</b><small>عبوة 35ml · فئة S</small></span></div>
+
+  <div class="bar">
+    <span class="i"><svg><use href="#i-truck"/></svg>التوصيل لكل المحافظات 5,000</span><span class="sep"></span>
+    <span class="i"><svg><use href="#i-pin"/></svg>بغداد · كرادة داخل</span><span class="sep"></span>
+    <span class="i"><svg><use href="#i-chat"/></svg>للطلب دايركت</span>
+  </div>
+  <div class="vig"></div>
+</section>
+
+<!-- 2 · Slazenger Gold — no published notes, so no ingredients: gold leaf, light and the name do the work -->
+<section class="post" id="slazenger">
+  <div class="logo"><div class="a">AMR</div><div class="b">aljanabi</div></div>
+  <div class="tagtop">عطور مطابقة ومعتّقة يدوياً</div>
+
+  <div class="giant" data-fit="940">GOLD</div>
+  <div class="over">SLAZENGER</div>
+  <div class="bokeh" data-seed="7"></div>
+
+  <img class="hand" src="cut/slazenger-clean-soft.png" alt="" style="left:-120px;top:40px;height:1330px" />
+
+  <div class="col">
+    <div class="pill">سلازنجر ذهبي · <span>eau de parfum</span></div>
+    <div class="hl">بدائل نخبوية..<br/>لأشهر الماركات<br/>العالمية</div>
+    <div class="notes">
+      <div class="r"><span class="chip ic"><svg><use href="#i-drop"/></svg></span><div><div class="k">الزيوت</div><div class="v">زيوت عطرية فرنسية وسويسرية</div></div></div>
+      <div class="r"><span class="chip ic"><svg><use href="#i-glass"/></svg></span><div><div class="k">التعتيق</div><div class="v">يدوي، للجودة والثبات</div></div></div>
+      <div class="r"><span class="chip ic"><svg><use href="#i-bottle"/></svg></span><div><div class="k">العبوة</div><div class="v">35ml</div></div></div>
+    </div>
+  </div>
+
+  <div class="price" id="slz-price"><span class="u"><b style="font-size:60px">السعر بالدايركت</b></span></div>
+
+  <div class="bar">
+    <span class="i"><svg><use href="#i-truck"/></svg>التوصيل لكل المحافظات 5,000</span><span class="sep"></span>
+    <span class="i"><svg><use href="#i-pin"/></svg>بغداد · كرادة داخل</span><span class="sep"></span>
+    <span class="i"><svg><use href="#i-chat"/></svg>للطلب دايركت</span>
+  </div>
+  <div class="vig"></div>
+</section>
+
+<script>
+  // bokeh: seeded so every render is identical; kept off the copy column
+  function rng(s) { return () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646; }
+  document.querySelectorAll('.bokeh').forEach((box) => {
+    const r = rng(+box.dataset.seed), post = box.parentElement;
+    // [x, y, size, depth] depth 0 = behind the bottle, 1 = in front, out of focus
+    const spots = [[60, 470, 120, 0], [430, 300, 70, 0], [470, 560, 46, 0], [250, 610, 36, 0], [40, 860, 64, 0], [520, 760, 90, 0],
+                   [300, 380, 54, 0], [560, 1090, 40, 0], [150, 1080, 80, 0], [-60, 1120, 220, 1], [460, 1120, 170, 1], [580, 400, 30, 0]];
+    for (const [x, y, d, depth] of spots) {
+      const o = document.createElement('div');
+      o.className = 'orb';
+      Object.assign(o.style, { left: x + 'px', top: y + 'px', width: d + 'px', height: d + 'px', zIndex: depth ? 25 : 4,
+        opacity: (depth ? 0.28 : 0.45 + r() * 0.4).toFixed(2), filter: `blur(${depth ? 10 : d > 80 ? 3 : 1.2}px)` });
+      post.appendChild(o);
+    }
+  });
+  document.fonts.ready.then(() => {
+    document.querySelectorAll('.giant').forEach((g) => {
+      g.style.fontSize = '100px';
+      const w = g.scrollWidth, span = document.createElement('span');
+      span.textContent = g.textContent; span.style.display = 'inline-block'; g.textContent = ''; g.appendChild(span);
+      g.style.fontSize = (100 * (+g.dataset.fit) / span.getBoundingClientRect().width) + 'px';
+    });
+    return Promise.all([...document.images].map((im) => im.decode().catch(() => {})));
+  }).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

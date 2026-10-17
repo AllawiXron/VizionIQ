@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>Miswag — الجمعة البيضاء (2 concepts)</title>
+<link rel="stylesheet" href="fonts/src.css" />
+<link rel="stylesheet" href="fonts-display/src.css" />
+<!-- 2.5D campaign look with real photos: one cut-out product on a Miswag-red studio sweep, big white display
+     lettering, a small logo. Photos: photo/prep.py. -->
+<style>
+  :root { --red: #de1c24; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 40px 0; }
+  .ad { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: "Alexandria", sans-serif; direction: rtl; color: #fff; background: var(--red); }
+  .abs { position: absolute; }
+
+  /* the studio: a lit red wall, a soft seam, a floor that catches the light in the middle */
+  .studio { position: absolute; inset: 0;
+    background:
+      radial-gradient(48% 30% at 50% 74%, rgba(255, 120, 110, 0.32) 0%, rgba(255, 120, 110, 0) 100%),
+      radial-gradient(70% 44% at 50% 36%, rgba(255, 95, 90, 0.5) 0%, rgba(255, 95, 90, 0) 100%),
+      linear-gradient(180deg, #d5121b 0%, #e01d26 44%, #c40e17 62%, #e5232c 66%, #de1c24 82%, #c2101a 100%); }
+  .studio::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 220px rgba(110, 0, 8, 0.45); }
+  .grain { position: absolute; inset: 0; z-index: 30; pointer-events: none; opacity: 0.12; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>"); }
+  .shadow { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(80, 0, 6, 0.6), rgba(80, 0, 6, 0)); }
+
+  .t { position: absolute; z-index: 12; left: 0; right: 0; text-align: center; white-space: nowrap; }
+  .big { font-family: "Lalezar", sans-serif; font-weight: 400; line-height: 1.32; text-shadow: 0 10px 30px rgba(90, 0, 4, 0.32); }
+  .lead { font-family: "Marhey", sans-serif; font-weight: 700; line-height: 1.5; color: rgba(255, 255, 255, 0.94); }
+
+  .top { position: absolute; z-index: 14; top: 46px; left: 52px; right: 52px; display: flex; justify-content: space-between; align-items: center; }
+  .top img { height: 44px; display: block; }
+  .top .tag { font-weight: 700; font-size: 20px; padding: 9px 18px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.16); border: 1.5px solid rgba(255, 255, 255, 0.4); }
+  .bot { position: absolute; z-index: 14; left: 52px; right: 52px; bottom: 44px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 19px; color: rgba(255, 255, 255, 0.9); }
+  .bot .cta { display: flex; align-items: center; gap: 12px; background: #fff; color: var(--red); font-weight: 800; font-size: 21px; padding: 13px 24px; border-radius: 16px; box-shadow: 0 12px 26px rgba(90, 0, 4, 0.3); }
+  .bot .cta svg { width: 20px; height: 20px; }
+
+  .sub { display: inline-block; font-weight: 700; font-size: 26px; padding: 10px 24px 12px; border-radius: 999px; background: #fff; color: var(--red); box-shadow: 0 10px 24px rgba(90, 0, 4, 0.25); }
+  /* the gift tag: a white card with a punched hole, clipped corners on the hole side */
+  .tag-card { position: absolute; z-index: 8; width: 200px; height: 96px; transform-origin: 14px 48px; background: #fff;
+    clip-path: polygon(26px 0, 100% 0, 100% 100%, 26px 100%, 0 70px, 0 26px); border-radius: 0 10px 10px 0;
+    filter: drop-shadow(0 12px 16px rgba(80, 0, 6, 0.35)); display: flex; align-items: center; justify-content: flex-end; padding-right: 20px; direction: ltr; }
+  .tag-card .hole { position: absolute; left: 12px; top: 40px; width: 16px; height: 16px; border-radius: 50%; background: #b8121b; box-shadow: inset 0 2px 3px rgba(0,0,0,0.35); }
+  .tag-card img { width: 124px; display: block; }
+  .coin { position: absolute; filter: drop-shadow(0 18px 18px rgba(80, 0, 6, 0.4)); }
+  .spark { position: absolute; z-index: 9; }
+
+  /* flat lay: red paper seen from above, lit from the top left */
+  .paper { position: absolute; inset: 0;
+    background: radial-gradient(90% 70% at 24% 18%, #ef2a33 0%, #de1c24 46%, #c3101a 100%); }
+  .paper::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 200px rgba(100, 0, 8, 0.4); }
+  .tagwrap { position: absolute; z-index: 6; width: 760px; height: 350px; transform-origin: 380px 175px; }
+  .piece { position: absolute; inset: 0; transform-origin: 380px 175px; filter: drop-shadow(10px 18px 14px rgba(70, 0, 6, 0.38)) drop-shadow(2px 3px 2px rgba(70, 0, 6, 0.25)); }
+  .clip { position: absolute; inset: 0; }
+  .clip > img:first-child { position: absolute; inset: 0; width: 760px; height: 350px; display: block; }
+  .piece.top { filter: drop-shadow(8px 12px 10px rgba(70, 0, 6, 0.26)) drop-shadow(1px 2px 1px rgba(70, 0, 6, 0.2)); }
+  /* the card is not pure white: soft light falling off away from the top left, and a faint warm bounce from the red */
+  .clip::after { content: ""; position: absolute; inset: 0; mix-blend-mode: multiply; pointer-events: none;
+    background: radial-gradient(120% 140% at 18% 8%, rgba(255,255,255,0) 30%, rgba(236,224,222,0.9) 100%);
+    -webkit-mask-image: url(img/tag-photo.png); mask-image: url(img/tag-photo.png); -webkit-mask-size: 760px 350px; mask-size: 760px 350px; }
+  .price { position: absolute; left: 190px; right: 40px; top: 70px; text-align: center; font-family: "Lalezar", sans-serif; font-size: 150px; line-height: 1.2;
+    color: #1d1a1b; mix-blend-mode: multiply; direction: rtl; }
+  .mark { position: absolute; right: 36px; bottom: 30px; width: 104px; mix-blend-mode: multiply; }
+  .scissors { position: absolute; z-index: 8; width: 600px; transform-origin: 321px 189px; filter: drop-shadow(12px 20px 14px rgba(70, 0, 6, 0.4)) drop-shadow(2px 3px 2px rgba(70, 0, 6, 0.3)); }
+
+  /* layer export */
+  body.export { background: transparent; padding: 0; display: block; }
+  body.export .ad [data-l] { visibility: hidden; }
+  body.export:not(.m-bg) .ad { background: none !important; }
+  body.m-bg .ad [data-l="bg"], body.m-photo .ad [data-l="photo"], body.m-txt .ad [data-l="txt"], body.m-logo .ad [data-l="logo"] { visibility: visible; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="dl" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+  <symbol id="spark" viewBox="0 0 40 40"><path d="M20 0 C21.5 13 27 18.5 40 20 C27 21.5 21.5 27 20 40 C18.5 27 13 21.5 0 20 C13 18.5 18.5 13 20 0 Z" fill="#fff" /></symbol>
+</defs></svg>
+
+<!-- ============ 1 · the price tag, cut ============ -->
+<!-- A flat lay on red paper, real photos only (photo/prep_pricetag.py): a blank white price tag with «السعر» and the
+     Miswag mark printed on it, cut lengthwise right through the word; the bottom half has slid away, and the open
+     scissors come in from the right edge, blades in the cut. -->
+<section class="ad" id="c1">
+  <div class="paper" data-l="bg"></div>
+  <div class="top" data-l="txt"><img data-l="logo" src="img/logo-white.png" alt="miswag" /><span class="tag">الجمعة البيضاء</span></div>
+
+  <div class="t lead" data-l="txt" style="top:112px; font-size:34px">بالجمعة البيضاء…</div>
+  <div class="t big" data-l="txt" style="top:154px; font-size:160px">الأسعار انگصّت</div>
+  <div class="t" data-l="txt" style="top:384px"><span class="sub">كلشي من مسواگ بأسعار أقل</span></div>
+
+  <div data-l="photo">
+    <div class="tagwrap" style="left:84px; top:706px; transform: rotate(-8deg) scale(1.04)">
+      <!-- the cut: a diagonal slash from the right edge up to the top edge, through the word; the top piece slides off -->
+      <div class="piece"><div class="clip" style="clip-path: polygon(-40px -40px, 236px -40px, 236px 0, 760px 262px, 800px 262px, 800px 400px, -40px 400px)">
+        <img src="img/tag-photo.png" alt="" /><span class="price">السعر</span><img class="mark" src="img/logo-red.png" alt="" />
+      </div></div>
+      <div class="piece top" style="transform: translate(16px, -30px) rotate(-3deg)"><div class="clip" style="clip-path: polygon(236px -40px, 800px -40px, 800px 262px, 760px 262px, 236px 0)">
+        <img src="img/tag-photo.png" alt="" /><span class="price">السعر</span><img class="mark" src="img/logo-red.png" alt="" />
+      </div></div>
+    </div>
+    <img class="scissors" src="img/scissors-photo.png" alt="" style="left:604px; top:746px; transform: rotate(-134deg)" />
+  </div>
+
+  <div class="bot" data-l="txt"><span>#مسواگ · أكثر من ١٧٠ ألف منتج أصلي</span><span class="cta"><svg><use href="#dl" /></svg>حمّل التطبيق</span></div>
+  <div class="grain" data-l="bg"></div>
+</section>
+
+<!-- ============ 2 · the white gift box ============ -->
+<!-- background: a studio shot made with ChatGPT (photo/chatgpt-gift.png). The Miswag mark is printed on the box
+     (multiplied into the paper) and the third line says plainly what the gift is: Miswag products, White Friday prices -->
+<section class="ad" id="c2">
+  <img class="abs" data-l="bg" src="img/gift-set.png" alt="" style="left:0; top:0; width:1080px; height:1350px" />
+  <div class="top" data-l="txt"><img data-l="logo" src="img/logo-white.png" alt="miswag" /><span class="tag">الجمعة البيضاء</span></div>
+
+  <div class="t lead" data-l="txt" style="top:112px; font-size:34px">هدية لأمك، لخطيبتك، لأهلك…</div>
+  <div class="t big" data-l="txt" style="top:154px; font-size:160px">بيّض وجهك</div>
+  <div class="t" data-l="txt" style="top:384px"><span class="sub">هداياك من مسواگ بأسعار الجمعة البيضاء</span></div>
+
+  <div data-l="photo">
+    <!-- a gift tag tied to the bow: a thin cord from the knot, a white card with the Miswag mark -->
+    <svg class="abs" width="1080" height="1350" style="left:0; top:0; z-index:7; overflow:visible" fill="none">
+      <path d="M556 654 C 574 704, 604 776, 644 822" stroke="#f3e8e4" stroke-width="2.5" stroke-linecap="round" />
+    </svg>
+    <div class="tag-card" style="left:624px; top:776px; transform: rotate(16deg)">
+      <i class="hole"></i>
+      <img src="img/logo-red.png" alt="miswag" />
+    </div>
+  </div>
+
+  <div class="bot" data-l="txt"><span>#مسواگ · توصيل لكل العراق</span><span class="cta"><svg><use href="#dl" /></svg>تسوّق هسة</span></div>
+</section>
+</body>
+</html>

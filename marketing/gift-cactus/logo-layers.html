@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../ig-brand-posts/fonts/src.css" />
+<link rel="stylesheet" href="../ig-food-brands/fonts/fonts.css" />
+<!-- The «كاكتوس» logo (kit.html #logo) split into one element per Photoshop layer.
+     node logo-layers.cjs renders each [data-layer] alone on a transparent canvas; build_psd.py stacks them into psd/kaktus-logo.psd. -->
+<style>
+@font-palette-values --cactus { font-family:'Reem Kufi Fun'; override-colors: 0 #e88a9b, 1 #e88a9b, 2 #e88a9b, 3 #e88a9b; }
+* { box-sizing:border-box; margin:0; padding:0 }
+html, body { background:transparent }
+#logo { position:relative; width:1080px; height:1080px; overflow:hidden; direction:rtl }
+#logo > * { position:absolute }
+body.solo #logo > [data-layer] { visibility:hidden }
+body.solo #logo > [data-layer].on { visibility:visible }
+.bg { inset:0; background:#f7f0e3 }
+.knit { inset:0; filter:invert(1);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='34'%3E%3Cpath d='M4 4 L22 28 L40 4' fill='none' stroke='%23fff' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size:44px 34px }
+.stitch { inset:46px; border:6px dashed rgba(47,90,58,.45); border-radius:44px }
+svg.part { left:300px; top:96px; width:480px; height:576px; overflow:visible }
+.wm { left:0; right:0; top:680px; text-align:center; font:700 190px/1.1 'Reem Kufi Fun'; color:#2f5a3a; white-space:nowrap; font-palette:--cactus }
+.sub { left:0; right:0; top:905px; text-align:center; font:500 46px/1.4 'Readex Pro'; color:rgba(47,90,58,.72); white-space:nowrap }
+.grain { inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E") }
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <pattern id="vst" width="30" height="24" patternUnits="userSpaceOnUse">
+      <rect width="30" height="24" fill="#6b9a5b" />
+      <path d="M3 3 L15 20 L27 3" fill="none" stroke="#86b371" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M0 0 V24 M30 0 V24" stroke="#5a8a4c" stroke-width="2" />
+    </pattern>
+    <pattern id="vst-pot" width="26" height="20" patternUnits="userSpaceOnUse">
+      <rect width="26" height="20" fill="#c96b45" />
+      <path d="M3 3 L13 16 L23 3" fill="none" stroke="#d98660" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    </pattern>
+    <linearGradient id="shade" x1="0" x2="1">
+      <stop offset="0" stop-color="#1d3a24" stop-opacity=".35" /><stop offset=".45" stop-color="#1d3a24" stop-opacity="0" /><stop offset="1" stop-color="#fff" stop-opacity=".12" />
+    </linearGradient>
+    <clipPath id="body">
+      <rect x="235" y="140" width="130" height="340" rx="65" />
+      <rect x="150" y="330" width="120" height="66" rx="33" />
+      <rect x="150" y="226" width="66" height="170" rx="33" />
+      <rect x="330" y="292" width="116" height="60" rx="30" />
+      <rect x="386" y="196" width="60" height="156" rx="30" />
+    </clipPath>
+    <path id="potshape" d="M178 486 H422 L398 650 Q396 664 382 664 H218 Q204 664 202 650 Z" />
+  </defs>
+</svg>
+
+<div id="logo">
+  <div class="bg" data-layer="bg"></div>
+  <div class="knit" data-layer="knit"></div>
+  <div class="stitch" data-layer="border"></div>
+
+  <svg class="part" viewBox="0 0 600 720" data-layer="strand"><path d="M420 560 C 480 600, 470 650, 520 655" fill="none" stroke="#f2a7b4" stroke-width="9" stroke-linecap="round" /></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="body"><g clip-path="url(#body)"><rect x="140" y="130" width="320" height="360" fill="url(#vst)" /></g></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="body-shade"><g clip-path="url(#body)"><rect x="140" y="130" width="320" height="360" fill="url(#shade)" /></g></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="spines"><g stroke="#f7f0e3" stroke-width="5" stroke-linecap="round">
+    <path d="M262 212 l14 0 M269 205 l0 14" /><path d="M322 262 l14 0 M329 255 l0 14" /><path d="M270 330 l14 0 M277 323 l0 14" />
+    <path d="M330 400 l14 0 M337 393 l0 14" /><path d="M176 270 l14 0 M183 263 l0 14" /><path d="M404 236 l14 0 M411 229 l0 14" /><path d="M300 160 l12 0 M306 154 l0 12" /></g></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="petals"><g transform="translate(300 138)" fill="#f2a7b4" stroke="#d97f90" stroke-width="3">
+    <ellipse rx="17" ry="30" transform="rotate(0) translate(0 -26)" /><ellipse rx="17" ry="30" transform="rotate(72) translate(0 -26)" />
+    <ellipse rx="17" ry="30" transform="rotate(144) translate(0 -26)" /><ellipse rx="17" ry="30" transform="rotate(216) translate(0 -26)" />
+    <ellipse rx="17" ry="30" transform="rotate(288) translate(0 -26)" /></g></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="flower-centre"><circle cx="300" cy="138" r="15" fill="#f3c552" stroke="#d9a730" stroke-width="3" /></svg>
+
+  <svg class="part" viewBox="0 0 600 720" data-layer="pot"><use href="#potshape" fill="url(#vst-pot)" /></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="pot-shade"><use href="#potshape" fill="url(#shade)" /></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="rim"><rect x="150" y="452" width="300" height="62" rx="20" fill="#a9532f" /></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="rim-stitch"><path d="M176 483 H424" stroke="#f7f0e3" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round" /></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="pot-stitch"><path d="M214 596 H386" stroke="#f7f0e3" stroke-width="4" stroke-dasharray="12 12" stroke-linecap="round" opacity=".8" /></svg>
+
+  <svg class="part" viewBox="0 0 600 720" data-layer="ball"><circle cx="520" cy="640" r="54" fill="#f2a7b4" /></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="ball-wraps"><g transform="translate(520 640)" fill="none" stroke="#d97f90" stroke-width="5" stroke-linecap="round">
+    <path d="M-42 -30 C -10 -10, 10 20, 30 46" /><path d="M-52 -4 C -20 6, 10 30, 18 52" /><path d="M-20 -50 C 10 -30, 36 -6, 50 20" /><path d="M-36 38 C -10 10, 20 -20, 44 -34" /></g></svg>
+  <svg class="part" viewBox="0 0 600 720" data-layer="hook"><g transform="translate(520 640)"><path d="M-80 -86 L 46 48" stroke="#f7f0e3" stroke-width="10" stroke-linecap="round" />
+    <path d="M-80 -86 q -10 -6 -4 -16" fill="none" stroke="#f7f0e3" stroke-width="8" stroke-linecap="round" /></g></svg>
+
+  <div class="wm" data-layer="wordmark">كاكتوس</div>
+  <div class="sub" data-layer="tagline">حياكة يدوية.. بكل حب</div>
+  <div class="grain" data-layer="grain"></div>
+</div>
+<script>
+Promise.all([
+  document.fonts.load("700 190px 'Reem Kufi Fun'", 'كاكتوس'),
+  document.fonts.load("500 46px 'Readex Pro'", 'حياكة يدوية.. بكل حب'),
+]).then(() => document.fonts.ready).then(() => (document.body.dataset.ready = 1));
+</script>
+</body></html>
