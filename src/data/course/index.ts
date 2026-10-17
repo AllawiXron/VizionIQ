@@ -1,11 +1,21 @@
 import type { Block, CourseChapter, Lesson } from "./types";
 import { chapter1 } from "./chapter1.js";
+import { chapter2 } from "./chapter2.js";
+import { chapter4 } from "./chapter4.js";
+import { chapter6 } from "./chapter6.js";
+import { chapter8 } from "./chapter8.js";
+import { chapter10 } from "./chapter10.js";
 
 export type { Block, CourseChapter, Lesson } from "./types";
 
 /** Every chapter of the course, by chapter id. */
 export const courseChapters: Record<string, CourseChapter> = {
   chapter1,
+  chapter2,
+  chapter4,
+  chapter6,
+  chapter8,
+  chapter10,
 };
 
 function blockText(b: Block): string {
