@@ -12,6 +12,8 @@ import {
   Lock, Crown, KeyRound, BookOpen, Check, Clock
 } from "lucide-react";
 import { isFreeTrialUser } from "./LockScreen";
+import { isTrialChapter } from "../lib/trial";
+import { LockChip, TrialLock } from "./TrialLock";
 import { chaptersList, chaptersDetailedMap } from "../data/chaptersData";
 import { caseStudiesList } from "../data/caseStudiesData";
 import { swipeFilesList } from "../data/swipeFilesData";
@@ -61,6 +63,8 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   const readTime = chapter.readTime?.match(/\d+\s*دقيقة/)?.[0];
 
   const isFreeTrial = isFreeTrialUser(userCode);
+  // Trial members get the start of chapters 1–2; every other chapter shows its outline only.
+  const trialLocked = isFreeTrial && !isTrialChapter(id);
   const progress = useCourseProgress(userCode);
   const isDone = progress.done.includes(id);
   const playbook = playbooksList.find((p) => p.id === chapterPlaybook[id]);
@@ -107,6 +111,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           <span className="text-vz-accent">{chapter.number}</span>
           {stage && <><span aria-hidden="true">·</span><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
           {readTime && <><span aria-hidden="true">·</span><span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{readTime}</span></>}
+          {trialLocked && <LockChip label="بالتجربة تشوف عناوين الفصل بس" />}
           {isDone && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-[11px]">
               <Check className="w-3 h-3" strokeWidth={3} /> مكتمل
@@ -158,7 +163,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
             <div className="space-y-5 sm:space-y-8 pt-1">
               {detailedData.coreFramework?.sections?.map((sec, idx) => {
-                const isLockedSection = isFreeTrial ? (id !== "chapter1" && id !== "chapter2" ? true : idx >= 1) : false;
+                const isLockedSection = isFreeTrial && (trialLocked || idx >= 1);
                 return (
                   <FadeInUp key={idx} delay={idx * 0.08}>
                     <div className="glass border rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 space-y-3.5 sm:space-y-4 relative overflow-hidden">
@@ -229,6 +234,17 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           </div>
 
           {/* Action Steps & Common Mistakes */}
+          {trialLocked ? (
+            <TrialLock
+              title="خطوات التطبيق والأغلاط مال هذا الفصل"
+              desc="هنا الخطوات بالترتيب ووقت كل خطوة، والأغلاط اللي توكع بيها وحل كل وحدة. تنفتح ويا الاشتراك الكامل."
+              items={[
+                ...(detailedData.actionSteps ?? []).map((st) => `خطوة ${st.step}: ${st.title}`),
+                ...(detailedData.commonMistakes ?? []).slice(0, 2).map((m) => `غلط: ${m.mistake}`),
+              ]}
+              cta="افتح الفصل كامل"
+            />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
             
             {/* Action Steps Box */}
@@ -274,6 +290,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
             </FadeInUp>
 
           </div>
+          )}
         </div>
       )}
 
@@ -295,7 +312,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
           <div className="space-y-6">
             {detailedData.deepDive?.sections?.map((sec, idx) => {
-              const isLockedDeep = isFreeTrial && idx >= 1;
+              const isLockedDeep = isFreeTrial && (trialLocked || idx >= 1);
               return (
                 <FadeInUp key={idx} delay={idx * 0.1}>
                   <div className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-4 relative">
@@ -413,7 +430,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {relatedSwipeFiles.map((sf, idx) => {
-              const isSwipeLocked = isFreeTrial && idx >= 1;
+              const isSwipeLocked = isFreeTrial && (trialLocked || idx >= 1);
               return (
                 <FadeInUp key={sf.id} delay={idx * 0.1}>
                   <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 space-y-3 sm:space-y-4 relative">
@@ -445,7 +462,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
       {/* TAB CONTENT 6: INTERACTIVE TOOLS */}
       {activeTab === "tools" && (
         <div className="space-y-8 max-w-5xl mx-auto animate-fade-in">
-          {isFreeTrial && !["chapter1", "chapter2"].includes(id) ? (
+          {trialLocked ? (
             <div className="p-8 sm:p-12 rounded-4xl glass border text-center space-y-5">
               <div className="w-16 h-16 mx-auto rounded-2xl bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent">
                 <Crown className="w-8 h-8" />

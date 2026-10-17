@@ -6,6 +6,9 @@ import { EASE_OUT } from "../lib/motion";
 import { CHAPTER_STAGES, nextChapterId, useCourseProgress } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { PageHeader } from "./ui/PageHeader";
+import { isFreeTrialUser } from "./LockScreen";
+import { isTrialChapter } from "../lib/trial";
+import { LockChip } from "./TrialLock";
 
 interface ChaptersIndexProps {
   userCode: string;
@@ -23,6 +26,7 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
   const done = new Set(progress.done);
   const nextId = nextChapterId(progress);
   const doneCount = chaptersList.filter((c) => done.has(c.id)).length;
+  const isTrial = isFreeTrialUser(userCode);
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
@@ -80,6 +84,11 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
                               {progress.last === id ? "وكفت هنا" : "الجاي"}
                             </span>
                           )}
+                          {isTrial && (isTrialChapter(id) ? (
+                            <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300">مفتوح بالتجربة</span>
+                          ) : (
+                            <LockChip />
+                          ))}
                         </span>
                         <span className="block text-xs sm:text-sm text-white/50 mt-1 line-clamp-1">{chapter.subtitle}</span>
                       </span>

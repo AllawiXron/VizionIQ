@@ -47,7 +47,8 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import { EASE_OUT, SPRING_SNAPPY, overlayMotion } from "../lib/motion";
 import { useOriginSheet } from "../lib/origin";
-import { getAllValidCodes, normalizeCode } from "./LockScreen";
+import { getAllValidCodes, normalizeCode, isFreeTrialUser } from "./LockScreen";
+import { OfferPrice, SubscribeButton } from "./OfferPrice";
 import { BusinessDiagnosticStepper } from "./BusinessDiagnosticStepper";
 import { AdvisorActionCard } from "./AdvisorActionCard";
 import { AdvisorMessageFeedbackBar, MessageFeedbackData } from "./AdvisorMessageFeedbackBar";
@@ -1764,8 +1765,46 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               </div>
             </div>
 
-            {/* IF NOT VIP: Render High-Converting AI Advisor Subscription Screen */}
-            {!isVip ? (
+            {/* TRIAL: the advisor comes with the one full plan */}
+            {!isVip && isFreeTrialUser(userCode) ? (
+              <div role="region" aria-label="المستشار ضمن الاشتراك الكامل" className="flex-1 overflow-y-auto p-4 sm:p-8 text-right">
+                <div className="max-w-xl mx-auto space-y-5">
+                  <div className="text-center space-y-3">
+                    <div className="vz-eyebrow text-xs sm:text-sm">
+                      <Sparkles className="w-4 h-4 text-vz-accent" />
+                      <span>المستشار ينفتح ويا الاشتراك الكامل</span>
+                    </div>
+                    <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">اكتبله مشكلتك، ويجاوبك على أرقام مشروعك إنت</h3>
+                    <p className="text-xs sm:text-sm text-white/70 leading-relaxed">مو جواب عام: يسألك عن سعرك وكلفتك وإعلانك، ويطلعلك وين الخلل وشنو الخطوة الجاية.</p>
+                  </div>
+                  <ul className="glass rounded-3xl p-5 space-y-2.5 text-xs sm:text-sm text-white/90">
+                    {[
+                      "دزله صورة إعلانك أو المحادثة اللي ضاع بيها الزبون، ويكلك وين الغلط والرد الصح",
+                      "يحسبلك السعر وحد الخسارة بالدينار قبل لا تصرف",
+                      "يربطك بالفصل والحل المناسب لمشكلتك بالضبط",
+                    ].map((line) => (
+                      <li key={line} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span className="leading-relaxed">{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="glass-elevated glass-edge rounded-3xl p-5 sm:p-6 space-y-4">
+                    <p className="text-sm font-black text-white">الاشتراك الكامل: الكورس + الحلول + الأدوات + المستشار</p>
+                    <OfferPrice size="md" />
+                    <SubscribeButton />
+                    <button
+                      type="button"
+                      onClick={() => window.dispatchEvent(new CustomEvent("open-upgrade-modal"))}
+                      className="btn btn-ghost w-full min-h-[44px] rounded-2xl text-xs text-white/70 gap-1.5"
+                    >
+                      <KeyRound className="w-4 h-4" />
+                      اشتركت وعندك الرمز؟ افتح حسابك
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : !isVip ? (
               <div 
                 role="region"
                 aria-label="اشتراك المستشار الذكي"

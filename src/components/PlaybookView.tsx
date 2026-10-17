@@ -11,6 +11,8 @@ import { EASE_OUT } from "../lib/motion";
 import { togglePlanDay, usePlaybookPlans } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { PlaybookCalculator } from "./playbook/PlaybookCalculator";
+import { isFreeTrialUser } from "./LockScreen";
+import { TrialLock } from "./TrialLock";
 
 interface PlaybookViewProps {
   key?: string;
@@ -22,6 +24,12 @@ interface PlaybookViewProps {
 }
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
+
+const TRIAL_SECTIONS = [
+  { id: "pb-numbers", label: "الأرقام", icon: Gauge },
+  { id: "pb-causes", label: "الأسباب", icon: Search },
+  { id: "pb-locked", label: "الحل الكامل", icon: ListChecks },
+];
 
 const SECTIONS = [
   { id: "pb-numbers", label: "الأرقام", icon: Gauge },
@@ -75,6 +83,9 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
   const plans = usePlaybookPlans(userCode);
   const ticked = new Set(plans[pb.id] ?? []);
   const planPercent = Math.round((ticked.size / pb.plan.length) * 100);
+  // Trial members can diagnose (numbers, causes); the fix itself is the paid part.
+  const isTrial = isFreeTrialUser(userCode);
+  const sections = isTrial ? TRIAL_SECTIONS : SECTIONS;
 
   const jump = (sectionId: string) => {
     const el = document.getElementById(sectionId);
@@ -108,7 +119,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
       {/* In-page sections */}
       <nav aria-label="أقسام الحل" className="sticky top-[4.5rem] sm:top-[4.75rem] z-20 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 sm:mb-10">
         <div className="flex items-center gap-1 p-1 rounded-full glass-floating overflow-x-auto no-scrollbar w-full sm:w-fit">
-          {SECTIONS.map((s) => (
+          {sections.map((s) => (
             <button
               key={s.id}
               onClick={() => jump(s.id)}
@@ -161,12 +172,29 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
                   {c.cause}
                 </h3>
                 <p className="text-xs sm:text-sm text-white/60 leading-relaxed"><span className="font-bold text-white/75">العلامة: </span>{c.signs}</p>
-                <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed pr-3 border-r-2 border-emerald-400/60"><span className="font-bold text-emerald-300">الحل: </span>{c.fix}</p>
+                {isTrial ? (
+                  <p className="text-xs sm:text-sm text-white/45 leading-relaxed pr-3 border-r-2 border-white/15 inline-flex items-center gap-1.5"><span className="font-bold text-white/60">الحل:</span> مقفول بالتجربة</p>
+                ) : (
+                  <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed pr-3 border-r-2 border-emerald-400/60"><span className="font-bold text-emerald-300">الحل: </span>{c.fix}</p>
+                )}
               </div>
             ))}
           </div>
         </section>
 
+        {isTrial ? (
+          <TrialLock
+            id="pb-locked"
+            title="الحل كامل، خطوة بخطوة"
+            desc={`عرفت إذا هاي مشكلتك وليش تصير. الحل نفسه هنا: ${pb.steps.length} خطوات بالترتيب، ${pb.scripts.length} رسائل جاهزة تنسخها، مثال بالأرقام، وخطة 7 أيام.`}
+            items={[
+              ...pb.steps.map((st, i) => `خطوة ${i + 1}: ${st.title}`),
+              ...pb.scripts.slice(0, 3).map((sc) => (sc.title.startsWith("رسالة") ? sc.title : `رسالة جاهزة: ${sc.title}`)),
+              "خطة 7 أيام تعلّم عليها كل يوم",
+            ]}
+          />
+        ) : (
+        <>
         {/* Steps */}
         <section>
           <SectionTitle id="pb-steps" icon={ListChecks} sub="طبقها بالترتيب. كل خطوة تبني على اللي قبلها.">الحل خطوة بخطوة</SectionTitle>
@@ -287,6 +315,9 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
             </ul>
           </div>
         </section>
+
+        </>
+        )}
 
         {/* Related */}
         <section className="glass rounded-3xl p-5 sm:p-7 space-y-5">

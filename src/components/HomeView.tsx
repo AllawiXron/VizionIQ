@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { ArrowLeft, BookOpen, Bot, Calculator, CheckCircle2, Compass, Crown } from "lucide-react";
+import { ArrowLeft, BookOpen, Bot, Calculator, CheckCircle2, Compass, Crown, Sparkles } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
 import { playbooksList } from "../data/playbooksData";
 import { upcomingSeasons } from "./guide/GuideTools";
@@ -8,6 +8,9 @@ import { EASE_OUT } from "../lib/motion";
 import { nextChapterId, stageOf, useCourseProgress } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { isFreeTrialUser } from "./LockScreen";
+import { TRIAL_PROBLEMS, diagnose, iqd, useTrialProfile } from "../lib/trial";
+import { FULL_PRICE, OFFER_LAST_DAY, deadlineLabel, offerState, thousands } from "../lib/offer";
+import { SubscribeButton } from "./OfferPrice";
 
 interface HomeViewProps {
   userCode: string;
@@ -40,6 +43,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
   const finished = doneCount >= total;
   const percent = Math.round((doneCount / total) * 100);
   const nextSeason = upcomingSeasons(new Date(), 1)[0];
+  const offer = offerState();
 
   const steps = [
     {
@@ -80,6 +84,8 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
           {total} فصل قصير، أدوات تحسبلك أرقامك، ومستشار يجاوبك على مشروعك.
         </p>
       </motion.div>
+
+      {isFreeTrialUser(userCode) && <TrialHomeCard />}
 
       {/* The one next step */}
       <motion.section {...rise(0.15)} aria-label="خطوتك الجاية" className="glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-5 sm:p-8 relative overflow-hidden">
@@ -252,12 +258,68 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
             </span>
             <span className="flex-1 min-w-0">
               <span className="block text-sm sm:text-base font-black text-white">افتح الكورس كامل</span>
-              <span className="block text-xs text-white/55 mt-0.5">إنت هسة بالنسخة التجريبية. شوف الباقات.</span>
+              <span className="block text-xs text-white/55 mt-0.5">{offer.active ? `${thousands(offer.price)} بدل ${thousands(FULL_PRICE)}، لحد ${OFFER_LAST_DAY}` : `${thousands(offer.price)}، مدى الحياة`}</span>
             </span>
             <ArrowLeft className="w-4 h-4 text-white/50 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
           </button>
         )}
       </motion.div>
     </div>
+  );
+}
+
+/** Trial members: their own result from the one-minute check (or an invitation to do it), and the way to subscribe. */
+function TrialHomeCard() {
+  const profile = useTrialProfile();
+  const offer = offerState();
+  const openCheck = () => window.dispatchEvent(new CustomEvent("open-trial-onboarding"));
+
+  if (!profile) {
+    return (
+      <motion.button
+        {...rise(0.1)}
+        onClick={openCheck}
+        className={`group w-full text-right glass-elevated glass-edge rounded-3xl p-5 sm:p-7 flex items-center gap-4 cursor-pointer ${focusRing}`}
+      >
+        <span className="w-12 h-12 shrink-0 rounded-2xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
+          <Sparkles className="w-5 h-5" />
+        </span>
+        <span className="flex-1 min-w-0 space-y-1">
+          <span className="block text-base sm:text-xl font-black text-white">اعرف ربحك الحقيقي من كل طلب، بدقيقة</span>
+          <span className="block text-xs sm:text-sm text-white/60">تكتب سعرك وكلفتك، ونطلعلك وين تروح فلوسك وحل مشكلتك.</span>
+        </span>
+        <ArrowLeft className="w-5 h-5 text-white/60 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
+      </motion.button>
+    );
+  }
+
+  const d = diagnose(profile);
+  const problem = TRIAL_PROBLEMS.find((p) => p.id === profile.problem);
+  const pb = playbooksList.find((p) => p.id === profile.problem);
+  const tone = d.real <= 0 ? "text-red-300" : d.real < d.thinks * 0.4 ? "text-amber-200" : "text-emerald-300";
+
+  return (
+    <motion.section {...rise(0.1)} aria-label="نتيجة مشروعك" className="glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-5 sm:p-7 space-y-5">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+        <div className="flex-1 min-w-0 space-y-1.5">
+          <p className="text-xs sm:text-sm font-bold text-vz-accent">نتيجة مشروعك{problem ? ` · ${problem.label}` : ""}</p>
+          <p className="text-sm text-white/65">
+            تحسب ربحك <span className="font-mono line-through text-white/45">{iqd(d.thinks)}</span>، بس اللي يبقالك من كل طلب:
+          </p>
+          <p className={`text-3xl sm:text-4xl font-black font-mono ${tone}`}>{iqd(d.real)} <span className="text-sm text-white/55 font-sans font-bold">دينار</span></p>
+          {pb && <p className="text-xs sm:text-sm text-white/60">حلك جاهز: «{pb.title}»</p>}
+        </div>
+        <div className="sm:w-72 shrink-0 space-y-2">
+          <SubscribeButton label="افتح الحل كامل" />
+          <p className="text-[11px] text-center text-white/50">
+            {offer.active ? `${thousands(offer.price)} بدل ${thousands(FULL_PRICE)} · ${deadlineLabel(offer)}` : `${thousands(offer.price)}، مدى الحياة`}
+          </p>
+        </div>
+      </div>
+      <button onClick={openCheck} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 text-white/70 ${focusRing}`}>
+        شوف النتيجة كاملة، وشكد يفرق وياك لو صلّحتها
+        <ArrowLeft className="w-3.5 h-3.5" />
+      </button>
+    </motion.section>
   );
 }

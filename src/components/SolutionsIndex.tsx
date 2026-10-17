@@ -6,6 +6,8 @@ import { EASE_OUT } from "../lib/motion";
 import { usePlaybookPlans } from "../lib/progress";
 import type { Route } from "../lib/route";
 import { PageHeader } from "./ui/PageHeader";
+import { isFreeTrialUser } from "./LockScreen";
+import { LockChip } from "./TrialLock";
 
 interface SolutionsIndexProps {
   userCode: string;
@@ -17,13 +19,14 @@ const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-wh
 /** The playbooks, listed by the problem as the merchant would say it. */
 export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexProps) {
   const plans = usePlaybookPlans(userCode);
+  const isTrial = isFreeTrialUser(userCode);
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><LifeBuoy className="w-4 h-4" /> الحلول</>}
         title="شنو مشكلتك هسه؟"
-        subtitle="كل حل خطة كاملة: شلون تعرف إنها مشكلتك بالأرقام، ليش تصير، الخطوات بالترتيب، رسائل جاهزة تنسخها، وخطة 7 أيام."
+        subtitle={isTrial ? "بالتجربة تكدر تعرف إذا هاي مشكلتك بالأرقام وليش تصير. الخطوات والرسائل الجاهزة وخطة 7 أيام تنفتح ويا الاشتراك." : "كل حل خطة كاملة: شلون تعرف إنها مشكلتك بالأرقام، ليش تصير، الخطوات بالترتيب، رسائل جاهزة تنسخها، وخطة 7 أيام."}
       />
 
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
@@ -46,6 +49,7 @@ export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexP
                   <div className="min-w-0 space-y-1.5">
                     <p className="text-sm sm:text-base text-white/60 leading-relaxed">«{pb.problem}»</p>
                     <h2 className="text-base sm:text-lg font-black text-white leading-snug">{pb.title}</h2>
+                    {isTrial && <LockChip label="الحل الكامل بالاشتراك" />}
                   </div>
                 </div>
                 <div className="mt-auto pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs text-white/50">
@@ -54,7 +58,7 @@ export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexP
                     <span>{pb.steps.length} خطوات · {pb.scripts.length} رسائل جاهزة</span>
                   </span>
                   <span className="inline-flex items-center gap-1 font-bold text-white/75 group-hover:text-white transition-colors">
-                    {done > 0 ? `${done}/${total} من الخطة` : "افتح الحل"}
+                    {isTrial ? "شخّص مشكلتك" : done > 0 ? `${done}/${total} من الخطة` : "افتح الحل"}
                     <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
                   </span>
                 </div>
