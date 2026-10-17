@@ -60,8 +60,33 @@ const MARKS = {
   },
 };
 
+// The chosen mark (v5): the clay tablet as the first screen. A tablet (a soft rounded rectangle) with two lines of
+// cuneiform; the third line is pixels ending in a gold text cursor on the left, where an Arabic line ends: the record
+// is still being written, now digitally. `c` = { field (the tablet), ink (the writing), accent (the cursor) }.
+function tabletMark(c, o = {}) {
+  const X = o.x ?? 62, Y = o.y ?? 34, W = o.w ?? 176, H = o.h ?? 232, R = o.r ?? 44;
+  const left = X + 30, right = X + W - 30, rows = o.rows ?? [100, 150, 200], h = o.wh ?? 28;
+  let s = `<rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="${R}" fill="${c.field}"/>`;
+  const hw = (x, cy, len) => hWedge(x, cy, h, len, c.ink);
+  const vw = (cx, cy, len) => vWedge(cx, cy - len / 2, h, len, c.ink);
+  // line 1: horizontal, horizontal, vertical
+  s += hw(left, rows[0], 40) + hw(left + 46, rows[0], 40) + vw(right - 13, rows[0], 46);
+  // line 2: vertical, horizontal, horizontal
+  s += vw(left + 13, rows[1], 46) + hw(left + 34, rows[1], 40) + hw(left + 80, rows[1], 36);
+  // line 3: pixels from the right, then the cursor where the line ends (on the left, as in Arabic)
+  // (three pixels as tall as a wedge head, so line 3 ends on the same inner margin as lines 1 and 2)
+  const p = o.p ?? h, g = o.g ?? 8;
+  for (let i = 0; i < 3; i++) s += sq(right - p - i * (p + g), rows[2] - p / 2, p, c.ink, 3);
+  s += `<rect x="${right - 3 * (p + g) - 8}" y="${rows[2] - 21}" width="8" height="42" rx="2" fill="${c.accent}"/>`;
+  return s;
+}
+MARKS.tab = (c) => tabletMark(c);
+
+// the tablet is portrait, so its SVG is cropped to the tablet; `size` is the height
+const VIEW = { tab: [62, 34, 176, 232] };
 function markSVG(name, c, size = 300, extra = '') {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="${size}" height="${size}" ${extra}>${MARKS[name](c)}</svg>`;
+  const [x, y, w, h] = VIEW[name] || [0, 0, 300, 300];
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}" width="${size * w / h}" height="${size}" ${extra}>${MARKS[name](c)}</svg>`;
 }
 
 // Loaded by the pages with a <script> tag (the repo's package.json is "type": "module", so require() won't see these).
