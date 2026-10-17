@@ -29,3 +29,8 @@ rather than taking packs from Pinterest, which are mostly other people's paid or
 No prices in reels unless the user asks for them (15 Oct).
 
 Don't use flat cream + orange + near-black fields with clean UI pills: the user said that reads as "Claude motion" (15 Oct).
+
+## Answering viZion leads
+
+When the user sends a lead's message and asks what to reply, follow `marketing/vizion-sales-brief.md` (offer, price,
+who it fits, payment, reply rules). No need to read code for this.
