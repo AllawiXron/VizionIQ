@@ -110,7 +110,9 @@ The voice artist's take (V5, 35.5 s) is in. `python3 voice_fit.py <take>` keeps 
 compression made it sound processed, so they're gone), cuts it into its lines at the pauses (word times from faster-whisper medium) and puts each
 line where its caption appears, into `assets/voice.wav` (not committed: it's her recording). Her list
 («بوستات.. ستوريات.. منيو.. لوگو.. وهوية كاملة») and the ask are slower than the screen was, so the labels, the slam,
-the move down to the ask and the whole ending now follow her words, and the reel is 43 s (was 38). Render:
+the move down to the ask and the whole ending now follow her words, and the reel is 43 s (was 38). Then (v11) the three points sped up to her own pace: «فكرة وحدة»،
+«حجي بلهجة زبونك»، «وسبب يخلّيه يطلب هسه» follow each other with a short breath instead of waiting for the old
+screen times, the moves between the prints are quicker, and the reel is 41 s. Render:
 `renders/one-second-reel-voice.mp4`.
 
 ## When the voice comes in

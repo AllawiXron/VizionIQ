@@ -7,7 +7,7 @@ import json, os, re, wave
 
 here = os.path.dirname(os.path.abspath(__file__))
 P = lambda *a: os.path.join(here, *a)
-D = 43
+D = 41
 
 
 def dur(f):
@@ -68,17 +68,17 @@ C += [(t, 'cinclick', 0.22) for t in (T['t3a'], T['t3b'], T['t7'], T['t9'])]   #
 C += [(T['stop'], 'cinclick', 0.45), (T['heart'], 'mpop', 0.35)]       # the scroll stops; the heart
 C += [(11.8 - 0.8, 'mainwhoosh', 0.3), (T['ico'], 'softpop', 0.45)]    # across to «ليش؟»; the disc
 C += [(T['three'], 'mpop', 0.4)]                                        # «٣ شغلات» lands
-C += [(15.3 - 0.6, 'simple', 0.28), (18.85 - 0.6, 'simple', 0.26), (22.35 - 0.6, 'simple', 0.26)]   # the three prints
+C += [(14.65 - 0.6, 'simple', 0.28), (17.74 - 0.6, 'simple', 0.26), (20.39 - 0.6, 'simple', 0.26)]   # the three prints
 C += [(t, 'click2', 0.38) for t in T['tags']]                          # tags swing in
 C += [(t, 'cinclick', 0.28) for t in T['ticks']]                       # ticks
 for t in T['hls']:                                                     # the highlighter pen (timing in src/timeline.js)
     C += [(t - 0.45 - 0.45, 'smooth', 0.12), (t, 'cinclick', 0.16)]     # it comes in; its tip lands
     C += [(t + 0.03, 'select', 0.33), (t + 0.66 + 0.02, 'select2', 0.22)]   # the stroke; the stroke back
-C += [(25.75 - 0.4, 'airy', 0.32)]                                      # the pull-back over the wall
-C += [(29.55 - 0.25, 'cinfast', 0.3)]                                   # the dive to the services sheet
+C += [(23.69 - 0.4, 'airy', 0.32)]                                      # the pull-back over the wall
+C += [(27.3 - 0.25, 'cinfast', 0.3)]                                   # the dive to the services sheet
 C += [(t + 0.32, 'cinclick', 0.18) for t in T['sv']]                   # each label's pin goes in
 C += [(T['slam8'] - 0.15, 'flick', 0.3), (T['slam8'] + 0.32, 'ppop3', 0.2)]   # «وهوية كاملة.» slams in
-C += [(35.95 - 0.7, 'fastwhoosh', 0.28)]                                 # down to the ask
+C += [(33.7 - 0.7, 'fastwhoosh', 0.28)]                                 # down to the ask
 C += [(T['slam9'] - 0.15, 'flick', 0.35), (T['slam9'] + 0.32, 'ppop2', 0.16), (T['plane'] - 0.15, 'airy', 0.22)]   # «راسلنا»; the plane
 C += [(T['btn'], 'mpop', 0.35), (T['click'], 'clickb', 0.6), (T['open'], 'sweet', 0.35)]   # the button, the click, it opens
 C.sort()

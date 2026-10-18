@@ -1,6 +1,6 @@
 """Fit the recorded voice (V5, 18 Oct) to the reel: cut it into its lines at the pauses, and place each line
 where its caption appears (the list and the ending are re-timed to her words instead; the new T cues are printed).
-  python3 voice_fit.py <recording>  ->  assets/voice.wav (43 s, 48 kHz mono)"""
+  python3 voice_fit.py <recording>  ->  assets/voice.wav (41 s, 48 kHz mono)"""
 import subprocess, sys, wave, os
 import numpy as np
 
@@ -25,15 +25,15 @@ def speech_end(a, b):
 # word starts are from faster-whisper (medium, Arabic)
 L = [
     (0.21, 3.19, 0.0), (3.19, 4.81, 2.3), (4.81, 5.99, 3.6), (5.99, 8.25, 5.6), (8.25, 9.99, 7.95),
-    (9.99, 11.83, 10.2), (11.83, 12.87, 12.1), (12.87, 14.19, 13.45 - 0.18), (14.19, 17.05, 15.9),
-    (17.05, 19.23, 19.35), (19.23, 22.29, 22.85), (22.29, 25.25, 26.15),
+    (9.99, 11.83, 10.2), (11.83, 12.87, 12.1), (12.87, 14.19, 13.45 - 0.18), (14.19, 17.05, 15.0),
+    (17.05, 19.23, 18.2), (19.23, 22.29, 20.75), (22.29, 25.25, 24.1),
     # بوستات، ستوريات، منيو، لوگو، وهوية كاملة: one after another; the labels follow
-    (25.25, 26.29, 29.6), (26.29, 27.37, ('gap', 0.12)), (27.37, 28.25, ('gap', 0.12)), (28.25, 29.19, ('gap', 0.12)),
+    (25.25, 26.29, 27.35), (26.29, 27.37, ('gap', 0.12)), (27.37, 28.25, ('gap', 0.12)), (28.25, 29.19, ('gap', 0.12)),
     (29.19, 31.03, ('gap', 0.2)),
     # عجبك الشغل؟ / راسلنا بالدايركت / ونبدي بمشروعك
-    (31.03, 32.47, 36.35), (32.47, 34.11, 37.85), (34.11, 35.55, 39.55),
+    (31.03, 32.47, 34.1), (32.47, 34.11, 35.6), (34.11, 35.55, 37.3),
 ]
-out = np.zeros(43 * SR, np.float32)
+out = np.zeros(41 * SR, np.float32)
 fade = int(0.03 * SR)
 placed, end = [], 0.0
 for a, b, at in L:
