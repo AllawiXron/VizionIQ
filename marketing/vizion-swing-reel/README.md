@@ -33,3 +33,6 @@ moves («Simple Whoosh» and «Smooth And Fast Whoosh» alternate). There's no m
 - `./make.sh`: renders `frames/`, builds `out/sfx.wav` (`sfx.py`, needs `../sfx-pack/fetch.sh` first) and encodes
   `out/vizion-swing-reel.mp4` at about 10 Mbps.
 - `node render.cjs --preview 0,0.65,1.3` renders stills only (`NODE_PATH=/opt/node-tools/node_modules`).
+- `caption.txt`: three captions (the first asks viewers to comment the number of their problem). `out/cover.jpg`: the
+  cover, the first frame with the viZion name moved down so it shows whole in the 4:5 profile grid
+  (`node cover.cjs`).
