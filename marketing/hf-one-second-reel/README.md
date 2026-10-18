@@ -104,6 +104,15 @@ Then, at his request, «وهذا بالضبط اللي أسويه» became «…
   is in its `T` table) and the sound cue list in `build.py`. Never edit `index.html` by hand.
 - `npx hyperframes@0.8.162 check`, then `render`. Set `HYPERFRAMES_BROWSER_PATH` to the headless shell on this machine.
 
+## The voice (v10, 18 Oct)
+
+The voice artist's take (V5, 35.5 s) is in. `python3 voice_fit.py <take>` cleans it (high-pass, light denoise,
+compression, -16 LUFS), cuts it into its lines at the pauses (word times from faster-whisper medium) and puts each
+line where its caption appears, into `assets/voice.wav` (not committed: it's her recording). Her list
+(«بوستات.. ستوريات.. منيو.. لوگو.. وهوية كاملة») and the ask are slower than the screen was, so the labels, the slam,
+the move down to the ask and the whole ending now follow her words, and the reel is 43 s (was 38). Render:
+`renders/one-second-reel-voice.mp4`.
+
 ## When the voice comes in
 
 Place it as `assets/voice.wav` (an `<audio>` cue in `build.py` at 0), move the `T` cues in `src/timeline.js` and the

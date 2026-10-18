@@ -2,12 +2,12 @@
   ./sfx.sh && python3 build.py
 Edit src/template.html (layout, copy), src/timeline.js (motion; every cue is in its T table) and the cue list below,
 never index.html by hand. Sound times follow the T table in src/timeline.js; keep the two in step. Every sound is from
-the user's own pack (sfx.sh copies them in); there is no music and no voice here: the user records the voice."""
+the user's own pack (sfx.sh copies them in); there is no music; the voice-over is assets/voice.wav (see voice_fit.py)."""
 import json, os, re, wave
 
 here = os.path.dirname(os.path.abspath(__file__))
 P = lambda *a: os.path.join(here, *a)
-D = 38
+D = 43
 
 
 def dur(f):
@@ -78,7 +78,7 @@ C += [(25.75 - 0.4, 'airy', 0.32)]                                      # the pu
 C += [(29.55 - 0.25, 'cinfast', 0.3)]                                   # the dive to the services sheet
 C += [(t + 0.32, 'cinclick', 0.18) for t in T['sv']]                   # each label's pin goes in
 C += [(T['slam8'] - 0.15, 'flick', 0.3), (T['slam8'] + 0.32, 'ppop3', 0.2)]   # «وهوية كاملة.» slams in
-C += [(33.1 - 0.7, 'fastwhoosh', 0.28)]                                 # down to the ask
+C += [(35.9 - 0.7, 'fastwhoosh', 0.28)]                                 # down to the ask
 C += [(T['slam9'] - 0.15, 'flick', 0.35), (T['slam9'] + 0.32, 'ppop2', 0.16), (T['plane'] - 0.15, 'airy', 0.22)]   # «راسلنا»; the plane
 C += [(T['btn'], 'mpop', 0.35), (T['click'], 'clickb', 0.6), (T['open'], 'sweet', 0.35)]   # the button, the click, it opens
 C.sort()
@@ -87,6 +87,9 @@ lines = []
 for i, (t, n, v) in enumerate(C):
     f = sx(n)
     lines.append(f'      <audio id="a{i}-{n}" src="{f}" data-start="{t:.2f}" data-duration="{dur(f)}" data-track-index="{10 + i}" data-volume="{v}"></audio>')
+# the voice-over, fitted to the captions by voice_fit.py (not committed: it's the voice artist's recording)
+if os.path.exists(P('assets', 'voice.wav')):
+    lines.insert(0, f'      <audio id="voice" src="assets/voice.wav" data-start="0" data-duration="{dur("assets/voice.wav")}" data-track-index="9" data-volume="1"></audio>')
 
 tpl = open(P('src', 'template.html')).read()
 fonts = open(P('assets', 'fonts', 'fonts.css')).read().rstrip('\n')
