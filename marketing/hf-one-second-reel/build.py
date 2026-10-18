@@ -78,7 +78,7 @@ C += [(25.75 - 0.4, 'airy', 0.32)]                                      # the pu
 C += [(29.55 - 0.25, 'cinfast', 0.3)]                                   # the dive to the services sheet
 C += [(t + 0.32, 'cinclick', 0.18) for t in T['sv']]                   # each label's pin goes in
 C += [(T['slam8'] - 0.15, 'flick', 0.3), (T['slam8'] + 0.32, 'ppop3', 0.2)]   # «وهوية كاملة.» slams in
-C += [(35.9 - 0.7, 'fastwhoosh', 0.28)]                                 # down to the ask
+C += [(35.95 - 0.7, 'fastwhoosh', 0.28)]                                 # down to the ask
 C += [(T['slam9'] - 0.15, 'flick', 0.35), (T['slam9'] + 0.32, 'ppop2', 0.16), (T['plane'] - 0.15, 'airy', 0.22)]   # «راسلنا»; the plane
 C += [(T['btn'], 'mpop', 0.35), (T['click'], 'clickb', 0.6), (T['open'], 'sweet', 0.35)]   # the button, the click, it opens
 C.sort()

@@ -1,4 +1,4 @@
-"""Fit the recorded voice (V5, 18 Oct) to the reel: clean it, cut it into its lines at the pauses, and place each line
+"""Fit the recorded voice (V5, 18 Oct) to the reel: cut it into its lines at the pauses, and place each line
 where its caption appears (the list and the ending are re-timed to her words instead; the new T cues are printed).
   python3 voice_fit.py <recording>  ->  assets/voice.wav (43 s, 48 kHz mono)"""
 import subprocess, sys, wave, os
@@ -7,21 +7,19 @@ import numpy as np
 here = os.path.dirname(os.path.abspath(__file__))
 SR = 48000
 src = sys.argv[1]
-clean = subprocess.run(['ffmpeg', '-v', 'error', '-i', src, '-af',
-                        'highpass=f=80,afftdn=nf=-32,lowpass=f=12000,'
-                        'acompressor=threshold=-20dB:ratio=2.5:attack=8:release=120,'
-                        'loudnorm=I=-16:TP=-1.5:LRA=7',
-                        '-ar', str(SR), '-ac', '1', '-f', 's16le', '-'], capture_output=True, check=True).stdout
-x = np.frombuffer(clean, np.int16).astype(np.float32) / 32768
+# her take as it is: no denoise, EQ or compression (they made it sound processed, 18 Oct); one fixed gain below
+raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', src, '-ar', str(SR), '-ac', '1', '-f', 's16le', '-'],
+                     capture_output=True, check=True).stdout
+x = np.frombuffer(raw, np.int16).astype(np.float32) / 32768
 
 # speech end inside [a, b]: the last 10 ms frame above the speech threshold
 hop = SR // 100
 rms = np.sqrt(np.convolve(x ** 2, np.ones(hop) / hop, 'same'))[::hop]
-thr = 10 ** (-32 / 20)
+thr = 10 ** (-42 / 20)
 def speech_end(a, b):
     i, j = int(a * 100), int(b * 100)
     on = np.nonzero(rms[i:j] > thr)[0]
-    return (i + on[-1] + 1) / 100 + 0.06 if len(on) else b
+    return min(b - 0.03, (i + on[-1] + 1) / 100 + 0.15) if len(on) else b
 
 # lines: (start in the take, start of the next line, where it goes; None = right after the previous one + gap)
 # word starts are from faster-whisper (medium, Arabic)
@@ -33,10 +31,10 @@ L = [
     (25.25, 26.29, 29.6), (26.29, 27.37, ('gap', 0.12)), (27.37, 28.25, ('gap', 0.12)), (28.25, 29.19, ('gap', 0.12)),
     (29.19, 31.03, ('gap', 0.2)),
     # عجبك الشغل؟ / راسلنا بالدايركت / ونبدي بمشروعك
-    (31.03, 32.47, 36.35), (32.47, 34.11, 37.79), (34.11, 35.55, 39.43),
+    (31.03, 32.47, 36.35), (32.47, 34.11, 37.85), (34.11, 35.55, 39.55),
 ]
 out = np.zeros(43 * SR, np.float32)
-fade = int(0.012 * SR)
+fade = int(0.03 * SR)
 placed, end = [], 0.0
 for a, b, at in L:
     a0, a1 = max(0, a - 0.04), speech_end(a, b)
@@ -48,6 +46,7 @@ for a, b, at in L:
     w0 = t + (a - a0)
     placed.append(round(w0, 2)); end = t + len(seg) / SR
     print(f'{a:6.2f}-{a1:6.2f} -> {w0:6.2f}-{end:6.2f}')
+out *= 10 ** (-1.5 / 20) / max(1e-6, np.abs(out).max())   # one gain: peaks at -1.5 dB
 with wave.open(os.path.join(here, 'assets', 'voice.wav'), 'wb') as w:
     w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes((np.clip(out, -1, 1) * 32767).astype(np.int16).tobytes())

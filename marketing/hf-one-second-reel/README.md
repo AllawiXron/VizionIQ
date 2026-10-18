@@ -106,8 +106,8 @@ Then, at his request, «وهذا بالضبط اللي أسويه» became «…
 
 ## The voice (v10, 18 Oct)
 
-The voice artist's take (V5, 35.5 s) is in. `python3 voice_fit.py <take>` cleans it (high-pass, light denoise,
-compression, -16 LUFS), cuts it into its lines at the pauses (word times from faster-whisper medium) and puts each
+The voice artist's take (V5, 35.5 s) is in. `python3 voice_fit.py <take>` keeps her take as it is (one fixed gain; the first fit's denoise and
+compression made it sound processed, so they're gone), cuts it into its lines at the pauses (word times from faster-whisper medium) and puts each
 line where its caption appears, into `assets/voice.wav` (not committed: it's her recording). Her list
 («بوستات.. ستوريات.. منيو.. لوگو.. وهوية كاملة») and the ask are slower than the screen was, so the labels, the slam,
 the move down to the ask and the whole ending now follow her words, and the reel is 43 s (was 38). Render:
