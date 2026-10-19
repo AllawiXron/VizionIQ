@@ -1,0 +1,44 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>viZion DIY post</title>
+<link rel="stylesheet" href="../vizion-results-carousel/fonts/src.css">
+<style>
+  /* viZion post after a reference the user liked ("You can make a website yourself. You can also cut your own hair."),
+     flipped to fit a course: learn it properly, not by burning money. No real person's photo: a drawn car instead. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1080px; height: 1350px; overflow: hidden; font-family: "Readex Pro", sans-serif;
+    background: radial-gradient(ellipse 70% 55% at 30% 62%, #4f9bff 0%, #1d64e6 38%, #0b3a9c 72%, #062469 100%); color: #fff; }
+  .txt { position: absolute; top: 96px; right: 84px; width: 760px; }
+  .txt p { font: 700 70px/1.32 "Readex Pro"; margin-bottom: 36px; }
+  .txt p.last { color: #0a1f55; background: #d9efe6; display: inline-block; padding: 6px 22px 14px; }
+  .brand { position: absolute; bottom: 64px; right: 84px; display: flex; align-items: center; gap: 14px; direction: ltr; font: 600 40px "Readex Pro"; color: #d9efe6; }
+  .car { position: absolute; left: 40px; bottom: 150px; }
+</style></head><body>
+<div class="txt">
+  <p>تكدر تتعلّم الإعلانات بالتجربة وتخسر فلوسك.</p>
+  <p>وتكدر هم تتعلّم السياقة بسيارة أبوك.</p>
+  <p class="last">ما ننصح بالاثنين.</p>
+</div>
+<svg class="car" width="560" height="330" viewBox="0 0 560 330">
+  <ellipse cx="290" cy="300" rx="250" ry="18" fill="#041a4d" opacity=".35"/>
+  <!-- body, its front (left) crumpled -->
+  <path d="M70 250 L62 196 L84 176 L70 160 L96 146 L160 138 L215 82 Q228 70 246 70 L380 70 Q398 70 410 84 L462 140 L506 150 Q528 156 530 178 L532 236 Q532 252 516 252 Z" fill="#d9efe6"/>
+  <path d="M232 92 L376 92 Q386 92 392 100 L432 140 L196 140 Z" fill="#0b3a9c" opacity=".85"/>
+  <path d="M310 92 L310 140" stroke="#d9efe6" stroke-width="8"/>
+  <path d="M84 176 L104 190 L90 206 L110 222" fill="none" stroke="#0b3a9c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="500" y="172" width="22" height="16" rx="5" fill="#f5b51a"/>
+  <!-- the learner sign -->
+  <rect x="330" y="160" width="96" height="58" rx="8" fill="#fff" stroke="#e2541b" stroke-width="5"/>
+  <text x="378" y="200" text-anchor="middle" font-family="Readex Pro" font-weight="700" font-size="28" fill="#e2541b">تعليم</text>
+  <circle cx="160" cy="252" r="40" fill="#0a1f55"/><circle cx="160" cy="252" r="16" fill="#9fb6d8"/>
+  <circle cx="440" cy="252" r="40" fill="#0a1f55"/><circle cx="440" cy="252" r="16" fill="#9fb6d8"/>
+  <!-- steam from the crash -->
+  <g fill="#ffffff" opacity=".55"><circle cx="58" cy="120" r="18"/><circle cx="36" cy="92" r="13"/><circle cx="66" cy="70" r="10"/></g>
+  <!-- the dent's stars -->
+  <g stroke="#f5b51a" stroke-width="5" stroke-linecap="round"><path d="M28 176 L8 168"/><path d="M30 200 L6 204"/><path d="M40 156 L26 138"/></g>
+</svg>
+<div class="brand"><svg id="mk" width="54" height="50"></svg>viZion</div>
+<script src="../vizion-swing-reel/mark.js"></script>
+<script>
+  const [x, y, w, h] = MARK.viewBox; const s = document.getElementById('mk');
+  s.setAttribute('viewBox', `${x} ${y} ${w} ${h}`); s.innerHTML = `<path d="${MARK.all}" fill="#d9efe6"/>`;
+</script>
+</body></html>
