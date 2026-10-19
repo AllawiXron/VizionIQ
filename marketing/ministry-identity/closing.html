@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Ministry identity: closing</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #777; }
+  .slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; background: #0c1b40; color: #fbf8f2; }
+  .c { position: absolute; top: 150px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  h1 { font: 600 84px "Readex Pro"; margin-top: 50px; }
+  p { font: 400 30px "IBM Plex Sans Arabic"; opacity: .8; margin-top: 14px; }
+  /* the designer's name and contact go in an editable PowerPoint text box over this area (deck.cjs) */
+  .slot { position: absolute; left: 50%; transform: translateX(-50%); top: 760px; width: 900px; height: 130px; border-top: 2px solid rgba(201,154,46,.6); }
+</style>
+</head>
+<body>
+<script src="marks.js"></script>
+<section class="slide">
+  <script>
+    const def = archTile('#ece2d0', .05, 150);
+    document.write(`<svg width="1920" height="1080" style="position:absolute;inset:0"><defs>${def}</defs><rect width="1920" height="1080" fill="url(#arch-ece2d0)"/></svg>`);
+  </script>
+  <div class="c">
+    <script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e', bg: '#0c1b40' }, 260))</script>
+    <h1>شكراً لكم</h1>
+    <p>من بوابة بابل.. إلى بوابة العراق الرقمية</p>
+  </div>
+  <div class="slot"></div>
+  <script>
+    const b = crenelBand('#17357d', 22);
+    document.write(`<svg width="1920" height="20" style="position:absolute;bottom:0;left:0"><defs>${b}</defs><rect width="1920" height="20" fill="url(#cren-17357d)"/></svg>`);
+  </script>
+</section>
+</body>
+</html>

@@ -42,7 +42,13 @@ Malwiya as rising tiers (a Christmas tree).
   `node render.cjs applications.html 7`.
 - `website.html` → slides 11–12: the homepage (desktop in a browser, and mobile) and a mobile flow (a service page and
   request tracking) with the design principles. `node render.cjs website.html 11`.
-- `out/ministry-identity-proposal.pdf`: slides 1–12 in one file.
+- `closing.html` → slide 13: «شكراً لكم», with a gold rule where the designer's name and contact go.
+  `node render.cjs closing.html 13`.
+- `out/ministry-identity-proposal.pdf`: slides 1–13 in one file.
+- `deck.cjs` → `out/ministry-identity-proposal.pptx` (rule 5): the 13 slides as full-bleed images (the identity's
+  fonts won't be on the judges' computers, so live text would break), a presenter script in formal Arabic in every
+  slide's notes, and one editable Arial text box on slide 13 for the designer's name and contact (rule 6). Needs
+  pptxgenjs: `NODE_PATH=<dir>/node_modules node deck.cjs`.
 
 Names, phone numbers, IDs and the `example.gov.iq` addresses are placeholders, and the QR-like squares are decoration,
 not working codes. The services on the website are illustrations, not the ministry's real list.
@@ -51,4 +57,4 @@ not working codes. The services on the website are illustrations, not the minist
   formal Arabic. It is the source: `python3 concept.py` lays it out as `concept.html` and `node concept-pdf.cjs`
   prints `out/concept-ar.pdf` (one A4 page in the identity's style).
 
-Still to do: the PowerPoint, a logo animation, and the ZIP.
+Still to do: a logo animation, and the ZIP.
