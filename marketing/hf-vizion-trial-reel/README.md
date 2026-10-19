@@ -1,6 +1,6 @@
 # «علّق كورس»: the viZion free-trial reel (HyperFrames)
 
-A 23 s reel at 1080×1920 for the viZion page. It ends on «علّق بـ «كورس»» so commenters get the free trial in DMs.
+A 26.4 s reel at 1080×1920 for the viZion page. It ends on «علّق بـ «كورس»» so commenters get the free trial in DMs.
 The copy is the user's own (19 Oct).
 
 ## v2 (19 Oct): made to look made by hand, after the user's reference
@@ -23,20 +23,30 @@ because the caption will reveal it as a prank: Claude made it. They sent a refer
 - **A handheld stage:** the whole frame drifts a little and kicks on each slam.
 - viZion's colours stay: navy, blue and the logo's yellow, with a dark navy shot for «كورس viZion».
 
-- `renders/vizion-trial-reel.mp4`: the draft (H.264, 30 fps on twos, 10 Mbps) with his sound effects; no voice or
-  music.
+- `renders/vizion-trial-reel.mp4`: the draft with the voice-over and his sound effects; no music (H.264, 30 fps on
+  twos, 10 Mbps).
 - `caption.txt`: the post caption, with the prank reveal line at the end.
 
-| Time | Shot |
+| Time | Voice / shot |
 |---|---|
-| 0–2.3 | wall: «تجيك رسائل» + «هواي..» (script); three 3D DMs fly up («شكد السعر؟», «عاشت إيدك، من أقرر أراسلك», «شدعوة هلگد غالي؟») |
-| 2.3–3.9 | «ومحد» + «يشتري؟» slams in, with a floor reflection |
-| 3.9–5.5 | a paper price tag swings in on its string; «الخلل مو بسعرك..», the price struck through |
-| 5.5–7.5 | the navy floor comes up, a megaphone flies in; «الخلل بطريقة ردك وإعلانك!» |
-| 7.5–10.5 | his flash 19 into dark navy: the 3D VZ mark turns in; «كورس viZion يحول الرسائل إلى طلبات حقيقية.» (yellow script, glowing), a parcel |
-| 10.5–15 | four shots on the floor, 01–04: target «أسرار الاستهداف», gift «صناعة العروض», magnet «فن الإقناع», coins «مضاعفة الأرباح» |
-| 15–17.3 | «يوقف خسارتك ويضاعف مبيعاتك», coins grow out of the floor |
-| 17.3–23 | his flash 6: «تريد تجربة مجانية للكورس؟», «علّق بـ» slams in, the blue 3D bubble with «كورس» typed in, «ونرسلك التجربة المجانية بالخاص.», the mark |
+| 0–1.6 | «تجيك رسائل هواي..»: the title, three 3D DMs fly up |
+| 1.6–2.5 | «ومحد يشتري؟»: it slams in with a floor reflection; the DMs drop out of frame |
+| 2.7–4.1 | «الخلل مو بسعرك..»: a paper price tag swings in; the price is struck through |
+| 4.1–7.1 | «الخلل بطريقة ردّك وإعلانك!»: the navy floor comes up, a megaphone flies in |
+| 7.1–10.8 | his flash 19 into dark navy, «كورس فيجن.. يحوّل الرسائل إلى طلبات حقيقية.»: the 3D VZ mark, yellow glowing script, a parcel |
+| 11.1–16.1 | the four, each on its word: target, gift, magnet, coins |
+| 16.4–19.1 | «يوقف خسارتك.. ويضاعف مبيعاتك.»: coins grow out of the floor |
+| 19.2–26.4 | his flash 6, «تريد تجربة مجانية للكورس؟ علّق بكلمة «كورس».. ونرسلك التجربة المجانية بالخاص.»: «علّق بـ» slams in, the blue bubble, «كورس» typed on the word, the mark |
+
+## Voice-over (19 Oct)
+
+The user's ElevenLabs take (Arafat Almnshid voice, 25.5 s) is kept whole and untouched: one fixed gain to peaks of
+−1.5 dB and 30 ms fades (the command is in `build.py`). It lives in `assets/voice.wav`, which is not committed. The
+visuals were moved to it, not the voice to the visuals. Word starts come from faster-whisper medium (decode the MP3
+with ffmpeg first: the installed PyAV doesn't take faster-whisper's arguments). They are snapped to the end of the
+pause before them (`silencedetect` at −40 dB), every pop lands on its word, and every shot changes inside the pause
+between two lines. The hook is only 1.4 s of voice, so the DMs stay on screen until «يشتري؟» lands and then drop out
+of frame. Under the voice the effects play at 70 % of their old levels.
 
 ## Build
 
@@ -61,7 +71,7 @@ because the caption will reveal it as a prank: Claude made it. They sent a refer
 
 Only his pack: a pop on every word (the smooth pops on the script and key words), a whoosh on every fly-in and whip,
 a flick and a hit on each slam, a ding per DM, a select on the strike and the yellow bar, a key click per letter of
-«كورس», and whooshes peaking on the two flashes. No music and no voice-over yet.
+«كورس», and whooshes peaking on the two flashes. No music.
 
 ## Honesty
 

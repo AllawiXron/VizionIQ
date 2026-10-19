@@ -3,7 +3,7 @@ start times and the sound cues.
   ./sfx.sh && python3 build.py            (DUR=6 python3 build.py for a short test cut)
 Edit src/template.html (layout, copy), src/timeline.js (motion; every cue is in its T table) and the cue list below,
 never index.html by hand. Sound times follow T. Every sound is from the user's own pack (sfx.sh copies them in); no
-music, no voice-over yet. Then render at 120 fps and run ./post.sh, which blends it down to the reference's look."""
+music; the voice-over is assets/voice.wav. Then render at 240 fps and run ./post.sh, which blends it down to the reference's look."""
 import json, os, re, wave
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -59,6 +59,7 @@ pop(T['hook'][2], True)
 for t in T['bubs']:
     whoosh(t + 0.15, 'simple', 0.16); C.append((t + 0.2, 'ding', 0.2))
 whoosh(T['outA'] + 0.15)
+whoosh(T['drop'] + 0.25, 'smooth', 0.2)
 # B
 pop(T['mahad']); slam(T['buy']); whoosh(T['outB'] + 0.15)
 # C
@@ -97,11 +98,20 @@ for i, t in enumerate(T['hb']):
     pop(t, i == 2)
 C += [(T['logo2'] + 0.3, 'softpop', 0.38), (T['logo2'] - 0.1, 'airy', 0.22)]
 C = sorted(c for c in C if c[0] < D - 0.05)
+# under the voice the effects sit lower
+VOICE = os.path.exists(P('assets', 'voice.wav'))
+if VOICE:
+    C = [(t, n, round(v * 0.7, 3)) for t, n, v in C]
 
 lines = []
 for i, (t, n, v) in enumerate(C):
     f = sx(n)
     lines.append(f'      <audio id="a{i}-{n}" src="{f}" data-start="{t:.3f}" data-duration="{min(dur(f), round(D - t, 3))}" data-track-index="{10 + i}" data-volume="{v}"></audio>')
+# the voice-over: the user's ElevenLabs take as it is, one fixed gain (peaks -1.5 dB) and 30 ms fades, made by
+#   ffmpeg -i take.mp3 -af "volume=-1.0dB,afade=t=in:d=0.03,afade=t=out:st=25.43:d=0.03" -ar 48000 -ac 1 assets/voice.wav
+# (not committed); the cues in T follow its words
+if VOICE:
+    lines.insert(0, f'      <audio id="voice" src="assets/voice.wav" data-start="0" data-duration="{min(dur("assets/voice.wav"), D)}" data-track-index="9" data-volume="1"></audio>')
 
 tpl = open(P('src', 'template.html')).read()
 fonts = open(P('assets', 'fonts', 'fonts.css')).read().rstrip('\n')

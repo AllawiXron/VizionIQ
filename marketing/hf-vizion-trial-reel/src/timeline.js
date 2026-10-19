@@ -3,17 +3,19 @@
 // blur and the 15 fps "on twos" look come from build.py's post step (120 fps render, blended down), not from here.
 // One paused timeline, built after the fonts load, registered on window.__timelines.main. build.py reads T.
 (function () {
-  const D = 23;
+  const D = 26.4;
+  // every cue is on the voice (ElevenLabs take, 19 Oct): word starts from faster-whisper medium, snapped to the end of
+  // the pause before them; each shot changes inside the pause between two lines
   const T = {
-    hook: [0, 0, 0.15], bubs: [0.35, 0.65, 0.95], outA: 2.3,
-    mahad: 2.45, buy: 2.7, outB: 3.85,
-    tag: 3.95, cw: [4.1, 4.3], price: 4.55, strike: 5.0, outC: 5.5,
-    floorD: 5.55, mega: 5.6, dw: [5.85, 6.1, 6.35], ads: 6.7, bar: 6.9, kick: 6.72,
-    tr: [7.21, 16.97], cut1: 7.55, cut2: 17.35,
-    logo: 7.6, ew: [7.9, 8.15, 8.6, 8.8, 9.1, 9.3, 9.5], parcel: 9.6, outE: 10.45,
-    beats: [10.55, 11.65, 12.75, 13.85], outF: 14.95,
-    gw: [15.05, 15.3, 15.75], sales: 16.0, coins: 16.1,
-    hw: [17.45, 17.7, 17.95], forc: 18.3, ask: 18.9, cb: 19.5, keys: [19.95, 20.1, 20.25, 20.4], hb: [20.9, 21.15, 21.4, 21.65], logo2: 22.0,
+    hook: [0, 0, 0.8], bubs: [0.2, 0.45, 0.7], outA: 1.42, drop: 1.95,
+    mahad: 1.62, buy: 2.0, outB: 2.52,
+    tag: 2.72, cw: [2.85, 3.3], price: 3.52, strike: 3.95, outC: 4.06,
+    floorD: 4.12, mega: 4.16, dw: [4.36, 5.08, 5.66], ads: 6.18, bar: 6.4, kick: 6.2,
+    tr: [6.76, 18.82], cut1: 7.1, cut2: 19.2,
+    logo: 7.12, ew: [7.24, 7.6, 8.3, 8.76, 9.52, 9.74, 10.22], parcel: 10.3, outE: 10.84,
+    beats: [11.15, 12.53, 13.74, 14.83], outF: 16.0,
+    gw: [16.4, 16.86, 17.7], sales: 18.3, coins: 18.4,
+    hw: [19.37, 19.62, 20.04], forc: 20.56, ask: 21.54, cb: 21.9, keys: [22.42, 22.52, 22.62, 22.72], hb: [23.05, 23.64, 24.08, 24.72], logo2: 25.2,
   };
   const WORD = 'كورس';
   const $ = (s) => document.querySelector(s);
@@ -69,10 +71,12 @@
     pop(aw[2], T.hook[2], true);
     ['#b1', '#b2', '#b3'].forEach((b, i) => {
       fly(b, T.bubs[i], { y: 900, r: i === 1 ? -14 : 12, s: 0.8 }, 0.5);
-      tl.to(b, { y: -8, rotation: i === 1 ? 1.2 : -1.2, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: 1 }, T.bubs[i] + 0.5);
+      tl.to(b, { y: -8, rotation: i === 1 ? 1.2 : -1.2, duration: 0.5, ease: 'sine.out' }, T.bubs[i] + 0.5);
     });
-    whip('#A', T.outA, { y: -1700 });
-    hide('#A', T.outA + 0.3);
+    // the title whips away; the DMs hang on until «يشتري؟» lands, then drop out of frame, unanswered
+    whip('#A .tx', T.outA, { y: -1700 });
+    tl.to(['#b1', '#b2', '#b3'], { y: 1500, rotation: (i) => [18, -24, 30][i], duration: 0.42, ease: 'power2.in', stagger: 0.05 }, T.drop);
+    hide('#A', T.drop + 0.6);
 
     // ── B · «ومحد يشتري؟»
     pop('#B .sm .w', T.mahad);
