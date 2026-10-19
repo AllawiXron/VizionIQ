@@ -10,4 +10,5 @@ lines = []
 tpl = open(P('src', 'template.html')).read()
 fonts = open(P('assets', 'fonts', 'fonts.css')).read().rstrip('\n')
 js = open(P('src', 'timeline.js')).read().rstrip('\n')
-open(P('index.html'), 'w').write(tpl.replace('/*FONTFACES*/', fonts).replace('<!--AUDIO-->', '\n'.join(lines)).replace('/*TIMELINE*/', js))
+vz = open(P('src', 'vz-symbol.svg')).read().rstrip('\n')
+open(P('index.html'), 'w').write(tpl.replace('<!--VZSYMBOL-->', vz).replace('/*FONTFACES*/', fonts).replace('<!--AUDIO-->', '\n'.join(lines)).replace('/*TIMELINE*/', js))

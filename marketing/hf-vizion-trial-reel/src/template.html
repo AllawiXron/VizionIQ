@@ -7,87 +7,83 @@
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
 /*FONTFACES*/
-/* One take on one desk (his highlights' brown, paper and orange sheets), as in ../hf-one-second-reel: a single camera
-   travels across three sheets without a cut. Stations are 1080×1920 boxes on the desk, so at camera scale 1 they fill
-   the frame. */
-:root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a }
+/* The viZion page's look (../vizion-results-carousel): navy to blue, fine vertical pinstripes, soft blue glows, the VZ
+   mark (mint, and a big faint outline), Readex Pro with cyan gradient words, glass cards with a white edge, cyan pills,
+   the selection box with handles and the pixel cursor. One take: the camera travels down one long navy canvas past
+   three stations (1080×1920 boxes, so at camera scale 1 each fills the frame). */
+:root { --mint:#d9efe6; --cyan:#62c6e9; --soft:rgba(255,255,255,.82); --navy:#020d2e }
 * { margin:0; padding:0; box-sizing:border-box }
-html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink) }
-#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); direction:rtl; font-family:'IBM Plex Sans Arabic'; font-synthesis:none }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy) }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--navy); direction:rtl; font-family:'Readex Pro'; color:#fff }
 #view { position:absolute; inset:0; overflow:hidden }
-#world { position:absolute; left:0; top:0; width:3000px; height:7400px; transform-origin:0 0 }
+#world { position:absolute; left:0; top:0; width:2400px; height:6400px; transform-origin:0 0;
+  background:linear-gradient(180deg, #04184a 0%, #072a74 18%, #04184a 34%, #020d2e 50%, #072a74 68%, #04184a 84%, #020d2e 100%) }
+#world::before { content:''; position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(90deg, rgba(255,255,255,.026) 0 2px, transparent 2px 10px) }
 .st { position:absolute; width:1080px; height:1920px }
-
-/* the desk and the sheets, with the highlights' fields and paper texture */
-.bgc { position:absolute }
-.bgc::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.2 }
-.bgc.paper { background:var(--paper) }
-.bgc.orange { background:radial-gradient(120% 80% at 50% 40%, var(--orange2), var(--orange) 55%, #c94612) }
-.bgc.orange::after { opacity:.26 }
-.bgc.ink { background:radial-gradient(120% 80% at 50% 40%, #2b1e16, var(--ink) 60%) }
-.bgc.ink::after { mix-blend-mode:screen; opacity:.1 }
-.sheet { box-shadow:0 30px 60px rgba(0,0,0,.5), 0 6px 12px rgba(0,0,0,.35) }
+.glow { position:absolute; border-radius:50%; filter:blur(110px); pointer-events:none }
+.line { position:absolute; left:0; top:0; overflow:visible; pointer-events:none }
 #fx { position:absolute; inset:0; pointer-events:none; z-index:30 }
 #grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.07 }
-#vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 58%, rgba(0,0,0,.24) 100%) }
+#vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 60%, rgba(0,4,20,.3) 100%) }
+/* brand chrome on the screen itself, as on the posts: the mint mark top left, a corner arrow top right */
+#mark { position:absolute; left:84px; top:150px; width:62px }
+#corner { position:absolute; right:84px; top:158px; width:42px; height:42px; border-radius:7px; background:var(--mint); display:grid; place-items:center }
 /* his flash transitions (../transitions-pack), laid over the two moves */
 .trx { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; mix-blend-mode:screen; pointer-events:none; z-index:25 }
 
 /* text */
-.tx { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap }
+.tx { position:absolute; left:40px; right:40px; text-align:center; white-space:nowrap }
 .ln { display:block; position:relative }
 .w { display:inline-block; position:relative; opacity:0 }
-.ax { font-family:'DG Sahabah', 'Alexandria'; font-weight:400 }
-.t76 { font-size:76px; line-height:1.4 }
-.big { font-family:'DG Sahabah', 'Alexandria'; font-weight:400; font-size:176px; line-height:1.2 }
-.on-paper { color:var(--ink) } .on-paper .k { color:var(--oink) }
-.on-orange { color:var(--cream) } .on-orange .k { color:var(--ink) }
+.grad { background:linear-gradient(100deg, #e9fff7 0%, #9df0ff 38%, #4fc3ef 70%, #2f8cf0 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+  padding:.16em .12em .34em; margin:-.16em -.12em -.34em }
+.cyan { color:var(--cyan) }
 .lat { direction:ltr; unicode-bidi:isolate }
+.soft { color:var(--soft) }
 
-/* torn caption strip, as on the highlights */
-.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8; opacity:0 }
-.strip > span { position:relative; display:inline-block; padding:24px 56px 34px; font:400 70px/1.35 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap;
-  background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 10px 12px rgba(0,0,0,.36)) }
-.strip .k { color:var(--oink) }
-.lab8 { position:absolute; z-index:4; opacity:0 }
-.lab8 > span { position:relative; display:inline-block; padding:22px 46px 32px; font:400 66px/1.3 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap;
-  background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 12px 14px rgba(0,0,0,.38)) }
-.lab8 .k { color:var(--oink) }
-.lab8 img, .strip img { position:absolute; pointer-events:none }
+/* incoming DMs in the hook: dark bubbles as in the real chats */
+.bub { position:absolute; padding:20px 34px 24px; border-radius:38px; background:#26262b; font:400 46px/1.3 'Readex Pro'; color:#f1f1f3; white-space:nowrap; opacity:0;
+  box-shadow:0 20px 40px rgba(0,0,10,.45) }
+.bub::after { content:''; position:absolute; bottom:-2px; width:26px; height:26px; background:#26262b }
+.bub.r::after { right:-6px; border-radius:0 0 0 26px; clip-path:polygon(0 0, 100% 100%, 0 100%) }
+.bub.l::after { left:-6px; clip-path:polygon(100% 0, 100% 100%, 0 100%) }
+.bub i { position:absolute; top:-12px; width:26px; height:26px; border-radius:50%; background:#ff4d6a; border:3px solid var(--navy) }
 
-/* prints, tape, kraft tags, desk props (his own renders, from ../hf-one-second-reel/props) */
-.print { position:absolute; padding:14px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
-.print img { display:block; width:100% }
-.print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)) }
-.tape { position:absolute; height:52px; z-index:6; filter:drop-shadow(0 2px 3px rgba(0,0,0,.2)) }
-.prop { position:absolute; display:block; pointer-events:none }
-.ktag { position:absolute; width:330px; height:160px; z-index:7; opacity:0; filter:drop-shadow(0 12px 14px rgba(0,0,0,.4)) }
-.ktag .tg { position:absolute; inset:0; background:var(--cream); clip-path:polygon(0 50%, 17% 0, 100% 0, 100% 100%, 17% 100%) }
-.ktag .hole { position:absolute; left:10%; top:50%; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%; background:var(--orange) }
-.ktag div { position:absolute; left:76px; right:16px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
-  font:400 54px/1.1 'DG Sahabah', 'Alexandria'; color:var(--ink) }
-.ktag div small { font:600 22px/1.3 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.7); margin-top:6px }
+/* the selection box with handles (the viZion pointer motif) */
+.select { position:absolute; border:3px solid #fff; z-index:6; opacity:0; box-shadow:0 0 0 1px rgba(0,0,0,.25), 0 0 40px rgba(98,198,233,.35) }
+.select .h { position:absolute; width:18px; height:18px; background:#0b2a6e; border:3px solid #fff }
+.select .tl { left:-10px; top:-10px } .select .tr { right:-10px; top:-10px } .select .bl { left:-10px; bottom:-10px } .select .br { right:-10px; bottom:-10px }
+.select .ml { left:-10px; top:calc(50% - 9px) } .select .mr { right:-10px; top:calc(50% - 9px) }
+.cursor { position:absolute; width:84px; z-index:9; opacity:0; filter:drop-shadow(0 6px 8px rgba(0,0,0,.45)) }
 
-/* marker lines: an underline, a circle, an arrow (stroked on with pathLength 1) */
-.mk { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; z-index:9 }
-.mk path { fill:none; stroke:var(--oink); stroke-width:9; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
+/* glass cards, as the offer pill on the posts */
+.glass { position:absolute; border:3px solid rgba(255,255,255,.9); background:linear-gradient(180deg, rgba(23,105,245,.24), rgba(10,40,120,.28));
+  box-shadow:0 0 0 10px rgba(98,198,233,.08), 0 0 90px rgba(47,140,255,.35), 0 30px 60px rgba(0,0,20,.35); opacity:0 }
+#head2 { left:110px; right:110px; top:330px; height:250px; border-radius:60px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px }
+.card { width:455px; height:160px; border-radius:40px; display:flex; align-items:center; gap:18px; padding:0 26px; direction:rtl }
+.card .n { flex:none; width:64px; height:64px; border-radius:50%; border:3px solid var(--cyan); display:grid; place-items:center;
+  font:500 30px/1 'IBM Plex Mono'; color:var(--cyan) }
+.card .t { font:600 37px/1.3 'Readex Pro'; white-space:nowrap }
 
-/* the ask: an Instagram comment box on a torn strip, «كورس» typed into it, a cursor taps send */
-#cbox { position:absolute; left:110px; top:860px; width:860px; height:150px; z-index:8; opacity:0 }
-#cbox .pap { position:absolute; inset:0; background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 12px 14px rgba(0,0,0,.36)) }
-#cbox .av { position:absolute; right:54px; top:38px; width:74px; height:74px; border-radius:50%; overflow:hidden; background:#d9cbb6 }
-#cbox .av svg { width:100%; height:100%; display:block; fill:#a8927a }
-#cbox .fld { position:absolute; right:150px; left:150px; top:30px; height:90px; border-radius:45px; border:3px solid rgba(31,21,16,.22) }
-#cbox .typed { position:absolute; right:184px; top:34px; font:400 70px/1.2 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap }
-#cbox .caret { display:inline-block; width:5px; height:64px; margin-right:6px; vertical-align:-8px; background:var(--oink) }
-#cbox .send { position:absolute; left:46px; top:30px; width:90px; height:90px; border-radius:50%; background:var(--orange) }
-#cbox .send svg { position:absolute; left:22px; top:22px; width:46px; height:46px; fill:none; stroke:var(--cream); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round }
-#cur { position:absolute; left:300px; top:1240px; width:64px; height:80px; opacity:0; z-index:12; filter:drop-shadow(0 6px 8px rgba(0,0,0,.3)) }
-#ripB { position:absolute; left:116px; top:900px; width:80px; height:80px; border-radius:50%; border:3px solid var(--oink); opacity:0; z-index:9 }
+/* the ask: an Instagram comment field, «كورس» typed into it, the cursor taps send */
+#cbox { left:90px; right:90px; top:880px; height:150px; border-radius:75px; opacity:0 }
+#cbox .av { position:absolute; right:30px; top:33px; width:84px; height:84px; border-radius:50%; background:#2a3e6e; overflow:hidden }
+#cbox .av svg { width:100%; height:100%; fill:#7f93bd }
+#cbox .typed { position:absolute; right:140px; top:36px; font:600 64px/1.2 'Readex Pro'; color:#fff; white-space:nowrap }
+#cbox .caret { display:inline-block; width:5px; height:62px; margin-right:8px; vertical-align:-10px; background:var(--cyan) }
+#cbox .send { position:absolute; left:24px; top:24px; width:102px; height:102px; border-radius:50%; background:linear-gradient(180deg, #8fe3f5 0%, #57c2e6 100%);
+  border:2px solid rgba(255,255,255,.55); box-shadow:inset 0 2px 0 rgba(255,255,255,.6), 0 0 0 8px rgba(98,198,233,.12), 0 14px 30px rgba(20,120,200,.45) }
+#cbox .send svg { position:absolute; left:26px; top:26px; width:50px; height:50px; fill:none; stroke:#071a45; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round }
+#ripB { position:absolute; left:124px; top:925px; width:60px; height:60px; border-radius:50%; border:3px solid var(--cyan); opacity:0; z-index:9 }
+#endmark { position:absolute; left:470px; top:1300px; width:140px; opacity:0; filter:drop-shadow(0 0 40px rgba(47,140,255,.5)) }
     </style>
   </head>
   <body>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+<!--VZSYMBOL-->
+        <symbol id="arrow-ur" viewBox="0 0 24 24"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="#0b1d58" stroke-width="3" stroke-linecap="square" /></symbol>
+      </defs>
       <filter id="camf" x="0" y="0" width="100%" height="100%"><feGaussianBlur id="cams" stdDeviation="0 0" edgeMode="duplicate" /></filter>
       <filter id="h2" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h2s" stdDeviation="0 0" /></filter>
       <filter id="h3" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h3s" stdDeviation="0 0" /></filter>
@@ -95,46 +91,53 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink)
     <div id="root" data-composition-id="main" data-start="0" data-duration="22" data-width="1080" data-height="1920">
       <div id="view" class="clip" data-start="0" data-duration="22" data-track-index="0">
         <div id="world">
-          <div class="bgc ink" style="left:0; top:0; width:3000px; height:7400px"></div>
+          <!-- glows and the big faint marks (filled in by the timeline script) -->
+          <div id="decor"></div>
 
-          <!-- the hook: one paper sheet; the camera starts close and eases back as the words arrive -->
-          <div class="st on-paper" id="s1" style="left:960px; top:290px">
-            <div class="tx" style="top:430px; font:400 112px/1.25 'DG Sahabah', 'Alexandria'"><span class="w">تصرف</span> <span class="w">على</span> <span class="w">الإعلان..</span></div>
-            <div class="tx" style="top:590px; font:400 168px/1.2 'DG Sahabah', 'Alexandria'; color:var(--oink)"><span class="w">وما</span> <span class="w">تبيع؟</span></div>
-            <svg class="mk" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="ul1" pathLength="1" d="M300 838 C 420 826, 600 832, 790 820" /></svg>
-            <div class="tx ax" style="top:930px; font-size:72px; line-height:1.45"><span class="ln"><span class="w">المشكلة</span> <span class="w">مو</span> <span class="w">بمنتجك..</span></span><span class="ln"><span class="w">المشكلة</span> <span class="w k">بالخطة.</span></span></div>
+          <!-- the hook: DMs come in, then «تجيك رسائل هواي.. ومحد يشتري؟» -->
+          <div class="st" id="s1" style="left:660px; top:40px">
+            <div class="bub r" id="b1" style="right:120px; top:330px"><i style="left:-8px"></i>بكم؟</div>
+            <div class="bub l" id="b2" style="left:150px; top:450px"><i style="right:-8px"></i>شكد السعر؟</div>
+            <div class="bub r" id="b3" style="right:200px; top:570px"><i style="left:-8px"></i>تفاصيل</div>
+            <div class="tx" style="top:720px; font:600 84px/1.3 'Readex Pro'"><span class="w">تجيك</span> <span class="w">رسائل</span> <span class="w">هواي..</span></div>
+            <div class="tx" style="top:850px; font:700 140px/1.25 'Readex Pro'"><span class="w"><span class="grad">ومحد</span></span> <span class="w"><span class="grad">يشتري؟</span></span></div>
+            <div class="tx soft" style="top:1110px; font:400 58px/1.3 'Readex Pro'"><span class="w">الخلل</span> <span class="w">مو</span> <span class="w">بسعرك..</span></div>
+            <div class="tx" style="top:1210px; font:600 62px/1.3 'Readex Pro'"><span class="w">الخلل</span> <span id="selw" style="margin-right:26px"><span class="w cyan">بطريقة</span> <span class="w cyan">ردك</span> <span class="w cyan">وإعلانك!</span></span></div>
+            <div class="select" id="sel1"><i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i><i class="h ml"></i><i class="h mr"></i></div>
+            <svg class="cursor" id="cur1" viewBox="0 0 17 17"></svg>
           </div>
 
-          <!-- what is in the course: a strip, four pinned labels, then «وكله بلهجتنا.» slams in -->
-          <div class="st on-orange" id="s2" style="left:960px; top:2740px">
-            <div class="strip" id="t2" style="top:330px"><span><span class="ln"><span class="w">كورس</span> <span class="w k lat">viZion</span></span><span class="ln" style="font-size:52px"><span class="w">يعلّمك</span> <span class="w">تبيع</span> <span class="w">أونلاين</span> <span class="w k">بالعراق.</span></span><img src="assets/props/clip-silver.png" alt="" style="right:46px; top:-62px; width:62px; transform:rotate(-8deg)" /></span></div>
-            <div class="lab8" id="lab1" style="left:770px; top:720px" data-r="-3"><span><span class="w"><span class="k">11</span> فصل</span><img src="assets/props/pin-cream.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
-            <div class="lab8" id="lab2" style="left:325px; top:745px" data-r="2.5"><span><span class="w">حاسبات بالدينار</span><img src="assets/props/pin-brown.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
-            <div class="lab8" id="lab3" style="left:780px; top:930px" data-r="2"><span><span class="w">دليل العراق</span><img src="assets/props/pin-brown.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
-            <div class="lab8" id="lab4" style="left:315px; top:955px" data-r="-2.5"><span><span class="w">مستشار يجاوبك</span><img src="assets/props/pin-cream.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
-            <div class="tx big" style="top:1180px; font-size:150px"><span class="w" id="slam2" style="filter:url(#h2)">وكله <span class="k">بلهجتنا.</span></span></div>
+          <!-- the system: a glass card, four cards, then «يوقف خسارتك ويضاعف بيعك..» -->
+          <div class="st" id="s2" style="left:660px; top:2240px">
+            <div class="glass" id="head2">
+              <div style="font:700 86px/1.3 'Readex Pro'"><span class="w">نظام</span> <span class="w lat"><span class="grad">viZion</span></span></div>
+              <div class="soft" style="font:400 46px/1.35 'Readex Pro'"><span class="w">يحول</span> <span class="w">الرسائل</span> <span class="w">إلى</span> <span class="w">طلبات</span> <span class="w cyan">حقيقية.</span></div>
+            </div>
+            <div class="glass card" id="c1" style="right:70px; top:700px"><span class="n">1</span><span class="t">أسرار الترويج</span></div>
+            <div class="glass card" id="c2" style="left:70px; top:700px"><span class="n">2</span><span class="t">ردود تقفل البيعة</span></div>
+            <div class="glass card" id="c3" style="right:70px; top:900px"><span class="n">3</span><span class="t">حاسبة أرباحك</span></div>
+            <div class="glass card" id="c4" style="left:70px; top:900px"><span class="n">4</span><span class="t">ذكاء اصطناعي وياك</span></div>
+            <div class="tx" style="top:1170px; font:700 112px/1.3 'Readex Pro'"><span class="ln"><span class="w" id="slam2a" style="filter:url(#h2)">يوقف <span class="grad">خسارتك</span></span></span><span class="ln"><span class="w" id="slam2b">ويضاعف <span class="grad">بيعك..</span></span></span></div>
           </div>
 
-          <!-- the ask: «تريد تجرّبه ببلاش؟ علّق «كورس» ونرسلك التجربة المجانية بالخاص.» -->
-          <div class="st on-paper" id="s3" style="left:960px; top:5140px">
-            <div class="strip" id="t3" style="top:330px"><span><span class="w">تريد</span> <span class="w">تجرّبه</span> <span class="w k">ببلاش؟</span><img src="assets/props/pin-orange.png" alt="" style="right:4px; top:-16px; width:84px" /></span></div>
-            <div class="tx big" style="top:560px; font-size:200px; color:var(--oink)"><span class="w" id="slam3" style="filter:url(#h3)">علّق</span></div>
-            <div id="cbox"><i class="pap"></i><span class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="4" /><path d="M4.5 21 C 5.5 16, 18.5 16, 19.5 21 Z" /></svg></span><i class="fld"></i><span class="typed"><span id="typed">كورس</span><i class="caret"></i></span>
+          <!-- the ask: «تريد تجربة مجانية للكورس؟ علّق بـ «كورس»» -->
+          <div class="st" id="s3" style="left:660px; top:4440px">
+            <div class="tx" style="top:340px; font:600 78px/1.35 'Readex Pro'"><span class="ln"><span class="w">تريد</span> <span class="w">تجربة</span> <span class="w cyan">مجانية</span></span><span class="ln"><span class="w">للكورس؟</span></span></div>
+            <div class="tx" style="top:600px; font:700 190px/1.25 'Readex Pro'"><span class="w" id="slam3" style="filter:url(#h3)"><span class="grad">علّق بـــ</span></span></div>
+            <div class="glass" id="cbox"><span class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="4" /><path d="M4.5 21 C 5.5 16, 18.5 16, 19.5 21 Z" /></svg></span>
+              <span class="typed"><span id="typed">كورس</span><i class="caret"></i></span>
               <span class="send"><svg viewBox="0 0 24 24"><path d="M21 3 L3 10.5 L10.5 13.5 L13.5 21 Z M21 3 L10.5 13.5" /></svg></span></div>
             <i id="ripB"></i>
-            <svg class="mk" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="arr1" pathLength="1" d="M906 742 C 960 790, 968 836, 940 872 M940 872 L 912 842 M940 872 L 968 850" /></svg>
-            <div class="tx ax t76" style="top:1090px"><span class="ln"><span class="w">ونرسلك</span> <span class="w">التجربة</span> <span class="w k">المجانية</span></span><span class="ln"><span class="w">بالخاص.</span></span></div>
-            <div class="print" id="logo3" style="left:150px; top:1270px; width:250px; transform:rotate(-4deg)"><img src="assets/img/vizion-logo.jpg" alt="" /></div>
-            <img class="tape" src="assets/props/tape2.png" alt="" style="left:205px; top:1248px; width:145px; transform:rotate(-7deg)" />
-            <div class="ktag" id="k3" style="left:420px; top:1355px; transform:rotate(5deg)"><i class="tg"></i><i class="hole"></i><div>viZion<small>كورس التجارة الإلكترونية</small></div></div>
-            <svg id="cur" viewBox="0 0 26 32"><path d="M2 2 L2 25 L8 19.5 L12.5 29.5 L17 27.5 L12.6 17.8 L21 17.8 Z" fill="#fff" stroke="#111" stroke-width="1.8" stroke-linejoin="round" /></svg>
+            <svg class="cursor" id="cur3" viewBox="0 0 17 17"></svg>
+            <div class="tx soft" style="top:1090px; font:400 54px/1.4 'Readex Pro'"><span class="ln"><span class="w">ونرسلك</span> <span class="w">التجربة</span> <span class="w cyan">المجانية</span></span><span class="ln"><span class="w">بالخاص.</span></span></div>
+            <svg id="endmark" viewBox="0 0 1130 1048"><use href="#vz" width="1130" height="1048" fill="var(--mint)" /></svg>
           </div>
-
-          <!-- the desk props (filled in by the timeline script) -->
-          <div id="props"></div>
         </div>
       </div>
-      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+      <div id="fx"><div id="grain"></div><div id="vig"></div>
+        <svg id="mark" viewBox="0 0 1130 1048"><use href="#vz" width="1130" height="1048" fill="var(--mint)" /></svg>
+        <div id="corner"><svg width="26" height="26"><use href="#arrow-ur" /></svg></div>
+      </div>
 
 <!--AUDIO-->
     </div>

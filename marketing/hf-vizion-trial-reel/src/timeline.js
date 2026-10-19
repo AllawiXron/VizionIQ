@@ -1,27 +1,44 @@
-// «علّق كورس»: the viZion trial reel, one take, as in ../hf-one-second-reel: everything sits on one desk and a single
-// camera travels across it, no cuts. One paused timeline, built after the fonts load, registered on
+// «علّق كورس»: the viZion trial reel, one take in the viZion page's look: a single camera travels down one long navy
+// canvas past three stations, no cuts. One paused timeline, built after the fonts load, registered on
 // window.__timelines.main. build.py's sound cues follow T and MOVES.
 (function () {
   const D = 22;
-  // camera poses: the desk point at the centre of the frame, the scale, the roll (deg)
-  const POSE = { S1t: [1500, 1140, 1.08, 0], S1: [1500, 1250, 1, 0], S2: [1500, 3700, 1, 0], S3: [1500, 6100, 1, 0] };
+  // camera poses: the canvas point at the centre of the frame, the scale, the roll (deg)
+  const POSE = { S1t: [1200, 960, 1.08, 0], S1: [1200, 1000, 1, 0], S2: [1200, 3200, 1, 0], S3: [1200, 5400, 1, 0] };
   // [start, end, pose, roll at mid-move]
   const MOVES = [[0.4, 4.4, 'S1', 0]];
-  // the sheets on the desk: centre x, centre y, width, height, field, rotation
-  const SHEETS = [[1500, 1150, 1400, 2600, 'paper', 1], [1500, 3700, 1400, 2400, 'orange', -1.5], [1500, 6100, 1400, 2400, 'paper', -1]];
-  // loose props on the desk: image, centre x, centre y, width (px), rotation. The mug and pencil frame the hook.
-  const PROPS = [['mug', 2035, 2162, 560, 0], ['pencil', 1230, 2050, 735, -18], ['clip-orange', 2150, 4900, 70, 24], ['pin-cream', 860, 7020, 84, 0]];
+  // soft blue glows on the canvas: centre x, centre y, width, height, colour
+  const GLOWS = [
+    [1250, 1050, 760, 640, 'rgba(40,130,255,.34)'], [1700, 300, 560, 420, 'rgba(60,190,255,.18)'],
+    [1200, 3050, 820, 620, 'rgba(40,130,255,.34)'], [700, 3900, 560, 460, 'rgba(60,190,255,.16)'],
+    [1200, 5420, 780, 700, 'rgba(40,130,255,.36)'], [1750, 4700, 520, 420, 'rgba(60,190,255,.18)'],
+  ];
+  // big faint outlines of the mark and line-art arrows along the way (they slide past as the camera moves): x, y, size
+  const MARKS = [[1330, -140, 760], [380, 2080, 900], [1420, 3900, 820], [300, 5900, 760]];
+  const ARROWS = [[700, 1700, 1640, 2500], [1750, 4000, 900, 4650]];
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
 
-  const world = $('#world'), firstStation = $('#s1');
-  SHEETS.forEach(([cx, cy, w, h, kind, r]) => {
-    const d = document.createElement('div');
-    d.className = `bgc ${kind} sheet`;
-    d.style.cssText = `left:${cx - w / 2}px; top:${cy - h / 2}px; width:${w}px; height:${h}px; transform:rotate(${r}deg)`;
-    world.insertBefore(d, firstStation);
+  const world = $('#world');
+  $('#decor').innerHTML = GLOWS.map(([cx, cy, w, h, c]) => `<div class="glow" style="left:${cx - w / 2}px; top:${cy - h / 2}px; width:${w}px; height:${h}px; background:${c}"></div>`).join('')
+    + `<svg class="line" width="2400" height="6400" viewBox="0 0 2400 6400">${MARKS.map(([x, y, s]) => `<use href="#vz" x="${x}" y="${y}" width="${s}" height="${s * 0.927}" fill="none" stroke="rgba(130,170,240,0.18)" stroke-width="3.6" />`).join('')}
+      ${ARROWS.map(([x0, y0, x1, y1]) => {
+        const mx = (x0 + x1) / 2 + (y1 - y0) * 0.25, my = (y0 + y1) / 2 - (x1 - x0) * 0.25, a = Math.atan2(y1 - my, x1 - mx), L = 46;
+        const h = (d) => `${(x1 - L * Math.cos(a + d)).toFixed(1)} ${(y1 - L * Math.sin(a + d)).toFixed(1)}`;
+        return `<path d="M${x0} ${y0} Q ${mx} ${my} ${x1} ${y1} M${h(0.5)} L${x1} ${y1} L${h(-0.5)}" fill="none" stroke="rgba(130,170,240,0.22)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />`;
+      }).join('')}</svg>`;
+
+  // the pixel-art pointer, as on the posts
+  const HAND = [
+    '......XX.........', '.....XooX........', '.....XooX........', '.....XooX........',
+    '.....XooXXX......', '.....XooXooXXX...', '.....XooXooXooXX.', '..XX.XooXooXooXoX',
+    '.XooXXooooooooXoX', '.XoooXooooooooooX', '..XoooooooooooooX', '...XooooooooooooX',
+    '...XoooooooooooX.', '....XooooooooooX.', '....XoooooooooX..', '.....XooooooooX..', '.....XXXXXXXXXX..',
+  ];
+  $$('.cursor').forEach((svg) => {
+    svg.innerHTML = HAND.map((row, y) => [...row].map((c, x) => (c === '.' ? '' : `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${c === 'X' ? '#000' : '#fff'}"/>`)).join('')).join('');
+    svg.setAttribute('shape-rendering', 'crispEdges');
   });
-  $('#props').innerHTML = PROPS.map(([img, cx, cy, w, r]) => `<img class="prop" src="assets/props/${img}.png" alt="" style="left:${cx - w / 2}px; top:${cy}px; width:${w}px; transform:translateY(-50%) rotate(${r}deg)" />`).join('');
 
   // ── the camera: holds drift in a little; moves ease softly, roll a touch, and blur lightly along their direction
   const ease = (p) => -(Math.cos(Math.PI * p) - 1) / 2;
@@ -43,88 +60,28 @@
     world.style.transform = `translate(540px, 960px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(5)}) translate(${(-x).toFixed(2)}px, ${(-y).toFixed(2)}px)`;
   }
   function render(t) {
-    const [x, y, s, r] = cam(t), [x0, y0, s0] = cam(Math.max(0, t - 1 / 30)), r0 = cam(Math.max(0, t - 1 / 30))[3];
-    place([x, y, s, r]);
-    const zb = Math.abs(Math.log(s / s0)) * 70 + Math.abs(r - r0) * 4;
-    const bx = Math.min(22, Math.abs(x - x0) * s * 0.2 + zb), by = Math.min(22, Math.abs(y - y0) * s * 0.2 + zb);
+    const c = cam(t), c0 = cam(Math.max(0, t - 1 / 30));
+    place(c);
+    const zb = Math.abs(Math.log(c[2] / c0[2])) * 70 + Math.abs(c[3] - c0[3]) * 4;
+    const bx = Math.min(22, Math.abs(c[0] - c0[0]) * c[2] * 0.2 + zb), by = Math.min(22, Math.abs(c[1] - c0[1]) * c[2] * 0.2 + zb);
     if (bx < 0.5 && by < 0.5) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
     else { camBlur.setAttribute('stdDeviation', `${bx.toFixed(2)} ${by.toFixed(2)}`); view.style.filter = 'url(#camf)'; }
   }
 
-  // ── torn paper: each strip and label gets its own piece, torn on all four sides with the paper's white core showing
-  // along the tear and a few loose fibres, drawn once at its own size (seeded, so every render is the same)
-  function rand(seed) {
-    return () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  }
-  function tearEdge(n, r, inset, amp) {
-    // fractal noise along an edge: wavelengths from 360 px down to 5 px, each octave a little weaker
-    const waves = [];
-    for (let o = 0, a = amp, L = 360; L > 4; o++, a *= 0.6, L /= 2) for (let j = 0; j < 2; j++) waves.push([a * (0.5 + r()), (2 * Math.PI) / (L * (0.7 + 0.6 * r())), r() * 6.283]);
-    const e = new Float32Array(n);
-    for (let i = 0; i < n; i++) { let v = 0; for (const [a, k, ph] of waves) v += a * Math.sin(k * i + ph); e[i] = inset + v; }
-    return e;
-  }
-  function tear(el, seed) {
-    const S = 2, W = el.offsetWidth * S, H = el.offsetHeight * S, r = rand(seed);
-    const top = tearEdge(W, r, 11 * S, 2.6 * S), bot = tearEdge(W, r, 12 * S, 2.6 * S), lft = tearEdge(H, r, 10 * S, 2.4 * S), rgt = tearEdge(H, r, 10 * S, 2.4 * S);
-    const bT = tearEdge(W, r, 3.2 * S, 1.3 * S), bB = tearEdge(W, r, 3.2 * S, 1.3 * S), bL = tearEdge(H, r, 2.8 * S, 1.2 * S), bR = tearEdge(H, r, 2.8 * S, 1.2 * S);
-    // a little mottling: value noise on a 26 px grid
-    const G = 26 * S, gw = Math.ceil(W / G) + 2, gh = Math.ceil(H / G) + 2, grid = Float32Array.from({ length: gw * gh }, () => r() - 0.5);
-    const cv = document.createElement('canvas');
-    cv.width = W; cv.height = H;
-    const ctx = cv.getContext('2d'), img = ctx.createImageData(W, H), px = img.data;
-    for (let y = 0; y < H; y++) {
-      const gy = y / G, y0 = Math.floor(gy), fy = gy - y0;
-      for (let x = 0; x < W; x++) {
-        const dt = y - top[x], db = H - 1 - y - bot[x], dl = x - lft[y], dr = W - 1 - x - rgt[y];
-        const d = Math.min(dt, db, dl, dr);
-        if (d < -1) continue;
-        let band = 0;
-        for (const [dd, bw] of [[dt, bT[x]], [db, bB[x]], [dl, bL[y]], [dr, bR[y]]]) band = Math.max(band, Math.min(1, Math.max(0, 1 - (dd - bw) / (1.5 * S))));
-        const n = (Math.sin(x * 12.9898 + y * 78.233) * 43758.5453) % 1, fib = Math.abs(n);
-        const gx = x / G, x0 = Math.floor(gx), fx = gx - x0, g = (i, j) => grid[(j % gh) * gw + (i % gw)];
-        const m = (g(x0, y0) * (1 - fx) + g(x0 + 1, y0) * fx) * (1 - fy) + (g(x0, y0 + 1) * (1 - fx) + g(x0 + 1, y0 + 1) * fx) * fy;
-        const k = 1 + m * 0.05 + (fib - 0.5) * 0.025;
-        const a = Math.min(1, Math.max(0, d + 0.5)) * (1 - band * (0.16 + 0.24 * fib));
-        const i4 = (y * W + x) * 4;
-        px[i4] = Math.min(255, 251 * k * (1 - band) + 255 * band);
-        px[i4 + 1] = Math.min(255, 243 * k * (1 - band) + 253 * band);
-        px[i4 + 2] = Math.min(255, 230 * k * (1 - band) + 248 * band);
-        px[i4 + 3] = a * 255;
-      }
-    }
-    ctx.putImageData(img, 0, 0);
-    // loose fibres poking out of the tear
-    ctx.lineCap = 'round';
-    for (let i = 0, nH = Math.round((W + H) / S * 0.12); i < nH; i++) {
-      const side = Math.floor(r() * 4);
-      let x, y, ang;
-      if (side === 0) { x = r() * W; y = top[Math.floor(x)]; ang = -Math.PI / 2; }
-      else if (side === 1) { x = r() * W; y = H - 1 - bot[Math.floor(x)]; ang = Math.PI / 2; }
-      else if (side === 2) { y = r() * H; x = lft[Math.floor(y)]; ang = Math.PI; }
-      else { y = r() * H; x = W - 1 - rgt[Math.floor(y)]; ang = 0; }
-      ang += (r() - 0.5) * 1.6;
-      const L = (2 + r() * 6) * S;
-      ctx.strokeStyle = `rgba(255,253,248,${(0.35 + r() * 0.4).toFixed(2)})`;
-      ctx.lineWidth = (0.5 + r() * 0.5) * S;
-      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(ang) * L, y + Math.sin(ang) * L); ctx.stroke();
-    }
-    el.style.backgroundImage = `url(${cv.toDataURL('image/png')})`;
-    el.style.backgroundColor = 'transparent';
-  }
-
-  function tearBox(el, seed) {   // the comment box's torn paper (its own child, so the box keeps its layout)
-    tear(el, seed);
+  // the selection box hugs the key words (measured once the fonts are in)
+  function fitSelect() {
+    const s1 = $('#s1').getBoundingClientRect(), r = $('#selw').getBoundingClientRect(), k = $('#s1').offsetWidth / s1.width;
+    Object.assign($('#sel1').style, { left: `${(r.left - s1.left) * k - 18}px`, top: `${(r.top - s1.top) * k + 4}px`, width: `${r.width * k + 36}px`, height: `${r.height * k + 6}px` });
   }
 
   function build() {
-    $$('.strip > span, .lab8 > span').forEach((el, i) => tear(el, 101 + i * 37));
-    tearBox($('#cbox .pap'), 907);
-    $$('.lab8').forEach((el) => gsap.set(el, { xPercent: -50, rotation: +el.dataset.r }));
-    // stills (stills/render.cjs): everything on, the camera parked on a sheet
+    place(POSE.S1);
+    fitSelect();
+    // stills (stills/render.cjs): everything on, the camera parked on a station
     window.__still = (name) => {
-      $$('.w, .strip, .lab8, .ktag, #cbox').forEach((e) => { e.style.opacity = 1; });
-      $$('.mk path').forEach((e) => { e.style.strokeDashoffset = 0; });
+      $$('.w, .bub, .glass, .select, .cursor, #endmark').forEach((e) => { e.style.opacity = 1; });
+      Object.assign($('#cur1').style, { left: `${parseFloat($('#sel1').style.left) + parseFloat($('#sel1').style.width) - 40}px`, top: `${parseFloat($('#sel1').style.top) + 70}px` });
+      Object.assign($('#cur3').style, { left: '150px', top: '965px' });
       place(POSE[name]);
     };
     document.body.dataset.ready = '1';

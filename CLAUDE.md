@@ -69,6 +69,10 @@ rather than taking packs from Pinterest, which are mostly other people's paid or
 
 No prices in reels unless the user asks for them (15 Oct).
 
+viZion reels and posts use the viZion page look, not the allawi.psd paper look (19 Oct): navy-to-blue fields with
+pinstripes, the VZ mark, Readex Pro, cyan gradient words, glass cards and cyan pills, the selection box and pixel cursor
+(`marketing/vizion-results-carousel`, reel: `marketing/hf-vizion-trial-reel`). The paper/DG Sahabah look is for @allawi.psd.
+
 Don't use flat cream + orange + near-black fields with clean UI pills: the user said that reads as "Claude motion" (15 Oct).
 The user also rejected a reel as "AI-looking and boring" (9 Oct): keep it handmade (paper, tape, real props) and keep it moving.
 
