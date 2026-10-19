@@ -47,4 +47,8 @@ Malwiya as rising tiers (a Christmas tree).
 Names, phone numbers, IDs and the `example.gov.iq` addresses are placeholders, and the QR-like squares are decoration,
 not working codes. The services on the website are illustrations, not the ministry's real list.
 
-Still to do: the PowerPoint, the concept write-up for the form, and the ZIP.
+- `concept-ar.txt`: the concept write-up for the form (rule 3: the idea, what each element and colour means), in
+  formal Arabic. It is the source: `python3 concept.py` lays it out as `concept.html` and `node concept-pdf.cjs`
+  prints `out/concept-ar.pdf` (one A4 page in the identity's style).
+
+Still to do: the PowerPoint, a logo animation, and the ZIP.
