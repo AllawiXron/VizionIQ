@@ -11,8 +11,8 @@ with «خلّي التصميم على أهله.. راسلنا» on a kraft tag a
   person; the original post used a celebrity, which we avoided. The caption says the photo is AI-generated.
 - Look: the page's own: torn cream strips with tape, an orange highlighter on «بالثنتين», a worn stamp, paper texture
   (multiply, .16), light grain (.07) and a vignette. Font: DG Sahabah (the text has no «چ» or «گ»).
-- `prep.py` builds `img/guy.jpg`: the photo at 1.15x, set at the bottom with his face on the left, the grey wall
-  continued 320 px upward; a light warm grade.
+- `prep.py` builds `img/guy.jpg`: the photo at 1.3x, set at the bottom with his face on the left, the grey wall
+  continued 185 px upward; a light warm grade.
 - `NODE_PATH=/opt/node-tools/node_modules node render.cjs` renders `out/`. `node ../tools/textcheck.cjs post.html '#post'`
   finds no collisions.
 - `caption.txt`: the caption.

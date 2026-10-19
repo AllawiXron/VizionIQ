@@ -1,12 +1,12 @@
-# python3 prep.py -> img/guy.jpg: the AI portrait (photo/src-guy.jpg, 1200x896) on the 1080x1350 post. Scaled 1.15x and
+# python3 prep.py -> img/guy.jpg: the AI portrait (photo/src-guy.jpg, 1200x896) on the 1080x1350 post. Scaled 1.3x and
 # set at the bottom with his face at about x 330, so the whole haircut shows and the grey wall on the right holds the
-# headline; the 320 px above the photo continue the wall (its top row, stretched and softened). Light warm grade.
+# headline; the 185 px above the photo continue the wall (its top row, stretched and softened). Light warm grade.
 from PIL import Image, ImageFilter, ImageEnhance
 
-W, H, S, X0 = 1080, 1350, 1.15, 150
+W, H, S, X0 = 1080, 1350, 1.3, 246
 src = Image.open('photo/src-guy.jpg').convert('RGB')
 ph = src.resize((round(src.width * S), round(src.height * S)), Image.LANCZOS).crop((X0, 0, X0 + W, round(src.height * S)))
-ph = ph.filter(ImageFilter.UnsharpMask(radius=1.6, percent=50, threshold=2))
+ph = ph.filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=2))
 top = H - ph.height
 ext = ph.crop((0, 0, W, 6)).resize((W, top + 60), Image.BILINEAR).filter(ImageFilter.GaussianBlur(14))
 im = Image.new('RGB', (W, H))
