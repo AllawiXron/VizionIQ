@@ -75,7 +75,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
   border:2px solid rgba(255,255,255,.55); box-shadow:inset 0 2px 0 rgba(255,255,255,.6), 0 0 0 8px rgba(98,198,233,.12), 0 14px 30px rgba(20,120,200,.45) }
 #cbox .send svg { position:absolute; left:26px; top:26px; width:50px; height:50px; fill:none; stroke:#071a45; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round }
 #ripB { position:absolute; left:124px; top:925px; width:60px; height:60px; border-radius:50%; border:3px solid var(--cyan); opacity:0; z-index:9 }
-#endmark { position:absolute; left:470px; top:1300px; width:140px; opacity:0; filter:drop-shadow(0 0 40px rgba(47,140,255,.5)) }
+#endmark { position:absolute; left:470px; top:1290px; width:140px; opacity:0; filter:drop-shadow(0 0 40px rgba(47,140,255,.5)) }
     </style>
   </head>
   <body>
@@ -87,6 +87,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
       <filter id="camf" x="0" y="0" width="100%" height="100%"><feGaussianBlur id="cams" stdDeviation="0 0" edgeMode="duplicate" /></filter>
       <filter id="h2" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h2s" stdDeviation="0 0" /></filter>
       <filter id="h3" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h3s" stdDeviation="0 0" /></filter>
+      <filter id="h4" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h4s" stdDeviation="0 0" /></filter>
     </svg>
     <div id="root" data-composition-id="main" data-start="0" data-duration="22" data-width="1080" data-height="1920">
       <div id="view" class="clip" data-start="0" data-duration="22" data-track-index="0">
@@ -96,9 +97,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
 
           <!-- the hook: DMs come in, then «تجيك رسائل هواي.. ومحد يشتري؟» -->
           <div class="st" id="s1" style="left:660px; top:40px">
-            <div class="bub r" id="b1" style="right:120px; top:330px"><i style="left:-8px"></i>بكم؟</div>
-            <div class="bub l" id="b2" style="left:150px; top:450px"><i style="right:-8px"></i>شكد السعر؟</div>
-            <div class="bub r" id="b3" style="right:200px; top:570px"><i style="left:-8px"></i>تفاصيل</div>
+            <div class="bub r" id="b1" style="right:110px; top:320px"><i style="left:-8px"></i>شكد السعر؟</div>
+            <div class="bub l" id="b2" style="left:90px; top:445px"><i style="right:-8px"></i>عاشت إيدك، من أقرر أراسلك</div>
+            <div class="bub r" id="b3" style="right:150px; top:570px"><i style="left:-8px"></i>شدعوة هلگد غالي؟</div>
             <div class="tx" style="top:720px; font:600 84px/1.3 'Readex Pro'"><span class="w">تجيك</span> <span class="w">رسائل</span> <span class="w">هواي..</span></div>
             <div class="tx" style="top:850px; font:700 140px/1.25 'Readex Pro'"><span class="w"><span class="grad">ومحد</span></span> <span class="w"><span class="grad">يشتري؟</span></span></div>
             <div class="tx soft" style="top:1110px; font:400 58px/1.3 'Readex Pro'"><span class="w">الخلل</span> <span class="w">مو</span> <span class="w">بسعرك..</span></div>
@@ -110,22 +111,22 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
           <!-- the system: a glass card, four cards, then «يوقف خسارتك ويضاعف بيعك..» -->
           <div class="st" id="s2" style="left:660px; top:2240px">
             <div class="glass" id="head2">
-              <div style="font:700 86px/1.3 'Readex Pro'"><span class="w">نظام</span> <span class="w lat"><span class="grad">viZion</span></span></div>
+              <div style="font:700 86px/1.3 'Readex Pro'"><span class="w">كورس</span> <span class="w lat"><span class="grad">viZion</span></span></div>
               <div class="soft" style="font:400 46px/1.35 'Readex Pro'"><span class="w">يحول</span> <span class="w">الرسائل</span> <span class="w">إلى</span> <span class="w">طلبات</span> <span class="w cyan">حقيقية.</span></div>
             </div>
-            <div class="glass card" id="c1" style="right:70px; top:700px"><span class="n">1</span><span class="t">أسرار الترويج</span></div>
-            <div class="glass card" id="c2" style="left:70px; top:700px"><span class="n">2</span><span class="t">ردود تقفل البيعة</span></div>
-            <div class="glass card" id="c3" style="right:70px; top:900px"><span class="n">3</span><span class="t">حاسبة أرباحك</span></div>
-            <div class="glass card" id="c4" style="left:70px; top:900px"><span class="n">4</span><span class="t">ذكاء اصطناعي وياك</span></div>
-            <div class="tx" style="top:1170px; font:700 112px/1.3 'Readex Pro'"><span class="ln"><span class="w" id="slam2a" style="filter:url(#h2)">يوقف <span class="grad">خسارتك</span></span></span><span class="ln"><span class="w" id="slam2b">ويضاعف <span class="grad">بيعك..</span></span></span></div>
+            <div class="glass card" id="c1" style="right:70px; top:700px"><span class="n">1</span><span class="t">أسرار الاستهداف</span></div>
+            <div class="glass card" id="c2" style="left:70px; top:700px"><span class="n">2</span><span class="t">صناعة العروض</span></div>
+            <div class="glass card" id="c3" style="right:70px; top:900px"><span class="n">3</span><span class="t">فن الإقناع</span></div>
+            <div class="glass card" id="c4" style="left:70px; top:900px"><span class="n">4</span><span class="t">مضاعفة الأرباح</span></div>
+            <div class="tx" style="top:1170px; font:700 112px/1.3 'Readex Pro'"><span class="ln"><span class="w" id="slam2a" style="filter:url(#h2)">يوقف <span class="grad">خسارتك</span></span></span><span class="ln"><span class="w" id="slam2b" style="filter:url(#h3)">ويضاعف <span class="grad">مبيعاتك</span></span></span></div>
           </div>
 
           <!-- the ask: «تريد تجربة مجانية للكورس؟ علّق بـ «كورس»» -->
           <div class="st" id="s3" style="left:660px; top:4440px">
             <div class="tx" style="top:340px; font:600 78px/1.35 'Readex Pro'"><span class="ln"><span class="w">تريد</span> <span class="w">تجربة</span> <span class="w cyan">مجانية</span></span><span class="ln"><span class="w">للكورس؟</span></span></div>
-            <div class="tx" style="top:600px; font:700 190px/1.25 'Readex Pro'"><span class="w" id="slam3" style="filter:url(#h3)"><span class="grad">علّق بـــ</span></span></div>
+            <div class="tx" style="top:600px; font:700 190px/1.25 'Readex Pro'"><span class="w" id="slam3" style="filter:url(#h4)"><span class="grad">علّق بـــ</span></span></div>
             <div class="glass" id="cbox"><span class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="4" /><path d="M4.5 21 C 5.5 16, 18.5 16, 19.5 21 Z" /></svg></span>
-              <span class="typed"><span id="typed">كورس</span><i class="caret"></i></span>
+              <span class="typed"><span id="typed"></span><i class="caret"></i></span>
               <span class="send"><svg viewBox="0 0 24 24"><path d="M21 3 L3 10.5 L10.5 13.5 L13.5 21 Z M21 3 L10.5 13.5" /></svg></span></div>
             <i id="ripB"></i>
             <svg class="cursor" id="cur3" viewBox="0 0 17 17"></svg>
@@ -134,6 +135,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
           </div>
         </div>
       </div>
+      <video class="trx" id="tr1" src="assets/tr/flash19.mp4" muted playsinline data-start="TR1" data-duration="0.76" data-track-index="2"></video>
+      <video class="trx" id="tr2" src="assets/tr/flash6.mp4" muted playsinline data-start="TR2" data-duration="0.8" data-track-index="3"></video>
       <div id="fx"><div id="grain"></div><div id="vig"></div>
         <svg id="mark" viewBox="0 0 1130 1048"><use href="#vz" width="1130" height="1048" fill="var(--mint)" /></svg>
         <div id="corner"><svg width="26" height="26"><use href="#arrow-ur" /></svg></div>

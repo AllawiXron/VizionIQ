@@ -344,7 +344,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
   border:2px solid rgba(255,255,255,.55); box-shadow:inset 0 2px 0 rgba(255,255,255,.6), 0 0 0 8px rgba(98,198,233,.12), 0 14px 30px rgba(20,120,200,.45) }
 #cbox .send svg { position:absolute; left:26px; top:26px; width:50px; height:50px; fill:none; stroke:#071a45; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round }
 #ripB { position:absolute; left:124px; top:925px; width:60px; height:60px; border-radius:50%; border:3px solid var(--cyan); opacity:0; z-index:9 }
-#endmark { position:absolute; left:470px; top:1300px; width:140px; opacity:0; filter:drop-shadow(0 0 40px rgba(47,140,255,.5)) }
+#endmark { position:absolute; left:470px; top:1290px; width:140px; opacity:0; filter:drop-shadow(0 0 40px rgba(47,140,255,.5)) }
     </style>
   </head>
   <body>
@@ -357,6 +357,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
       <filter id="camf" x="0" y="0" width="100%" height="100%"><feGaussianBlur id="cams" stdDeviation="0 0" edgeMode="duplicate" /></filter>
       <filter id="h2" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h2s" stdDeviation="0 0" /></filter>
       <filter id="h3" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h3s" stdDeviation="0 0" /></filter>
+      <filter id="h4" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h4s" stdDeviation="0 0" /></filter>
     </svg>
     <div id="root" data-composition-id="main" data-start="0" data-duration="22" data-width="1080" data-height="1920">
       <div id="view" class="clip" data-start="0" data-duration="22" data-track-index="0">
@@ -366,9 +367,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
 
           <!-- the hook: DMs come in, then «تجيك رسائل هواي.. ومحد يشتري؟» -->
           <div class="st" id="s1" style="left:660px; top:40px">
-            <div class="bub r" id="b1" style="right:120px; top:330px"><i style="left:-8px"></i>بكم؟</div>
-            <div class="bub l" id="b2" style="left:150px; top:450px"><i style="right:-8px"></i>شكد السعر؟</div>
-            <div class="bub r" id="b3" style="right:200px; top:570px"><i style="left:-8px"></i>تفاصيل</div>
+            <div class="bub r" id="b1" style="right:110px; top:320px"><i style="left:-8px"></i>شكد السعر؟</div>
+            <div class="bub l" id="b2" style="left:90px; top:445px"><i style="right:-8px"></i>عاشت إيدك، من أقرر أراسلك</div>
+            <div class="bub r" id="b3" style="right:150px; top:570px"><i style="left:-8px"></i>شدعوة هلگد غالي؟</div>
             <div class="tx" style="top:720px; font:600 84px/1.3 'Readex Pro'"><span class="w">تجيك</span> <span class="w">رسائل</span> <span class="w">هواي..</span></div>
             <div class="tx" style="top:850px; font:700 140px/1.25 'Readex Pro'"><span class="w"><span class="grad">ومحد</span></span> <span class="w"><span class="grad">يشتري؟</span></span></div>
             <div class="tx soft" style="top:1110px; font:400 58px/1.3 'Readex Pro'"><span class="w">الخلل</span> <span class="w">مو</span> <span class="w">بسعرك..</span></div>
@@ -380,22 +381,22 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
           <!-- the system: a glass card, four cards, then «يوقف خسارتك ويضاعف بيعك..» -->
           <div class="st" id="s2" style="left:660px; top:2240px">
             <div class="glass" id="head2">
-              <div style="font:700 86px/1.3 'Readex Pro'"><span class="w">نظام</span> <span class="w lat"><span class="grad">viZion</span></span></div>
+              <div style="font:700 86px/1.3 'Readex Pro'"><span class="w">كورس</span> <span class="w lat"><span class="grad">viZion</span></span></div>
               <div class="soft" style="font:400 46px/1.35 'Readex Pro'"><span class="w">يحول</span> <span class="w">الرسائل</span> <span class="w">إلى</span> <span class="w">طلبات</span> <span class="w cyan">حقيقية.</span></div>
             </div>
-            <div class="glass card" id="c1" style="right:70px; top:700px"><span class="n">1</span><span class="t">أسرار الترويج</span></div>
-            <div class="glass card" id="c2" style="left:70px; top:700px"><span class="n">2</span><span class="t">ردود تقفل البيعة</span></div>
-            <div class="glass card" id="c3" style="right:70px; top:900px"><span class="n">3</span><span class="t">حاسبة أرباحك</span></div>
-            <div class="glass card" id="c4" style="left:70px; top:900px"><span class="n">4</span><span class="t">ذكاء اصطناعي وياك</span></div>
-            <div class="tx" style="top:1170px; font:700 112px/1.3 'Readex Pro'"><span class="ln"><span class="w" id="slam2a" style="filter:url(#h2)">يوقف <span class="grad">خسارتك</span></span></span><span class="ln"><span class="w" id="slam2b">ويضاعف <span class="grad">بيعك..</span></span></span></div>
+            <div class="glass card" id="c1" style="right:70px; top:700px"><span class="n">1</span><span class="t">أسرار الاستهداف</span></div>
+            <div class="glass card" id="c2" style="left:70px; top:700px"><span class="n">2</span><span class="t">صناعة العروض</span></div>
+            <div class="glass card" id="c3" style="right:70px; top:900px"><span class="n">3</span><span class="t">فن الإقناع</span></div>
+            <div class="glass card" id="c4" style="left:70px; top:900px"><span class="n">4</span><span class="t">مضاعفة الأرباح</span></div>
+            <div class="tx" style="top:1170px; font:700 112px/1.3 'Readex Pro'"><span class="ln"><span class="w" id="slam2a" style="filter:url(#h2)">يوقف <span class="grad">خسارتك</span></span></span><span class="ln"><span class="w" id="slam2b" style="filter:url(#h3)">ويضاعف <span class="grad">مبيعاتك</span></span></span></div>
           </div>
 
           <!-- the ask: «تريد تجربة مجانية للكورس؟ علّق بـ «كورس»» -->
           <div class="st" id="s3" style="left:660px; top:4440px">
             <div class="tx" style="top:340px; font:600 78px/1.35 'Readex Pro'"><span class="ln"><span class="w">تريد</span> <span class="w">تجربة</span> <span class="w cyan">مجانية</span></span><span class="ln"><span class="w">للكورس؟</span></span></div>
-            <div class="tx" style="top:600px; font:700 190px/1.25 'Readex Pro'"><span class="w" id="slam3" style="filter:url(#h3)"><span class="grad">علّق بـــ</span></span></div>
+            <div class="tx" style="top:600px; font:700 190px/1.25 'Readex Pro'"><span class="w" id="slam3" style="filter:url(#h4)"><span class="grad">علّق بـــ</span></span></div>
             <div class="glass" id="cbox"><span class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="4" /><path d="M4.5 21 C 5.5 16, 18.5 16, 19.5 21 Z" /></svg></span>
-              <span class="typed"><span id="typed">كورس</span><i class="caret"></i></span>
+              <span class="typed"><span id="typed"></span><i class="caret"></i></span>
               <span class="send"><svg viewBox="0 0 24 24"><path d="M21 3 L3 10.5 L10.5 13.5 L13.5 21 Z M21 3 L10.5 13.5" /></svg></span></div>
             <i id="ripB"></i>
             <svg class="cursor" id="cur3" viewBox="0 0 17 17"></svg>
@@ -404,12 +405,65 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
           </div>
         </div>
       </div>
+      <video class="trx" id="tr1" src="assets/tr/flash19.mp4" muted playsinline data-start="6.41" data-duration="0.76" data-track-index="2"></video>
+      <video class="trx" id="tr2" src="assets/tr/flash6.mp4" muted playsinline data-start="13.77" data-duration="0.8" data-track-index="3"></video>
       <div id="fx"><div id="grain"></div><div id="vig"></div>
         <svg id="mark" viewBox="0 0 1130 1048"><use href="#vz" width="1130" height="1048" fill="var(--mint)" /></svg>
         <div id="corner"><svg width="26" height="26"><use href="#arrow-ur" /></svg></div>
       </div>
 
-
+      <audio id="a0-ding" src="assets/sfx/ding.wav" data-start="0.30" data-duration="0.704" data-track-index="10" data-volume="0.22"></audio>
+      <audio id="a1-ding" src="assets/sfx/ding.wav" data-start="0.62" data-duration="0.704" data-track-index="11" data-volume="0.22"></audio>
+      <audio id="a2-ding" src="assets/sfx/ding.wav" data-start="0.94" data-duration="0.704" data-track-index="12" data-volume="0.22"></audio>
+      <audio id="a3-mpop" src="assets/sfx/mpop.wav" data-start="1.35" data-duration="1.25" data-track-index="13" data-volume="0.35"></audio>
+      <audio id="a4-flick" src="assets/sfx/flick.wav" data-start="1.50" data-duration="0.552" data-track-index="14" data-volume="0.3"></audio>
+      <audio id="a5-ppop3" src="assets/sfx/ppop3.wav" data-start="1.67" data-duration="0.38" data-track-index="15" data-volume="0.22"></audio>
+      <audio id="a6-npop1" src="assets/sfx/npop1.wav" data-start="2.57" data-duration="0.16" data-track-index="16" data-volume="0.3"></audio>
+      <audio id="a7-npop2" src="assets/sfx/npop2.wav" data-start="2.82" data-duration="0.18" data-track-index="17" data-volume="0.2"></audio>
+      <audio id="a8-npop3" src="assets/sfx/npop3.wav" data-start="3.07" data-duration="0.17" data-track-index="18" data-volume="0.24"></audio>
+      <audio id="a9-npop4" src="assets/sfx/npop4.wav" data-start="3.67" data-duration="0.16" data-track-index="19" data-volume="0.22"></audio>
+      <audio id="a10-npop5" src="assets/sfx/npop5.wav" data-start="3.92" data-duration="0.15" data-track-index="20" data-volume="0.3"></audio>
+      <audio id="a11-npop1" src="assets/sfx/npop1.wav" data-start="4.17" data-duration="0.16" data-track-index="21" data-volume="0.3"></audio>
+      <audio id="a12-ppop1" src="assets/sfx/ppop1.wav" data-start="4.42" data-duration="0.3" data-track-index="22" data-volume="0.22"></audio>
+      <audio id="a13-select" src="assets/sfx/select.wav" data-start="4.85" data-duration="0.167" data-track-index="23" data-volume="0.3"></audio>
+      <audio id="a14-clickb" src="assets/sfx/clickb.wav" data-start="5.15" data-duration="0.351" data-track-index="24" data-volume="0.5"></audio>
+      <audio id="a15-mainwhoosh" src="assets/sfx/mainwhoosh.wav" data-start="5.95" data-duration="1.717" data-track-index="25" data-volume="0.34"></audio>
+      <audio id="a16-sweet" src="assets/sfx/sweet.wav" data-start="6.95" data-duration="1.076" data-track-index="26" data-volume="0.3"></audio>
+      <audio id="a17-npop2" src="assets/sfx/npop2.wav" data-start="7.02" data-duration="0.18" data-track-index="27" data-volume="0.2"></audio>
+      <audio id="a18-ppop2" src="assets/sfx/ppop2.wav" data-start="7.32" data-duration="0.4" data-track-index="28" data-volume="0.15"></audio>
+      <audio id="a19-npop3" src="assets/sfx/npop3.wav" data-start="7.77" data-duration="0.17" data-track-index="29" data-volume="0.24"></audio>
+      <audio id="a20-npop4" src="assets/sfx/npop4.wav" data-start="8.00" data-duration="0.16" data-track-index="30" data-volume="0.22"></audio>
+      <audio id="a21-npop5" src="assets/sfx/npop5.wav" data-start="8.23" data-duration="0.15" data-track-index="31" data-volume="0.3"></audio>
+      <audio id="a22-npop1" src="assets/sfx/npop1.wav" data-start="8.46" data-duration="0.16" data-track-index="32" data-volume="0.3"></audio>
+      <audio id="a23-ppop3" src="assets/sfx/ppop3.wav" data-start="8.69" data-duration="0.38" data-track-index="33" data-volume="0.2"></audio>
+      <audio id="a24-mpop" src="assets/sfx/mpop.wav" data-start="9.35" data-duration="1.25" data-track-index="34" data-volume="0.3"></audio>
+      <audio id="a25-mpop" src="assets/sfx/mpop.wav" data-start="9.80" data-duration="1.25" data-track-index="35" data-volume="0.3"></audio>
+      <audio id="a26-mpop" src="assets/sfx/mpop.wav" data-start="10.25" data-duration="1.25" data-track-index="36" data-volume="0.3"></audio>
+      <audio id="a27-mpop" src="assets/sfx/mpop.wav" data-start="10.70" data-duration="1.25" data-track-index="37" data-volume="0.3"></audio>
+      <audio id="a28-flick" src="assets/sfx/flick.wav" data-start="11.35" data-duration="0.552" data-track-index="38" data-volume="0.3"></audio>
+      <audio id="a29-ppop2" src="assets/sfx/ppop2.wav" data-start="11.82" data-duration="0.4" data-track-index="39" data-volume="0.16"></audio>
+      <audio id="a30-flick" src="assets/sfx/flick.wav" data-start="12.00" data-duration="0.552" data-track-index="40" data-volume="0.3"></audio>
+      <audio id="a31-ppop2" src="assets/sfx/ppop2.wav" data-start="12.47" data-duration="0.4" data-track-index="41" data-volume="0.16"></audio>
+      <audio id="a32-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="13.45" data-duration="2.616" data-track-index="42" data-volume="0.3"></audio>
+      <audio id="a33-npop2" src="assets/sfx/npop2.wav" data-start="14.57" data-duration="0.18" data-track-index="43" data-volume="0.2"></audio>
+      <audio id="a34-npop3" src="assets/sfx/npop3.wav" data-start="14.82" data-duration="0.17" data-track-index="44" data-volume="0.24"></audio>
+      <audio id="a35-ppop4" src="assets/sfx/ppop4.wav" data-start="15.07" data-duration="0.4" data-track-index="45" data-volume="0.15"></audio>
+      <audio id="a36-npop4" src="assets/sfx/npop4.wav" data-start="15.47" data-duration="0.16" data-track-index="46" data-volume="0.22"></audio>
+      <audio id="a37-flick" src="assets/sfx/flick.wav" data-start="16.05" data-duration="0.552" data-track-index="47" data-volume="0.38"></audio>
+      <audio id="a38-mpop" src="assets/sfx/mpop.wav" data-start="16.50" data-duration="1.25" data-track-index="48" data-volume="0.4"></audio>
+      <audio id="a39-softpop" src="assets/sfx/softpop.wav" data-start="16.90" data-duration="0.72" data-track-index="49" data-volume="0.35"></audio>
+      <audio id="a40-key" src="assets/sfx/key.wav" data-start="17.35" data-duration="0.624" data-track-index="50" data-volume="0.45"></audio>
+      <audio id="a41-key" src="assets/sfx/key.wav" data-start="17.50" data-duration="0.624" data-track-index="51" data-volume="0.45"></audio>
+      <audio id="a42-key" src="assets/sfx/key.wav" data-start="17.65" data-duration="0.624" data-track-index="52" data-volume="0.45"></audio>
+      <audio id="a43-key" src="assets/sfx/key.wav" data-start="17.80" data-duration="0.624" data-track-index="53" data-volume="0.45"></audio>
+      <audio id="a44-clickb" src="assets/sfx/clickb.wav" data-start="18.70" data-duration="0.351" data-track-index="54" data-volume="0.55"></audio>
+      <audio id="a45-enter" src="assets/sfx/enter.wav" data-start="18.73" data-duration="0.801" data-track-index="55" data-volume="0.3"></audio>
+      <audio id="a46-npop5" src="assets/sfx/npop5.wav" data-start="19.17" data-duration="0.15" data-track-index="56" data-volume="0.3"></audio>
+      <audio id="a47-npop1" src="assets/sfx/npop1.wav" data-start="19.42" data-duration="0.16" data-track-index="57" data-volume="0.3"></audio>
+      <audio id="a48-ppop1" src="assets/sfx/ppop1.wav" data-start="19.67" data-duration="0.3" data-track-index="58" data-volume="0.22"></audio>
+      <audio id="a49-npop2" src="assets/sfx/npop2.wav" data-start="19.97" data-duration="0.18" data-track-index="59" data-volume="0.2"></audio>
+      <audio id="a50-airy" src="assets/sfx/airy.wav" data-start="20.20" data-duration="1.957" data-track-index="60" data-volume="0.25"></audio>
+      <audio id="a51-softpop" src="assets/sfx/softpop.wav" data-start="20.50" data-duration="0.72" data-track-index="61" data-volume="0.4"></audio>
     </div>
     <script>
 // «علّق كورس»: the viZion trial reel, one take in the viZion page's look: a single camera travels down one long navy
@@ -420,7 +474,16 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
   // camera poses: the canvas point at the centre of the frame, the scale, the roll (deg)
   const POSE = { S1t: [1200, 960, 1.08, 0], S1: [1200, 1000, 1, 0], S2: [1200, 3200, 1, 0], S3: [1200, 5400, 1, 0] };
   // [start, end, pose, roll at mid-move]
-  const MOVES = [[0.4, 4.4, 'S1', 0]];
+  const MOVES = [[0.3, 3.8, 'S1', 0], [6.3, 7.2, 'S2', 1.5], [13.7, 14.6, 'S3', -1.5]];
+  // every cue (s); build.py reads this table for the sound cues and the transition clips' start times
+  const T = {
+    s1w: [0, 0, 0, 1.35, 1.65, 2.55, 2.8, 3.05, 3.65, 3.9, 4.15, 4.4], bubs: [0.3, 0.62, 0.94], dim: 1.75, sel: 4.85, cur1: 4.55, click1: 5.15,
+    tr: [6.41, 13.77],
+    head2: 6.95, h2w: [7.0, 7.3, 7.75, 7.98, 8.21, 8.44, 8.67], cards: [9.3, 9.75, 10.2, 10.65], slam2: [11.5, 12.15],
+    s3w: [14.55, 14.8, 15.05, 15.45], slam3: 16.2, cbox: 16.9, keys: [17.35, 17.5, 17.65, 17.8], cur3: 18.1, click3: 18.7,
+    s3b: [19.15, 19.4, 19.65, 19.95], endmark: 20.5,
+  };
+  const WORD = 'كورس';
   // soft blue glows on the canvas: centre x, centre y, width, height, colour
   const GLOWS = [
     [1250, 1050, 760, 640, 'rgba(40,130,255,.34)'], [1700, 300, 560, 420, 'rgba(60,190,255,.18)'],
@@ -480,7 +543,12 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
     const bx = Math.min(22, Math.abs(c[0] - c0[0]) * c[2] * 0.2 + zb), by = Math.min(22, Math.abs(c[1] - c0[1]) * c[2] * 0.2 + zb);
     if (bx < 0.5 && by < 0.5) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
     else { camBlur.setAttribute('stdDeviation', `${bx.toFixed(2)} ${by.toFixed(2)}`); view.style.filter = 'url(#camf)'; }
+    // «كورس» typed a letter per key press; the caret blinks while it waits
+    const n = T.keys.filter((k) => t >= k).length;
+    typed.textContent = WORD.slice(0, n);
+    caret.style.opacity = (t > T.keys[0] - 0.05 && t < T.keys[3] + 0.1) || Math.floor(t * 2.6) % 2 === 0 ? 1 : 0;
   }
+  const typed = $('#typed'), caret = $('#cbox .caret');
 
   // the selection box hugs the key words (measured once the fonts are in)
   function fitSelect() {
@@ -489,13 +557,78 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:var(--navy
   }
 
   function build() {
-    place(POSE.S1);
     fitSelect();
+    const sel = $('#sel1').style;
+    Object.assign($('#cur1').style, { left: `${parseFloat(sel.left) + parseFloat(sel.width) - 40}px`, top: `${parseFloat(sel.top) + 70}px` });
+    Object.assign($('#cur3').style, { left: '150px', top: '965px' });
+    const tl = gsap.timeline({ paused: true });
+    // words pop out of a blur, drifting in from the reading side (each with a pop from his pack: build.py)
+    const pop = (w, t) => {
+      tl.fromTo(w, { opacity: 0, x: -20, filter: 'blur(10px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out' }, t);
+      tl.fromTo(w, { scale: 0.78 }, { scale: 1, duration: 0.38, ease: 'back.out(2.4)' }, t);
+    };
+    const words = (sel, times) => $$(sel).forEach((w, i) => pop(w, times[i]));
+    // a big line slams in sideways with motion blur (its own SVG filter)
+    const slam = (sel, f, t) => {
+      tl.fromTo(sel, { opacity: 0, x: -760, scale: 1.04 }, { opacity: 1, x: 0, scale: 1, duration: 0.42, ease: 'power3.out' }, t);
+      tl.fromTo(f, { attr: { stdDeviation: '90 0' } }, { attr: { stdDeviation: '0 0' }, duration: 0.4, ease: 'power2.out' }, t);
+    };
+    const card = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 50, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, t);
+    const click = (cur, t) => {
+      tl.to(cur, { scale: 0.85, duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
+    };
+
+    // ── the hook: the first line is on from frame one; the DMs pile in; «ومحد يشتري؟» lands and they go quiet
+    const hw = $$('#s1 .w');
+    tl.fromTo(hw.slice(0, 3), { opacity: 0.7, scale: 1.04, filter: 'blur(3px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'power2.out' }, 0);
+    ['#b1', '#b2', '#b3'].forEach((b, i) => {
+      tl.fromTo(b, { opacity: 0, scale: 0.4, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'back.out(2.2)', transformOrigin: i === 1 ? '0% 100%' : '100% 100%' }, T.bubs[i]);
+      tl.to(b, { y: '+=10', duration: 1.1, ease: 'sine.inOut', yoyo: true, repeat: 3 }, T.bubs[i] + 0.45);
+    });
+    hw.slice(3, 5).forEach((w, i) => tl.fromTo(w, { opacity: 0, scale: 1.3, filter: 'blur(16px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, T.s1w[3 + i]));
+    tl.to(['#b1', '#b2', '#b3'], { opacity: 0.35, filter: 'grayscale(1)', duration: 0.6, ease: 'power1.out' }, T.dim);
+    hw.slice(5).forEach((w, i) => pop(w, T.s1w[5 + i]));
+    tl.fromTo('#cur1', { opacity: 0, x: 260, y: 380 }, { opacity: 1, x: 0, y: 0, duration: 0.55, ease: 'power2.out' }, T.cur1);
+    tl.fromTo('#sel1', { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, T.sel);
+    click('#cur1', T.click1);
+    tl.to('#cur1', { opacity: 0, x: 120, y: 200, duration: 0.4, ease: 'power2.in' }, 5.8);
+
+    // ── the course: the card, its words, four cards, then the two lines slam in
+    tl.fromTo('#head2', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)' }, T.head2);
+    words('#head2 .w', T.h2w);
+    ['#c1', '#c2', '#c3', '#c4'].forEach((c, i) => {
+      card(c, T.cards[i]);
+      tl.fromTo(`${c} .n`, { scale: 0 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' }, T.cards[i] + 0.15);
+    });
+    slam('#slam2a', '#h2s', T.slam2[0]);
+    slam('#slam2b', '#h3s', T.slam2[1]);
+
+    // ── the ask: the question, «علّق بـ» slams in, the comment box, «كورس» typed, the cursor taps send
+    words('#s3 > .tx:first-child .w', T.s3w);
+    slam('#slam3', '#h4s', T.slam3);
+    card('#cbox', T.cbox);
+    tl.fromTo('#cur3', { opacity: 0, x: 380, y: 520 }, { opacity: 1, x: 0, y: 0, duration: 0.55, ease: 'power2.inOut' }, T.cur3);
+    click('#cur3', T.click3);
+    tl.to('#cbox .send', { scale: 0.88, duration: 0.08, yoyo: true, repeat: 1, ease: 'power1.inOut' }, T.click3);
+    tl.set('#ripB', { opacity: 0.9, scale: 1 }, T.click3);
+    tl.to('#ripB', { opacity: 0, scale: 2.6, duration: 0.6, ease: 'power2.out' }, T.click3);
+    tl.to('#cur3', { opacity: 0, x: 160, y: 240, duration: 0.4, ease: 'power2.in' }, T.click3 + 0.5);
+    words('#s3 > .soft .w', T.s3b);
+    tl.fromTo('#endmark', { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(2)' }, T.endmark);
+
+    // ── the camera and the typing, driven by one clock so any frame can be rendered on its own
+    const clock = { t: 0 };
+    render(0);
+    tl.to(clock, { t: D, duration: D, ease: 'none', onUpdate: () => render(clock.t) }, 0);
+    window.__timelines = window.__timelines || {};
+    window.__timelines['main'] = tl;
+
     // stills (stills/render.cjs): everything on, the camera parked on a station
     window.__still = (name) => {
-      $$('.w, .bub, .glass, .select, .cursor, #endmark').forEach((e) => { e.style.opacity = 1; });
-      Object.assign($('#cur1').style, { left: `${parseFloat($('#sel1').style.left) + parseFloat($('#sel1').style.width) - 40}px`, top: `${parseFloat($('#sel1').style.top) + 70}px` });
-      Object.assign($('#cur3').style, { left: '150px', top: '965px' });
+      tl.progress(1);
+      typed.textContent = WORD;
+      $$('.cursor').forEach((e) => gsap.set(e, { opacity: 1, x: 0, y: 0 }));
+      $$('.bub').forEach((e) => gsap.set(e, { opacity: 1, filter: 'none' }));
       place(POSE[name]);
     };
     document.body.dataset.ready = '1';
