@@ -1,9 +1,9 @@
-"""Assemble index.html from src/template.html: the embedded font faces, the viZion mark, the timeline script, the
-transition clips' start times and the sound cues.
-  ./sfx.sh && python3 build.py
+"""Assemble index.html from src/template.html: the embedded font faces, the timeline script, the transition clips'
+start times and the sound cues.
+  ./sfx.sh && python3 build.py            (DUR=6 python3 build.py for a short test cut)
 Edit src/template.html (layout, copy), src/timeline.js (motion; every cue is in its T table) and the cue list below,
-never index.html by hand. Sound times follow the T table in src/timeline.js. Every sound is from the user's own pack
-(sfx.sh copies them in); there is no music and no voice-over yet."""
+never index.html by hand. Sound times follow T. Every sound is from the user's own pack (sfx.sh copies them in); no
+music, no voice-over yet. Then render at 120 fps and run ./post.sh, which blends it down to the reference's look."""
 import json, os, re, wave
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -16,70 +16,98 @@ def dur(f):
 
 
 sx = lambda n: f'assets/sfx/{n}.wav'
+js = open(P('src', 'timeline.js')).read()
 
 
-def read_T():
-    """The cue table T from src/timeline.js (a plain JS object of numbers and arrays)."""
-    js = open(P('src', 'timeline.js')).read()
-    body = js[js.index('const T = {') + len('const T = '):]
+def read_obj(name):
+    body = js[js.index(f'const {name} = {{') + len(f'const {name} = '):]
     body = body[:body.index('};') + 1]
     body = re.sub(r'([A-Za-z_]\w*)\s*:', r'"\1":', body)
     return json.loads(re.sub(r',\s*([}\]])', r'\1', body))
 
 
-T = read_T()
-# Peaks (s into the file): flick 0.2, fastwhoosh 0.7, mainwhoosh 0.8, cinfast 0.25, airy 0.4, the pops ~0.02.
+T = read_obj('T')
+D = float(re.search(r'const D = ([\d.]+);', js).group(1))
+D = float(os.environ.get('DUR', D))
+# Peaks (s into the file): flick 0.2, fastwhoosh 0.7, mainwhoosh 0.8, cinfast 0.25, simple 0.6, smooth 0.65, airy 0.4.
 C = []  # (time, sound, volume)
-
-# ── a pop on every word: his «Normal Pop» five in turn, his «Premium And Smooth Pop» four on the cyan key words
 NPOP = [('npop1', 0.3), ('npop2', 0.2), ('npop3', 0.24), ('npop4', 0.22), ('npop5', 0.3)]
 PPOP = [('ppop1', 0.22), ('ppop2', 0.15), ('ppop3', 0.2), ('ppop4', 0.15)]
-KEY = {('s1w', 9), ('s1w', 10), ('s1w', 11), ('h2w', 1), ('h2w', 6), ('s3w', 2), ('s3b', 2)}
 ni = pi = 0
 
 
-def pops(name, times, first=0):
+def pop(t, key=False):
     global ni, pi
-    for i in range(first, len(times)):
-        if (name, i) in KEY:
-            n, v = PPOP[pi % len(PPOP)]; pi += 1
-        else:
-            n, v = NPOP[ni % len(NPOP)]; ni += 1
-        C.append((times[i] + 0.02, n, v))
+    if key:
+        n, v = PPOP[pi % 4]; pi += 1
+    else:
+        n, v = NPOP[ni % 5]; ni += 1
+    C.append((t + 0.02, n, v))
 
 
-pops('s1w', [t for i, t in enumerate(T['s1w']) if i not in (3, 4)], first=3)   # the hook (first line on from frame one)
-pops('h2w', T['h2w']); pops('s3w', T['s3w']); pops('s3b', T['s3b'])
+def slam(t):        # a big word lands: the fast whoosh into it, a hit on it
+    C.extend([(t - 0.15, 'flick', 0.34), (t + 0.02, 'mpop', 0.42)])
 
-# ── the hook: a ding per message, «ومحد يشتري؟» hits, the selection box and the click
-C += [(t, 'ding', 0.22) for t in T['bubs']]
-C += [(T['s1w'][3], 'mpop', 0.35), (T['s1w'][4] - 0.15, 'flick', 0.3), (T['s1w'][4] + 0.02, 'ppop3', 0.22)]
-C += [(T['sel'], 'select', 0.3), (T['click1'], 'clickb', 0.5)]
-# ── the two moves, each with his flash clip on it, and a whoosh peaking on the flash
-C += [(6.75 - 0.8, 'mainwhoosh', 0.34), (14.15 - 0.7, 'fastwhoosh', 0.3)]
-# ── the course: the card opens, the four cards land, the two lines slam in
-C += [(T['head2'], 'sweet', 0.3)]
-C += [(t + 0.05, 'mpop', 0.3) for t in T['cards']]
-for t in T['slam2']:
-    C += [(t - 0.15, 'flick', 0.3), (t + 0.32, 'ppop2', 0.16)]
-# ── the ask: «علّق بـ» hits, the comment box, a key per letter, send
-C += [(T['slam3'] - 0.15, 'flick', 0.38), (T['slam3'] + 0.3, 'mpop', 0.4)]
-C += [(T['cbox'], 'softpop', 0.35)]
+
+def whoosh(t, n='cinfast', v=0.3):   # peaking at t
+    peak = {'cinfast': 0.25, 'simple': 0.6, 'smooth': 0.65, 'fastwhoosh': 0.7, 'mainwhoosh': 0.8, 'airy': 0.4}[n]
+    C.append((max(0, t - peak), n, v))
+
+
+# A · the hook
+pop(T['hook'][2], True)
+for t in T['bubs']:
+    whoosh(t + 0.15, 'simple', 0.16); C.append((t + 0.2, 'ding', 0.2))
+whoosh(T['outA'] + 0.15)
+# B
+pop(T['mahad']); slam(T['buy']); whoosh(T['outB'] + 0.15)
+# C
+whoosh(T['tag'] + 0.2, 'smooth', 0.22)
+for t in T['cw']:
+    pop(t)
+slam(T['price']); C.append((T['strike'], 'select', 0.32)); whoosh(T['outC'] + 0.15)
+# D
+whoosh(T['mega'] + 0.2, 'fastwhoosh', 0.26)
+for i, t in enumerate(T['dw']):
+    pop(t, i > 0)
+slam(T['ads']); C.append((T['bar'], 'select', 0.25))
+# the first flash, E
+whoosh(T['cut1'], 'mainwhoosh', 0.36)
+C += [(T['logo'], 'sweet', 0.32)]
+for i, t in enumerate(T['ew']):
+    pop(t, i in (1, 4, 5, 6))
+C += [(T['parcel'] + 0.2, 'mpop', 0.32)]
+whoosh(T['outE'] + 0.15)
+# F · the four
+for i, t in enumerate(T['beats']):
+    whoosh(t + 0.2, 'simple', 0.24); pop(t + 0.05, True); C.append((t + 0.38, 'mpop', 0.26))
+whoosh(T['outF'] + 0.12, 'cinfast', 0.26)
+# G
+for t in T['gw']:
+    pop(t)
+slam(T['sales']); C.append((T['coins'] + 0.2, 'sweet', 0.28))
+# the second flash, H
+whoosh(T['cut2'], 'fastwhoosh', 0.32)
+for t in T['hw']:
+    pop(t)
+pop(T['forc'], True); slam(T['ask'])
+whoosh(T['cb'] + 0.25, 'simple', 0.2); C.append((T['cb'] + 0.4, 'softpop', 0.35))
 C += [(t, 'key', 0.45) for t in T['keys']]
-C += [(T['click3'], 'clickb', 0.55), (T['click3'] + 0.03, 'enter', 0.3)]
-C += [(T['endmark'] - 0.3, 'airy', 0.25), (T['endmark'], 'softpop', 0.4)]
-C.sort()
+for i, t in enumerate(T['hb']):
+    pop(t, i == 2)
+C += [(T['logo2'] + 0.3, 'softpop', 0.38), (T['logo2'] - 0.1, 'airy', 0.22)]
+C = sorted(c for c in C if c[0] < D - 0.05)
 
 lines = []
 for i, (t, n, v) in enumerate(C):
     f = sx(n)
-    lines.append(f'      <audio id="a{i}-{n}" src="{f}" data-start="{t:.2f}" data-duration="{dur(f)}" data-track-index="{10 + i}" data-volume="{v}"></audio>')
+    lines.append(f'      <audio id="a{i}-{n}" src="{f}" data-start="{t:.3f}" data-duration="{min(dur(f), round(D - t, 3))}" data-track-index="{10 + i}" data-volume="{v}"></audio>')
 
 tpl = open(P('src', 'template.html')).read()
 fonts = open(P('assets', 'fonts', 'fonts.css')).read().rstrip('\n')
-vz = open(P('src', 'vz-symbol.svg')).read().rstrip('\n')
-js = open(P('src', 'timeline.js')).read().rstrip('\n')
-out = (tpl.replace('<!--VZSYMBOL-->', vz).replace('/*FONTFACES*/', fonts).replace('<!--AUDIO-->', '\n'.join(lines))
-       .replace('/*TIMELINE*/', js).replace('data-start="TR1"', f'data-start="{T["tr"][0]}"').replace('data-start="TR2"', f'data-start="{T["tr"][1]}"'))
+out = (tpl.replace('/*FONTFACES*/', fonts).replace('<!--AUDIO-->', '\n'.join(lines)).replace('/*TIMELINE*/', js.rstrip('\n'))
+       .replace('data-duration="DUR"', f'data-duration="{D:g}"'))
+for k, t in zip(('TR1', 'TR2'), T['tr']):
+    out = out.replace(f'data-start="{k}"', f'data-start="{t}"') if t < D else re.sub(rf'\s*<video[^>]*data-start="{k}"[^>]*></video>', '', out)
 open(P('index.html'), 'w').write(out)
-print(len(C), 'sound cues')
+print(len(C), 'sound cues,', D, 's')

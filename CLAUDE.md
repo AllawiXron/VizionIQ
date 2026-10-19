@@ -72,6 +72,9 @@ No prices in reels unless the user asks for them (15 Oct).
 viZion reels and posts use the viZion page look, not the allawi.psd paper look (19 Oct): navy-to-blue fields with
 pinstripes, the VZ mark, Readex Pro, cyan gradient words, glass cards and cyan pills, the selection box and pixel cursor
 (`marketing/vizion-results-carousel`, reel: `marketing/hf-vizion-trial-reel`). The paper/DG Sahabah look is for @allawi.psd.
+The user called glass cards, gradient words and UI pills "ai slop" (19 Oct) and loves the look of a reference reel: motion
+"on twos" (15 fps held frames) with heavy real motion blur, real 3D objects on a studio wall, a few words per shot in
+heavy type mixed with a script. See `marketing/hf-vizion-trial-reel` (240 fps render blended down by `post.sh`).
 
 Don't use flat cream + orange + near-black fields with clean UI pills: the user said that reads as "Claude motion" (15 Oct).
 The user also rejected a reel as "AI-looking and boring" (9 Oct): keep it handmade (paper, tape, real props) and keep it moving.

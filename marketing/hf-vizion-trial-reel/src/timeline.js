@@ -1,168 +1,155 @@
-// «علّق كورس»: the viZion trial reel, one take in the viZion page's look: a single camera travels down one long navy
-// canvas past three stations, no cuts. One paused timeline, built after the fonts load, registered on
-// window.__timelines.main. build.py's sound cues follow T and MOVES.
+// «علّق كورس» v2: shots on a studio wall, after the user's reference. Objects and words fly in fast and land with a
+// little overshoot; shots leave with a whip. The stage drifts like a handheld camera and kicks on every slam. Motion
+// blur and the 15 fps "on twos" look come from build.py's post step (120 fps render, blended down), not from here.
+// One paused timeline, built after the fonts load, registered on window.__timelines.main. build.py reads T.
 (function () {
-  const D = 22;
-  // camera poses: the canvas point at the centre of the frame, the scale, the roll (deg)
-  const POSE = { S1t: [1200, 960, 1.08, 0], S1: [1200, 1000, 1, 0], S2: [1200, 3200, 1, 0], S3: [1200, 5400, 1, 0] };
-  // [start, end, pose, roll at mid-move]
-  const MOVES = [[0.3, 3.8, 'S1', 0], [6.3, 7.2, 'S2', 1.5], [13.7, 14.6, 'S3', -1.5]];
-  // every cue (s); build.py reads this table for the sound cues and the transition clips' start times
+  const D = 23;
   const T = {
-    s1w: [0, 0, 0, 1.35, 1.65, 2.55, 2.8, 3.05, 3.65, 3.9, 4.15, 4.4], bubs: [0.3, 0.62, 0.94], dim: 1.75, sel: 4.85, cur1: 4.55, click1: 5.15,
-    tr: [6.41, 13.77],
-    head2: 6.95, h2w: [7.0, 7.3, 7.75, 7.98, 8.21, 8.44, 8.67], cards: [9.3, 9.75, 10.2, 10.65], slam2: [11.5, 12.15],
-    s3w: [14.55, 14.8, 15.05, 15.45], slam3: 16.2, cbox: 16.9, keys: [17.35, 17.5, 17.65, 17.8], cur3: 18.1, click3: 18.7,
-    s3b: [19.15, 19.4, 19.65, 19.95], endmark: 20.5,
+    hook: [0, 0, 0.15], bubs: [0.35, 0.65, 0.95], outA: 2.3,
+    mahad: 2.45, buy: 2.7, outB: 3.85,
+    tag: 3.95, cw: [4.1, 4.3], price: 4.55, strike: 5.0, outC: 5.5,
+    floorD: 5.55, mega: 5.6, dw: [5.85, 6.1, 6.35], ads: 6.7, bar: 6.9, kick: 6.72,
+    tr: [7.21, 16.97], cut1: 7.55, cut2: 17.35,
+    logo: 7.6, ew: [7.9, 8.15, 8.6, 8.8, 9.1, 9.3, 9.5], parcel: 9.6, outE: 10.45,
+    beats: [10.55, 11.65, 12.75, 13.85], outF: 14.95,
+    gw: [15.05, 15.3, 15.75], sales: 16.0, coins: 16.1,
+    hw: [17.45, 17.7, 17.95], forc: 18.3, ask: 18.9, cb: 19.5, keys: [19.95, 20.1, 20.25, 20.4], hb: [20.9, 21.15, 21.4, 21.65], logo2: 22.0,
   };
   const WORD = 'كورس';
-  // soft blue glows on the canvas: centre x, centre y, width, height, colour
-  const GLOWS = [
-    [1250, 1050, 760, 640, 'rgba(40,130,255,.34)'], [1700, 300, 560, 420, 'rgba(60,190,255,.18)'],
-    [1200, 3050, 820, 620, 'rgba(40,130,255,.34)'], [700, 3900, 560, 460, 'rgba(60,190,255,.16)'],
-    [1200, 5420, 780, 700, 'rgba(40,130,255,.36)'], [1750, 4700, 520, 420, 'rgba(60,190,255,.18)'],
-  ];
-  // big faint outlines of the mark and line-art arrows along the way (they slide past as the camera moves): x, y, size
-  const MARKS = [[1330, -140, 760], [380, 2080, 900], [1420, 3900, 820], [300, 5900, 760]];
-  const ARROWS = [[700, 1700, 1640, 2500], [1750, 4000, 900, 4650]];
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
+  const stage = $('#stage'), typed = $('#typed'), caret = $('#caret');
+  // a kick on each slam: a short, decaying shake of the whole stage
+  const KICKS = [T.buy, T.price, T.ads, T.cut1, T.sales, T.ask];
 
-  const world = $('#world');
-  $('#decor').innerHTML = GLOWS.map(([cx, cy, w, h, c]) => `<div class="glow" style="left:${cx - w / 2}px; top:${cy - h / 2}px; width:${w}px; height:${h}px; background:${c}"></div>`).join('')
-    + `<svg class="line" width="2400" height="6400" viewBox="0 0 2400 6400">${MARKS.map(([x, y, s]) => `<use href="#vz" x="${x}" y="${y}" width="${s}" height="${s * 0.927}" fill="none" stroke="rgba(130,170,240,0.18)" stroke-width="3.6" />`).join('')}
-      ${ARROWS.map(([x0, y0, x1, y1]) => {
-        const mx = (x0 + x1) / 2 + (y1 - y0) * 0.25, my = (y0 + y1) / 2 - (x1 - x0) * 0.25, a = Math.atan2(y1 - my, x1 - mx), L = 46;
-        const h = (d) => `${(x1 - L * Math.cos(a + d)).toFixed(1)} ${(y1 - L * Math.sin(a + d)).toFixed(1)}`;
-        return `<path d="M${x0} ${y0} Q ${mx} ${my} ${x1} ${y1} M${h(0.5)} L${x1} ${y1} L${h(-0.5)}" fill="none" stroke="rgba(130,170,240,0.22)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />`;
-      }).join('')}</svg>`;
-
-  // the pixel-art pointer, as on the posts
-  const HAND = [
-    '......XX.........', '.....XooX........', '.....XooX........', '.....XooX........',
-    '.....XooXXX......', '.....XooXooXXX...', '.....XooXooXooXX.', '..XX.XooXooXooXoX',
-    '.XooXXooooooooXoX', '.XoooXooooooooooX', '..XoooooooooooooX', '...XooooooooooooX',
-    '...XoooooooooooX.', '....XooooooooooX.', '....XoooooooooX..', '.....XooooooooX..', '.....XXXXXXXXXX..',
-  ];
-  $$('.cursor').forEach((svg) => {
-    svg.innerHTML = HAND.map((row, y) => [...row].map((c, x) => (c === '.' ? '' : `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${c === 'X' ? '#000' : '#fff'}"/>`)).join('')).join('');
-    svg.setAttribute('shape-rendering', 'crispEdges');
-  });
-
-  // ── the camera: holds drift in a little; moves ease softly, roll a touch, and blur lightly along their direction
-  const ease = (p) => -(Math.cos(Math.PI * p) - 1) / 2;
-  const drift = (P, dt) => [P[0], P[1], P[2] * (1 + 0.025 * Math.min(1, Math.max(0, dt) / 4)), P[3]];
-  function cam(t) {
-    let prev = POSE.S1t, prevEnd = 0;
-    for (const [t0, t1, name, bank] of MOVES) {
-      if (t < t0) return drift(prev, t - prevEnd);
-      if (t <= t1) {
-        const a = drift(prev, t0 - prevEnd), b = POSE[name], p = (t - t0) / (t1 - t0), e = ease(p);
-        return [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, Math.pow(a[2], 1 - e) * Math.pow(b[2], e), a[3] + (b[3] - a[3]) * e + bank * Math.sin(Math.PI * p)];
-      }
-      prev = POSE[name]; prevEnd = t1;
-    }
-    return drift(prev, t - prevEnd);
-  }
-  const view = $('#view'), camBlur = $('#cams');
-  function place([x, y, s, r]) {
-    world.style.transform = `translate(540px, 960px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(5)}) translate(${(-x).toFixed(2)}px, ${(-y).toFixed(2)}px)`;
-  }
   function render(t) {
-    const c = cam(t), c0 = cam(Math.max(0, t - 1 / 30));
-    place(c);
-    const zb = Math.abs(Math.log(c[2] / c0[2])) * 70 + Math.abs(c[3] - c0[3]) * 4;
-    const bx = Math.min(22, Math.abs(c[0] - c0[0]) * c[2] * 0.2 + zb), by = Math.min(22, Math.abs(c[1] - c0[1]) * c[2] * 0.2 + zb);
-    if (bx < 0.5 && by < 0.5) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
-    else { camBlur.setAttribute('stdDeviation', `${bx.toFixed(2)} ${by.toFixed(2)}`); view.style.filter = 'url(#camf)'; }
-    // «كورس» typed a letter per key press; the caret blinks while it waits
-    const n = T.keys.filter((k) => t >= k).length;
-    typed.textContent = WORD.slice(0, n);
-    caret.style.opacity = (t > T.keys[0] - 0.05 && t < T.keys[3] + 0.1) || Math.floor(t * 2.6) % 2 === 0 ? 1 : 0;
-  }
-  const typed = $('#typed'), caret = $('#cbox .caret');
-
-  // the selection box hugs the key words (measured once the fonts are in)
-  function fitSelect() {
-    const s1 = $('#s1').getBoundingClientRect(), r = $('#selw').getBoundingClientRect(), k = $('#s1').offsetWidth / s1.width;
-    Object.assign($('#sel1').style, { left: `${(r.left - s1.left) * k - 18}px`, top: `${(r.top - s1.top) * k + 4}px`, width: `${r.width * k + 36}px`, height: `${r.height * k + 6}px` });
+    let x = 4 * Math.sin(t * 1.3) + 2.5 * Math.sin(t * 2.9 + 1), y = 4 * Math.sin(t * 1.1 + 2) + 2 * Math.sin(t * 3.3), r = 0.25 * Math.sin(t * 0.9), s = 1;
+    for (const k of KICKS) {
+      const d = t - k;
+      if (d >= 0 && d < 0.4) {
+        const e = Math.exp(-d * 11);
+        x += 16 * e * Math.sin(d * 70); y += 22 * e * Math.sin(d * 55 + 1); r += 0.6 * e * Math.sin(d * 48); s += 0.03 * e;
+      }
+    }
+    stage.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(4)})`;
+    typed.textContent = WORD.slice(0, T.keys.filter((k) => t >= k).length);
+    caret.style.opacity = t < T.cb || (t > T.keys[0] - 0.05 && t < T.keys[3] + 0.1) || Math.floor(t * 2.6) % 2 === 0 ? 1 : 0;
   }
 
   function build() {
-    fitSelect();
-    const sel = $('#sel1').style;
-    Object.assign($('#cur1').style, { left: `${parseFloat(sel.left) + parseFloat(sel.width) - 40}px`, top: `${parseFloat(sel.top) + 70}px` });
-    Object.assign($('#cur3').style, { left: '150px', top: '965px' });
     const tl = gsap.timeline({ paused: true });
-    // words pop out of a blur, drifting in from the reading side (each with a pop from his pack: build.py)
-    const pop = (w, t) => {
-      tl.fromTo(w, { opacity: 0, x: -20, filter: 'blur(10px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out' }, t);
-      tl.fromTo(w, { scale: 0.78 }, { scale: 1, duration: 0.38, ease: 'back.out(2.4)' }, t);
+    // a word drops in big and settles, out of a blur (a pop from his pack on each: build.py)
+    const pop = (w, t, big = false) => {
+      tl.fromTo(w, { opacity: 0, scale: big ? 1.7 : 1.35, y: big ? -30 : -14, filter: `blur(${big ? 18 : 10}px)` },
+        { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)', duration: big ? 0.32 : 0.28, ease: 'back.out(2.2)' }, t);
     };
     const words = (sel, times) => $$(sel).forEach((w, i) => pop(w, times[i]));
-    // a big line slams in sideways with motion blur (its own SVG filter)
-    const slam = (sel, f, t) => {
-      tl.fromTo(sel, { opacity: 0, x: -760, scale: 1.04 }, { opacity: 1, x: 0, scale: 1, duration: 0.42, ease: 'power3.out' }, t);
-      tl.fromTo(f, { attr: { stdDeviation: '90 0' } }, { attr: { stdDeviation: '0 0' }, duration: 0.4, ease: 'power2.out' }, t);
+    // an object flies in from a side, spinning a little, and lands
+    // (plus a blur while it travels fast, on top of the post step's blend, so the smear has no steps in it)
+    const fly = (el, t, from = {}, d = 0.45) => {
+      el = typeof el === 'string' ? $(el) : el;
+      tl.fromTo(el, { x: from.x || 0, y: from.y || 0, rotation: from.r || 0, scale: from.s || 1 },
+        { x: 0, y: 0, rotation: 0, scale: 1, duration: d, ease: 'back.out(1.5)' }, t);
+      tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.06 }, t);
+      const base = getComputedStyle(el).filter.replace('none', '');
+      tl.fromTo(el, { filter: `blur(18px) ${base}`.trim() }, { filter: `blur(0px) ${base}`.trim(), duration: d * 0.55, ease: 'power2.in' }, t);
     };
-    const card = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 50, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, t);
-    const click = (cur, t) => {
-      tl.to(cur, { scale: 0.85, duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
+    // a shot leaves with a whip
+    const whip = (el, t, to) => {
+      tl.to(el, { ...to, duration: 0.28, ease: 'power3.in' }, t);
+      tl.fromTo(el, { filter: 'blur(0px)' }, { filter: 'blur(26px)', duration: 0.28, ease: 'power3.in' }, t);
     };
+    const hide = (el, t) => tl.set(el, { visibility: 'hidden' }, t);
+    const floor = $('#floor');
+    tl.set(floor, { scaleY: 0 }, 0);
 
-    // ── the hook: the first line is on from frame one; the DMs pile in; «ومحد يشتري؟» lands and they go quiet
-    const hw = $$('#s1 .w');
-    tl.fromTo(hw.slice(0, 3), { opacity: 0.7, scale: 1.04, filter: 'blur(3px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.35, ease: 'power2.out' }, 0);
+    // ── A · the hook: the title is there from frame one; three DMs fly up and stack
+    const aw = $$('#A .w');
+    tl.fromTo(aw.slice(0, 2), { opacity: 0.6, scale: 1.08, filter: 'blur(4px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'power2.out' }, 0);
+    pop(aw[2], T.hook[2], true);
     ['#b1', '#b2', '#b3'].forEach((b, i) => {
-      tl.fromTo(b, { opacity: 0, scale: 0.4, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'back.out(2.2)', transformOrigin: i === 1 ? '0% 100%' : '100% 100%' }, T.bubs[i]);
-      tl.to(b, { y: '+=10', duration: 1.1, ease: 'sine.inOut', yoyo: true, repeat: 3 }, T.bubs[i] + 0.45);
+      fly(b, T.bubs[i], { y: 900, r: i === 1 ? -14 : 12, s: 0.8 }, 0.5);
+      tl.to(b, { y: -8, rotation: i === 1 ? 1.2 : -1.2, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: 1 }, T.bubs[i] + 0.5);
     });
-    hw.slice(3, 5).forEach((w, i) => tl.fromTo(w, { opacity: 0, scale: 1.3, filter: 'blur(16px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, T.s1w[3 + i]));
-    tl.to(['#b1', '#b2', '#b3'], { opacity: 0.35, filter: 'grayscale(1)', duration: 0.6, ease: 'power1.out' }, T.dim);
-    hw.slice(5).forEach((w, i) => pop(w, T.s1w[5 + i]));
-    tl.fromTo('#cur1', { opacity: 0, x: 260, y: 380 }, { opacity: 1, x: 0, y: 0, duration: 0.55, ease: 'power2.out' }, T.cur1);
-    tl.fromTo('#sel1', { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, T.sel);
-    click('#cur1', T.click1);
-    tl.to('#cur1', { opacity: 0, x: 120, y: 200, duration: 0.4, ease: 'power2.in' }, 5.8);
+    whip('#A', T.outA, { y: -1700 });
+    hide('#A', T.outA + 0.3);
 
-    // ── the course: the card, its words, four cards, then the two lines slam in
-    tl.fromTo('#head2', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)' }, T.head2);
-    words('#head2 .w', T.h2w);
-    ['#c1', '#c2', '#c3', '#c4'].forEach((c, i) => {
-      card(c, T.cards[i]);
-      tl.fromTo(`${c} .n`, { scale: 0 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' }, T.cards[i] + 0.15);
+    // ── B · «ومحد يشتري؟»
+    pop('#B .sm .w', T.mahad);
+    [['#buy', 1.9], ['#buyr', 1.9]].forEach(([w, s]) => tl.fromTo(w, { opacity: 0, scale: s, filter: 'blur(26px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.buy));
+    tl.to('#buy', { scale: 1.04, duration: 1.0, ease: 'sine.inOut' }, T.buy + 0.3);
+    whip('#B', T.outB, { x: 1500, rotation: 6 });
+    hide('#B', T.outB + 0.3);
+
+    // ── C · the tag swings down on its string; «الخلل مو بسعرك..», struck through
+    tl.fromTo('#tag', { y: -1000 }, { y: 0, duration: 0.42, ease: 'power3.out' }, T.tag);
+    tl.fromTo('#tag', { rotation: 24 }, { rotation: 0, duration: 1.5, ease: 'elastic.out(1.2, 0.3)' }, T.tag);
+    tl.fromTo('#tag', { opacity: 0 }, { opacity: 1, duration: 0.06 }, T.tag);
+    words('#C .sm .w', T.cw);
+    tl.fromTo('#price', { opacity: 0, scale: 1.6, filter: 'blur(20px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.price);
+    tl.fromTo('#strk', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.22, ease: 'power2.out' }, T.strike);
+    tl.to('#price', { opacity: 0.55, duration: 0.2 }, T.strike + 0.1);
+    whip('#C', T.outC, { y: 1700 });
+    hide('#C', T.outC + 0.3);
+
+    // ── D · the floor comes up; the megaphone flies in and kicks on «وإعلانك!»
+    tl.to(floor, { scaleY: 1, duration: 0.35, ease: 'power3.out' }, T.floorD);
+    fly('#mega', T.mega, { x: -1000, r: -30, s: 0.8 }, 0.5);
+    tl.to('#mega', { x: 24, rotation: -4, duration: 0.07, yoyo: true, repeat: 3, ease: 'power1.inOut' }, T.kick);
+    words('#D .sm .w, #D .sc1 .w', T.dw);
+    tl.fromTo('#D .hv .w', { opacity: 0, scale: 1.8, filter: 'blur(22px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.ads);
+    tl.to('#barD', { scaleX: 1, duration: 0.25, ease: 'power2.out' }, T.bar);
+    hide('#D', T.cut1);
+
+    // ── E · dark, on the flash: the mark turns in; «كورس viZion يحول الرسائل إلى طلبات حقيقية.»
+    tl.set('#dark', { opacity: 1 }, T.cut1);
+    tl.set(floor, { scaleY: 0 }, T.cut1);
+    tl.fromTo('#logo', { rotationY: 110, scale: 0.6, y: 120 }, { rotationY: 0, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)' }, T.logo);
+    tl.fromTo('#logo', { opacity: 0 }, { opacity: 1, duration: 0.1 }, T.logo);
+    tl.to('#logo', { rotationY: -14, y: -10, duration: 1.4, ease: 'sine.inOut', yoyo: true, repeat: 1 }, T.logo + 0.7);
+    words('#E .w', T.ew);
+    fly('#parcel', T.parcel, { y: 700, r: -40, s: 0.7 }, 0.45);
+    whip('#E', T.outE, { y: -1700 });
+    tl.to('#dark', { opacity: 0, duration: 0.2 }, T.outE + 0.1);
+    hide('#E', T.outE + 0.3);
+
+    // ── F · the four: the number, the name, the object from the left; each leaves to the right for the next
+    tl.to(floor, { scaleY: 1, duration: 0.3, ease: 'power3.out' }, T.outE + 0.1);
+    T.beats.forEach((t, i) => {
+      const k = i + 1;
+      tl.fromTo(`#n${k}`, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, t);
+      tl.fromTo(`#f${k} .w`, { opacity: 0, scale: 1.5, filter: 'blur(16px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.28, ease: 'expo.out' }, t + 0.05);
+      fly(`#o${k}`, t, { x: -1200, r: -35, s: 0.85 }, 0.42);
+      tl.to(`#o${k}`, { rotation: i % 2 ? 3 : -3, y: -10, duration: 0.6, ease: 'sine.inOut' }, t + 0.42);
+      const out = i < 3 ? T.beats[i + 1] - 0.12 : T.outF;
+      tl.to([`#o${k}`, `#f${k}`, `#n${k}`], { x: 1300, rotation: 20, filter: 'blur(24px)', duration: 0.24, ease: 'power3.in' }, out);
+      tl.set([`#o${k}`, `#f${k}`, `#n${k}`], { visibility: 'hidden' }, out + 0.25);
     });
-    slam('#slam2a', '#h2s', T.slam2[0]);
-    slam('#slam2b', '#h3s', T.slam2[1]);
 
-    // ── the ask: the question, «علّق بـ» slams in, the comment box, «كورس» typed, the cursor taps send
-    words('#s3 > .tx:first-child .w', T.s3w);
-    slam('#slam3', '#h4s', T.slam3);
-    card('#cbox', T.cbox);
-    tl.fromTo('#cur3', { opacity: 0, x: 380, y: 520 }, { opacity: 1, x: 0, y: 0, duration: 0.55, ease: 'power2.inOut' }, T.cur3);
-    click('#cur3', T.click3);
-    tl.to('#cbox .send', { scale: 0.88, duration: 0.08, yoyo: true, repeat: 1, ease: 'power1.inOut' }, T.click3);
-    tl.set('#ripB', { opacity: 0.9, scale: 1 }, T.click3);
-    tl.to('#ripB', { opacity: 0, scale: 2.6, duration: 0.6, ease: 'power2.out' }, T.click3);
-    tl.to('#cur3', { opacity: 0, x: 160, y: 240, duration: 0.4, ease: 'power2.in' }, T.click3 + 0.5);
-    words('#s3 > .soft .w', T.s3b);
-    tl.fromTo('#endmark', { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(2)' }, T.endmark);
+    // ── G · «يوقف خسارتك ويضاعف مبيعاتك», the coins grow out of the floor
+    words('#G .w:not(#sales)', T.gw);
+    tl.fromTo('#sales', { opacity: 0, scale: 1.8, filter: 'blur(24px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.sales);
+    tl.fromTo('#coins2', { scaleY: 0.1, scaleX: 0.7, y: 60 }, { scaleY: 1, scaleX: 1, y: 0, duration: 0.5, ease: 'back.out(2)' }, T.coins);
+    tl.fromTo('#coins2', { opacity: 0 }, { opacity: 1, duration: 0.06 }, T.coins);
+    hide('#G', T.cut2);
+    tl.set(floor, { scaleY: 0 }, T.cut2);
 
-    // ── the camera and the typing, driven by one clock so any frame can be rendered on its own
+    // ── H · the ask, on the second flash
+    words('#H > .tx:nth-child(1) .w', T.hw);
+    pop('#H .sc1 .w', T.forc, true);
+    tl.fromTo('#ask', { opacity: 0, x: -900, scale: 1.1, filter: 'blur(30px)' }, { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)', duration: 0.34, ease: 'power4.out' }, T.ask);
+    fly('#cb', T.cb, { y: 900, r: 10, s: 0.8 }, 0.5);
+    T.keys.forEach((k) => tl.fromTo('#cb', { scale: 1 }, { scale: 1.035, duration: 0.05, yoyo: true, repeat: 1 }, k));
+    words('#H > .sm .w', T.hb);
+    fly('#logo2', T.logo2, { y: 400, r: -60, s: 0.5 }, 0.5);
+    tl.to('#H', { scale: 1.04, duration: D - T.logo2, ease: 'none' }, T.logo2);
+
+    // ── the stage and the typing, driven by one clock so any frame can be rendered on its own
     const clock = { t: 0 };
     render(0);
     tl.to(clock, { t: D, duration: D, ease: 'none', onUpdate: () => render(clock.t) }, 0);
     window.__timelines = window.__timelines || {};
     window.__timelines['main'] = tl;
-
-    // stills (stills/render.cjs): everything on, the camera parked on a station
-    window.__still = (name) => {
-      tl.progress(1);
-      typed.textContent = WORD;
-      $$('.cursor').forEach((e) => gsap.set(e, { opacity: 1, x: 0, y: 0 }));
-      $$('.bub').forEach((e) => gsap.set(e, { opacity: 1, filter: 'none' }));
-      place(POSE[name]);
-    };
     document.body.dataset.ready = '1';
   }
   document.fonts.ready.then(build);
