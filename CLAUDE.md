@@ -4,18 +4,18 @@ The user is Ali: an Iraqi graphic designer (@allawi.psd on Instagram) who also s
 built as this website (vizioniq.vercel.app; Vercel deploys `main`). The site is `src/`, `api/`, `server.ts`;
 everything for Instagram (posts, reels, briefs, sound and transition packs) is in `marketing/`.
 
-## Working with Ali (saves his weekly usage)
+## Working with Ali (saves the weekly usage)
 
-- When he says "don't waste usage" or sends a lead or caption question, answer in text: no tools, no reading code.
+- When the user says "don't waste usage" or sends a lead or caption question, answer in text: no tools, no reading code.
 - Lead replies: viZion leads follow `marketing/vizion-sales-brief.md`; design-page leads and captions follow
   `marketing/allawi-psd-brief.md`. Iraqi dialect, short; gender-neutral wording when you don't know who is writing.
-- For a new reel or design: show the idea or 2–3 still frames first, build after he approves, then one draft render.
+- For a new reel or design: show the idea or 2–3 still frames first, build after the user approves, then one draft render.
   For a small change, make one pass and one render; don't re-check everything.
-- When he states a new like or dislike, add it to this file in a line or two so later sessions know it.
+- When the user states a new like or dislike, add it to this file in a line or two so later sessions know it.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
   phone numbers.
-- Commit and push to the session's branch when done. No pull request unless he asks.
+- Commit and push to the session's branch when done. No pull request unless the user asks.
 
 ## Reference projects (start from these; copy their structure and look)
 
@@ -40,11 +40,11 @@ stamp or impact on big moments.
 
 ## Voice-over
 
-- Use a real recorded voice (or the ElevenLabs take he sends). Don't process it: no denoise, EQ, compressor or
-  loudness normalising. One fixed gain only (peaks about −1.5 dB), 30 ms fades, and keep the word tails. He said a
+- Use a real recorded voice (or the ElevenLabs take the user sends). Don't process it: no denoise, EQ, compressor or
+  loudness normalising. One fixed gain only (peaks about −1.5 dB), 30 ms fades, and keep the word tails. The user said a
   processed take sounded "weird and bad" next to the original (18 Oct).
 - Cut it into lines at the pauses and start each line on its caption (word times from faster-whisper medium); see
-  `marketing/hf-one-second-reel/voice_fit.py`. Tighten the visuals to the voice rather than padding pauses: he found
+  `marketing/hf-one-second-reel/voice_fit.py`. Tighten the visuals to the voice rather than padding pauses: the user found
   a padded section "slow and boring" (18 Oct).
 
 ## Transitions in reels and videos
@@ -70,7 +70,7 @@ rather than taking packs from Pinterest, which are mostly other people's paid or
 No prices in reels unless the user asks for them (15 Oct).
 
 Don't use flat cream + orange + near-black fields with clean UI pills: the user said that reads as "Claude motion" (15 Oct).
-He also rejected a reel as "AI-looking and boring" (9 Oct): keep it handmade (paper, tape, real props) and keep it moving.
+The user also rejected a reel as "AI-looking and boring" (9 Oct): keep it handmade (paper, tape, real props) and keep it moving.
 
 Sizes: post 1080×1350, story and reel 1080×1920; keep reel text clear of the top 250 px, the bottom 350 px and the
 right-hand buttons. The hook is in the first second.
@@ -78,5 +78,5 @@ right-hand buttons. The hook is in the first second.
 ## Photos and people
 
 Use the client's real product photos, the user's own photos, licensed photos (CC0, public domain, CC-BY with credit),
-or made-up AI people he generates. Never a real celebrity's face or a real person edited as a joke. Ads for big
+or made-up AI people the user generates. Never a real celebrity's face or a real person edited as a joke. Ads for big
 brands are unofficial concepts: label them «إعلان غير رسمي · فكرة وتصميم @allawi.psd».
