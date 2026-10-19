@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>viZion — علّق كورس (reel)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/00b30da798.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/b9f68601ff.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:500; font-display:block; src:url(assets/fonts/32d758561b.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:500; font-display:block; src:url(assets/fonts/0b17f11da9.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:600; font-display:block; src:url(assets/fonts/dda02519c2.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:600; font-display:block; src:url(assets/fonts/5344fa57ba.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/5ab42dd5a7.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'IBM Plex Sans Arabic'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/a39bac68c3.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Aref Ruqaa'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/0dd1a6b4b1.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Aref Ruqaa'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/4d199ea9c3.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Alexandria'; font-style:normal; font-weight:800; font-display:block; src:url(assets/fonts/Alexandria-800-arabic.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Alexandria'; font-style:normal; font-weight:800; font-display:block; src:url(assets/fonts/Alexandria-800-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Alexandria'; font-style:normal; font-weight:900; font-display:block; src:url(assets/fonts/Alexandria-900-arabic.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Alexandria'; font-style:normal; font-weight:900; font-display:block; src:url(assets/fonts/Alexandria-900-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'DG Sahabah'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
+/* One take on one desk (his highlights' brown, paper and orange sheets), as in ../hf-one-second-reel: a single camera
+   travels across three sheets without a cut. Stations are 1080×1920 boxes on the desk, so at camera scale 1 they fill
+   the frame. */
+:root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a }
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--ink) }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); direction:rtl; font-family:'IBM Plex Sans Arabic'; font-synthesis:none }
+#view { position:absolute; inset:0; overflow:hidden }
+#world { position:absolute; left:0; top:0; width:3000px; height:7400px; transform-origin:0 0 }
+.st { position:absolute; width:1080px; height:1920px }
+
+/* the desk and the sheets, with the highlights' fields and paper texture */
+.bgc { position:absolute }
+.bgc::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.2 }
+.bgc.paper { background:var(--paper) }
+.bgc.orange { background:radial-gradient(120% 80% at 50% 40%, var(--orange2), var(--orange) 55%, #c94612) }
+.bgc.orange::after { opacity:.26 }
+.bgc.ink { background:radial-gradient(120% 80% at 50% 40%, #2b1e16, var(--ink) 60%) }
+.bgc.ink::after { mix-blend-mode:screen; opacity:.1 }
+.sheet { box-shadow:0 30px 60px rgba(0,0,0,.5), 0 6px 12px rgba(0,0,0,.35) }
+#fx { position:absolute; inset:0; pointer-events:none; z-index:30 }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.07 }
+#vig { position:absolute; inset:0; background:radial-gradient(115% 80% at 50% 50%, rgba(0,0,0,0) 58%, rgba(0,0,0,.24) 100%) }
+/* his flash transitions (../transitions-pack), laid over the two moves */
+.trx { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; mix-blend-mode:screen; pointer-events:none; z-index:25 }
+
+/* text */
+.tx { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap }
+.ln { display:block; position:relative }
+.w { display:inline-block; position:relative; opacity:0 }
+.ax { font-family:'DG Sahabah', 'Alexandria'; font-weight:400 }
+.t76 { font-size:76px; line-height:1.4 }
+.big { font-family:'DG Sahabah', 'Alexandria'; font-weight:400; font-size:176px; line-height:1.2 }
+.on-paper { color:var(--ink) } .on-paper .k { color:var(--oink) }
+.on-orange { color:var(--cream) } .on-orange .k { color:var(--ink) }
+.lat { direction:ltr; unicode-bidi:isolate }
+
+/* torn caption strip, as on the highlights */
+.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8; opacity:0 }
+.strip > span { position:relative; display:inline-block; padding:24px 56px 34px; font:400 70px/1.35 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap;
+  background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 10px 12px rgba(0,0,0,.36)) }
+.strip .k { color:var(--oink) }
+.lab8 { position:absolute; z-index:4; opacity:0 }
+.lab8 > span { position:relative; display:inline-block; padding:22px 46px 32px; font:400 66px/1.3 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap;
+  background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 12px 14px rgba(0,0,0,.38)) }
+.lab8 .k { color:var(--oink) }
+.lab8 img, .strip img { position:absolute; pointer-events:none }
+
+/* prints, tape, kraft tags, desk props (his own renders, from ../hf-one-second-reel/props) */
+.print { position:absolute; padding:14px; background:#f7f4ee; box-shadow:0 24px 36px rgba(0,0,0,.45), 0 3px 6px rgba(0,0,0,.3) }
+.print img { display:block; width:100% }
+.print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.16), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.08)) }
+.tape { position:absolute; height:52px; z-index:6; filter:drop-shadow(0 2px 3px rgba(0,0,0,.2)) }
+.prop { position:absolute; display:block; pointer-events:none }
+.ktag { position:absolute; width:330px; height:160px; z-index:7; opacity:0; filter:drop-shadow(0 12px 14px rgba(0,0,0,.4)) }
+.ktag .tg { position:absolute; inset:0; background:var(--cream); clip-path:polygon(0 50%, 17% 0, 100% 0, 100% 100%, 17% 100%) }
+.ktag .hole { position:absolute; left:10%; top:50%; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%; background:var(--orange) }
+.ktag div { position:absolute; left:76px; right:16px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+  font:400 54px/1.1 'DG Sahabah', 'Alexandria'; color:var(--ink) }
+.ktag div small { font:600 22px/1.3 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.7); margin-top:6px }
+
+/* marker lines: an underline, a circle, an arrow (stroked on with pathLength 1) */
+.mk { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; z-index:9 }
+.mk path { fill:none; stroke:var(--oink); stroke-width:9; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1 }
+
+/* the ask: an Instagram comment box on a torn strip, «كورس» typed into it, a cursor taps send */
+#cbox { position:absolute; left:110px; top:860px; width:860px; height:150px; z-index:8; opacity:0 }
+#cbox .pap { position:absolute; inset:0; background:var(--cream) 0 0 / 100% 100% no-repeat; filter:drop-shadow(0 12px 14px rgba(0,0,0,.36)) }
+#cbox .av { position:absolute; right:54px; top:38px; width:74px; height:74px; border-radius:50%; overflow:hidden; background:#d9cbb6 }
+#cbox .av svg { width:100%; height:100%; display:block; fill:#a8927a }
+#cbox .fld { position:absolute; right:150px; left:150px; top:30px; height:90px; border-radius:45px; border:3px solid rgba(31,21,16,.22) }
+#cbox .typed { position:absolute; right:184px; top:34px; font:400 70px/1.2 'DG Sahabah', 'Alexandria'; color:var(--ink); white-space:nowrap }
+#cbox .caret { display:inline-block; width:5px; height:64px; margin-right:6px; vertical-align:-8px; background:var(--oink) }
+#cbox .send { position:absolute; left:46px; top:30px; width:90px; height:90px; border-radius:50%; background:var(--orange) }
+#cbox .send svg { position:absolute; left:22px; top:22px; width:46px; height:46px; fill:none; stroke:var(--cream); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round }
+#cur { position:absolute; left:300px; top:1240px; width:64px; height:80px; opacity:0; z-index:12; filter:drop-shadow(0 6px 8px rgba(0,0,0,.3)) }
+#ripB { position:absolute; left:116px; top:900px; width:80px; height:80px; border-radius:50%; border:3px solid var(--oink); opacity:0; z-index:9 }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <filter id="camf" x="0" y="0" width="100%" height="100%"><feGaussianBlur id="cams" stdDeviation="0 0" edgeMode="duplicate" /></filter>
+      <filter id="h2" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h2s" stdDeviation="0 0" /></filter>
+      <filter id="h3" x="-30%" y="0" width="160%" height="100%"><feGaussianBlur id="h3s" stdDeviation="0 0" /></filter>
+    </svg>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="22" data-width="1080" data-height="1920">
+      <div id="view" class="clip" data-start="0" data-duration="22" data-track-index="0">
+        <div id="world">
+          <div class="bgc ink" style="left:0; top:0; width:3000px; height:7400px"></div>
+
+          <!-- the hook: one paper sheet; the camera starts close and eases back as the words arrive -->
+          <div class="st on-paper" id="s1" style="left:960px; top:290px">
+            <div class="tx" style="top:430px; font:400 112px/1.25 'DG Sahabah', 'Alexandria'"><span class="w">تصرف</span> <span class="w">على</span> <span class="w">الإعلان..</span></div>
+            <div class="tx" style="top:590px; font:400 168px/1.2 'DG Sahabah', 'Alexandria'; color:var(--oink)"><span class="w">وما</span> <span class="w">تبيع؟</span></div>
+            <svg class="mk" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="ul1" pathLength="1" d="M300 838 C 420 826, 600 832, 790 820" /></svg>
+            <div class="tx ax" style="top:930px; font-size:72px; line-height:1.45"><span class="ln"><span class="w">المشكلة</span> <span class="w">مو</span> <span class="w">بمنتجك..</span></span><span class="ln"><span class="w">المشكلة</span> <span class="w k">بالخطة.</span></span></div>
+          </div>
+
+          <!-- what is in the course: a strip, four pinned labels, then «وكله بلهجتنا.» slams in -->
+          <div class="st on-orange" id="s2" style="left:960px; top:2740px">
+            <div class="strip" id="t2" style="top:330px"><span><span class="ln"><span class="w">كورس</span> <span class="w k lat">viZion</span></span><span class="ln" style="font-size:52px"><span class="w">يعلّمك</span> <span class="w">تبيع</span> <span class="w">أونلاين</span> <span class="w k">بالعراق.</span></span><img src="assets/props/clip-silver.png" alt="" style="right:46px; top:-62px; width:62px; transform:rotate(-8deg)" /></span></div>
+            <div class="lab8" id="lab1" style="left:770px; top:720px" data-r="-3"><span><span class="w"><span class="k">11</span> فصل</span><img src="assets/props/pin-cream.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="lab8" id="lab2" style="left:325px; top:745px" data-r="2.5"><span><span class="w">حاسبات بالدينار</span><img src="assets/props/pin-brown.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="lab8" id="lab3" style="left:780px; top:930px" data-r="2"><span><span class="w">دليل العراق</span><img src="assets/props/pin-brown.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="lab8" id="lab4" style="left:315px; top:955px" data-r="-2.5"><span><span class="w">مستشار يجاوبك</span><img src="assets/props/pin-cream.png" alt="" style="right:2px; top:-16px; width:84px" /></span></div>
+            <div class="tx big" style="top:1180px; font-size:150px"><span class="w" id="slam2" style="filter:url(#h2)">وكله <span class="k">بلهجتنا.</span></span></div>
+          </div>
+
+          <!-- the ask: «تريد تجرّبه ببلاش؟ علّق «كورس» ونرسلك التجربة المجانية بالخاص.» -->
+          <div class="st on-paper" id="s3" style="left:960px; top:5140px">
+            <div class="strip" id="t3" style="top:330px"><span><span class="w">تريد</span> <span class="w">تجرّبه</span> <span class="w k">ببلاش؟</span><img src="assets/props/pin-orange.png" alt="" style="right:4px; top:-16px; width:84px" /></span></div>
+            <div class="tx big" style="top:560px; font-size:200px; color:var(--oink)"><span class="w" id="slam3" style="filter:url(#h3)">علّق</span></div>
+            <div id="cbox"><i class="pap"></i><span class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="4" /><path d="M4.5 21 C 5.5 16, 18.5 16, 19.5 21 Z" /></svg></span><i class="fld"></i><span class="typed"><span id="typed">كورس</span><i class="caret"></i></span>
+              <span class="send"><svg viewBox="0 0 24 24"><path d="M21 3 L3 10.5 L10.5 13.5 L13.5 21 Z M21 3 L10.5 13.5" /></svg></span></div>
+            <i id="ripB"></i>
+            <svg class="mk" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="arr1" pathLength="1" d="M906 742 C 960 790, 968 836, 940 872 M940 872 L 912 842 M940 872 L 968 850" /></svg>
+            <div class="tx ax t76" style="top:1090px"><span class="ln"><span class="w">ونرسلك</span> <span class="w">التجربة</span> <span class="w k">المجانية</span></span><span class="ln"><span class="w">بالخاص.</span></span></div>
+            <div class="print" id="logo3" style="left:150px; top:1270px; width:250px; transform:rotate(-4deg)"><img src="assets/img/vizion-logo.jpg" alt="" /></div>
+            <img class="tape" src="assets/props/tape2.png" alt="" style="left:205px; top:1248px; width:145px; transform:rotate(-7deg)" />
+            <div class="ktag" id="k3" style="left:420px; top:1355px; transform:rotate(5deg)"><i class="tg"></i><i class="hole"></i><div>viZion<small>كورس التجارة الإلكترونية</small></div></div>
+            <svg id="cur" viewBox="0 0 26 32"><path d="M2 2 L2 25 L8 19.5 L12.5 29.5 L17 27.5 L12.6 17.8 L21 17.8 Z" fill="#fff" stroke="#111" stroke-width="1.8" stroke-linejoin="round" /></svg>
+          </div>
+
+          <!-- the desk props (filled in by the timeline script) -->
+          <div id="props"></div>
+        </div>
+      </div>
+      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+
+
+    </div>
+    <script>
+// «علّق كورس»: the viZion trial reel, one take, as in ../hf-one-second-reel: everything sits on one desk and a single
+// camera travels across it, no cuts. One paused timeline, built after the fonts load, registered on
+// window.__timelines.main. build.py's sound cues follow T and MOVES.
+(function () {
+  const D = 22;
+  // camera poses: the desk point at the centre of the frame, the scale, the roll (deg)
+  const POSE = { S1t: [1500, 1140, 1.08, 0], S1: [1500, 1250, 1, 0], S2: [1500, 3700, 1, 0], S3: [1500, 6100, 1, 0] };
+  // [start, end, pose, roll at mid-move]
+  const MOVES = [[0.4, 4.4, 'S1', 0]];
+  // the sheets on the desk: centre x, centre y, width, height, field, rotation
+  const SHEETS = [[1500, 1150, 1400, 2600, 'paper', 1], [1500, 3700, 1400, 2400, 'orange', -1.5], [1500, 6100, 1400, 2400, 'paper', -1]];
+  // loose props on the desk: image, centre x, centre y, width (px), rotation. The mug and pencil frame the hook.
+  const PROPS = [['mug', 2035, 2162, 560, 0], ['pencil', 1230, 2050, 735, -18], ['clip-orange', 2150, 4900, 70, 24], ['pin-cream', 860, 7020, 84, 0]];
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
+
+  const world = $('#world'), firstStation = $('#s1');
+  SHEETS.forEach(([cx, cy, w, h, kind, r]) => {
+    const d = document.createElement('div');
+    d.className = `bgc ${kind} sheet`;
+    d.style.cssText = `left:${cx - w / 2}px; top:${cy - h / 2}px; width:${w}px; height:${h}px; transform:rotate(${r}deg)`;
+    world.insertBefore(d, firstStation);
+  });
+  $('#props').innerHTML = PROPS.map(([img, cx, cy, w, r]) => `<img class="prop" src="assets/props/${img}.png" alt="" style="left:${cx - w / 2}px; top:${cy}px; width:${w}px; transform:translateY(-50%) rotate(${r}deg)" />`).join('');
+
+  // ── the camera: holds drift in a little; moves ease softly, roll a touch, and blur lightly along their direction
+  const ease = (p) => -(Math.cos(Math.PI * p) - 1) / 2;
+  const drift = (P, dt) => [P[0], P[1], P[2] * (1 + 0.025 * Math.min(1, Math.max(0, dt) / 4)), P[3]];
+  function cam(t) {
+    let prev = POSE.S1t, prevEnd = 0;
+    for (const [t0, t1, name, bank] of MOVES) {
+      if (t < t0) return drift(prev, t - prevEnd);
+      if (t <= t1) {
+        const a = drift(prev, t0 - prevEnd), b = POSE[name], p = (t - t0) / (t1 - t0), e = ease(p);
+        return [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, Math.pow(a[2], 1 - e) * Math.pow(b[2], e), a[3] + (b[3] - a[3]) * e + bank * Math.sin(Math.PI * p)];
+      }
+      prev = POSE[name]; prevEnd = t1;
+    }
+    return drift(prev, t - prevEnd);
+  }
+  const view = $('#view'), camBlur = $('#cams');
+  function place([x, y, s, r]) {
+    world.style.transform = `translate(540px, 960px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(5)}) translate(${(-x).toFixed(2)}px, ${(-y).toFixed(2)}px)`;
+  }
+  function render(t) {
+    const [x, y, s, r] = cam(t), [x0, y0, s0] = cam(Math.max(0, t - 1 / 30)), r0 = cam(Math.max(0, t - 1 / 30))[3];
+    place([x, y, s, r]);
+    const zb = Math.abs(Math.log(s / s0)) * 70 + Math.abs(r - r0) * 4;
+    const bx = Math.min(22, Math.abs(x - x0) * s * 0.2 + zb), by = Math.min(22, Math.abs(y - y0) * s * 0.2 + zb);
+    if (bx < 0.5 && by < 0.5) { view.style.filter = 'none'; camBlur.setAttribute('stdDeviation', '0 0'); }
+    else { camBlur.setAttribute('stdDeviation', `${bx.toFixed(2)} ${by.toFixed(2)}`); view.style.filter = 'url(#camf)'; }
+  }
+
+  // ── torn paper: each strip and label gets its own piece, torn on all four sides with the paper's white core showing
+  // along the tear and a few loose fibres, drawn once at its own size (seeded, so every render is the same)
+  function rand(seed) {
+    return () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  function tearEdge(n, r, inset, amp) {
+    // fractal noise along an edge: wavelengths from 360 px down to 5 px, each octave a little weaker
+    const waves = [];
+    for (let o = 0, a = amp, L = 360; L > 4; o++, a *= 0.6, L /= 2) for (let j = 0; j < 2; j++) waves.push([a * (0.5 + r()), (2 * Math.PI) / (L * (0.7 + 0.6 * r())), r() * 6.283]);
+    const e = new Float32Array(n);
+    for (let i = 0; i < n; i++) { let v = 0; for (const [a, k, ph] of waves) v += a * Math.sin(k * i + ph); e[i] = inset + v; }
+    return e;
+  }
+  function tear(el, seed) {
+    const S = 2, W = el.offsetWidth * S, H = el.offsetHeight * S, r = rand(seed);
+    const top = tearEdge(W, r, 11 * S, 2.6 * S), bot = tearEdge(W, r, 12 * S, 2.6 * S), lft = tearEdge(H, r, 10 * S, 2.4 * S), rgt = tearEdge(H, r, 10 * S, 2.4 * S);
+    const bT = tearEdge(W, r, 3.2 * S, 1.3 * S), bB = tearEdge(W, r, 3.2 * S, 1.3 * S), bL = tearEdge(H, r, 2.8 * S, 1.2 * S), bR = tearEdge(H, r, 2.8 * S, 1.2 * S);
+    // a little mottling: value noise on a 26 px grid
+    const G = 26 * S, gw = Math.ceil(W / G) + 2, gh = Math.ceil(H / G) + 2, grid = Float32Array.from({ length: gw * gh }, () => r() - 0.5);
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d'), img = ctx.createImageData(W, H), px = img.data;
+    for (let y = 0; y < H; y++) {
+      const gy = y / G, y0 = Math.floor(gy), fy = gy - y0;
+      for (let x = 0; x < W; x++) {
+        const dt = y - top[x], db = H - 1 - y - bot[x], dl = x - lft[y], dr = W - 1 - x - rgt[y];
+        const d = Math.min(dt, db, dl, dr);
+        if (d < -1) continue;
+        let band = 0;
+        for (const [dd, bw] of [[dt, bT[x]], [db, bB[x]], [dl, bL[y]], [dr, bR[y]]]) band = Math.max(band, Math.min(1, Math.max(0, 1 - (dd - bw) / (1.5 * S))));
+        const n = (Math.sin(x * 12.9898 + y * 78.233) * 43758.5453) % 1, fib = Math.abs(n);
+        const gx = x / G, x0 = Math.floor(gx), fx = gx - x0, g = (i, j) => grid[(j % gh) * gw + (i % gw)];
+        const m = (g(x0, y0) * (1 - fx) + g(x0 + 1, y0) * fx) * (1 - fy) + (g(x0, y0 + 1) * (1 - fx) + g(x0 + 1, y0 + 1) * fx) * fy;
+        const k = 1 + m * 0.05 + (fib - 0.5) * 0.025;
+        const a = Math.min(1, Math.max(0, d + 0.5)) * (1 - band * (0.16 + 0.24 * fib));
+        const i4 = (y * W + x) * 4;
+        px[i4] = Math.min(255, 251 * k * (1 - band) + 255 * band);
+        px[i4 + 1] = Math.min(255, 243 * k * (1 - band) + 253 * band);
+        px[i4 + 2] = Math.min(255, 230 * k * (1 - band) + 248 * band);
+        px[i4 + 3] = a * 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    // loose fibres poking out of the tear
+    ctx.lineCap = 'round';
+    for (let i = 0, nH = Math.round((W + H) / S * 0.12); i < nH; i++) {
+      const side = Math.floor(r() * 4);
+      let x, y, ang;
+      if (side === 0) { x = r() * W; y = top[Math.floor(x)]; ang = -Math.PI / 2; }
+      else if (side === 1) { x = r() * W; y = H - 1 - bot[Math.floor(x)]; ang = Math.PI / 2; }
+      else if (side === 2) { y = r() * H; x = lft[Math.floor(y)]; ang = Math.PI; }
+      else { y = r() * H; x = W - 1 - rgt[Math.floor(y)]; ang = 0; }
+      ang += (r() - 0.5) * 1.6;
+      const L = (2 + r() * 6) * S;
+      ctx.strokeStyle = `rgba(255,253,248,${(0.35 + r() * 0.4).toFixed(2)})`;
+      ctx.lineWidth = (0.5 + r() * 0.5) * S;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(ang) * L, y + Math.sin(ang) * L); ctx.stroke();
+    }
+    el.style.backgroundImage = `url(${cv.toDataURL('image/png')})`;
+    el.style.backgroundColor = 'transparent';
+  }
+
+  function tearBox(el, seed) {   // the comment box's torn paper (its own child, so the box keeps its layout)
+    tear(el, seed);
+  }
+
+  function build() {
+    $$('.strip > span, .lab8 > span').forEach((el, i) => tear(el, 101 + i * 37));
+    tearBox($('#cbox .pap'), 907);
+    $$('.lab8').forEach((el) => gsap.set(el, { xPercent: -50, rotation: +el.dataset.r }));
+    // stills (stills/render.cjs): everything on, the camera parked on a sheet
+    window.__still = (name) => {
+      $$('.w, .strip, .lab8, .ktag, #cbox').forEach((e) => { e.style.opacity = 1; });
+      $$('.mk path').forEach((e) => { e.style.strokeDashoffset = 0; });
+      place(POSE[name]);
+    };
+    document.body.dataset.ready = '1';
+  }
+  document.fonts.ready.then(build);
+})();
+    </script>
+  </body>
+</html>
