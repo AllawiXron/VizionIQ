@@ -19,11 +19,11 @@ function lock(ink, tc, h, vertical = false) {
   :root {
     --head: "Markazi Text", serif; --text: "IBM Plex Sans Arabic", sans-serif; --latin: "IBM Plex Sans", sans-serif;
     --blue: #17357d; --night: #0c1b40; --gold: #c99a2e; --clay: #ece2d0; --paper: #fdfcf9; --plate: #f3efe6;
-    --rule: #d9d4c8; --mute: #5b6478;
+    --rule: #d9d4c8; --mute: #4a5368;
   }
   @page { size: 297mm 210mm; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #8a8a8a; font-family: var(--text); color: var(--night); font-size: 9.5pt; line-height: 1.75;
+  body { background: #8a8a8a; font-family: var(--text); color: var(--night); font-size: 10pt; line-height: 1.75;
     -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   @media print { body { background: none; } .page { margin: 0 !important; } }
   .page { width: 297mm; height: 210mm; position: relative; overflow: hidden; background: var(--paper); margin: 0 auto 8mm; break-after: page; }
@@ -41,12 +41,12 @@ function lock(ink, tc, h, vertical = false) {
   /* type */
   .sec { display: block; font: 500 8pt var(--text); color: var(--blue); letter-spacing: .2pt; }
   h1 { font: 700 34pt/1.25 var(--head); }
-  h2 { font: 700 24pt/1.3 var(--head); margin: 1mm 0 4mm; }
+  h2 { font: 700 27pt/1.25 var(--head); margin: 1mm 0 4mm; }
   h3 { font: 700 13pt/1.4 var(--head); margin: 0 0 .8mm; }
   p { margin-bottom: 3mm; text-align: justify; }
   .lead { font-size: 10.5pt; line-height: 1.8; }
   .mute { color: var(--mute); }
-  .cap { font-size: 7pt; color: var(--mute); margin-top: 2.2mm; }
+  .cap { font-size: 7.5pt; color: var(--mute); margin-top: 2.2mm; }
   .cap b { font-weight: 500; color: var(--night); }
   .latin { font-family: var(--latin); direction: ltr; unicode-bidi: isolate; }
   ol.spec { list-style: none; counter-reset: s; border-top: .3mm solid var(--rule); }
@@ -131,6 +131,34 @@ function lock(ink, tc, h, vertical = false) {
   .mis .x { position: absolute; top: 2.4mm; left: 3mm; width: 4.2mm; height: 4.2mm; border-radius: 50%; background: #a8322d; color: #fff;
     font: 600 8pt/4.2mm var(--latin); text-align: center; }
 
+  /* full-bleed pages: cover, section dividers, photographs. .af elements are filled with the arch pattern
+     (data-af="colour|opacity|tile") by the script */
+  .page.fb { color: var(--clay); }
+  .page.fb.blue { background: var(--blue); } .page.fb.night { background: var(--night); }
+  .af { position: absolute; inset: 0; }
+  .cover2 .gate { position: absolute; bottom: 0; left: 22mm; line-height: 0; }
+  .cover2 .issuer { position: absolute; top: 18mm; right: 20mm; font: 700 13pt/1.5 var(--head); }
+  .cover2 .issuer span { display: block; font: 400 8pt var(--text); opacity: .7; }
+  .cover2 .tt { position: absolute; top: 64mm; right: 20mm; width: 132mm; }
+  .cover2 .tt .sec { color: var(--gold); margin-bottom: 4mm; }
+  .cover2 h1 { font-size: 40pt; line-height: 1.2; }
+  .cover2 .sub { font: 500 18pt/1.5 var(--head); margin-top: 3mm; opacity: .9; }
+  .cover2 .rule { width: 24mm; height: .6mm; background: var(--gold); margin: 9mm 0 6mm; }
+  .cover2 .tt p { opacity: .75; width: 112mm; }
+  .cover2 .meta { position: absolute; bottom: 14mm; right: 20mm; width: 132mm; display: flex; gap: 14mm; font-size: 8pt;
+    border-top: .3mm solid rgba(236,226,208,.3); padding-top: 3.5mm; }
+  .cover2 .meta span { display: block; font-size: 6.8pt; opacity: .6; }
+  .divider .no { position: absolute; top: 26mm; right: 20mm; font: 400 120pt/1 var(--head); color: var(--gold); }
+  .divider h1 { position: absolute; top: 84mm; right: 20mm; font-size: 46pt; }
+  .divider .items { position: absolute; top: 112mm; right: 20mm; font-size: 10pt; line-height: 2.2; opacity: .8; }
+  .divider .items b { font-weight: 500; color: var(--gold); margin-left: 3mm; }
+  .divider .wall { position: absolute; bottom: 0; left: 0; width: 100%; height: 16mm; }
+  .photo-top .img { position: absolute; top: 0; left: 0; right: 0; height: 148mm; background-size: cover; background-position: center; }
+  .photo-top .txt { position: absolute; top: 157mm; right: 18mm; left: 18mm; display: flex; justify-content: space-between; gap: 14mm; }
+  .photo-top .txt h2 { margin-bottom: 0; }
+  .photo-top .txt p { width: 132mm; margin: 0; }
+  .photo-top .cap { position: absolute; top: 149.5mm; right: 18mm; }
+
   /* closing */
   .closing { background: var(--night); color: var(--clay); }
   .closing .c { position: absolute; top: 34mm; right: 0; left: 0; text-align: center; }
@@ -145,25 +173,21 @@ function lock(ink, tc, h, vertical = false) {
 <body>
 
 <!-- 1 cover -->
-<section class="page cover" data-bare>
-  <div class="panel">
-    <script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e' }, 290))</script>
-    <div class="pl"><span>بوابة عشتار</span><span class="latin">The Ishtar Gate</span></div>
+<section class="page fb blue cover2" data-bare>
+  <div class="af" data-af="#ece2d0|.05|150"></div>
+  <div class="gate"><script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e' }, 420))</script></div>
+  <div class="issuer">جمهورية العراق<span>وزارة الاقتصاد الرقمي والحوكمة</span></div>
+  <div class="tt">
+    <span class="sec">مقترح مقدَّم إلى مسابقة شعار الوزارة وهويتها البصرية</span>
+    <h1>الهوية البصرية لوزارة<br>الاقتصاد الرقمي والحوكمة</h1>
+    <div class="sub">بوابة عشتار.. بوابة العراق الرقمية</div>
+    <div class="rule"></div>
+    <p>يقدّم هذا المستند فكرة الشعار وطريقة بنائه، ونظام الألوان والخطوط والعناصر المرافقة له، ثم يعرض كيف تبدو الهوية على المراسلات الرسمية والهويات والتطبيق والموقع الإلكتروني.</p>
   </div>
-  <div class="body">
-    <div class="issuer">جمهورية العراق<span>وزارة الاقتصاد الرقمي والحوكمة</span></div>
-    <div class="tt">
-      <span class="sec">مقترح مقدَّم إلى مسابقة شعار الوزارة وهويتها البصرية</span>
-      <h1>الهوية البصرية لوزارة<br>الاقتصاد الرقمي والحوكمة</h1>
-      <div class="sub">بوابة عشتار.. بوابة العراق الرقمية</div>
-      <div class="rule"></div>
-      <p>يقدّم هذا المستند فكرة الشعار وطريقة بنائه، ونظام الألوان والخطوط والعناصر المرافقة له، ثم يعرض كيف تبدو الهوية على المراسلات الرسمية والهويات والتطبيق والموقع الإلكتروني.</p>
-    </div>
-    <div class="meta">
-      <div><span>الإصدار</span>١٫٠</div>
-      <div><span>التاريخ</span>تشرين الأول ٢٠٢٦</div>
-      <div><span>عدد الصفحات</span><b id="npages" style="font-weight:400"></b></div>
-    </div>
+  <div class="meta">
+    <div><span>الإصدار</span>١٫٠</div>
+    <div><span>التاريخ</span>تشرين الأول ٢٠٢٦</div>
+    <div><span>عدد الصفحات</span><b id="npages" style="font-weight:400"></b></div>
   </div>
 </section>
 
@@ -365,11 +389,19 @@ function lock(ink, tc, h, vertical = false) {
   </div>
 </section>
 
-<!-- 12–15 applications -->
-<section class="page" data-sec="٦ · التطبيقات" data-toc="٦|التطبيقات|المراسلات، والهويات، والتطبيق، والمنشورات، واللوحات">
-  <div class="head-row"><div><span class="sec">٦٫١ المراسلات الرسمية</span><h2>الورق الرسمي والظرف وبطاقة العمل</h2></div>
-    <p>يحمل الورق الرسمي الشعار بصيغته الأفقية في الأعلى، ويحدّه شريط الشرفات، ويفصل التذييلَ خطٌّ ذهبي رفيع. وللبطاقة وجهان: الشعار على الأزرق، والبيانات على الأبيض.</p></div>
-  <div class="fig-full"><div class="img" style="background-image:url(out/fig/app-1.jpg)"></div><div class="cap"><b>الشكل ٦-١</b> · المراسلات الرسمية. الأسماء والأرقام للتوضيح.</div></div>
+<!-- 6 applications: divider, then one page per group -->
+<section class="page fb night divider" data-bare data-toc="٦|التطبيقات|المراسلات، والهويات، والتطبيق، والمنشورات، واللوحات">
+  <div class="af" data-af="#ece2d0|.05|150"></div>
+  <div class="no">٦</div>
+  <h1>التطبيقات</h1>
+  <div class="items"><b>٦٫١</b>المراسلات الرسمية<br><b>٦٫٢</b>الهويات والتطبيق<br><b>٦٫٣</b>المنصات الرقمية<br><b>٦٫٤</b>اللوحات</div>
+  <svg class="wall" id="wall6"></svg>
+</section>
+<section class="page photo-top" data-sec="٦ · التطبيقات" data-nohead>
+  <div class="img" style="background-image:url(print/renders/stationery.png)"></div>
+  <div class="cap"><b>الشكل ٦-١</b> · الورق الرسمي والظرف وبطاقة العمل. الأسماء والأرقام نماذج.</div>
+  <div class="txt"><div><span class="sec">٦٫١ المراسلات الرسمية</span><h2>الورق الرسمي والظرف والبطاقة</h2></div>
+    <p>يحمل الورق الرسمي الشعار بصيغته الأفقية في الأعلى تحت شريط الشرفات، ويفصل التذييلَ خطٌّ ذهبي رفيع. ويُقترح له ورق أبيض غير مطلي بوزن ١٢٠ غم. وللبطاقة وجهان: الرمز على حبر الليل، والبيانات على الأبيض.</p></div>
 </section>
 <section class="page" data-sec="٦ · التطبيقات">
   <div class="head-row"><div><span class="sec">٦٫٢ الهويات والتطبيق</span><h2>هوية الموظف وشاشة التطبيق</h2></div>
@@ -434,7 +466,8 @@ function lock(ink, tc, h, vertical = false) {
   pages.forEach((pg, i) => {
     const n = AR(String(i + 1).padStart(2, '0'));
     if (!pg.hasAttribute('data-bare')) {
-      pg.insertAdjacentHTML('beforeend', `<div class="rh"><span><b>الهوية البصرية</b> · وزارة الاقتصاد الرقمي والحوكمة</span><span>${pg.dataset.sec || ''}</span></div>
+      if (!pg.hasAttribute('data-nohead')) pg.insertAdjacentHTML('beforeend', `<div class="rh"><span><b>الهوية البصرية</b> · وزارة الاقتصاد الرقمي والحوكمة</span><span>${pg.dataset.sec || ''}</span></div>`);
+      pg.insertAdjacentHTML('beforeend', `
         <div class="rf"><span>مقترح مقدَّم إلى مسابقة شعار الوزارة وهويتها البصرية · تشرين الأول ٢٠٢٦</span><span class="pg">${n}</span></div>`);
     }
     if (pg.dataset.toc) {
@@ -518,30 +551,19 @@ function lock(ink, tc, h, vertical = false) {
     `<div><div class="chip ${i === 3 ? 'light' : ''}" style="background:${h}"><b>${n}</b><i>${d}</i></div>
       <table><tr><td>HEX</td><td>${h}</td></tr><tr><td>RGB</td><td>${rgb(h)}</td></tr><tr><td>CMYK</td><td>${cmyk(h)}</td></tr></table></div>`).join('');
 
-  // 5 patterns, drawn as shapes: an SVG <pattern> fill is printed as a blurry bitmap.
-  const fill = (id, paths) => { const el = document.getElementById(id);
-    el.insertAdjacentHTML('afterbegin', `<svg width="${el.clientWidth}" height="${el.clientHeight}" style="position:absolute;inset:0">${paths}</svg>`); };
-  // the arch field: the mark's arch (three bands of width b, b apart) in staggered rows, like courses of brick;
-  // each row's legs stop just above the arches of the row below
-  const archField = (id, color, op, R) => {
-    const el = document.getElementById(id), W = el.clientWidth, H = el.clientHeight, b = R / 6.5, s = 2 * R + 3 * b, rowH = 1.6 * R;
-    let p = '';
-    for (let row = 0; row * rowH < H + R; row++) for (let cx = row % 2 ? 0 : s / 2; cx < W + R; cx += s) {
-      const oy = row * rowH + R + 1.5 * b, G = oy + rowH - R - b;
-      for (const k of [0, 2, 4]) p += archBand(R - k * b, R - (k + 1) * b, { cx, oy, G }) + ' ';
-    }
-    fill(id, `<path d="${p}" fill="${color}" fill-opacity="${op}"/>`);
-  };
-  // the crenellation band: stepped merlons (5U wide, U apart) on a base of U, centred in the plate
-  const crenField = (id, color, U) => {
-    const el = document.getElementById(id), W = el.clientWidth, y = (el.clientHeight + 2 * U) / 2;
-    let p = `<rect x="0" y="${y - 0.3}" width="${W}" height="${U + 0.3}" fill="${color}"/>`;
-    for (let x = U / 2; x < W; x += 6 * U) p += merlon(x + 2.5 * U, y, 5 * U, color);
-    fill(id, p);
-  };
-  archField('pat1', '#ece2d0', .2, 34);
-  archField('pat2', '#17357d', 1, 30);
-  crenField('pat3', '#17357d', 5);
+  // 5 patterns: the shared shapes from marks.js (the same arches and merlons as on the mockups), drawn as paths
+  // because an SVG <pattern> fill is printed as a blurry bitmap
+  const fill = (el, paths) => el.insertAdjacentHTML('afterbegin',
+    `<svg width="${el.clientWidth}" height="${el.clientHeight}" style="position:absolute;inset:0">${paths}</svg>`);
+  const P = (id) => document.getElementById(id);
+  fill(P('pat1'), archField(P('pat1').clientWidth, P('pat1').clientHeight, '#ece2d0', .2, 110));
+  fill(P('pat2'), archField(P('pat2').clientWidth, P('pat2').clientHeight, '#17357d', .9, 80));
+  fill(P('pat3'), crenRow(P('pat3').clientWidth, '#17357d', 36, (P('pat3').clientHeight + 36 * 0.49) / 2));
+  document.querySelectorAll('.af').forEach((el) => { const [c, o, s] = el.dataset.af.split('|'); fill(el, archField(el.clientWidth, el.clientHeight, c, +o, +s)); });
+  // the divider's wall: a row of merlons on a band, along the bottom edge
+  document.querySelectorAll('svg.wall').forEach((w) => { const { width: W, height: H } = w.getBoundingClientRect();
+    w.setAttribute('width', W); w.setAttribute('height', H);
+    w.innerHTML = crenRow(W, '#17357d', 30, H - 26) + `<rect y="${H - 26.5}" width="${W}" height="27" fill="#17357d"/>`; });
 })();
 
 </script>

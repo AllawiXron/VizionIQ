@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Print artwork</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<script src="../marks.js"></script>
+<style>
+  /* Flat print artwork at real sizes (mm), for the 3D renders: node print/art.cjs -> print/tex/*.png.
+     The names, numbers and addresses are samples. */
+  :root { --blue: #17357d; --night: #0c1b40; --gold: #c99a2e; --clay: #ece2d0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #888; font-family: "IBM Plex Sans Arabic", sans-serif; color: var(--night); padding: 10mm; display: flex; flex-wrap: wrap; gap: 10mm; align-items: flex-start; }
+  .art { position: relative; overflow: hidden; background: #fff; }
+  .lock { display: inline-flex; align-items: center; gap: .9em; white-space: nowrap; }
+  .lock .bar { width: .25mm; align-self: stretch; background: currentColor; opacity: .3; }
+  .lock .t1 { font: 400 .34em var(--t, "IBM Plex Sans Arabic"); opacity: .8; }
+  .lock .t2 { font: 700 .62em/1.2 "Markazi Text"; margin: .02em 0 .1em; }
+  .lock .t3 { font: 500 .19em "IBM Plex Sans"; direction: ltr; text-align: right; letter-spacing: .08em; opacity: .75; }
+  .lat { font-family: "IBM Plex Sans"; direction: ltr; unicode-bidi: isolate; }
+</style>
+<script>
+const lock = (ink, tc, h) => `<div class="lock" style="font-size:${h}mm;color:${tc}">${markSVG('gate', ink, h * 3.7795)}<div class="bar"></div>
+  <div><div class="t1">جمهورية العراق</div><div class="t2">وزارة الاقتصاد الرقمي والحوكمة</div><div class="t3">MINISTRY OF DIGITAL ECONOMY AND GOVERNANCE</div></div></div>`;
+const svg = (wmm, hmm, inner) => `<svg width="${wmm}mm" height="${hmm}mm" viewBox="0 0 ${wmm} ${hmm}" style="position:absolute;left:0;top:0">${inner}</svg>`;
+const ON_WHITE = { ink: '#17357d', accent: '#c99a2e' }, ON_DARK = { ink: '#ece2d0', accent: '#c99a2e' };
+</script>
+</head>
+<body>
+
+<!-- letterhead, A4 -->
+<div class="art" id="letterhead" style="width:210mm;height:297mm">
+  <script>document.write(svg(210, 297, crenRow(210, '#17357d', 4.6, 3.9) + `<rect y="3.7" width="210" height="2.6" fill="#17357d"/>`))</script>
+  <div style="position:absolute;top:19mm;right:18mm"><script>document.write(lock(ON_WHITE, '#0c1b40', 15))</script></div>
+  <div style="position:absolute;top:22mm;left:18mm;font-size:8.5pt;line-height:2;color:#3c4660">العدد: ٤١٢ / ٢٠٢٦<br>التاريخ: ٢٠ / ١٠ / ٢٠٢٦</div>
+  <div style="position:absolute;top:58mm;right:22mm;left:22mm;font-size:10.5pt;line-height:2.05;text-align:justify">
+    <div style="font:700 13pt 'Markazi Text';margin-bottom:5mm">م/ تنسيق الكتب الرسمية</div>
+    <p style="margin-bottom:4mm">تحية طيبة،</p>
+    <p style="margin-bottom:4mm">يوضّح هذا النموذج تنسيق الكتب الرسمية الصادرة عن الوزارة. يأتي الشعار بصيغته الأفقية في أعلى الصفحة، ويقابله رقم الكتاب وتاريخه، ثم الموضوع بخط مركزي، ويليه نص الكتاب بخط IBM Plex Sans Arabic بحجم أحد عشر.</p>
+    <p style="margin-bottom:4mm">وتُترك هوامش متساوية على جانبي الصفحة، ويُختم الكتاب بالتوقيع والختم الرسمي في أسفله، فوق الخط الذهبي الذي يفصل التذييل عن المتن.</p>
+    <p>مع التقدير.</p>
+    <div style="margin-top:16mm;margin-right:auto;width:62mm;text-align:center;line-height:1.7"><b style="font:700 12pt 'Markazi Text'">المدير العام</b><br><span style="font-size:9pt;color:#3c4660">دائرة الخدمات الرقمية</span></div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:22mm">
+    <div style="margin:0 18mm;height:.5mm;background:var(--gold)"></div>
+    <div style="display:flex;justify-content:space-between;padding:4mm 18mm 0;font-size:7.5pt;color:#3c4660"><span>بغداد، جمهورية العراق</span><span class="lat">www.example.gov.iq</span></div>
+  </div>
+</div>
+
+<!-- envelope, DL -->
+<div class="art" id="envelope" style="width:220mm;height:110mm">
+  <div style="position:absolute;top:10mm;right:12mm"><script>document.write(lock(ON_WHITE, '#0c1b40', 11))</script></div>
+  <div style="position:absolute;top:52mm;left:22mm;font-size:9.5pt;line-height:1.9">
+    <div style="font:700 11pt 'Markazi Text'">إلى/ دائرة التخطيط والمتابعة</div>
+    <div style="color:#3c4660">بغداد، جمهورية العراق</div>
+  </div>
+  <script>document.write(svg(220, 110, `<rect y="105.8" width="220" height="4.2" fill="#17357d"/>` + crenRow(220, '#17357d', 4.6, 105.9)))</script>
+</div>
+
+<!-- business card, front -->
+<div class="art" id="card-front" style="width:85mm;height:55mm;background:var(--night)">
+  <script>document.write(svg(85, 55, archField(85, 55, '#ece2d0', .09, 16)))</script>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><script>document.write(markSVG('gate', ON_DARK, 22 * 3.7795))</script></div>
+</div>
+
+<!-- business card, back -->
+<div class="art" id="card-back" style="width:85mm;height:55mm">
+  <div style="position:absolute;top:0;bottom:0;left:0;width:24mm;background:var(--blue)"></div>
+  <div style="position:absolute;top:7mm;right:6mm"><script>document.write(lock(ON_WHITE, '#0c1b40', 4.6))</script></div>
+  <div style="position:absolute;top:24mm;right:6mm">
+    <div style="font:700 11.5pt 'Markazi Text'">سارة عبد الله</div>
+    <div style="font-size:6.5pt;color:#3c4660;margin-top:.5mm">مديرة قسم الخدمات الرقمية</div>
+  </div>
+  <div style="position:absolute;bottom:6mm;right:6mm;font-size:6.2pt;line-height:1.75;color:#3c4660"><span class="lat">+964 770 000 0000</span><br><span class="lat">s.abdullah@example.gov.iq</span></div>
+  <div style="position:absolute;top:50%;left:12mm;transform:translate(-50%,-50%)"><script>document.write(markSVG('gate', ON_DARK, 9 * 3.7795))</script></div>
+</div>
+
+</body>
+</html>

@@ -80,4 +80,20 @@ function archTile(stroke, op = 1, s = 120) {
   return `<pattern id="arch-${stroke.slice(1)}" width="${s}" height="${s * 0.8}" patternUnits="userSpaceOnUse">${one(s / 2, s * 0.42)}</pattern>`;
 }
 
+// The same two patterns as explicit shapes, for anything that is printed: Chrome prints an SVG <pattern> fill as a
+// blurry bitmap. Same geometry as archTile and crenelBand, so the document and the mockups match exactly.
+function archField(w, h, stroke, op = 1, s = 120) {
+  const a = (r, ox, oy) => `M${ox - r} ${oy + r * 0.9} V${oy} A${r} ${r} 0 0 1 ${ox + r} ${oy} V${oy + r * 0.9}`;
+  let d = '';
+  for (let y = 0; y < h; y += s * 0.8) for (let x = 0; x < w; x += s)
+    for (const r of [s * 0.36, s * 0.24, s * 0.12]) d += a(r, x + s / 2, y + s * 0.42) + ' ';
+  return `<path d="${d}" fill="none" stroke="${stroke}" stroke-opacity="${op}" stroke-width="${s * 0.03}"/>`;
+}
+// one row of merlons (tile t wide), standing on y
+function crenRow(w, fill, t = 40, y = t * 0.9) {
+  let s = '';
+  for (let x = 0; x < w; x += t) s += merlon(x + t / 2, y, t * 0.82, fill);
+  return s;
+}
+
 // Loaded by the pages with a <script> tag (the repo's package.json is "type": "module", so require() won't see these).
