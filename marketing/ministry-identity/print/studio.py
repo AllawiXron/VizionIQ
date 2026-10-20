@@ -264,9 +264,9 @@ def sign(preview):
     brick.inputs["Brick Width"].default_value = 0.6
     brick.inputs["Row Height"].default_value = 0.3
     brick.inputs["Mortar Size"].default_value = 0.004
-    brick.inputs["Color1"].default_value = lin("#e2d7c4")
-    brick.inputs["Color2"].default_value = lin("#d8cbb4")
-    brick.inputs["Mortar"].default_value = lin("#c9bba3")
+    brick.inputs["Color1"].default_value = lin("#e4dccd")
+    brick.inputs["Color2"].default_value = lin("#dad0be")
+    brick.inputs["Mortar"].default_value = lin("#cdc2ae")
     nt.links.new(tc.outputs["Object"], brick.inputs["Vector"])
     noise = nt.nodes.new("ShaderNodeTexNoise")
     noise.inputs["Scale"].default_value = 6.0
@@ -279,13 +279,13 @@ def sign(preview):
     nt.links.new(noise.outputs["Color"], mix.inputs["B"])
     nt.links.new(mix.outputs["Result"], b.inputs["Base Color"])
     fine = nt.nodes.new("ShaderNodeTexNoise")
-    fine.inputs["Scale"].default_value = 140.0
+    fine.inputs["Scale"].default_value = 60.0
     add = nt.nodes.new("ShaderNodeMath")
     add.operation = "ADD"
     nt.links.new(fine.outputs["Fac"], add.inputs[0])
     nt.links.new(brick.outputs["Fac"], add.inputs[1])
     bp = nt.nodes.new("ShaderNodeBump")
-    bp.inputs["Strength"].default_value = 0.07
+    bp.inputs["Strength"].default_value = 0.025
     nt.links.new(add.outputs["Value"], bp.inputs["Height"])
     nt.links.new(bp.outputs["Normal"], b.inputs["Normal"])
     wall.data.materials.append(m)
