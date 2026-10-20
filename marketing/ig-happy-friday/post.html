@@ -5,47 +5,58 @@
 <title>allawi.psd — جمعة مباركة</title>
 <style>
 @font-face { font-family:'DG Sahabah'; src:url(../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight:400 }
-:root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a }
+:root { --paper:#ece3d4; --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a; --tex:url(../ig-highlights/assets/img/paper.jpg) }
 * { margin:0; padding:0; box-sizing:border-box }
 body { background:#222; padding:40px; width:1160px }
-.art { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; background:var(--paper);
+.art { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl;
+  background:radial-gradient(90% 70% at 50% 45%, #3d2b1f, #271a12 60%, var(--ink));
   font-family:'DG Sahabah', 'Alexandria'; font-weight:400; font-synthesis:none }
-.art::before { content:''; position:absolute; inset:0; background:url(../ig-highlights/assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.3 }
-.grain { position:absolute; inset:0; background:url(../ig-highlights/assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.07; z-index:20 }
-.vig { position:absolute; inset:0; background:radial-gradient(115% 85% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.3) 100%); z-index:21 }
+.art::before { content:''; position:absolute; inset:0; background:var(--tex) center/cover; mix-blend-mode:overlay; opacity:.35 }
+.grain { position:absolute; inset:0; background:url(../ig-highlights/assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.07; z-index:30 }
+.vig { position:absolute; inset:0; background:radial-gradient(100% 80% at 50% 48%, rgba(0,0,0,0) 50%, rgba(0,0,0,.45) 100%); z-index:31 }
+.tx { position:absolute; inset:0; background:var(--tex) center/700px; mix-blend-mode:multiply; opacity:.4; pointer-events:none }
 
-/* torn cream strips */
-.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8 }
-.strip span { display:inline-block; padding:14px 56px 30px; font-size:112px; line-height:1.35; color:var(--ink); background:var(--cream); white-space:nowrap;
-  filter:drop-shadow(0 10px 12px rgba(0,0,0,.35));
-  clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
-.strip span.sm { font-size:64px; padding:10px 46px 24px }
-.strip b { font-weight:400; color:var(--oink) }
-.tape { position:absolute; height:50px; background:rgba(236,226,200,.8); box-shadow:0 2px 6px rgba(0,0,0,.18); z-index:9;
-  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+/* torn strips: cream paper over a white fibre edge */
+.stripW { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:12 }
+.sw { position:relative; display:inline-block; filter:drop-shadow(0 14px 14px rgba(0,0,0,.5)) drop-shadow(0 2px 3px rgba(0,0,0,.35)) }
+.sw .fib { position:absolute; inset:-6px -4px; background:#fffdf7 }
+.sw .cr { position:absolute; inset:0; background:var(--cream); overflow:hidden }
+.sw span { position:relative; display:block; padding:16px 64px 34px; font-size:120px; line-height:1.3; color:var(--ink); white-space:nowrap }
+.sw.sm span { font-size:66px; padding:12px 50px 26px }
+.sw b { font-weight:400; color:var(--oink) }
+/* masking tape: straight sides, torn ends */
+.tape { position:absolute; height:54px; z-index:14; background:linear-gradient(180deg, rgba(243,234,210,.82), rgba(226,213,182,.78)); box-shadow:0 1px 3px rgba(0,0,0,.2);
+  clip-path:polygon(0 4%, 3% 22%, 1% 41%, 4% 60%, 1% 79%, 3% 100%, 97% 100%, 99% 82%, 96% 63%, 100% 44%, 97% 25%, 99% 0) }
+.tape::after { content:''; position:absolute; inset:0; background:var(--tex) center/400px; mix-blend-mode:multiply; opacity:.35 }
 
-/* the torn-off calendar page */
-.cal { position:absolute; left:245px; top:300px; width:590px; height:790px; z-index:3; transform:rotate(-2.2deg);
-  filter:drop-shadow(0 22px 26px rgba(0,0,0,.42)) drop-shadow(0 3px 4px rgba(0,0,0,.25)) }
-.cal .pg { position:absolute; inset:0; background:
-  var(--cream);
-  clip-path:polygon(0 1.4%, 4% 0, 8% 1.2%, 12% .2%, 16% 1.4%, 20% 0, 24% 1.3%, 28% .1%, 32% 1.4%, 36% 0, 40% 1.2%, 44% .2%, 48% 1.4%, 52% 0, 56% 1.3%, 60% .1%, 64% 1.4%, 68% 0, 72% 1.2%, 76% .2%, 80% 1.4%, 84% 0, 88% 1.3%, 92% .1%, 96% 1.4%, 100% 0, 100% 100%, 0 100%) }
-.cal .rule { position:absolute; left:40px; right:40px; height:2px; background:rgba(31,21,16,.1) }
-.cal .band { position:absolute; left:0; right:0; top:10px; height:128px; background:linear-gradient(180deg, var(--orange2), var(--orange));
-  display:flex; align-items:center; justify-content:center; font-size:70px; color:var(--cream) }
-.day { position:absolute; right:78px; font-size:58px; line-height:1.2; color:rgba(31,21,16,.55) }
-.day .x { position:absolute; left:-10px; right:-10px; top:46%; height:22px; overflow:visible }
-.day .x path { fill:none; stroke:var(--ink); stroke-width:6; stroke-linecap:round; opacity:.8 }
-.fri { position:absolute; left:0; right:0; text-align:center; font-size:104px; line-height:1.2; color:var(--oink) }
-.mk { position:absolute; left:0; top:0; overflow:visible; z-index:4 }
-.mk path { fill:none; stroke:var(--orange); stroke-width:9; stroke-linecap:round; stroke-linejoin:round; opacity:.9 }
-.pin { position:absolute; width:58px; height:58px; z-index:10 }
+/* the tear-off pad */
+.pad { position:absolute; left:190px; top:300px; width:700px; height:880px; transform:rotate(-2deg); z-index:5;
+  filter:drop-shadow(0 34px 34px rgba(0,0,0,.6)) drop-shadow(0 6px 8px rgba(0,0,0,.4)) }
+.board { position:absolute; inset:0; background:#9b7048; border-radius:6px; overflow:hidden }
+.board::after { content:''; position:absolute; inset:0; background:var(--tex) center/500px; mix-blend-mode:multiply; opacity:.9 }
+.sheet { position:absolute; left:26px; right:26px; top:74px; background:#f3ead9; box-shadow:0 1px 0 rgba(0,0,0,.18) }
+.page { position:absolute; left:26px; right:26px; top:74px; height:770px; background:var(--cream); overflow:hidden;
+  clip-path:polygon(0 0, 100% 0, 100% 90.5%, 89% 100%, 0 100%) }
+.page::before { content:''; position:absolute; inset:0; background:linear-gradient(160deg, rgba(255,255,255,.35), rgba(255,255,255,0) 40%, rgba(120,80,40,.08)); z-index:1 }
+.curl { position:absolute; right:26px; top:770px; width:71px; height:74px; z-index:6;
+  background:linear-gradient(225deg, #e9dcc4 0%, #fbf3e6 46%, #d9c9ab 52%, rgba(0,0,0,0) 53%);
+  filter:drop-shadow(-4px -3px 4px rgba(0,0,0,.22)) }
+.stubs { position:absolute; left:26px; right:26px; top:40px; height:52px; z-index:4 }
+.stubs i { position:absolute; inset:0; background:#f6eedf }
+.rings { position:absolute; left:0; top:0; z-index:8; overflow:visible }
 
-/* rubber stamp: noise eats holes in the ink */
-.stamp { position:absolute; padding:2px 30px 12px; border:7px double var(--oink); border-radius:16px; color:var(--oink); font-size:60px; line-height:1.3;
-  direction:ltr; white-space:nowrap; opacity:.85; mix-blend-mode:multiply; filter:url(#stampF); z-index:9 }
-
-.pencil { position:absolute; z-index:11; filter:drop-shadow(-14px 20px 14px rgba(0,0,0,.38)) drop-shadow(-2px 3px 3px rgba(0,0,0,.3)) }
+.hd { position:absolute; left:0; right:0; top:70px; text-align:center; font-size:66px; color:var(--ink); z-index:2 }
+.rule2 { position:absolute; left:60px; right:60px; top:168px; height:9px; border-top:3px solid var(--oink); border-bottom:2px solid var(--oink); z-index:2 }
+.rule { position:absolute; left:46px; right:46px; height:2px; background:rgba(31,21,16,.09); z-index:2 }
+.day { position:absolute; right:84px; font-size:58px; line-height:1.2; color:rgba(31,21,16,.5); z-index:2 }
+.day .x { position:absolute; left:-12px; right:-12px; top:30%; height:34px; overflow:visible }
+.day .x path { fill:none; stroke:#2a1d14; stroke-width:5.5; stroke-linecap:round; stroke-linejoin:round; opacity:.82 }
+.fri { position:absolute; left:0; right:0; text-align:center; font-size:116px; line-height:1.2; color:var(--oink); z-index:2 }
+.note { position:absolute; font-size:46px; color:rgba(31,21,16,.78); z-index:3 }
+.mk { position:absolute; left:0; top:0; overflow:visible; z-index:3; filter:url(#markF) }
+.mk path { fill:none; stroke:var(--orange); stroke-linecap:round; stroke-linejoin:round }
+.stamp { position:absolute; padding:2px 26px 10px; border:6px double var(--oink); border-radius:14px; color:var(--oink); font-size:46px; line-height:1.3;
+  direction:ltr; white-space:nowrap; opacity:.8; mix-blend-mode:multiply; filter:url(#stampF); z-index:3 }
 </style>
 </head>
 <body>
@@ -56,62 +67,85 @@ body { background:#222; padding:40px; width:1160px }
     <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
     <feDisplacementMap in="s" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
   </filter>
+  <!-- marker ink: slightly uneven edge and density -->
+  <filter id="markF" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.06 0.5" numOctaves="2" seed="9" result="n" />
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -.9 1.35" result="m" />
+    <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
+    <feDisplacementMap in="s" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
 </svg>
 
 <div class="art" id="post">
-  <div class="strip" style="top:70px; transform:rotate(-1.5deg)"><span>جمعتكم <b>مباركة</b></span></div>
-  <div class="tape" style="left:72px; top:78px; width:110px; transform:rotate(-26deg)"></div>
+  <div id="s1"></div>
 
-  <div class="cal" id="cal">
-    <div class="pg"></div>
-    <div class="band">هذا الأسبوع</div>
-    <div id="days"></div>
-    <div class="fri" style="top:648px">الجمعة</div>
-    <svg class="mk" width="590" height="790" viewBox="0 0 590 790"><path id="loop" /></svg>
+  <div class="pad">
+    <div class="board"></div>
+    <div class="sheet" style="height:782px; transform:translate(2px,0)"></div>
+    <div class="sheet" style="height:778px; transform:translate(-1px,0)"></div>
+    <div class="sheet" style="height:774px"></div>
+    <div class="page" id="page">
+      <div class="tx"></div>
+      <div class="hd">هذا الأسبوع</div>
+      <div class="rule2"></div>
+      <div id="days"></div>
+      <div class="note" style="left:34px; top:556px; transform:rotate(-9deg)">أخيراً..</div>
+      <div class="fri" style="top:616px">الجمعة</div>
+      <svg class="mk" width="648" height="770" viewBox="0 0 648 770"><path id="loop" stroke-width="11" opacity=".88" /><path id="loop2" stroke-width="4" opacity=".35" /></svg>
+      <div class="stamp" style="left:46px; top:300px; transform:rotate(-13deg)">allawi.psd</div>
+    </div>
+    <div class="curl"></div>
+    <div class="stubs" id="stubs"></div>
+    <svg class="rings" id="rings" width="700" height="110" viewBox="0 0 700 110"></svg>
   </div>
-  <div class="pin" style="left:512px; top:292px" id="pin"></div>
 
-  <div class="stamp" style="left:270px; top:700px; font-size:48px; transform:rotate(-14deg)">allawi.psd</div>
-
-  <svg class="pencil" width="560" height="120" viewBox="0 0 560 120" style="left:740px; top:880px; transform:rotate(-38deg)">
-    <defs>
-      <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#f79a52" /><stop offset=".32" stop-color="#f07a2e" /><stop offset=".34" stop-color="#d95a1c" />
-        <stop offset=".66" stop-color="#e2541b" /><stop offset=".68" stop-color="#b8430f" /><stop offset="1" stop-color="#8f3209" />
-      </linearGradient>
-      <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1cf9e" /><stop offset=".5" stop-color="#ddb07a" /><stop offset="1" stop-color="#b9875a" /></linearGradient>
-      <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e3d6" /><stop offset=".35" stop-color="#b7ad9b" /><stop offset=".6" stop-color="#f3eee4" /><stop offset="1" stop-color="#7d7364" /></linearGradient>
-      <linearGradient id="rub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9b9a6" /><stop offset="1" stop-color="#b9806c" /></linearGradient>
-    </defs>
-    <!-- point on the left, eraser on the right -->
-    <path d="M12 60 L92 38 L92 82 Z" fill="url(#wood)" />
-    <path d="M12 60 L36 53.5 L36 66.5 Z" fill="#2a2420" />
-    <path d="M92 38 L100 42 L100 78 L92 82 Z" fill="#c98a52" opacity=".6" />
-    <rect x="92" y="38" width="372" height="44" fill="url(#body)" />
-    <text x="270" y="66" font-size="16" fill="#3a1d0c" opacity=".55" font-family="DG Sahabah" direction="ltr" text-anchor="middle">allawi.psd  HB</text>
-    <rect x="464" y="36" width="50" height="48" rx="3" fill="url(#metal)" />
-    <path d="M474 36 V84 M484 36 V84 M504 36 V84" stroke="rgba(60,50,40,.35)" stroke-width="2" />
-    <rect x="514" y="38" width="36" height="44" rx="9" fill="url(#rub)" />
-  </svg>
-
-  <div class="strip" style="top:1140px; transform:rotate(1.2deg)"><span class="sm">ونرجع السبت بأفكار <b>جديدة</b></span></div>
-  <div class="tape" style="left:118px; top:1142px; width:110px; transform:rotate(-28deg)"></div>
-
+  <div id="s2"></div>
   <div class="grain"></div><div class="vig"></div>
 </div>
 
 <script>
 let seed = 11; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-// the week, crossed off in pen
+// a torn edge all round: many small irregular bites, deeper on the long edges
+const torn = (amp) => { const p = [], n = 46;
+  for (let k = 0; k <= n; k++) p.push(`${(k / n * 100).toFixed(1)}% ${(rnd() * amp).toFixed(1)}%`);
+  for (let k = 1; k < 6; k++) p.push(`${(100 - rnd() * 1.4).toFixed(1)}% ${(k / 6 * 100).toFixed(1)}%`);
+  for (let k = n; k >= 0; k--) p.push(`${(k / n * 100).toFixed(1)}% ${(100 - rnd() * amp).toFixed(1)}%`);
+  for (let k = 5; k > 0; k--) p.push(`${(rnd() * 1.4).toFixed(1)}% ${(k / 6 * 100).toFixed(1)}%`);
+  return `polygon(${p.join(', ')})`; };
+const strip = (top, rot, html, cls = '') => `<div class="stripW" style="top:${top}px; transform:rotate(${rot}deg)"><div class="sw ${cls}"><i class="fib" style="clip-path:${torn(9)}"></i><i class="cr" style="clip-path:${torn(8)}"><i class="tx"></i></i><span>${html}</span></div></div>`;
+const tape = (x, y, w, rot) => `<div class="tape" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${rot}deg)"></div>`;
+document.getElementById('s1').outerHTML = strip(64, -2.2, 'جمعتكم <b>مباركة</b>') + tape(62, 88, 110, -34) + tape(872, 70, 112, 28);
+document.getElementById('s2').outerHTML = strip(1146, 1.6, 'ونرجع السبت بأفكار <b>جديدة</b>', 'sm') + tape(88, 1150, 100, -30);
+
+// the week, crossed off in pen (two days scribbled twice)
 const DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
 document.getElementById('days').innerHTML = DAYS.map((d, i) => {
-  const y1 = 8 + rnd() * 8, y2 = 6 + rnd() * 10;
-  return `<div class="rule" style="top:${246 + i * 80}px"></div><div class="day" style="top:${172 + i * 80}px; transform:rotate(${(rnd() - .5) * 3}deg)">${d}<svg class="x" viewBox="0 0 100 22" preserveAspectRatio="none"><path vector-effect="non-scaling-stroke" d="M0 ${y1.toFixed(1)} C 30 ${(y1 - 4).toFixed(1)}, 66 ${(y2 + 5).toFixed(1)}, 100 ${y2.toFixed(1)}" /></svg></div>`;
+  const a = 12 + rnd() * 8, b = 10 + rnd() * 10;
+  let path = `M0 ${a.toFixed(1)} C 30 ${(a - 6).toFixed(1)}, 64 ${(b + 6).toFixed(1)}, 100 ${b.toFixed(1)}`;
+  if (i === 1 || i === 4) path += ` L 96 ${(b + 7).toFixed(1)} C 64 ${(b + 12).toFixed(1)}, 30 ${(a + 2).toFixed(1)}, 4 ${(a + 9).toFixed(1)}`;
+  return `<div class="rule" style="top:${266 + i * 74}px"></div><div class="day" style="top:${196 + i * 74}px; transform:rotate(${((rnd() - .5) * 3).toFixed(2)}deg)">${d}<svg class="x" viewBox="0 0 100 34" preserveAspectRatio="none"><path vector-effect="non-scaling-stroke" d="${path}" /></svg></div>`;
 }).join('');
-// a hand-drawn marker loop round «الجمعة» (goes a little past the start, like a real circle)
-const loop = (cx, cy, rx, ry) => { let d = ''; for (let k = 0; k <= 64; k++) { const a = -2.5 + (k / 64) * Math.PI * 2 * 1.12, w = 1 + (rnd() - .5) * .05 + k * .0014; d += (k ? ' L' : 'M') + (cx + Math.cos(a) * rx * w).toFixed(1) + ' ' + (cy + Math.sin(a) * ry * w).toFixed(1); } return d; };
-document.getElementById('loop').setAttribute('d', loop(295, 712, 196, 66));
-document.getElementById('pin').innerHTML = `<svg viewBox="0 0 46 46"><defs><radialGradient id="pg" cx=".34" cy=".3" r=".8"><stop offset="0" stop-color="#ffb48c"/><stop offset=".42" stop-color="#e2541b"/><stop offset="1" stop-color="#7a2a0b"/></radialGradient></defs><ellipse cx="28" cy="29" rx="13" ry="6.5" fill="rgba(0,0,0,.38)"/><path d="M22 30 L27 38" stroke="rgba(0,0,0,.35)" stroke-width="2"/><circle cx="21" cy="19" r="14" fill="url(#pg)"/><ellipse cx="16" cy="13" rx="5.5" ry="3.6" fill="#fff" opacity=".55"/></svg>`;
+
+// marker loop round «الجمعة», overshooting its start like a real circle
+const loop = (cx, cy, rx, ry, s) => { let d = ''; for (let k = 0; k <= 72; k++) { const t = -2.6 + (k / 72) * Math.PI * 2 * 1.13, w = 1 + Math.sin(k * .7 + s) * .012 + k * .0016; d += (k ? ' L' : 'M') + (cx + Math.cos(t) * rx * w).toFixed(1) + ' ' + (cy + Math.sin(t) * ry * w).toFixed(1); } return d; };
+document.getElementById('loop').setAttribute('d', loop(324, 688, 208, 66, 0));
+document.getElementById('loop2').setAttribute('d', loop(326, 686, 214, 70, 2));
+
+// stubs of the pages already torn off, under the wire
+const st = document.getElementById('stubs');
+st.innerHTML = [0, 1].map((j) => { const p = ['0 0', '100% 0'];
+  for (let k = 40; k >= 0; k--) p.push(`${(k / 40 * 100).toFixed(1)}% ${(35 + rnd() * 55 - j * 12).toFixed(1)}%`);
+  return `<i style="clip-path:polygon(${p.join(', ')}); background:${j ? '#fbf3e6' : '#efe5d2'}; ${j ? '' : 'transform:translateY(5px)'}"></i>`; }).join('');
+
+// twin-wire binding: punched holes and metal loops
+let r = `<defs><linearGradient id="wire" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6d6a66"/><stop offset=".35" stop-color="#e8e6e1"/><stop offset=".6" stop-color="#9c9893"/><stop offset="1" stop-color="#4b4845"/></linearGradient></defs>`;
+for (let k = 0; k < 17; k++) { const x = 58 + k * 36.5;
+  r += `<ellipse cx="${x + 4}" cy="70" rx="8" ry="6" fill="#1a120c" opacity=".85"/>`;
+  r += `<path d="M${x - 3} 70 C ${x - 4} 34, ${x + 2} 22, ${x + 2} 22 M${x + 9} 70 C ${x + 8} 34, ${x + 14} 22, ${x + 14} 22" stroke="rgba(0,0,0,.35)" stroke-width="6" fill="none" transform="translate(2,4)"/>`;
+  r += `<path d="M${x - 3} 70 C ${x - 4} 34, ${x + 2} 22, ${x + 2} 22 M${x + 9} 70 C ${x + 8} 34, ${x + 14} 22, ${x + 14} 22" stroke="url(#wire)" stroke-width="5" stroke-linecap="round" fill="none"/>`; }
+r += `<path d="M40 22 H668" stroke="rgba(0,0,0,.3)" stroke-width="6" transform="translate(1,4)"/><path d="M40 22 H668" stroke="url(#wire)" stroke-width="5" stroke-linecap="round"/>`;
+document.getElementById('rings').innerHTML = r;
+
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
