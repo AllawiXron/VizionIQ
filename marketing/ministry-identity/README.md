@@ -55,18 +55,21 @@ they picked Markazi Text over Amiri and Reem Kufi.
 - `closing.html` → slide 13: «شكراً لكم», with a gold rule where the designer's name and contact go.
   `node render.cjs closing.html 13`.
 - `proposal.html` → `out/ministry-identity-proposal.pdf` (`node doc.cjs`): **the proposal document**, 18 pages of A4
-  landscape, printed from HTML so the text and the mark are vector. Cover, contents, the idea, the mark's elements,
-  construction (with dimensions), versions, clear space and minimum size, misuse, colour (HEX, RGB, a first CMYK
-  conversion to be proofed), type, patterns, applications, the website, and a closing page. The user asked for it to
-  look made by a professional document designer, not AI: a fixed grid and margins, a running header and footer,
-  numbered sections and figures with captions, thin rules and spec lists, no rounded cards, glows or gradients.
-  Page numbers, the header and the contents are filled in by its script. The closing page's designer name and contact
-  are placeholders: set `window.WHO = { name, contact }` before the last script (don't commit a phone number).
-  `node fig.cjs` renders the application and website mockups as figures (`out/fig/`, 2x, slide captions hidden).
-- `deck.cjs` → `out/ministry-identity-proposal.pptx` (rule 5): the 13 slides as full-bleed images (the identity's
-  fonts won't be on the judges' computers, so live text would break), a presenter script in formal Arabic in every
-  slide's notes, and one editable Arial text box on slide 13 for the designer's name and contact (rule 6). Needs
-  pptxgenjs: `NODE_PATH=<dir>/node_modules node deck.cjs`.
+  landscape, printed from HTML so the text, the mark and the patterns are vector (patterns are drawn as shapes: an SVG
+  `<pattern>` fill prints as a blurry bitmap). Cover, contents, the idea, the mark's elements, construction (with
+  dimensions), versions, clear space and minimum size, misuse, colour (HEX, RGB, a first CMYK conversion to be
+  proofed), type, patterns, applications, the website, and a closing page. The user asked for it to look made by a
+  professional document designer, not AI (a fixed grid and margins, a running header and footer, numbered sections and
+  figures with captions, thin rules and spec lists, no rounded cards, glows or gradients), and for the copy to read as
+  written by a person: plain formal Arabic, varied sentences, no slogan-style "X: Y" lines.
+  Page numbers, the header and the contents are filled in by its script.
+- **The designer's name and contact** live in `who.json` (git-ignored). `node doc.cjs --final` and
+  `node deck.cjs --final` write the copies with them to `out/final/` (git-ignored, sent to the user); the committed
+  `out/` copies show placeholders.
+- `deck.cjs` → `out/ministry-identity-proposal.pptx` (rule 5): the 18 pages as full-bleed A4 slides (the fonts won't
+  be on the judges' computers), with a presenter script in formal Arabic in every slide's notes. Needs pptxgenjs:
+  `NODE_PATH=<dir>/node_modules node deck.cjs [--final]`, after `node doc.cjs [--final]`.
+- `node fig.cjs` renders the application and website mockups as figures (`out/fig/`, 2x, slide captions hidden).
 
 Names, phone numbers, IDs and the `example.gov.iq` addresses are placeholders, and the QR-like squares are decoration,
 not working codes. The services on the website are illustrations, not the ministry's real list.
@@ -75,5 +78,6 @@ not working codes. The services on the website are illustrations, not the minist
   formal Arabic. It is the source: `python3 concept.py` lays it out as `concept.html` and `node concept-pdf.cjs`
   prints `out/concept-ar.pdf` (one A4 page in the identity's style).
 
-Still to do: rebuild the PowerPoint from the new document (it still uses the old 1920×1080 slides), a logo
-animation, and the ZIP.
+The 1920×1080 slides (`out/slide-*.png`, `render.cjs`) are the earlier presentation, kept for reference.
+
+Still to do: a logo animation, and the ZIP.

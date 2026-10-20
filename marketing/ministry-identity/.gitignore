@@ -1,0 +1,4 @@
+# the designer's contact details and the files built with them (sent to the user, not committed)
+who.json
+out/final/
+out/doc-*.png

@@ -13,6 +13,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   For a small change, make one pass and one render; don't re-check everything.
 - The user asked to save usage while keeping the work at its best (20 Oct): read only the code that draws the piece,
   look at one big render to find issues, fix in one pass, then check the result on one contact sheet of slides, not each.
+- Documents and proposals (20 Oct): the user wants them to look made by a professional document designer, not AI,
+  and the copy to read as written by a person (plain formal Arabic, no slogan-style lines); fonts must not look default.
 - When the user states a new like or dislike, add it to this file in a line or two so later sessions know it.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat

@@ -136,9 +136,10 @@ function lock(ink, tc, h, vertical = false) {
   .closing .c { position: absolute; top: 34mm; right: 0; left: 0; text-align: center; }
   .closing h1 { font-size: 40pt; margin-top: 9mm; }
   .closing .c p { width: 150mm; margin: 4mm auto 0; text-align: center; color: rgba(236,226,208,.75); font-size: 10pt; }
-  .closing .who { position: absolute; bottom: 24mm; right: 50mm; left: 50mm; display: grid; grid-template-columns: 1fr 1fr; gap: 12mm;
-    border-top: .3mm solid var(--gold); padding-top: 4mm; font-size: 9pt; }
-  .closing .who span { display: block; font-size: 6.8pt; color: rgba(236,226,208,.6); }
+  .closing .who { position: absolute; bottom: 24mm; right: 50mm; left: 50mm; display: grid; grid-template-columns: 1fr 1.5fr; gap: 12mm;
+    border-top: .3mm solid var(--gold); padding-top: 4mm; font-size: 10.5pt; white-space: nowrap; }
+  .closing .who b#who-name { font: 700 14pt var(--head); }
+  .closing .who > div > span { display: block; font-size: 6.8pt; color: rgba(236,226,208,.6); }
 </style>
 </head>
 <body>
@@ -156,7 +157,7 @@ function lock(ink, tc, h, vertical = false) {
       <h1>الهوية البصرية لوزارة<br>الاقتصاد الرقمي والحوكمة</h1>
       <div class="sub">بوابة عشتار.. بوابة العراق الرقمية</div>
       <div class="rule"></div>
-      <p>يعرض هذا المستند فكرة الشعار وأسس بنائه، ونظام الألوان والخطوط والأنماط المشتقة منه، ونماذج من تطبيقه على المطبوعات الرسمية والمنصات الرقمية.</p>
+      <p>يقدّم هذا المستند فكرة الشعار وطريقة بنائه، ونظام الألوان والخطوط والعناصر المرافقة له، ثم يعرض كيف تبدو الهوية على المراسلات الرسمية والهويات والتطبيق والموقع الإلكتروني.</p>
     </div>
     <div class="meta">
       <div><span>الإصدار</span>١٫٠</div>
@@ -175,27 +176,27 @@ function lock(ink, tc, h, vertical = false) {
   </div>
   <div class="col-l" style="top:auto;bottom:24mm;width:80mm">
     <h3>عن هذا المستند</h3>
-    <p class="mute">أُعدّ هذا المستند ليُقرأ مطبوعاً على ورق A4 بالعرض أو على الشاشة. الأسماء وأرقام الهواتف والعناوين في النماذج للتوضيح فقط، والرموز المربعة زخرفة وليست رموزاً فعالة.</p>
+    <p class="mute">صُمّم المستند للقراءة على الشاشة وللطباعة على ورق A4 بالعرض. الأسماء والأرقام والعناوين الظاهرة في النماذج افتراضية، والمربعات التي تشبه رموز QR زخرفية فقط.</p>
   </div>
 </section>
 
 <!-- 3 the idea -->
-<section class="page" data-sec="١ · الفكرة" data-toc="١|الفكرة|من بوابة بابل إلى بوابة العراق الرقمية">
+<section class="page" data-sec="١ · الفكرة" data-toc="١|الفكرة|لماذا اخترنا بوابة عشتار">
   <div class="col-r" style="width:138mm">
     <span class="sec">١ الفكرة</span>
-    <h2>بوابة عشتار.. بوابة العراق الرقمية</h2>
-    <p class="lead">بُني الشعار على بوابة عشتار في بابل، التي شُيّدت في عهد الملك نبوخذنصر الثاني نحو عام ٥٧٥ قبل الميلاد، وهي من أشهر المداخل في تاريخ العراق والعالم.</p>
-    <p>واخترنا البوابة لأن رسالة الوزارة في جوهرها رسالة «بوابة»: فالوزارة هي المدخل الذي تمرّ منه الخدمات الحكومية الرقمية إلى المواطن، والطريق الذي يدخل منه العراق إلى الاقتصاد الرقمي. وبذلك يجمع الشعار بين أصالة الهوية العراقية وروح التكنولوجيا الحديثة في شكل واحد بسيط يُقرأ من النظرة الأولى.</p>
+    <h2>لماذا البوابة؟</h2>
+    <p class="lead">حين بحثنا عن صورة تختصر عمل الوزارة، وجدناها في بابل. فبوابة عشتار، التي شُيّدت في عهد نبوخذنصر الثاني نحو عام ٥٧٥ قبل الميلاد، كانت المدخل الرئيس للمدينة، وما زالت من أشهر المعالم التي تُعرف بها حضارة العراق.</p>
+    <p>والوزارة اليوم تؤدي دور البوابة نفسه بلغة عصرها: منها تصل الخدمات الحكومية إلى المواطن، ومنها يدخل الاقتصاد العراقي إلى العالم الرقمي. لذلك جعلنا البوابة شعاراً، ورسمناها بأبسط شكل ممكن حتى تُعرف من النظرة الأولى، على ختم صغير كانت أو على واجهة مبنى.</p>
     <table class="hier" style="margin-top:5mm">
-      <tr><td class="m">الهوية العراقية</td><td>البوابة نفسها، من أشهر معالم بابل.</td></tr>
-      <tr><td class="m">الاقتصاد الرقمي</td><td>البوابة الرقمية، والشرفات المدرّجة التي تشبه البكسل.</td></tr>
-      <tr><td class="m">الحوكمة</td><td>بناء متوازن ومنظّم، ومدخل مفتوح للجميع.</td></tr>
-      <tr><td class="m">الابتكار</td><td>القوسان الذهبيان، وهما موجات الاتصال أيضاً.</td></tr>
+      <tr><td class="m">الهوية العراقية</td><td>معلَم بابلي يعرفه العراقيون ويعرفه العالم.</td></tr>
+      <tr><td class="m">الاقتصاد الرقمي</td><td>بوابة رقمية، وشرفات مدرّجة تذكّر بمربعات البكسل.</td></tr>
+      <tr><td class="m">الحوكمة</td><td>بناء متوازن ومتماثل، ومدخل مفتوح أمام الجميع.</td></tr>
+      <tr><td class="m">الاتصال والابتكار</td><td>قوسان ذهبيان يتّسعان حول المدخل كموجات الإشارة.</td></tr>
     </table>
   </div>
   <div class="col-l" style="width:104mm">
     <div class="plate blue" style="height:150mm"><script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e' }, 250))</script></div>
-    <div class="cap"><b>الشكل ١-١</b> · الشعار على أزرق بابل، لون الطابوق المزجّج في البوابة الأصلية.</div>
+    <div class="cap"><b>الشكل ١-١</b> · الشعار على أزرق بابل، وهو لون الطابوق المزجّج في البوابة الأصلية.</div>
   </div>
 </section>
 
@@ -203,18 +204,18 @@ function lock(ink, tc, h, vertical = false) {
 <section class="page" data-sec="٢ · الشعار" data-toc="٢|الشعار|العناصر، والبناء، والنسخ، وقواعد الاستعمال">
   <div class="col-r" style="width:100mm">
     <span class="sec">٢٫١ عناصر الشعار</span>
-    <h2>كل جزء يحمل معنى</h2>
+    <h2>قراءة الشعار</h2>
     <ol class="spec tight">
-      <li><span><h3>البوابة</h3>رمز للدخول والانفتاح؛ فالوزارة بوابة الدولة الرقمية، ومنها تصل الخدمات إلى المواطن أينما كان.</span></li>
-      <li><span><h3>البرجان والجدار</h3>بناء متوازن ومتماثل، يعبّر عن الحوكمة الرشيدة ومؤسسات قوية تُبنى على أسس ثابتة.</span></li>
-      <li><span><h3>المدخل المفتوح</h3>دلالة على الشفافية وسهولة الوصول؛ فالبوابة مفتوحة للجميع.</span></li>
-      <li><span><h3>القوسان الذهبيان</h3>يستلهمان أقواس مدخل البوابة الأصلية، ويرسمان موجات الاتصال: دولة متصلة رقمياً.</span></li>
-      <li><span><h3>الشرفات المدرّجة</h3>من أبرز عناصر العمارة الرافدينية، ودرجاتها المربّعة تشبه البكسل، وحدة الصورة الرقمية.</span></li>
+      <li><span><h3>البوابة</h3>الشكل العام للشعار. الوزارة مدخل الدولة إلى خدماتها الرقمية، والبوابة أوضح صورة لهذا الدور.</span></li>
+      <li><span><h3>البرجان والجدار</h3>برجان متساويان يحيطان بجدار أوطأ منهما، في تماثل يوحي بالاستقرار وبمؤسسة قائمة على أسس ثابتة.</span></li>
+      <li><span><h3>المدخل المفتوح</h3>لا باب يغلقه. المدخل مفتوح دائماً، إشارةً إلى الشفافية وإلى خدمة متاحة لكل مواطن.</span></li>
+      <li><span><h3>القوسان الذهبيان</h3>مأخوذان من الأقواس المتداخلة فوق مدخل البوابة الأصلية، ويُقرآن أيضاً موجاتِ اتصال تخرج من المدخل.</span></li>
+      <li><span><h3>الشرفات المدرّجة</h3>عنصر معروف في العمارة الرافدينية. درجاتها المربعة قريبة من شكل البكسل، فتصل بين الطابوق البابلي والشاشة.</span></li>
     </ol>
   </div>
   <div class="col-l" style="width:150mm">
     <div class="plate" style="height:156mm"><svg id="callouts" viewBox="-40 0 380 300" width="540" height="426"></svg></div>
-    <div class="cap"><b>الشكل ٢-١</b> · عناصر الشعار. الأرقام تقابل القائمة.</div>
+    <div class="cap"><b>الشكل ٢-١</b> · عناصر الشعار، مرقّمة كما في القائمة.</div>
   </div>
 </section>
 
@@ -222,18 +223,18 @@ function lock(ink, tc, h, vertical = false) {
 <section class="page" data-sec="٢ · الشعار">
   <div class="col-r" style="width:96mm">
     <span class="sec">٢٫٢ بناء الشعار</span>
-    <h2>شبكة واحدة تحكم كل الأجزاء</h2>
-    <p class="lead">بُني الشعار على وحدة قياس واحدة (و). كل حافة تقع على خط من خطوط الشبكة، فيبقى الشكل متوازناً في كل الأحجام، من ختم صغير إلى واجهة مبنى.</p>
+    <h2>البناء الهندسي</h2>
+    <p class="lead">رُسم الشعار على شبكة مربعة بوحدة قياس واحدة نسمّيها (و). تقع كل حافة فيه على خط من خطوط الشبكة، ولهذا يحتفظ بتوازنه عند التصغير والتكبير، ويسهل إعادة رسمه بدقة في أي برنامج.</p>
     <ol class="spec">
-      <li><span><h3>الأبراج والجدار</h3>عرض البرج ١١ وحدة، والجدار بينهما ٢٣ وحدة، والبرجان أعلى من الجدار ليُقرأ الشكل بوابةً من النظرة الأولى.</span></li>
-      <li><span><h3>الشرفات</h3>كل شرفة ثلاث درجات متساوية، بعرض ٥ وحدات وارتفاع ٣، وبالحجم نفسه على الأبراج والجدار.</span></li>
-      <li><span><h3>المدخل والقوسان</h3>من مركز واحد، وكل الأشرطة الزرقاء والذهبية بعرض واحد: وحدة ونصف.</span></li>
-      <li><span><h3>الفواصل</h3>نصف وحدة بين البرجين والجدار، تمنح البوابة عمقاً وتبقى واضحة في الطباعة بلون واحد.</span></li>
+      <li><span><h3>الأبراج والجدار</h3>عرض البرج ١١ وحدة، وعرض الجدار ٢٣ وحدة. ويرتفع البرجان فوق الجدار بما يكفي ليُقرأ الشكل بوابةً لا مبنى عادياً.</span></li>
+      <li><span><h3>الشرفات</h3>ثلاث درجات متساوية، عرضها ٥ وحدات وارتفاعها ٣، وهي بالقياس نفسه على الأبراج والجدار.</span></li>
+      <li><span><h3>المدخل والقوسان</h3>تُرسم من مركز واحد، وعرض كل شريط فيها، أزرق كان أو ذهبياً، وحدة ونصف.</span></li>
+      <li><span><h3>الفواصل</h3>فراغ بعرض نصف وحدة يفصل البرجين عن الجدار، فيمنح البوابة عمقاً، ويبقى ظاهراً حتى في الطباعة بلون واحد.</span></li>
     </ol>
   </div>
   <div class="col-l" style="width:150mm">
     <div class="plate" style="height:156mm"><svg id="con" viewBox="-6 -14 312 324" width="500" height="519"></svg></div>
-    <div class="cap"><b>الشكل ٢-٢</b> · الشعار على شبكة البناء. الأرقام بعدد الوحدات (و).</div>
+    <div class="cap"><b>الشكل ٢-٢</b> · الشعار على شبكة البناء، والقياسات بعدد الوحدات (و).</div>
   </div>
 </section>
 
@@ -241,25 +242,26 @@ function lock(ink, tc, h, vertical = false) {
 <section class="page" data-sec="٢ · الشعار">
   <div class="col-r" style="width:261mm">
     <span class="sec">٢٫٣ نسخ الشعار</span>
-    <h2>نسخة لكل استعمال</h2>
+    <h2>نسخ الشعار</h2>
+    <p class="mute" style="width:170mm">للشعار صيغتان، أفقية وعمودية، ولكل منهما نسخة للخلفيات الفاتحة وأخرى للداكنة. وتُستعمل النسخة أحادية اللون في الأختام والطباعة الاقتصادية، والرمز وحده في أيقونة التطبيق.</p>
   </div>
-  <div style="position:absolute;top:47mm;right:18mm;left:18mm;display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:62mm 62mm;gap:4mm">
+  <div style="position:absolute;top:62mm;right:18mm;left:18mm;display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:54mm 54mm;gap:4mm">
     <div class="plate white"><script>document.write(lock({ ink: '#17357d', accent: '#c99a2e' }, '#0c1b40', 44))</script><span class="lbl">أ. الأفقية الأساسية</span></div>
     <div class="plate" style="grid-row:span 2;background:var(--clay)"><script>document.write(lock({ ink: '#17357d', accent: '#c99a2e' }, '#0c1b40', 40, true))</script><span class="lbl">ب. العمودية</span></div>
     <div class="plate night"><div style="width:30mm;height:30mm;border-radius:7mm;background:var(--blue);display:flex;align-items:center;justify-content:center"><script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e' }, 70))</script></div><span class="lbl">د. أيقونة التطبيق</span></div>
     <div class="plate night"><script>document.write(lock({ ink: '#ece2d0', accent: '#c99a2e' }, '#ece2d0', 44))</script><span class="lbl">ج. على الخلفيات الداكنة</span></div>
     <div class="plate white"><script>document.write(markSVG('gate', { ink: '#111111', accent: 'none' }, 110))</script><span class="lbl">هـ. بلون واحد، للأختام والطباعة</span></div>
   </div>
-  <div class="cap" style="position:absolute;top:177mm;right:18mm"><b>الشكل ٢-٣</b> · نسخ الشعار. في النسخة ذات اللون الواحد يبقى القوسان مفتوحين فتظهر الخلفية من خلالهما.</div>
+  <div class="cap" style="position:absolute;top:174mm;right:18mm"><b>الشكل ٢-٣</b> · نسخ الشعار. في النسخة أحادية اللون يبقى مكان القوسين فارغاً، فتظهر الخلفية من خلاله.</div>
 </section>
 
 <!-- 7 clear space and minimum size -->
 <section class="page" data-sec="٢ · الشعار">
   <div class="col-r" style="width:96mm">
     <span class="sec">٢٫٤ المساحة الآمنة والحجم الأدنى</span>
-    <h2>مساحة تحفظ وضوح الشعار</h2>
-    <p>تُترك حول الشعار مساحة فارغة لا يدخلها نص أو صورة أو حافة. وحدتها (س) تساوي نصف ارتفاع الرمز.</p>
-    <p>ولا يُستعمل الشعار بأصغر من الحجم الأدنى، حتى تبقى الشرفات والقوسان واضحة.</p>
+    <h2>المساحة المحيطة والحجم الأدنى</h2>
+    <p>يحتاج الشعار إلى فراغ حوله حتى يُقرأ بوضوح، فلا يقترب منه نص أو صورة أو حافة صفحة لمسافة تساوي (س)، وهي نصف ارتفاع الرمز.</p>
+    <p>وللتصغير حدّ أدنى، إذا نزل الشعار تحته اختلطت الشرفات وضاق ما بين القوسين.</p>
     <table class="hier" style="margin-top:4mm">
       <tr><td class="m">الرمز وحده</td><td>١٢ مم في الطباعة · ٤٨ بكسل على الشاشة</td></tr>
       <tr><td class="m">الصيغة الأفقية</td><td>٤٥ مم في الطباعة · ١٨٠ بكسل على الشاشة</td></tr>
@@ -275,7 +277,7 @@ function lock(ink, tc, h, vertical = false) {
         <span class="lbl">الرمز: ١٢ مم و١٨ مم</span></div>
       <div class="plate white" style="flex:1.6;height:34mm"><script>document.write(lock({ ink: '#17357d', accent: '#c99a2e' }, '#0c1b40', 22))</script><span class="lbl">الصيغة الأفقية: ٤٥ مم</span></div>
     </div>
-    <div class="cap"><b>الشكل ٢-٥</b> · الشعار بحجمه الأدنى (بالقياس الفعلي عند الطباعة).</div>
+    <div class="cap"><b>الشكل ٢-٥</b> · الشعار بحجمه الأدنى، بالقياس الفعلي عند طباعة المستند.</div>
   </div>
 </section>
 
@@ -283,8 +285,8 @@ function lock(ink, tc, h, vertical = false) {
 <section class="page" data-sec="٢ · الشعار">
   <div class="col-r" style="width:261mm">
     <span class="sec">٢٫٥ الاستعمالات غير الصحيحة</span>
-    <h2>ما لا يُفعل بالشعار</h2>
-    <p class="mute" style="width:150mm">يُستعمل الشعار كما هو في الملفات المعتمدة فقط. هذه أمثلة على تعديلات تُضعف الهوية ولا يُسمح بها.</p>
+    <h2>أخطاء شائعة في الاستعمال</h2>
+    <p class="mute" style="width:170mm">يُستعمل الشعار من الملفات المعتمدة كما هو، دون أي تعديل. والأمثلة التالية من الأخطاء التي تتكرر عادةً عند تطبيق الهويات، وكلها تُضعف الشعار.</p>
   </div>
   <div class="mis" style="position:absolute;top:62mm;right:18mm;left:18mm" id="mis"></div>
 </section>
@@ -293,8 +295,8 @@ function lock(ink, tc, h, vertical = false) {
 <section class="page" data-sec="٣ · الألوان" data-toc="٣|الألوان|الألوان الأساسية وقيمها ونسب استعمالها">
   <div class="col-r" style="width:261mm">
     <span class="sec">٣ الألوان</span>
-    <h2>ألوان من بابل</h2>
-    <p class="mute" style="width:170mm">أربعة ألوان مستوحاة من بوابة عشتار وأرض العراق. قيم CMYK تحويل أولي للطباعة على الورق المطلي، وتُضبط ببروفة طباعة قبل الاعتماد.</p>
+    <h2>الألوان</h2>
+    <p class="mute" style="width:190mm">أربعة ألوان، اثنان منها من البوابة نفسها: أزرق الطابوق المزجّج، والذهبي الذي يبرز به القوسان. أما الكحلي الداكن فللنصوص والخلفيات الرسمية، ولون الطين خلفية دافئة للمطبوعات. قيم CMYK تحويل أولي، وتُعتمد بعد بروفة طباعة.</p>
   </div>
   <div class="sw" id="sw" style="position:absolute;top:60mm;right:18mm;left:18mm"></div>
   <div style="position:absolute;top:160mm;right:18mm;left:18mm">
@@ -312,13 +314,13 @@ function lock(ink, tc, h, vertical = false) {
 <section class="page" data-sec="٤ · الخطوط" data-toc="٤|الخطوط|خط العناوين وخط النصوص وتدرّج الأحجام">
   <div class="col-r" style="width:125mm">
     <span class="sec">٤ الخطوط</span>
-    <h2>خطان رسميان واضحان</h2>
+    <h2>الخطوط</h2>
     <div class="wts" style="margin-top:2mm">
       <div><span>العناوين</span><b style="font:700 15pt var(--head)">Markazi Text</b></div>
       <div><span>النصوص</span><b style="font:500 10pt var(--text)">IBM Plex Sans Arabic</b></div>
       <div><span>الإنكليزية</span><b style="font:500 10pt var(--latin)">IBM Plex Sans</b></div>
     </div>
-    <p style="margin-top:4mm">خط «مركزي» نسخيّ حديث، فيه وقار الخط العربي المطبوع ووضوح الشاشة، ويُستعمل للعناوين واسم الوزارة. وخط IBM Plex Sans Arabic للنصوص والجداول والواجهات، لأنه مريح في الأحجام الصغيرة. والخطوط كلها مجانية ومفتوحة الترخيص (SIL Open Font License).</p>
+    <p style="margin-top:4mm">اخترنا للعناوين واسم الوزارة خط «مركزي»، وهو خط نسخ حديث يحتفظ بوقار الحرف العربي المطبوع ويبقى واضحاً على الشاشة. وللنصوص والجداول والواجهات خط IBM Plex Sans Arabic، لأنه مريح للقراءة في الأحجام الصغيرة، وله نظير لاتيني للنصوص الإنكليزية. والخطوط الثلاثة مجانية بترخيص SIL Open Font License، فلا تحتاج الوزارة إلى شراء رخص لاستعمالها.</p>
     <table class="hier" style="margin-top:3mm">
       <tr><td class="m">عنوان رئيسي · مركزي ٣٤</td><td style="font:700 22pt/1.2 var(--head)">الاقتصاد الرقمي</td></tr>
       <tr><td class="m">عنوان فرعي · مركزي ١٣</td><td style="font:700 13pt var(--head)">خدمات حكومية أسرع وأوضح</td></tr>
@@ -346,19 +348,19 @@ function lock(ink, tc, h, vertical = false) {
 <section class="page" data-sec="٥ · العناصر الرسومية" data-toc="٥|العناصر الرسومية|نقشان مشتقان من الشعار">
   <div class="col-r" style="width:261mm">
     <span class="sec">٥ العناصر الرسومية</span>
-    <h2>نقشان من الشعار نفسه</h2>
-    <p class="mute" style="width:170mm">يكمّل الهوية نقشان مشتقان من الشعار، فتبقى المطبوعات والشاشات متّسقة حتى حين لا يظهر الشعار كاملاً.</p>
+    <h2>العناصر المرافقة</h2>
+    <p class="mute" style="width:170mm">اشتققنا من الشعار نقشين بالقياسات نفسها، يُستعملان حين لا يكون للشعار الكامل مكان، أو حين تحتاج المساحة إلى ما يملؤها دون أن يزاحم المحتوى.</p>
   </div>
   <div style="position:absolute;top:62mm;right:18mm;left:18mm;display:grid;grid-template-columns:1.3fr 1fr;gap:4mm">
     <div>
-      <div class="plate night" style="height:96mm" id="pat1"></div>
-      <div class="cap"><b>الشكل ٥-١</b> · نقش الأقواس: للأغلفة والخلفيات الكبيرة والمنشورات.</div>
+      <div class="plate night" style="height:108mm" id="pat1"></div>
+      <div class="cap"><b>الشكل ٥-١</b> · نقش الأقواس على حبر الليل، للأغلفة والخلفيات الكبيرة.</div>
     </div>
     <div>
-      <div class="plate" style="height:58mm;background:var(--clay)" id="pat2"></div>
-      <div class="cap"><b>الشكل ٥-٢</b> · نقش الأقواس بالأزرق على الطين.</div>
-      <div class="plate white" style="height:24mm;margin-top:4mm" id="pat3"></div>
-      <div class="cap"><b>الشكل ٥-٣</b> · شريط الشرفات: للحواف والفواصل في المراسلات والشاشات.</div>
+      <div class="plate" style="height:66mm;background:var(--clay)" id="pat2"></div>
+      <div class="cap"><b>الشكل ٥-٢</b> · نقش الأقواس بأزرق بابل على الطين، للمطبوعات والمنشورات.</div>
+      <div class="plate white" style="height:28mm;margin-top:4mm" id="pat3"></div>
+      <div class="cap"><b>الشكل ٥-٣</b> · شريط الشرفات، لحواف المراسلات وفواصل الشاشات.</div>
     </div>
   </div>
 </section>
@@ -366,41 +368,41 @@ function lock(ink, tc, h, vertical = false) {
 <!-- 12–15 applications -->
 <section class="page" data-sec="٦ · التطبيقات" data-toc="٦|التطبيقات|المراسلات، والهويات، والتطبيق، والمنشورات، واللوحات">
   <div class="head-row"><div><span class="sec">٦٫١ المراسلات الرسمية</span><h2>الورق الرسمي والظرف وبطاقة العمل</h2></div>
-    <p>شريط الشرفات يحدّ الورق من الأعلى والظرف من الأسفل، وخط ذهبي رفيع يفصل التذييل. وبطاقة العمل بوجهين: الشعار على أزرق بابل، والبيانات على الأبيض.</p></div>
+    <p>يحمل الورق الرسمي الشعار بصيغته الأفقية في الأعلى، ويحدّه شريط الشرفات، ويفصل التذييلَ خطٌّ ذهبي رفيع. وللبطاقة وجهان: الشعار على الأزرق، والبيانات على الأبيض.</p></div>
   <div class="fig-full"><div class="img" style="background-image:url(out/fig/app-1.jpg)"></div><div class="cap"><b>الشكل ٦-١</b> · المراسلات الرسمية. الأسماء والأرقام للتوضيح.</div></div>
 </section>
 <section class="page" data-sec="٦ · التطبيقات">
   <div class="head-row"><div><span class="sec">٦٫٢ الهويات والتطبيق</span><h2>هوية الموظف وشاشة التطبيق</h2></div>
-    <p>هوية الموظف بشريط الشرفات تحت الشعار، وشاشة البدء في التطبيق على حبر الليل مع نقش الأقواس، وأيقونة التطبيق على أزرق بابل.</p></div>
+    <p>في هوية الموظف رأس أزرق يحمل الشعار، وتحته الصورة والاسم والمنصب. وشاشة البدء في التطبيق كحلية بنقش الأقواس، وأيقونته الرمز وحده على الأزرق.</p></div>
   <div class="fig-full"><div class="img" style="background-image:url(out/fig/app-2.jpg)"></div><div class="cap"><b>الشكل ٦-٢</b> · هوية الموظف، وشاشة البدء، وأيقونة التطبيق.</div></div>
 </section>
 <section class="page" data-sec="٦ · التطبيقات">
   <div class="head-row"><div><span class="sec">٦٫٣ المنصات الرقمية</span><h2>منشورات وقصص</h2></div>
-    <p>قالب ثابت للمنشورات: الشعار في الأعلى، والعنوان بخط مركزي، والكلمة المهمة بالذهبي، وشريط الشرفات في الأسفل.</p></div>
+    <p>للمنشورات قالب ثابت يجعلها معروفة من أول نظرة: الشعار في الأعلى، والعنوان بخط مركزي، والكلمة الأهم بالذهبي، وشريط الشرفات في الأسفل.</p></div>
   <div class="fig-full"><div class="img" style="background-image:url(out/fig/app-3.jpg)"></div><div class="cap"><b>الشكل ٦-٣</b> · منشورات وقصص للمنصات الرقمية. النصوص للتوضيح.</div></div>
 </section>
 <section class="page" data-sec="٦ · التطبيقات">
   <div class="head-row"><div><span class="sec">٦٫٤ اللوحات</span><h2>واجهة المبنى واللوحات الإرشادية</h2></div>
-    <p>لوحة الواجهة بالصيغة الأفقية على أزرق بابل، ومدخل مقوّس بقوسين ذهبيين يردّد الشعار، ولوحة إرشاد داخلية عمودية.</p></div>
+    <p>تحمل الواجهة الشعار بصيغته الأفقية على لوح أزرق، ويحيط بالمدخل المقوّس إطاران ذهبيان كما في الشعار. وفي الداخل لوحات إرشاد عمودية بالألوان نفسها.</p></div>
   <div class="fig-full"><div class="img" style="background-image:url(out/fig/app-4.jpg)"></div><div class="cap"><b>الشكل ٦-٤</b> · واجهة المبنى ولوحة الإرشاد الداخلية.</div></div>
 </section>
 
 <!-- 16–17 website -->
 <section class="page" data-sec="٧ · الموقع الإلكتروني" data-toc="٧|الموقع الإلكتروني|الواجهة الرئيسية ومسار الخدمة">
   <div class="head-row"><div><span class="sec">٧٫١ الواجهة الرئيسية</span><h2>بوابة فعلية للخدمات</h2></div>
-    <p>تبدأ الواجهة بالبحث عن الخدمة، ثم الخدمات الأكثر طلباً. وتصميم واحد للحاسوب والهاتف بخطوط واضحة وألوان عالية التباين.</p></div>
+    <p>صُمّمت الواجهة الرئيسية حول سؤال واحد: ما الخدمة التي يبحث عنها المواطن؟ لذلك يأتي مربع البحث أولاً، تليه الخدمات الأكثر طلباً، والتصميم نفسه يعمل على الحاسوب والهاتف.</p></div>
   <div class="fig-full"><div class="img" style="background-image:url(out/fig/web-1.jpg)"></div><div class="cap"><b>الشكل ٧-١</b> · الواجهة الرئيسية على الحاسوب والهاتف. الخدمات المعروضة للتوضيح.</div></div>
 </section>
 <section class="page" data-sec="٧ · الموقع الإلكتروني">
   <div class="col-r" style="width:100mm">
     <span class="sec">٧٫٢ مسار الخدمة</span>
-    <h2>تجربة واضحة.. خطوة بخطوة</h2>
-    <p>مثال: تسجيل شركة جديدة، من صفحة الخدمة إلى متابعة الطلب.</p>
+    <h2>مسار الخدمة</h2>
+    <p>مثال من خدمة تسجيل شركة جديدة، من صفحة الخدمة حتى متابعة الطلب. وقد بُني الموقع على أربعة مبادئ:</p>
     <ol class="spec">
-      <li><span><h3>البحث أولاً</h3>المواطن يكتب ما يحتاجه، ولا يضيع بين الأقسام.</span></li>
-      <li><span><h3>كل خدمة بالشكل نفسه</h3>ماذا تحتاج، والخطوات، ثم زرّ البدء.</span></li>
-      <li><span><h3>الشفافية</h3>حالة كل معاملة ظاهرة، خطوة بخطوة.</span></li>
-      <li><span><h3>الهاتف أولاً</h3>يُصمَّم للهاتف ثم للحاسوب، بخطوط واضحة وألوان عالية التباين.</span></li>
+      <li><span><h3>البحث أولاً</h3>يكتب المواطن ما يحتاجه، ولا يضطر إلى معرفة القسم المسؤول.</span></li>
+      <li><span><h3>صفحة موحّدة لكل خدمة</h3>المستمسكات المطلوبة، ثم الخطوات، ثم زرّ البدء، بالترتيب نفسه في كل خدمة.</span></li>
+      <li><span><h3>متابعة واضحة</h3>يرى المواطن أين وصلت معاملته في كل مرحلة.</span></li>
+      <li><span><h3>الهاتف أولاً</h3>يُصمَّم كل شيء للهاتف ثم يتّسع للحاسوب، بخط واضح وتباين عالٍ.</span></li>
     </ol>
   </div>
   <div class="col-l" style="width:150mm">
@@ -414,7 +416,7 @@ function lock(ink, tc, h, vertical = false) {
   <div class="c">
     <script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e' }, 120))</script>
     <h1>شكراً لكم</h1>
-    <p>من بوابة بابل التي استقبلت العالم قبل أكثر من ألفين وخمسمئة عام، إلى بوابة رقمية تستقبل كل مواطن عراقي اليوم: هوية تحمل أصالة العراق، وتعبّر عن تطلّعه إلى مستقبل رقمي، ومؤسسات أكثر كفاءة وشفافية.</p>
+    <p>قبل أكثر من ألفين وخمسمئة عام كانت بوابة عشتار مدخل بابل إلى العالم. ونقترح أن تكون اليوم رمزاً لمدخل العراقيين إلى دولة رقمية، تقدّم خدماتها بوضوح وسرعة وشفافية.</p>
   </div>
   <div class="who">
     <div><span>المصمم</span><b id="who-name" style="font-weight:500"></b></div>
@@ -442,9 +444,11 @@ function lock(ink, tc, h, vertical = false) {
     }
   });
   document.getElementById('npages').textContent = AR(pages.length);
+  // the designer's details come from who.json (not committed) when doc.cjs runs with --final
   const who = window.WHO || {};
   document.getElementById('who-name').textContent = who.name || 'اسم المصمم';
-  document.getElementById('who-contact').textContent = who.contact || 'الهاتف · البريد الإلكتروني';
+  document.getElementById('who-contact').innerHTML = who.phone
+    ? `<span class="latin">${who.phone}</span>&nbsp; · &nbsp;<span class="latin">${who.email}</span>` : 'الهاتف · البريد الإلكتروني';
 
   const g = GATE;
   const ln = (x1, y1, x2, y2, c = '#0c1b40', o = .5, w = .5, d = '') =>
@@ -503,10 +507,10 @@ function lock(ink, tc, h, vertical = false) {
   document.querySelectorAll('svg.outline path').forEach((p) => { p.setAttribute('stroke', '#17357d'); p.setAttribute('stroke-width', '2'); });
 
   // 3 colour: HEX, RGB and a first CMYK conversion
-  const cols = [['أزرق بابل', 'لون الطابوق المزجّج في بوابة عشتار. الثقة والاستقرار.', '#17357D'],
-    ['حبر الليل', 'للنصوص والخلفيات الرسمية. الوقار والوضوح.', '#0C1B40'],
-    ['ذهب عشتار', 'لون القوسين. القيمة والإنجاز والاتصال.', '#C99A2E'],
-    ['الطين', 'لون الطين الرافديني. خلفية دافئة للمطبوعات.', '#ECE2D0']];
+  const cols = [['أزرق بابل', 'اللون الأساسي للهوية، من طابوق البوابة المزجّج.', '#17357D'],
+    ['حبر الليل', 'للنصوص الطويلة والخلفيات الرسمية.', '#0C1B40'],
+    ['ذهب عشتار', 'لون القوسين، ويُستعمل للإبراز فقط.', '#C99A2E'],
+    ['الطين', 'خلفية دافئة للمطبوعات والصفحات.', '#ECE2D0']];
   const cmyk = (h) => { const [r, gg, b] = [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16) / 255), k = 1 - Math.max(r, gg, b);
     return [r, gg, b].map((v) => Math.round((1 - v - k) / (1 - k) * 100)).concat(Math.round(k * 100)).join(' '); };
   const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16)).join(' ');
@@ -514,14 +518,30 @@ function lock(ink, tc, h, vertical = false) {
     `<div><div class="chip ${i === 3 ? 'light' : ''}" style="background:${h}"><b>${n}</b><i>${d}</i></div>
       <table><tr><td>HEX</td><td>${h}</td></tr><tr><td>RGB</td><td>${rgb(h)}</td></tr><tr><td>CMYK</td><td>${cmyk(h)}</td></tr></table></div>`).join('');
 
-  // 5 patterns
-  // `rowH` limits the fill to one centred row (for the band)
-  const pat = (id, def, ref, rowH) => { const el = document.getElementById(id), r = el.getBoundingClientRect();
-    const h = rowH || r.height, y = rowH ? (r.height - rowH) / 2 : 0;
-    el.insertAdjacentHTML('afterbegin', `<svg width="${r.width}" height="${r.height}" style="position:absolute;inset:0"><defs>${def}</defs><g transform="translate(0 ${y})"><rect width="100%" height="${h}" fill="url(#${ref})"/></g></svg>`); };
-  pat('pat1', archTile('#ece2d0', .22, 120), 'arch-ece2d0');
-  pat('pat2', archTile('#17357d', .9, 90), 'arch-17357d');
-  pat('pat3', crenelBand('#17357d', 26), 'cren-17357d', 26 * 0.9);
+  // 5 patterns, drawn as shapes: an SVG <pattern> fill is printed as a blurry bitmap.
+  const fill = (id, paths) => { const el = document.getElementById(id);
+    el.insertAdjacentHTML('afterbegin', `<svg width="${el.clientWidth}" height="${el.clientHeight}" style="position:absolute;inset:0">${paths}</svg>`); };
+  // the arch field: the mark's arch (three bands of width b, b apart) in staggered rows, like courses of brick;
+  // each row's legs stop just above the arches of the row below
+  const archField = (id, color, op, R) => {
+    const el = document.getElementById(id), W = el.clientWidth, H = el.clientHeight, b = R / 6.5, s = 2 * R + 3 * b, rowH = 1.6 * R;
+    let p = '';
+    for (let row = 0; row * rowH < H + R; row++) for (let cx = row % 2 ? 0 : s / 2; cx < W + R; cx += s) {
+      const oy = row * rowH + R + 1.5 * b, G = oy + rowH - R - b;
+      for (const k of [0, 2, 4]) p += archBand(R - k * b, R - (k + 1) * b, { cx, oy, G }) + ' ';
+    }
+    fill(id, `<path d="${p}" fill="${color}" fill-opacity="${op}"/>`);
+  };
+  // the crenellation band: stepped merlons (5U wide, U apart) on a base of U, centred in the plate
+  const crenField = (id, color, U) => {
+    const el = document.getElementById(id), W = el.clientWidth, y = (el.clientHeight + 2 * U) / 2;
+    let p = `<rect x="0" y="${y - 0.3}" width="${W}" height="${U + 0.3}" fill="${color}"/>`;
+    for (let x = U / 2; x < W; x += 6 * U) p += merlon(x + 2.5 * U, y, 5 * U, color);
+    fill(id, p);
+  };
+  archField('pat1', '#ece2d0', .2, 34);
+  archField('pat2', '#17357d', 1, 30);
+  crenField('pat3', '#17357d', 5);
 })();
 
 </script>
