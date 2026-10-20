@@ -54,19 +54,27 @@ they picked Markazi Text over Amiri and Reem Kufi.
   request tracking) with the design principles. `node render.cjs website.html 11`.
 - `closing.html` → slide 13: «شكراً لكم», with a gold rule where the designer's name and contact go.
   `node render.cjs closing.html 13`.
-- `proposal.html` → `out/ministry-identity-proposal.pdf` (`node doc.cjs`): **the proposal document**, 18 pages of A4
-  landscape, printed from HTML so the text, the mark and the patterns are vector (patterns are drawn as shapes: an SVG
-  `<pattern>` fill prints as a blurry bitmap). Cover, contents, the idea, the mark's elements, construction (with
-  dimensions), versions, clear space and minimum size, misuse, colour (HEX, RGB, a first CMYK conversion to be
-  proofed), type, patterns, applications, the website, and a closing page. The user asked for it to look made by a
-  professional document designer, not AI (a fixed grid and margins, a running header and footer, numbered sections and
-  figures with captions, thin rules and spec lists, no rounded cards, glows or gradients), and for the copy to read as
-  written by a person: plain formal Arabic, varied sentences, no slogan-style "X: Y" lines.
-  Page numbers, the header and the contents are filled in by its script.
+- `proposal.html` → `out/ministry-identity-proposal.pdf` (`node doc.cjs`): **the proposal document**, 21 pages of A4
+  landscape, printed from HTML so the text, the mark and the patterns are vector. A full-blue cover with the gate
+  standing on the page edge, contents, then three parts, each opened by a dark divider page (big gold numeral, the
+  part's sections, a crenellated wall along the bottom): 1 the logo (idea, elements, construction, versions, clear
+  space, misuse), 2 the visual system (colour, type, patterns), 3 applications (stationery, ID and app, social, signage,
+  website, service flow), and a closing page. Applications are full-bleed photographs with the text below.
+  The user found the first version "cheap" (flat drawn mockups, small elements in hairline boxes) and asked for it to
+  look made by a professional document designer, not AI, with copy that reads as written by a person.
+  Page numbers, the header and the contents are filled in by its script. Patterns are drawn with `archField` and
+  `crenRow` from `marks.js` (shapes, not an SVG `<pattern>`, which prints as a blurry bitmap), the same geometry as
+  `archTile` and `crenelBand` on the mockups.
+- `print/`: the photographic mockups. `art.html` holds the flat print artwork at real sizes (letterhead A4, envelope DL,
+  business card front and back, employee ID, lanyard, the app's start screen, the building sign);
+  `node print/art.cjs` writes it to `print/tex/` (about 380 dpi). `print/studio.py` (Blender 4.2 as the `bpy` Python
+  module: `python3.11 -m venv v && v/bin/pip install bpy==4.2.0`) lays it on paper, card, a phone and a sign panel and
+  renders `print/renders/{stationery,devices,sign}.png` (2600×1365, Cycles; `--preview` for a quick look; each final
+  takes 3–6 minutes on 4 cores).
 - **The designer's name and contact** live in `who.json` (git-ignored). `node doc.cjs --final` and
   `node deck.cjs --final` write the copies with them to `out/final/` (git-ignored, sent to the user); the committed
   `out/` copies show placeholders.
-- `deck.cjs` → `out/ministry-identity-proposal.pptx` (rule 5): the 18 pages as full-bleed A4 slides (the fonts won't
+- `deck.cjs` → `out/ministry-identity-proposal.pptx` (rule 5): the 21 pages as full-bleed A4 slides (the fonts won't
   be on the judges' computers), with a presenter script in formal Arabic in every slide's notes. Needs pptxgenjs:
   `NODE_PATH=<dir>/node_modules node deck.cjs [--final]`, after `node doc.cjs [--final]`.
 - `node fig.cjs` renders the application and website mockups as figures (`out/fig/`, 2x, slide captions hidden).
