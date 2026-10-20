@@ -218,6 +218,59 @@ def textured_plane(mat, w, h, x, y, rot, z):
     return ob
 
 
+def phone(x, y, rot, length=14.9):
+    """the phone model (print/models/phone.glb, "Low Poly Mobile Phone", CC BY) lying face up, length cm long, with the
+    app's start screen on its face"""
+    bpy.ops.import_scene.gltf(filepath=os.path.join(HERE, "models", "phone.glb"))
+    parts = [o for o in bpy.context.selected_objects if o.type == "MESH"]
+    case = next(o for o in parts if o.name.startswith("Phone_Case"))
+    # the model sits tilted in its file: express every part in the case's own axes (x across, y along, z through)
+    to_case = case.matrix_world.inverted()
+    mats = {o: to_case @ o.matrix_world for o in parts}
+    for o in parts:
+        o.parent = None
+        o.matrix_world = mats[o]
+    front = next(o for o in parts if o.name.startswith("Camera_Front"))
+    flip = front.matrix_world.translation.z < 0                        # the front camera marks the face
+    bpy.ops.object.select_all(action="DESELECT")
+    for o in parts:
+        o.select_set(True)
+    bpy.context.view_layer.objects.active = case
+    bpy.ops.object.join()
+    ob = bpy.context.object
+    if flip:
+        ob.rotation_euler = (0, math.radians(180), 0)
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    me = ob.data
+    face_i = [k for k, m in enumerate(me.materials) if m and m.name.startswith("PhoneFace")][0]
+    faces = [p for p in me.polygons if p.material_index == face_i and p.normal.z > 0.9]
+    big = max(p.area for p in faces)
+    faces = [p for p in faces if p.area > big * 0.1]                  # the face itself, not the lens rims
+    k = length * CM / max(ob.dimensions)
+    ob.scale = (k, k, k * 0.62)                                        # the low-poly body is thick: slim it to about 7.7 mm
+    bpy.ops.object.transform_apply(scale=True)
+    vs = [v.co for v in me.vertices]
+    lo = Vector((min(v.x for v in vs), min(v.y for v in vs), min(v.z for v in vs)))
+    hi = Vector((max(v.x for v in vs), max(v.y for v in vs), max(v.z for v in vs)))
+    mid = (lo + hi) / 2
+    for v in me.vertices:
+        v.co -= Vector((mid.x, mid.y, lo.z))
+    # the screen sits on the face: its size from the face polygons
+    fv = [me.vertices[i].co for p in faces for i in p.vertices]
+    fw = max(v.x for v in fv) - min(v.x for v in fv)
+    fh = max(v.y for v in fv) - min(v.y for v in fv)
+    fz = max(v.z for v in fv)
+    for m in list(me.materials):
+        nm = m.name
+        me.materials[me.materials.find(nm)] = (plain("blackglass", "#060607", rough=0.25, coat=0.2) if nm.startswith("PhoneFace")
+                                               else plain("graphite", "#2b2d32", rough=0.4, metal=0.5))
+    scr = textured_plane(textured("screen", "screen", rough=0.2, coat=0.1, emit=0.45), fw / CM * 0.965, fh / CM * 0.975, 0, 0, 0, fz / CM + 0.004)
+    scr.parent = ob                                                    # the screen moves with the phone
+    ob.location = (x * CM, y * CM, 0)
+    ob.rotation_euler = (0, 0, math.radians(rot))
+    return ob, scr
+
+
 def devices(preview):
     """the employee ID on its lanyard, and a phone showing the app's start screen"""
     s = reset(*(960, 504) if preview else (2600, 1365), 24 if preview else 160)
@@ -232,14 +285,7 @@ def devices(preview):
     textured_plane(textured("lanyard", "lanyard", rough=0.85, bump=0.3), 2.0, 30.0, lx, ly, 7, 0.06)
     clip = rounded_slab(1.3, 1.9, 0.18, 0.25, cx, cy, 7, z=0.076, edge=0.05)
     clip.data.materials.append(plain("steel", "#b9bcc2", rough=0.25, metal=1.0))
-    # the phone: graphite body, then the glass with the screen just above it
-    body = rounded_slab(7.2, 14.9, 0.78, 1.0, 5.6, -0.6, -6, edge=0.18)
-    body.data.materials.append(plain("graphite", "#2a2c31", rough=0.35, metal=0.6))
-    front = rounded_slab(7.08, 14.78, 0.004, 0.95, 5.6, -0.6, -6, z=0.782, edge=0.0)   # black glass over the whole face
-    front.modifiers.remove(front.modifiers["b"])
-    front.data.materials.append(plain("blackglass", "#050506", rough=0.3, coat=0.15))
-    # the screen: a plane carrying the start screen, transparent outside its rounded corners
-    textured_plane(textured("screen", "screen", rough=0.2, coat=0.1, emit=0.45), 6.7, 14.5, 5.6, -0.6, -6, 0.79)
+    phone(5.6, -0.6, -6)
     lights()
     camera(40, 2600 / 1365)
     return s

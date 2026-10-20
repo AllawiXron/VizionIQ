@@ -89,3 +89,8 @@ not working codes. The services on the website are illustrations, not the minist
 The 1920×1080 slides (`out/slide-*.png`, `render.cjs`) are the earlier presentation, kept for reference.
 
 Still to do: a logo animation, and the ZIP.
+
+Phone model: "Low Poly Mobile Phone" (the user's download, Creative Commons Attribution), converted from ASCII FBX to
+`print/models/phone.glb` with assimp. Credited in figure 3-2's caption; add the author's name there and here when known.
+The user prefers flat designs for the social and website pages ("we don't overuse 3D", 20 Oct).
+The copy speaks in the first person singular: the user made and researched the identity alone (20 Oct).
