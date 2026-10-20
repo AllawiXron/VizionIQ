@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>مقترح الهوية البصرية</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<script src="marks.js"></script>
+<style>
+  /* The proposal as a printed document: A4 landscape, vector, a 12-column grid with 18 mm margins.
+     --head is the formal heading face, --text the reading face (one line each to try another pairing). */
+  :root {
+    --head: "Noto Naskh Arabic", serif; --text: "IBM Plex Sans Arabic", sans-serif; --latin: "IBM Plex Sans", sans-serif;
+    --blue: #17357d; --night: #0c1b40; --gold: #c99a2e; --clay: #ece2d0; --paper: #fdfcf9; --rule: #d9d4c8; --mute: #5b6478;
+  }
+  @page { size: 297mm 210mm; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #8a8a8a; font-family: var(--text); color: var(--night); font-size: 9.5pt; line-height: 1.75;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { body { background: none; } .page { margin: 0 !important; } }
+  .page { width: 297mm; height: 210mm; position: relative; overflow: hidden; background: var(--paper); margin: 0 auto 8mm; page-break-after: always; }
+
+  /* running header and footer */
+  .rh { position: absolute; top: 10mm; right: 18mm; left: 18mm; display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 7.5pt; color: var(--mute); padding-bottom: 2.2mm; border-bottom: .3mm solid var(--rule); }
+  .rh b { font-weight: 500; color: var(--night); }
+  .rf { position: absolute; bottom: 9mm; right: 18mm; left: 18mm; display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 7pt; color: var(--mute); }
+  .rf .pg { font: 500 8pt var(--text); color: var(--night); }
+
+  /* type */
+  .sec { font: 500 8pt var(--text); color: var(--blue); letter-spacing: .2pt; }
+  h1 { font: 700 30pt/1.35 var(--head); }
+  h2 { font: 700 21pt/1.4 var(--head); margin: 2mm 0 5mm; }
+  h3 { font: 700 11pt/1.5 var(--head); margin: 0 0 1.2mm; }
+  p { margin-bottom: 3mm; text-align: justify; }
+  .lead { font-size: 11pt; line-height: 1.8; }
+  .cap { font-size: 7pt; color: var(--mute); margin-top: 2.5mm; }
+  .cap b { font-weight: 500; color: var(--night); }
+  ol.spec { list-style: none; counter-reset: s; border-top: .3mm solid var(--rule); }
+  ol.spec li { counter-increment: s; display: grid; grid-template-columns: 9mm 1fr; padding: 2.6mm 0; border-bottom: .3mm solid var(--rule); }
+  ol.spec li::before { content: counter(s, arabic-indic) "."; font: 500 9pt var(--text); color: var(--blue); }
+  .latin { font-family: var(--latin); direction: ltr; unicode-bidi: isolate; }
+
+  /* cover */
+  .cover .panel { position: absolute; top: 0; bottom: 0; left: 0; width: 112mm; background: var(--blue); }
+  .cover .panel svg.mark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%); }
+  .cover .panel .pl { position: absolute; bottom: 12mm; left: 12mm; right: 12mm; display: flex; justify-content: space-between;
+    font-size: 7pt; color: rgba(236,226,208,.7); border-top: .3mm solid rgba(236,226,208,.25); padding-top: 2.5mm; }
+  .cover .body { position: absolute; top: 18mm; bottom: 14mm; right: 20mm; width: 145mm; display: flex; flex-direction: column; }
+  .cover .issuer { font: 700 11pt/1.6 var(--head); }
+  .cover .issuer span { display: block; font: 400 8pt var(--text); color: var(--mute); }
+  .cover .tt { margin-top: auto; }
+  .cover .tt .sec { margin-bottom: 4mm; display: block; }
+  .cover .tt .sub { font: 400 14pt/1.6 var(--head); color: var(--blue); margin-top: 3mm; }
+  .cover .tt .rule { width: 24mm; height: .6mm; background: var(--gold); margin: 9mm 0 6mm; }
+  .cover .tt p { width: 118mm; color: var(--mute); }
+  .cover .meta { margin-top: auto; display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 12mm;
+    border-top: .3mm solid var(--rule); padding-top: 3.5mm; font-size: 7.5pt; }
+  .cover .meta span { display: block; color: var(--mute); font-size: 6.8pt; }
+
+  /* construction */
+  .cons .txt { position: absolute; top: 24mm; right: 18mm; width: 92mm; }
+  .cons .fig { position: absolute; top: 24mm; left: 18mm; width: 157mm; bottom: 20mm; }
+  .cons .fig .plate { height: 150mm; background: #f3efe6; border: .3mm solid var(--rule); display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+
+<!-- cover -->
+<section class="page cover">
+  <div class="panel">
+    <script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e' }, 290, 'class="mark"'))</script>
+    <div class="pl"><span>بوابة عشتار</span><span class="latin">The Ishtar Gate</span></div>
+  </div>
+  <div class="body">
+    <div class="issuer">جمهورية العراق<span>وزارة الاقتصاد الرقمي والحوكمة</span></div>
+    <div class="tt">
+      <span class="sec">مقترح مقدَّم إلى مسابقة شعار الوزارة وهويتها البصرية</span>
+      <h1>الهوية البصرية لوزارة<br>الاقتصاد الرقمي والحوكمة</h1>
+      <div class="sub">بوابة عشتار.. بوابة العراق الرقمية</div>
+      <div class="rule"></div>
+      <p>يعرض هذا المستند فكرة الشعار وأسس بنائه، ونظام الألوان والخطوط والأنماط المشتقة منه، ونماذج من تطبيقه على المطبوعات الرسمية والمنصات الرقمية.</p>
+    </div>
+    <div class="meta">
+      <div><span>الإصدار</span>١٫٠</div>
+      <div><span>التاريخ</span>تشرين الأول ٢٠٢٦</div>
+      <div><span>عدد الصفحات</span>١٦</div>
+    </div>
+  </div>
+</section>
+
+<!-- construction -->
+<section class="page cons">
+  <div class="rh"><span><b>الهوية البصرية</b> · وزارة الاقتصاد الرقمي والحوكمة</span><span>٢ · الشعار</span></div>
+  <div class="txt">
+    <span class="sec">٢٫٢ بناء الشعار</span>
+    <h2>شبكة واحدة تحكم كل الأجزاء</h2>
+    <p class="lead">بُني الشعار على وحدة قياس واحدة (و). كل حافة تقع على خط من خطوط الشبكة، فيبقى الشكل متوازناً ومتماسكاً في كل الأحجام، من ختم صغير إلى واجهة مبنى.</p>
+    <ol class="spec">
+      <li><span><h3>الأبراج والجدار</h3>عرض البرج ١١ وحدة، والجدار بينهما ٢٣ وحدة، والبرجان أعلى من الجدار ليُقرأ الشكل بوابةً من النظرة الأولى.</span></li>
+      <li><span><h3>الشُّرَف</h3>كل شرفة ثلاث درجات متساوية، بعرض ٥ وحدات وارتفاع ٣، وبالحجم نفسه على الأبراج والجدار.</span></li>
+      <li><span><h3>المدخل والقوسان</h3>من مركز واحد، وكل الأشرطة الزرقاء والذهبية بعرض واحد: وحدة ونصف.</span></li>
+      <li><span><h3>الفواصل</h3>نصف وحدة بين البرجين والجدار، تمنح البوابة عمقاً وتبقى واضحة في الطباعة بلون واحد.</span></li>
+    </ol>
+  </div>
+  <div class="fig">
+    <div class="plate"><svg id="con" viewBox="-6 -14 312 330" width="520" height="550"></svg></div>
+    <div class="cap"><b>الشكل ٢-٢</b> · الشعار على شبكة البناء. الأرقام بعدد الوحدات (و).</div>
+  </div>
+  <div class="rf"><span>مقترح مقدَّم إلى مسابقة شعار الوزارة وهويتها البصرية · تشرين الأول ٢٠٢٦</span><span class="pg">٠٥</span></div>
+  <script>
+    (() => {
+      const g = GATE, ln = (x1, y1, x2, y2, c = '#0c1b40', o = .5, w = .5, d = '') =>
+        `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-opacity="${o}" stroke-width="${w}" ${d && `stroke-dasharray="${d}"`}/>`;
+      const ar = (n) => String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[d]).replace('.', '٫');
+      const lbl = (x, y, t) => `<text x="${x}" y="${y}" font-family="IBM Plex Sans Arabic" font-size="8" font-weight="500" fill="#17357d" text-anchor="middle">${t}</text>`;
+      // a dimension line with end ticks and its value, above (dy < 0) or below the drawing
+      const dim = (x1, x2, y, t) => ln(x1, y, x2, y, '#17357d', .9) + ln(x1, y - 3, x1, y + 3, '#17357d', .9) + ln(x2, y - 3, x2, y + 3, '#17357d', .9)
+        + `<rect x="${(x1 + x2) / 2 - 12}" y="${y - 6}" width="24" height="11" fill="#f3efe6"/>` + lbl((x1 + x2) / 2, y + 3, t);
+      let s = '';
+      for (let x = 0; x <= 300; x += g.U) s += ln(x, 6, x, 300, '#0c1b40', .09, .35);
+      for (let y = 6; y <= 300; y += g.U) s += ln(0, y, 300, y, '#0c1b40', .09, .35);
+      s += gate({ ink: '#17357d', accent: '#c99a2e' });
+      for (const x of [...g.towers.flat(), ...g.wall]) s += ln(x, 6, x, 300, '#0c1b40', .35, .4, '2 2');
+      s += ln(0, g.oy, 300, g.oy, '#c99a2e', 1, .6, '3 2');
+      for (const r of [g.r0, ...g.rings]) s += `<circle cx="${g.cx}" cy="${g.oy}" r="${r}" fill="none" stroke="#0c1b40" stroke-opacity=".35" stroke-width=".4" stroke-dasharray="2 2"/>`;
+      s += `<circle cx="${g.cx}" cy="${g.oy}" r="2.4" fill="#c99a2e"/>`;
+      s += dim(g.towers[0][0], g.towers[0][1], -4, ar(11)) + dim(g.wall[0], g.wall[1], -4, ar(23)) + dim(g.towers[1][0], g.towers[1][1], -4, ar(11));
+      s += dim(g.cx - g.r0, g.cx + g.r0, 296, ar(8));
+      document.getElementById('con').innerHTML = s;
+    })();
+  </script>
+</section>
+
+</body>
+</html>
