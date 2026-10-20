@@ -11,6 +11,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   `marketing/allawi-psd-brief.md`. Iraqi dialect, short; gender-neutral wording when you don't know who is writing.
 - For a new reel or design: show the idea or 2–3 still frames first, build after the user approves, then one draft render.
   For a small change, make one pass and one render; don't re-check everything.
+- The user asked to save usage while keeping the work at its best (20 Oct): read only the code that draws the piece,
+  look at one big render to find issues, fix in one pass, then check the result on one contact sheet of slides, not each.
 - When the user states a new like or dislike, add it to this file in a line or two so later sessions know it.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
