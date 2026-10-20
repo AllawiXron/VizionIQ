@@ -12,6 +12,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - For a new reel or design: show the idea or 2–3 still frames first, build after the user approves, then one draft render.
   For a small change, make one pass and one render; don't re-check everything.
 - When the user states a new like or dislike, add it to this file in a line or two so later sessions know it.
+- Before making props or images, ask whether to use AI image elements (the user generates them) or 3D (Blender);
+  3D renders cost a lot of usage (20 Oct).
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
   phone numbers.
