@@ -13,3 +13,11 @@ orange marker. Above it is the strip «جمعتكم مباركة»; below it, «
 - `NODE_PATH=/opt/node-tools/node_modules node render.cjs` renders `out/`. It serves `marketing/` over a local http
   server because the page uses `../` paths.
 - Check: `node ../tools/textcheck.cjs post.html '.art'` reports no collisions.
+
+## Second version: the poster (`out/happy-friday-poster.jpg`)
+
+Typography only, the user's pick of the two directions offered after the remake: a deep orange field under heavy paper
+texture, «الجمعة» in cream at 520 px, cropped by both edges of the frame, slightly worn ink (`#printF`), one torn strip
+«جمعتكم مباركة» taped across it, and the «allawi.psd» stamp in brown ink at the bottom left. Source `poster.html`;
+render with `node render.cjs poster.html happy-friday-poster`. textcheck reports the strip over the big word: that
+overlap is the design.

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>allawi.psd — الجمعة (poster)</title>
+<style>
+@font-face { font-family:'DG Sahabah'; src:url(../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight:400 }
+:root { --ink:#1f1510; --orange:#e2541b; --orange2:#f07a2e; --cream:#fbf3e6; --oink:#c2441a; --tex:url(../ig-highlights/assets/img/paper.jpg) }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#222; padding:40px; width:1160px }
+.art { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl;
+  background:radial-gradient(110% 80% at 45% 40%, var(--orange2), var(--orange) 55%, #c24410);
+  font-family:'DG Sahabah', 'Alexandria'; font-weight:400; font-synthesis:none }
+/* heavy paper texture over the whole field, the big word included */
+.paper { position:absolute; inset:0; background:var(--tex) center/cover; mix-blend-mode:multiply; opacity:.6; z-index:6 }
+.paper2 { position:absolute; inset:0; background:var(--tex) center/520px; mix-blend-mode:soft-light; opacity:.5; z-index:6 }
+.grain { position:absolute; inset:0; background:url(../ig-highlights/assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.07; z-index:30 }
+.vig { position:absolute; inset:0; background:radial-gradient(100% 80% at 50% 48%, rgba(0,0,0,0) 52%, rgba(40,10,0,.42) 100%); z-index:31 }
+.tx { position:absolute; inset:0; background:var(--tex) center/700px; mix-blend-mode:multiply; opacity:.4; pointer-events:none }
+
+/* the big word, printed: worn ink, cropped by the frame */
+.big { position:absolute; left:-400px; right:-400px; top:235px; text-align:center; font-size:520px; line-height:1.3; color:var(--cream);
+  white-space:nowrap; transform:rotate(-4deg); filter:url(#printF); z-index:4 }
+.big.sh { color:rgba(90,25,0,.35); transform:translate(10px,14px) rotate(-4deg); filter:blur(6px); z-index:3 }
+
+.stripW { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:12 }
+.sw { position:relative; display:inline-block; filter:drop-shadow(0 16px 16px rgba(60,15,0,.5)) drop-shadow(0 2px 3px rgba(0,0,0,.35)) }
+.sw .fib { position:absolute; inset:-6px -4px; background:#fffdf7 }
+.sw .cr { position:absolute; inset:0; background:var(--cream); overflow:hidden }
+.sw span { position:relative; display:block; padding:14px 60px 30px; font-size:92px; line-height:1.3; color:var(--ink); white-space:nowrap }
+.sw b { font-weight:400; color:var(--oink) }
+.tape { position:absolute; height:56px; z-index:14; background:linear-gradient(180deg, rgba(243,234,210,.82), rgba(226,213,182,.78)); box-shadow:0 1px 3px rgba(0,0,0,.2);
+  clip-path:polygon(0 4%, 3% 22%, 1% 41%, 4% 60%, 1% 79%, 3% 100%, 97% 100%, 99% 82%, 96% 63%, 100% 44%, 97% 25%, 99% 0) }
+.tape::after { content:''; position:absolute; inset:0; background:var(--tex) center/400px; mix-blend-mode:multiply; opacity:.35 }
+
+.stamp { position:absolute; padding:2px 26px 10px; border:6px double var(--ink); border-radius:14px; color:var(--ink); font-size:50px; line-height:1.3;
+  direction:ltr; white-space:nowrap; opacity:.72; mix-blend-mode:multiply; filter:url(#stampF); z-index:8 }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="stampF" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="5" result="n" />
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.75" result="m" />
+    <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
+    <feDisplacementMap in="s" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <!-- big print: ink a little thin in places, edge slightly rough -->
+  <filter id="printF" x="-2%" y="-5%" width="104%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="3" seed="4" result="n" />
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -.35 1.15" result="m" />
+    <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" seed="2" result="f" />
+    <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
+    <feDisplacementMap in="s" in2="f" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<div class="art" id="post">
+  <div class="big sh">الجمعة</div>
+  <div class="big">الجمعة</div>
+  <div class="paper"></div><div class="paper2"></div>
+  <div id="s1"></div>
+  <div class="stamp" style="left:70px; top:1150px; transform:rotate(-9deg)">allawi.psd</div>
+  <div class="grain"></div><div class="vig"></div>
+</div>
+
+<script>
+let seed = 23; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+const torn = (amp) => { const p = [], n = 40;
+  for (let k = 0; k <= n; k++) p.push(`${(k / n * 100).toFixed(1)}% ${(rnd() * amp).toFixed(1)}%`);
+  for (let k = 1; k < 6; k++) p.push(`${(100 - rnd() * 1.4).toFixed(1)}% ${(k / 6 * 100).toFixed(1)}%`);
+  for (let k = n; k >= 0; k--) p.push(`${(k / n * 100).toFixed(1)}% ${(100 - rnd() * amp).toFixed(1)}%`);
+  for (let k = 5; k > 0; k--) p.push(`${(rnd() * 1.4).toFixed(1)}% ${(k / 6 * 100).toFixed(1)}%`);
+  return `polygon(${p.join(', ')})`; };
+const strip = (top, rot, html) => `<div class="stripW" style="top:${top}px; transform:rotate(${rot}deg)"><div class="sw"><i class="fib" style="clip-path:${torn(9)}"></i><i class="cr" style="clip-path:${torn(8)}"><i class="tx"></i></i><span>${html}</span></div></div>`;
+const tape = (x, y, w, rot) => `<div class="tape" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${rot}deg)"></div>`;
+document.getElementById('s1').outerHTML = strip(790, 5, 'جمعتكم <b>مباركة</b>') + tape(150, 760, 120, -38) + tape(812, 858, 120, -34);
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
