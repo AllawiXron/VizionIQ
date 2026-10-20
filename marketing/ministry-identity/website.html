@@ -86,10 +86,10 @@ const I = {
 const SERVICES = [
   ['id', 'الهوية الرقمية', 'دخول واحد لكل الخدمات الحكومية.'],
   ['pay', 'الدفع الإلكتروني', 'ادفع الرسوم والفواتير من مكانك.'],
-  ['biz', 'تسجيل الشركات', 'أسّس شركتك أونلاين خطوة بخطوة.'],
+  ['biz', 'تسجيل الشركات', 'أسس شركتك أونلاين خطوة بخطوة.'],
   ['data', 'البيانات المفتوحة', 'بيانات حكومية منشورة للجميع.'],
-  ['talk', 'الشكاوى والمقترحات', 'صوتك يصل، ونردّ عليك بوضوح.'],
-  ['track', 'تتبّع المعاملات', 'اعرف أين وصلت معاملتك الآن.'],
+  ['talk', 'الشكاوى والمقترحات', 'صوتك يصل، ونرد عليك بوضوح.'],
+  ['track', 'تتبع المعاملات', 'اعرف أين وصلت معاملتك الآن.'],
 ];
 const nav = () => `<div class="nav"><div style="display:flex;align-items:center;gap:14px;white-space:nowrap">${markSVG('gate', ON_WHITE, 46)}<div><div style="font:400 11px 'Markazi Text';opacity:.7">جمهورية العراق</div><div style="font:600 17px 'Markazi Text'">وزارة الاقتصاد الرقمي والحوكمة</div></div></div>
   <div class="links"><span>الرئيسية</span><span>الخدمات</span><span>البيانات المفتوحة</span><span>الأخبار</span><span>عن الوزارة</span><span>تواصل معنا</span></div>
@@ -109,12 +109,12 @@ const nav = () => `<div class="nav"><div style="display:flex;align-items:center;
         <div style="position:relative">
           <h1>بوابتك إلى<br><b>الخدمات الحكومية الرقمية</b></h1>
           <p>كل معاملاتك الحكومية في مكان واحد: أسرع، وأوضح، ومن أي مكان.</p>
-          <div class="search"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#778" stroke-width="2.2"><circle cx="9.5" cy="9.5" r="7"/><path d="M15 15l5 5"/></svg>ابحث عن خدمة.. مثلاً: تسجيل شركة<span class="btn go">ابحث</span></div>
-          <div class="chips"><span>الهوية الرقمية</span><span>الدفع الإلكتروني</span><span>تتبّع معاملة</span></div>
+          <div class="search"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#778" stroke-width="2.2"><circle cx="9.5" cy="9.5" r="7"/><path d="M15 15l5 5"/></svg>ابحث عن خدمة.. مثلا: تسجيل شركة<span class="btn go">ابحث</span></div>
+          <div class="chips"><span>الهوية الرقمية</span><span>الدفع الإلكتروني</span><span>تتبع معاملة</span></div>
         </div>
       </div>
       <div style="background:var(--white)"><script>document.write(band(1440, 18, C.night, 18))</script></div>
-      <div class="sec"><h2>الخدمات الأكثر طلباً <small>كل الخدمات ←</small></h2>
+      <div class="sec"><h2>الخدمات الأكثر طلبا <small>كل الخدمات ←</small></h2>
         <div class="cards"><script>document.write(SERVICES.map(([i, t, d]) => `<div class="card"><div class="ic">${I[i]}</div><div><b>${t}</b><span>${d}</span></div></div>`).join(''))</script></div>
       </div>
     </div>
@@ -124,7 +124,7 @@ const nav = () => `<div class="nav"><div style="display:flex;align-items:center;
     <div class="scr"><div class="island"></div>
       <div class="m-top"><script>document.write(arches(364, 260, C.clay, .05, 80))</script>
         <div style="position:relative;display:flex;align-items:center;gap:10px;margin-bottom:22px"><script>document.write(markSVG('gate', ON_DARK, 34))</script><span style="font:600 14px 'Markazi Text'">وزارة الاقتصاد الرقمي والحوكمة</span></div>
-        <h3 style="position:relative">أهلاً بك،<br><b>ماذا تحتاج اليوم؟</b></h3>
+        <h3 style="position:relative">أهلا بك،<br><b>ماذا تحتاج اليوم؟</b></h3>
         <div class="m-search" style="position:relative">ابحث عن خدمة..</div>
       </div>
       <div class="m-body"><h4>الخدمات</h4>
@@ -146,14 +146,14 @@ const nav = () => `<div class="nav"><div style="display:flex;align-items:center;
       <div class="m-top" style="padding-bottom:30px"><script>document.write(arches(364, 240, C.clay, .05, 80))</script>
         <div style="position:relative;font-size:14px;opacity:.75;margin-bottom:10px">الخدمات ← الشركات</div>
         <h3 style="position:relative">تسجيل شركة جديدة</h3>
-        <div style="position:relative;font-size:14px;opacity:.8;margin-top:8px">المدة المتوقعة: تُحدَّد حسب نوع الشركة</div>
+        <div style="position:relative;font-size:14px;opacity:.8;margin-top:8px">المدة المتوقعة: تحدد حسب نوع الشركة</div>
       </div>
       <div class="m-body"><h4>تحتاج:</h4>
         <div style="font-size:15px;line-height:2.1">✓ الهوية الرقمية<br>✓ اسم الشركة ونشاطها<br>✓ عقد التأسيس (نموذج جاهز)</div>
         <h4 style="margin-top:18px">الخطوات</h4>
         <div class="step"><div class="dot" style="background:var(--blue);color:#fff">١</div><div><b>املأ الطلب</b><span>بيانات الشركة والشركاء</span></div></div>
         <div class="step"><div class="dot" style="background:var(--blue);color:#fff">٢</div><div><b>ارفع المستمسكات</b><span>صور واضحة من الهاتف</span></div></div>
-        <div class="step"><div class="dot" style="background:var(--blue);color:#fff">٣</div><div><b>ادفع الرسوم إلكترونياً</b><span>وتصلك شهادة التسجيل</span></div></div>
+        <div class="step"><div class="dot" style="background:var(--blue);color:#fff">٣</div><div><b>ادفع الرسوم إلكترونيا</b><span>وتصلك شهادة التسجيل</span></div></div>
         <div class="btn" style="background:var(--gold);color:var(--night);text-align:center;margin-top:8px;padding:14px">ابدأ الطلب</div>
       </div>
     </div>
@@ -169,9 +169,9 @@ const nav = () => `<div class="nav"><div style="display:flex;align-items:center;
         <div style="position:relative;height:8px;border-radius:4px;background:rgba(255,255,255,.15);margin-top:14px"><div style="width:62%;height:100%;border-radius:4px;background:var(--gold)"></div></div>
       </div>
       <div style="padding:0 20px">
-        <div class="step"><div class="dot" style="background:#2e8b57;color:#fff">✓</div><div><b>استُلم الطلب</b><span>اكتمل</span></div></div>
-        <div class="step"><div class="dot" style="background:#2e8b57;color:#fff">✓</div><div><b>دُفعت الرسوم</b><span>اكتمل</span></div></div>
-        <div class="step"><div class="dot" style="background:var(--gold);color:var(--night)">٣</div><div><b>مراجعة المستمسكات</b><span>جارٍ الآن</span></div></div>
+        <div class="step"><div class="dot" style="background:#2e8b57;color:#fff">✓</div><div><b>استلم الطلب</b><span>اكتمل</span></div></div>
+        <div class="step"><div class="dot" style="background:#2e8b57;color:#fff">✓</div><div><b>دفعت الرسوم</b><span>اكتمل</span></div></div>
+        <div class="step"><div class="dot" style="background:var(--gold);color:var(--night)">٣</div><div><b>مراجعة المستمسكات</b><span>جار الآن</span></div></div>
         <div class="step"><div class="dot" style="background:#e3e6ec;color:#889">٤</div><div><b>إصدار الشهادة</b><span>الخطوة التالية</span></div></div>
       </div>
       <div class="tabbar"><div><i></i>الرئيسية</div><div class="on"><i></i>معاملاتي</div><div><i></i>الإشعارات</div><div><i></i>حسابي</div></div>
@@ -180,10 +180,10 @@ const nav = () => `<div class="nav"><div style="display:flex;align-items:center;
   <!-- design notes -->
   <div class="abs" style="top:300px;left:110px;width:700px;font-size:25px;line-height:1.85">
     <div style="font:600 30px 'Markazi Text';margin-bottom:16px">مبادئ تصميم الموقع</div>
-    <div style="margin-bottom:14px"><b class="rd" style="color:var(--blue)">البحث أولاً:</b> المواطن يكتب ما يحتاجه، ولا يضيع بين الأقسام.</div>
-    <div style="margin-bottom:14px"><b class="rd" style="color:var(--blue)">كل خدمة بنفس الشكل:</b> ماذا تحتاج، والخطوات، ثم زرّ البدء.</div>
+    <div style="margin-bottom:14px"><b class="rd" style="color:var(--blue)">البحث أولا:</b> المواطن يكتب ما يحتاجه، ولا يضيع بين الأقسام.</div>
+    <div style="margin-bottom:14px"><b class="rd" style="color:var(--blue)">كل خدمة بنفس الشكل:</b> ماذا تحتاج، والخطوات، ثم زر البدء.</div>
     <div style="margin-bottom:14px"><b class="rd" style="color:var(--blue)">الشفافية:</b> حالة كل معاملة ظاهرة، خطوة بخطوة.</div>
-    <div style="margin-bottom:14px"><b class="rd" style="color:var(--blue)">الهاتف أولاً:</b> يُصمَّم للهاتف ثم الحاسوب، بخطوط واضحة وألوان عالية التباين.</div>
+    <div style="margin-bottom:14px"><b class="rd" style="color:var(--blue)">الهاتف أولا:</b> يصمم للهاتف ثم الحاسوب، بخطوط واضحة وألوان عالية التباين.</div>
     <div style="font-size:19px;opacity:.6;margin-top:26px">الخدمات والنصوص في الصفحات للتوضيح فقط.</div>
   </div>
 </section>
