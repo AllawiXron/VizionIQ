@@ -11,20 +11,20 @@
   .slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; background: var(--white); margin-bottom: 40px; }
   .bgpat { position: absolute; inset: 0; }
   .tag { position: absolute; top: 64px; right: 96px; font-size: 22px; letter-spacing: .5px; opacity: .7; }
-  .num { position: absolute; top: 64px; left: 96px; font: 500 22px "Readex Pro"; opacity: .5; direction: ltr; }
-  .title { position: absolute; top: 120px; right: 96px; font: 600 64px/1.2 "Readex Pro"; }
+  .num { position: absolute; top: 64px; left: 96px; font: 500 22px "Markazi Text"; opacity: .5; direction: ltr; }
+  .title { position: absolute; top: 120px; right: 96px; font: 600 64px/1.2 "Markazi Text"; }
   .dark { background: var(--night); color: var(--white); }
 
   /* lockups */
   .lock { display: flex; align-items: center; gap: 44px; white-space: nowrap; }
   .lock .rule { width: 2px; align-self: stretch; background: currentColor; opacity: .25; }
-  .lock .t1 { font: 400 26px "Readex Pro"; letter-spacing: .3px; opacity: .8; }
-  .lock .t2 { font: 600 58px/1.25 "Readex Pro"; margin: 4px 0 14px; }
-  .lock .t3 { font: 400 19px "Readex Pro"; direction: ltr; text-align: right; letter-spacing: .5px; opacity: .75; }
+  .lock .t1 { font: 400 26px "Markazi Text"; letter-spacing: .3px; opacity: .8; }
+  .lock .t2 { font: 600 58px/1.25 "Markazi Text"; margin: 4px 0 14px; }
+  .lock .t3 { font: 400 19px "Markazi Text"; direction: ltr; text-align: right; letter-spacing: .5px; opacity: .75; }
   .stack { display: flex; flex-direction: column; align-items: center; text-align: center; white-space: nowrap; }
-  .stack .t1 { font: 400 24px "Readex Pro"; opacity: .8; margin-top: 34px; }
-  .stack .t2 { font: 600 40px/1.3 "Readex Pro"; margin: 6px 0 16px; }
-  .stack .t3 { font: 400 15px "Readex Pro"; direction: ltr; letter-spacing: .6px; opacity: .75; }
+  .stack .t1 { font: 400 24px "Markazi Text"; opacity: .8; margin-top: 34px; }
+  .stack .t2 { font: 600 40px/1.3 "Markazi Text"; margin: 6px 0 16px; }
+  .stack .t3 { font: 400 15px "Markazi Text"; direction: ltr; letter-spacing: .6px; opacity: .75; }
 
   /* 1 cover */
   #s1 .stack { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%); }
@@ -36,7 +36,7 @@
   #s2 .pts { position: absolute; top: 280px; right: 96px; width: 980px; }
   #s2 .pt { margin-bottom: 40px; padding-right: 34px; position: relative; }
   #s2 .pt::before { content: ""; position: absolute; right: 0; top: 16px; width: 14px; height: 14px; background: var(--gold); }
-  #s2 .pt h3 { font: 600 38px "Readex Pro"; } #s2 .pt p { font-size: 25px; line-height: 1.7; opacity: .8; margin-top: 6px; }
+  #s2 .pt h3 { font: 600 38px "Markazi Text"; } #s2 .pt p { font-size: 25px; line-height: 1.7; opacity: .8; margin-top: 6px; }
   #s2 .note { position: absolute; bottom: 74px; right: 96px; left: 96px; font-size: 27px; line-height: 1.8; padding-top: 28px; border-top: 2px solid rgba(12,27,64,.12); }
   #s2 .note b { font-weight: 500; color: var(--blue); }
 
@@ -56,13 +56,13 @@
   /* 5 colour + type */
   #s5 .sw { position: absolute; top: 250px; right: 96px; width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   #s5 .chip { height: 300px; border-radius: 18px; padding: 30px; display: flex; flex-direction: column; justify-content: flex-end; }
-  #s5 .chip b { font: 600 32px "Readex Pro"; } #s5 .chip span { font-size: 21px; opacity: .85; margin-top: 6px; line-height: 1.5; }
-  #s5 .chip code { font: 500 20px "Readex Pro"; direction: ltr; text-align: right; opacity: .8; margin-top: 10px; }
+  #s5 .chip b { font: 600 32px "Markazi Text"; } #s5 .chip span { font-size: 21px; opacity: .85; margin-top: 6px; line-height: 1.5; }
+  #s5 .chip code { font: 500 20px "Markazi Text"; direction: ltr; text-align: right; opacity: .8; margin-top: 10px; }
   #s5 .type { position: absolute; top: 250px; left: 96px; width: 780px; }
   #s5 .type .f { padding: 30px 0; border-bottom: 2px solid rgba(12,27,64,.1); }
   #s5 .type .f small { font-size: 20px; opacity: .6; display: block; margin-bottom: 8px; }
-  #s5 .type .big { font: 600 92px/1.2 "Readex Pro"; color: var(--blue); }
-  #s5 .type .lat { font: 400 30px "Readex Pro"; direction: ltr; text-align: right; opacity: .8; }
+  #s5 .type .big { font: 600 92px/1.2 "Markazi Text"; color: var(--blue); }
+  #s5 .type .lat { font: 400 30px "Markazi Text"; direction: ltr; text-align: right; opacity: .8; }
   #s5 .type .body { font: 400 27px/1.8 "IBM Plex Sans Arabic"; }
 
   /* 6 pattern */
@@ -89,7 +89,7 @@ const pat = (def, id, op = 1) => `<svg class="bgpat" width="1920" height="1080">
 <section class="slide dark" id="s1">
   <script>document.write(pat(archTile(C.clay, 1, 150), 'arch-ece2d0', .05))</script>
   <script>document.write(stack(ON_DARK, 330))</script>
-  <div class="foot"><span>مقترح الهوية البصرية</span><span style="direction:ltr;font-family:'Readex Pro'">2026</span></div>
+  <div class="foot"><span>مقترح الهوية البصرية</span><span style="direction:ltr;font-family:'Markazi Text'">2026</span></div>
 </section>
 
 <!-- 2: the idea -->

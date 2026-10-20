@@ -33,7 +33,9 @@ blue) from one centre. The doorway, seams and (in one colour) the gold bands are
 and each colour is one compound path in the SVGs.
 
 **Colours:** أزرق بابل `#17357D`, حبر الليل `#0C1B40`, ذهب عشتار `#C99A2E` (accent, used sparingly), الطين `#ECE2D0`.
-**Type:** Readex Pro for headings, IBM Plex Sans Arabic for text (both SIL OFL; files in `fonts/`).
+**Type:** Markazi Text for headings and the ministry's name, IBM Plex Sans Arabic for text, IBM Plex Sans for Latin (all
+SIL OFL; files in `fonts/`). The user found Readex Pro unprofessional and Noto Naskh Arabic "a default font" (20 Oct);
+they picked Markazi Text over Amiri and Reem Kufi.
 
 - `marks.js`: the gate (`gate`, proportions in `GATE`), `markSVG`, and the patterns from it: `crenelBand` (a row of
   stepped merlons, for borders) and `archTile` (nested arches, for large fields). The tablet and the cuneiform grid
@@ -52,7 +54,15 @@ and each colour is one compound path in the SVGs.
   request tracking) with the design principles. `node render.cjs website.html 11`.
 - `closing.html` → slide 13: «شكراً لكم», with a gold rule where the designer's name and contact go.
   `node render.cjs closing.html 13`.
-- `out/ministry-identity-proposal.pdf`: slides 1–13 in one file (made from the PNGs with Pillow).
+- `proposal.html` → `out/ministry-identity-proposal.pdf` (`node doc.cjs`): **the proposal document**, 18 pages of A4
+  landscape, printed from HTML so the text and the mark are vector. Cover, contents, the idea, the mark's elements,
+  construction (with dimensions), versions, clear space and minimum size, misuse, colour (HEX, RGB, a first CMYK
+  conversion to be proofed), type, patterns, applications, the website, and a closing page. The user asked for it to
+  look made by a professional document designer, not AI: a fixed grid and margins, a running header and footer,
+  numbered sections and figures with captions, thin rules and spec lists, no rounded cards, glows or gradients.
+  Page numbers, the header and the contents are filled in by its script. The closing page's designer name and contact
+  are placeholders: set `window.WHO = { name, contact }` before the last script (don't commit a phone number).
+  `node fig.cjs` renders the application and website mockups as figures (`out/fig/`, 2x, slide captions hidden).
 - `deck.cjs` → `out/ministry-identity-proposal.pptx` (rule 5): the 13 slides as full-bleed images (the identity's
   fonts won't be on the judges' computers, so live text would break), a presenter script in formal Arabic in every
   slide's notes, and one editable Arial text box on slide 13 for the designer's name and contact (rule 6). Needs
@@ -65,4 +75,5 @@ not working codes. The services on the website are illustrations, not the minist
   formal Arabic. It is the source: `python3 concept.py` lays it out as `concept.html` and `node concept-pdf.cjs`
   prints `out/concept-ar.pdf` (one A4 page in the identity's style).
 
-Still to do: a logo animation, and the ZIP.
+Still to do: rebuild the PowerPoint from the new document (it still uses the old 1920×1080 slides), a logo
+animation, and the ZIP.

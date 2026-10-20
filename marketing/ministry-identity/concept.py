@@ -36,10 +36,10 @@ page = f'''<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
   body {{ font-family: "IBM Plex Sans Arabic", sans-serif; color: #0c1b40; font-size: 9.6pt; line-height: 1.66; }}
   .band {{ height: 14px; }}
   header {{ background: #0c1b40; color: #fbf8f2; padding: 20px 44px 18px; display: flex; align-items: center; gap: 26px; }}
-  header .t {{ font: 600 23pt/1.3 "Readex Pro"; }} header .s {{ font-size: 11pt; opacity: .85; margin-top: 2px; }}
+  header .t {{ font: 700 24pt/1.25 "Markazi Text"; }} header .s {{ font-size: 11pt; opacity: .85; margin-top: 2px; }}
   header .o {{ font-size: 9pt; opacity: .65; margin-top: 6px; }}
   main {{ padding: 12px 44px 0; }}
-  h2 {{ font: 600 12pt "Readex Pro"; color: #17357d; margin: 11px 0 4px; padding-right: 14px; position: relative; break-after: avoid; }}
+  h2 {{ font: 700 13pt "Markazi Text"; color: #17357d; margin: 11px 0 4px; padding-right: 14px; position: relative; break-after: avoid; }}
   h2::before {{ content: ""; position: absolute; right: 0; top: 9px; width: 8px; height: 8px; background: #c99a2e; }}
   p {{ margin-bottom: 6px; text-align: justify; }}
   ul, ol {{ padding-right: 22px; margin-bottom: 6px; }} li {{ margin-bottom: 2px; }} li::marker {{ color: #c99a2e; }}
