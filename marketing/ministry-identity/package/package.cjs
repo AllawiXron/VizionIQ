@@ -51,6 +51,13 @@ const cp = (from, to) => { fs.mkdirSync(path.dirname(path.join(PKG, to)), { recu
   await b2.close();
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', path.join(__dirname, 'reel.mp4'),
     '-map_metadata', '-1', '-c', 'copy', path.join(PKG, '07-Designer/Motion-Reel.mp4')]);   // the user's reel, tags stripped
+  // 8 the development stages, from the project's own history (package/dev/stages.html)
+  fs.mkdirSync(path.join(PKG, '08-Development'), { recursive: true });
+  const b3 = await chromium.launch(); const p3 = await b3.newPage();
+  await p3.addInitScript(`window.WHO = ${JSON.stringify(who)};`);
+  await p3.goto('file://' + path.join(__dirname, 'dev/stages.html')); await p3.evaluate(() => document.fonts.ready); await p3.waitForTimeout(400);
+  await p3.pdf({ path: path.join(PKG, '08-Development/Development-Stages.pdf'), width: '297mm', height: '210mm', printBackground: true, preferCSSPageSize: true });
+  await b3.close();
   // the guide to the files; the designer as author in the documents' properties
   cp('package/README.txt', 'README.txt');
   execFileSync('python3', [path.join(__dirname, 'tidy.py'), PKG, path.join(ROOT, 'who.json')], { stdio: 'inherit' });

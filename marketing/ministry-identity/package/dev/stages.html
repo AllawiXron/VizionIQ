@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>مراحل تطوير التصميم</title>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<style>
+  /* The development stages, A4 landscape, from the project's own history (images in src/, taken from the renders of
+     each round). package.cjs prints it with the designer's name. */
+  :root { --blue: #17357d; --night: #0c1b40; --gold: #c99a2e; --paper: #fdfcf9; --plate: #f1ece2; --rule: #d9d4c8; --mute: #4a5368; }
+  @page { size: 297mm 210mm; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #888; font: 400 10pt/1.8 "IBM Plex Sans Arabic", sans-serif; color: var(--night); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { body { background: none; } .page { margin: 0 !important; } }
+  .page { width: 297mm; height: 210mm; position: relative; overflow: hidden; background: var(--paper); margin: 0 auto 8mm; break-after: page; }
+  h1 { font: 700 38pt/1.2 "Markazi Text", serif; }
+  h2 { font: 700 25pt/1.25 "Markazi Text", serif; margin: 1mm 0 4mm; }
+  h3 { font: 700 12pt "Markazi Text", serif; margin: 3mm 0 1mm; }
+  p { margin-bottom: 2.6mm; text-align: justify; }
+  .k { font: 500 8pt "IBM Plex Sans Arabic"; color: var(--blue); }
+  .k b { color: var(--gold); font-weight: 500; }
+  .lat { font-family: "IBM Plex Sans"; direction: ltr; unicode-bidi: isolate; }
+  .rh { position: absolute; top: 10mm; right: 18mm; left: 18mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: var(--mute);
+    padding-bottom: 2.2mm; border-bottom: .3mm solid var(--rule); }
+  .rf { position: absolute; bottom: 9mm; right: 18mm; left: 18mm; display: flex; justify-content: space-between; font-size: 7pt; color: var(--mute); }
+  .cover { background: var(--night); color: #ece2d0; }
+  .cover .in { position: absolute; top: 50%; right: 22mm; transform: translateY(-50%); width: 170mm; }
+  .cover .line { width: 26mm; height: .6mm; background: var(--gold); margin: 8mm 0; }
+  .cover p { opacity: .8; font-size: 11pt; }
+  .cover .who { position: absolute; bottom: 16mm; right: 22mm; font-size: 9pt; opacity: .75; }
+  .txt { position: absolute; top: 24mm; right: 18mm; width: 92mm; bottom: 20mm; }
+  .txt .why { border-top: .3mm solid var(--rule); padding-top: 2mm; margin-top: 3mm; }
+  .imgs { position: absolute; top: 24mm; left: 18mm; width: 160mm; bottom: 20mm; display: grid; gap: 3.5mm; }
+  .imgs figure { display: flex; flex-direction: column; min-height: 0; }
+  .imgs .ph { flex: 1; min-height: 0; background: var(--plate) center / contain no-repeat; }
+  .imgs figcaption { font-size: 7pt; color: var(--mute); margin-top: 1.2mm; }
+  .tl { position: absolute; top: 26mm; right: 18mm; left: 18mm; border-top: .4mm solid var(--night); }
+  .tl div { display: grid; grid-template-columns: 34mm 70mm 1fr; padding: 2.3mm 0; border-bottom: .3mm solid var(--rule); align-items: baseline; }
+  .tl span { font-size: 8.5pt; color: var(--mute); }
+  .tl b { font: 700 12pt "Markazi Text"; }
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="in">
+    <div class="k" style="color:var(--gold)">ملحق: ملفات العمل ومراحل التطوير</div>
+    <h1 style="margin-top:4mm">مراحل تطوير التصميم</h1>
+    <div class="line"></div>
+    <p>هوية وزارة الاقتصاد الرقمي والحوكمة، من الفكرة الأولى إلى الصيغة المقدمة. كل مرحلة هنا بتاريخها، مع ما جربته فيها، وما أبقيته أو استبعدته وسبب ذلك.</p>
+  </div>
+  <div class="who" id="who"></div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>مراحل تطوير التصميم</span><span>نظرة عامة</span></div>
+  <div style="position:absolute;top:24mm;right:18mm"><div class="k">نظرة عامة</div><h2>عشر مراحل في خمسة أيام</h2></div>
+  <div class="tl" id="tl" style="top:48mm"></div>
+  <div class="rf"><span>علي احمد شهاب</span><span class="lat">02</span></div>
+</section>
+
+<script>
+const AR = (s) => String(s).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[d]);
+// [date, title, short, paragraphs, why, images [[file, caption]], grid columns]
+const STAGES = [
+  ['١٧ تشرين الأول', 'الفكرة الأولى: من المسمار إلى البكسل', 'علامة من إسفينة تتحول إلى بكسل',
+    ['بدأت من الكتابة المسمارية، فالألواح الطينية في العراق هي أقدم السجلات المكتوبة، أي أول بيانات في التاريخ. ورسمت علامة من ثلاث خانات: إسفينة مسمارية، ثم إسفينة مقطعة إلى مربعات، ثم بكسل ذهبي.',
+     'وجربت في الجولة نفسها إسفينة واحدة تتفكك إلى بكسلات داخل ختم دائري، ونجمة شمش من أربع إسفينات تخرج منها أشعة من البكسل.'],
+    'استبعدت العلامة لأنها تسع قطع لا شكل واحد، وتشبه شعارات الشركات التقنية، وعند قراءتها من اليمين كما نقرأ العربية تنقلب القصة: من البكسل إلى المسمار، أي من المستقبل إلى الماضي. أما الإسفينة في الختم فقرئت كبوق، والنجمة قرئت كأيقونة لمعة عامة تكثر في التطبيقات.',
+    [['r1-slide-2.png', 'فكرة العلامة الأولى بمراحلها الثلاث'], ['r1-slide-1.png', 'العلامة الأولى مع اسم الوزارة'], ['r1-slide-3.png', 'نسخها على خلفيات مختلفة']], 1],
+  ['١٧ تشرين الأول', 'الجولة الثانية: اللوح الطيني.. أول شاشة', 'لوح طيني بشكل شاشة الهاتف',
+    ['رسمت لوحا طينيا بزوايا مستديرة كشاشة الهاتف، فيه سطران من الإسفينات الأفقية والعمودية، وسطر ثالث من البكسل ينتهي بمؤشر كتابة ذهبي في جهة اليسار، حيث ينتهي السطر العربي. الفكرة أن السجل المكتوب والشاشة شيء واحد، وأن القصة ما زالت تكتب.'],
+    'استبعدته بعد المراجعة لأنه أقرب إلى أيقونة تطبيق منه إلى شعار وزارة، ولأن الفكرة نفسها لم تكن بالقوة التي أريدها.',
+    [['r2-slide-2.png', 'فكرة اللوح الطيني وعناصره'], ['r2-slide-1.png', 'اللوح مع اسم الوزارة'], ['r2-slide-5.png', 'بناء اللوح']], 1],
+  ['١٧ تشرين الأول', 'الجولة الثالثة: بوابة عشتار', 'أربعة اتجاهات، واختيار البوابة',
+    ['عدت إلى نص المسابقة: هوية تجمع أصالة الهوية العراقية وروح التكنولوجيا الحديثة. ورسمت أربعة اتجاهات من معالم العراق.',
+     'الأول بوابة من طابوق مربع كالبكسل، والثاني التقاء دجلة والفرات، والثالث الملوية بطبقات صاعدة، والرابع بوابة عشتار ببرجين وجدار وشرفات مدرجة وقوسين ذهبيين حول المدخل.'],
+    'اخترت بوابة عشتار، لأن البوابة تختصر عمل الوزارة: مدخل الخدمات إلى المواطن ومدخل العراق إلى الاقتصاد الرقمي. أما البوابة المربعة فقرئت كحرف M أو كخزانة أجهزة، والنهران قرئا كمقلاع، والملوية قرئت كشجرة.',
+    [['r3-sketch-gate.png', 'بوابة من طابوق مربع'], ['r3-sketch-rivers.png', 'التقاء النهرين'], ['r3-sketch-malwiya.png', 'الملوية'], ['r3-sketch-gate3.png', 'بوابة عشتار، المختارة'], ['r3-concept-gate.png', 'لوحة عرض الاتجاه المختار', 2]], 4],
+  ['١٧ تشرين الأول', 'أول نظام للهوية على البوابة', 'النسخ والبناء والألوان والخطوط',
+    ['بنيت على البوابة أول نظام كامل: الصيغة الأفقية والعمودية، والنسخ على الخلفيات الفاتحة والداكنة وبلون واحد، وأيقونة التطبيق، ورسم البناء، ولوحة الألوان الأربعة، والخطوط.'],
+    'أبقيت الفكرة والألوان، وغيرت لاحقا خط العناوين، وأعدت رسم الشعار على شبكة أدق.',
+    [['r4-slide-3.png', 'نسخ الشعار'], ['r4-slide-4.png', 'البناء، النسخة الأولى'], ['r4-slide-5.png', 'الألوان والخطوط الأولى']], 1],
+  ['١٧ إلى ١٩ تشرين الأول', 'التطبيقات والموقع، النسخة الأولى', 'المراسلات والهويات والتطبيق والموقع',
+    ['طبقت الهوية على الورق الرسمي والظرف وبطاقة العمل، وهوية الموظف وشاشة التطبيق، والمنشورات، ولوحة المبنى، وصممت الواجهة الرئيسية للموقع ومسار الخدمة على الهاتف.'],
+    'كانت هذه النماذج رسوما مسطحة. أبقيت تصاميم المنشورات والموقع مسطحة لأنها رقمية أصلا، وأعدت المطبوعات واللوحة لاحقا كنماذج واقعية.',
+    [['r5-slide-7.png', 'المراسلات الرسمية، النسخة الأولى'], ['r5-slide-8.png', 'هوية الموظف والتطبيق، النسخة الأولى'], ['r5-slide-11.png', 'الموقع الإلكتروني']], 1],
+  ['٢٠ تشرين الأول', 'تنقيح الشعار على شبكة واحدة', 'الشكل نفسه بدقة أعلى',
+    ['عند تكبير الشعار ظهرت أخطاء صغيرة: رؤوس الشرفات مقطوعة من الأعلى، وشرفات الأبراج أصغر من شرفات الجدار، وحواف زائدة عند الزوايا، ومسافات غير متساوية حول القوسين، والمدخل والفواصل ملونة بلون الخلفية لا مفرغة.',
+     'فأعدت رسمه على شبكة بوحدة قياس واحدة: البرج ١١ وحدة والجدار ٢٣، وكل الشرفات بالقياس نفسه، وأشرطة القوسين متساوية بعرض وحدة ونصف، والمدخل والفواصل فراغ حقيقي.'],
+    'الشعار المقدم هو هذه النسخة المنقحة.',
+    [['r6-before.png', 'قبل التنقيح'], ['r6-after.png', 'بعد التنقيح']], 2],
+  ['٢٠ تشرين الأول', 'خط العناوين', 'من Readex Pro إلى مركزي',
+    ['بدأت بخط Readex Pro للعناوين، ثم وجدته عصريا أكثر مما يحتاجه مستند رسمي. وجربت Noto Naskh Arabic فبدا خطا افتراضيا. ثم قارنت ثلاثة خطوط على عنوان المستند نفسه: أميري، ومركزي، وريم كوفي.'],
+    'اخترت مركزي (Markazi Text) لأنه خط نسخ حديث يجمع وقار الحرف المطبوع ووضوح الشاشة، ويناسب وزارة رقمية دون أن يفقد الطابع الرسمي.',
+    [['r7-fonts.png', 'المقارنة بين الخطوط الثلاثة']], 1],
+  ['٢٠ و٢١ تشرين الأول', 'المستند', 'من صفحات مجمعة إلى مستند مطبوع',
+    ['النسخة الأولى من المستند كانت شرائح عرض مجمعة. ثم أعدت تصميمه كمستند مطبوع بحجم A4 بالعرض: هوامش ثابتة، وترويسة وتذييل، وأقسام وأشكال مرقمة، وكل النصوص والرسوم متجهة.',
+     'ثم قسمته إلى ثلاثة أجزاء تفتح كل منها صفحة فاصلة، وأعطيت التطبيقات صورا واقعية بعرض الصفحة.'],
+    'المستند المقدم هو النسخة الأخيرة.',
+    [['r8-doc-v1-p1.png', 'النسخة الأولى: الغلاف'], ['r8-doc-final-p1.png', 'النسخة الأخيرة: الغلاف'], ['r8-doc-v1-p12.png', 'النسخة الأولى: المراسلات'], ['r8-doc-final-p15.png', 'النسخة الأخيرة: المراسلات']], 2],
+  ['٢٠ تشرين الأول', 'النماذج الواقعية', 'مشاهد ثلاثية الأبعاد بخامات حقيقية',
+    ['رسمت مطبوعات الهوية بقياساتها الحقيقية، ثم بنيت لها مشاهد ثلاثية الأبعاد في Blender: الورق والبطاقات على سطح حجري تحت ضوء نافذة، وهوية الموظف مع الهاتف، ولوحة المبنى على جدار من الحجر.',
+     'الهاتف في النسخة الأولى صنعته بنفسي ولم يكن مقنعا، فاستبدلته بنموذج هاتف جاهز بترخيص CC BY، وصححت نسبه وأضفت عليه شاشة التطبيق.'],
+    'ملفات المشاهد الثلاثة مرفقة في مجلد 06-Source-Files.',
+    [['r9-devices-v1.png', 'هوية الموظف والهاتف، النسخة الأولى'], ['../../../print/renders/devices.png', 'النسخة الأخيرة بالنموذج الجديد'], ['../../../print/renders/sign.png', 'لوحة المبنى']], 1],
+  ['٢١ تشرين الأول', 'حركة الشعار', 'من ثلاث لقطات إلى فيديو',
+    ['رسمت الفكرة أولا في ثلاث لقطات: الشبكة وارتفاع البوابة، ثم القوسان الذهبيان، ثم الصيغة الأفقية. ثم نفذت الحركة كاملة: خط أرض ذهبي، والشبكة تنفتح من المدخل، والجدار والأبراج ترتفع بوحدات الشبكة كالبكسل، والقوسان يرسمان من الأسفل، وموجتا إشارة، ثم الانتقال إلى الصيغة الأفقية.'],
+    'في المراجعة ظهر خط رفيع في قمة كل قوس حيث يلتقي نصفاه أثناء الرسم، فصححته. والأصوات من مكتبتي الخاصة.',
+    [['r10-idea-1.png', 'اللقطة الأولى'], ['r10-idea-2.png', 'اللقطة الثانية'], ['../../../anim/out/frames-3.0.png', 'من الفيديو النهائي'], ['../../../anim/out/frames-5.5.png', 'نهاية الفيديو']], 2],
+];
+STAGES.forEach(([date, title, short, ps, why, imgs, cols], i) => {
+  const n = i + 1;
+  const figs = imgs.map(([f, c, span]) => `<figure${span ? ` style="grid-column:span ${span}"` : ''}><div class="ph" style="background-image:url(src/${f})"></div><figcaption>${c}</figcaption></figure>`).join('');
+  document.write(`<section class="page">
+    <div class="rh"><span>مراحل تطوير التصميم</span><span>${date}</span></div>
+    <div class="txt"><div class="k"><b>${AR(String(n).padStart(2, '0'))}</b> · ${date}</div><h2>${title}</h2>${ps.map((p) => `<p>${p}</p>`).join('')}<p class="why">${why}</p></div>
+    <div class="imgs" style="grid-template-columns:repeat(${cols},1fr);grid-auto-rows:1fr">${figs}</div>
+    <div class="rf"><span>علي احمد شهاب</span><span class="lat">${String(n + 2).padStart(2, '0')}</span></div>
+  </section>`);
+});
+document.getElementById('tl').innerHTML = STAGES.map(([d, t, s], i) => `<div><span>${AR(String(i + 1).padStart(2, '0'))} · ${d}</span><b>${t}</b><span>${s}</span></div>`).join('');
+const who = window.WHO || {};
+document.getElementById('who').innerHTML = [who.name || 'علي احمد شهاب', '<span class="lat">@allawi.psd</span>'].join(' · ');
+</script>
+</body>
+</html>
