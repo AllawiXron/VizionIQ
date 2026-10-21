@@ -88,7 +88,14 @@ not working codes. The services on the website are illustrations, not the minist
 
 The 1920×1080 slides (`out/slide-*.png`, `render.cjs`) are the earlier presentation, kept for reference.
 
-Still to do: a logo animation, and the ZIP.
+- `anim/logo.html` → `anim/out/logo-animation.mp4` (`node anim/render.cjs`, about 2 minutes; `--preview` for 4 stills):
+  the logo animation, 6.4 s, 1920×1080, 60 fps, H.264 at 10 Mbps. A gold ground line draws out, the construction grid
+  opens from the doorway, the wall and towers rise in whole grid units (like pixels), the gold arches draw up from their
+  legs, two signal waves pass behind the gate, and the mark glides into the horizontal lockup as the name arrives from
+  the right; the arch pattern settles faintly behind. Sound from the user's pack only (riser, two whooshes, a sparkle),
+  each at a fixed gain, peaks about −4 dB. `window.seek(t)` draws any moment; the page plays live in a browser.
+
+Still to do: the ZIP for submission.
 
 Phone model: "Low Poly Mobile Phone" (the user's download, Creative Commons Attribution), converted from ASCII FBX to
 `print/models/phone.glb` with assimp. Credited in figure 3-2's caption; add the author's name there and here when known.

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Logo animation</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<script src="../marks.js"></script>
+<style>
+  /* The logo animation, 1920x1080. window.seek(t) draws the frame at t seconds; render.cjs steps through it.
+     Open the page alone and it plays in real time. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0c1b40; }
+  #stage { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 50% 52%, #12265a 0%, #0c1b40 70%); }
+  #pattern { position: absolute; inset: 0; opacity: 0; }
+  #mark { position: absolute; overflow: visible; }
+  .lock { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 56px;
+    white-space: nowrap; color: #ece2d0; }
+  .lock .slot { width: 288px; height: 276px; }
+  .lock .bar { width: 2px; align-self: stretch; background: #ece2d0; opacity: .3; transform-origin: center; }
+  .lock .txt > div { will-change: clip-path, transform, opacity; }
+  .t1 { font: 400 30px "IBM Plex Sans Arabic"; opacity: .8; }
+  .t2 { font: 700 64px/1.2 "Markazi Text"; margin: 4px 0 8px; }
+  .t3 { font: 500 17px "IBM Plex Sans"; direction: ltr; text-align: right; letter-spacing: 2px; opacity: .75; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<svg id="pattern" width="1920" height="1080"></svg>
+<div class="lock" id="lock"><div class="slot" id="slot"></div><div class="bar" id="bar"></div>
+  <div class="txt"><div class="t1" id="t1">جمهورية العراق</div><div class="t2" id="t2">وزارة الاقتصاد الرقمي والحوكمة</div>
+  <div class="t3" id="t3">MINISTRY OF DIGITAL ECONOMY AND GOVERNANCE</div></div></div>
+<svg id="mark" viewBox="0 0 300 300"></svg>
+
+<script>
+const g = GATE, C = { ink: '#ece2d0', accent: '#c99a2e' };
+const [INK, GOLD] = gate(C).match(/<path[^>]*\/>/g);
+const [box] = [VIEW.gate];                                   // the gate's own box in the 300 x 300 drawing
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));           // 0..1 progress of t through [a, b]
+const out3 = (x) => 1 - Math.pow(1 - x, 3), inout3 = (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const lerp = (a, b, k) => a + (b - a) * k;
+
+// the arch centre lines, for drawing the gold bands up from their legs
+const half = (r, side) => `M${g.cx + side * r} ${g.G + 2} V${g.oy} A${r} ${r} 0 0 ${side < 0 ? 1 : 0} ${g.cx} ${g.oy - r}`;
+const halfLen = (r) => (g.G + 2 - g.oy) + Math.PI * r / 2;
+const R = g.rings;                                            // [inner, outer] centre radii
+
+// static parts of the drawing
+let grid = '';
+for (let x = 0; x <= 300; x += U) grid += `<line x1="${x}" y1="0" x2="${x}" y2="300"/>`;
+for (let y = 0; y <= 300; y += U) grid += `<line x1="0" y1="${y}" x2="300" y2="${y}"/>`;
+const blocks = [g.towers[0], g.wall, g.towers[1]];
+const mark = document.getElementById('mark');
+mark.innerHTML = `
+  <defs>
+    <radialGradient id="fadeR"><stop offset="0" stop-color="#fff"/><stop offset=".75" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+    <mask id="gridMask"><circle id="gridDisc" cx="${g.cx}" cy="${g.oy}" r="0" fill="url(#fadeR)"/></mask>
+    ${blocks.map((b, i) => `<clipPath id="cb${i}"><rect id="rb${i}" x="${b[0] - 1}" width="${b[1] - b[0] + 2}" y="${g.G}" height="0"/></clipPath>`).join('')}
+    <mask id="goldMask">${R.map((r, i) => [-1, 1].map((s) => `<path class="gm gm${i}" d="${half(r, s)}" fill="none" stroke="#fff" stroke-width="${g.b + 2}"
+      stroke-dasharray="${halfLen(r)}" stroke-dashoffset="${halfLen(r)}"/>`).join('')).join('')}</mask>
+  </defs>
+  <g id="grid" mask="url(#gridMask)" stroke="#ece2d0" stroke-width=".25" stroke-opacity=".16">${grid}</g>
+  <line id="ground" x1="${g.cx}" y1="${g.G + .3}" x2="${g.cx}" y2="${g.G + .3}" stroke="#c99a2e" stroke-width=".7"/>
+  <g id="pulses" fill="none" stroke="#c99a2e" stroke-width=".8"></g>
+  ${blocks.map((b, i) => `<g clip-path="url(#cb${i})">${INK}</g>`).join('')}
+  <g mask="url(#goldMask)">${GOLD}</g>`;
+
+// the faint arch pattern that settles behind the lockup at the end
+document.getElementById('pattern').innerHTML = archField(1920, 1080, '#ece2d0', 1, 170);
+
+// where the mark starts (centred, large) and ends (in the lockup's slot)
+const big = { w: 276 * 2.9, h: 264 * 2.9 };
+const start = { x: 960 - big.w / 2, y: 540 - big.h / 2 + 20, w: big.w, h: big.h };
+const slot = document.getElementById('slot').getBoundingClientRect();
+const end = { x: slot.left, y: slot.top, w: slot.width, h: slot.height };
+const place = (r) => {   // the svg's viewBox is the 300 x 300 drawing; map the gate's box onto rect r
+  const k = r.w / box[2];
+  Object.assign(mark.style, { left: r.x - box[0] * k + 'px', top: r.y - box[1] * k + 'px', width: 300 * k + 'px', height: 300 * k + 'px' });
+};
+
+window.seek = (t) => {
+  // 1. the gold ground line draws out from the centre, then fades
+  const gl = out3(seg(t, 0, .7)) * 150, gf = 1 - seg(t, 3.3, 4.0);
+  const ground = document.getElementById('ground');
+  ground.setAttribute('x1', g.cx - gl); ground.setAttribute('x2', g.cx + gl); ground.setAttribute('stroke-opacity', gf);
+  // 2. the grid opens from the doorway, then fades
+  document.getElementById('gridDisc').setAttribute('r', out3(seg(t, .2, 1.4)) * 165);
+  document.getElementById('grid').setAttribute('stroke-opacity', .16 * (1 - seg(t, 3.3, 4.1)));
+  // 3. the wall, then the towers, rise in whole grid units, like pixels
+  [[.7, 1.75], [.55, 1.55], [.85, 1.9]].forEach(([a, b], i) => {
+    const top = i === 1 ? g.wTop - g.mh : g.tTop - g.mh, H = g.G - top;
+    const h = Math.ceil(out3(seg(t, a, b)) * H / U) * U;
+    const r = document.getElementById('rb' + i);
+    r.setAttribute('y', g.G - h); r.setAttribute('height', h + 1);
+  });
+  // 4. the gold arches draw up from their legs, the inner one first
+  [[1.8, 2.45], [1.98, 2.7]].forEach(([a, b], i) => {
+    const p = inout3(seg(t, a, b));
+    document.querySelectorAll('.gm' + i).forEach((m) => m.setAttribute('stroke-dashoffset', halfLen(R[i]) * (1 - p)));
+  });
+  // 5. two signal waves leave the doorway
+  document.getElementById('pulses').innerHTML = [2.62, 2.92].map((a) => {
+    const p = seg(t, a, a + 1.0); if (p <= 0 || p >= 1) return '';
+    const r = lerp(g.r0 + 4.5 * g.b, 150, out3(p));
+    return `<path d="M${g.cx - r} ${g.G} V${g.oy} A${r} ${r} 0 0 1 ${g.cx + r} ${g.oy} V${g.G}" stroke-opacity="${.7 * (1 - p)}"/>`;
+  }).join('');
+  // 6. the mark glides into the lockup, and the name arrives line by line
+  place(((k) => ({ x: lerp(start.x, end.x, k), y: lerp(start.y, end.y, k), w: lerp(start.w, end.w, k), h: lerp(start.h, end.h, k) }))(inout3(seg(t, 3.5, 4.45))));
+  const bar = document.getElementById('bar');
+  bar.style.transform = `scaleY(${out3(seg(t, 4.1, 4.5))})`;
+  ['t1', 't2', 't3'].forEach((id, i) => {
+    const p = out3(seg(t, 4.2 + i * .12, 4.85 + i * .12)), el = document.getElementById(id);
+    el.style.clipPath = `inset(0 0 0 ${(1 - p) * 100}%)`;      // revealed from the right, the way Arabic reads
+    el.style.transform = `translateX(${(1 - p) * 24}px)`;
+    el.style.opacity = id === 't1' ? .8 * p : id === 't3' ? .75 * p : p;
+  });
+  document.getElementById('pattern').style.opacity = .025 * out3(seg(t, 4.5, 5.3));
+};
+window.DURATION = 6.4;
+window.seek(0);
+if (!navigator.webdriver) { const t0 = performance.now(); const tick = () => { window.seek(((performance.now() - t0) / 1000) % (window.DURATION + 1)); requestAnimationFrame(tick); }; requestAnimationFrame(tick); }
+</script>
+</body>
+</html>
