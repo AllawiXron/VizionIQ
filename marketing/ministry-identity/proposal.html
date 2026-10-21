@@ -78,6 +78,7 @@ function lock(ink, tc, h, vertical = false) {
   .lock.v { flex-direction: column; text-align: center; gap: .45em; }
   .lock.v .bar { display: none; }
   .lock.v .t3 { text-align: center; }
+  .lock.v { gap: .22em; } .lock.v .t1 { font-size: .17em; } .lock.v .t2 { font-size: .31em; } .lock.v .t3 { font-size: .095em; }   /* in the stack the name sits under the mark, smaller */
 
   /* cover */
   .cover .panel { position: absolute; top: 0; bottom: 0; left: 0; width: 112mm; background: var(--blue); }
@@ -283,7 +284,7 @@ function lock(ink, tc, h, vertical = false) {
   </div>
   <div style="position:absolute;top:62mm;right:18mm;left:18mm;display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:54mm 54mm;gap:4mm">
     <div class="plate white"><script>document.write(lock({ ink: '#17357d', accent: '#c99a2e' }, '#0c1b40', 44))</script><span class="lbl">أ. الأفقية الأساسية</span></div>
-    <div class="plate" style="grid-row:span 2;background:var(--clay)"><script>document.write(lock({ ink: '#17357d', accent: '#c99a2e' }, '#0c1b40', 40, true))</script><span class="lbl">ب. العمودية</span></div>
+    <div class="plate" style="grid-row:span 2;background:var(--clay)"><script>document.write(lock({ ink: '#17357d', accent: '#c99a2e' }, '#0c1b40', 76, true))</script><span class="lbl">ب. العمودية</span></div>
     <div class="plate night"><div style="width:30mm;height:30mm;border-radius:7mm;background:var(--blue);display:flex;align-items:center;justify-content:center"><script>document.write(markSVG('gate', { ink: '#ece2d0', accent: '#c99a2e' }, 70))</script></div><span class="lbl">د. أيقونة التطبيق</span></div>
     <div class="plate night"><script>document.write(lock({ ink: '#ece2d0', accent: '#c99a2e' }, '#ece2d0', 44))</script><span class="lbl">ج. على الخلفيات الداكنة</span></div>
     <div class="plate white"><script>document.write(markSVG('gate', { ink: '#111111', accent: 'none' }, 110))</script><span class="lbl">هـ. بلون واحد، للأختام والطباعة</span></div>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<script src="../marks.js"></script>
+<style>
+  /* One logo file at a time, on a transparent page: logos.html?v=<name>. package.cjs prints each as PDF (vector) and PNG. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; }
+  #art { display: inline-block; padding: 24px; }
+  .lock { display: inline-flex; align-items: center; gap: .9em; white-space: nowrap; }
+  .lock .bar { width: .02em; min-width: 1px; align-self: stretch; background: currentColor; opacity: .3; }
+  .lock .t1 { font: 400 .34em "IBM Plex Sans Arabic"; opacity: .8; }
+  .lock .t2 { font: 700 .62em/1.2 "Markazi Text"; margin: .02em 0 .1em; }
+  .lock .t3 { font: 500 .19em "IBM Plex Sans"; direction: ltr; text-align: right; letter-spacing: .08em; opacity: .75; }
+  .lock.v { flex-direction: column; text-align: center; gap: .45em; }
+  .lock.v .bar { display: none; }
+  .lock.v .t3 { text-align: center; }
+  .lock.v { gap: .22em; } .lock.v .t1 { font-size: .17em; } .lock.v .t2 { font-size: .31em; } .lock.v .t3 { font-size: .095em; }   /* in the stack the name sits under the mark, smaller */
+</style>
+</head>
+<body>
+<div id="art"></div>
+<script>
+const BLUE = { ink: '#17357D', accent: '#C99A2E' }, LIGHT = { ink: '#ECE2D0', accent: '#C99A2E' };
+const lock = (ink, tc, h, v) => `<div class="lock${v ? ' v' : ''}" style="font-size:${h}px;color:${tc}">${markSVG('gate', ink, h)}<div class="bar"></div>
+  <div><div class="t1">جمهورية العراق</div><div class="t2">وزارة الاقتصاد الرقمي والحوكمة</div><div class="t3">MINISTRY OF DIGITAL ECONOMY AND GOVERNANCE</div></div></div>`;
+// name -> [html, the background it is meant for (only for the preview sheet)]
+window.VARIANTS = {
+  'mark-color': [markSVG('gate', BLUE, 600), '#fff'],
+  'mark-color-on-dark': [markSVG('gate', LIGHT, 600), '#0C1B40'],
+  'mark-black': [markSVG('gate', { ink: '#000000', accent: 'none' }, 600), '#fff'],
+  'mark-white': [markSVG('gate', { ink: '#FFFFFF', accent: 'none' }, 600), '#17357D'],
+  'lockup-horizontal': [lock(BLUE, '#0C1B40', 200), '#fff'],
+  'lockup-horizontal-on-dark': [lock(LIGHT, '#ECE2D0', 200), '#0C1B40'],
+  'lockup-horizontal-black': [lock({ ink: '#000000', accent: 'none' }, '#000000', 200), '#fff'],
+  'lockup-vertical': [lock(BLUE, '#0C1B40', 260, true), '#fff'],
+  'lockup-vertical-on-dark': [lock(LIGHT, '#ECE2D0', 260, true), '#0C1B40'],
+};
+const v = new URLSearchParams(location.search).get('v') || 'mark-color';
+document.getElementById('art').innerHTML = VARIANTS[v][0];
+</script>
+</body>
+</html>

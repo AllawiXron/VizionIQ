@@ -95,7 +95,12 @@ The 1920×1080 slides (`out/slide-*.png`, `render.cjs`) are the earlier presenta
   the right; the arch pattern settles faintly behind. Sound from the user's pack only (riser, two whooshes, a sparkle),
   each at a fixed gain, peaks about −4 dB. `window.seek(t)` draws any moment; the page plays live in a browser.
 
-Still to do: the ZIP for submission.
+- `package/package.cjs` → `out/final/Ministry-Identity-Proposal-Ali-Ahmed-Shihab.zip` (git-ignored: it carries the
+  designer's contact): the submission. 01 the presentation (PDF and PPTX, the --final copies), 02 the concept (PDF and
+  text), 03 the logo (SVG; every version as vector PDF and transparent PNG from `package/logos.html`: the mark in colour,
+  on dark, black and white; the horizontal lockup in colour, on dark and black; the vertical lockup in colour and on
+  dark), 04 the animation, 05 the three mockup renders, and `package/README.txt` (a guide to the files, the colours and
+  the fonts). Run `doc.cjs --final`, `deck.cjs --final` and `anim/render.cjs` first.
 
 Phone model: "Low Poly Mobile Phone" (the user's download, Creative Commons Attribution), converted from ASCII FBX to
 `print/models/phone.glb` with assimp. Credited in figure 3-2's caption; add the author's name there and here when known.
