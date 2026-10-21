@@ -26,6 +26,18 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   phone numbers.
 - Commit and push to the session's branch when done. No pull request unless the user asks.
 
+## -noAI
+
+When the user writes **-noAI**, everything delivered must be unrelated to AI, as for the ministry identity submission
+(21 Oct): no mention of AI, Claude or the tools behind the work in any file, text, name or metadata. Author fields
+(PDF, PowerPoint) are the user; SVGs get a title and named layers; Blender files get named objects, packed textures and
+clean texture paths; video and image tags are stripped (`ffmpeg -map_metadata -1 -c copy`); library names are removed
+from document properties (e.g. PptxGenJS in the PowerPoint's Company field); no «» and no Arabic diacritics; copy in the
+first person singular. Leave out any work that used AI-generated images (ChatGPT, Gemini and the like). Don't fake
+software names (a browser PDF producer stays). Finish by scanning every file, binaries included, for
+`claude|anthropic|chatgpt|openai|gemini|hyperframes|pptxgenjs|playwright|headless|scratchpad` and fix what it finds.
+`marketing/ministry-identity/package/` (tidy.py, package.cjs) is the worked example.
+
 ## Reference projects (start from these; copy their structure and look)
 
 - Reel: `marketing/hf-one-second-reel` (HyperFrames, the current standard: one-take camera over paper sheets, word

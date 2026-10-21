@@ -101,8 +101,9 @@ The 1920×1080 slides (`out/slide-*.png`, `render.cjs`) are the earlier presenta
   on dark, black and white; the horizontal lockup in colour, on dark and black; the vertical lockup in colour and on
   dark), 04 the animation, 05 the three mockup renders, and `package/README.txt` (a guide to the files, the colours and
   the fonts), 06 the three Blender scenes (named objects, textures packed), and 07 the designer: `package/bio.txt`,
-  `package/portfolio.html` (six recent concept ads: Qi Card, Asiacell, Iraqi Airways, Miswag White Friday 1, Miswag
-  Shorja, Baly; White Friday 2 is left out because its gift photo was generated with ChatGPT) and the Asiacell reel.
+  `package/portfolio.html` (all twelve concept ads, newest first: Qi Card, Asiacell, Iraqi Airways, Pepsi, talabat,
+  Miswag White Friday 1, Al-Faqma, Al-Waseet, Saj Al-Reef, Sala, Miswag Shorja, Baly; White Friday 2 is left out because
+  its gift photo was generated with ChatGPT) and `package/reel.mp4` (the user's motion reel, tags stripped).
   `package/tidy.py` puts the designer as author in the PDFs and the PowerPoint. Run `doc.cjs --final`,
   `deck.cjs --final` and `anim/render.cjs` first, with `BLENDER_PY` set to a python that has bpy 4.2.
 
