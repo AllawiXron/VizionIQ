@@ -1,5 +1,6 @@
 """python3 package/tidy.py <package dir> <who.json>: the designer as author in the PDFs' and the PowerPoint's document
-properties (title, author), and the PowerPoint's page format named as it is (A4, not 16:9)."""
+properties (title, author), the PowerPoint's page format named as it is (A4, not 16:9) and its company field left
+empty (the library put its own name there)."""
 import json
 import re
 import shutil
@@ -32,6 +33,7 @@ for pptx in pkg.rglob('*.pptx'):
                 data = s.encode()
             elif item.filename == 'docProps/app.xml':
                 data = re.sub(rb'<PresentationFormat>.*?</PresentationFormat>', b'<PresentationFormat>A4 Paper (210x297 mm)</PresentationFormat>', data)
+                data = re.sub(rb'<Company>.*?</Company>', b'<Company></Company>', data)
             zout.writestr(item, data)
     shutil.move(tmp, pptx)
 print('tidied', pkg)

@@ -39,6 +39,18 @@ const cp = (from, to) => { fs.mkdirSync(path.dirname(path.join(PKG, to)), { recu
   fs.mkdirSync(path.join(PKG, '06-Source-Files/Blender'), { recursive: true });
   for (const m of ['stationery', 'devices', 'sign'])
     execFileSync(process.env.BLENDER_PY, [path.join(ROOT, 'print/studio.py'), m, '--save', path.join(PKG, `06-Source-Files/Blender/${m}.blend`)], { stdio: 'ignore' });
+  // 7 the designer: a short bio (to paste into the form too), the portfolio, and the Asiacell reel
+  const who = JSON.parse(fs.readFileSync(path.join(ROOT, 'who.json'), 'utf8'));
+  fs.mkdirSync(path.join(PKG, '07-Designer'), { recursive: true });
+  fs.writeFileSync(path.join(PKG, '07-Designer/Bio.txt'), fs.readFileSync(path.join(__dirname, 'bio.txt'), 'utf8')
+    .replace('{phone}', who.phone).replace('{email}', who.email));
+  const b2 = await chromium.launch(); const p2 = await b2.newPage();
+  await p2.addInitScript(`window.WHO = ${JSON.stringify(who)};`);
+  await p2.goto('file://' + path.join(__dirname, 'portfolio.html')); await p2.evaluate(() => document.fonts.ready); await p2.waitForTimeout(300);
+  await p2.pdf({ path: path.join(PKG, '07-Designer/Portfolio.pdf'), width: '297mm', height: '210mm', printBackground: true, preferCSSPageSize: true });
+  await b2.close();
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', path.join(ROOT, '../hf-asiacell-reel/renders/asiacell-reel.mp4'),
+    '-map_metadata', '-1', '-c', 'copy', path.join(PKG, '07-Designer/Asiacell-Reel.mp4')]);   // without the renderer's tags
   // the guide to the files; the designer as author in the documents' properties
   cp('package/README.txt', 'README.txt');
   execFileSync('python3', [path.join(__dirname, 'tidy.py'), PKG, path.join(ROOT, 'who.json')], { stdio: 'inherit' });

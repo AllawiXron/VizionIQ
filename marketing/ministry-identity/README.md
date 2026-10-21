@@ -100,7 +100,11 @@ The 1920×1080 slides (`out/slide-*.png`, `render.cjs`) are the earlier presenta
   text), 03 the logo (SVG; every version as vector PDF and transparent PNG from `package/logos.html`: the mark in colour,
   on dark, black and white; the horizontal lockup in colour, on dark and black; the vertical lockup in colour and on
   dark), 04 the animation, 05 the three mockup renders, and `package/README.txt` (a guide to the files, the colours and
-  the fonts). Run `doc.cjs --final`, `deck.cjs --final` and `anim/render.cjs` first.
+  the fonts), 06 the three Blender scenes (named objects, textures packed), and 07 the designer: `package/bio.txt`,
+  `package/portfolio.html` (six recent concept ads: Qi Card, Asiacell, Iraqi Airways, Miswag White Friday 1, Miswag
+  Shorja, Baly; White Friday 2 is left out because its gift photo was generated with ChatGPT) and the Asiacell reel.
+  `package/tidy.py` puts the designer as author in the PDFs and the PowerPoint. Run `doc.cjs --final`,
+  `deck.cjs --final` and `anim/render.cjs` first, with `BLENDER_PY` set to a python that has bpy 4.2.
 
 Phone model: "Low Poly Mobile Phone" (the user's download, Creative Commons Attribution), converted from ASCII FBX to
 `print/models/phone.glb` with assimp. Credited in figure 3-2's caption; add the author's name there and here when known.

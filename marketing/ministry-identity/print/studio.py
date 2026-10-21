@@ -395,6 +395,8 @@ if __name__ == "__main__":
     s = SHOTS[shot](preview)
     if "--save" in sys.argv:
         bpy.ops.file.pack_all()
+        for img in bpy.data.images:                    # packed in; the paths only name them
+            img.filepath = "//textures/" + os.path.basename(img.filepath)
         bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(sys.argv[sys.argv.index("--save") + 1]), compress=True)
         sys.stdout.flush()
         os._exit(0)          # skip bpy's teardown, which can crash after the importer's objects are removed

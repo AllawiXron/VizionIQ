@@ -18,6 +18,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   Write proposals in the first person singular (the user made and researched the work alone, not a team), and don't
   overuse 3D: realistic renders for print and objects, flat designs for social media and websites (20 Oct).
   No «» quotation marks and no Arabic diacritics (تُ ّ ً and the like) in documents: the user says they read as AI (20 Oct).
+  Deliverables carry nothing that points to AI or the tools behind them: file and layer names, document properties
+  (author is the user), media tags and paths are clean; the user says how AI was used in their own words (21 Oct).
 - When the user states a new like or dislike, add it to this file in a line or two so later sessions know it.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
