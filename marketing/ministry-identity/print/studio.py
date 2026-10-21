@@ -1,7 +1,8 @@
 """Photographic mockups of the ministry's print pieces (Blender 4.2, Cycles): the flat artwork from print/tex/*.png on
 paper and card at real sizes, lying on a warm stone surface under soft window light.
 
-  <python with bpy 4.2> print/studio.py <shot> [--preview]      shots: stationery, devices, sign
+  <python with bpy 4.2> print/studio.py <shot> [--preview] [--save <file.blend>]      shots: stationery, devices, sign
+  --save writes the scene (textures packed in) instead of rendering it.
 """
 import math
 import os
@@ -47,6 +48,7 @@ def surface(color, w=160, d=110):
     """the table: a warm stone with a faint mottle and grain"""
     bpy.ops.mesh.primitive_plane_add(size=1)
     ob = bpy.context.object
+    ob.name = "Table"
     ob.scale = (w * CM, d * CM, 1)
     m = bpy.data.materials.new("stone")
     m.use_nodes = True
@@ -70,10 +72,15 @@ def surface(color, w=160, d=110):
     ob.data.materials.append(m)
 
 
+NAMES = {"letterhead": "Letterhead", "envelope": "Envelope", "card-front": "Business Card Front", "card-back": "Business Card Back",
+         "badge": "ID Card", "lanyard": "Lanyard", "screen": "Phone Screen", "sign": "Sign Face"}
+
+
 def sheet(tex, w, h, x, y, rot, z=0.0, thick=0.012, rough=0.72, gloss=0.0):
     """a printed sheet or card, w x h cm, centred at (x, y) cm, rotated rot degrees, its underside at z cm"""
     bpy.ops.mesh.primitive_plane_add(size=1)
     ob = bpy.context.object
+    ob.name = NAMES.get(tex, tex)
     ob.scale = (w * CM, h * CM, 1)
     ob.location = (x * CM, y * CM, (z + thick) * CM)
     ob.rotation_euler = (0, 0, math.radians(rot))
@@ -90,7 +97,7 @@ def sheet(tex, w, h, x, y, rot, z=0.0, thick=0.012, rough=0.72, gloss=0.0):
     b.inputs["Roughness"].default_value = rough
     b.inputs["Coat Weight"].default_value = gloss
     img = nt.nodes.new("ShaderNodeTexImage")
-    img.image = bpy.data.images.load(os.path.join(TEX, tex + ".png"))
+    img.image = bpy.data.images.load(os.path.join(TEX, tex + ".png"), check_existing=True)
     img.interpolation = "Cubic"
     nt.links.new(img.outputs["Color"], b.inputs["Base Color"])
     fib = nt.nodes.new("ShaderNodeTexNoise")              # paper fibre
@@ -108,7 +115,7 @@ def lights(elev=24, azim=140, soft=2.5, power=4.6):
     sun.energy = power
     sun.angle = math.radians(soft)
     sun.color = lin("#fffaf2")[:3]
-    ob = bpy.data.objects.new("sun", sun)
+    ob = bpy.data.objects.new("Sun", sun)
     ob.rotation_euler = (math.radians(90 - elev), 0, math.radians(azim))
     bpy.context.collection.objects.link(ob)
 
@@ -117,7 +124,7 @@ def camera(frame_w, aspect, tilt=0.0, focal=120):
     cam = bpy.data.cameras.new("cam")
     cam.lens = focal
     cam.sensor_width = 36
-    ob = bpy.data.objects.new("cam", cam)
+    ob = bpy.data.objects.new("Camera", cam)
     bpy.context.collection.objects.link(ob)
     dist = frame_w * CM * focal / 36
     ob.location = (0, -math.sin(math.radians(tilt)) * dist, math.cos(math.radians(tilt)) * dist)
@@ -150,7 +157,7 @@ def textured(name, tex, rough=0.6, coat=0.0, emit=0.0, bump=0.0, metal=0.0):
     b.inputs["Coat Roughness"].default_value = 0.05
     b.inputs["Metallic"].default_value = metal
     img = nt.nodes.new("ShaderNodeTexImage")
-    img.image = bpy.data.images.load(os.path.join(TEX, tex + ".png"))
+    img.image = bpy.data.images.load(os.path.join(TEX, tex + ".png"), check_existing=True)
     img.interpolation = "Cubic"
     nt.links.new(img.outputs["Color"], b.inputs["Base Color"])
     if emit:
@@ -211,6 +218,7 @@ def rounded_slab(w, h, t, r, x, y, rot, z=0.0, edge=0.08):
 def textured_plane(mat, w, h, x, y, rot, z):
     bpy.ops.mesh.primitive_plane_add(size=1)
     ob = bpy.context.object
+    ob.name = NAMES.get(mat.name, mat.name)
     ob.scale = (w * CM, h * CM, 1)
     ob.location = (x * CM, y * CM, z * CM)
     ob.rotation_euler = (0, 0, math.radians(rot))
@@ -230,6 +238,8 @@ def phone(x, y, rot, length=14.9):
     for o in parts:
         o.parent = None
         o.matrix_world = mats[o]
+    for o in [o for o in bpy.data.objects if o.type == "EMPTY"]:     # the importer's empty root node
+        bpy.data.objects.remove(o)
     front = next(o for o in parts if o.name.startswith("Camera_Front"))
     flip = front.matrix_world.translation.z < 0                        # the front camera marks the face
     bpy.ops.object.select_all(action="DESELECT")
@@ -238,6 +248,7 @@ def phone(x, y, rot, length=14.9):
     bpy.context.view_layer.objects.active = case
     bpy.ops.object.join()
     ob = bpy.context.object
+    ob.name = "Phone"
     if flip:
         ob.rotation_euler = (0, math.radians(180), 0)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
@@ -284,6 +295,7 @@ def devices(preview):
     lx, ly = up(cx, cy, 0.8 + 15.0)
     textured_plane(textured("lanyard", "lanyard", rough=0.85, bump=0.3), 2.0, 30.0, lx, ly, 7, 0.06)
     clip = rounded_slab(1.3, 1.9, 0.18, 0.25, cx, cy, 7, z=0.076, edge=0.05)
+    clip.name = "Clip"
     clip.data.materials.append(plain("steel", "#b9bcc2", rough=0.25, metal=1.0))
     phone(5.6, -0.6, -6)
     lights()
@@ -297,6 +309,7 @@ def sign(preview):
     # the wall stands in the x-z plane at y = 0, built of large limestone blocks
     bpy.ops.mesh.primitive_plane_add(size=1)
     wall = bpy.context.object
+    wall.name = "Wall"
     wall.scale = (900 * CM, 500 * CM, 1)
     wall.rotation_euler = (math.radians(90), 0, 0)
     m = bpy.data.materials.new("limestone")
@@ -338,6 +351,7 @@ def sign(preview):
     # the panel: a blue box 4 cm deep, 3 cm off the wall on hidden standoffs, the artwork on its face
     bpy.ops.mesh.primitive_cube_add(size=1)
     box = bpy.context.object
+    box.name = "Sign Panel"
     box.scale = (240 * CM, 4 * CM, 60 * CM)
     box.location = (0, -5 * CM, 0)
     bev = box.modifiers.new("b", "BEVEL")
@@ -346,6 +360,7 @@ def sign(preview):
     box.data.materials.append(plain("panel", "#17357d", rough=0.35, coat=0.3))
     bpy.ops.mesh.primitive_plane_add(size=1)
     face = bpy.context.object
+    face.name = "Sign Face"
     face.scale = (239.4 * CM, 59.4 * CM, 1)
     face.rotation_euler = (math.radians(90), 0, 0)
     face.location = (0, -7.02 * CM, 0)
@@ -355,7 +370,7 @@ def sign(preview):
     sun.energy = 5.5
     sun.angle = math.radians(1.0)
     sun.color = lin("#ffe9cc")[:3]
-    so = bpy.data.objects.new("sun", sun)
+    so = bpy.data.objects.new("Sun", sun)
     so.rotation_euler = Vector((-0.55, 0.5, -0.67)).to_track_quat("-Z", "Y").to_euler()   # travelling left, into the wall, down
     bpy.context.collection.objects.link(so)
     s.world.node_tree.nodes["Background"].inputs[0].default_value = lin("#e6eef7")
@@ -363,7 +378,7 @@ def sign(preview):
     # camera: a little to the left and below, looking up at the panel
     cam = bpy.data.cameras.new("cam")
     cam.lens = 50
-    co = bpy.data.objects.new("cam", cam)
+    co = bpy.data.objects.new("Camera", cam)
     bpy.context.collection.objects.link(co)
     co.location = (-150 * CM, -420 * CM, -40 * CM)
     d = Vector((25 * CM, 0, -2 * CM)) - co.location
@@ -378,6 +393,11 @@ if __name__ == "__main__":
     shot = sys.argv[1]
     preview = "--preview" in sys.argv
     s = SHOTS[shot](preview)
+    if "--save" in sys.argv:
+        bpy.ops.file.pack_all()
+        bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(sys.argv[sys.argv.index("--save") + 1]), compress=True)
+        sys.stdout.flush()
+        os._exit(0)          # skip bpy's teardown, which can crash after the importer's objects are removed
     os.makedirs(OUT, exist_ok=True)
     s.render.filepath = os.path.join(OUT, shot + ("-preview" if preview else "") + ".png")
     bpy.ops.render.render(write_still=True)

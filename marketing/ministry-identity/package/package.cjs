@@ -1,6 +1,7 @@
 // node package/package.cjs -> out/final/Ministry-Identity-Proposal-Ali-Ahmed-Shihab.zip, the competition submission.
 // Run node doc.cjs --final and deck.cjs --final first (the presentation with the designer's contact), and
-// anim/render.cjs for the animation. Everything lands in out/final/ (git-ignored).
+// anim/render.cjs for the animation. BLENDER_PY is a python with bpy 4.2 (for the .blend files).
+// Everything lands in out/final/ (git-ignored).
 const { chromium } = require('playwright'); const path = require('path'); const fs = require('fs'); const { execFileSync } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'out', 'final');
@@ -34,8 +35,13 @@ const cp = (from, to) => { fs.mkdirSync(path.dirname(path.join(PKG, to)), { recu
   // 4 the animation, 5 the mockups
   cp('anim/out/logo-animation.mp4', '04-Animation/Logo-Animation.mp4');
   for (const m of ['stationery', 'devices', 'sign']) cp(`print/renders/${m}.png`, `05-Mockups/${m}.png`);
-  // the guide to the files, and the fonts
+  // 6 the source files: the three Blender scenes, textures packed in
+  fs.mkdirSync(path.join(PKG, '06-Source-Files/Blender'), { recursive: true });
+  for (const m of ['stationery', 'devices', 'sign'])
+    execFileSync(process.env.BLENDER_PY, [path.join(ROOT, 'print/studio.py'), m, '--save', path.join(PKG, `06-Source-Files/Blender/${m}.blend`)], { stdio: 'ignore' });
+  // the guide to the files; the designer as author in the documents' properties
   cp('package/README.txt', 'README.txt');
+  execFileSync('python3', [path.join(__dirname, 'tidy.py'), PKG, path.join(ROOT, 'who.json')], { stdio: 'inherit' });
   fs.rmSync(path.join(OUT, NAME + '.zip'), { force: true });
   execFileSync('zip', ['-r', '-q', '-X', NAME + '.zip', NAME], { cwd: OUT });
   console.log(path.join(OUT, NAME + '.zip'));
