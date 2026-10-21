@@ -56,14 +56,14 @@ mark.innerHTML = `
     <radialGradient id="fadeR"><stop offset="0" stop-color="#fff"/><stop offset=".75" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
     <mask id="gridMask"><circle id="gridDisc" cx="${g.cx}" cy="${g.oy}" r="0" fill="url(#fadeR)"/></mask>
     ${blocks.map((b, i) => `<clipPath id="cb${i}"><rect id="rb${i}" x="${b[0] - 1}" width="${b[1] - b[0] + 2}" y="${g.G}" height="0"/></clipPath>`).join('')}
-    <mask id="goldMask">${R.map((r, i) => [-1, 1].map((s) => `<path class="gm gm${i}" d="${half(r, s)}" fill="none" stroke="#fff" stroke-width="${g.b + 2}"
+    <mask id="goldMask">${R.map((r, i) => [-1, 1].map((s) => `<path class="gm gm${i}" d="${half(r, s)}" fill="none" stroke="#fff" stroke-width="${g.b + 2}" stroke-linecap="square"
       stroke-dasharray="${halfLen(r)}" stroke-dashoffset="${halfLen(r)}"/>`).join('')).join('')}</mask>
   </defs>
   <g id="grid" mask="url(#gridMask)" stroke="#ece2d0" stroke-width=".25" stroke-opacity=".16">${grid}</g>
   <line id="ground" x1="${g.cx}" y1="${g.G + .3}" x2="${g.cx}" y2="${g.G + .3}" stroke="#c99a2e" stroke-width=".7"/>
   <g id="pulses" fill="none" stroke="#c99a2e" stroke-width=".8"></g>
   ${blocks.map((b, i) => `<g clip-path="url(#cb${i})">${INK}</g>`).join('')}
-  <g mask="url(#goldMask)">${GOLD}</g>`;
+  <g id="goldG" mask="url(#goldMask)">${GOLD}</g>`;
 
 // the faint arch pattern that settles behind the lockup at the end
 document.getElementById('pattern').innerHTML = archField(1920, 1080, '#ece2d0', 1, 170);
@@ -98,6 +98,9 @@ window.seek = (t) => {
     const p = inout3(seg(t, a, b));
     document.querySelectorAll('.gm' + i).forEach((m) => m.setAttribute('stroke-dashoffset', halfLen(R[i]) * (1 - p)));
   });
+  // once drawn, the arches are the solid shape, with no seam where the two halves met
+  const goldG = document.getElementById('goldG');
+  if (t >= 2.7) goldG.removeAttribute('mask'); else goldG.setAttribute('mask', 'url(#goldMask)');
   // 5. two signal waves leave the doorway
   document.getElementById('pulses').innerHTML = [2.62, 2.92].map((a) => {
     const p = seg(t, a, a + 1.0); if (p <= 0 || p >= 1) return '';
