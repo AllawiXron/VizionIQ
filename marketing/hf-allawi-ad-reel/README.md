@@ -1,7 +1,8 @@
 # Ad reel for allawi.psd
 
 A 41 s reel at 1080×1920, 30 fps, that sells my design work. The idea and the visual language come from an agency reel
-the user sent (Brandek): one vivid coral field for the whole reel, big white type with the key words in near-black,
+the user sent (Brandek): one vivid field for the whole reel (here my brand orange, #e2541b to #f07a2e), big white type with the key words in my
+brown (#1f1510),
 black-and-white cut-outs that come in from the frame edges and act on the words, and the next idea pushing the last one
 out of the frame. The content is mine: the script, the elements the user picked, and my three reels playing on phones.
 
@@ -42,6 +43,6 @@ The voice is the user's ElevenLabs take of `voice-script.txt`, trimmed and sped 
 
 ## Credits
 
-- The empty wallet: rawpixel, CC0. The other elements (objects, hands, people) were picked or made by the user and cut
-  out here (`assets/el`); the phone frame has its screen cut out so a reel plays inside it.
+- The empty wallet: rawpixel, CC0. The other elements (objects, hands, people, the handshake) were picked or made by the
+  user and cut out here (`assets/el`); the phone frame has its screen cut out so a reel plays inside it.
 - Sounds: only the user's own pack. No music.

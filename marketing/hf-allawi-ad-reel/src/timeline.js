@@ -99,13 +99,14 @@
     };
     const punch = (sel, t, s = 1.1) => { tl.to(sel, { scale: s, duration: 0.08, ease: 'power2.out' }, t); tl.to(sel, { scale: 1, duration: 0.4, ease: 'back.out(3)' }, t + 0.08); };
     const enter = (sel, t, from, to = {}, d = 0.5) => { tl.set(sel, { opacity: 1 }, t); tl.fromTo(sel, from, { x: 0, y: 0, scale: 1, ...to, duration: d, ease: SETTLE }, t); };
-    const leave = (sel, t, to, d = 0.3) => tl.to(sel, { ...to, duration: d, ease: ae(80, 20) }, t);
+    // a thing that leaves is gone for good once it is out, so it never turns up in a later beat
+    const leave = (sel, t, to, d = 0.3) => { tl.to(sel, { ...to, duration: d, ease: ae(80, 20) }, t); tl.set(sel, { opacity: 0 }, t + d); };
 
     gsap.set('.obj', { opacity: 0 });
 
     // ── A · the box comes in from the right edge; «أرباحك»: the wallet slams it away; «قليلة»: one coin drops on the
     //    wallet and bounces off into the next beat, onto the middle phone
-    enter('#box', 0.0, { x: 700, rotation: 14 }, { rotation: 0 }, 0.5);
+    enter('#box', 0.0, { x: 260, rotation: 6 }, { rotation: 0 }, 0.4);
     leave('#box', 1.58, { x: 900, rotation: 24 });
     enter('#wallet', 1.62, { y: -1300, rotation: -40 }, { rotation: -7 }, 0.3);
     tl.to('#wallet', { keyframes: [{ x: -14, duration: 0.05 }, { x: 10, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 2.38);
@@ -142,12 +143,12 @@
     enter('#cash', 11.83, { y: -1000, rotation: -30 }, { rotation: 8 }, 0.32);
 
     // ── I · the hand with the stopwatch comes up; the giant 3 bounces in on its word
-    enter('#hand', 12.6, { y: 1200, rotation: 10 }, { rotation: -6 }, 0.55);
+    enter('#hand', 12.74, { y: 1000, rotation: 10 }, { rotation: -6 }, 0.5);
     pop('#n3', 13.17, { rotation: -16 });
 
     // ── J · the magnifier comes in from the right and passes over «الكواليتي», which swells under it; the handshake
     //    slams in on «يثق»; the finger comes down from the top and presses on «مباشرة»
-    enter('#lens', 14.5, { x: 700, rotation: 30 }, { rotation: -12 }, 0.5);
+    enter('#lens', 14.3, { x: 700, rotation: 30 }, { rotation: -12 }, 0.5);
     tl.to('#lens', { x: -380, y: 90, rotation: -4, duration: 0.6, ease: ae(40, 100) }, 15.37);
     tl.to('#L18 .w:first-child', { scale: 1.22, duration: 0.25, ease: 'power2.out' }, 15.55);
     tl.to('#L18 .w:first-child', { scale: 1, duration: 0.3, ease: 'power2.inOut' }, 16.0);
@@ -183,9 +184,10 @@
     //    «وتقفل»: the padlock drops and locks
     tl.set('#crowd1', { opacity: 1 }, 28.4);
     tl.fromTo('#crowd1', { x: 1100 }, { x: -1150, duration: 3.9, ease: 'none' }, 28.4);
+    tl.set('#crowd1', { opacity: 0 }, 32.3);
     tl.set('#crowd2', { opacity: 1 }, 30.6);
     tl.fromTo('#crowd2', { x: 1100 }, { x: 40, duration: 2.45, ease: 'none' }, 30.6);
-    leave('#crowd2', 33.05, { x: -1200 }, 0.4);
+    leave('#crowd2', 33.05, { y: 900 }, 0.35);
     enter('#stop', 33.05, { y: 1100 }, {}, 0.25);
     leave('#stop', 33.95, { y: 1200 });
     enter('#lock', 34.05, { y: -1100 }, {}, 0.3);
@@ -196,7 +198,7 @@
     enter('#recv', 35.45, { x: 800, rotation: 35 }, { rotation: 0 }, 0.5);
     punch('#recv', 36.09, 1.08);
     leave('#recv', 36.7, { x: 900, rotation: 30 });
-    $$('#sR .rph').forEach((el, i) => { enter(el, 36.74 + i * 0.08, { y: 1300, rotation: (i - 1) * 30 }, { rotation: [-10, 9, -2][i] }, 0.5); leave(el, 37.42 + i * 0.03, { y: 1500 }, 0.32); });
+    $$('#sR .rph').forEach((el, i) => { enter(el, 36.8 + i * 0.08, { y: 1300, rotation: (i - 1) * 30 }, { rotation: [-10, 9, -2][i] }, 0.5); leave(el, 37.42 + i * 0.03, { y: 1500 }, 0.32); });
     tl.to('#patR', { opacity: 1, duration: 0.5 }, 36.8);
     tl.to('#patR', { opacity: 0, duration: 0.3 }, 37.45);
     enter('#register', 37.5, { y: 1200 }, {}, 0.42);
@@ -207,8 +209,14 @@
     tl.fromTo('#handle', { scale: 0 }, { scale: 1, duration: 1.16, ease: smart(0.16) }, 39.55);
     tl.to('#mark', { opacity: 0, duration: 0.2 }, 39.45);
 
-    // a beat's things go once the camera has left it
-    SC.slice(0, -1).forEach((s) => tl.set($$('.obj', s.el).filter((e) => e.id !== 'coin'), { opacity: 0 }, s.b + 0.7));
+    // whatever is still on a beat when it ends is pushed out the way the camera leaves it, faster than the push, and
+    // is gone before the next beat comes into view
+    SC.slice(0, -1).forEach((s, j) => {
+      const n = SC[j + 1], els = $$('.obj, #n3, #cord', s.el).filter((e) => e.id !== 'coin');
+      const dx = -Math.sign(n.c[0] - s.c[0]) * 1150, dy = -Math.sign(n.c[1] - s.c[1]) * 1150;
+      tl.to(els, { x: `+=${dx}`, y: `+=${dy}`, duration: 0.28, ease: ae(85, 10) }, s.b - 0.3);
+      tl.set(els, { opacity: 0 }, s.b - 0.02);
+    });
 
     tl.to({}, { duration: D }, 0);
 
@@ -233,14 +241,14 @@
       tl.totalTime(q, false);
       mov.forEach((m, i) => {
         const [x1, y1, z1] = box(m), [x0, y0, z0] = before[i];
-        const sx = Math.min(40, Math.abs(x1 - x0) / 2.5 + Math.abs(z1 - z0) / 16), sy = Math.min(40, Math.abs(y1 - y0) / 2.5 + Math.abs(z1 - z0) / 16);
+        const sx = Math.min(18, Math.abs(x1 - x0) / 4 + Math.abs(z1 - z0) / 20), sy = Math.min(18, Math.abs(y1 - y0) / 4 + Math.abs(z1 - z0) / 20);
         const on = sx + sy > 0.6;
         m.wrap.style.filter = on ? `url(#${m.id})` : 'none';
         if (on) m.f.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
       });
       const [x, y] = view(q), [x0, y0] = view(Math.max(0, q - SHUTTER));
       strip.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`;
-      mb.setAttribute('stdDeviation', `${Math.min(24, Math.abs(x - x0) / 5).toFixed(2)} ${Math.min(24, Math.abs(y - y0) / 5).toFixed(2)}`);
+      mb.setAttribute('stdDeviation', `${Math.min(16, Math.abs(x - x0) / 6).toFixed(2)} ${Math.min(16, Math.abs(y - y0) / 6).toFixed(2)}`);
     };
     const clock = { now: 0 };
     Object.defineProperty(clock, 't', { get() { return this.now; }, set(v) { this.now = v; render(v); } });
