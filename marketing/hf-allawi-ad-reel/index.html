@@ -13,13 +13,13 @@
 * { margin:0; padding:0; box-sizing:border-box }
 html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 #root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
-#stage { filter:url(#mb) }
+#stage { filter:url(#mb); background:#17110d }
 /* the stage runs 100 px past the frame so the motion blur never pulls in the empty page at the edges */
-.sc { position:absolute; inset:100px }
-.world { position:absolute; inset:-220px; transform-origin:50% 50% }
-.world::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38 }
-.world .lt { margin:160px 0 0 160px }
-.cam { position:absolute; inset:0; transform-origin:540px 960px }
+#table { position:absolute; left:100px; top:100px; width:4700px; height:8100px; transform-origin:0 0; background:#17110d url(assets/img/paper.jpg) 0 0/1080px; background-blend-mode:multiply }
+/* one sheet of paper per line of the voice; it clips what it holds, so a hand comes in from its edge */
+.sheetP { position:absolute; width:1000px; height:1780px; overflow:hidden; border-radius:4px; box-shadow:0 30px 70px rgba(0,0,0,.6), 0 4px 10px rgba(0,0,0,.4) }
+.sheetP::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38; pointer-events:none; z-index:25 }
+.zone { position:absolute; left:-40px; top:-70px; width:1080px; height:1920px }
 .lt { position:absolute; border-radius:50%; filter:blur(120px) }
 #dirt { position:absolute; inset:100px; z-index:40; pointer-events:none; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.5; filter:grayscale(1) brightness(1.9) contrast(1.6) }
 #fx { position:absolute; inset:0; pointer-events:none; z-index:50 }
@@ -43,7 +43,6 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .obj { position:absolute; z-index:10 }
 .ph img { position:relative; z-index:2; filter:drop-shadow(0 40px 40px rgba(0,0,0,.55)) }
 .ph .scr { position:absolute; z-index:1; left:9.03%; top:1.84%; width:88.04%; height:96.21%; object-fit:cover; -webkit-mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat; mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat }
-.caps { position:absolute; inset:0; z-index:30; transform-origin:540px 960px }
 .scrim { position:absolute; z-index:15; left:-200px; right:-200px; top:-200px; height:1100px; background:linear-gradient(rgba(10,6,4,.96), rgba(10,6,4,.92) 55%, rgba(10,6,4,0)) }
 .obj img { display:block; width:100%; filter:drop-shadow(0 46px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4)) }
     </style>
@@ -52,123 +51,156 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
     <div id="root" data-composition-id="main" data-start="0" data-duration="41.2" data-width="1080" data-height="1920">
       <div id="stage" class="clip" data-start="0" data-duration="41.2" data-track-index="0" style="position:absolute; inset:-100px">
 
+        <div id="table">
         <!-- A · مشروعك متعوب عليه، بس أرباحك قليلة: hands hold out the box, then the empty wallet slams onto the word and one coin drops in -->
-        <div class="sc" id="sA">
-          <div class="world" style="background:#2a1a12"><i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i></div>
+        <div class="sheetP" id="pA" style="left:3490px; top:40px; transform:rotate(1.2deg); background-color:#2a1a12">
+          <div class="zone" id="sA">
+                    <i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i>
           <div class="obj" id="box" style="left:400px; top:800px; width:780px"><img src="assets/el/box-hand.png" /></div>
           <div class="obj" id="wallet" style="left:120px; top:775px; width:840px; transform:rotate(-7deg)"><img src="assets/obj/wallet.png" /></div>
           <div class="obj" id="coin" style="left:430px; top:700px; width:200px"><img src="assets/el/coin.png" /></div>
         </div>
+        </div>
 
         <!-- B · عدنا نصمملك موشن جرافيك وبوستات إعلانية: an old film camera and three real phones playing my reels -->
-        <div class="sc" id="sB">
-          <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
-          <div class="obj ph" id="phL" style="left:20px; top:700px; width:330px; transform:rotate(-12deg)"><video id="v1" class="scr" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="1.6" data-track-index="2" muted playsinline></video><img src="assets/el/phone.png" /></div>
-          <div class="obj ph" id="phR" style="left:730px; top:700px; width:330px; transform:rotate(11deg)"><video id="v2" class="scr" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="16.6" data-track-index="3" muted playsinline></video><img src="assets/el/phone.png" /></div>
+        <div class="sheetP" id="pB" style="left:2370px; top:100px; transform:rotate(-1.4deg); background-color:#1d1612">
+          <div class="zone" id="sB">
+                    <i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i>
+          <div class="obj ph" id="phL" style="left:70px; top:720px; width:310px; transform:rotate(-9deg)"><video id="v1" class="scr" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="1.6" data-track-index="2" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph" id="phR" style="left:700px; top:720px; width:310px; transform:rotate(8deg)"><video id="v2" class="scr" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="16.6" data-track-index="3" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj ph" id="phC" style="left:340px; top:600px; width:400px; transform:rotate(-2deg)"><video id="v3" class="scr" src="assets/clips/vizion-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="7.4" data-track-index="4" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj" id="cam" style="left:30px; top:1150px; width:330px"><img src="assets/el/film-camera.png" /></div>
         </div>
+        </div>
 
         <!-- D · تحجي بقوة براندك: an old megaphone blasting the word -->
-        <div class="sc" id="sD">
-          <div class="world" style="background:#10202a"><i class="lt" style="left:100px; top:500px; width:900px; height:900px; background:rgba(90,150,200,.4)"></i></div>
-          <div class="obj" id="mega" style="left:120px; top:760px; width:760px; transform:rotate(-8deg)"><img src="assets/el/megaphone.png" /></div>
+        <div class="sheetP" id="pD" style="left:1170px; top:0px; transform:rotate(0.8deg); background-color:#10202a">
+          <div class="zone" id="sD">
+                    <i class="lt" style="left:100px; top:500px; width:900px; height:900px; background:rgba(90,150,200,.4)"></i>
+          <div class="obj" id="mega" style="left:190px; top:780px; width:680px; transform:rotate(-8deg)"><img src="assets/el/megaphone.png" /></div>
+        </div>
         </div>
 
         <!-- E · وتبيع بمكانك: a shop owner hands over the bag while you are away -->
-        <div class="sc inkt" id="sE">
-          <div class="world" style="background:#e9dfcf"><i class="lt" style="left:200px; top:600px; width:800px; height:800px; background:rgba(255,250,240,.6)"></i></div>
+        <div class="sheetP" id="pE" style="left:80px; top:70px; transform:rotate(-0.6deg); background-color:#e9dfcf">
+          <div class="zone inkt" id="sE">
+                    <i class="lt" style="left:200px; top:600px; width:800px; height:800px; background:rgba(255,250,240,.6)"></i>
           <div class="obj" id="owner" style="left:40px; top:830px; width:1000px"><img src="assets/el/shop-owner.png" /></div>
+        </div>
         </div>
 
         <!-- F · حركة تشد العين: the word, then binoculars come up in front of it -->
-        <div class="sc" id="sF">
-          <div class="world" style="background:#5e0a14"><i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.55)"></i></div>
+        <div class="sheetP" id="pF" style="left:10px; top:2090px; transform:rotate(1.5deg); background-color:#5e0a14">
+          <div class="zone" id="sF">
+                    <i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.55)"></i>
           <div class="obj" id="bino" style="left:40px; top:960px; width:1000px"><img src="assets/el/binoculars.png" /></div>
+        </div>
         </div>
 
         <!-- G · فكرة تقنع الزبون: the bulb flickers on -->
-        <div class="sc" id="sG">
-          <div class="world" style="background:#14215e"><i class="lt" id="glow" style="left:240px; top:300px; width:700px; height:700px; background:rgba(255,200,90,.0)"></i></div>
+        <div class="sheetP" id="pG" style="left:1210px; top:1980px; transform:rotate(-1.0deg); background-color:#14215e">
+          <div class="zone" id="sG">
+                    <i class="lt" id="glow" style="left:240px; top:300px; width:700px; height:700px; background:rgba(255,200,90,.0)"></i>
           <div class="obj" id="bulb" style="left:330px; top:300px; width:420px"><img src="assets/el/bulb.png" /></div>
+        </div>
         </div>
 
         <!-- H · ونتيجة ترفع مبيعاتك: the coins rise, the cash lands -->
-        <div class="sc inkt" id="sH">
-          <div class="world" style="background:#ece3d4"></div>
-          <div class="obj" id="coins" style="left:170px; top:780px; width:740px"><img src="assets/el/coin-stacks.png" /></div>
+        <div class="sheetP" id="pH" style="left:2300px; top:2060px; transform:rotate(0.6deg); background-color:#ece3d4">
+          <div class="zone inkt" id="sH">
+                    <div class="obj" id="coins" style="left:170px; top:780px; width:740px"><img src="assets/el/coin-stacks.png" /></div>
           <div class="obj" id="cash" style="left:520px; top:900px; width:480px; transform:rotate(8deg)"><img src="assets/el/cash-pile.png" /></div>
+        </div>
         </div>
 
         <!-- I · من أول 3 ثواني بإعلانك: the number, the hand with the stopwatch rising beside it -->
-        <div class="sc" id="sI">
-          <div class="world" style="background:#2a1a12"><i class="lt" style="left:100px; top:400px; width:900px; height:900px; background:rgba(226,84,27,.4)"></i></div>
+        <div class="sheetP" id="pI" style="left:3520px; top:2010px; transform:rotate(-1.6deg); background-color:#2a1a12">
+          <div class="zone" id="sI">
+                    <i class="lt" style="left:100px; top:400px; width:900px; height:900px; background:rgba(226,84,27,.4)"></i>
           <div id="n3" style="position:absolute; z-index:9; left:70px; top:380px; font-size:860px; line-height:1; color:#e2541b; opacity:0">3</div>
           <div class="obj" id="hand" style="left:640px; top:900px; width:520px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
         </div>
+        </div>
 
         <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: the magnifier sweeps across, then the handshake -->
-        <div class="sc" id="sJ">
-          <div class="world" style="background:#1d2a22"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(140,200,160,.25)"></i></div>
+        <div class="sheetP" id="pJ" style="left:3470px; top:4080px; transform:rotate(1.0deg); background-color:#1d2a22">
+          <div class="zone" id="sJ">
+                    <i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(140,200,160,.25)"></i>
           <div class="obj" id="jbag" style="left:340px; top:760px; width:400px"><img src="assets/el/bag-orange.png" /></div>
           <div class="obj" id="lens" style="left:280px; top:700px; width:560px"><img src="assets/el/magnifier.png" /></div>
-          <div class="obj" id="shake" style="left:-110px; top:700px; width:1300px"><img src="assets/el/handshake.png" /></div>
+          <div class="obj" id="shake" style="left:-60px; top:820px; width:1200px"><img src="assets/el/handshake.png" /></div>
+        </div>
         </div>
 
         <!-- K · ويدخل يطلب منك مباشرة: a finger presses the red button -->
-        <div class="sc" id="sK">
-          <div class="world" style="background:#171310"><i class="lt" style="left:200px; top:800px; width:700px; height:700px; background:rgba(226,60,40,.3)"></i></div>
+        <div class="sheetP" id="pK" style="left:2380px; top:3990px; transform:rotate(-0.8deg); background-color:#171310">
+          <div class="zone" id="sK">
+                    <i class="lt" style="left:200px; top:800px; width:700px; height:700px; background:rgba(226,60,40,.3)"></i>
           <div class="obj" id="press" style="left:560px; top:-120px; width:600px"><img src="assets/el/button-finger.png" /></div>
+        </div>
         </div>
 
         <!-- L · يعزلك تماما عن منافسيك: the king stands in the light, the pawns fall -->
-        <div class="sc" id="sL">
-          <div class="world" style="background:#16201d"><i class="lt" style="left:180px; top:600px; width:760px; height:900px; background:rgba(240,200,140,.38)"></i></div>
+        <div class="sheetP" id="pL" style="left:1160px; top:4070px; transform:rotate(1.4deg); background-color:#16201d">
+          <div class="zone" id="sL">
+                    <i class="lt" style="left:180px; top:600px; width:760px; height:900px; background:rgba(240,200,140,.38)"></i>
           <div class="obj pawn" style="left:40px; top:980px; width:200px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj pawn" style="left:220px; top:1060px; width:180px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj pawn" style="left:690px; top:1060px; width:180px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj pawn" style="left:850px; top:980px; width:200px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj" id="king" style="left:420px; top:560px; width:250px"><img src="assets/el/chess-king.png" /></div>
         </div>
+        </div>
 
         <!-- M · مرة ومرتين وعشرة: shopping bags, one, two, then a pile -->
-        <div class="sc" id="sM">
-          <div class="world" style="background:#3a1608"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(226,84,27,.4)"></i></div>
+        <div class="sheetP" id="pM" style="left:60px; top:4100px; transform:rotate(-1.2deg); background-color:#3a1608">
+          <div class="zone" id="sM">
+                    <i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(226,84,27,.4)"></i>
           <div id="bags"></div>
+        </div>
         </div>
 
         <!-- N · لأن شاف براند حقيقي قدامه: the man with the binoculars -->
-        <div class="sc" id="sN">
-          <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
+        <div class="sheetP" id="pN" style="left:0px; top:6020px; transform:rotate(0.7deg); background-color:#1d1612">
+          <div class="zone" id="sN">
+                    <i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i>
           <div class="obj" id="watcher" style="left:370px; top:400px; width:340px"><img src="assets/el/binoculars-man.png" /></div>
+        </div>
         </div>
 
         <!-- O · the crowd walks past without looking; the stop hand slams down; the padlock locks the sale -->
-        <div class="sc" id="sO">
-          <div class="world" style="background:#24282a"><i class="lt" style="left:100px; top:700px; width:900px; height:700px; background:rgba(200,200,190,.18)"></i></div>
+        <div class="sheetP" id="pO" style="left:1220px; top:6080px; transform:rotate(-1.5deg); background-color:#24282a">
+          <div class="zone" id="sO">
+                    <i class="lt" style="left:100px; top:700px; width:900px; height:700px; background:rgba(200,200,190,.18)"></i>
           <div class="obj" id="crowd1" style="left:0; top:760px; width:900px"><img src="assets/el/crowd.png" /></div>
           <div class="obj" id="crowd2" style="left:0; top:720px; width:900px"><img src="assets/el/crowd2.png" /></div>
           <div class="obj" id="stop" style="left:190px; top:1000px; width:700px"><img src="assets/el/stop-hand.png" /></div>
           <div class="obj" id="lock" style="left:400px; top:640px; width:290px"><img src="assets/el/padlock.png" /></div>
         </div>
+        </div>
 
         <!-- Q · تواصل ويانا بالخاص: the receiver swings in -->
-        <div class="sc" id="sQ">
-          <div class="world" style="background:#0f1517"><i class="lt" style="left:300px; top:600px; width:700px; height:700px; background:rgba(226,84,27,.3)"></i></div>
+        <div class="sheetP" id="pQ" style="left:2320px; top:6010px; transform:rotate(0.9deg); background-color:#0f1517">
+          <div class="zone" id="sQ">
+                    <i class="lt" style="left:300px; top:600px; width:700px; height:700px; background:rgba(226,84,27,.3)"></i>
           <div class="obj" id="recv" style="left:470px; top:520px; width:700px"><img src="assets/el/receiver.png" /></div>
+        </div>
         </div>
 
         <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my reels on three phones, then the cash register rings, then the handle -->
-        <div class="sc dk" id="sR">
-          <div class="world" style="background:#d4521c"><i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
-          <div class="obj ph rph" style="left:20px; top:640px; width:330px; transform:rotate(-12deg)"><video id="v4" class="scr" src="assets/clips/logos-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="46.3" data-track-index="5" muted playsinline></video><img src="assets/el/phone.png" /></div>
-          <div class="obj ph rph" style="left:730px; top:640px; width:330px; transform:rotate(11deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="2.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
+        <div class="sheetP" id="pR" style="left:3490px; top:6040px; transform:rotate(-0.7deg); background-color:#d4521c">
+          <div class="zone dk" id="sR">
+                    <i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i>
+          <div class="obj ph rph" style="left:70px; top:660px; width:310px; transform:rotate(-9deg)"><video id="v4" class="scr" src="assets/clips/logos-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="46.3" data-track-index="5" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph rph" style="left:700px; top:660px; width:310px; transform:rotate(8deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="2.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj ph rph" style="left:340px; top:560px; width:400px; transform:rotate(-2deg)"><video id="v6" class="scr" src="assets/clips/vizion-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="7.6" data-track-index="7" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj" id="cashfan" style="left:320px; top:560px; width:440px"><img src="assets/el/cash-fan.png" /></div>
           <div class="obj" id="register" style="left:240px; top:650px; width:600px"><img src="assets/el/register.png" /></div>
           <div class="cap" id="handle" style="top:1450px; font-size:100px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
         </div>
+        </div>
 
+        </div>
         <div id="dirt"></div>
       </div>
       <div id="fx"><div id="grain"></div><div id="vig"></div></div>
@@ -324,8 +356,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
     </div>
     <script>
 window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 6.62], ["E", 6.62, 7.74], ["F", 7.74, 9.14], ["G", 9.14, 10.72], ["H", 10.72, 12.62], ["I", 12.62, 14.42], ["J", 14.42, 17.5], ["K", 17.5, 19.04], ["L", 19.04, 23.52], ["M", 23.52, 26.62], ["N", 26.62, 28.5], ["O", 28.5, 35.48], ["Q", 35.48, 36.74], ["R", 36.74, 40.8]], "lines": [["A", 300, 76, "مشروعك متعوب عليه، بس", [0.0, 0.56, 0.88, 1.38]], ["A", 400, 330, "أرباحك", [1.66]], ["A", 1300, 170, "*قليلة؟", [2.1]], ["B", 300, 124, "عدنا *نصمملك", [2.65, 2.91], 4.1], ["B", 1440, 110, "موشن جرافيك", [3.45, 3.73], 4.1], ["B", 300, 130, "وبوستات إعلانية", [4.2, 4.73]], ["D", 300, 96, "تحجي بقوة", [5.25, 5.63]], ["D", 400, 310, "براندك", [6.09]], ["E", 300, 150, "وتبيع بمكانك", [6.67, 7.09]], ["F", 390, 400, "حركة", [7.79]], ["F", 300, 84, "تشد *العين", [8.37, 8.61]], ["G", 1130, 330, "فكرة", [9.19]], ["G", 1480, 80, "تقنع الزبون", [9.63, 10.03]], ["H", 300, 330, "ونتيجة", [10.77]], ["H", 1420, 96, "ترفع *مبيعاتك", [11.45, 11.83]], ["I", 300, 96, "من أول", [12.67, 12.93]], ["I", 1490, 104, "ثواني بإعلانك", [13.35, 13.73], null, "l"], ["J", 300, 104, "الزبون راح يلمس", [14.47, 14.87, 15.09], 16.3], ["J", 430, 120, "الكواليتي *العالي", [15.37, 15.79], 16.3], ["J", 300, 120, "يثق بمنتجك", [16.41, 16.69]], ["K", 1330, 96, "ويدخل يطلب منك", [17.55, 17.89, 18.23]], ["K", 1440, 150, "*مباشرة", [18.55]], ["L", 300, 104, "لأن ويانا راح يطلع", [19.09, 19.65, 20.21, 20.43], 21.6], ["L", 430, 104, "إعلانك بمستوى", [20.69, 21.13], 21.6], ["L", 300, 120, "يعزلك *تماما", [21.75, 22.17]], ["L", 1380, 96, "عن منافسيك", [22.69, 22.77]], ["M", 300, 96, "ويخلي الزبون يشتري منك", [23.57, 23.93, 24.27, 24.63], 24.9], ["M", 290, 110, "مرة ومرتين", [24.97, 25.35]], ["M", 1370, 220, "*وعشرة", [25.97]], ["N", 300, 110, "لأن شاف براند", [26.67, 27.01, 27.21]], ["N", 1460, 110, "*حقيقي قدامه", [27.57, 27.97]], ["O", 300, 104, "كافي تضيع جمهورك", [28.55, 28.93, 29.15], 30.6], ["O", 430, 104, "بتصاميم عادية", [29.65, 30.15], 30.6], ["O", 1500, 110, "الكل يتخطاها", [30.85, 30.99], 31.5], ["O", 300, 110, "ابدأ اليوم", [31.63, 32.05], 32.45], ["O", 300, 104, "بتصاميم *توقف الزبون", [32.51, 33.09, 33.51]], ["O", 1520, 100, "وتقفل وياه البيعة", [34.05, 34.61, 34.85]], ["Q", 300, 120, "تواصل ويانا", [35.53, 35.81]], ["Q", 1450, 140, "*بالخاص", [36.09]], ["R", 290, 150, "شوف أعمالنا", [36.79, 36.99], 37.45], ["R", 290, 110, "وخلي براندك *يبيع صح", [37.53, 38.05, 38.71, 39.07]]], "fx": [[0.05, "flick", 0.3], [0.42, "cinclick", 0.34], [1.6, "flick", 0.26], [2.1, "money", 0.22], [2.12, "softpop", 0.3], [2.6, "fastwhoosh", 0.22], [2.66, "softpop", 0.24], [2.8, "softpop", 0.2], [2.94, "softpop", 0.2], [4.2, "simple", 0.22], [4.25, "cinclick", 0.22], [5.2, "smooth", 0.24], [5.3, "whooshcon", 0.2], [6.62, "cinclick", 0.3], [6.68, "simple", 0.22], [7.74, "hitcut", 0.3], [8.26, "bite", 0.4], [9.14, "cinclick", 0.3], [9.19, "select", 0.3], [9.2, "flick", 0.24], [9.3, "select2", 0.22], [10.72, "cinclick", 0.3], [10.78, "mpop", 0.28], [11.83, "ppop3", 0.22], [12.62, "fastwhoosh", 0.24], [12.68, "gear", 0.28], [13.17, "hit", 0.26], [14.42, "cinclick", 0.3], [15.37, "smooth", 0.2], [15.6, "airy", 0.2], [16.41, "mpop", 0.3], [17.5, "hitcut", 0.3], [18.55, "cinclick", 0.36], [19.04, "smooth", 0.24], [19.12, "sweet", 0.22], [21.75, "whooshcon", 0.24], [23.52, "cinclick", 0.3], [24.97, "mpop", 0.26], [25.35, "mpop", 0.26], [25.97, "money", 0.3], [26.62, "fastwhoosh", 0.22], [26.7, "softpop", 0.22], [28.5, "cinfast", 0.24], [29.0, "data", 0.18], [33.09, "cinclick", 0.3], [33.09, "hit", 0.32], [34.05, "cinclick", 0.3], [34.1, "clickb", 0.4], [35.48, "cinclick", 0.3], [36.09, "click2", 0.4], [36.74, "flick", 0.3], [36.8, "softpop", 0.2], [36.9, "softpop", 0.2], [37.0, "softpop", 0.2], [37.1, "softpop", 0.2], [37.2, "mpop", 0.24], [37.45, "mainwhoosh", 0.24], [37.6, "smooth", 0.22], [38.1, "money", 0.32], [39.55, "sweet", 0.3]]};
-// The motion of my ad reel, on the reel standard (see ../hf-simple-logos-reel/README.md, Motion): every shot rides a
-// camera on two nulls that lands fast and settles, then speeds into the cut; each cut gets a 0.3 s box-blur pulse;
+// The motion of my ad reel: one take over a table of paper sheets, one sheet per line of the voice; the camera glides
+// from sheet to sheet and drifts closer while the voice is on one. From the reel standard (../hf-simple-logos-reel):
 // letters come out of a blur one at a time, 4.8 frames apart (TextEvo); things pop in with Smart Bounce (amplitude 50,
 // frequency 2, decay 4); the whole frame steps (Posterize Time, here 15 fps so every step holds two frames of the 30 fps
 // video) with a long shutter so each step carries its motion blur, and a grunge layer sits over it all on multiply.
@@ -336,7 +368,7 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
   const $ = (s) => document.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
-  const POSTER = 15, ZOOM = 1050, SHUTTER = 1 / 30, FLASH = [0.15, 6];
+  const POSTER = 15, SHUTTER = 1 / 30;
 
   // After Effects' temporal ease as a curve: outgoing influence of the first key, incoming influence of the second
   const bez = (x1, y1, x2, y2) => (p) => {
@@ -354,14 +386,6 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
   // Smart Bounce, «Elastic»: the keyframed move, then the overshoot v·amp·sin(2π·f·t)/e^(decay·t) for a second
   const smart = (k) => (p) => { const t = p * (k + 1); return t < k ? t / k : 1 + 0.05 / k * Math.sin(4 * Math.PI * (t - k)) / Math.exp(4 * (t - k)); };
 
-  // each scene's contents ride on a camera layer; its colour world, far behind, moves a third as much
-  $$('.sc').forEach((sc) => {
-    const cam = document.createElement('div');
-    cam.className = 'cam';
-    [...sc.children].filter((c) => !c.classList.contains('world')).forEach((c) => cam.appendChild(c));
-    sc.appendChild(cam);
-  });
-
   // the bags: one, two, then a pile of ten
   const BAG = ['bag-orange', 'bag-black', 'bag-blue', 'bag-black2'];
   for (let i = 0; i < 12; i++) {
@@ -369,9 +393,6 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     $('#bags').insertAdjacentHTML('beforeend', `<div class="obj bag" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${(Math.sin(i * 1.9) * 12).toFixed(1)}deg)"><img src="assets/el/${BAG[i % 4]}.png" /></div>`);
   }
 
-  // the captions ride their own layer above the camera, which follows the camera less than half as much, so a push-in
-  // never carries a line out of the safe area
-  $$('.sc').forEach((sc) => { const c = document.createElement('div'); c.className = 'caps'; sc.appendChild(c); });
   // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time, «l» to
   // set the line on the left]
   R.lines.forEach(([sc, top, size, text, times, , align], i) => {
@@ -379,46 +400,32 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     d.className = 'cap'; d.id = 'L' + i;
     d.style.cssText = `top:${top}px; font-size:${size}px` + (align === 'l' ? '; text-align:left; left:70px' : '');
     d.innerHTML = text.split(' ').map((w) => {
+      // a lam-alef stays in one piece: it is one shape, drawn from two letters
       const k = w[0] === '*', s = k ? w.slice(1) : w;
-      return `<span class="w${k ? ' k' : ''}">${[...s].map((c) => `<span class="l">${c}</span>`).join('')}</span>`;
+      return `<span class="w${k ? ' k' : ''}">${(s.match(/ل[اأإآ]|./gu) || []).map((c) => `<span class="l">${c}</span>`).join('')}</span>`;
     }).join(' ');
-    $(`#s${sc} .caps`).appendChild(d);
+    $(`#s${sc}`).appendChild(d);
   });
 
-  // the camera of every shot, in the After Effects project's units: «from» is where the inner null starts and settles
-  // from, «drift» the slow moves in between, «exit» the outer null's move into the cut
-  const RIG = {
-    A: { from: [0, 0, 70], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
-    B: { from: [-200, 0, 0], settle: 1.4, drift: [[4.1, 4.5, [0, 0, 120]]], exit: [[0, -378, 0], 0.4] },
-    D: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 220], 0.5] },
-    E: { from: [0, 0, 120], settle: 1.0, exit: [[-65, 0, 0], 0.6] },
-    F: { from: [85, 0, 0], settle: 1.2, exit: [[0, -405, 0], 0.5] },
-    G: { from: [0, 0, 168], settle: 1.3, exit: [[0, -405, 0], 0.6] },
-    H: { from: [0, 497, 0], settle: 0.8, exit: [[0, 0, -370], 0.44] },
-    I: { from: [0, 0, 192], settle: 1.6, exit: [[0, -319, 0], 0.6] },
-    J: { from: [0, 0, 60], settle: 1.0, exit: [[0, 0, 120], 0.4] },
-    K: { from: [0, 0, 200], settle: 1.2, exit: [[0, 593, 0], 0.6] },
-    L: { from: [0, -500, 0], settle: 1.8, drift: [[21.0, 23.0, [0, 0, 80]]], exit: [[376, 0, 0], 0.6] },
-    M: { from: [-196, 0, 0], settle: 2.5, exit: [[102, 0, 0], 0.6] },
-    N: { from: [0, 0, 200], settle: 1.4, exit: [[0, 0, -122], 0.5] },
-    O: { from: [0, 0, 180], settle: 2.0, drift: [[33.0, 35.0, [0, 0, 90]]], exit: [[0, 0, -231], 0.6] },
-    Q: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 200], 0.4] },
-    R: { from: [0, 0, 220], settle: 1.8, drift: [[38.0, 40.8, [0, 0, -43], HOLD]] },
+  // the one take: the camera holds on a sheet while its lines are spoken, drifting closer, and glides to the next sheet
+  // across each change (0.2 s before it to 0.38 s after), pulling back a little mid-flight
+  const SC = R.scenes.map(([id, a, b], i) => ({ id, a, b: i === R.scenes.length - 1 ? D : b, el: $('#s' + id) }));
+  const centre = (id) => { const el = $('#p' + id); return [el.offsetLeft + 500, el.offsetTop + 890]; };
+  SC.forEach((s) => { s.c = centre(s.id); });
+  const K0 = 0.9, K1 = 0.97, PRE = 0.2, POST = 0.38, GLIDE = ae(45, 45);
+  const camAt = (t) => {
+    for (let j = 0; j < SC.length - 1; j++) {
+      const B = SC[j].b;
+      if (t >= B - PRE && t < B + POST) {
+        const p = GLIDE((t - (B - PRE)) / (PRE + POST)), a = SC[j].c, n = SC[j + 1].c;
+        return [a[0] + (n[0] - a[0]) * p, a[1] + (n[1] - a[1]) * p, K1 + (K0 - K1) * p - 0.1 * Math.sin(Math.PI * p)];
+      }
+    }
+    const s = SC.find((x) => t < x.b) || SC[SC.length - 1];
+    const a0 = s === SC[0] ? 0 : s.a + POST, a1 = s.b - PRE;
+    return [s.c[0], s.c[1], K0 + (K1 - K0) * DRIFT(Math.min(1, Math.max(0, (t - a0) / Math.max(0.1, a1 - a0))))];
   };
-  const SC = R.scenes.map(([id, a, b], i) => {
-    const r = RIG[id], moves = [];
-    moves.push([a, a + r.settle, r.from.map((v) => -v), SETTLE]);
-    (r.drift || []).forEach(([t0, t1, d, e]) => moves.push([t0, t1, d, e || DRIFT]));
-    if (r.exit) moves.push([b - r.exit[1], b, r.exit[0], EXIT]);
-    return { id, a, b: i === R.scenes.length - 1 ? D : b, from: r.from, moves, cam: $(`#s${id} .cam`), caps: $(`#s${id} .caps`), world: $(`#s${id} .world`) };
-  });
-  const camAt = (s, t) => {
-    const c = [...s.from];
-    s.moves.forEach(([t0, t1, d, e]) => { const k = e((t - t0) / (t1 - t0)); c[0] += d[0] * k; c[1] += d[1] * k; c[2] += d[2] * k; });
-    const sc = ZOOM / (ZOOM - c[2]);
-    return [-c[0] * sc, -c[1] * sc, sc];
-  };
-  const cuts = SC.slice(1).map((s) => s.a);
+  const view = (t) => { const [x, y, k] = camAt(t); return [540 - x * k, 960 - y * k, k]; };
 
   function build() {
     // a line wider than the safe width shrinks to fit (the letters are laid out already, only hidden)
@@ -462,11 +469,8 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
       return main;
     };
 
-    // ── scenes: hard cuts, the camera and the blur pulse do the rest
-    gsap.set('.sc', { autoAlpha: 0 });
-    gsap.set('#sA', { autoAlpha: 1 });
-    gsap.set('.obj, .print, .shot', { opacity: 0 });
-    SC.slice(1).forEach((s, i) => { tl.set(`#s${SC[i].id}`, { autoAlpha: 0 }, s.a); tl.set(`#s${s.id}`, { autoAlpha: 1 }, s.a); });
+    // ── everything waits on its sheet and comes in as the camera lands there
+    gsap.set('.obj', { opacity: 0 });
 
     const enter = (sel, t, from, to = {}, d = 0.5) => { tl.set(sel, { opacity: 1 }, t); tl.fromTo(sel, from, { x: 0, y: 0, rotation: 0, scale: 1, ...to, duration: d, ease: SETTLE }, t); };
     const leave = (sel, t, to, d = 0.3) => tl.to(sel, { ...to, duration: d, ease: ae(80, 20) }, t);
@@ -483,41 +487,41 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     tl.to('#wallet', { keyframes: [{ x: -12, duration: 0.05 }, { x: 10, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 2.42);
 
     // ── B · the phones come up with my reels playing, the film camera rolls in; on «وبوستات» the phones turn
-    [['#phL', 2.66, -12], ['#phR', 2.8, 11], ['#phC', 2.94, -2]].forEach(([sel, t, r]) => enter(sel, t, { y: 1300, rotation: r * 3 }, { rotation: r }, 0.55));
-    enter('#cam', 3.45, { x: -700, rotation: -20 }, {}, 0.5);
+    [['#phL', 2.66, -9], ['#phR', 2.8, 8], ['#phC', 2.94, -2]].forEach(([sel, t, r]) => enter(sel, t - 0.06, { y: 1300, rotation: r * 3 }, { rotation: r }, 0.55));
+    enter('#cam', 2.9, { x: -700, rotation: -20 }, {}, 0.5);
     tl.to(['#phL', '#phR', '#phC'], { rotationY: 360, duration: 0.6, ease: ae(60, 100), stagger: 0.08 }, 4.2);
     tl.to('#cam', { x: -700, rotation: -20, duration: 0.3, ease: ae(80, 20) }, 4.15);
 
     // ── D · the megaphone swings up and blasts on «براندك»
-    enter('#mega', 5.3, { y: 1100, rotation: 30 }, { rotation: -8 }, 0.5);
+    enter('#mega', 5.2, { y: 1100, rotation: 30 }, { rotation: -8 }, 0.5);
     tl.to('#mega', { keyframes: [{ scale: 1.12, x: -20, duration: 0.07 }, { scale: 0.98, x: 8, duration: 0.07 }, { scale: 1.04, x: -4, duration: 0.07 }, { scale: 1, x: 0, duration: 0.1 }] }, 6.09);
 
     // ── E · the shop owner comes up and hands the bag over on «بمكانك»
-    enter('#owner', 6.67, { y: 1200 }, {}, 0.5);
+    enter('#owner', 6.62, { y: 1200 }, {}, 0.5);
     punch('#owner', 7.09, 1.05);
 
     // ── F · the binoculars come up in front of «حركة» on «تشد العين»
-    enter('#bino', 8.3, { y: 1300, rotation: 10 }, {}, 0.45);
+    enter('#bino', 7.74, { y: 1300, rotation: 10 }, {}, 0.45);
     push('#bino img', 8.75, 9.14, 1.06);
 
     // ── G · the bulb drops on its socket and flickers on
-    enter('#bulb', 9.19, { y: -1100 }, {}, 0.4);
+    enter('#bulb', 9.14, { y: -1100 }, {}, 0.4);
     tl.fromTo('#bulb img', { filter: 'brightness(.35) drop-shadow(0 40px 40px rgba(0,0,0,.6))' }, { keyframes: [
       { filter: 'brightness(1.3) drop-shadow(0 0 60px rgba(255,210,120,.9))', duration: 0.05 }, { filter: 'brightness(.5) drop-shadow(0 40px 40px rgba(0,0,0,.6))', duration: 0.06 },
       { filter: 'brightness(1.25) drop-shadow(0 0 70px rgba(255,210,120,.95))', duration: 0.05 }] }, 9.6);
     tl.to('#glow', { backgroundColor: 'rgba(255,200,90,.55)', duration: 0.2 }, 9.7);
 
     // ── H · the coins rise on «ونتيجة», the cash lands on «مبيعاتك»
-    enter('#coins', 10.78, { y: 900 }, {}, 0.55);
+    enter('#coins', 10.72, { y: 900 }, {}, 0.55);
     enter('#cash', 11.83, { y: -1200, rotation: -30 }, { rotation: 8 }, 0.35);
 
     // ── I · the hand comes up with the stopwatch, the «3» bounces in on its word
-    enter('#hand', 12.66, { y: 1200, rotation: 10 }, { rotation: -8 }, 0.6);
+    enter('#hand', 12.62, { y: 1200, rotation: 10 }, { rotation: -8 }, 0.6);
     pop('#n3', 13.17, { rotation: -20 });
 
     // ── J · the magnifier sweeps across on «الكواليتي», then the handshake slams in on «يثق»
-    enter('#jbag', 14.47, { y: 1200 }, {}, 0.5);
-    enter('#lens', 14.9, { x: 900, rotation: 30 }, {}, 0.5);
+    enter('#jbag', 14.42, { y: 1200 }, {}, 0.5);
+    enter('#lens', 14.6, { x: 900, rotation: 30 }, {}, 0.5);
     tl.to('#lens', { x: -180, y: 160, rotation: -8, duration: 0.6, ease: ae(40, 100) }, 15.37);
     leave('#jbag', 16.3, { y: 1400 });
     tl.to('#lens', { scale: 1.12, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, 15.79);
@@ -526,12 +530,12 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     punch('#shake', 16.69, 1.05);
 
     // ── K · the finger comes down and presses on «مباشرة»
-    enter('#press', 17.55, { y: -1300 }, {}, 0.5);
+    enter('#press', 17.5, { y: -1300 }, {}, 0.5);
     tl.to('#press', { y: 60, duration: 0.07, ease: 'power2.in', yoyo: true, repeat: 1 }, 18.5);
 
     // ── L · the king lands in the light among the pawns; on «يعزلك» the pawns fall
-    enter('#king', 19.09, { y: -1200 }, {}, 0.45);
-    $$('#sL .pawn').forEach((el, i) => enter(el, 19.3 + i * 0.08, { y: 900 }, {}, 0.4));
+    enter('#king', 19.04, { y: -1200 }, {}, 0.45);
+    $$('#sL .pawn').forEach((el, i) => enter(el, 19.1 + i * 0.08, { y: 900 }, {}, 0.4));
     $$('#sL .pawn').forEach((el, i) => tl.to(el, { rotation: (i < 2 ? -1 : 1) * 95, x: (i < 2 ? -1 : 1) * 700, y: -120, duration: 0.45, ease: ae(60, 100) }, 21.75 + i * 0.06));
     tl.to('#king', { scale: 1.08, duration: 0.5, ease: 'power2.out' }, 21.75);
     tl.set('#L25', { className: 'cap dim' }, 22.6);
@@ -540,7 +544,7 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     $$('#bags .bag').forEach((el, i) => enter(el, i === 0 ? 24.97 : i === 1 ? 25.35 : 25.97 + (i - 2) * 0.05, { y: -1400, x: (i % 2 ? 1 : -1) * 150 }, {}, 0.35));
 
     // ── N · the man with the binoculars rises and leans in
-    enter('#watcher', 26.66, { y: 1300 }, {}, 0.55);
+    enter('#watcher', 26.62, { y: 1300 }, {}, 0.55);
     push('#watcher', 27.3, 28.5, 1.08);
 
     // ── O · the crowd walks past and off; «توقف»: the stop hand slams down; «وتقفل»: the padlock locks
@@ -555,11 +559,11 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     tl.to('#lock', { y: 18, duration: 0.06, yoyo: true, repeat: 1 }, 34.35);
 
     // ── Q · the receiver swings in, punches on «بالخاص»
-    enter('#recv', 35.53, { x: 900, rotation: 40 }, {}, 0.5);
+    enter('#recv', 35.48, { x: 900, rotation: 40 }, {}, 0.5);
     punch('#recv', 36.09, 1.1);
 
     // ── R · «شوف أعمالنا»: my reels on the phones; «وخلي»: the phones go and the register drops and rings, cash bursts out; the handle
-    $$('#sR .rph').forEach((el, i) => { enter(el, 36.8 + i * 0.1, { y: 1300, rotation: (i - 1) * 30 }, { rotation: [-12, 11, -2][i] }, 0.5); leave(el, 37.45 + i * 0.03, { y: 1500, rotation: (i - 1) * 40 }, 0.35); });
+    $$('#sR .rph').forEach((el, i) => { enter(el, 36.74 + i * 0.08, { y: 1300, rotation: (i - 1) * 30 }, { rotation: [-9, 8, -2][i] }, 0.5); leave(el, 37.45 + i * 0.03, { y: 1500, rotation: (i - 1) * 40 }, 0.35); });
     enter('#register', 37.55, { y: -1400 }, {}, 0.35);
     tl.set('#cashfan', { opacity: 1 }, 38.05);
     tl.fromTo('#cashfan', { y: 300, scale: 0.4, rotation: -20 }, { y: -140, scale: 1, rotation: 6, duration: 0.5, ease: SETTLE }, 38.05);
@@ -569,11 +573,10 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
 
     tl.to({}, { duration: D }, 0);
 
-    // the clock HyperFrames drives: it holds every step for 1/15 s, plays the timeline there, places the shot's camera
-    // and blurs what moved during the shutter: the whole frame for the camera (plus the pulse on a cut), and each
-    // moving thing on its own for its own move
-    const mb = $('#mbB'), defs = $('#mb').parentNode;
-    const MOV = SC.map((s) => $$('.obj, #n3', s.cam).map((el, i) => {
+    // the clock HyperFrames drives: it holds every step for 1/15 s, plays the timeline there, places the camera over the
+    // table and blurs what moved during the shutter: the whole frame for the camera, and each moving thing for its own move
+    const mb = $('#mbB'), defs = $('#mb').parentNode, table = $('#table');
+    const MOV = SC.map((s) => $$('.obj, #n3', s.el).map((el, i) => {
       const wrap = document.createElement('div'), id = `mb${s.id}${i}`;
       wrap.style.cssText = `position:absolute; inset:0; z-index:${getComputedStyle(el).zIndex}`;
       el.parentNode.insertBefore(wrap, el);
@@ -584,24 +587,21 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     const box = (m) => { const r = m.el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2, r.width + r.height]; };
     const render = (t) => {
       const q = Math.min(D, Math.floor((t + 0.03) * POSTER) / POSTER);
-      const si = SC.findIndex((x) => q >= x.a && q < x.b), s = SC[si < 0 ? SC.length - 1 : si], mov = MOV[si < 0 ? SC.length - 1 : si];
+      let si = SC.findIndex((x) => q < x.b); if (si < 0) si = SC.length - 1;
+      const mov = [].concat(MOV[si - 1] || [], MOV[si], MOV[si + 1] || []);
       tl.totalTime(Math.max(0, q - SHUTTER), true);
       const before = mov.map(box);
       tl.totalTime(q, false);
       mov.forEach((m, i) => {
         const [x1, y1, z1] = box(m), [x0, y0, z0] = before[i];
-        const sx = Math.min(70, Math.abs(x1 - x0) / 2.5 + Math.abs(z1 - z0) / 16), sy = Math.min(70, Math.abs(y1 - y0) / 2.5 + Math.abs(z1 - z0) / 16);
+        const sx = Math.min(50, Math.abs(x1 - x0) / 2.5 + Math.abs(z1 - z0) / 16), sy = Math.min(50, Math.abs(y1 - y0) / 2.5 + Math.abs(z1 - z0) / 16);
         const on = sx + sy > 0.6;
         m.wrap.style.filter = on ? `url(#${m.id})` : 'none';
         if (on) m.f.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
       });
-      const [x, y, k] = camAt(s, q), [x0, y0, k0] = camAt(s, Math.max(s.a, q - SHUTTER));
-      s.cam.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${k.toFixed(4)})`;
-      s.caps.style.transform = `translate(${(x * 0.4).toFixed(2)}px, ${(y * 0.4).toFixed(2)}px) scale(${(1 + (k - 1) * 0.4).toFixed(4)})`;
-      s.world.style.transform = `translate(${(x * 0.35).toFixed(2)}px, ${(y * 0.35).toFixed(2)}px) scale(${(1 + (k - 1) * 0.35).toFixed(4)})`;
-      const near = cuts.reduce((m, c) => Math.min(m, Math.abs(q - c)), 9);
-      const f = near < FLASH[0] ? FLASH[1] * (1 - near / FLASH[0]) : 0;
-      const sx = Math.min(80, Math.abs(x - x0) / 2.5 + Math.abs(k - k0) * 110) + f, sy = Math.min(80, Math.abs(y - y0) / 2.5 + Math.abs(k - k0) * 190) + f;
+      const [x, y, k] = view(q), [x0, y0, k0] = view(Math.max(0, q - SHUTTER));
+      table.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${k.toFixed(4)})`;
+      const sx = Math.min(22, Math.abs(x - x0) / 5 + Math.abs(k - k0) * 110), sy = Math.min(22, Math.abs(y - y0) / 5 + Math.abs(k - k0) * 190);
       mb.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
     };
     const clock = { now: 0 };

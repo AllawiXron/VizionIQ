@@ -13,13 +13,13 @@
 * { margin:0; padding:0; box-sizing:border-box }
 html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 #root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
-#stage { filter:url(#mb) }
+#stage { filter:url(#mb); background:#17110d }
 /* the stage runs 100 px past the frame so the motion blur never pulls in the empty page at the edges */
-.sc { position:absolute; inset:100px }
-.world { position:absolute; inset:-220px; transform-origin:50% 50% }
-.world::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38 }
-.world .lt { margin:160px 0 0 160px }
-.cam { position:absolute; inset:0; transform-origin:540px 960px }
+#table { position:absolute; left:100px; top:100px; width:4700px; height:8100px; transform-origin:0 0; background:#17110d url(assets/img/paper.jpg) 0 0/1080px; background-blend-mode:multiply }
+/* one sheet of paper per line of the voice; it clips what it holds, so a hand comes in from its edge */
+.sheetP { position:absolute; width:1000px; height:1780px; overflow:hidden; border-radius:4px; box-shadow:0 30px 70px rgba(0,0,0,.6), 0 4px 10px rgba(0,0,0,.4) }
+.sheetP::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38; pointer-events:none; z-index:25 }
+.zone { position:absolute; left:-40px; top:-70px; width:1080px; height:1920px }
 .lt { position:absolute; border-radius:50%; filter:blur(120px) }
 #dirt { position:absolute; inset:100px; z-index:40; pointer-events:none; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.5; filter:grayscale(1) brightness(1.9) contrast(1.6) }
 #fx { position:absolute; inset:0; pointer-events:none; z-index:50 }
@@ -43,7 +43,6 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .obj { position:absolute; z-index:10 }
 .ph img { position:relative; z-index:2; filter:drop-shadow(0 40px 40px rgba(0,0,0,.55)) }
 .ph .scr { position:absolute; z-index:1; left:9.03%; top:1.84%; width:88.04%; height:96.21%; object-fit:cover; -webkit-mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat; mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat }
-.caps { position:absolute; inset:0; z-index:30; transform-origin:540px 960px }
 .scrim { position:absolute; z-index:15; left:-200px; right:-200px; top:-200px; height:1100px; background:linear-gradient(rgba(10,6,4,.96), rgba(10,6,4,.92) 55%, rgba(10,6,4,0)) }
 .obj img { display:block; width:100%; filter:drop-shadow(0 46px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4)) }
     </style>
@@ -52,123 +51,156 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
     <div id="root" data-composition-id="main" data-start="0" data-duration="__D__" data-width="1080" data-height="1920">
       <div id="stage" class="clip" data-start="0" data-duration="__D__" data-track-index="0" style="position:absolute; inset:-100px">
 
+        <div id="table">
         <!-- A · مشروعك متعوب عليه، بس أرباحك قليلة: hands hold out the box, then the empty wallet slams onto the word and one coin drops in -->
-        <div class="sc" id="sA">
-          <div class="world" style="background:#2a1a12"><i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i></div>
+        <div class="sheetP" id="pA" style="left:3490px; top:40px; transform:rotate(1.2deg); background-color:#2a1a12">
+          <div class="zone" id="sA">
+                    <i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i>
           <div class="obj" id="box" style="left:400px; top:800px; width:780px"><img src="assets/el/box-hand.png" /></div>
           <div class="obj" id="wallet" style="left:120px; top:775px; width:840px; transform:rotate(-7deg)"><img src="assets/obj/wallet.png" /></div>
           <div class="obj" id="coin" style="left:430px; top:700px; width:200px"><img src="assets/el/coin.png" /></div>
         </div>
+        </div>
 
         <!-- B · عدنا نصمملك موشن جرافيك وبوستات إعلانية: an old film camera and three real phones playing my reels -->
-        <div class="sc" id="sB">
-          <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
-          <div class="obj ph" id="phL" style="left:20px; top:700px; width:330px; transform:rotate(-12deg)"><video id="v1" class="scr" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="1.6" data-track-index="2" muted playsinline></video><img src="assets/el/phone.png" /></div>
-          <div class="obj ph" id="phR" style="left:730px; top:700px; width:330px; transform:rotate(11deg)"><video id="v2" class="scr" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="16.6" data-track-index="3" muted playsinline></video><img src="assets/el/phone.png" /></div>
+        <div class="sheetP" id="pB" style="left:2370px; top:100px; transform:rotate(-1.4deg); background-color:#1d1612">
+          <div class="zone" id="sB">
+                    <i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i>
+          <div class="obj ph" id="phL" style="left:70px; top:720px; width:310px; transform:rotate(-9deg)"><video id="v1" class="scr" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="1.6" data-track-index="2" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph" id="phR" style="left:700px; top:720px; width:310px; transform:rotate(8deg)"><video id="v2" class="scr" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="16.6" data-track-index="3" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj ph" id="phC" style="left:340px; top:600px; width:400px; transform:rotate(-2deg)"><video id="v3" class="scr" src="assets/clips/vizion-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="7.4" data-track-index="4" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj" id="cam" style="left:30px; top:1150px; width:330px"><img src="assets/el/film-camera.png" /></div>
         </div>
+        </div>
 
         <!-- D · تحجي بقوة براندك: an old megaphone blasting the word -->
-        <div class="sc" id="sD">
-          <div class="world" style="background:#10202a"><i class="lt" style="left:100px; top:500px; width:900px; height:900px; background:rgba(90,150,200,.4)"></i></div>
-          <div class="obj" id="mega" style="left:120px; top:760px; width:760px; transform:rotate(-8deg)"><img src="assets/el/megaphone.png" /></div>
+        <div class="sheetP" id="pD" style="left:1170px; top:0px; transform:rotate(0.8deg); background-color:#10202a">
+          <div class="zone" id="sD">
+                    <i class="lt" style="left:100px; top:500px; width:900px; height:900px; background:rgba(90,150,200,.4)"></i>
+          <div class="obj" id="mega" style="left:190px; top:780px; width:680px; transform:rotate(-8deg)"><img src="assets/el/megaphone.png" /></div>
+        </div>
         </div>
 
         <!-- E · وتبيع بمكانك: a shop owner hands over the bag while you are away -->
-        <div class="sc inkt" id="sE">
-          <div class="world" style="background:#e9dfcf"><i class="lt" style="left:200px; top:600px; width:800px; height:800px; background:rgba(255,250,240,.6)"></i></div>
+        <div class="sheetP" id="pE" style="left:80px; top:70px; transform:rotate(-0.6deg); background-color:#e9dfcf">
+          <div class="zone inkt" id="sE">
+                    <i class="lt" style="left:200px; top:600px; width:800px; height:800px; background:rgba(255,250,240,.6)"></i>
           <div class="obj" id="owner" style="left:40px; top:830px; width:1000px"><img src="assets/el/shop-owner.png" /></div>
+        </div>
         </div>
 
         <!-- F · حركة تشد العين: the word, then binoculars come up in front of it -->
-        <div class="sc" id="sF">
-          <div class="world" style="background:#5e0a14"><i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.55)"></i></div>
+        <div class="sheetP" id="pF" style="left:10px; top:2090px; transform:rotate(1.5deg); background-color:#5e0a14">
+          <div class="zone" id="sF">
+                    <i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.55)"></i>
           <div class="obj" id="bino" style="left:40px; top:960px; width:1000px"><img src="assets/el/binoculars.png" /></div>
+        </div>
         </div>
 
         <!-- G · فكرة تقنع الزبون: the bulb flickers on -->
-        <div class="sc" id="sG">
-          <div class="world" style="background:#14215e"><i class="lt" id="glow" style="left:240px; top:300px; width:700px; height:700px; background:rgba(255,200,90,.0)"></i></div>
+        <div class="sheetP" id="pG" style="left:1210px; top:1980px; transform:rotate(-1.0deg); background-color:#14215e">
+          <div class="zone" id="sG">
+                    <i class="lt" id="glow" style="left:240px; top:300px; width:700px; height:700px; background:rgba(255,200,90,.0)"></i>
           <div class="obj" id="bulb" style="left:330px; top:300px; width:420px"><img src="assets/el/bulb.png" /></div>
+        </div>
         </div>
 
         <!-- H · ونتيجة ترفع مبيعاتك: the coins rise, the cash lands -->
-        <div class="sc inkt" id="sH">
-          <div class="world" style="background:#ece3d4"></div>
-          <div class="obj" id="coins" style="left:170px; top:780px; width:740px"><img src="assets/el/coin-stacks.png" /></div>
+        <div class="sheetP" id="pH" style="left:2300px; top:2060px; transform:rotate(0.6deg); background-color:#ece3d4">
+          <div class="zone inkt" id="sH">
+                    <div class="obj" id="coins" style="left:170px; top:780px; width:740px"><img src="assets/el/coin-stacks.png" /></div>
           <div class="obj" id="cash" style="left:520px; top:900px; width:480px; transform:rotate(8deg)"><img src="assets/el/cash-pile.png" /></div>
+        </div>
         </div>
 
         <!-- I · من أول 3 ثواني بإعلانك: the number, the hand with the stopwatch rising beside it -->
-        <div class="sc" id="sI">
-          <div class="world" style="background:#2a1a12"><i class="lt" style="left:100px; top:400px; width:900px; height:900px; background:rgba(226,84,27,.4)"></i></div>
+        <div class="sheetP" id="pI" style="left:3520px; top:2010px; transform:rotate(-1.6deg); background-color:#2a1a12">
+          <div class="zone" id="sI">
+                    <i class="lt" style="left:100px; top:400px; width:900px; height:900px; background:rgba(226,84,27,.4)"></i>
           <div id="n3" style="position:absolute; z-index:9; left:70px; top:380px; font-size:860px; line-height:1; color:#e2541b; opacity:0">3</div>
           <div class="obj" id="hand" style="left:640px; top:900px; width:520px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
         </div>
+        </div>
 
         <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: the magnifier sweeps across, then the handshake -->
-        <div class="sc" id="sJ">
-          <div class="world" style="background:#1d2a22"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(140,200,160,.25)"></i></div>
+        <div class="sheetP" id="pJ" style="left:3470px; top:4080px; transform:rotate(1.0deg); background-color:#1d2a22">
+          <div class="zone" id="sJ">
+                    <i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(140,200,160,.25)"></i>
           <div class="obj" id="jbag" style="left:340px; top:760px; width:400px"><img src="assets/el/bag-orange.png" /></div>
           <div class="obj" id="lens" style="left:280px; top:700px; width:560px"><img src="assets/el/magnifier.png" /></div>
-          <div class="obj" id="shake" style="left:-110px; top:700px; width:1300px"><img src="assets/el/handshake.png" /></div>
+          <div class="obj" id="shake" style="left:-60px; top:820px; width:1200px"><img src="assets/el/handshake.png" /></div>
+        </div>
         </div>
 
         <!-- K · ويدخل يطلب منك مباشرة: a finger presses the red button -->
-        <div class="sc" id="sK">
-          <div class="world" style="background:#171310"><i class="lt" style="left:200px; top:800px; width:700px; height:700px; background:rgba(226,60,40,.3)"></i></div>
+        <div class="sheetP" id="pK" style="left:2380px; top:3990px; transform:rotate(-0.8deg); background-color:#171310">
+          <div class="zone" id="sK">
+                    <i class="lt" style="left:200px; top:800px; width:700px; height:700px; background:rgba(226,60,40,.3)"></i>
           <div class="obj" id="press" style="left:560px; top:-120px; width:600px"><img src="assets/el/button-finger.png" /></div>
+        </div>
         </div>
 
         <!-- L · يعزلك تماما عن منافسيك: the king stands in the light, the pawns fall -->
-        <div class="sc" id="sL">
-          <div class="world" style="background:#16201d"><i class="lt" style="left:180px; top:600px; width:760px; height:900px; background:rgba(240,200,140,.38)"></i></div>
+        <div class="sheetP" id="pL" style="left:1160px; top:4070px; transform:rotate(1.4deg); background-color:#16201d">
+          <div class="zone" id="sL">
+                    <i class="lt" style="left:180px; top:600px; width:760px; height:900px; background:rgba(240,200,140,.38)"></i>
           <div class="obj pawn" style="left:40px; top:980px; width:200px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj pawn" style="left:220px; top:1060px; width:180px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj pawn" style="left:690px; top:1060px; width:180px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj pawn" style="left:850px; top:980px; width:200px"><img src="assets/el/chess-pawn.png" /></div>
           <div class="obj" id="king" style="left:420px; top:560px; width:250px"><img src="assets/el/chess-king.png" /></div>
         </div>
+        </div>
 
         <!-- M · مرة ومرتين وعشرة: shopping bags, one, two, then a pile -->
-        <div class="sc" id="sM">
-          <div class="world" style="background:#3a1608"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(226,84,27,.4)"></i></div>
+        <div class="sheetP" id="pM" style="left:60px; top:4100px; transform:rotate(-1.2deg); background-color:#3a1608">
+          <div class="zone" id="sM">
+                    <i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(226,84,27,.4)"></i>
           <div id="bags"></div>
+        </div>
         </div>
 
         <!-- N · لأن شاف براند حقيقي قدامه: the man with the binoculars -->
-        <div class="sc" id="sN">
-          <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
+        <div class="sheetP" id="pN" style="left:0px; top:6020px; transform:rotate(0.7deg); background-color:#1d1612">
+          <div class="zone" id="sN">
+                    <i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i>
           <div class="obj" id="watcher" style="left:370px; top:400px; width:340px"><img src="assets/el/binoculars-man.png" /></div>
+        </div>
         </div>
 
         <!-- O · the crowd walks past without looking; the stop hand slams down; the padlock locks the sale -->
-        <div class="sc" id="sO">
-          <div class="world" style="background:#24282a"><i class="lt" style="left:100px; top:700px; width:900px; height:700px; background:rgba(200,200,190,.18)"></i></div>
+        <div class="sheetP" id="pO" style="left:1220px; top:6080px; transform:rotate(-1.5deg); background-color:#24282a">
+          <div class="zone" id="sO">
+                    <i class="lt" style="left:100px; top:700px; width:900px; height:700px; background:rgba(200,200,190,.18)"></i>
           <div class="obj" id="crowd1" style="left:0; top:760px; width:900px"><img src="assets/el/crowd.png" /></div>
           <div class="obj" id="crowd2" style="left:0; top:720px; width:900px"><img src="assets/el/crowd2.png" /></div>
           <div class="obj" id="stop" style="left:190px; top:1000px; width:700px"><img src="assets/el/stop-hand.png" /></div>
           <div class="obj" id="lock" style="left:400px; top:640px; width:290px"><img src="assets/el/padlock.png" /></div>
         </div>
+        </div>
 
         <!-- Q · تواصل ويانا بالخاص: the receiver swings in -->
-        <div class="sc" id="sQ">
-          <div class="world" style="background:#0f1517"><i class="lt" style="left:300px; top:600px; width:700px; height:700px; background:rgba(226,84,27,.3)"></i></div>
+        <div class="sheetP" id="pQ" style="left:2320px; top:6010px; transform:rotate(0.9deg); background-color:#0f1517">
+          <div class="zone" id="sQ">
+                    <i class="lt" style="left:300px; top:600px; width:700px; height:700px; background:rgba(226,84,27,.3)"></i>
           <div class="obj" id="recv" style="left:470px; top:520px; width:700px"><img src="assets/el/receiver.png" /></div>
+        </div>
         </div>
 
         <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my reels on three phones, then the cash register rings, then the handle -->
-        <div class="sc dk" id="sR">
-          <div class="world" style="background:#d4521c"><i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
-          <div class="obj ph rph" style="left:20px; top:640px; width:330px; transform:rotate(-12deg)"><video id="v4" class="scr" src="assets/clips/logos-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="46.3" data-track-index="5" muted playsinline></video><img src="assets/el/phone.png" /></div>
-          <div class="obj ph rph" style="left:730px; top:640px; width:330px; transform:rotate(11deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="2.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
+        <div class="sheetP" id="pR" style="left:3490px; top:6040px; transform:rotate(-0.7deg); background-color:#d4521c">
+          <div class="zone dk" id="sR">
+                    <i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i>
+          <div class="obj ph rph" style="left:70px; top:660px; width:310px; transform:rotate(-9deg)"><video id="v4" class="scr" src="assets/clips/logos-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="46.3" data-track-index="5" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph rph" style="left:700px; top:660px; width:310px; transform:rotate(8deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="2.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj ph rph" style="left:340px; top:560px; width:400px; transform:rotate(-2deg)"><video id="v6" class="scr" src="assets/clips/vizion-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="7.6" data-track-index="7" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj" id="cashfan" style="left:320px; top:560px; width:440px"><img src="assets/el/cash-fan.png" /></div>
           <div class="obj" id="register" style="left:240px; top:650px; width:600px"><img src="assets/el/register.png" /></div>
           <div class="cap" id="handle" style="top:1450px; font-size:100px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
         </div>
+        </div>
 
+        </div>
         <div id="dirt"></div>
       </div>
       <div id="fx"><div id="grain"></div><div id="vig"></div></div>

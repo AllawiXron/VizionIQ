@@ -2,8 +2,14 @@
 
 A 41 s reel at 1080×1920 that sells my design work. The idea comes from an agency reel the user sent (Brandek): a
 problem, who we are, why it works, what waiting costs, then the ask. Its look is mine: one colour world per line of the
-voice, cut-out objects, hands and people acting out each line, my real reels playing on phones, and the reel motion standard
-(`../hf-simple-logos-reel`, Motion).
+voice, cut-out objects, hands and people acting out each line, and my real reels playing on phones.
+
+It is one take: every line has its own paper sheet on a dark table (`#table`), laid in a snake that reads right to left,
+and the camera holds on a sheet while its lines are spoken, drifting closer, then glides to the next one across each
+change. A sheet clips what it holds, so a hand or a sleeve comes in from its edge. Each element is already on its sheet
+when the camera lands; only the story beats (the wallet, the coin, the stop hand, the padlock, the register) come in on
+their word. The rest of the motion is the reel standard (`../hf-simple-logos-reel`): letters out of a blur, Smart
+Bounce, motion blur, 15 fps steps.
 
 The voice is the user's ElevenLabs take of `voice-script.txt`, trimmed and sped up by the user.
 
