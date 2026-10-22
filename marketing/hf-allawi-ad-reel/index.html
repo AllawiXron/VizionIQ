@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>allawi.psd · ad reel</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+@font-face { font-family:'DG Sahabah'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
+/* my ad for the page: one colour world per line of the voice, my real posts as prints, my real reels on phones, my
+   real profile; the motion is the reel standard (camera per shot, blur pulse on cuts, letters out of a blur, motion
+   blur, 15 fps steps) */
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
+#root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
+#stage { filter:url(#mb) }
+/* the stage runs 100 px past the frame so the motion blur never pulls in the empty page at the edges */
+.sc { position:absolute; inset:100px }
+.world { position:absolute; inset:-220px; transform-origin:50% 50% }
+.world::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38 }
+.world .lt { margin:160px 0 0 160px }
+.cam { position:absolute; inset:0; transform-origin:540px 960px }
+.lt { position:absolute; border-radius:50%; filter:blur(120px) }
+#dirt { position:absolute; inset:100px; z-index:40; pointer-events:none; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.5; filter:grayscale(1) brightness(1.9) contrast(1.6) }
+#fx { position:absolute; inset:0; pointer-events:none; z-index:50 }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07 }
+#vig { position:absolute; inset:0; box-shadow:inset 0 0 280px 70px rgba(0,0,0,.5) }
+
+.cap { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap; z-index:20; text-shadow:0 6px 18px rgba(0,0,0,.45); line-height:1.2 }
+.w { display:inline-block }
+.l { opacity:0 }
+.k { color:#f08a4b }
+.inkt .cap { color:#1f1510; text-shadow:0 4px 14px rgba(255,240,220,.35) } .inkt .k { color:#b9461c }
+.dk .cap { color:#2a1208; text-shadow:none } .dk .k { color:#fbf0e0 }
+.dim { color:#8c8a84 !important }
+.print { position:absolute; z-index:10; padding:14px; background:#efe7d8; box-shadow:0 30px 50px rgba(0,0,0,.5) }
+.print img { display:block; width:100%; height:100% }
+.shot { position:absolute; z-index:10; overflow:hidden; border-radius:34px; box-shadow:0 40px 70px rgba(0,0,0,.55) }
+.shot img, .shot video { display:block; width:100%; height:100%; object-fit:cover; object-position:top }
+.phone { border:12px solid #0b0b0b; border-radius:46px }
+.sheet { position:absolute; z-index:9; background:#9a968e url(assets/img/paper.jpg) center/cover; background-blend-mode:multiply; filter:grayscale(1) brightness(.62); box-shadow:0 20px 40px rgba(0,0,0,.5) }
+.tag { position:absolute; left:0; right:0; z-index:12; text-align:center; font-size:40px; color:#f6ead8; opacity:.85 }
+.obj { position:absolute; z-index:10 }
+.obj img { display:block; width:100%; filter:drop-shadow(0 46px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4)) }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="41.2" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="41.2" data-track-index="0" style="position:absolute; inset:-100px">
+
+        <!-- A · مشروعك متعوب عليه، بس أرباحك قليلة: the empty wallet slams onto the word -->
+        <div class="sc" id="sA">
+          <div class="world" style="background:#2a1a12"><i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i></div>
+          <div class="obj" id="wallet" style="left:120px; top:775px; width:840px; transform:rotate(-7deg)"><img src="assets/obj/wallet.png" /></div>
+        </div>
+
+        <!-- B · عدنا نصمملك موشن جرافيك: my three reels playing on phones -->
+        <div class="sc" id="sB">
+          <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
+          <div class="shot phone" id="phL" style="left:-10px; top:700px; width:380px; height:676px; transform:rotate(-10deg)"><video id="v1" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="1.7" data-media-start="1.6" data-track-index="2" muted playsinline></video></div>
+          <div class="shot phone" id="phR" style="left:710px; top:700px; width:380px; height:676px; transform:rotate(9deg)"><video id="v2" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="1.7" data-media-start="16.6" data-track-index="3" muted playsinline></video></div>
+          <div class="shot phone" id="phC" style="left:315px; top:600px; width:450px; height:800px; transform:rotate(-1deg); box-shadow:0 50px 80px rgba(0,0,0,.7)"><video id="v3" src="assets/clips/vizion-reel.mp4" data-start="2.6" data-duration="1.7" data-media-start="7.4" data-track-index="4" muted playsinline></video></div>
+        </div>
+
+        <!-- C · وبوستات إعلانية: three of my strongest posts fanned out -->
+        <div class="sc" id="sC">
+          <div class="world" style="background:#22140e"><i class="lt" style="left:100px; top:600px; width:900px; height:900px; background:rgba(226,84,27,.3)"></i></div>
+          <div class="print" id="fanL" style="left:-20px; top:720px; width:520px; height:650px; transform:rotate(-12deg)"><img src="assets/work/asiacell.jpg" /></div>
+          <div class="print" id="fanR" style="left:580px; top:720px; width:520px; height:650px; transform:rotate(11deg)"><img src="assets/work/pepsi.jpg" /></div>
+          <div class="print" id="fanC" style="left:255px; top:600px; width:570px; height:712px; transform:rotate(-1deg); box-shadow:0 44px 70px rgba(0,0,0,.65)"><img src="assets/work/miswag.jpg" /></div>
+        </div>
+
+        <!-- D · تحجي بقوة براندك: the Iraqi Airways concept standing on the word -->
+        <div class="sc" id="sD">
+          <div class="world" style="background:#10202a"><i class="lt" style="left:100px; top:500px; width:900px; height:900px; background:rgba(90,150,200,.4)"></i></div>
+          <div class="print" id="pIA" style="left:270px; top:760px; width:540px; height:675px; transform:rotate(5deg); box-shadow:0 40px 70px rgba(0,0,20,.6)"><img src="assets/work/iraqiairways.jpg" /></div>
+          <div class="tag" id="tagD" style="top:1480px; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
+        </div>
+
+        <!-- E · وتبيع بمكانك: the delivery ad on paper -->
+        <div class="sc inkt" id="sE">
+          <div class="world" style="background:#e9dfcf"><i class="lt" style="left:200px; top:600px; width:800px; height:800px; background:rgba(255,250,240,.6)"></i></div>
+          <div class="print" id="pTal" style="left:230px; top:600px; width:620px; height:775px; transform:rotate(-5deg)"><img src="assets/work/talabat.jpg" /></div>
+          <div class="tag" id="tagE" style="top:1470px; color:#1f1510; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
+        </div>
+
+        <!-- F · حركة تشد العين: the logos reel on a phone, the bite taken out on the beat -->
+        <div class="sc" id="sF">
+          <div class="world" style="background:#5e0a14"><i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.55)"></i></div>
+          <div class="shot phone" id="phF" style="left:350px; top:860px; width:380px; height:676px; transform:rotate(5deg)"><video id="v4" src="assets/clips/logos-reel.mp4" data-start="7.74" data-duration="1.4" data-media-start="48.2" data-track-index="5" muted playsinline></video></div>
+        </div>
+
+        <!-- G · فكرة تقنع الزبون: the Al-Waseet ad, the idea from the Nimrud reliefs -->
+        <div class="sc" id="sG">
+          <div class="world" style="background:#14215e"><i class="lt" style="left:300px; top:400px; width:800px; height:900px; background:rgba(70,100,220,.4)"></i></div>
+          <div class="print" id="pWas" style="left:290px; top:400px; width:600px; height:750px; transform:rotate(3deg)"><img src="assets/work/alwaseet.jpg" /></div>
+        </div>
+
+        <!-- H · ونتيجة ترفع مبيعاتك: a real tile of my grid with its real views -->
+        <div class="sc inkt" id="sH">
+          <div class="world" style="background:#ece3d4"></div>
+          <div class="shot" id="views" style="left:290px; top:740px; width:500px; height:661px; transform:rotate(-3deg)"><img src="assets/shots/views-tile.png" /></div>
+        </div>
+
+        <!-- I · من أول 3 ثواني بإعلانك: the number, the hand with the stopwatch rising beside it -->
+        <div class="sc" id="sI">
+          <div class="world" style="background:#2a1a12"><i class="lt" style="left:100px; top:400px; width:900px; height:900px; background:rgba(226,84,27,.4)"></i></div>
+          <div id="n3" style="position:absolute; z-index:9; left:90px; top:400px; font-size:900px; line-height:1; color:#e2541b; opacity:0">3</div>
+          <div class="obj" id="hand" style="left:480px; top:820px; width:540px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
+        </div>
+
+        <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: the camera goes into the Saj Al-Reef ad -->
+        <div class="sc" id="sJ">
+          <div class="world" style="background:#171310"><i class="lt" style="left:150px; top:500px; width:800px; height:900px; background:rgba(214,170,90,.25)"></i></div>
+          <div class="print" id="pSaj" style="left:170px; top:620px; width:740px; height:925px; transform:rotate(-2deg); box-shadow:0 44px 80px rgba(0,0,0,.7)"><img src="assets/work/sajalreef.jpg" /></div>
+        </div>
+
+        <!-- K · ويدخل يطلب منك مباشرة: so close to that ad you only see its order button -->
+        <div class="sc" id="sK">
+          <div class="world" style="background:#171310"></div>
+          <div id="btnAd" style="position:absolute; z-index:10; left:270px; top:-2179px; width:2700px; height:3375px; transform:rotate(-3deg); transform-origin:270px 3139px; box-shadow:0 40px 80px rgba(0,0,0,.6)"><img src="assets/work/sajalreef.jpg" style="width:100%; height:100%; display:block" /></div>
+        </div>
+
+        <!-- L · يعزلك تماما عن منافسيك: my ad in the light, plain sheets falling away into the dark -->
+        <div class="sc" id="sL">
+          <div class="world" style="background:#16201d"><i class="lt" style="left:180px; top:600px; width:760px; height:900px; background:rgba(240,200,140,.38)"></i></div>
+          <div class="sheet" style="left:-120px; top:620px; width:400px; height:500px; transform:rotate(-14deg)"></div>
+          <div class="sheet" style="left:820px; top:540px; width:380px; height:475px; transform:rotate(11deg)"></div>
+          <div class="sheet" style="left:-60px; top:1250px; width:360px; height:450px; transform:rotate(8deg)"></div>
+          <div class="sheet" style="left:790px; top:1220px; width:400px; height:500px; transform:rotate(-9deg)"></div>
+          <div class="print" id="pBaly" style="left:205px; top:600px; width:670px; height:837px; transform:rotate(2deg); box-shadow:0 40px 70px rgba(0,0,0,.65)"><img src="assets/work/baly.jpg" /></div>
+          <div class="tag" id="tagL" style="top:1460px; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
+        </div>
+
+        <!-- M · مرة ومرتين وعشرة: the same ad printed again and again -->
+        <div class="sc" id="sM">
+          <div class="world" style="background:#3a1608"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(226,84,27,.4)"></i></div>
+          <div id="pile"></div>
+        </div>
+
+        <!-- N · لأن شاف براند حقيقي قدامه: my real profile -->
+        <div class="sc" id="sN">
+          <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
+          <div class="shot phone" id="phProf" style="left:250px; top:500px; width:580px; height:930px; transform:rotate(-4deg)"><img src="assets/shots/profile.png" /></div>
+        </div>
+
+        <!-- O · plain sheets stream past, then one ad stops dead in front of them -->
+        <div class="sc" id="sO">
+          <div class="world" style="background:#1a1c1d"></div>
+          <div id="stream" style="position:absolute; left:250px; top:-200px; width:580px; filter:url(#vblur)"></div>
+          <div class="print" id="pSala" style="left:200px; top:640px; width:680px; height:850px; transform:rotate(-2deg); box-shadow:0 50px 80px rgba(0,0,0,.7)"><img src="assets/work/sala.jpg" /></div>
+        </div>
+
+        <!-- Q · تواصل ويانا بالخاص: the real buttons of my profile, Contact in the middle -->
+        <div class="sc" id="sQ">
+          <div class="world" style="background:#0f1517"><i class="lt" style="left:400px; top:700px; width:700px; height:600px; background:rgba(226,84,27,.3)"></i></div>
+          <div class="shot" id="btns" style="left:-750px; top:760px; width:1900px; height:580px; transform:rotate(-3deg); transform-origin:1290px 290px"><img src="assets/shots/buttons.png" /></div>
+        </div>
+
+        <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my portfolio thrown on the table, then the handle -->
+        <div class="sc dk" id="sR">
+          <div class="world" style="background:#d4521c"><i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
+          <div class="print tbl" style="left:-40px; top:560px; width:430px; height:537px; transform:rotate(-11deg)"><img src="assets/work/alwaseet.jpg" /></div>
+          <div class="print tbl" style="left:660px; top:500px; width:420px; height:525px; transform:rotate(9deg)"><img src="assets/work/pepsi.jpg" /></div>
+          <div class="print tbl" style="left:690px; top:1080px; width:440px; height:550px; transform:rotate(-6deg)"><img src="assets/work/asiacell.jpg" /></div>
+          <div class="print tbl" style="left:-70px; top:1110px; width:420px; height:525px; transform:rotate(7deg)"><img src="assets/work/iraqiairways.jpg" /></div>
+          <div class="print tbl" style="left:250px; top:700px; width:580px; height:725px; transform:rotate(-2.5deg); box-shadow:0 44px 70px rgba(60,10,0,.6)"><img src="assets/work/alfaqma.jpg" /></div>
+          <div class="cap" id="handle" style="top:860px; font-size:150px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
+        </div>
+
+        <div id="dirt"></div>
+      </div>
+      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+      <svg width="0" height="0" style="position:absolute"><filter id="mb" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feGaussianBlur id="mbB" stdDeviation="0 0" edgeMode="duplicate" /></filter><filter id="vblur"><feGaussianBlur stdDeviation="0 26" /></filter></svg>
+      <audio id="voice" src="assets/voice.wav" data-start="0" data-duration="39.549" data-track-index="9" data-volume="1"></audio>
+      <audio id="a0-npop1" src="assets/sfx/npop1.wav" data-start="0.02" data-duration="0.16" data-track-index="10" data-volume="0.24"></audio>
+      <audio id="a1-flick" src="assets/sfx/flick.wav" data-start="0.05" data-duration="0.552" data-track-index="11" data-volume="0.3"></audio>
+      <audio id="a2-cinclick" src="assets/sfx/cinclick.wav" data-start="0.42" data-duration="0.094" data-track-index="12" data-volume="0.34"></audio>
+      <audio id="a3-npop2" src="assets/sfx/npop2.wav" data-start="0.58" data-duration="0.18" data-track-index="13" data-volume="0.17"></audio>
+      <audio id="a4-npop3" src="assets/sfx/npop3.wav" data-start="0.90" data-duration="0.17" data-track-index="14" data-volume="0.2"></audio>
+      <audio id="a5-npop4" src="assets/sfx/npop4.wav" data-start="1.40" data-duration="0.16" data-track-index="15" data-volume="0.18"></audio>
+      <audio id="a6-npop5" src="assets/sfx/npop5.wav" data-start="1.68" data-duration="0.15" data-track-index="16" data-volume="0.24"></audio>
+      <audio id="a7-money" src="assets/sfx/money.wav" data-start="2.10" data-duration="1.476" data-track-index="17" data-volume="0.22"></audio>
+      <audio id="a8-ppop1" src="assets/sfx/ppop1.wav" data-start="2.12" data-duration="0.3" data-track-index="18" data-volume="0.19"></audio>
+      <audio id="a9-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="2.60" data-duration="2.616" data-track-index="19" data-volume="0.22"></audio>
+      <audio id="a10-softpop" src="assets/sfx/softpop.wav" data-start="2.66" data-duration="0.72" data-track-index="20" data-volume="0.24"></audio>
+      <audio id="a11-npop1" src="assets/sfx/npop1.wav" data-start="2.67" data-duration="0.16" data-track-index="21" data-volume="0.24"></audio>
+      <audio id="a12-softpop" src="assets/sfx/softpop.wav" data-start="2.80" data-duration="0.72" data-track-index="22" data-volume="0.2"></audio>
+      <audio id="a13-ppop2" src="assets/sfx/ppop2.wav" data-start="2.93" data-duration="0.4" data-track-index="23" data-volume="0.13"></audio>
+      <audio id="a14-softpop" src="assets/sfx/softpop.wav" data-start="2.94" data-duration="0.72" data-track-index="24" data-volume="0.2"></audio>
+      <audio id="a15-npop2" src="assets/sfx/npop2.wav" data-start="3.47" data-duration="0.18" data-track-index="25" data-volume="0.17"></audio>
+      <audio id="a16-npop3" src="assets/sfx/npop3.wav" data-start="3.75" data-duration="0.17" data-track-index="26" data-volume="0.2"></audio>
+      <audio id="a17-npop4" src="assets/sfx/npop4.wav" data-start="4.22" data-duration="0.16" data-track-index="27" data-volume="0.18"></audio>
+      <audio id="a18-cinclick" src="assets/sfx/cinclick.wav" data-start="4.28" data-duration="0.094" data-track-index="28" data-volume="0.3"></audio>
+      <audio id="a19-mpop" src="assets/sfx/mpop.wav" data-start="4.30" data-duration="1.25" data-track-index="29" data-volume="0.24"></audio>
+      <audio id="a20-mpop" src="assets/sfx/mpop.wav" data-start="4.44" data-duration="1.25" data-track-index="30" data-volume="0.2"></audio>
+      <audio id="a21-mpop" src="assets/sfx/mpop.wav" data-start="4.58" data-duration="1.25" data-track-index="31" data-volume="0.2"></audio>
+      <audio id="a22-npop5" src="assets/sfx/npop5.wav" data-start="4.75" data-duration="0.15" data-track-index="32" data-volume="0.24"></audio>
+      <audio id="a23-smooth" src="assets/sfx/smooth.wav" data-start="5.20" data-duration="1.75" data-track-index="33" data-volume="0.24"></audio>
+      <audio id="a24-npop1" src="assets/sfx/npop1.wav" data-start="5.27" data-duration="0.16" data-track-index="34" data-volume="0.24"></audio>
+      <audio id="a25-whooshcon" src="assets/sfx/whooshcon.wav" data-start="5.30" data-duration="1.608" data-track-index="35" data-volume="0.2"></audio>
+      <audio id="a26-npop2" src="assets/sfx/npop2.wav" data-start="5.65" data-duration="0.18" data-track-index="36" data-volume="0.17"></audio>
+      <audio id="a27-npop3" src="assets/sfx/npop3.wav" data-start="6.11" data-duration="0.17" data-track-index="37" data-volume="0.2"></audio>
+      <audio id="a28-cinclick" src="assets/sfx/cinclick.wav" data-start="6.62" data-duration="0.094" data-track-index="38" data-volume="0.3"></audio>
+      <audio id="a29-simple" src="assets/sfx/simple.wav" data-start="6.68" data-duration="1.531" data-track-index="39" data-volume="0.22"></audio>
+      <audio id="a30-npop4" src="assets/sfx/npop4.wav" data-start="6.69" data-duration="0.16" data-track-index="40" data-volume="0.18"></audio>
+      <audio id="a31-npop5" src="assets/sfx/npop5.wav" data-start="7.11" data-duration="0.15" data-track-index="41" data-volume="0.24"></audio>
+      <audio id="a32-hitcut" src="assets/sfx/hitcut.wav" data-start="7.74" data-duration="2.208" data-track-index="42" data-volume="0.3"></audio>
+      <audio id="a33-npop1" src="assets/sfx/npop1.wav" data-start="7.81" data-duration="0.16" data-track-index="43" data-volume="0.24"></audio>
+      <audio id="a34-bite" src="assets/sfx/bite.wav" data-start="8.26" data-duration="0.625" data-track-index="44" data-volume="0.4"></audio>
+      <audio id="a35-npop2" src="assets/sfx/npop2.wav" data-start="8.39" data-duration="0.18" data-track-index="45" data-volume="0.17"></audio>
+      <audio id="a36-ppop3" src="assets/sfx/ppop3.wav" data-start="8.63" data-duration="0.38" data-track-index="46" data-volume="0.17"></audio>
+      <audio id="a37-cinclick" src="assets/sfx/cinclick.wav" data-start="9.14" data-duration="0.094" data-track-index="47" data-volume="0.3"></audio>
+      <audio id="a38-flick" src="assets/sfx/flick.wav" data-start="9.20" data-duration="0.552" data-track-index="48" data-volume="0.24"></audio>
+      <audio id="a39-npop3" src="assets/sfx/npop3.wav" data-start="9.21" data-duration="0.17" data-track-index="49" data-volume="0.2"></audio>
+      <audio id="a40-npop4" src="assets/sfx/npop4.wav" data-start="9.65" data-duration="0.16" data-track-index="50" data-volume="0.18"></audio>
+      <audio id="a41-npop5" src="assets/sfx/npop5.wav" data-start="10.05" data-duration="0.15" data-track-index="51" data-volume="0.24"></audio>
+      <audio id="a42-cinclick" src="assets/sfx/cinclick.wav" data-start="10.72" data-duration="0.094" data-track-index="52" data-volume="0.3"></audio>
+      <audio id="a43-mpop" src="assets/sfx/mpop.wav" data-start="10.78" data-duration="1.25" data-track-index="53" data-volume="0.28"></audio>
+      <audio id="a44-npop1" src="assets/sfx/npop1.wav" data-start="10.79" data-duration="0.16" data-track-index="54" data-volume="0.24"></audio>
+      <audio id="a45-npop2" src="assets/sfx/npop2.wav" data-start="11.47" data-duration="0.18" data-track-index="55" data-volume="0.17"></audio>
+      <audio id="a46-ppop3" src="assets/sfx/ppop3.wav" data-start="11.83" data-duration="0.38" data-track-index="56" data-volume="0.22"></audio>
+      <audio id="a47-ppop4" src="assets/sfx/ppop4.wav" data-start="11.85" data-duration="0.4" data-track-index="57" data-volume="0.13"></audio>
+      <audio id="a48-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="12.62" data-duration="2.616" data-track-index="58" data-volume="0.24"></audio>
+      <audio id="a49-gear" src="assets/sfx/gear.wav" data-start="12.68" data-duration="2.847" data-track-index="59" data-volume="0.28"></audio>
+      <audio id="a50-npop3" src="assets/sfx/npop3.wav" data-start="12.69" data-duration="0.17" data-track-index="60" data-volume="0.2"></audio>
+      <audio id="a51-npop4" src="assets/sfx/npop4.wav" data-start="12.95" data-duration="0.16" data-track-index="61" data-volume="0.18"></audio>
+      <audio id="a52-hit" src="assets/sfx/hit.wav" data-start="13.17" data-duration="6.601" data-track-index="62" data-volume="0.26"></audio>
+      <audio id="a53-npop5" src="assets/sfx/npop5.wav" data-start="13.37" data-duration="0.15" data-track-index="63" data-volume="0.24"></audio>
+      <audio id="a54-npop1" src="assets/sfx/npop1.wav" data-start="13.75" data-duration="0.16" data-track-index="64" data-volume="0.24"></audio>
+      <audio id="a55-cinclick" src="assets/sfx/cinclick.wav" data-start="14.42" data-duration="0.094" data-track-index="65" data-volume="0.3"></audio>
+      <audio id="a56-npop2" src="assets/sfx/npop2.wav" data-start="14.49" data-duration="0.18" data-track-index="66" data-volume="0.17"></audio>
+      <audio id="a57-npop3" src="assets/sfx/npop3.wav" data-start="14.89" data-duration="0.17" data-track-index="67" data-volume="0.2"></audio>
+      <audio id="a58-npop4" src="assets/sfx/npop4.wav" data-start="15.11" data-duration="0.16" data-track-index="68" data-volume="0.18"></audio>
+      <audio id="a59-npop5" src="assets/sfx/npop5.wav" data-start="15.39" data-duration="0.15" data-track-index="69" data-volume="0.24"></audio>
+      <audio id="a60-airy" src="assets/sfx/airy.wav" data-start="15.60" data-duration="1.957" data-track-index="70" data-volume="0.2"></audio>
+      <audio id="a61-ppop1" src="assets/sfx/ppop1.wav" data-start="15.81" data-duration="0.3" data-track-index="71" data-volume="0.19"></audio>
+      <audio id="a62-npop1" src="assets/sfx/npop1.wav" data-start="16.43" data-duration="0.16" data-track-index="72" data-volume="0.24"></audio>
+      <audio id="a63-npop2" src="assets/sfx/npop2.wav" data-start="16.71" data-duration="0.18" data-track-index="73" data-volume="0.17"></audio>
+      <audio id="a64-hitcut" src="assets/sfx/hitcut.wav" data-start="17.50" data-duration="2.208" data-track-index="74" data-volume="0.3"></audio>
+      <audio id="a65-npop3" src="assets/sfx/npop3.wav" data-start="17.57" data-duration="0.17" data-track-index="75" data-volume="0.2"></audio>
+      <audio id="a66-npop4" src="assets/sfx/npop4.wav" data-start="17.91" data-duration="0.16" data-track-index="76" data-volume="0.18"></audio>
+      <audio id="a67-npop5" src="assets/sfx/npop5.wav" data-start="18.25" data-duration="0.15" data-track-index="77" data-volume="0.24"></audio>
+      <audio id="a68-cinclick" src="assets/sfx/cinclick.wav" data-start="18.55" data-duration="0.094" data-track-index="78" data-volume="0.36"></audio>
+      <audio id="a69-ppop2" src="assets/sfx/ppop2.wav" data-start="18.57" data-duration="0.4" data-track-index="79" data-volume="0.13"></audio>
+      <audio id="a70-smooth" src="assets/sfx/smooth.wav" data-start="19.04" data-duration="1.75" data-track-index="80" data-volume="0.24"></audio>
+      <audio id="a71-npop1" src="assets/sfx/npop1.wav" data-start="19.11" data-duration="0.16" data-track-index="81" data-volume="0.24"></audio>
+      <audio id="a72-sweet" src="assets/sfx/sweet.wav" data-start="19.12" data-duration="1.076" data-track-index="82" data-volume="0.22"></audio>
+      <audio id="a73-npop2" src="assets/sfx/npop2.wav" data-start="19.67" data-duration="0.18" data-track-index="83" data-volume="0.17"></audio>
+      <audio id="a74-npop3" src="assets/sfx/npop3.wav" data-start="20.23" data-duration="0.17" data-track-index="84" data-volume="0.2"></audio>
+      <audio id="a75-npop4" src="assets/sfx/npop4.wav" data-start="20.45" data-duration="0.16" data-track-index="85" data-volume="0.18"></audio>
+      <audio id="a76-npop5" src="assets/sfx/npop5.wav" data-start="20.71" data-duration="0.15" data-track-index="86" data-volume="0.24"></audio>
+      <audio id="a77-npop1" src="assets/sfx/npop1.wav" data-start="21.15" data-duration="0.16" data-track-index="87" data-volume="0.24"></audio>
+      <audio id="a78-whooshcon" src="assets/sfx/whooshcon.wav" data-start="21.75" data-duration="1.608" data-track-index="88" data-volume="0.24"></audio>
+      <audio id="a79-npop2" src="assets/sfx/npop2.wav" data-start="21.77" data-duration="0.18" data-track-index="89" data-volume="0.17"></audio>
+      <audio id="a80-ppop3" src="assets/sfx/ppop3.wav" data-start="22.19" data-duration="0.38" data-track-index="90" data-volume="0.17"></audio>
+      <audio id="a81-npop3" src="assets/sfx/npop3.wav" data-start="22.71" data-duration="0.17" data-track-index="91" data-volume="0.2"></audio>
+      <audio id="a82-npop4" src="assets/sfx/npop4.wav" data-start="22.79" data-duration="0.16" data-track-index="92" data-volume="0.18"></audio>
+      <audio id="a83-cinclick" src="assets/sfx/cinclick.wav" data-start="23.52" data-duration="0.094" data-track-index="93" data-volume="0.3"></audio>
+      <audio id="a84-npop5" src="assets/sfx/npop5.wav" data-start="23.59" data-duration="0.15" data-track-index="94" data-volume="0.24"></audio>
+      <audio id="a85-npop1" src="assets/sfx/npop1.wav" data-start="23.95" data-duration="0.16" data-track-index="95" data-volume="0.24"></audio>
+      <audio id="a86-npop2" src="assets/sfx/npop2.wav" data-start="24.29" data-duration="0.18" data-track-index="96" data-volume="0.17"></audio>
+      <audio id="a87-npop3" src="assets/sfx/npop3.wav" data-start="24.65" data-duration="0.17" data-track-index="97" data-volume="0.2"></audio>
+      <audio id="a88-mpop" src="assets/sfx/mpop.wav" data-start="24.97" data-duration="1.25" data-track-index="98" data-volume="0.26"></audio>
+      <audio id="a89-npop4" src="assets/sfx/npop4.wav" data-start="24.99" data-duration="0.16" data-track-index="99" data-volume="0.18"></audio>
+      <audio id="a90-mpop" src="assets/sfx/mpop.wav" data-start="25.35" data-duration="1.25" data-track-index="100" data-volume="0.26"></audio>
+      <audio id="a91-npop5" src="assets/sfx/npop5.wav" data-start="25.37" data-duration="0.15" data-track-index="101" data-volume="0.24"></audio>
+      <audio id="a92-money" src="assets/sfx/money.wav" data-start="25.97" data-duration="1.476" data-track-index="102" data-volume="0.3"></audio>
+      <audio id="a93-ppop4" src="assets/sfx/ppop4.wav" data-start="25.99" data-duration="0.4" data-track-index="103" data-volume="0.13"></audio>
+      <audio id="a94-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="26.62" data-duration="2.616" data-track-index="104" data-volume="0.22"></audio>
+      <audio id="a95-npop1" src="assets/sfx/npop1.wav" data-start="26.69" data-duration="0.16" data-track-index="105" data-volume="0.24"></audio>
+      <audio id="a96-softpop" src="assets/sfx/softpop.wav" data-start="26.70" data-duration="0.72" data-track-index="106" data-volume="0.22"></audio>
+      <audio id="a97-npop2" src="assets/sfx/npop2.wav" data-start="27.03" data-duration="0.18" data-track-index="107" data-volume="0.17"></audio>
+      <audio id="a98-npop3" src="assets/sfx/npop3.wav" data-start="27.23" data-duration="0.17" data-track-index="108" data-volume="0.2"></audio>
+      <audio id="a99-ppop1" src="assets/sfx/ppop1.wav" data-start="27.59" data-duration="0.3" data-track-index="109" data-volume="0.19"></audio>
+      <audio id="a100-npop4" src="assets/sfx/npop4.wav" data-start="27.99" data-duration="0.16" data-track-index="110" data-volume="0.18"></audio>
+      <audio id="a101-cinfast" src="assets/sfx/cinfast.wav" data-start="28.50" data-duration="0.856" data-track-index="111" data-volume="0.24"></audio>
+      <audio id="a102-npop5" src="assets/sfx/npop5.wav" data-start="28.57" data-duration="0.15" data-track-index="112" data-volume="0.24"></audio>
+      <audio id="a103-npop1" src="assets/sfx/npop1.wav" data-start="28.95" data-duration="0.16" data-track-index="113" data-volume="0.24"></audio>
+      <audio id="a104-data" src="assets/sfx/data.wav" data-start="29.00" data-duration="1.003" data-track-index="114" data-volume="0.18"></audio>
+      <audio id="a105-npop2" src="assets/sfx/npop2.wav" data-start="29.17" data-duration="0.18" data-track-index="115" data-volume="0.17"></audio>
+      <audio id="a106-npop3" src="assets/sfx/npop3.wav" data-start="29.67" data-duration="0.17" data-track-index="116" data-volume="0.2"></audio>
+      <audio id="a107-npop4" src="assets/sfx/npop4.wav" data-start="30.17" data-duration="0.16" data-track-index="117" data-volume="0.18"></audio>
+      <audio id="a108-npop5" src="assets/sfx/npop5.wav" data-start="30.87" data-duration="0.15" data-track-index="118" data-volume="0.24"></audio>
+      <audio id="a109-npop1" src="assets/sfx/npop1.wav" data-start="31.01" data-duration="0.16" data-track-index="119" data-volume="0.24"></audio>
+      <audio id="a110-npop2" src="assets/sfx/npop2.wav" data-start="31.65" data-duration="0.18" data-track-index="120" data-volume="0.17"></audio>
+      <audio id="a111-npop3" src="assets/sfx/npop3.wav" data-start="32.07" data-duration="0.17" data-track-index="121" data-volume="0.2"></audio>
+      <audio id="a112-npop4" src="assets/sfx/npop4.wav" data-start="32.53" data-duration="0.16" data-track-index="122" data-volume="0.18"></audio>
+      <audio id="a113-hit" src="assets/sfx/hit.wav" data-start="33.09" data-duration="6.601" data-track-index="123" data-volume="0.32"></audio>
+      <audio id="a114-ppop2" src="assets/sfx/ppop2.wav" data-start="33.11" data-duration="0.4" data-track-index="124" data-volume="0.13"></audio>
+      <audio id="a115-npop5" src="assets/sfx/npop5.wav" data-start="33.53" data-duration="0.15" data-track-index="125" data-volume="0.24"></audio>
+      <audio id="a116-cinclick" src="assets/sfx/cinclick.wav" data-start="34.05" data-duration="0.094" data-track-index="126" data-volume="0.3"></audio>
+      <audio id="a117-npop1" src="assets/sfx/npop1.wav" data-start="34.07" data-duration="0.16" data-track-index="127" data-volume="0.24"></audio>
+      <audio id="a118-npop2" src="assets/sfx/npop2.wav" data-start="34.63" data-duration="0.18" data-track-index="128" data-volume="0.17"></audio>
+      <audio id="a119-npop3" src="assets/sfx/npop3.wav" data-start="34.87" data-duration="0.17" data-track-index="129" data-volume="0.2"></audio>
+      <audio id="a120-cinclick" src="assets/sfx/cinclick.wav" data-start="35.48" data-duration="0.094" data-track-index="130" data-volume="0.3"></audio>
+      <audio id="a121-npop4" src="assets/sfx/npop4.wav" data-start="35.55" data-duration="0.16" data-track-index="131" data-volume="0.18"></audio>
+      <audio id="a122-npop5" src="assets/sfx/npop5.wav" data-start="35.83" data-duration="0.15" data-track-index="132" data-volume="0.24"></audio>
+      <audio id="a123-click2" src="assets/sfx/click2.wav" data-start="36.09" data-duration="0.465" data-track-index="133" data-volume="0.4"></audio>
+      <audio id="a124-ppop3" src="assets/sfx/ppop3.wav" data-start="36.11" data-duration="0.38" data-track-index="134" data-volume="0.17"></audio>
+      <audio id="a125-flick" src="assets/sfx/flick.wav" data-start="36.74" data-duration="0.552" data-track-index="135" data-volume="0.3"></audio>
+      <audio id="a126-softpop" src="assets/sfx/softpop.wav" data-start="36.80" data-duration="0.72" data-track-index="136" data-volume="0.2"></audio>
+      <audio id="a127-npop1" src="assets/sfx/npop1.wav" data-start="36.81" data-duration="0.16" data-track-index="137" data-volume="0.24"></audio>
+      <audio id="a128-softpop" src="assets/sfx/softpop.wav" data-start="36.90" data-duration="0.72" data-track-index="138" data-volume="0.2"></audio>
+      <audio id="a129-softpop" src="assets/sfx/softpop.wav" data-start="37.00" data-duration="0.72" data-track-index="139" data-volume="0.2"></audio>
+      <audio id="a130-npop2" src="assets/sfx/npop2.wav" data-start="37.01" data-duration="0.18" data-track-index="140" data-volume="0.17"></audio>
+      <audio id="a131-softpop" src="assets/sfx/softpop.wav" data-start="37.10" data-duration="0.72" data-track-index="141" data-volume="0.2"></audio>
+      <audio id="a132-mpop" src="assets/sfx/mpop.wav" data-start="37.20" data-duration="1.25" data-track-index="142" data-volume="0.24"></audio>
+      <audio id="a133-npop3" src="assets/sfx/npop3.wav" data-start="37.55" data-duration="0.17" data-track-index="143" data-volume="0.2"></audio>
+      <audio id="a134-npop4" src="assets/sfx/npop4.wav" data-start="38.07" data-duration="0.16" data-track-index="144" data-volume="0.18"></audio>
+      <audio id="a135-npop5" src="assets/sfx/npop5.wav" data-start="38.73" data-duration="0.15" data-track-index="145" data-volume="0.24"></audio>
+      <audio id="a136-ppop4" src="assets/sfx/ppop4.wav" data-start="39.09" data-duration="0.4" data-track-index="146" data-volume="0.13"></audio>
+      <audio id="a137-mainwhoosh" src="assets/sfx/mainwhoosh.wav" data-start="39.35" data-duration="1.717" data-track-index="147" data-volume="0.24"></audio>
+      <audio id="a138-sweet" src="assets/sfx/sweet.wav" data-start="39.55" data-duration="1.076" data-track-index="148" data-volume="0.3"></audio>
+    </div>
+    <script>
+window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28, 5.2], ["D", 5.2, 6.62], ["E", 6.62, 7.74], ["F", 7.74, 9.14], ["G", 9.14, 10.72], ["H", 10.72, 12.62], ["I", 12.62, 14.42], ["J", 14.42, 17.5], ["K", 17.5, 19.04], ["L", 19.04, 23.52], ["M", 23.52, 26.62], ["N", 26.62, 28.5], ["O", 28.5, 35.48], ["Q", 35.48, 36.74], ["R", 36.74, 40.8]], "lines": [["A", 300, 76, "مشروعك متعوب عليه، بس", [0.0, 0.56, 0.88, 1.38]], ["A", 400, 330, "أرباحك", [1.66]], ["A", 1300, 170, "*قليلة؟", [2.1]], ["B", 300, 124, "عدنا *نصمملك", [2.65, 2.91]], ["B", 1440, 110, "موشن جرافيك", [3.45, 3.73]], ["C", 300, 130, "وبوستات إعلانية", [4.2, 4.73]], ["D", 300, 96, "تحجي بقوة", [5.25, 5.63]], ["D", 400, 310, "براندك", [6.09]], ["E", 300, 150, "وتبيع بمكانك", [6.67, 7.09]], ["F", 390, 400, "حركة", [7.79]], ["F", 300, 84, "تشد *العين", [8.37, 8.61]], ["G", 1130, 330, "فكرة", [9.19]], ["G", 1480, 80, "تقنع الزبون", [9.63, 10.03]], ["H", 300, 330, "ونتيجة", [10.77]], ["H", 1420, 96, "ترفع *مبيعاتك", [11.45, 11.83]], ["I", 300, 96, "من أول", [12.67, 12.93]], ["I", 1430, 110, "ثواني بإعلانك", [13.35, 13.73]], ["J", 300, 104, "الزبون راح يلمس", [14.47, 14.87, 15.09], 16.3], ["J", 430, 120, "الكواليتي *العالي", [15.37, 15.79], 16.3], ["J", 300, 120, "يثق بمنتجك", [16.41, 16.69]], ["K", 300, 110, "ويدخل يطلب منك", [17.55, 17.89, 18.23]], ["K", 1400, 170, "*مباشرة", [18.55]], ["L", 300, 104, "لأن ويانا راح يطلع", [19.09, 19.65, 20.21, 20.43], 21.6], ["L", 430, 104, "إعلانك بمستوى", [20.69, 21.13], 21.6], ["L", 300, 120, "يعزلك *تماما", [21.75, 22.17]], ["L", 1560, 96, "عن منافسيك", [22.69, 22.77]], ["M", 300, 96, "ويخلي الزبون يشتري منك", [23.57, 23.93, 24.27, 24.63], 24.9], ["M", 300, 110, "مرة ومرتين", [24.97, 25.35]], ["M", 1370, 220, "*وعشرة", [25.97]], ["N", 300, 110, "لأن شاف براند", [26.67, 27.01, 27.21]], ["N", 1470, 110, "*حقيقي قدامه", [27.57, 27.97]], ["O", 300, 104, "كافي تضيع جمهورك", [28.55, 28.93, 29.15], 30.6], ["O", 430, 104, "بتصاميم عادية", [29.65, 30.15], 30.6], ["O", 1500, 110, "الكل يتخطاها", [30.85, 30.99], 31.5], ["O", 300, 110, "ابدأ اليوم", [31.63, 32.05], 32.45], ["O", 300, 104, "بتصاميم *توقف الزبون", [32.51, 33.09, 33.51]], ["O", 1520, 100, "وتقفل وياه البيعة", [34.05, 34.61, 34.85]], ["Q", 300, 120, "تواصل ويانا", [35.53, 35.81]], ["Q", 1450, 140, "*بالخاص", [36.09]], ["R", 290, 150, "شوف أعمالنا", [36.79, 36.99], 37.45], ["R", 290, 120, "وخلي براندك", [37.53, 38.05], 39.35], ["R", 1470, 130, "يبيع *صح", [38.71, 39.07], 39.35]], "fx": [[0.05, "flick", 0.3], [0.42, "cinclick", 0.34], [2.1, "money", 0.22], [2.6, "fastwhoosh", 0.22], [2.66, "softpop", 0.24], [2.8, "softpop", 0.2], [2.94, "softpop", 0.2], [4.28, "cinclick", 0.3], [4.3, "mpop", 0.24], [4.44, "mpop", 0.2], [4.58, "mpop", 0.2], [5.2, "smooth", 0.24], [5.3, "whooshcon", 0.2], [6.62, "cinclick", 0.3], [6.68, "simple", 0.22], [7.74, "hitcut", 0.3], [8.26, "bite", 0.4], [9.14, "cinclick", 0.3], [9.2, "flick", 0.24], [10.72, "cinclick", 0.3], [10.78, "mpop", 0.28], [11.83, "ppop3", 0.22], [12.62, "fastwhoosh", 0.24], [12.68, "gear", 0.28], [13.17, "hit", 0.26], [14.42, "cinclick", 0.3], [15.6, "airy", 0.2], [17.5, "hitcut", 0.3], [18.55, "cinclick", 0.36], [19.04, "smooth", 0.24], [19.12, "sweet", 0.22], [21.75, "whooshcon", 0.24], [23.52, "cinclick", 0.3], [24.97, "mpop", 0.26], [25.35, "mpop", 0.26], [25.97, "money", 0.3], [26.62, "fastwhoosh", 0.22], [26.7, "softpop", 0.22], [28.5, "cinfast", 0.24], [29.0, "data", 0.18], [33.09, "hit", 0.32], [34.05, "cinclick", 0.3], [35.48, "cinclick", 0.3], [36.09, "click2", 0.4], [36.74, "flick", 0.3], [36.8, "softpop", 0.2], [36.9, "softpop", 0.2], [37.0, "softpop", 0.2], [37.1, "softpop", 0.2], [37.2, "mpop", 0.24], [39.35, "mainwhoosh", 0.24], [39.55, "sweet", 0.3]]};
+// The motion of my ad reel, on the reel standard (see ../hf-simple-logos-reel/README.md, Motion): every shot rides a
+// camera on two nulls that lands fast and settles, then speeds into the cut; each cut gets a 0.3 s box-blur pulse;
+// letters come out of a blur one at a time, 4.8 frames apart (TextEvo); things pop in with Smart Bounce (amplitude 50,
+// frequency 2, decay 4); the whole frame steps (Posterize Time, here 15 fps so every step holds two frames of the 30 fps
+// video) with a long shutter so each step carries its motion blur, and a grunge layer sits over it all on multiply.
+// Every cue sits on a word of the voice (src/reel.json, made from the word times in src/words.json); build.py reads the
+// same file for the sounds.
+(function () {
+  const R = window.REEL, D = R.D;
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const POSTER = 15, ZOOM = 1050, SHUTTER = 1 / 30, FLASH = [0.15, 6];
+
+  // After Effects' temporal ease as a curve: outgoing influence of the first key, incoming influence of the second
+  const bez = (x1, y1, x2, y2) => (p) => {
+    if (p <= 0) return 0;
+    if (p >= 1) return 1;
+    let lo = 0, hi = 1, u = p;
+    for (let i = 0; i < 32; i++) {
+      u = (lo + hi) / 2;
+      if (3 * (1 - u) * (1 - u) * u * x1 + 3 * (1 - u) * u * u * x2 + u * u * u < p) lo = u; else hi = u;
+    }
+    return 3 * (1 - u) * (1 - u) * u * y1 + 3 * (1 - u) * u * u * y2 + u * u * u;
+  };
+  const ae = (out, inn) => bez(out / 100, 0, 1 - inn / 100, 1);
+  const SETTLE = ae(0, 100), EXIT = ae(100, 0.01), DRIFT = ae(33, 100), EVO = ae(0.1, 100), HOLD = ae(17, 17);
+  // Smart Bounce, «Elastic»: the keyframed move, then the overshoot v·amp·sin(2π·f·t)/e^(decay·t) for a second
+  const smart = (k) => (p) => { const t = p * (k + 1); return t < k ? t / k : 1 + 0.05 / k * Math.sin(4 * Math.PI * (t - k)) / Math.exp(4 * (t - k)); };
+
+  // each scene's contents ride on a camera layer; its colour world, far behind, moves a third as much
+  $$('.sc').forEach((sc) => {
+    const cam = document.createElement('div');
+    cam.className = 'cam';
+    [...sc.children].filter((c) => !c.classList.contains('world')).forEach((c) => cam.appendChild(c));
+    sc.appendChild(cam);
+  });
+
+  // the pile: one ad printed ten times, each copy a little off the last; the stream: plain sheets with no design on them
+  for (let i = 0; i < 10; i++) {
+    $('#pile').insertAdjacentHTML('beforeend', `<div class="print pl" style="left:${270 + Math.sin(i * 2.3) * 70}px; top:${480 + i * 24}px; width:520px; height:650px; transform:rotate(${(Math.sin(i * 1.7) * 9).toFixed(1)}deg)"><img src="assets/work/alfaqma.jpg" /></div>`);
+  }
+  for (let i = 0; i < 9; i++) $('#stream').insertAdjacentHTML('beforeend', '<div class="sheet" style="position:relative; left:0; margin-bottom:60px; width:580px; height:725px; filter:grayscale(1) brightness(.7)"></div>');
+
+  // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time]
+  R.lines.forEach(([sc, top, size, text, times], i) => {
+    const d = document.createElement('div');
+    d.className = 'cap'; d.id = 'L' + i;
+    d.style.cssText = `top:${top}px; font-size:${size}px`;
+    d.innerHTML = text.split(' ').map((w) => {
+      const k = w[0] === '*', s = k ? w.slice(1) : w;
+      return `<span class="w${k ? ' k' : ''}">${[...s].map((c) => `<span class="l">${c}</span>`).join('')}</span>`;
+    }).join(' ');
+    $(`#s${sc} .cam`).appendChild(d);
+  });
+
+  // the camera of every shot, in the After Effects project's units: «from» is where the inner null starts and settles
+  // from, «drift» the slow moves in between, «exit» the outer null's move into the cut
+  const RIG = {
+    A: { from: [0, 0, 200], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
+    B: { from: [-200, 0, 0], settle: 1.2, exit: [[0, 0, -119], 0.5] },
+    C: { from: [0, 0, 220], settle: 0.8, exit: [[0, -378, 0], 0.4] },
+    D: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 220], 0.5] },
+    E: { from: [0, 0, -121], settle: 1.0, exit: [[-65, 0, 0], 0.6] },
+    F: { from: [85, 0, 0], settle: 1.2, exit: [[0, 0, -103], 0.5] },
+    G: { from: [0, 0, 168], settle: 1.3, exit: [[0, -405, 0], 0.6] },
+    H: { from: [0, 497, 0], settle: 0.8, exit: [[0, 0, -370], 0.44] },
+    I: { from: [0, 0, 192], settle: 1.6, exit: [[0, 319, 0], 0.6] },
+    J: { from: [0, -300, 0], settle: 1.5, drift: [[15.6, 17.2, [0, 0, 140]]], exit: [[0, 0, 220], 0.5] },
+    K: { from: [0, 0, 200], settle: 1.2, exit: [[0, 593, 0], 0.6] },
+    L: { from: [0, -500, 0], settle: 1.8, drift: [[21.0, 23.0, [0, 0, 80]]], exit: [[376, 0, 0], 0.6] },
+    M: { from: [-196, 0, 0], settle: 2.5, exit: [[102, 0, 0], 0.6] },
+    N: { from: [0, 0, 200], settle: 1.4, exit: [[0, 0, -122], 0.5] },
+    O: { from: [0, 0, 180], settle: 2.0, drift: [[33.0, 35.0, [0, 0, 90]]], exit: [[0, 0, -231], 0.6] },
+    Q: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 200], 0.4] },
+    R: { from: [0, 0, 220], settle: 1.8, drift: [[38.0, 40.8, [0, 0, -43], HOLD]] },
+  };
+  const SC = R.scenes.map(([id, a, b], i) => {
+    const r = RIG[id], moves = [];
+    moves.push([a, a + r.settle, r.from.map((v) => -v), SETTLE]);
+    (r.drift || []).forEach(([t0, t1, d, e]) => moves.push([t0, t1, d, e || DRIFT]));
+    if (r.exit) moves.push([b - r.exit[1], b, r.exit[0], EXIT]);
+    return { id, a, b: i === R.scenes.length - 1 ? D : b, from: r.from, moves, cam: $(`#s${id} .cam`), world: $(`#s${id} .world`) };
+  });
+  const camAt = (s, t) => {
+    const c = [...s.from];
+    s.moves.forEach(([t0, t1, d, e]) => { const k = e((t - t0) / (t1 - t0)); c[0] += d[0] * k; c[1] += d[1] * k; c[2] += d[2] * k; });
+    const sc = ZOOM / (ZOOM - c[2]);
+    return [-c[0] * sc, -c[1] * sc, sc];
+  };
+  const cuts = SC.slice(1).map((s) => s.a);
+
+  function build() {
+    // a line wider than the safe width shrinks to fit (the letters are laid out already, only hidden)
+    $$('.cap').forEach((c) => {
+      const w = c.scrollWidth, max = 920;
+      if (w > max) c.style.fontSize = (parseFloat(c.style.fontSize) * max / w).toFixed(1) + 'px';
+    });
+    const tl = gsap.timeline({ paused: true });
+    const at = (t) => Math.max(0, t);
+    // TextEvo: each letter runs the same one-second curve out of a blur, 4.8 frames (at 100 fps) after the one before
+    const word = (w, t) => $$('.l', w).forEach((l, j) => {
+      tl.fromTo(l, { opacity: 0, filter: 'blur(18px)' }, { opacity: 1, filter: 'blur(0px)', duration: 1, ease: EVO }, at(t + j * 0.048));
+    });
+    R.lines.forEach(([, , , , times, outT], i) => {
+      $$(`#L${i} .w`).forEach((w, j) => word(w, times[j]));
+      if (outT) tl.to(`#L${i}`, { opacity: 0, y: -40, filter: 'blur(16px)', duration: 0.22, ease: 'power2.in' }, outT);
+    });
+    // Smart Bounce: scale 0 to 100 in 0.16 s and rotation 20 to 0 in 0.09 s, then the elastic overshoot
+    const pop = (sel, t, from = {}) => {
+      tl.set(sel, { opacity: 1, filter: 'blur(0px)' }, t);
+      tl.fromTo(sel, { scale: 0 }, { scale: 1, duration: 1.16, ease: smart(0.16) }, t);
+      tl.fromTo(sel, { rotation: from.rotation ?? 20 }, { rotation: 0, duration: 1.09, ease: smart(0.09) }, t);
+      tl.fromTo(sel, { x: from.x || 0, y: from.y || 0 }, { x: 0, y: 0, duration: 0.6, ease: SETTLE }, t);
+    };
+    const push = (sel, t0, t1, s = 1.07, r = 0) => tl.fromTo(sel, { scale: 1, rotation: -r / 2 }, { scale: s, rotation: r / 2, duration: t1 - t0, ease: 'none' }, t0);
+    const punch = (sel, t, s = 1.18) => { tl.to(sel, { scale: s, duration: 0.08, ease: 'power2.out' }, t); tl.to(sel, { scale: 1, duration: 0.4, ease: 'back.out(3)' }, t + 0.08); };
+    // an object drops in from above trailing four ghost copies of itself, then squashes on landing
+    const drop = (sel, t) => {
+      const box = $(sel), src = box.dataset.src, f = box.dataset.f;
+      [1, 0.5, 0.32, 0.2, 0.1].forEach((o, k) => {
+        const im = document.createElement('img');
+        im.src = src;
+        im.style.cssText = `position:absolute; left:0; top:0; width:100%; filter:${f}; z-index:${10 - k}`;
+        box.appendChild(im);
+        tl.fromTo(im, { y: -1400, opacity: 0 }, { y: 0, opacity: o, duration: 0.5, ease: 'power4.out' }, t + k * 0.05);
+        if (k) tl.to(im, { opacity: 0, duration: 0.25, ease: 'power1.out' }, t + 0.5 + k * 0.05);
+      });
+      const main = box.firstChild;
+      tl.to(main, { scaleY: 0.9, scaleX: 1.06, transformOrigin: '50% 100%', duration: 0.08, ease: 'power2.out' }, t + 0.5);
+      tl.to(main, { scaleY: 1, scaleX: 1, duration: 0.4, ease: 'back.out(3)' }, t + 0.58);
+      return main;
+    };
+
+    // ── scenes: hard cuts, the camera and the blur pulse do the rest
+    gsap.set('.sc', { autoAlpha: 0 });
+    gsap.set('#sA', { autoAlpha: 1 });
+    gsap.set('.obj, .print, .shot', { opacity: 0 });
+    SC.slice(1).forEach((s, i) => { tl.set(`#s${SC[i].id}`, { autoAlpha: 0 }, s.a); tl.set(`#s${s.id}`, { autoAlpha: 1 }, s.a); });
+
+    // ── A · the wallet slams onto «أرباحك», shakes empty on «قليلة»
+    tl.set('#wallet', { opacity: 1 }, 0.05);
+    tl.fromTo('#wallet', { y: -1300, rotation: -40 }, { y: 0, rotation: -7, duration: 0.42, ease: SETTLE }, 0.05);
+    tl.to('#wallet', { keyframes: [{ x: -14, duration: 0.05 }, { x: 12, duration: 0.05 }, { x: -6, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 2.1);
+
+    // ── B · three phones come up with my reels playing on them
+    [['#phL', 2.66, -10], ['#phR', 2.8, 9], ['#phC', 2.94, -1]].forEach(([s, t, r]) => {
+      tl.set(s, { opacity: 1 }, t);
+      tl.fromTo(s, { y: 1300, rotation: r * 3 }, { y: 0, rotation: r, duration: 0.55, ease: SETTLE }, t);
+    });
+
+    // ── C · the posts fan out, the middle one on top
+    pop('#fanL', 4.3, { x: -300, rotation: -30 });
+    pop('#fanR', 4.44, { x: 300, rotation: 30 });
+    pop('#fanC', 4.58, { y: 200 });
+
+    // ── D · the Iraqi Airways concept rises onto «براندك»
+    tl.set('#pIA', { opacity: 1 }, 5.3);
+    tl.fromTo('#pIA', { y: 1200, rotation: 20 }, { y: 0, rotation: 5, duration: 0.6, ease: SETTLE }, 5.3);
+    punch('#pIA', 6.09, 1.06);
+    tl.to('#tagD', { opacity: 0.85, duration: 0.3 }, 5.7);
+
+    // ── E · the delivery ad slides in on «وتبيع»
+    tl.set('#pTal', { opacity: 1 }, 6.67);
+    tl.fromTo('#pTal', { x: -1100, rotation: -25 }, { x: 0, rotation: -5, duration: 0.5, ease: SETTLE }, 6.67);
+    tl.to('#tagE', { opacity: 0.85, duration: 0.3 }, 7.0);
+
+    // ── F · the logos reel on a phone: the bite lands on «تشد العين»
+    tl.set('#phF', { opacity: 1 }, 7.74);
+    tl.fromTo('#phF', { y: 1100, rotation: 25 }, { y: 0, rotation: 5, duration: 0.5, ease: SETTLE }, 7.74);
+    punch('#phF', 8.37, 1.08);
+
+    // ── G · the Al-Waseet ad drops onto «فكرة»
+    tl.set('#pWas', { opacity: 1 }, 9.19);
+    tl.fromTo('#pWas', { y: -1300, rotation: -15 }, { y: 0, rotation: 3, duration: 0.45, ease: SETTLE }, 9.19);
+    push('#pWas', 9.7, 10.72, 1.05);
+
+    // ── H · the real views pop in, punch on «مبيعاتك»
+    pop('#views', 10.78);
+    punch('#views', 11.83, 1.1);
+
+    // ── I · the hand comes up with the stopwatch, the «3» bounces in on its word
+    tl.set('#hand', { opacity: 1 }, 12.66);
+    tl.fromTo('#hand', { y: 1200, rotation: 10 }, { y: 0, rotation: -8, duration: 0.6, ease: SETTLE }, 12.66);
+    pop('#n3', 13.17, { rotation: -20 });
+
+    // ── J · the Saj Al-Reef ad lands, the camera pushes into it
+    tl.set('#pSaj', { opacity: 1 }, 14.42);
+    tl.fromTo('#pSaj', { y: 900, rotation: 8 }, { y: 0, rotation: -2, duration: 0.5, ease: SETTLE }, 14.42);
+
+    // ── K · the order button fills the frame, punches on «مباشرة»
+    tl.set('#btnAd', { opacity: 1 }, 17.5);
+    punch('#btnAd', 18.55, 1.08);
+
+    // ── L · my ad lands in the light; on «يعزلك» the plain sheets fall away
+    tl.set('#pBaly', { opacity: 1 }, 19.09);
+    tl.fromTo('#pBaly', { y: -1200, rotation: -12 }, { y: 0, rotation: 2, duration: 0.5, ease: SETTLE }, 19.09);
+    tl.to('#tagL', { opacity: 0.85, duration: 0.3 }, 19.6);
+    $$('#sL .sheet').forEach((el, i) => {
+      tl.to(el, { y: 1500, rotation: (i % 2 ? 1 : -1) * 40, duration: 0.7, ease: EXIT }, 21.75 + i * 0.06);
+    });
+    tl.set('#L25', { className: 'cap dim' }, 22.6);
+
+    // ── M · one print on «مرة», another on «ومرتين», the rest pile up on «وعشرة»
+    $$('#pile .pl').forEach((el, i) => {
+      const t = i === 0 ? 24.97 : i === 1 ? 25.35 : 25.97 + (i - 2) * 0.06;
+      tl.set(el, { opacity: 1 }, t);
+      tl.fromTo(el, { y: -1400, x: (i % 2 ? 1 : -1) * 200 }, { y: 0, x: 0, duration: 0.35, ease: SETTLE }, t);
+    });
+
+    // ── N · my real profile comes up
+    tl.set('#phProf', { opacity: 1 }, 26.66);
+    tl.fromTo('#phProf', { y: 1300, rotation: 12 }, { y: 0, rotation: -4, duration: 0.6, ease: SETTLE }, 26.66);
+    push('#phProf', 27.3, 28.5, 1.05);
+
+    // ── O · the plain sheets stream past; on «توقف» my ad slams down and the stream stops
+    tl.fromTo('#stream', { y: 300 }, { y: -2400, duration: 4.6, ease: 'none' }, 28.5);
+    tl.to('#stream', { y: -2700, duration: 0.5, ease: SETTLE }, 33.1);
+    tl.set('#pSala', { opacity: 1 }, 33.05);
+    tl.fromTo('#pSala', { y: -1500, rotation: -20 }, { y: 0, rotation: -2, duration: 0.3, ease: SETTLE }, 33.05);
+    punch('#pSala', 34.05, 1.06);
+
+    // ── Q · the real buttons slide in, Contact punches on «بالخاص»
+    tl.set('#btns', { opacity: 1 }, 35.5);
+    tl.fromTo('#btns', { x: 900 }, { x: 0, duration: 0.5, ease: SETTLE }, 35.5);
+    punch('#btns', 36.09, 1.12);
+
+    // ── R · the portfolio is thrown on the table, then flies out for the handle
+    $$('#sR .tbl').forEach((el, i) => {
+      const t = 36.8 + i * 0.1;
+      tl.set(el, { opacity: 1 }, t);
+      tl.fromTo(el, { x: (i % 2 ? 1 : -1) * 1200, y: 300, rotation: (i % 2 ? 1 : -1) * 40 }, { x: 0, y: 0, rotation: 0, duration: 0.45, ease: SETTLE }, t);
+      tl.to(el, { x: (i % 2 ? 1 : -1) * 1400, y: -400 + i * 200, rotation: (i % 2 ? 1 : -1) * 30, duration: 0.45, ease: EXIT }, 39.35 + i * 0.03);
+    });
+    tl.set('#handle', { opacity: 1 }, 39.55);
+    tl.fromTo('#handle', { scale: 0 }, { scale: 1, duration: 1.16, ease: smart(0.16) }, 39.55);
+
+    tl.to({}, { duration: D }, 0);
+
+    // the clock HyperFrames drives: it holds every step for 1/15 s, plays the timeline there, places the shot's camera
+    // and blurs what moved during the shutter: the whole frame for the camera (plus the pulse on a cut), and each
+    // moving thing on its own for its own move
+    const mb = $('#mbB'), defs = $('#mb').parentNode;
+    const MOV = SC.map((s) => $$('.obj, .print, .shot, #n3', s.cam).map((el, i) => {
+      const wrap = document.createElement('div'), id = `mb${s.id}${i}`;
+      wrap.style.cssText = `position:absolute; inset:0; z-index:${getComputedStyle(el).zIndex}`;
+      el.parentNode.insertBefore(wrap, el);
+      wrap.appendChild(el);
+      defs.insertAdjacentHTML('beforeend', `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="0 0" /></filter>`);
+      return { el, wrap, id, f: defs.lastElementChild.firstElementChild };
+    }));
+    const box = (m) => { const r = m.el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2, r.width + r.height]; };
+    const render = (t) => {
+      const q = Math.min(D, Math.floor((t + 0.03) * POSTER) / POSTER);
+      const si = SC.findIndex((x) => q >= x.a && q < x.b), s = SC[si < 0 ? SC.length - 1 : si], mov = MOV[si < 0 ? SC.length - 1 : si];
+      tl.totalTime(Math.max(0, q - SHUTTER), true);
+      const before = mov.map(box);
+      tl.totalTime(q, false);
+      mov.forEach((m, i) => {
+        const [x1, y1, z1] = box(m), [x0, y0, z0] = before[i];
+        const sx = Math.min(70, Math.abs(x1 - x0) / 2.5 + Math.abs(z1 - z0) / 6), sy = Math.min(70, Math.abs(y1 - y0) / 2.5 + Math.abs(z1 - z0) / 6);
+        const on = sx + sy > 0.6;
+        m.wrap.style.filter = on ? `url(#${m.id})` : 'none';
+        if (on) m.f.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
+      });
+      const [x, y, k] = camAt(s, q), [x0, y0, k0] = camAt(s, Math.max(s.a, q - SHUTTER));
+      s.cam.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${k.toFixed(4)})`;
+      s.world.style.transform = `translate(${(x * 0.35).toFixed(2)}px, ${(y * 0.35).toFixed(2)}px) scale(${(1 + (k - 1) * 0.35).toFixed(4)})`;
+      const near = cuts.reduce((m, c) => Math.min(m, Math.abs(q - c)), 9);
+      const f = near < FLASH[0] ? FLASH[1] * (1 - near / FLASH[0]) : 0;
+      const sx = Math.min(80, Math.abs(x - x0) / 2.5 + Math.abs(k - k0) * 180) + f, sy = Math.min(80, Math.abs(y - y0) / 2.5 + Math.abs(k - k0) * 320) + f;
+      mb.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
+    };
+    const clock = { now: 0 };
+    Object.defineProperty(clock, 't', { get() { return this.now; }, set(v) { this.now = v; render(v); } });
+    const main = gsap.timeline({ paused: true });
+    main.fromTo(clock, { t: 0 }, { t: D, duration: D, ease: 'none' }, 0);
+    window.__timelines = window.__timelines || {};
+    window.__timelines['main'] = main;
+  }
+  document.fonts.ready.then(build);
+})();
+    </script>
+  </body>
+</html>
