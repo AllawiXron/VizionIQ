@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>allawi.psd · simple logos v2</title>
+<!-- each object cut from its photo and lit on a field graded from its brand colour, the name set huge behind it -->
+<style>
+@font-face { font-family:'DG Sahabah'; src:url(../../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight:400; font-display:block }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:3480px }
+.f { position:relative; width:1080px; height:1350px; overflow:hidden; flex:none; direction:rtl; color:#f6ead8;
+  font-family:'DG Sahabah'; font-weight:400; font-synthesis:none }
+.tex { position:absolute; inset:0; background:url(../../ig-highlights/assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.45; z-index:1; pointer-events:none }
+.light { position:absolute; z-index:1; border-radius:50%; filter:blur(90px); pointer-events:none }
+.vig { position:absolute; inset:0; z-index:30; pointer-events:none; box-shadow:inset 0 0 220px 40px rgba(0,0,0,.55) }
+.grain { position:absolute; inset:0; background:url(../../hf-dollar-reel/assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.08; pointer-events:none; z-index:40 }
+.word { position:absolute; z-index:2; line-height:1; white-space:nowrap }
+.obj { position:absolute; z-index:6; display:block }
+.sh { position:absolute; z-index:5; border-radius:50%; background:radial-gradient(closest-side, rgba(0,0,0,.62), rgba(0,0,0,0)); filter:blur(6px) }
+.cast { position:absolute; z-index:4; border-radius:50%; background:radial-gradient(closest-side, rgba(0,0,0,.35), rgba(0,0,0,0)); filter:blur(28px) }
+.tx { position:absolute; z-index:10; line-height:1.45 }
+.print { position:absolute; z-index:3; padding:10px; background:#efe7d8; box-shadow:0 22px 40px rgba(0,0,0,.55), 0 2px 5px rgba(0,0,0,.4) }
+.print div { width:100%; height:100%; background-size:cover; background-position:center; filter:sepia(.15) contrast(1.05) }
+</style>
+</head>
+<body>
+
+<!-- cover: a still life of the six things -->
+<section class="f" id="v2-1" style="background:#2a1a12">
+  <div class="light" style="left:120px; top:420px; width:900px; height:700px; background:rgba(214,140,80,.38)"></div>
+  <div class="light" style="left:-200px; top:-200px; width:700px; height:500px; background:rgba(0,0,0,.6)"></div>
+  <div class="ab" style="position:absolute; left:0; right:0; top:1060px; bottom:0; z-index:1; background:linear-gradient(#3a2418, #22140d)"></div>
+  <div class="tex"></div>
+  <div class="tx" style="right:70px; top:96px; font-size:84px; line-height:1.14">ست أشياء تشوفها كل يوم<br>صارت شعارات تعرفها</div>
+  <div class="tx" style="right:74px; top:330px; font-size:40px; color:rgba(246,234,216,.72)">خمن الشعار قبل ما تسحب</div>
+  <div class="print" style="left:96px; top:470px; width:300px; height:470px; transform:rotate(-5deg)"><div style="background-image:url(../photos/mermaid.jpg)"></div></div>
+  <div class="print" style="left:660px; top:540px; width:350px; height:262px; transform:rotate(6deg)"><div style="background-image:url(../photos/circles.jpg)"></div></div>
+  <div class="cast" style="left:250px; top:1000px; width:520px; height:90px"></div>
+  <div class="sh" style="left:300px; top:1020px; width:400px; height:46px"></div>
+  <img class="obj" src="bull.png" style="left:250px; top:640px; width:470px">
+  <div class="sh" style="left:600px; top:1100px; width:420px; height:50px"></div>
+  <img class="obj" src="croc.png" style="left:600px; top:770px; width:560px; transform:rotate(-4deg); z-index:7">
+  <div class="sh" style="left:90px; top:1140px; width:280px; height:40px"></div>
+  <img class="obj" src="shell.png" style="left:70px; top:900px; width:300px; z-index:8">
+  <div class="sh" style="left:400px; top:1180px; width:220px; height:36px"></div>
+  <img class="obj" src="apple.png" style="left:390px; top:930px; width:236px; z-index:9">
+  <div class="tx" style="right:70px; bottom:58px; font-size:30px; direction:ltr; color:rgba(246,234,216,.55)">allawi.psd</div>
+  <div class="vig"></div><div class="grain"></div>
+</section>
+
+<!-- apple: the real apple with the logo's bite taken out of it -->
+<section class="f" id="v2-2" style="background:#7a0b17">
+  <div class="light" style="left:180px; top:180px; width:760px; height:760px; background:rgba(214,40,58,.7)"></div>
+  <div class="light" style="left:520px; top:900px; width:700px; height:600px; background:rgba(40,0,6,.7)"></div>
+  <div class="tex" style="opacity:.35"></div>
+  <div class="word" style="left:0; right:0; text-align:center; top:-10px; font-size:430px; color:#b42a3c">تفاحة</div>
+  <div class="cast" style="left:300px; top:1000px; width:620px; height:110px"></div>
+  <div class="sh" style="left:330px; top:1010px; width:440px; height:50px"></div>
+  <img class="obj" src="apple.png" id="bitten" style="left:240px; top:300px; width:600px">
+  <img src="../logos/apple.svg" style="position:absolute; z-index:10; left:76px; top:1150px; width:74px; filter:invert(1) brightness(1.1); opacity:.95">
+  <div class="tx" style="right:70px; top:1110px; width:700px">
+    <div style="font-size:58px; line-height:1.15">العضة هي اللي خلتها أبل</div>
+    <div style="font-size:33px; color:rgba(246,234,216,.78); margin-top:12px">روب جانوف، اللي صمم الشعار، قال حطها حتى محد يحسبها كرزة.</div>
+  </div>
+  <div class="vig"></div><div class="grain"></div>
+</section>
+
+<!-- my cactus: the real saguaro next to the knitted one I drew for Cactus -->
+<section class="f" id="v2-9" style="background:#1f3a27">
+  <div class="light" style="left:-100px; top:300px; width:800px; height:800px; background:rgba(98,150,90,.45)"></div>
+  <div class="light" style="left:500px; top:600px; width:700px; height:800px; background:rgba(10,24,14,.6)"></div>
+  <div class="tex" style="opacity:.4"></div>
+  <div class="word" style="left:0; right:0; text-align:center; top:-20px; font-size:440px; color:#2d5539">صبار</div>
+  <div class="tx" style="right:70px; top:450px; width:620px">
+    <div style="font-size:52px; line-height:1.2">لمحل كاكتوس، الشي البسيط جان صبار، لأن هذا اسمه.</div>
+    <div style="font-size:33px; color:rgba(246,234,216,.78); margin-top:16px">والتفصيلة اللي ما ياخذها غيره: الصبار محوك من خيط، لأنها تحيك كلشي بيدها.</div>
+  </div>
+  <img class="obj" src="cactus.png" style="right:-30px; bottom:-40px; width:560px; filter:brightness(1.18) saturate(1.1)">
+  <div class="cast" style="left:70px; top:1150px; width:460px; height:90px"></div>
+  <div class="sh" style="left:120px; top:1170px; width:330px; height:40px"></div>
+  <img class="obj" src="knit-cactus.png" style="left:110px; top:690px; width:340px">
+  <div class="tx" style="left:76px; top:1240px; font-size:28px; color:rgba(246,234,216,.6)">من شغلي، هوية محل كاكتوس</div>
+  <div class="vig"></div><div class="grain"></div>
+</section>
+
+<script>
+  // the bite: a circle taken out of the right side of the real apple, where the logo has it
+  const a = document.getElementById('bitten');
+  const r = 0.2 * 600;
+  a.style.webkitMaskImage = a.style.maskImage = `radial-gradient(circle ${r}px at calc(100% + ${r * 0.42}px) 46%, transparent ${r - 1}px, #000 ${r}px)`;
+  document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
