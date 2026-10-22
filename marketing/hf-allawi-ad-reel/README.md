@@ -1,36 +1,31 @@
 # Ad reel for allawi.psd
 
-A 41 s reel at 1080×1920 that sells my design work. The idea comes from an agency reel the user sent (Brandek): a
-problem, who we are, why it works, what waiting costs, then the ask. Its look is mine: one colour world per line of the
-voice, cut-out objects, hands and people acting out each line, and my real reels playing on phones.
+A 41 s reel at 1080×1920, 30 fps, that sells my design work. The idea and the visual language come from an agency reel
+the user sent (Brandek): one vivid coral field for the whole reel, big white type with the key words in near-black,
+black-and-white cut-outs that come in from the frame edges and act on the words, and the next idea pushing the last one
+out of the frame. The content is mine: the script, the elements the user picked, and my three reels playing on phones.
 
-It is one take: every line has its own paper sheet on a dark table (`#table`), laid in a snake that reads right to left,
-and the camera holds on a sheet while its lines are spoken, drifting closer, then glides to the next one across each
-change. A sheet clips what it holds, so a hand or a sleeve comes in from its edge. Each element is already on its sheet
-when the camera lands; only the story beats (the wallet, the coin, the stop hand, the padlock, the register) come in on
-their word. The rest of the motion is the reel standard (`../hf-simple-logos-reel`): letters out of a blur, Smart
-Bounce, motion blur, 15 fps steps.
+It is one take. Everything sits on a long strip (`#strip`) over the fixed coral field, and the camera pushes through it,
+mostly right to left with three drops, holding on each beat while it is spoken and leaning towards the next. Things
+cross from one beat to the next where the story allows (the coin from the wallet lands on the middle phone). The motion
+keeps the reel standard (`../hf-simple-logos-reel`): Smart Bounce, motion blur on the camera and on everything that
+moves, the frame stepping at 15 fps.
 
 The voice is the user's ElevenLabs take of `voice-script.txt`, trimmed and sped up by the user.
 
 | Time | Line | On screen |
 |---|---|---|
-| 0–2.6 | مشروعك متعوب عليه، بس أرباحك قليلة | hands hold out a box; the empty wallet slams onto the word, one coin drops in |
-| 2.6–5.2 | عدنا نصمملك موشن جرافيك وبوستات إعلانية | three phones play my dollar, viZion and logos reels; an old film camera rolls in; the phones turn |
-| 5.2–6.6 | تحجي بقوة براندك | an old megaphone blasts the word |
-| 6.6–7.7 | وتبيع بمكانك | a shop owner hands over the bag |
-| 7.7–9.1 | حركة تشد العين | binoculars come up in front of the word |
-| 9.1–10.7 | فكرة تقنع الزبون | a bulb drops and flickers on |
-| 10.7–12.6 | ونتيجة ترفع مبيعاتك | coin stacks rise, cash lands |
-| 12.6–14.4 | من أول 3 ثواني بإعلانك | a hand with a stopwatch, the 3 bounces in |
-| 14.4–17.5 | الزبون راح يلمس الكواليتي العالي، يثق بمنتجك | a magnifier sweeps across, then a handshake |
-| 17.5–19 | ويدخل يطلب منك مباشرة | a finger presses the red button |
-| 19–23.5 | لأن ويانا راح يطلع إعلانك بمستوى يعزلك تماما عن منافسيك | the king lands in the light, the pawns fall away |
-| 23.5–26.6 | ويخلي الزبون يشتري منك مرة ومرتين وعشرة | shopping bags: one, two, then a pile |
-| 26.6–28.5 | لأن شاف براند حقيقي قدامه | a man looks through binoculars |
-| 28.5–35.5 | كافي تضيع جمهورك... ابدأ اليوم بتصاميم توقف الزبون وتقفل وياه البيعة | crowds walk past without looking; a stop hand slams down; a padlock locks |
-| 35.5–36.7 | تواصل ويانا بالخاص | an old phone receiver swings in |
-| 36.7–41.2 | شوف أعمالنا، وخلي براندك يبيع صح | my reels on the phones, then a cash register rings with cash bursting out, then @allawi.psd |
+| 0–2.6 | مشروعك متعوب عليه، بس أرباحك قليلة | hands hold out a box from the right edge; the wallet slams it away; a coin bounces off it into the next beat |
+| 2.6–5.2 | عدنا نصمملك موشن جرافيك وبوستات إعلانية | the coin lands on the middle phone; three phones play my dollar, viZion and logos reels; a film camera rolls in |
+| 5.2–7.7 | تحجي بقوة براندك وتبيع بمكانك | a megaphone from the left edge blasts «براندك» out of its mouth; a shop owner rises from the bottom |
+| 7.7–12.6 | حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك | the three words stack up on the right; binoculars, a bulb on its cord that lights, coins and cash on the left |
+| 12.6–14.4 | من أول 3 ثواني بإعلانك | a giant 3, a hand with a stopwatch |
+| 14.4–19 | الكواليتي العالي، يثق بمنتجك، ويدخل يطلب منك مباشرة | a magnifier passes over «الكواليتي», which swells; a handshake; a finger presses above «مباشرة» |
+| 19–23.5 | يعزلك تماما عن منافسيك | the king stands, the pawns are knocked out of the frame, «منافسيك» fills the background |
+| 23.5–26.6 | ويخلي الزبون يشتري منك مرة ومرتين وعشرة | the words tilt in; bags drop, one, two, then a pile |
+| 26.6–28.5 | لأن شاف براند حقيقي قدامه | a man with binoculars looks at «براند» |
+| 28.5–35.5 | كافي تضيع جمهورك... توقف الزبون وتقفل وياه البيعة | crowds walk along the bottom; a stop hand comes up, the crowd scatters; a padlock locks |
+| 35.5–41.2 | تواصل ويانا بالخاص، شوف أعمالنا، وخلي براندك يبيع صح | a receiver, my reels on phones over «أعمالنا», a register that throws its cash, @allawi.psd |
 
 ## Build
 
@@ -43,7 +38,7 @@ The voice is the user's ElevenLabs take of `voice-script.txt`, trimmed and sped 
 - `python3 build.py` writes `index.html` from `src/template.html`, `src/timeline.js` and `src/reel.json`.
 - `npx hyperframes@0.8.162 check`, then `render`, then strip the tags:
   `ffmpeg -i raw.mp4 -map_metadata -1 -c copy allawi-ad-reel.mp4`.
-- `stills.html` holds the first still frames (an earlier look with my posts, since replaced by the elements).
+- `stills.html` holds the first still frames (an earlier look, since replaced).
 
 ## Credits
 

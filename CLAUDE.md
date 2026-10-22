@@ -32,7 +32,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   (`marketing/ig-simple-logos`). Explain the design reason on each slide, not only the story.
 - Ad reels for the page (22 Oct): the user likes the Brandek style, one cut-out element per line (objects, hands,
   people as PNGs acting out the words), not screenshots or his post designs (`marketing/hf-allawi-ad-reel`). His reels
-  may play on phones.
+  may play on phones. He wants it as a true one take in Brandek's visual language: one vivid coral field, big bold
+  white type with dark key words, black-and-white cut-outs anchored to the frame edges and acting on the words, ideas
+  pushing each other out; no dark or muddy backgrounds, heavy vignettes, blur transitions or one poster per sentence.
+  Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
