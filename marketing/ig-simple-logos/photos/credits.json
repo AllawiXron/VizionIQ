@@ -1,36 +1,4 @@
 {
- "apple": {
-  "title": "Red apple and white dishes",
-  "creator": "occhipiuverdi2",
-  "license": "cc0",
-  "source": "flickr",
-  "landing": "https://www.flickr.com/photos/23133090@N05/5171463516",
-  "url": "https://live.staticflickr.com/4132/5171463516_9808e1a66c_b.jpg"
- },
- "croc": {
-  "title": "Wild saltwater crocodile, Adelaide River",
-  "creator": null,
-  "license": "cc0",
-  "source": "rawpixel",
-  "landing": "https://www.rawpixel.com/image/11189166/image-animal-public-domain-photo",
-  "url": "https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9zdGF0aWMvZmlsZXMvd2Vic2l0ZS8yMDIyLTEyL2ZsNTIyNDg3Nzc3MjYtaW1hZ2UuanBn.jpg"
- },
- "shell": {
-  "title": "Scallop shell.",
-  "creator": "Bernard Spragg",
-  "license": "cc0",
-  "source": "flickr",
-  "landing": "https://www.flickr.com/photos/88123769@N02/22635350606",
-  "url": "https://live.staticflickr.com/5626/22635350606_a0d1ffa93b_b.jpg"
- },
- "bull": {
-  "title": "Bull on the Piano.",
-  "creator": "Bernard Spragg",
-  "license": "cc0",
-  "source": "flickr",
-  "landing": "https://www.flickr.com/photos/88123769@N02/14341489024",
-  "url": "https://live.staticflickr.com/2939/14341489024_1ac956828c_b.jpg"
- },
  "mermaid": {
   "title": "Woodcut of a (fashionably accoutred!) mermaid with two tails holding a flower in each hand. Used by Valentin Schumann of Leipzig.",
   "creator": "Provenance Online Project",
@@ -47,12 +15,12 @@
   "landing": "https://www.rawpixel.com/image/5911914/compass-free-public-domain-cc0-photo",
   "url": "https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9zdGF0aWMvaW1hZ2Uvd2Vic2l0ZS8yMDIyLTA0L2xyL3B4MTMzNDE0MC1pbWFnZS1rd3Z3MHM0My5qcGc.jpg"
  },
- "cactus": {
-  "title": "Saguaro cactus. Photo by NPS/Todd M. Edgar.",
-  "creator": "naturenps",
-  "license": "pdm",
+ "shell": {
+  "title": "Scallop shell.",
+  "creator": "Bernard Spragg",
+  "license": "cc0",
   "source": "flickr",
-  "landing": "https://www.flickr.com/photos/130826934@N07/23629713704",
-  "url": "https://live.staticflickr.com/1546/23629713704_aeffaf0bd9_b.jpg"
+  "landing": "https://www.flickr.com/photos/88123769@N02/22635350606",
+  "url": "https://live.staticflickr.com/5626/22635350606_a0d1ffa93b_b.jpg"
  }
 }
