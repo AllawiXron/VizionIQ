@@ -12,7 +12,8 @@
 * { margin:0; padding:0; box-sizing:border-box }
 html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 #root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
-.sc { position:absolute; inset:0; overflow:hidden }
+/* the stage runs 100 px past the frame so the motion blur never pulls in the empty page at the edges */
+.sc { position:absolute; inset:100px }
 .world { position:absolute; inset:-220px; transform-origin:50% 50% }
 .world .lt { margin:160px 0 0 160px }
 .cam { position:absolute; inset:0; transform-origin:540px 960px }
@@ -24,7 +25,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .black::after { opacity:.12 }
 #fx { position:absolute; inset:0; pointer-events:none; z-index:50 }
 #grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07 }
-#dirt { position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.5; filter:grayscale(1) brightness(1.9) contrast(1.6) }
+#dirt { position:absolute; inset:100px; z-index:40; pointer-events:none; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.5; filter:grayscale(1) brightness(1.9) contrast(1.6) }
 #vig { position:absolute; inset:0; box-shadow:inset 0 0 260px 60px rgba(0,0,0,.5) }
 
 .cap { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap; z-index:20; text-shadow:0 6px 18px rgba(0,0,0,.45); line-height:1.2 }
@@ -48,7 +49,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
   </head>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="__D__" data-width="1080" data-height="1920">
-      <div id="stage" class="clip" data-start="0" data-duration="__D__" data-track-index="0" style="position:absolute; inset:0">
+      <div id="stage" class="clip" data-start="0" data-duration="__D__" data-track-index="0" style="position:absolute; inset:-100px">
 
         <!-- A · the hook -->
         <div class="sc" id="sA">
@@ -161,8 +162,9 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="world orange"><i class="lt" style="left:300px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1200px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
           <div class="cap" id="handle" style="top:1240px; font-size:92px; direction:ltr"><span class="w">@allawi.psd</span></div>
         </div>
+        <div id="dirt"></div>
       </div>
-      <div id="fx"><div id="dirt"></div><div id="grain"></div><div id="vig"></div></div>
+      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
       <svg width="0" height="0" style="position:absolute"><filter id="mb" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feGaussianBlur id="mbB" stdDeviation="0 0" edgeMode="duplicate" /></filter></svg>
 <!--AUDIO-->
     </div>
