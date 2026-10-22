@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>allawi.psd — 7 design tips</title>
+<!-- an art director's desk: each tip is a print taped to the paper, corrected in orange pen, with a kraft tag for its number -->
+<style>
+@font-face { font-family:'DG Sahabah'; src:url(../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight:400; font-display:block }
+:root { --paper:#ece3d4; --ink:#1f1510; --or:#e2541b; --or2:#f07a2e; --cream:#fbf3e6; --orInk:#c2441a; --soft:#6a5a4c }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:2320px }
+.slide { position:relative; width:1080px; height:1350px; overflow:hidden; flex:none; direction:rtl; color:var(--ink);
+  font-family:'DG Sahabah', 'Alexandria', sans-serif; font-weight:400; font-synthesis:none; background:var(--paper) }
+.slide.ink { background:radial-gradient(120% 80% at 50% 40%, #2d1f16, var(--ink) 65%); color:var(--cream) }
+.slide.orange { background:radial-gradient(120% 80% at 50% 35%, var(--or2), var(--or) 55%, #c94612) }
+.paperTx { position:absolute; inset:0; background:url(../ig-highlights/assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.3; pointer-events:none }
+.ink .paperTx { mix-blend-mode:screen; opacity:.08 }
+.orange .paperTx { opacity:.4 }
+.grain { position:absolute; inset:0; background:url(../hf-dollar-reel/assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07; pointer-events:none; z-index:30 }
+.vig { position:absolute; inset:0; background:radial-gradient(120% 85% at 50% 45%, rgba(0,0,0,0) 58%, rgba(20,12,8,.3) 100%); pointer-events:none; z-index:31 }
+.ab { position:absolute }
+
+/* torn cream strip for headlines */
+.strip { position:absolute; z-index:8; filter:drop-shadow(0 10px 12px rgba(0,0,0,.35)) }
+.strip > div { background:var(--cream); color:var(--ink); padding:20px 46px 30px; font-size:78px; line-height:1.3; white-space:nowrap;
+  clip-path:polygon(0 7%, 8% 0, 21% 6%, 35% 1%, 50% 6%, 64% 0, 79% 6%, 92% 1%, 100% 7%, 99% 93%, 89% 100%, 74% 94%, 59% 100%, 43% 95%, 28% 100%, 13% 95%, 1% 100%) }
+.strip b { font-weight:400; color:var(--orInk) }
+.tape { position:absolute; height:50px; background:rgba(236,226,200,.8); box-shadow:0 2px 6px rgba(0,0,0,.16); z-index:12;
+  clip-path:polygon(0 8%, 6% 0, 12% 10%, 20% 2%, 30% 9%, 42% 1%, 55% 8%, 66% 0, 78% 9%, 90% 2%, 100% 8%, 100% 92%, 92% 100%, 82% 90%, 70% 99%, 58% 91%, 45% 100%, 33% 92%, 21% 100%, 10% 91%, 0 98%) }
+
+/* kraft tag with the tip number */
+.ktag { position:absolute; z-index:9; filter:drop-shadow(0 10px 12px rgba(0,0,0,.4)) }
+.ktag > div { position:relative; background:#b8875a url(../ig-highlights/assets/img/paper.jpg) center/500px; background-blend-mode:multiply;
+  padding:12px 60px 18px 70px; font-size:44px; line-height:1.25; white-space:nowrap; color:var(--ink);
+  clip-path:polygon(0 50%, 40px 0, 100% 0, 100% 100%, 40px 100%) }
+.ktag > div::before { content:''; position:absolute; left:36px; top:50%; width:20px; height:20px; margin-top:-10px; border-radius:50%; background:var(--paper); box-shadow:inset 0 2px 3px rgba(0,0,0,.4) }
+.ktag i { font-style:normal }
+.ktag svg { position:absolute; left:-120px; top:50%; width:140px; height:60px; overflow:visible }
+.ktag svg path { fill:none; stroke:#7a5a3a; stroke-width:3 }
+
+.body { position:absolute; right:84px; left:84px; font-size:42px; line-height:1.55; z-index:8 }
+.body em { font-style:normal; color:var(--orInk) }
+
+/* a photo print */
+.print { position:absolute; padding:14px; background:#f7f4ee; box-shadow:0 22px 34px rgba(0,0,0,.42), 0 3px 6px rgba(0,0,0,.3); z-index:4 }
+.print > .im { position:relative; overflow:hidden; background:#ddd }
+.print::after { content:''; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,.14), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 70%, rgba(255,255,255,.07)); pointer-events:none }
+
+/* orange pen: marks and handwriting */
+.mk { position:absolute; overflow:visible; z-index:14; pointer-events:none }
+.mk path, .mk ellipse { fill:none; stroke:var(--or); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; opacity:.95 }
+.hand { position:absolute; z-index:15; color:var(--orInk); font-size:44px; line-height:1.2; white-space:nowrap }
+.ok, .no { position:absolute; z-index:15; width:74px; height:74px }
+.ok path, .no path { fill:none; stroke:var(--or); stroke-width:9; stroke-linecap:round; stroke-linejoin:round }
+
+.foot { position:absolute; bottom:46px; left:116px; font-size:30px; direction:ltr; color:rgba(31,21,16,.6); z-index:8 }
+.ink .foot { color:rgba(251,243,230,.55) }
+.orange .foot { color:rgba(31,21,16,.7) }
+
+/* the made-up roastery ad, built at 540x675 */
+.ad { position:relative; width:540px; height:675px; overflow:hidden; background:#cbb; direction:rtl; color:var(--ink) }
+.ad .ph { position:absolute; inset:0; background:url(renders/scene.jpg) 50% 62%/auto 100% }
+.ad .t1 { position:absolute; top:44px; right:40px; font-size:44px; line-height:1.15 }
+.ad .t2 { position:absolute; top:94px; right:38px; font-size:118px; line-height:1.1; color:var(--orInk) }
+.ad .logo { position:absolute; bottom:30px; right:40px; font-size:40px; color:var(--cream) }
+.ad .chip { position:absolute; bottom:36px; left:36px; padding:6px 20px 12px; background:var(--cream); font-size:26px; border-radius:6px }
+.ad.loud .big { position:absolute; left:0; right:0; top:120px; text-align:center; font-size:190px; line-height:1; color:var(--orInk) }
+.ad.loud .small { position:absolute; left:0; right:0; bottom:40px; text-align:center; font-size:27px; color:var(--cream) }
+
+/* tip 2: two index cards */
+.card { position:absolute; background:var(--cream); box-shadow:0 18px 28px rgba(0,0,0,.3), 0 2px 4px rgba(0,0,0,.2); z-index:4; padding:46px 44px }
+.card .h { line-height:1.15 }
+.card .p { color:var(--soft); line-height:1.45 }
+
+/* tip 3: shadows and blacks */
+.stage { position:absolute; inset:0; background:radial-gradient(90% 70% at 50% 30%, #f3e6cf, #dcc6a3) }
+.stage .cup { position:absolute; left:50%; bottom:14px; width:330px; transform:translateX(-50%); z-index:2 }
+.stage .sh { position:absolute; left:50%; bottom:44px; width:250px; height:46px; transform:translateX(-30%); border-radius:50%; filter:blur(12px); z-index:1 }
+.stage .lbl { position:absolute; top:38px; left:0; right:0; text-align:center; font-size:58px; z-index:3 }
+.sw { position:absolute; z-index:6; display:flex; align-items:center; gap:18px; font-size:34px; direction:ltr }
+.sw span { display:block; width:70px; height:70px; border-radius:8px; box-shadow:0 6px 10px rgba(0,0,0,.25) }
+
+/* tip 4: play buttons */
+.disc { position:absolute; width:300px; height:300px; border-radius:50%; background:var(--ink); z-index:4; box-shadow:0 16px 26px rgba(0,0,0,.3) }
+.disc svg { position:absolute; inset:0; overflow:visible }
+.guide { stroke:var(--or2); stroke-width:2.5; stroke-dasharray:8 7 }
+
+/* tip 5: arabic letterforms */
+.sheet { position:absolute; background:var(--cream); z-index:4; box-shadow:0 20px 30px rgba(0,0,0,.3);
+  background-image:repeating-linear-gradient(180deg, transparent 0 168px, rgba(31,21,16,.1) 168px 171px) }
+.word { position:absolute; right:110px; font-size:104px; line-height:1.4; white-space:nowrap }
+
+/* tip 7: the layers slip */
+.layers { position:absolute; z-index:10; width:420px; background:#2a201a; color:#e8dccb; padding:10px 0 8px; font-size:26px; direction:ltr;
+  box-shadow:0 18px 28px rgba(0,0,0,.4); font-family:'DG Sahabah' }
+.layers .r { display:flex; align-items:center; gap:14px; padding:4px 20px 8px }
+.layers .r.on { background:rgba(226,84,27,.35) }
+.layers .th { width:44px; height:34px; border:2px solid rgba(255,255,255,.35); flex:none }
+.layers .r small { margin-left:auto; font-size:22px; opacity:.7 }
+
+/* slide 9: checklist */
+.note { position:absolute; background:var(--cream); color:var(--ink); z-index:4; box-shadow:0 22px 34px rgba(0,0,0,.5);
+  background-image:linear-gradient(90deg, transparent calc(100% - 70px), rgba(226,84,27,.55) calc(100% - 70px), rgba(226,84,27,.55) calc(100% - 66px), transparent calc(100% - 66px)),
+    repeating-linear-gradient(180deg, transparent 0 120px, rgba(31,21,16,.1) 120px 123px) }
+.chk { position:absolute; right:110px; left:50px; display:flex; align-items:flex-start; gap:26px; font-size:52px; line-height:1.3 }
+.chk svg { flex:none; width:60px; height:56px; margin-top:6px; overflow:visible }
+.chk svg path { fill:none; stroke:var(--or); stroke-width:6; stroke-linecap:round; stroke-linejoin:round }
+.chk small { display:block; font-size:34px; color:var(--soft) }
+
+.stamp { position:absolute; padding:6px 30px 14px; border:6px double var(--ink); border-radius:14px; font-size:44px; direction:ltr; color:var(--ink);
+  opacity:.85; mix-blend-mode:multiply; filter:url(#stampF); z-index:12 }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="stampF" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="5" result="n" />
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.75" result="m" />
+    <feComposite in="SourceGraphic" in2="m" operator="in" result="s" />
+    <feDisplacementMap in="s" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<!-- 1 cover -->
+<section class="slide" id="s1">
+  <div class="paperTx"></div>
+  <div class="strip" style="right:70px; top:96px; transform:rotate(-1.5deg)"><div>٧ أشياء يسويها</div></div>
+  <div class="strip" style="right:110px; top:236px; transform:rotate(1deg)"><div>المصمم <b>المحترف</b></div></div>
+  <div class="strip" style="right:70px; top:376px; transform:rotate(-1deg)"><div style="font-size:58px">وما يحجي عنها</div></div>
+  <div class="print" style="left:96px; top:520px; transform:rotate(-3.5deg)"><div class="im"><div class="ad loud" data-zoom="0.92"></div></div></div>
+  <div class="tape" style="left:250px; top:500px; width:190px; transform:rotate(-6deg)"></div>
+  <svg class="mk" style="left:0; top:0; width:1080px; height:1350px" viewBox="0 0 1080 1350">
+    <ellipse cx="335" cy="760" rx="210" ry="110" transform="rotate(-6 335 760)" />
+    <path d="M560 735 C 640 700, 700 690, 760 700" /><path d="M740 680 L 764 701 L 738 720" />
+    <ellipse cx="350" cy="1090" rx="200" ry="44" transform="rotate(-4 350 1090)" />
+    <path d="M565 1090 C 650 1100, 700 1080, 760 1050" /><path d="M735 1040 L 764 1048 L 750 1076" />
+  </svg>
+  <div class="hand" style="left:780px; top:640px; transform:rotate(-4deg)">صغره!</div>
+  <div class="hand" style="left:780px; top:980px; transform:rotate(-3deg); line-height:1.3">هذا هو<br>العرض.. كبره</div>
+  <div class="ktag" style="right:0; top:1150px"><div>احفظه، <i>راح ترجعله</i></div></div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 2 blur -->
+<section class="slide" id="s2">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="ktag" style="right:0; top:80px"><div>نصيحة <i>١</i></div></div>
+  <div class="strip" style="right:70px; top:180px; transform:rotate(-1.2deg)"><div>غبش تصميمك</div></div>
+  <div class="body" style="top:345px">سوي بلر قوي على التصميم. الشي اللي يبقى واضح هو أول شي يشوفه الناس. إذا بقى اللوغو واضح وضاع العرض، <em>الترتيب غلط.</em></div>
+  <div class="print" style="right:80px; top:640px; transform:rotate(2deg)"><div class="im"><div class="ad loud" data-zoom="0.74" data-blur="1" data-side="r"></div></div></div>
+  <div class="print" style="left:80px; top:660px; transform:rotate(-2deg)"><div class="im"><div class="ad good" data-zoom="0.74" data-blur="1" data-side="l"></div></div></div>
+  <div class="tape" style="right:220px; top:620px; width:150px; transform:rotate(3deg)"></div>
+  <div class="tape" style="left:230px; top:640px; width:150px; transform:rotate(-4deg)"></div>
+  <div class="no" style="right:440px; top:1150px"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" /></svg></div>
+  <div class="hand" style="right:120px; top:1180px; transform:rotate(-2deg)">بقى اللوغو بس</div>
+  <div class="ok" style="left:430px; top:1170px"><svg viewBox="0 0 40 40"><path d="M5 22 L15 32 L36 7" /></svg></div>
+  <div class="hand" style="left:120px; top:1196px; transform:rotate(2deg)">العرض يبين أول</div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 3 contrast -->
+<section class="slide" id="s3">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="ktag" style="right:0; top:80px"><div>نصيحة <i>٢</i></div></div>
+  <div class="strip" style="right:70px; top:180px; transform:rotate(1deg)"><div>الفرق لازم <b>يبين</b></div></div>
+  <div class="body" style="top:345px">عنوان أكبر من النص بشوية يبين غلطة. أكبر بثلاث مرات يبين قرار. إذا تريد شي يختلف، <em>خليه يختلف هواية.</em></div>
+  <div class="card" style="right:80px; top:660px; width:440px; height:470px; transform:rotate(2deg)">
+    <div class="h" style="font-size:52px">عرض الجمعة</div>
+    <div class="p" style="font-size:42px; margin-top:12px; color:var(--ink)">الكوب الثاني علينا، من الصبح لحد الظهر بكل فروع سمرة</div>
+  </div>
+  <div class="card" style="left:80px; top:680px; width:440px; height:470px; transform:rotate(-2deg)">
+    <div class="h" style="font-size:150px; color:var(--orInk)">الجمعة</div>
+    <div class="p" style="font-size:34px; margin-top:22px">الكوب الثاني علينا، من الصبح لحد الظهر بكل فروع سمرة</div>
+  </div>
+  <div class="tape" style="right:240px; top:640px; width:150px; transform:rotate(4deg)"></div>
+  <div class="tape" style="left:240px; top:660px; width:150px; transform:rotate(-3deg)"></div>
+  <div class="hand" style="right:150px; top:1170px; transform:rotate(-2deg)">١.٢ مرة.. متردد</div>
+  <div class="hand" style="left:150px; top:1186px; transform:rotate(2deg)">٣ مرات.. قرار</div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 4 black -->
+<section class="slide" id="s4">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="ktag" style="right:0; top:80px"><div>نصيحة <i>٣</i></div></div>
+  <div class="strip" style="right:70px; top:180px; transform:rotate(-1deg)"><div>الأسود <b>مو أسود</b></div></div>
+  <div class="body" style="top:345px">المحترف ما يستخدم أسود صافي ولا ظل رمادي. يخلط الأسود بلون البراند، ويخلي الظل <em>ياخذ لون المكان.</em></div>
+  <div class="print" style="right:80px; top:610px; transform:rotate(1.5deg)"><div class="im" style="width:420px; height:520px">
+    <div class="stage"><div class="lbl" style="color:#000">صباحك أطيب</div><div class="sh" style="background:rgba(0,0,0,.62)"></div><img class="cup" src="renders/cup.png" alt=""></div></div></div>
+  <div class="print" style="left:80px; top:630px; transform:rotate(-1.5deg)"><div class="im" style="width:420px; height:520px">
+    <div class="stage"><div class="lbl" style="color:#2a170d">صباحك أطيب</div><div class="sh" style="background:rgba(120,58,22,.55)"></div><img class="cup" src="renders/cup.png" alt=""></div></div></div>
+  <div class="tape" style="right:240px; top:590px; width:150px; transform:rotate(3deg)"></div>
+  <div class="tape" style="left:240px; top:610px; width:150px; transform:rotate(-4deg)"></div>
+  <div class="sw" style="right:120px; top:1186px"><span style="background:#000"></span>#000000</div>
+  <div class="no" style="right:400px; top:1184px"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" /></svg></div>
+  <div class="sw" style="left:130px; top:1186px"><span style="background:#2a170d"></span>#2A170D</div>
+  <div class="ok" style="left:410px; top:1184px"><svg viewBox="0 0 40 40"><path d="M5 22 L15 32 L36 7" /></svg></div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 5 optical centre -->
+<section class="slide" id="s5">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="ktag" style="right:0; top:80px"><div>نصيحة <i>٤</i></div></div>
+  <div class="strip" style="right:70px; top:180px; transform:rotate(1deg)"><div>المنتصف <b>بالعين</b></div></div>
+  <div class="body" style="top:345px">زر التشغيل بنص الدائرة بالأرقام يبين مايل. حركه شوية لليمين لحد ما يرتاح بالعين. <em>نفس الشي للنص داخل الأزرار.</em></div>
+  <div class="disc" id="d1" style="right:150px; top:720px"></div>
+  <div class="disc" id="d2" style="left:150px; top:720px"></div>
+  <div class="hand" style="right:160px; top:1075px; transform:rotate(-2deg)">بالأرقام: بالنص</div>
+  <div class="hand" style="right:180px; top:1135px; transform:rotate(-2deg); color:var(--soft); font-size:36px">بس يبين مايل لليسار</div>
+  <div class="hand" style="left:170px; top:1075px; transform:rotate(2deg)">بالعين: بالنص</div>
+  <div class="hand" style="left:170px; top:1135px; transform:rotate(2deg); color:var(--soft); font-size:36px">حركته ١٨ بكسل لليمين</div>
+  <div class="no" style="right:263px; top:620px"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" /></svg></div>
+  <div class="ok" style="left:263px; top:620px"><svg viewBox="0 0 40 40"><path d="M5 22 L15 32 L36 7" /></svg></div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 6 arabic letterforms -->
+<section class="slide" id="s6">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="ktag" style="right:0; top:80px"><div>نصيحة <i>٥</i></div></div>
+  <div class="strip" style="right:70px; top:180px; transform:rotate(-1deg)"><div>العربي <b>ما ينمط</b></div></div>
+  <div class="body" style="top:345px">لا تسوي تباعد أحرف للعربي، ولا تمط الكلمة بالكشيدة حتى تملي السطر. الحروف مربوطة، <em>والتباعد يقطعها.</em></div>
+  <div class="sheet" style="left:80px; right:80px; top:620px; height:560px; transform:rotate(-1deg)">
+    <div class="word" style="top:30px">قهوة سمرة</div>
+    <div class="word" style="top:200px; color:#5b4c40" id="tracked">قهوة سمرة</div>
+    <div class="word" style="top:380px; color:#5b4c40; font-size:96px">قهـــوة سمـــرة</div>
+  </div>
+  <div class="tape" style="left:460px; top:600px; width:170px; transform:rotate(-2deg)"></div>
+  <div class="ok" style="left:130px; top:690px"><svg viewBox="0 0 40 40"><path d="M5 22 L15 32 L36 7" /></svg></div>
+  <div class="no" style="left:130px; top:850px"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" /></svg></div>
+  <div class="no" style="left:130px; top:1020px"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" /></svg></div>
+  <div class="hand" style="left:126px; top:926px; transform:rotate(-3deg); font-size:32px">تباعد</div>
+  <div class="hand" style="left:122px; top:1096px; transform:rotate(-3deg); font-size:32px">كشيدة</div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 7 grayscale -->
+<section class="slide" id="s7">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="ktag" style="right:0; top:80px"><div>نصيحة <i>٦</i></div></div>
+  <div class="strip" style="right:70px; top:180px; transform:rotate(1deg)"><div>شغله <b>رمادي</b></div></div>
+  <div class="body" style="top:345px">حول التصميم أبيض وأسود. إذا العنوان ذاب بالخلفية، فالتباين جاي من اللون بس، <em>وراح يضعف بأي شاشة.</em></div>
+  <div class="print" style="right:80px; top:630px; transform:rotate(2deg)"><div class="im gtest" style="width:420px; height:525px"></div></div>
+  <div class="print" style="left:80px; top:650px; transform:rotate(-2deg)"><div class="im gtest" style="width:420px; height:525px; filter:grayscale(1)"></div></div>
+  <div class="tape" style="right:240px; top:610px; width:150px; transform:rotate(3deg)"></div>
+  <div class="tape" style="left:240px; top:630px; width:150px; transform:rotate(-3deg)"></div>
+  <div class="hand" style="right:150px; top:1205px; transform:rotate(-2deg)">بالألوان يبين واضح</div>
+  <div class="hand" style="left:190px; top:1196px; transform:rotate(2deg)">وين راح العنوان؟</div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 8 glue layer -->
+<section class="slide" id="s8">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="ktag" style="right:0; top:80px"><div>نصيحة <i>٧</i></div></div>
+  <div class="strip" style="right:70px; top:180px; transform:rotate(-1deg)"><div>طبقة <b>اللزق</b></div></div>
+  <div class="body" style="top:345px; font-size:40px">المنتج الملزوق على خلفية يبين ملزوق. خلي الضوء من نفس الجهة، وحط طبقة لون وحدة فوق كلشي بشفافية قليلة، <em>فيصير الكل تحت نفس الضوء.</em></div>
+  <div class="print" style="right:80px; top:640px; transform:rotate(2deg)"><div class="im" style="width:420px; height:430px; background:url(renders/table.jpg) 50% 60%/auto 120%">
+    <img src="renders/cup-cold.png" alt="" style="position:absolute; left:50%; top:50%; width:290px; transform:translate(-50%,-50%)"></div></div>
+  <div class="print" style="left:80px; top:655px; transform:rotate(-2deg)"><div class="im" style="width:420px; height:430px; background:url(renders/scene.jpg) 50% 60%/auto 120%"></div></div>
+  <div class="tape" style="right:240px; top:640px; width:150px; transform:rotate(3deg)"></div>
+  <div class="tape" style="left:240px; top:660px; width:150px; transform:rotate(-3deg)"></div>
+  <div class="hand" style="right:110px; top:1130px; transform:rotate(-2deg); line-height:1.25">الضوء من اليمين<br>والشمس من اليسار</div>
+  <div class="layers" style="left:110px; top:1060px; transform:rotate(-1.5deg)">
+    <div class="r on"><div class="th" style="background:#f0b070"></div>لزق<small>Soft Light 12%</small></div>
+    <div class="r"><div class="th" style="background:#555"></div>ظل<small>Multiply</small></div>
+    <div class="r"><div class="th" style="background:#eee"></div>الكوب</div>
+  </div>
+  <div class="tape" style="left:990px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 9 checklist -->
+<section class="slide ink" id="s9">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:560px; width:180px; transform:rotate(-5deg)"></div>
+  <div class="strip" style="right:80px; top:120px; transform:rotate(-1deg)"><div>قبل ما تسلم <b>أي تصميم</b></div></div>
+  <div class="note" style="left:110px; right:110px; top:330px; height:820px; transform:rotate(1deg)">
+    <div class="chk" style="top:70px"><svg viewBox="0 0 30 26"><path d="M3 14 L11 22 L27 4" /></svg><div>غبشه<small>شنو أول شي يبين؟</small></div></div>
+    <div class="chk" style="top:250px"><svg viewBox="0 0 30 26"><path d="M3 14 L11 22 L27 4" /></svg><div>حوله رمادي<small>العنوان بعده واضح؟</small></div></div>
+    <div class="chk" style="top:430px"><svg viewBox="0 0 30 26"><path d="M3 14 L11 22 L27 4" /></svg><div>دور على الأسود الصافي<small>وبدله بأسود مخلوط</small></div></div>
+    <div class="chk" style="top:610px"><svg viewBox="0 0 30 26"><path d="M3 14 L11 22 L27 4" /></svg><div>شوفه بحجم الموبايل<small>هناك يشوفه الزبون، مو على شاشتك الجبيرة</small></div></div>
+  </div>
+  <div class="tape" style="left:450px; top:310px; width:180px; transform:rotate(-2deg)"></div>
+  <div class="foot">@allawi.psd</div>
+  <div class="tape" style="left:990px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<!-- 10 call to action -->
+<section class="slide orange" id="s10">
+  <div class="paperTx"></div>
+  <div class="tape" style="left:-90px; top:1240px; width:180px; transform:rotate(4deg)"></div>
+  <div class="strip" style="right:70px; top:110px; transform:rotate(-1.2deg)"><div style="font-size:64px">هذي التفاصيل ما تبين بالتصميم</div></div>
+  <div class="strip" style="right:200px; top:240px; transform:rotate(1deg)"><div><b>بس تنحس.</b></div></div>
+  <div class="print" style="right:70px; top:470px; transform:rotate(4deg)"><div class="im" style="width:280px; height:350px; background:url(../ig-highlights/assets/work/saj.jpg) center/cover"></div></div>
+  <div class="print" style="right:380px; top:440px; transform:rotate(-1.5deg); z-index:5"><div class="im" style="width:300px; height:375px; background:url(../ig-highlights/assets/work/shifa.jpg) center/cover"></div></div>
+  <div class="print" style="left:60px; top:480px; transform:rotate(-4.5deg)"><div class="im" style="width:280px; height:350px; background:url(../ig-highlights/assets/work/sala.jpg) center/cover"></div></div>
+  <div class="tape" style="right:450px; top:420px; width:160px; transform:rotate(2deg)"></div>
+  <div class="ktag" style="right:0; top:880px"><div>أفكار إعلانات <i>من تصميمي</i></div></div>
+  <div class="body" style="top:1010px; text-align:center; font-size:52px; line-height:1.4; color:var(--cream)">تريد تصميم لبراندك مشتغل بهالطريقة؟<br><span style="color:var(--ink)">راسلني على الخاص</span></div>
+  <div class="stamp" style="left:50%; top:1180px; transform:translateX(-50%) rotate(-3deg)">@allawi.psd</div>
+  <div class="grain"></div><div class="vig"></div>
+</section>
+
+<script>
+  // the roastery ad: «good» puts the offer first, «loud» puts the logo first
+  document.querySelectorAll('.ad').forEach((ad) => {
+    const z = parseFloat(ad.dataset.zoom || 1);
+    const inner = ad.classList.contains('loud')
+      ? '<div class="ph"></div><div class="big">سمرة</div><div class="small">الكوب الثاني علينا · كل جمعة للظهر</div>'
+      : '<div class="ph"></div><div class="t1">الجمعة.. الكوب الثاني</div><div class="t2">علينا.</div><div class="chip">كل جمعة للظهر</div><div class="logo">سمرة</div>';
+    ad.innerHTML = inner;
+    ad.parentNode.style.width = 540 * z + 'px';
+    ad.parentNode.style.height = 675 * z + 'px';
+    ad.style.zoom = z;
+    if (ad.dataset.blur) {   // the print blurred, the sharp original as a small print taped over its corner
+      const im = ad.parentNode, pr = im.parentNode, z2 = 0.3;
+      const sharp = document.createElement('div');
+      sharp.className = 'print';
+      sharp.style.cssText = `padding:8px; left:${ad.dataset.side === 'l' ? -40 : 'auto'}px; right:${ad.dataset.side === 'l' ? 'auto' : -40}px; top:-60px; transform:rotate(${ad.dataset.side === 'l' ? -6 : 6}deg); z-index:6`;
+      sharp.innerHTML = `<div class="im" style="width:${540 * z2}px; height:${675 * z2}px"><div class="ad ${ad.classList.contains('loud') ? 'loud' : 'good'}" style="zoom:${z2}">${inner}</div></div>`;
+      pr.appendChild(sharp);
+      ad.style.filter = 'blur(9px)';
+    }
+  });
+  // tip 4: a play triangle centred by its box, and one moved right until it looks centred
+  const tri = (dx) => `<svg viewBox="0 0 300 300"><line class="guide" x1="150" y1="20" x2="150" y2="280"/><path d="M${120 + dx} 100 L${120 + dx} 200 L${207 + dx} 150 Z" fill="#fbf3e6"/></svg>`;
+  document.getElementById('d1').innerHTML = tri(-13.5);
+  document.getElementById('d2').innerHTML = tri(4.5);
+  // tip 5: tracking, as an app does it: the letters keep their joined shapes, with gaps between them
+  const t = document.getElementById('tracked');
+  t.innerHTML = [...'قهوة'].join('\u200d\u2009\u200d') + '\u2002' + [...'سمرة'].join('\u200d\u2009\u200d');
+  // tip 6: orange-red and teal of the same brightness
+  document.querySelectorAll('.gtest').forEach((g) => {
+    g.style.background = '#d9472a';
+    g.innerHTML = '<div style="position:absolute; top:60px; right:40px; left:30px; font-size:96px; line-height:1.1; color:#1d7a70">الكوب الثاني علينا</div><div style="position:absolute; bottom:44px; right:40px; font-size:40px; color:#fbf3e6">سمرة · كل جمعة</div>';
+  });
+  document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
