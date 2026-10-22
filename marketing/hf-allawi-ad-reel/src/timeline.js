@@ -167,7 +167,11 @@
     tl.to('#patL', { opacity: 1, duration: 0.5 }, 21.8);
     tl.to('#patL', { opacity: 0, duration: 0.25 }, 23.25);
 
-    // ── M · a bag drops on «مرة», another on «ومرتين», the pile on «وعشرة»
+    // ── M · the hand with the box from the opening comes back and hands it over on «يشتري»; then a bag drops on «مرة»,
+    //    another on «ومرتين», the pile on «وعشرة»
+    enter('#box2', 23.55, { x: 760, rotation: 14 }, { rotation: 0 }, 0.5);
+    tl.to('#box2', { x: -120, duration: 0.35, ease: SETTLE }, 24.27);
+    leave('#box2', 24.85, { x: 1000, rotation: 20 });
     $$('#bags .bag').forEach((el, i) => enter(el, i === 0 ? 24.97 : i === 1 ? 25.35 : 25.97 + (i - 2) * 0.05, { y: -1500, rotation: (i % 2 ? 1 : -1) * 30 }, { rotation: Math.sin(i * 1.9) * 12 }, 0.35));
 
     // ── N · the man with the binoculars comes up from the bottom, looking at «براند»
