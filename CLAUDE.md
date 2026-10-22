@@ -21,6 +21,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   Deliverables carry nothing that points to AI or the tools behind them: file and layer names, document properties
   (author is the user), media tags and paths are clean; the user says how AI was used in their own words (21 Oct).
 - When the user states a new like or dislike, add it to this file in a line or two so later sessions know it.
+- Tips and education posts (22 Oct): clean editorial reference sheets, like a sizes guide or a principles cheat sheet
+  (big bold type, hairline grids, exact numbers, one brand-colour field per slide; `marketing/ig-design-guides`). The
+  user rejected the collage look with before/after mock-ups for these (`marketing/ig-design-tips`).
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
   phone numbers.
