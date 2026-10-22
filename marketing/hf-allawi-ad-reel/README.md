@@ -6,27 +6,27 @@ brown (#1f1510),
 black-and-white cut-outs that come in from the frame edges and act on the words, and the next idea pushing the last one
 out of the frame. The content is mine: the script, the elements the user picked, and my three reels playing on phones.
 
-It is one take. Everything sits on a long strip (`#strip`) over the fixed coral field, and the camera pushes through it,
-mostly right to left with three drops, holding on each beat while it is spoken and leaning towards the next. Things
-cross from one beat to the next where the story allows (the coin from the wallet lands on the middle phone). The motion
-keeps the reel standard (`../hf-simple-logos-reel`): Smart Bounce, motion blur on the camera and on everything that
-moves, the frame stepping at 15 fps.
+It is one take. The ten ideas sit in a row on a strip (`#strip`) over the fixed orange field, with room between them so
+nothing of one idea shows in the next. The camera holds still on an idea while it is spoken and pushes smoothly to the
+next, right to left. Each idea has one hero cut-out, anchored to a frame edge and held through its lines (the phone
+beat plays «حركة / فكرة / نتيجة» on its own screen), and the words slide up softly in the middle of the frame. The motion
+keeps the reel standard (`../hf-simple-logos-reel`): Smart Bounce on the key moments, motion blur on the camera and on
+everything that moves, the frame stepping at 15 fps.
 
 The voice is the user's ElevenLabs take of `voice-script.txt`, trimmed and sped up by the user.
 
 | Time | Line | On screen |
 |---|---|---|
-| 0–2.6 | مشروعك متعوب عليه، بس أرباحك قليلة | hands hold out a box from the right edge; the wallet slams it away; a coin bounces off it into the next beat |
-| 2.6–5.2 | عدنا نصمملك موشن جرافيك وبوستات إعلانية | the coin lands on the middle phone; three phones play my dollar, viZion and logos reels; a film camera rolls in |
-| 5.2–7.7 | تحجي بقوة براندك وتبيع بمكانك | a megaphone from the left edge blasts «براندك» out of its mouth; a shop owner rises from the bottom |
-| 7.7–12.6 | حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك | the three words stack up on the right; binoculars, a bulb on its cord that lights, coins and cash on the left |
+| 0–2.6 | مشروعك متعوب عليه، بس أرباحك قليلة | the open empty wallet; one coin drops in, bounces off and flies into the next idea |
+| 2.6–5.2 | عدنا نصمملك موشن جرافيك وبوستات إعلانية | the coin lands on the middle of three phones playing my dollar, viZion and logos reels |
+| 5.2–7.7 | تحجي بقوة براندك وتبيع بمكانك | a megaphone from the left edge, «براندك» comes out of its mouth; a shop owner comes up |
+| 7.7–12.6 | حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك | one big phone; the three words play on its screen, the line above changes |
 | 12.6–14.4 | من أول 3 ثواني بإعلانك | a giant 3, a hand with a stopwatch |
-| 14.4–19 | الكواليتي العالي، يثق بمنتجك، ويدخل يطلب منك مباشرة | a magnifier passes over «الكواليتي», which swells; a handshake; a finger presses above «مباشرة» |
-| 19–23.5 | يعزلك تماما عن منافسيك | the king stands, the pawns are knocked out of the frame, «منافسيك» fills the background |
-| 23.5–26.6 | ويخلي الزبون يشتري منك مرة ومرتين وعشرة | the words tilt in; bags drop, one, two, then a pile |
-| 26.6–28.5 | لأن شاف براند حقيقي قدامه | a man with binoculars looks at «براند» |
-| 28.5–35.5 | كافي تضيع جمهورك... توقف الزبون وتقفل وياه البيعة | crowds walk along the bottom; a stop hand comes up, the crowd scatters; a padlock locks |
-| 35.5–41.2 | تواصل ويانا بالخاص، شوف أعمالنا، وخلي براندك يبيع صح | a receiver, my reels on phones over «أعمالنا», a register that throws its cash, @allawi.psd |
+| 14.4–19 | الكواليتي العالي، يثق بمنتجك، ويدخل يطلب منك مباشرة | a magnifier settles on «الكواليتي»; a handshake comes up and holds |
+| 19–23.5 | يعزلك تماما عن منافسيك | the king stands, the pawns are knocked away, «منافسيك» fills the background |
+| 23.5–28.5 | مرة ومرتين وعشرة، لأن شاف براند حقيقي قدامه | bags pile up; a man with binoculars looks at «براند» |
+| 28.5–35.5 | كافي تضيع جمهورك... توقف الزبون وتقفل وياه البيعة | crowds walk past; the stop hand comes up and the crowd stops; a padlock locks |
+| 35.5–41.2 | تواصل ويانا بالخاص، شوف أعمالنا، وخلي براندك يبيع صح | a receiver, then my reels on three phones to the end, @allawi.psd |
 
 ## Build
 
