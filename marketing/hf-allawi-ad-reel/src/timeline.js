@@ -42,16 +42,20 @@
   }
   for (let i = 0; i < 9; i++) $('#stream').insertAdjacentHTML('beforeend', '<div class="sheet" style="position:relative; left:0; margin-bottom:60px; width:580px; height:725px; filter:grayscale(1) brightness(.7)"></div>');
 
-  // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time]
-  R.lines.forEach(([sc, top, size, text, times], i) => {
+  // the captions ride their own layer above the camera, which follows the camera less than half as much, so a push-in
+  // never carries a line out of the safe area
+  $$('.sc').forEach((sc) => { const c = document.createElement('div'); c.className = 'caps'; sc.appendChild(c); });
+  // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time, «l» to
+  // set the line on the left]
+  R.lines.forEach(([sc, top, size, text, times, , align], i) => {
     const d = document.createElement('div');
     d.className = 'cap'; d.id = 'L' + i;
-    d.style.cssText = `top:${top}px; font-size:${size}px`;
+    d.style.cssText = `top:${top}px; font-size:${size}px` + (align === 'l' ? '; text-align:left; left:70px' : '');
     d.innerHTML = text.split(' ').map((w) => {
       const k = w[0] === '*', s = k ? w.slice(1) : w;
       return `<span class="w${k ? ' k' : ''}">${[...s].map((c) => `<span class="l">${c}</span>`).join('')}</span>`;
     }).join(' ');
-    $(`#s${sc} .cam`).appendChild(d);
+    $(`#s${sc} .caps`).appendChild(d);
   });
 
   // the camera of every shot, in the After Effects project's units: «from» is where the inner null starts and settles
@@ -66,7 +70,7 @@
     G: { from: [0, 0, 168], settle: 1.3, exit: [[0, -405, 0], 0.6] },
     H: { from: [0, 497, 0], settle: 0.8, exit: [[0, 0, -370], 0.44] },
     I: { from: [0, 0, 192], settle: 1.6, exit: [[0, 319, 0], 0.6] },
-    J: { from: [0, -300, 0], settle: 1.5, drift: [[15.6, 17.2, [0, 0, 140]]], exit: [[0, 0, 220], 0.5] },
+    J: { from: [0, 0, 60], settle: 1.0, exit: [[0, 0, 120], 0.4] },
     K: { from: [0, 0, 200], settle: 1.2, exit: [[0, 593, 0], 0.6] },
     L: { from: [0, -500, 0], settle: 1.8, drift: [[21.0, 23.0, [0, 0, 80]]], exit: [[376, 0, 0], 0.6] },
     M: { from: [-196, 0, 0], settle: 2.5, exit: [[102, 0, 0], 0.6] },
@@ -80,7 +84,7 @@
     moves.push([a, a + r.settle, r.from.map((v) => -v), SETTLE]);
     (r.drift || []).forEach(([t0, t1, d, e]) => moves.push([t0, t1, d, e || DRIFT]));
     if (r.exit) moves.push([b - r.exit[1], b, r.exit[0], EXIT]);
-    return { id, a, b: i === R.scenes.length - 1 ? D : b, from: r.from, moves, cam: $(`#s${id} .cam`), world: $(`#s${id} .world`) };
+    return { id, a, b: i === R.scenes.length - 1 ? D : b, from: r.from, moves, cam: $(`#s${id} .cam`), caps: $(`#s${id} .caps`), world: $(`#s${id} .world`) };
   });
   const camAt = (s, t) => {
     const c = [...s.from];
@@ -98,9 +102,9 @@
     });
     const tl = gsap.timeline({ paused: true });
     const at = (t) => Math.max(0, t);
-    // TextEvo: each letter runs the same one-second curve out of a blur, 4.8 frames (at 100 fps) after the one before
+    // TextEvo, quicker than the project's (0.55 s a letter, 3.5 frames apart) so every line is sharp before its cut
     const word = (w, t) => $$('.l', w).forEach((l, j) => {
-      tl.fromTo(l, { opacity: 0, filter: 'blur(18px)' }, { opacity: 1, filter: 'blur(0px)', duration: 1, ease: EVO }, at(t + j * 0.048));
+      tl.fromTo(l, { opacity: 0, filter: 'blur(14px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.55, ease: EVO }, at(t + j * 0.035));
     });
     R.lines.forEach(([, , , , times, outT], i) => {
       $$(`#L${i} .w`).forEach((w, j) => word(w, times[j]));
@@ -149,10 +153,12 @@
       tl.fromTo(s, { y: 1300, rotation: r * 3 }, { y: 0, rotation: r, duration: 0.55, ease: SETTLE }, t);
     });
 
-    // ── C · the posts fan out, the middle one on top
-    pop('#fanL', 4.3, { x: -300, rotation: -30 });
-    pop('#fanR', 4.44, { x: 300, rotation: 30 });
-    pop('#fanC', 4.58, { y: 200 });
+    // ── C · the flip-book: six posts slam down one on top of the other
+    $$('#sC .flip').forEach((el, i) => {
+      const t = 4.28 + i * 0.12;
+      tl.set(el, { opacity: 1 }, t);
+      tl.fromTo(el, { y: -1400, x: (i % 2 ? 1 : -1) * 160 }, { y: 0, x: 0, duration: 0.13, ease: SETTLE }, t);
+    });
 
     // ── D · the Iraqi Airways concept rises onto «براندك»
     tl.set('#pIA', { opacity: 1 }, 5.3);
@@ -177,16 +183,19 @@
 
     // ── H · the real views pop in, punch on «مبيعاتك»
     pop('#views', 10.78);
-    punch('#views', 11.83, 1.1);
+    punch('#views', 11.83, 1.05);
 
     // ── I · the hand comes up with the stopwatch, the «3» bounces in on its word
     tl.set('#hand', { opacity: 1 }, 12.66);
     tl.fromTo('#hand', { y: 1200, rotation: 10 }, { y: 0, rotation: -8, duration: 0.6, ease: SETTLE }, 12.66);
     pop('#n3', 13.17, { rotation: -20 });
 
-    // ── J · the Saj Al-Reef ad lands, the camera pushes into it
-    tl.set('#pSaj', { opacity: 1 }, 14.42);
-    tl.fromTo('#pSaj', { y: 900, rotation: 8 }, { y: 0, rotation: -2, duration: 0.5, ease: SETTLE }, 14.42);
+    // ── J · a macro move across the Saj Al-Reef ad: the food, then the offer on «الكواليتي», then the brand on «يثق»
+    const view = (fx, fy, k = 1) => ({ x: 540 - fx * 2700 * k, y: 1060 - fy * 3375 * k, scale: k });
+    tl.set('#macro', { opacity: 1 }, 14.42);
+    tl.fromTo('#macro', view(0.5, 0.64, 1.2), { ...view(0.5, 0.6), duration: 0.9, ease: SETTLE }, 14.42);
+    tl.to('#macro', { ...view(0.3, 0.46), duration: 0.5, ease: ae(60, 100) }, 15.3);
+    tl.to('#macro', { ...view(0.9, 0.93), duration: 0.5, ease: ae(60, 100) }, 16.36);
 
     // ── K · the order button fills the frame, punches on «مباشرة»
     tl.set('#btnAd', { opacity: 1 }, 17.5);
@@ -225,13 +234,16 @@
     tl.fromTo('#btns', { x: 900 }, { x: 0, duration: 0.5, ease: SETTLE }, 35.5);
     punch('#btns', 36.09, 1.12);
 
-    // ── R · the portfolio is thrown on the table, then flies out for the handle
+    // ── R · the portfolio is thrown on the table; on «وخلي» it flies off and my real grid scrolls up on a phone; the handle
     $$('#sR .tbl').forEach((el, i) => {
       const t = 36.8 + i * 0.1;
       tl.set(el, { opacity: 1 }, t);
       tl.fromTo(el, { x: (i % 2 ? 1 : -1) * 1200, y: 300, rotation: (i % 2 ? 1 : -1) * 40 }, { x: 0, y: 0, rotation: 0, duration: 0.45, ease: SETTLE }, t);
-      tl.to(el, { x: (i % 2 ? 1 : -1) * 1400, y: -400 + i * 200, rotation: (i % 2 ? 1 : -1) * 30, duration: 0.45, ease: EXIT }, 39.35 + i * 0.03);
+      tl.to(el, { x: (i % 2 ? 1 : -1) * 1400, y: -400 + i * 200, rotation: (i % 2 ? 1 : -1) * 30, duration: 0.4, ease: ae(70, 30) }, 37.45 + i * 0.03);
     });
+    tl.set('#phGrid', { opacity: 1 }, 37.55);
+    tl.fromTo('#phGrid', { y: 1300, rotation: 14 }, { y: 0, rotation: -2, duration: 0.6, ease: SETTLE }, 37.55);
+    tl.fromTo('#gridScroll', { y: 0 }, { y: -760, duration: 1.7, ease: ae(33, 100) }, 37.9);
     tl.set('#handle', { opacity: 1 }, 39.55);
     tl.fromTo('#handle', { scale: 0 }, { scale: 1, duration: 1.16, ease: smart(0.16) }, 39.55);
 
@@ -241,7 +253,7 @@
     // and blurs what moved during the shutter: the whole frame for the camera (plus the pulse on a cut), and each
     // moving thing on its own for its own move
     const mb = $('#mbB'), defs = $('#mb').parentNode;
-    const MOV = SC.map((s) => $$('.obj, .print, .shot, #n3', s.cam).map((el, i) => {
+    const MOV = SC.map((s) => $$('.obj, .print, .shot, #n3, #macro', s.cam).map((el, i) => {
       const wrap = document.createElement('div'), id = `mb${s.id}${i}`;
       wrap.style.cssText = `position:absolute; inset:0; z-index:${getComputedStyle(el).zIndex}`;
       el.parentNode.insertBefore(wrap, el);
@@ -265,6 +277,7 @@
       });
       const [x, y, k] = camAt(s, q), [x0, y0, k0] = camAt(s, Math.max(s.a, q - SHUTTER));
       s.cam.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${k.toFixed(4)})`;
+      s.caps.style.transform = `translate(${(x * 0.4).toFixed(2)}px, ${(y * 0.4).toFixed(2)}px) scale(${(1 + (k - 1) * 0.4).toFixed(4)})`;
       s.world.style.transform = `translate(${(x * 0.35).toFixed(2)}px, ${(y * 0.35).toFixed(2)}px) scale(${(1 + (k - 1) * 0.35).toFixed(4)})`;
       const near = cuts.reduce((m, c) => Math.min(m, Math.abs(q - c)), 9);
       const f = near < FLASH[0] ? FLASH[1] * (1 - near / FLASH[0]) : 0;

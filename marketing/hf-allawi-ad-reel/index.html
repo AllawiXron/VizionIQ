@@ -31,16 +31,18 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .l { opacity:0 }
 .k { color:#f08a4b }
 .inkt .cap { color:#1f1510; text-shadow:0 4px 14px rgba(255,240,220,.35) } .inkt .k { color:#b9461c }
-.dk .cap { color:#2a1208; text-shadow:none } .dk .k { color:#fbf0e0 }
+.dk .cap { color:#2a1208; text-shadow:none } .dk .k { color:#fff6e8; text-shadow:0 3px 12px rgba(90,20,0,.55) }
 .dim { color:#8c8a84 !important }
 .print { position:absolute; z-index:10; padding:14px; background:#efe7d8; box-shadow:0 30px 50px rgba(0,0,0,.5) }
 .print img { display:block; width:100%; height:100% }
 .shot { position:absolute; z-index:10; overflow:hidden; border-radius:34px; box-shadow:0 40px 70px rgba(0,0,0,.55) }
-.shot img, .shot video { display:block; width:100%; height:100%; object-fit:cover; object-position:top }
+.shot > img, .shot video { display:block; width:100%; height:100%; object-fit:cover; object-position:top }
 .phone { border:12px solid #0b0b0b; border-radius:46px }
 .sheet { position:absolute; z-index:9; background:#9a968e url(assets/img/paper.jpg) center/cover; background-blend-mode:multiply; filter:grayscale(1) brightness(.62); box-shadow:0 20px 40px rgba(0,0,0,.5) }
 .tag { position:absolute; left:0; right:0; z-index:12; text-align:center; font-size:40px; color:#f6ead8; opacity:.85 }
 .obj { position:absolute; z-index:10 }
+.caps { position:absolute; inset:0; z-index:30; transform-origin:540px 960px }
+.scrim { position:absolute; z-index:15; left:-200px; right:-200px; top:-200px; height:1000px; background:linear-gradient(rgba(10,6,4,.96), rgba(10,6,4,.9) 50%, rgba(10,6,4,0)) }
 .obj img { display:block; width:100%; filter:drop-shadow(0 46px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4)) }
     </style>
   </head>
@@ -62,12 +64,15 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="shot phone" id="phC" style="left:315px; top:600px; width:450px; height:800px; transform:rotate(-1deg); box-shadow:0 50px 80px rgba(0,0,0,.7)"><video id="v3" src="assets/clips/vizion-reel.mp4" data-start="2.6" data-duration="1.7" data-media-start="7.4" data-track-index="4" muted playsinline></video></div>
         </div>
 
-        <!-- C · وبوستات إعلانية: three of my strongest posts fanned out -->
+        <!-- C · وبوستات إعلانية: a flip-book, six of my posts slam down one on top of the other -->
         <div class="sc" id="sC">
           <div class="world" style="background:#22140e"><i class="lt" style="left:100px; top:600px; width:900px; height:900px; background:rgba(226,84,27,.3)"></i></div>
-          <div class="print" id="fanL" style="left:-20px; top:720px; width:520px; height:650px; transform:rotate(-12deg)"><img src="assets/work/asiacell.jpg" /></div>
-          <div class="print" id="fanR" style="left:580px; top:720px; width:520px; height:650px; transform:rotate(11deg)"><img src="assets/work/pepsi.jpg" /></div>
-          <div class="print" id="fanC" style="left:255px; top:600px; width:570px; height:712px; transform:rotate(-1deg); box-shadow:0 44px 70px rgba(0,0,0,.65)"><img src="assets/work/miswag.jpg" /></div>
+          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(-4deg)"><img src="assets/work/asiacell.jpg" /></div>
+          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(3deg)"><img src="assets/work/qi.jpg" /></div>
+          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(-2deg)"><img src="assets/work/alshifa.jpg" /></div>
+          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(4deg)"><img src="assets/work/optes.jpg" /></div>
+          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(-3deg)"><img src="assets/work/pepsi.jpg" /></div>
+          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(1deg); box-shadow:0 44px 70px rgba(0,0,0,.65)"><img src="assets/work/miswag.jpg" /></div>
         </div>
 
         <!-- D · تحجي بقوة براندك: the Iraqi Airways concept standing on the word -->
@@ -105,20 +110,22 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
         <!-- I · من أول 3 ثواني بإعلانك: the number, the hand with the stopwatch rising beside it -->
         <div class="sc" id="sI">
           <div class="world" style="background:#2a1a12"><i class="lt" style="left:100px; top:400px; width:900px; height:900px; background:rgba(226,84,27,.4)"></i></div>
-          <div id="n3" style="position:absolute; z-index:9; left:90px; top:400px; font-size:900px; line-height:1; color:#e2541b; opacity:0">3</div>
-          <div class="obj" id="hand" style="left:480px; top:820px; width:540px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
+          <div id="n3" style="position:absolute; z-index:9; left:70px; top:380px; font-size:860px; line-height:1; color:#e2541b; opacity:0">3</div>
+          <div class="obj" id="hand" style="left:600px; top:720px; width:440px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
         </div>
 
-        <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: the camera goes into the Saj Al-Reef ad -->
+        <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: a macro move across the Saj Al-Reef ad, the food, the offer, the brand -->
         <div class="sc" id="sJ">
-          <div class="world" style="background:#171310"><i class="lt" style="left:150px; top:500px; width:800px; height:900px; background:rgba(214,170,90,.25)"></i></div>
-          <div class="print" id="pSaj" style="left:170px; top:620px; width:740px; height:925px; transform:rotate(-2deg); box-shadow:0 44px 80px rgba(0,0,0,.7)"><img src="assets/work/sajalreef.jpg" /></div>
+          <div class="world" style="background:#171310"></div>
+          <div id="macro" style="position:absolute; z-index:10; left:0; top:0; width:2700px; height:3375px; transform-origin:0 0; opacity:0"><img src="assets/work/sajalreef.jpg" style="width:100%; height:100%; display:block" /></div>
+          <div class="scrim"></div>
         </div>
 
         <!-- K · ويدخل يطلب منك مباشرة: so close to that ad you only see its order button -->
         <div class="sc" id="sK">
           <div class="world" style="background:#171310"></div>
-          <div id="btnAd" style="position:absolute; z-index:10; left:270px; top:-2179px; width:2700px; height:3375px; transform:rotate(-3deg); transform-origin:270px 3139px; box-shadow:0 40px 80px rgba(0,0,0,.6)"><img src="assets/work/sajalreef.jpg" style="width:100%; height:100%; display:block" /></div>
+          <div id="btnAd" style="position:absolute; z-index:10; left:173px; top:-2176px; width:2700px; height:3375px; transform:rotate(-3deg); transform-origin:367px 3176px; box-shadow:0 40px 80px rgba(0,0,0,.6)"><img src="assets/work/sajalreef.jpg" style="width:100%; height:100%; display:block" /></div>
+          <div class="scrim"></div>
         </div>
 
         <!-- L · يعزلك تماما عن منافسيك: my ad in the light, plain sheets falling away into the dark -->
@@ -128,8 +135,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="sheet" style="left:820px; top:540px; width:380px; height:475px; transform:rotate(11deg)"></div>
           <div class="sheet" style="left:-60px; top:1250px; width:360px; height:450px; transform:rotate(8deg)"></div>
           <div class="sheet" style="left:790px; top:1220px; width:400px; height:500px; transform:rotate(-9deg)"></div>
-          <div class="print" id="pBaly" style="left:205px; top:600px; width:670px; height:837px; transform:rotate(2deg); box-shadow:0 40px 70px rgba(0,0,0,.65)"><img src="assets/work/baly.jpg" /></div>
-          <div class="tag" id="tagL" style="top:1460px; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
+          <div class="print" id="pBaly" style="left:240px; top:580px; width:600px; height:750px; transform:rotate(2deg); box-shadow:0 40px 70px rgba(0,0,0,.65)"><img src="assets/work/baly.jpg" /></div>
+          <div class="tag" id="tagL" style="top:1515px; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
         </div>
 
         <!-- M · مرة ومرتين وعشرة: the same ad printed again and again -->
@@ -157,7 +164,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="shot" id="btns" style="left:-750px; top:760px; width:1900px; height:580px; transform:rotate(-3deg); transform-origin:1290px 290px"><img src="assets/shots/buttons.png" /></div>
         </div>
 
-        <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my portfolio thrown on the table, then the handle -->
+        <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my portfolio thrown on the table, then my real grid scrolling on a phone, then the handle -->
         <div class="sc dk" id="sR">
           <div class="world" style="background:#d4521c"><i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
           <div class="print tbl" style="left:-40px; top:560px; width:430px; height:537px; transform:rotate(-11deg)"><img src="assets/work/alwaseet.jpg" /></div>
@@ -165,7 +172,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="print tbl" style="left:690px; top:1080px; width:440px; height:550px; transform:rotate(-6deg)"><img src="assets/work/asiacell.jpg" /></div>
           <div class="print tbl" style="left:-70px; top:1110px; width:420px; height:525px; transform:rotate(7deg)"><img src="assets/work/iraqiairways.jpg" /></div>
           <div class="print tbl" style="left:250px; top:700px; width:580px; height:725px; transform:rotate(-2.5deg); box-shadow:0 44px 70px rgba(60,10,0,.6)"><img src="assets/work/alfaqma.jpg" /></div>
-          <div class="cap" id="handle" style="top:860px; font-size:150px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
+          <div class="shot phone" id="phGrid" style="left:300px; top:470px; width:480px; height:854px; transform:rotate(-2deg)"><div id="gridScroll" style="position:absolute; left:0; top:0; width:100%"><div style="height:852px; overflow:hidden"><img src="assets/shots/grid-1.png" style="width:100%; height:auto" /></div><div style="height:741px; overflow:hidden"><img src="assets/shots/grid-2.png" style="width:100%; height:auto; margin-top:-111px" /></div></div></div>
+          <div class="cap" id="handle" style="top:1400px; font-size:120px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
         </div>
 
         <div id="dirt"></div>
@@ -192,129 +200,133 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
       <audio id="a16-npop3" src="assets/sfx/npop3.wav" data-start="3.75" data-duration="0.17" data-track-index="26" data-volume="0.2"></audio>
       <audio id="a17-npop4" src="assets/sfx/npop4.wav" data-start="4.22" data-duration="0.16" data-track-index="27" data-volume="0.18"></audio>
       <audio id="a18-cinclick" src="assets/sfx/cinclick.wav" data-start="4.28" data-duration="0.094" data-track-index="28" data-volume="0.3"></audio>
-      <audio id="a19-mpop" src="assets/sfx/mpop.wav" data-start="4.30" data-duration="1.25" data-track-index="29" data-volume="0.24"></audio>
-      <audio id="a20-mpop" src="assets/sfx/mpop.wav" data-start="4.44" data-duration="1.25" data-track-index="30" data-volume="0.2"></audio>
-      <audio id="a21-mpop" src="assets/sfx/mpop.wav" data-start="4.58" data-duration="1.25" data-track-index="31" data-volume="0.2"></audio>
-      <audio id="a22-npop5" src="assets/sfx/npop5.wav" data-start="4.75" data-duration="0.15" data-track-index="32" data-volume="0.24"></audio>
-      <audio id="a23-smooth" src="assets/sfx/smooth.wav" data-start="5.20" data-duration="1.75" data-track-index="33" data-volume="0.24"></audio>
-      <audio id="a24-npop1" src="assets/sfx/npop1.wav" data-start="5.27" data-duration="0.16" data-track-index="34" data-volume="0.24"></audio>
-      <audio id="a25-whooshcon" src="assets/sfx/whooshcon.wav" data-start="5.30" data-duration="1.608" data-track-index="35" data-volume="0.2"></audio>
-      <audio id="a26-npop2" src="assets/sfx/npop2.wav" data-start="5.65" data-duration="0.18" data-track-index="36" data-volume="0.17"></audio>
-      <audio id="a27-npop3" src="assets/sfx/npop3.wav" data-start="6.11" data-duration="0.17" data-track-index="37" data-volume="0.2"></audio>
-      <audio id="a28-cinclick" src="assets/sfx/cinclick.wav" data-start="6.62" data-duration="0.094" data-track-index="38" data-volume="0.3"></audio>
-      <audio id="a29-simple" src="assets/sfx/simple.wav" data-start="6.68" data-duration="1.531" data-track-index="39" data-volume="0.22"></audio>
-      <audio id="a30-npop4" src="assets/sfx/npop4.wav" data-start="6.69" data-duration="0.16" data-track-index="40" data-volume="0.18"></audio>
-      <audio id="a31-npop5" src="assets/sfx/npop5.wav" data-start="7.11" data-duration="0.15" data-track-index="41" data-volume="0.24"></audio>
-      <audio id="a32-hitcut" src="assets/sfx/hitcut.wav" data-start="7.74" data-duration="2.208" data-track-index="42" data-volume="0.3"></audio>
-      <audio id="a33-npop1" src="assets/sfx/npop1.wav" data-start="7.81" data-duration="0.16" data-track-index="43" data-volume="0.24"></audio>
-      <audio id="a34-bite" src="assets/sfx/bite.wav" data-start="8.26" data-duration="0.625" data-track-index="44" data-volume="0.4"></audio>
-      <audio id="a35-npop2" src="assets/sfx/npop2.wav" data-start="8.39" data-duration="0.18" data-track-index="45" data-volume="0.17"></audio>
-      <audio id="a36-ppop3" src="assets/sfx/ppop3.wav" data-start="8.63" data-duration="0.38" data-track-index="46" data-volume="0.17"></audio>
-      <audio id="a37-cinclick" src="assets/sfx/cinclick.wav" data-start="9.14" data-duration="0.094" data-track-index="47" data-volume="0.3"></audio>
-      <audio id="a38-flick" src="assets/sfx/flick.wav" data-start="9.20" data-duration="0.552" data-track-index="48" data-volume="0.24"></audio>
-      <audio id="a39-npop3" src="assets/sfx/npop3.wav" data-start="9.21" data-duration="0.17" data-track-index="49" data-volume="0.2"></audio>
-      <audio id="a40-npop4" src="assets/sfx/npop4.wav" data-start="9.65" data-duration="0.16" data-track-index="50" data-volume="0.18"></audio>
-      <audio id="a41-npop5" src="assets/sfx/npop5.wav" data-start="10.05" data-duration="0.15" data-track-index="51" data-volume="0.24"></audio>
-      <audio id="a42-cinclick" src="assets/sfx/cinclick.wav" data-start="10.72" data-duration="0.094" data-track-index="52" data-volume="0.3"></audio>
-      <audio id="a43-mpop" src="assets/sfx/mpop.wav" data-start="10.78" data-duration="1.25" data-track-index="53" data-volume="0.28"></audio>
-      <audio id="a44-npop1" src="assets/sfx/npop1.wav" data-start="10.79" data-duration="0.16" data-track-index="54" data-volume="0.24"></audio>
-      <audio id="a45-npop2" src="assets/sfx/npop2.wav" data-start="11.47" data-duration="0.18" data-track-index="55" data-volume="0.17"></audio>
-      <audio id="a46-ppop3" src="assets/sfx/ppop3.wav" data-start="11.83" data-duration="0.38" data-track-index="56" data-volume="0.22"></audio>
-      <audio id="a47-ppop4" src="assets/sfx/ppop4.wav" data-start="11.85" data-duration="0.4" data-track-index="57" data-volume="0.13"></audio>
-      <audio id="a48-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="12.62" data-duration="2.616" data-track-index="58" data-volume="0.24"></audio>
-      <audio id="a49-gear" src="assets/sfx/gear.wav" data-start="12.68" data-duration="2.847" data-track-index="59" data-volume="0.28"></audio>
-      <audio id="a50-npop3" src="assets/sfx/npop3.wav" data-start="12.69" data-duration="0.17" data-track-index="60" data-volume="0.2"></audio>
-      <audio id="a51-npop4" src="assets/sfx/npop4.wav" data-start="12.95" data-duration="0.16" data-track-index="61" data-volume="0.18"></audio>
-      <audio id="a52-hit" src="assets/sfx/hit.wav" data-start="13.17" data-duration="6.601" data-track-index="62" data-volume="0.26"></audio>
-      <audio id="a53-npop5" src="assets/sfx/npop5.wav" data-start="13.37" data-duration="0.15" data-track-index="63" data-volume="0.24"></audio>
-      <audio id="a54-npop1" src="assets/sfx/npop1.wav" data-start="13.75" data-duration="0.16" data-track-index="64" data-volume="0.24"></audio>
-      <audio id="a55-cinclick" src="assets/sfx/cinclick.wav" data-start="14.42" data-duration="0.094" data-track-index="65" data-volume="0.3"></audio>
-      <audio id="a56-npop2" src="assets/sfx/npop2.wav" data-start="14.49" data-duration="0.18" data-track-index="66" data-volume="0.17"></audio>
-      <audio id="a57-npop3" src="assets/sfx/npop3.wav" data-start="14.89" data-duration="0.17" data-track-index="67" data-volume="0.2"></audio>
-      <audio id="a58-npop4" src="assets/sfx/npop4.wav" data-start="15.11" data-duration="0.16" data-track-index="68" data-volume="0.18"></audio>
-      <audio id="a59-npop5" src="assets/sfx/npop5.wav" data-start="15.39" data-duration="0.15" data-track-index="69" data-volume="0.24"></audio>
-      <audio id="a60-airy" src="assets/sfx/airy.wav" data-start="15.60" data-duration="1.957" data-track-index="70" data-volume="0.2"></audio>
-      <audio id="a61-ppop1" src="assets/sfx/ppop1.wav" data-start="15.81" data-duration="0.3" data-track-index="71" data-volume="0.19"></audio>
-      <audio id="a62-npop1" src="assets/sfx/npop1.wav" data-start="16.43" data-duration="0.16" data-track-index="72" data-volume="0.24"></audio>
-      <audio id="a63-npop2" src="assets/sfx/npop2.wav" data-start="16.71" data-duration="0.18" data-track-index="73" data-volume="0.17"></audio>
-      <audio id="a64-hitcut" src="assets/sfx/hitcut.wav" data-start="17.50" data-duration="2.208" data-track-index="74" data-volume="0.3"></audio>
-      <audio id="a65-npop3" src="assets/sfx/npop3.wav" data-start="17.57" data-duration="0.17" data-track-index="75" data-volume="0.2"></audio>
-      <audio id="a66-npop4" src="assets/sfx/npop4.wav" data-start="17.91" data-duration="0.16" data-track-index="76" data-volume="0.18"></audio>
-      <audio id="a67-npop5" src="assets/sfx/npop5.wav" data-start="18.25" data-duration="0.15" data-track-index="77" data-volume="0.24"></audio>
-      <audio id="a68-cinclick" src="assets/sfx/cinclick.wav" data-start="18.55" data-duration="0.094" data-track-index="78" data-volume="0.36"></audio>
-      <audio id="a69-ppop2" src="assets/sfx/ppop2.wav" data-start="18.57" data-duration="0.4" data-track-index="79" data-volume="0.13"></audio>
-      <audio id="a70-smooth" src="assets/sfx/smooth.wav" data-start="19.04" data-duration="1.75" data-track-index="80" data-volume="0.24"></audio>
-      <audio id="a71-npop1" src="assets/sfx/npop1.wav" data-start="19.11" data-duration="0.16" data-track-index="81" data-volume="0.24"></audio>
-      <audio id="a72-sweet" src="assets/sfx/sweet.wav" data-start="19.12" data-duration="1.076" data-track-index="82" data-volume="0.22"></audio>
-      <audio id="a73-npop2" src="assets/sfx/npop2.wav" data-start="19.67" data-duration="0.18" data-track-index="83" data-volume="0.17"></audio>
-      <audio id="a74-npop3" src="assets/sfx/npop3.wav" data-start="20.23" data-duration="0.17" data-track-index="84" data-volume="0.2"></audio>
-      <audio id="a75-npop4" src="assets/sfx/npop4.wav" data-start="20.45" data-duration="0.16" data-track-index="85" data-volume="0.18"></audio>
-      <audio id="a76-npop5" src="assets/sfx/npop5.wav" data-start="20.71" data-duration="0.15" data-track-index="86" data-volume="0.24"></audio>
-      <audio id="a77-npop1" src="assets/sfx/npop1.wav" data-start="21.15" data-duration="0.16" data-track-index="87" data-volume="0.24"></audio>
-      <audio id="a78-whooshcon" src="assets/sfx/whooshcon.wav" data-start="21.75" data-duration="1.608" data-track-index="88" data-volume="0.24"></audio>
-      <audio id="a79-npop2" src="assets/sfx/npop2.wav" data-start="21.77" data-duration="0.18" data-track-index="89" data-volume="0.17"></audio>
-      <audio id="a80-ppop3" src="assets/sfx/ppop3.wav" data-start="22.19" data-duration="0.38" data-track-index="90" data-volume="0.17"></audio>
-      <audio id="a81-npop3" src="assets/sfx/npop3.wav" data-start="22.71" data-duration="0.17" data-track-index="91" data-volume="0.2"></audio>
-      <audio id="a82-npop4" src="assets/sfx/npop4.wav" data-start="22.79" data-duration="0.16" data-track-index="92" data-volume="0.18"></audio>
-      <audio id="a83-cinclick" src="assets/sfx/cinclick.wav" data-start="23.52" data-duration="0.094" data-track-index="93" data-volume="0.3"></audio>
-      <audio id="a84-npop5" src="assets/sfx/npop5.wav" data-start="23.59" data-duration="0.15" data-track-index="94" data-volume="0.24"></audio>
-      <audio id="a85-npop1" src="assets/sfx/npop1.wav" data-start="23.95" data-duration="0.16" data-track-index="95" data-volume="0.24"></audio>
-      <audio id="a86-npop2" src="assets/sfx/npop2.wav" data-start="24.29" data-duration="0.18" data-track-index="96" data-volume="0.17"></audio>
-      <audio id="a87-npop3" src="assets/sfx/npop3.wav" data-start="24.65" data-duration="0.17" data-track-index="97" data-volume="0.2"></audio>
-      <audio id="a88-mpop" src="assets/sfx/mpop.wav" data-start="24.97" data-duration="1.25" data-track-index="98" data-volume="0.26"></audio>
-      <audio id="a89-npop4" src="assets/sfx/npop4.wav" data-start="24.99" data-duration="0.16" data-track-index="99" data-volume="0.18"></audio>
-      <audio id="a90-mpop" src="assets/sfx/mpop.wav" data-start="25.35" data-duration="1.25" data-track-index="100" data-volume="0.26"></audio>
-      <audio id="a91-npop5" src="assets/sfx/npop5.wav" data-start="25.37" data-duration="0.15" data-track-index="101" data-volume="0.24"></audio>
-      <audio id="a92-money" src="assets/sfx/money.wav" data-start="25.97" data-duration="1.476" data-track-index="102" data-volume="0.3"></audio>
-      <audio id="a93-ppop4" src="assets/sfx/ppop4.wav" data-start="25.99" data-duration="0.4" data-track-index="103" data-volume="0.13"></audio>
-      <audio id="a94-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="26.62" data-duration="2.616" data-track-index="104" data-volume="0.22"></audio>
-      <audio id="a95-npop1" src="assets/sfx/npop1.wav" data-start="26.69" data-duration="0.16" data-track-index="105" data-volume="0.24"></audio>
-      <audio id="a96-softpop" src="assets/sfx/softpop.wav" data-start="26.70" data-duration="0.72" data-track-index="106" data-volume="0.22"></audio>
-      <audio id="a97-npop2" src="assets/sfx/npop2.wav" data-start="27.03" data-duration="0.18" data-track-index="107" data-volume="0.17"></audio>
-      <audio id="a98-npop3" src="assets/sfx/npop3.wav" data-start="27.23" data-duration="0.17" data-track-index="108" data-volume="0.2"></audio>
-      <audio id="a99-ppop1" src="assets/sfx/ppop1.wav" data-start="27.59" data-duration="0.3" data-track-index="109" data-volume="0.19"></audio>
-      <audio id="a100-npop4" src="assets/sfx/npop4.wav" data-start="27.99" data-duration="0.16" data-track-index="110" data-volume="0.18"></audio>
-      <audio id="a101-cinfast" src="assets/sfx/cinfast.wav" data-start="28.50" data-duration="0.856" data-track-index="111" data-volume="0.24"></audio>
-      <audio id="a102-npop5" src="assets/sfx/npop5.wav" data-start="28.57" data-duration="0.15" data-track-index="112" data-volume="0.24"></audio>
-      <audio id="a103-npop1" src="assets/sfx/npop1.wav" data-start="28.95" data-duration="0.16" data-track-index="113" data-volume="0.24"></audio>
-      <audio id="a104-data" src="assets/sfx/data.wav" data-start="29.00" data-duration="1.003" data-track-index="114" data-volume="0.18"></audio>
-      <audio id="a105-npop2" src="assets/sfx/npop2.wav" data-start="29.17" data-duration="0.18" data-track-index="115" data-volume="0.17"></audio>
-      <audio id="a106-npop3" src="assets/sfx/npop3.wav" data-start="29.67" data-duration="0.17" data-track-index="116" data-volume="0.2"></audio>
-      <audio id="a107-npop4" src="assets/sfx/npop4.wav" data-start="30.17" data-duration="0.16" data-track-index="117" data-volume="0.18"></audio>
-      <audio id="a108-npop5" src="assets/sfx/npop5.wav" data-start="30.87" data-duration="0.15" data-track-index="118" data-volume="0.24"></audio>
-      <audio id="a109-npop1" src="assets/sfx/npop1.wav" data-start="31.01" data-duration="0.16" data-track-index="119" data-volume="0.24"></audio>
-      <audio id="a110-npop2" src="assets/sfx/npop2.wav" data-start="31.65" data-duration="0.18" data-track-index="120" data-volume="0.17"></audio>
-      <audio id="a111-npop3" src="assets/sfx/npop3.wav" data-start="32.07" data-duration="0.17" data-track-index="121" data-volume="0.2"></audio>
-      <audio id="a112-npop4" src="assets/sfx/npop4.wav" data-start="32.53" data-duration="0.16" data-track-index="122" data-volume="0.18"></audio>
-      <audio id="a113-hit" src="assets/sfx/hit.wav" data-start="33.09" data-duration="6.601" data-track-index="123" data-volume="0.32"></audio>
-      <audio id="a114-ppop2" src="assets/sfx/ppop2.wav" data-start="33.11" data-duration="0.4" data-track-index="124" data-volume="0.13"></audio>
-      <audio id="a115-npop5" src="assets/sfx/npop5.wav" data-start="33.53" data-duration="0.15" data-track-index="125" data-volume="0.24"></audio>
-      <audio id="a116-cinclick" src="assets/sfx/cinclick.wav" data-start="34.05" data-duration="0.094" data-track-index="126" data-volume="0.3"></audio>
-      <audio id="a117-npop1" src="assets/sfx/npop1.wav" data-start="34.07" data-duration="0.16" data-track-index="127" data-volume="0.24"></audio>
-      <audio id="a118-npop2" src="assets/sfx/npop2.wav" data-start="34.63" data-duration="0.18" data-track-index="128" data-volume="0.17"></audio>
-      <audio id="a119-npop3" src="assets/sfx/npop3.wav" data-start="34.87" data-duration="0.17" data-track-index="129" data-volume="0.2"></audio>
-      <audio id="a120-cinclick" src="assets/sfx/cinclick.wav" data-start="35.48" data-duration="0.094" data-track-index="130" data-volume="0.3"></audio>
-      <audio id="a121-npop4" src="assets/sfx/npop4.wav" data-start="35.55" data-duration="0.16" data-track-index="131" data-volume="0.18"></audio>
-      <audio id="a122-npop5" src="assets/sfx/npop5.wav" data-start="35.83" data-duration="0.15" data-track-index="132" data-volume="0.24"></audio>
-      <audio id="a123-click2" src="assets/sfx/click2.wav" data-start="36.09" data-duration="0.465" data-track-index="133" data-volume="0.4"></audio>
-      <audio id="a124-ppop3" src="assets/sfx/ppop3.wav" data-start="36.11" data-duration="0.38" data-track-index="134" data-volume="0.17"></audio>
-      <audio id="a125-flick" src="assets/sfx/flick.wav" data-start="36.74" data-duration="0.552" data-track-index="135" data-volume="0.3"></audio>
-      <audio id="a126-softpop" src="assets/sfx/softpop.wav" data-start="36.80" data-duration="0.72" data-track-index="136" data-volume="0.2"></audio>
-      <audio id="a127-npop1" src="assets/sfx/npop1.wav" data-start="36.81" data-duration="0.16" data-track-index="137" data-volume="0.24"></audio>
-      <audio id="a128-softpop" src="assets/sfx/softpop.wav" data-start="36.90" data-duration="0.72" data-track-index="138" data-volume="0.2"></audio>
-      <audio id="a129-softpop" src="assets/sfx/softpop.wav" data-start="37.00" data-duration="0.72" data-track-index="139" data-volume="0.2"></audio>
-      <audio id="a130-npop2" src="assets/sfx/npop2.wav" data-start="37.01" data-duration="0.18" data-track-index="140" data-volume="0.17"></audio>
-      <audio id="a131-softpop" src="assets/sfx/softpop.wav" data-start="37.10" data-duration="0.72" data-track-index="141" data-volume="0.2"></audio>
-      <audio id="a132-mpop" src="assets/sfx/mpop.wav" data-start="37.20" data-duration="1.25" data-track-index="142" data-volume="0.24"></audio>
-      <audio id="a133-npop3" src="assets/sfx/npop3.wav" data-start="37.55" data-duration="0.17" data-track-index="143" data-volume="0.2"></audio>
-      <audio id="a134-npop4" src="assets/sfx/npop4.wav" data-start="38.07" data-duration="0.16" data-track-index="144" data-volume="0.18"></audio>
-      <audio id="a135-npop5" src="assets/sfx/npop5.wav" data-start="38.73" data-duration="0.15" data-track-index="145" data-volume="0.24"></audio>
-      <audio id="a136-ppop4" src="assets/sfx/ppop4.wav" data-start="39.09" data-duration="0.4" data-track-index="146" data-volume="0.13"></audio>
-      <audio id="a137-mainwhoosh" src="assets/sfx/mainwhoosh.wav" data-start="39.35" data-duration="1.717" data-track-index="147" data-volume="0.24"></audio>
-      <audio id="a138-sweet" src="assets/sfx/sweet.wav" data-start="39.55" data-duration="1.076" data-track-index="148" data-volume="0.3"></audio>
+      <audio id="a19-npop1" src="assets/sfx/npop1.wav" data-start="4.38" data-duration="0.16" data-track-index="29" data-volume="0.3"></audio>
+      <audio id="a20-npop2" src="assets/sfx/npop2.wav" data-start="4.50" data-duration="0.18" data-track-index="30" data-volume="0.3"></audio>
+      <audio id="a21-npop3" src="assets/sfx/npop3.wav" data-start="4.62" data-duration="0.17" data-track-index="31" data-volume="0.3"></audio>
+      <audio id="a22-npop4" src="assets/sfx/npop4.wav" data-start="4.74" data-duration="0.16" data-track-index="32" data-volume="0.3"></audio>
+      <audio id="a23-npop5" src="assets/sfx/npop5.wav" data-start="4.75" data-duration="0.15" data-track-index="33" data-volume="0.24"></audio>
+      <audio id="a24-npop5" src="assets/sfx/npop5.wav" data-start="4.86" data-duration="0.15" data-track-index="34" data-volume="0.3"></audio>
+      <audio id="a25-npop1" src="assets/sfx/npop1.wav" data-start="4.98" data-duration="0.16" data-track-index="35" data-volume="0.3"></audio>
+      <audio id="a26-smooth" src="assets/sfx/smooth.wav" data-start="5.20" data-duration="1.75" data-track-index="36" data-volume="0.24"></audio>
+      <audio id="a27-npop1" src="assets/sfx/npop1.wav" data-start="5.27" data-duration="0.16" data-track-index="37" data-volume="0.24"></audio>
+      <audio id="a28-whooshcon" src="assets/sfx/whooshcon.wav" data-start="5.30" data-duration="1.608" data-track-index="38" data-volume="0.2"></audio>
+      <audio id="a29-npop2" src="assets/sfx/npop2.wav" data-start="5.65" data-duration="0.18" data-track-index="39" data-volume="0.17"></audio>
+      <audio id="a30-npop3" src="assets/sfx/npop3.wav" data-start="6.11" data-duration="0.17" data-track-index="40" data-volume="0.2"></audio>
+      <audio id="a31-cinclick" src="assets/sfx/cinclick.wav" data-start="6.62" data-duration="0.094" data-track-index="41" data-volume="0.3"></audio>
+      <audio id="a32-simple" src="assets/sfx/simple.wav" data-start="6.68" data-duration="1.531" data-track-index="42" data-volume="0.22"></audio>
+      <audio id="a33-npop4" src="assets/sfx/npop4.wav" data-start="6.69" data-duration="0.16" data-track-index="43" data-volume="0.18"></audio>
+      <audio id="a34-npop5" src="assets/sfx/npop5.wav" data-start="7.11" data-duration="0.15" data-track-index="44" data-volume="0.24"></audio>
+      <audio id="a35-hitcut" src="assets/sfx/hitcut.wav" data-start="7.74" data-duration="2.208" data-track-index="45" data-volume="0.3"></audio>
+      <audio id="a36-npop1" src="assets/sfx/npop1.wav" data-start="7.81" data-duration="0.16" data-track-index="46" data-volume="0.24"></audio>
+      <audio id="a37-bite" src="assets/sfx/bite.wav" data-start="8.26" data-duration="0.625" data-track-index="47" data-volume="0.4"></audio>
+      <audio id="a38-npop2" src="assets/sfx/npop2.wav" data-start="8.39" data-duration="0.18" data-track-index="48" data-volume="0.17"></audio>
+      <audio id="a39-ppop3" src="assets/sfx/ppop3.wav" data-start="8.63" data-duration="0.38" data-track-index="49" data-volume="0.17"></audio>
+      <audio id="a40-cinclick" src="assets/sfx/cinclick.wav" data-start="9.14" data-duration="0.094" data-track-index="50" data-volume="0.3"></audio>
+      <audio id="a41-flick" src="assets/sfx/flick.wav" data-start="9.20" data-duration="0.552" data-track-index="51" data-volume="0.24"></audio>
+      <audio id="a42-npop3" src="assets/sfx/npop3.wav" data-start="9.21" data-duration="0.17" data-track-index="52" data-volume="0.2"></audio>
+      <audio id="a43-npop4" src="assets/sfx/npop4.wav" data-start="9.65" data-duration="0.16" data-track-index="53" data-volume="0.18"></audio>
+      <audio id="a44-npop5" src="assets/sfx/npop5.wav" data-start="10.05" data-duration="0.15" data-track-index="54" data-volume="0.24"></audio>
+      <audio id="a45-cinclick" src="assets/sfx/cinclick.wav" data-start="10.72" data-duration="0.094" data-track-index="55" data-volume="0.3"></audio>
+      <audio id="a46-mpop" src="assets/sfx/mpop.wav" data-start="10.78" data-duration="1.25" data-track-index="56" data-volume="0.28"></audio>
+      <audio id="a47-npop1" src="assets/sfx/npop1.wav" data-start="10.79" data-duration="0.16" data-track-index="57" data-volume="0.24"></audio>
+      <audio id="a48-npop2" src="assets/sfx/npop2.wav" data-start="11.47" data-duration="0.18" data-track-index="58" data-volume="0.17"></audio>
+      <audio id="a49-ppop3" src="assets/sfx/ppop3.wav" data-start="11.83" data-duration="0.38" data-track-index="59" data-volume="0.22"></audio>
+      <audio id="a50-ppop4" src="assets/sfx/ppop4.wav" data-start="11.85" data-duration="0.4" data-track-index="60" data-volume="0.13"></audio>
+      <audio id="a51-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="12.62" data-duration="2.616" data-track-index="61" data-volume="0.24"></audio>
+      <audio id="a52-gear" src="assets/sfx/gear.wav" data-start="12.68" data-duration="2.847" data-track-index="62" data-volume="0.28"></audio>
+      <audio id="a53-npop3" src="assets/sfx/npop3.wav" data-start="12.69" data-duration="0.17" data-track-index="63" data-volume="0.2"></audio>
+      <audio id="a54-npop4" src="assets/sfx/npop4.wav" data-start="12.95" data-duration="0.16" data-track-index="64" data-volume="0.18"></audio>
+      <audio id="a55-hit" src="assets/sfx/hit.wav" data-start="13.17" data-duration="6.601" data-track-index="65" data-volume="0.26"></audio>
+      <audio id="a56-npop5" src="assets/sfx/npop5.wav" data-start="13.37" data-duration="0.15" data-track-index="66" data-volume="0.24"></audio>
+      <audio id="a57-npop1" src="assets/sfx/npop1.wav" data-start="13.75" data-duration="0.16" data-track-index="67" data-volume="0.24"></audio>
+      <audio id="a58-cinclick" src="assets/sfx/cinclick.wav" data-start="14.42" data-duration="0.094" data-track-index="68" data-volume="0.3"></audio>
+      <audio id="a59-npop2" src="assets/sfx/npop2.wav" data-start="14.49" data-duration="0.18" data-track-index="69" data-volume="0.17"></audio>
+      <audio id="a60-npop3" src="assets/sfx/npop3.wav" data-start="14.89" data-duration="0.17" data-track-index="70" data-volume="0.2"></audio>
+      <audio id="a61-npop4" src="assets/sfx/npop4.wav" data-start="15.11" data-duration="0.16" data-track-index="71" data-volume="0.18"></audio>
+      <audio id="a62-npop5" src="assets/sfx/npop5.wav" data-start="15.39" data-duration="0.15" data-track-index="72" data-volume="0.24"></audio>
+      <audio id="a63-airy" src="assets/sfx/airy.wav" data-start="15.60" data-duration="1.957" data-track-index="73" data-volume="0.2"></audio>
+      <audio id="a64-ppop1" src="assets/sfx/ppop1.wav" data-start="15.81" data-duration="0.3" data-track-index="74" data-volume="0.19"></audio>
+      <audio id="a65-npop1" src="assets/sfx/npop1.wav" data-start="16.43" data-duration="0.16" data-track-index="75" data-volume="0.24"></audio>
+      <audio id="a66-npop2" src="assets/sfx/npop2.wav" data-start="16.71" data-duration="0.18" data-track-index="76" data-volume="0.17"></audio>
+      <audio id="a67-hitcut" src="assets/sfx/hitcut.wav" data-start="17.50" data-duration="2.208" data-track-index="77" data-volume="0.3"></audio>
+      <audio id="a68-npop3" src="assets/sfx/npop3.wav" data-start="17.57" data-duration="0.17" data-track-index="78" data-volume="0.2"></audio>
+      <audio id="a69-npop4" src="assets/sfx/npop4.wav" data-start="17.91" data-duration="0.16" data-track-index="79" data-volume="0.18"></audio>
+      <audio id="a70-npop5" src="assets/sfx/npop5.wav" data-start="18.25" data-duration="0.15" data-track-index="80" data-volume="0.24"></audio>
+      <audio id="a71-cinclick" src="assets/sfx/cinclick.wav" data-start="18.55" data-duration="0.094" data-track-index="81" data-volume="0.36"></audio>
+      <audio id="a72-ppop2" src="assets/sfx/ppop2.wav" data-start="18.57" data-duration="0.4" data-track-index="82" data-volume="0.13"></audio>
+      <audio id="a73-smooth" src="assets/sfx/smooth.wav" data-start="19.04" data-duration="1.75" data-track-index="83" data-volume="0.24"></audio>
+      <audio id="a74-npop1" src="assets/sfx/npop1.wav" data-start="19.11" data-duration="0.16" data-track-index="84" data-volume="0.24"></audio>
+      <audio id="a75-sweet" src="assets/sfx/sweet.wav" data-start="19.12" data-duration="1.076" data-track-index="85" data-volume="0.22"></audio>
+      <audio id="a76-npop2" src="assets/sfx/npop2.wav" data-start="19.67" data-duration="0.18" data-track-index="86" data-volume="0.17"></audio>
+      <audio id="a77-npop3" src="assets/sfx/npop3.wav" data-start="20.23" data-duration="0.17" data-track-index="87" data-volume="0.2"></audio>
+      <audio id="a78-npop4" src="assets/sfx/npop4.wav" data-start="20.45" data-duration="0.16" data-track-index="88" data-volume="0.18"></audio>
+      <audio id="a79-npop5" src="assets/sfx/npop5.wav" data-start="20.71" data-duration="0.15" data-track-index="89" data-volume="0.24"></audio>
+      <audio id="a80-npop1" src="assets/sfx/npop1.wav" data-start="21.15" data-duration="0.16" data-track-index="90" data-volume="0.24"></audio>
+      <audio id="a81-whooshcon" src="assets/sfx/whooshcon.wav" data-start="21.75" data-duration="1.608" data-track-index="91" data-volume="0.24"></audio>
+      <audio id="a82-npop2" src="assets/sfx/npop2.wav" data-start="21.77" data-duration="0.18" data-track-index="92" data-volume="0.17"></audio>
+      <audio id="a83-ppop3" src="assets/sfx/ppop3.wav" data-start="22.19" data-duration="0.38" data-track-index="93" data-volume="0.17"></audio>
+      <audio id="a84-npop3" src="assets/sfx/npop3.wav" data-start="22.71" data-duration="0.17" data-track-index="94" data-volume="0.2"></audio>
+      <audio id="a85-npop4" src="assets/sfx/npop4.wav" data-start="22.79" data-duration="0.16" data-track-index="95" data-volume="0.18"></audio>
+      <audio id="a86-cinclick" src="assets/sfx/cinclick.wav" data-start="23.52" data-duration="0.094" data-track-index="96" data-volume="0.3"></audio>
+      <audio id="a87-npop5" src="assets/sfx/npop5.wav" data-start="23.59" data-duration="0.15" data-track-index="97" data-volume="0.24"></audio>
+      <audio id="a88-npop1" src="assets/sfx/npop1.wav" data-start="23.95" data-duration="0.16" data-track-index="98" data-volume="0.24"></audio>
+      <audio id="a89-npop2" src="assets/sfx/npop2.wav" data-start="24.29" data-duration="0.18" data-track-index="99" data-volume="0.17"></audio>
+      <audio id="a90-npop3" src="assets/sfx/npop3.wav" data-start="24.65" data-duration="0.17" data-track-index="100" data-volume="0.2"></audio>
+      <audio id="a91-mpop" src="assets/sfx/mpop.wav" data-start="24.97" data-duration="1.25" data-track-index="101" data-volume="0.26"></audio>
+      <audio id="a92-npop4" src="assets/sfx/npop4.wav" data-start="24.99" data-duration="0.16" data-track-index="102" data-volume="0.18"></audio>
+      <audio id="a93-mpop" src="assets/sfx/mpop.wav" data-start="25.35" data-duration="1.25" data-track-index="103" data-volume="0.26"></audio>
+      <audio id="a94-npop5" src="assets/sfx/npop5.wav" data-start="25.37" data-duration="0.15" data-track-index="104" data-volume="0.24"></audio>
+      <audio id="a95-money" src="assets/sfx/money.wav" data-start="25.97" data-duration="1.476" data-track-index="105" data-volume="0.3"></audio>
+      <audio id="a96-ppop4" src="assets/sfx/ppop4.wav" data-start="25.99" data-duration="0.4" data-track-index="106" data-volume="0.13"></audio>
+      <audio id="a97-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="26.62" data-duration="2.616" data-track-index="107" data-volume="0.22"></audio>
+      <audio id="a98-npop1" src="assets/sfx/npop1.wav" data-start="26.69" data-duration="0.16" data-track-index="108" data-volume="0.24"></audio>
+      <audio id="a99-softpop" src="assets/sfx/softpop.wav" data-start="26.70" data-duration="0.72" data-track-index="109" data-volume="0.22"></audio>
+      <audio id="a100-npop2" src="assets/sfx/npop2.wav" data-start="27.03" data-duration="0.18" data-track-index="110" data-volume="0.17"></audio>
+      <audio id="a101-npop3" src="assets/sfx/npop3.wav" data-start="27.23" data-duration="0.17" data-track-index="111" data-volume="0.2"></audio>
+      <audio id="a102-ppop1" src="assets/sfx/ppop1.wav" data-start="27.59" data-duration="0.3" data-track-index="112" data-volume="0.19"></audio>
+      <audio id="a103-npop4" src="assets/sfx/npop4.wav" data-start="27.99" data-duration="0.16" data-track-index="113" data-volume="0.18"></audio>
+      <audio id="a104-cinfast" src="assets/sfx/cinfast.wav" data-start="28.50" data-duration="0.856" data-track-index="114" data-volume="0.24"></audio>
+      <audio id="a105-npop5" src="assets/sfx/npop5.wav" data-start="28.57" data-duration="0.15" data-track-index="115" data-volume="0.24"></audio>
+      <audio id="a106-npop1" src="assets/sfx/npop1.wav" data-start="28.95" data-duration="0.16" data-track-index="116" data-volume="0.24"></audio>
+      <audio id="a107-data" src="assets/sfx/data.wav" data-start="29.00" data-duration="1.003" data-track-index="117" data-volume="0.18"></audio>
+      <audio id="a108-npop2" src="assets/sfx/npop2.wav" data-start="29.17" data-duration="0.18" data-track-index="118" data-volume="0.17"></audio>
+      <audio id="a109-npop3" src="assets/sfx/npop3.wav" data-start="29.67" data-duration="0.17" data-track-index="119" data-volume="0.2"></audio>
+      <audio id="a110-npop4" src="assets/sfx/npop4.wav" data-start="30.17" data-duration="0.16" data-track-index="120" data-volume="0.18"></audio>
+      <audio id="a111-npop5" src="assets/sfx/npop5.wav" data-start="30.87" data-duration="0.15" data-track-index="121" data-volume="0.24"></audio>
+      <audio id="a112-npop1" src="assets/sfx/npop1.wav" data-start="31.01" data-duration="0.16" data-track-index="122" data-volume="0.24"></audio>
+      <audio id="a113-npop2" src="assets/sfx/npop2.wav" data-start="31.65" data-duration="0.18" data-track-index="123" data-volume="0.17"></audio>
+      <audio id="a114-npop3" src="assets/sfx/npop3.wav" data-start="32.07" data-duration="0.17" data-track-index="124" data-volume="0.2"></audio>
+      <audio id="a115-npop4" src="assets/sfx/npop4.wav" data-start="32.53" data-duration="0.16" data-track-index="125" data-volume="0.18"></audio>
+      <audio id="a116-hit" src="assets/sfx/hit.wav" data-start="33.09" data-duration="6.601" data-track-index="126" data-volume="0.32"></audio>
+      <audio id="a117-ppop2" src="assets/sfx/ppop2.wav" data-start="33.11" data-duration="0.4" data-track-index="127" data-volume="0.13"></audio>
+      <audio id="a118-npop5" src="assets/sfx/npop5.wav" data-start="33.53" data-duration="0.15" data-track-index="128" data-volume="0.24"></audio>
+      <audio id="a119-cinclick" src="assets/sfx/cinclick.wav" data-start="34.05" data-duration="0.094" data-track-index="129" data-volume="0.3"></audio>
+      <audio id="a120-npop1" src="assets/sfx/npop1.wav" data-start="34.07" data-duration="0.16" data-track-index="130" data-volume="0.24"></audio>
+      <audio id="a121-npop2" src="assets/sfx/npop2.wav" data-start="34.63" data-duration="0.18" data-track-index="131" data-volume="0.17"></audio>
+      <audio id="a122-npop3" src="assets/sfx/npop3.wav" data-start="34.87" data-duration="0.17" data-track-index="132" data-volume="0.2"></audio>
+      <audio id="a123-cinclick" src="assets/sfx/cinclick.wav" data-start="35.48" data-duration="0.094" data-track-index="133" data-volume="0.3"></audio>
+      <audio id="a124-npop4" src="assets/sfx/npop4.wav" data-start="35.55" data-duration="0.16" data-track-index="134" data-volume="0.18"></audio>
+      <audio id="a125-npop5" src="assets/sfx/npop5.wav" data-start="35.83" data-duration="0.15" data-track-index="135" data-volume="0.24"></audio>
+      <audio id="a126-click2" src="assets/sfx/click2.wav" data-start="36.09" data-duration="0.465" data-track-index="136" data-volume="0.4"></audio>
+      <audio id="a127-ppop3" src="assets/sfx/ppop3.wav" data-start="36.11" data-duration="0.38" data-track-index="137" data-volume="0.17"></audio>
+      <audio id="a128-flick" src="assets/sfx/flick.wav" data-start="36.74" data-duration="0.552" data-track-index="138" data-volume="0.3"></audio>
+      <audio id="a129-softpop" src="assets/sfx/softpop.wav" data-start="36.80" data-duration="0.72" data-track-index="139" data-volume="0.2"></audio>
+      <audio id="a130-npop1" src="assets/sfx/npop1.wav" data-start="36.81" data-duration="0.16" data-track-index="140" data-volume="0.24"></audio>
+      <audio id="a131-softpop" src="assets/sfx/softpop.wav" data-start="36.90" data-duration="0.72" data-track-index="141" data-volume="0.2"></audio>
+      <audio id="a132-softpop" src="assets/sfx/softpop.wav" data-start="37.00" data-duration="0.72" data-track-index="142" data-volume="0.2"></audio>
+      <audio id="a133-npop2" src="assets/sfx/npop2.wav" data-start="37.01" data-duration="0.18" data-track-index="143" data-volume="0.17"></audio>
+      <audio id="a134-softpop" src="assets/sfx/softpop.wav" data-start="37.10" data-duration="0.72" data-track-index="144" data-volume="0.2"></audio>
+      <audio id="a135-mpop" src="assets/sfx/mpop.wav" data-start="37.20" data-duration="1.25" data-track-index="145" data-volume="0.24"></audio>
+      <audio id="a136-mainwhoosh" src="assets/sfx/mainwhoosh.wav" data-start="37.45" data-duration="1.717" data-track-index="146" data-volume="0.24"></audio>
+      <audio id="a137-npop3" src="assets/sfx/npop3.wav" data-start="37.55" data-duration="0.17" data-track-index="147" data-volume="0.2"></audio>
+      <audio id="a138-smooth" src="assets/sfx/smooth.wav" data-start="37.60" data-duration="1.75" data-track-index="148" data-volume="0.22"></audio>
+      <audio id="a139-npop4" src="assets/sfx/npop4.wav" data-start="38.07" data-duration="0.16" data-track-index="149" data-volume="0.18"></audio>
+      <audio id="a140-ppop4" src="assets/sfx/ppop4.wav" data-start="38.73" data-duration="0.4" data-track-index="150" data-volume="0.13"></audio>
+      <audio id="a141-npop5" src="assets/sfx/npop5.wav" data-start="39.09" data-duration="0.15" data-track-index="151" data-volume="0.24"></audio>
+      <audio id="a142-sweet" src="assets/sfx/sweet.wav" data-start="39.55" data-duration="1.076" data-track-index="152" data-volume="0.3"></audio>
     </div>
     <script>
-window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28, 5.2], ["D", 5.2, 6.62], ["E", 6.62, 7.74], ["F", 7.74, 9.14], ["G", 9.14, 10.72], ["H", 10.72, 12.62], ["I", 12.62, 14.42], ["J", 14.42, 17.5], ["K", 17.5, 19.04], ["L", 19.04, 23.52], ["M", 23.52, 26.62], ["N", 26.62, 28.5], ["O", 28.5, 35.48], ["Q", 35.48, 36.74], ["R", 36.74, 40.8]], "lines": [["A", 300, 76, "مشروعك متعوب عليه، بس", [0.0, 0.56, 0.88, 1.38]], ["A", 400, 330, "أرباحك", [1.66]], ["A", 1300, 170, "*قليلة؟", [2.1]], ["B", 300, 124, "عدنا *نصمملك", [2.65, 2.91]], ["B", 1440, 110, "موشن جرافيك", [3.45, 3.73]], ["C", 300, 130, "وبوستات إعلانية", [4.2, 4.73]], ["D", 300, 96, "تحجي بقوة", [5.25, 5.63]], ["D", 400, 310, "براندك", [6.09]], ["E", 300, 150, "وتبيع بمكانك", [6.67, 7.09]], ["F", 390, 400, "حركة", [7.79]], ["F", 300, 84, "تشد *العين", [8.37, 8.61]], ["G", 1130, 330, "فكرة", [9.19]], ["G", 1480, 80, "تقنع الزبون", [9.63, 10.03]], ["H", 300, 330, "ونتيجة", [10.77]], ["H", 1420, 96, "ترفع *مبيعاتك", [11.45, 11.83]], ["I", 300, 96, "من أول", [12.67, 12.93]], ["I", 1430, 110, "ثواني بإعلانك", [13.35, 13.73]], ["J", 300, 104, "الزبون راح يلمس", [14.47, 14.87, 15.09], 16.3], ["J", 430, 120, "الكواليتي *العالي", [15.37, 15.79], 16.3], ["J", 300, 120, "يثق بمنتجك", [16.41, 16.69]], ["K", 300, 110, "ويدخل يطلب منك", [17.55, 17.89, 18.23]], ["K", 1400, 170, "*مباشرة", [18.55]], ["L", 300, 104, "لأن ويانا راح يطلع", [19.09, 19.65, 20.21, 20.43], 21.6], ["L", 430, 104, "إعلانك بمستوى", [20.69, 21.13], 21.6], ["L", 300, 120, "يعزلك *تماما", [21.75, 22.17]], ["L", 1560, 96, "عن منافسيك", [22.69, 22.77]], ["M", 300, 96, "ويخلي الزبون يشتري منك", [23.57, 23.93, 24.27, 24.63], 24.9], ["M", 300, 110, "مرة ومرتين", [24.97, 25.35]], ["M", 1370, 220, "*وعشرة", [25.97]], ["N", 300, 110, "لأن شاف براند", [26.67, 27.01, 27.21]], ["N", 1470, 110, "*حقيقي قدامه", [27.57, 27.97]], ["O", 300, 104, "كافي تضيع جمهورك", [28.55, 28.93, 29.15], 30.6], ["O", 430, 104, "بتصاميم عادية", [29.65, 30.15], 30.6], ["O", 1500, 110, "الكل يتخطاها", [30.85, 30.99], 31.5], ["O", 300, 110, "ابدأ اليوم", [31.63, 32.05], 32.45], ["O", 300, 104, "بتصاميم *توقف الزبون", [32.51, 33.09, 33.51]], ["O", 1520, 100, "وتقفل وياه البيعة", [34.05, 34.61, 34.85]], ["Q", 300, 120, "تواصل ويانا", [35.53, 35.81]], ["Q", 1450, 140, "*بالخاص", [36.09]], ["R", 290, 150, "شوف أعمالنا", [36.79, 36.99], 37.45], ["R", 290, 120, "وخلي براندك", [37.53, 38.05], 39.35], ["R", 1470, 130, "يبيع *صح", [38.71, 39.07], 39.35]], "fx": [[0.05, "flick", 0.3], [0.42, "cinclick", 0.34], [2.1, "money", 0.22], [2.6, "fastwhoosh", 0.22], [2.66, "softpop", 0.24], [2.8, "softpop", 0.2], [2.94, "softpop", 0.2], [4.28, "cinclick", 0.3], [4.3, "mpop", 0.24], [4.44, "mpop", 0.2], [4.58, "mpop", 0.2], [5.2, "smooth", 0.24], [5.3, "whooshcon", 0.2], [6.62, "cinclick", 0.3], [6.68, "simple", 0.22], [7.74, "hitcut", 0.3], [8.26, "bite", 0.4], [9.14, "cinclick", 0.3], [9.2, "flick", 0.24], [10.72, "cinclick", 0.3], [10.78, "mpop", 0.28], [11.83, "ppop3", 0.22], [12.62, "fastwhoosh", 0.24], [12.68, "gear", 0.28], [13.17, "hit", 0.26], [14.42, "cinclick", 0.3], [15.6, "airy", 0.2], [17.5, "hitcut", 0.3], [18.55, "cinclick", 0.36], [19.04, "smooth", 0.24], [19.12, "sweet", 0.22], [21.75, "whooshcon", 0.24], [23.52, "cinclick", 0.3], [24.97, "mpop", 0.26], [25.35, "mpop", 0.26], [25.97, "money", 0.3], [26.62, "fastwhoosh", 0.22], [26.7, "softpop", 0.22], [28.5, "cinfast", 0.24], [29.0, "data", 0.18], [33.09, "hit", 0.32], [34.05, "cinclick", 0.3], [35.48, "cinclick", 0.3], [36.09, "click2", 0.4], [36.74, "flick", 0.3], [36.8, "softpop", 0.2], [36.9, "softpop", 0.2], [37.0, "softpop", 0.2], [37.1, "softpop", 0.2], [37.2, "mpop", 0.24], [39.35, "mainwhoosh", 0.24], [39.55, "sweet", 0.3]]};
+window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28, 5.2], ["D", 5.2, 6.62], ["E", 6.62, 7.74], ["F", 7.74, 9.14], ["G", 9.14, 10.72], ["H", 10.72, 12.62], ["I", 12.62, 14.42], ["J", 14.42, 17.5], ["K", 17.5, 19.04], ["L", 19.04, 23.52], ["M", 23.52, 26.62], ["N", 26.62, 28.5], ["O", 28.5, 35.48], ["Q", 35.48, 36.74], ["R", 36.74, 40.8]], "lines": [["A", 300, 76, "مشروعك متعوب عليه، بس", [0.0, 0.56, 0.88, 1.38]], ["A", 400, 330, "أرباحك", [1.66]], ["A", 1300, 170, "*قليلة؟", [2.1]], ["B", 300, 124, "عدنا *نصمملك", [2.65, 2.91]], ["B", 1440, 110, "موشن جرافيك", [3.45, 3.73]], ["C", 300, 130, "وبوستات إعلانية", [4.2, 4.73]], ["D", 300, 96, "تحجي بقوة", [5.25, 5.63]], ["D", 400, 310, "براندك", [6.09]], ["E", 300, 150, "وتبيع بمكانك", [6.67, 7.09]], ["F", 390, 400, "حركة", [7.79]], ["F", 300, 84, "تشد *العين", [8.37, 8.61]], ["G", 1130, 330, "فكرة", [9.19]], ["G", 1480, 80, "تقنع الزبون", [9.63, 10.03]], ["H", 300, 330, "ونتيجة", [10.77]], ["H", 1420, 96, "ترفع *مبيعاتك", [11.45, 11.83]], ["I", 300, 96, "من أول", [12.67, 12.93]], ["I", 1490, 104, "ثواني بإعلانك", [13.35, 13.73], null, "l"], ["J", 300, 104, "الزبون راح يلمس", [14.47, 14.87, 15.09], 16.3], ["J", 430, 120, "الكواليتي *العالي", [15.37, 15.79], 16.3], ["J", 300, 120, "يثق بمنتجك", [16.41, 16.69]], ["K", 300, 110, "ويدخل يطلب منك", [17.55, 17.89, 18.23]], ["K", 1400, 170, "*مباشرة", [18.55]], ["L", 300, 104, "لأن ويانا راح يطلع", [19.09, 19.65, 20.21, 20.43], 21.6], ["L", 430, 104, "إعلانك بمستوى", [20.69, 21.13], 21.6], ["L", 300, 120, "يعزلك *تماما", [21.75, 22.17]], ["L", 1380, 96, "عن منافسيك", [22.69, 22.77]], ["M", 300, 96, "ويخلي الزبون يشتري منك", [23.57, 23.93, 24.27, 24.63], 24.9], ["M", 290, 110, "مرة ومرتين", [24.97, 25.35]], ["M", 1370, 220, "*وعشرة", [25.97]], ["N", 300, 110, "لأن شاف براند", [26.67, 27.01, 27.21]], ["N", 1470, 110, "*حقيقي قدامه", [27.57, 27.97]], ["O", 300, 104, "كافي تضيع جمهورك", [28.55, 28.93, 29.15], 30.6], ["O", 430, 104, "بتصاميم عادية", [29.65, 30.15], 30.6], ["O", 1500, 110, "الكل يتخطاها", [30.85, 30.99], 31.5], ["O", 300, 110, "ابدأ اليوم", [31.63, 32.05], 32.45], ["O", 300, 104, "بتصاميم *توقف الزبون", [32.51, 33.09, 33.51]], ["O", 1520, 100, "وتقفل وياه البيعة", [34.05, 34.61, 34.85]], ["Q", 300, 120, "تواصل ويانا", [35.53, 35.81]], ["Q", 1450, 140, "*بالخاص", [36.09]], ["R", 290, 150, "شوف أعمالنا", [36.79, 36.99], 37.45], ["R", 290, 110, "وخلي براندك *يبيع صح", [37.53, 38.05, 38.71, 39.07]]], "fx": [[0.05, "flick", 0.3], [0.42, "cinclick", 0.34], [2.1, "money", 0.22], [2.6, "fastwhoosh", 0.22], [2.66, "softpop", 0.24], [2.8, "softpop", 0.2], [2.94, "softpop", 0.2], [4.28, "cinclick", 0.3], [4.38, "npop1", 0.3], [4.5, "npop2", 0.3], [4.62, "npop3", 0.3], [4.74, "npop4", 0.3], [4.86, "npop5", 0.3], [4.98, "npop1", 0.3], [5.2, "smooth", 0.24], [5.3, "whooshcon", 0.2], [6.62, "cinclick", 0.3], [6.68, "simple", 0.22], [7.74, "hitcut", 0.3], [8.26, "bite", 0.4], [9.14, "cinclick", 0.3], [9.2, "flick", 0.24], [10.72, "cinclick", 0.3], [10.78, "mpop", 0.28], [11.83, "ppop3", 0.22], [12.62, "fastwhoosh", 0.24], [12.68, "gear", 0.28], [13.17, "hit", 0.26], [14.42, "cinclick", 0.3], [15.6, "airy", 0.2], [17.5, "hitcut", 0.3], [18.55, "cinclick", 0.36], [19.04, "smooth", 0.24], [19.12, "sweet", 0.22], [21.75, "whooshcon", 0.24], [23.52, "cinclick", 0.3], [24.97, "mpop", 0.26], [25.35, "mpop", 0.26], [25.97, "money", 0.3], [26.62, "fastwhoosh", 0.22], [26.7, "softpop", 0.22], [28.5, "cinfast", 0.24], [29.0, "data", 0.18], [33.09, "hit", 0.32], [34.05, "cinclick", 0.3], [35.48, "cinclick", 0.3], [36.09, "click2", 0.4], [36.74, "flick", 0.3], [36.8, "softpop", 0.2], [36.9, "softpop", 0.2], [37.0, "softpop", 0.2], [37.1, "softpop", 0.2], [37.2, "mpop", 0.24], [37.45, "mainwhoosh", 0.24], [37.6, "smooth", 0.22], [39.55, "sweet", 0.3]]};
 // The motion of my ad reel, on the reel standard (see ../hf-simple-logos-reel/README.md, Motion): every shot rides a
 // camera on two nulls that lands fast and settles, then speeds into the cut; each cut gets a 0.3 s box-blur pulse;
 // letters come out of a blur one at a time, 4.8 frames apart (TextEvo); things pop in with Smart Bounce (amplitude 50,
@@ -359,16 +371,20 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
   }
   for (let i = 0; i < 9; i++) $('#stream').insertAdjacentHTML('beforeend', '<div class="sheet" style="position:relative; left:0; margin-bottom:60px; width:580px; height:725px; filter:grayscale(1) brightness(.7)"></div>');
 
-  // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time]
-  R.lines.forEach(([sc, top, size, text, times], i) => {
+  // the captions ride their own layer above the camera, which follows the camera less than half as much, so a push-in
+  // never carries a line out of the safe area
+  $$('.sc').forEach((sc) => { const c = document.createElement('div'); c.className = 'caps'; sc.appendChild(c); });
+  // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time, «l» to
+  // set the line on the left]
+  R.lines.forEach(([sc, top, size, text, times, , align], i) => {
     const d = document.createElement('div');
     d.className = 'cap'; d.id = 'L' + i;
-    d.style.cssText = `top:${top}px; font-size:${size}px`;
+    d.style.cssText = `top:${top}px; font-size:${size}px` + (align === 'l' ? '; text-align:left; left:70px' : '');
     d.innerHTML = text.split(' ').map((w) => {
       const k = w[0] === '*', s = k ? w.slice(1) : w;
       return `<span class="w${k ? ' k' : ''}">${[...s].map((c) => `<span class="l">${c}</span>`).join('')}</span>`;
     }).join(' ');
-    $(`#s${sc} .cam`).appendChild(d);
+    $(`#s${sc} .caps`).appendChild(d);
   });
 
   // the camera of every shot, in the After Effects project's units: «from» is where the inner null starts and settles
@@ -383,7 +399,7 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
     G: { from: [0, 0, 168], settle: 1.3, exit: [[0, -405, 0], 0.6] },
     H: { from: [0, 497, 0], settle: 0.8, exit: [[0, 0, -370], 0.44] },
     I: { from: [0, 0, 192], settle: 1.6, exit: [[0, 319, 0], 0.6] },
-    J: { from: [0, -300, 0], settle: 1.5, drift: [[15.6, 17.2, [0, 0, 140]]], exit: [[0, 0, 220], 0.5] },
+    J: { from: [0, 0, 60], settle: 1.0, exit: [[0, 0, 120], 0.4] },
     K: { from: [0, 0, 200], settle: 1.2, exit: [[0, 593, 0], 0.6] },
     L: { from: [0, -500, 0], settle: 1.8, drift: [[21.0, 23.0, [0, 0, 80]]], exit: [[376, 0, 0], 0.6] },
     M: { from: [-196, 0, 0], settle: 2.5, exit: [[102, 0, 0], 0.6] },
@@ -397,7 +413,7 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
     moves.push([a, a + r.settle, r.from.map((v) => -v), SETTLE]);
     (r.drift || []).forEach(([t0, t1, d, e]) => moves.push([t0, t1, d, e || DRIFT]));
     if (r.exit) moves.push([b - r.exit[1], b, r.exit[0], EXIT]);
-    return { id, a, b: i === R.scenes.length - 1 ? D : b, from: r.from, moves, cam: $(`#s${id} .cam`), world: $(`#s${id} .world`) };
+    return { id, a, b: i === R.scenes.length - 1 ? D : b, from: r.from, moves, cam: $(`#s${id} .cam`), caps: $(`#s${id} .caps`), world: $(`#s${id} .world`) };
   });
   const camAt = (s, t) => {
     const c = [...s.from];
@@ -415,9 +431,9 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
     });
     const tl = gsap.timeline({ paused: true });
     const at = (t) => Math.max(0, t);
-    // TextEvo: each letter runs the same one-second curve out of a blur, 4.8 frames (at 100 fps) after the one before
+    // TextEvo, quicker than the project's (0.55 s a letter, 3.5 frames apart) so every line is sharp before its cut
     const word = (w, t) => $$('.l', w).forEach((l, j) => {
-      tl.fromTo(l, { opacity: 0, filter: 'blur(18px)' }, { opacity: 1, filter: 'blur(0px)', duration: 1, ease: EVO }, at(t + j * 0.048));
+      tl.fromTo(l, { opacity: 0, filter: 'blur(14px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.55, ease: EVO }, at(t + j * 0.035));
     });
     R.lines.forEach(([, , , , times, outT], i) => {
       $$(`#L${i} .w`).forEach((w, j) => word(w, times[j]));
@@ -466,10 +482,12 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
       tl.fromTo(s, { y: 1300, rotation: r * 3 }, { y: 0, rotation: r, duration: 0.55, ease: SETTLE }, t);
     });
 
-    // ── C · the posts fan out, the middle one on top
-    pop('#fanL', 4.3, { x: -300, rotation: -30 });
-    pop('#fanR', 4.44, { x: 300, rotation: 30 });
-    pop('#fanC', 4.58, { y: 200 });
+    // ── C · the flip-book: six posts slam down one on top of the other
+    $$('#sC .flip').forEach((el, i) => {
+      const t = 4.28 + i * 0.12;
+      tl.set(el, { opacity: 1 }, t);
+      tl.fromTo(el, { y: -1400, x: (i % 2 ? 1 : -1) * 160 }, { y: 0, x: 0, duration: 0.13, ease: SETTLE }, t);
+    });
 
     // ── D · the Iraqi Airways concept rises onto «براندك»
     tl.set('#pIA', { opacity: 1 }, 5.3);
@@ -494,16 +512,19 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
 
     // ── H · the real views pop in, punch on «مبيعاتك»
     pop('#views', 10.78);
-    punch('#views', 11.83, 1.1);
+    punch('#views', 11.83, 1.05);
 
     // ── I · the hand comes up with the stopwatch, the «3» bounces in on its word
     tl.set('#hand', { opacity: 1 }, 12.66);
     tl.fromTo('#hand', { y: 1200, rotation: 10 }, { y: 0, rotation: -8, duration: 0.6, ease: SETTLE }, 12.66);
     pop('#n3', 13.17, { rotation: -20 });
 
-    // ── J · the Saj Al-Reef ad lands, the camera pushes into it
-    tl.set('#pSaj', { opacity: 1 }, 14.42);
-    tl.fromTo('#pSaj', { y: 900, rotation: 8 }, { y: 0, rotation: -2, duration: 0.5, ease: SETTLE }, 14.42);
+    // ── J · a macro move across the Saj Al-Reef ad: the food, then the offer on «الكواليتي», then the brand on «يثق»
+    const view = (fx, fy, k = 1) => ({ x: 540 - fx * 2700 * k, y: 1060 - fy * 3375 * k, scale: k });
+    tl.set('#macro', { opacity: 1 }, 14.42);
+    tl.fromTo('#macro', view(0.5, 0.64, 1.2), { ...view(0.5, 0.6), duration: 0.9, ease: SETTLE }, 14.42);
+    tl.to('#macro', { ...view(0.3, 0.46), duration: 0.5, ease: ae(60, 100) }, 15.3);
+    tl.to('#macro', { ...view(0.9, 0.93), duration: 0.5, ease: ae(60, 100) }, 16.36);
 
     // ── K · the order button fills the frame, punches on «مباشرة»
     tl.set('#btnAd', { opacity: 1 }, 17.5);
@@ -542,13 +563,16 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
     tl.fromTo('#btns', { x: 900 }, { x: 0, duration: 0.5, ease: SETTLE }, 35.5);
     punch('#btns', 36.09, 1.12);
 
-    // ── R · the portfolio is thrown on the table, then flies out for the handle
+    // ── R · the portfolio is thrown on the table; on «وخلي» it flies off and my real grid scrolls up on a phone; the handle
     $$('#sR .tbl').forEach((el, i) => {
       const t = 36.8 + i * 0.1;
       tl.set(el, { opacity: 1 }, t);
       tl.fromTo(el, { x: (i % 2 ? 1 : -1) * 1200, y: 300, rotation: (i % 2 ? 1 : -1) * 40 }, { x: 0, y: 0, rotation: 0, duration: 0.45, ease: SETTLE }, t);
-      tl.to(el, { x: (i % 2 ? 1 : -1) * 1400, y: -400 + i * 200, rotation: (i % 2 ? 1 : -1) * 30, duration: 0.45, ease: EXIT }, 39.35 + i * 0.03);
+      tl.to(el, { x: (i % 2 ? 1 : -1) * 1400, y: -400 + i * 200, rotation: (i % 2 ? 1 : -1) * 30, duration: 0.4, ease: ae(70, 30) }, 37.45 + i * 0.03);
     });
+    tl.set('#phGrid', { opacity: 1 }, 37.55);
+    tl.fromTo('#phGrid', { y: 1300, rotation: 14 }, { y: 0, rotation: -2, duration: 0.6, ease: SETTLE }, 37.55);
+    tl.fromTo('#gridScroll', { y: 0 }, { y: -760, duration: 1.7, ease: ae(33, 100) }, 37.9);
     tl.set('#handle', { opacity: 1 }, 39.55);
     tl.fromTo('#handle', { scale: 0 }, { scale: 1, duration: 1.16, ease: smart(0.16) }, 39.55);
 
@@ -558,7 +582,7 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
     // and blurs what moved during the shutter: the whole frame for the camera (plus the pulse on a cut), and each
     // moving thing on its own for its own move
     const mb = $('#mbB'), defs = $('#mb').parentNode;
-    const MOV = SC.map((s) => $$('.obj, .print, .shot, #n3', s.cam).map((el, i) => {
+    const MOV = SC.map((s) => $$('.obj, .print, .shot, #n3, #macro', s.cam).map((el, i) => {
       const wrap = document.createElement('div'), id = `mb${s.id}${i}`;
       wrap.style.cssText = `position:absolute; inset:0; z-index:${getComputedStyle(el).zIndex}`;
       el.parentNode.insertBefore(wrap, el);
@@ -582,6 +606,7 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
       });
       const [x, y, k] = camAt(s, q), [x0, y0, k0] = camAt(s, Math.max(s.a, q - SHUTTER));
       s.cam.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${k.toFixed(4)})`;
+      s.caps.style.transform = `translate(${(x * 0.4).toFixed(2)}px, ${(y * 0.4).toFixed(2)}px) scale(${(1 + (k - 1) * 0.4).toFixed(4)})`;
       s.world.style.transform = `translate(${(x * 0.35).toFixed(2)}px, ${(y * 0.35).toFixed(2)}px) scale(${(1 + (k - 1) * 0.35).toFixed(4)})`;
       const near = cuts.reduce((m, c) => Math.min(m, Math.abs(q - c)), 9);
       const f = near < FLASH[0] ? FLASH[1] * (1 - near / FLASH[0]) : 0;
