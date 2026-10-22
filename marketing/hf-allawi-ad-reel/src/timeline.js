@@ -220,7 +220,7 @@
       });
       const x = view(q), x0 = view(Math.max(0, q - SHUTTER));
       strip.style.transform = `translate(${x.toFixed(2)}px, 0px)`;
-      mb.setAttribute('stdDeviation', `${Math.min(14, Math.abs(x - x0) / 6).toFixed(2)} 0`);
+      mb.setAttribute('stdDeviation', `${Math.min(7, Math.abs(x - x0) / 11).toFixed(2)} 0`);
     };
     const clock = { now: 0 };
     Object.defineProperty(clock, 't', { get() { return this.now; }, set(v) { this.now = v; render(v); } });
