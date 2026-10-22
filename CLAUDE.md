@@ -52,6 +52,10 @@ project: design, documents, video, websites, apps, games, code. Worked example: 
   Tailwind's default palette, rows of three rounded cards with an icon in a circle, emoji as icons, the stock
   hero > features > testimonials > CTA page, and made-up stats or testimonials. Take a real art direction from the
   brand or subject: chosen typefaces, real photos or custom drawing, an unexpected grid, specific details.
+- Images and posts (22 Oct): no AI-generator images, so no SynthID or other invisible AI watermark, and no C2PA or
+  IPTC "AI generated" tags (check PNG chunks and JPEG/EXIF/XMP, strip anything but pixels). No template look either:
+  not the stock Canva/Envato carousel (spaced-caps English labels everywhere, "SWIPE" cues, a numbered square in the
+  corner, a faint grid on every slide, rounded cards with icons). Each post gets its own idea, drawn for its subject.
 - Games: an original art direction and UI (not default buttons or a neon/synthwave default), named mechanics,
   sound from the user's own packs.
 - Copy: plain, specific, varied sentences, written as the user (first person singular, "I made it"). None of:
