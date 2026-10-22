@@ -1,0 +1,5 @@
+node_modules/
+out/
+public/sfx/
+public/clips/
+public/voice.wav
