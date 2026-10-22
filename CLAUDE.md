@@ -112,6 +112,8 @@ It has no «چ» or «گ»: write «ج» on screen («هيج», «حجي») and 
 Keep the grain light (overlay about .07, not moving every frame) and encode at about 10 Mbps: at .32 the user said the
 reel "looks grainy" (15 Oct). For "premium PNG" props, make them (Blender renders with real shadows, noise textures)
 rather than taking packs from Pinterest, which are mostly other people's paid or copyrighted work.
+3D models (22 Oct): don't model them yourself. Tell the user what to search for on Sketchfab (search words, a free
+licence that allows use); the user downloads the models and sends them, then light and render them in Blender.
 
 No prices in reels unless the user asks for them (15 Oct).
 
