@@ -19,7 +19,7 @@ The script follows hook, lead, body 1, open loop, body 2, open loop, body 3, CTA
 | 27.2–29.5 | open loop: بس هذا مو أغرب شي بالموضوع | black, a small shake |
 | 29.5–33.1 | body 2: Starbucks | the old woodcut in a frame; the logo on a disc |
 | 33.1–36 | body 2: Red Bull | two bronze bulls charge in and collide, the sun comes up, the logo |
-| 36–40.7 | body 2: Mastercard | the six logos slide past with a blur; two circles meet over a compass drawing, the overlap turns orange |
+| 36–40.7 | body 2: Mastercard | a compass drawing; two circles bounce in apart, slide into each other, the overlap turns orange |
 | 40.7–46.3 | open loop: والأغرب.. شعار يمكن بإيدك هسه، ناقص منه قطعة، وعلى قصد | black; a giant logo out of focus racks in, the camera travels to the bite |
 | 46.3–53.9 | body 3: the bite | the real apple drops in; on «قص» the bite is taken out of it; the logo beside it |
 | 53.9–58.8 | الشي البسيط.. والتفصيلة الوحدة | the six things bounce in, then each flips into its logo |
@@ -33,14 +33,16 @@ Taken from the After Effects project, with its numbers:
   (ease: outgoing influence 0, incoming 100). The outer null holds, then speeds into the cut (outgoing 100, incoming
   0.01). Some shots add a slow drift between the two (33 / 100). `RIG` in `src/timeline.js` lists each shot's moves in
   the project's units; push-ins stay under 220 so the captions fit. The colour world behind moves a third as much.
-- Cuts: hard cuts with a 0.3 s blur pulse centred on the cut (Fast Box Blur radius 0, 6, 0, linear), plus motion blur
-  from the camera's speed (180° shutter at 100 fps).
+- Cuts: hard cuts with a 0.3 s blur pulse centred on the cut (Fast Box Blur radius 0, 6, 0, linear).
+- Motion blur: a 1/30 s shutter. The camera's move blurs the whole frame; every object that moves (the cut-outs, logos,
+  prints, the circles) gets its own blur along its own move, measured from where it was at the start of the shutter.
 - Text: TextEvo. Each letter fades in out of a blur on the same one-second curve, 4.8 frames (0.048 s) after the one
   before, starting on its word in the voice. The letters stay joined.
 - Pop-ins: Smart Bounce (elastic, amplitude 50, frequency 2, decay 4): scale 0 to 100 in 0.16 s, rotation 20° to 0 in
   0.09 s, then the overshoot.
-- Look: the whole frame steps at 12 fps (Posterize Time), and a grunge texture sits over everything on multiply at 50 %
-  with its exposure raised. `POSTER` in `src/timeline.js` sets the step rate.
+- Look: the whole frame steps like the project's Posterize Time, at 15 fps rather than 12: on a 30 fps video every step
+  then holds exactly two frames, where 12 fps gave an uneven 3, 2, 3 that read as lag. A grunge texture sits over
+  everything on multiply at 50 % with its exposure raised. `POSTER` and `SHUTTER` in `src/timeline.js` set both.
 
 ## Build
 

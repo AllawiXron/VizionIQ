@@ -1,7 +1,8 @@
 // The reel's motion, rebuilt on the After Effects project the user sent (comp «01»): every shot rides a camera on two
 // nulls that lands fast and settles, then speeds into the cut; each cut gets a 0.3 s box-blur pulse (radius 0, 6, 0);
 // letters come out of a blur one at a time, 4.8 frames apart (TextEvo); things pop in with Smart Bounce (amplitude 50,
-// frequency 2, decay 4); the whole frame steps at 12 fps (Posterize Time) and carries a grunge layer on multiply.
+// frequency 2, decay 4); the whole frame steps (Posterize Time, here 15 fps so every step holds two frames of the 30 fps
+// video) with a long shutter so each step carries its motion blur, and a grunge layer sits over it all on multiply.
 // Every cue sits on a word of the voice (src/reel.json, made from the word times in src/words.json); build.py reads the
 // same file for the sounds.
 (function () {
@@ -9,7 +10,7 @@
   const $ = (s) => document.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
-  const POSTER = 12, ZOOM = 1050, SHUTTER = 1 / 200, FLASH = [0.15, 6];
+  const POSTER = 15, ZOOM = 1050, SHUTTER = 1 / 30, FLASH = [0.15, 6];
 
   // After Effects' temporal ease as a curve: outgoing influence of the first key, incoming influence of the second
   const bez = (x1, y1, x2, y2) => (p) => {
@@ -212,19 +213,12 @@
     tl.fromTo('#sunL', { y: 260, opacity: 0, scale: 0.6 }, { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out' }, 34.49);
     pop('#lgRB', 35.55);
 
-    // ── M · the six logos slide past with a blur and stop on the two circles; then the circles meet
-    const conv = $('#conv');
-    const SIX = [['apple.svg', 'invert(0)'], ['lacoste-croc.svg', ''], ['shell.svg', ''], ['redbull.svg', ''], ['starbucks.svg', ''], ['mastercard.svg', '']];
-    SIX.forEach(([f, fl], i) => {
-      const im = document.createElement('img');
-      im.src = 'assets/logos/' + f;
-      im.style.cssText = `position:absolute; top:30px; left:${i * 360 + 60}px; width:${f === 'redbull.svg' ? 300 : 220}px; filter:${fl} drop-shadow(0 18px 22px rgba(0,0,0,.35))`;
-      conv.appendChild(im);
-    });
-    tl.fromTo(conv, { x: 1300, filter: 'blur(24px)' }, { x: -1550, filter: 'blur(0px)', duration: 1.1, ease: 'power3.out' }, 36.13);
-    tl.to(conv, { opacity: 0, duration: 0.25 }, 37.95);
-    tl.fromTo('#cRed', { opacity: 0.95, x: -700, filter: 'blur(16px)' }, { opacity: 0.95, x: 0, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out' }, 38.16);
-    tl.fromTo('#cYel', { opacity: 0.95, x: 700, filter: 'blur(16px)' }, { opacity: 0.95, x: 0, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out' }, 38.42);
+    // ── M · two circles bounce in apart on «دايرتين», slide into each other on «يدخلن», the overlap turns orange on «لون»
+    pop('#cRed', 37.44, { x: -160, rotation: 0 });
+    pop('#cYel', 37.66, { x: 160, rotation: 0 });
+    tl.to('#cRed', { x: 120, duration: 0.42, ease: ae(40, 100) }, 38.6);
+    tl.to('#cYel', { x: -120, duration: 0.42, ease: ae(40, 100) }, 38.6);
+    tl.fromTo('#cLens', { opacity: 0 }, { opacity: 1, duration: 0.1 }, 39.96);
     punch(['#cRed', '#cYel'], 39.96, 1.07);
 
     // ── N · the giant logo, out of focus, racks in; the camera travels to the bite
@@ -272,19 +266,40 @@
 
     tl.to({}, { duration: D }, 0);
 
-    // the clock HyperFrames drives: it holds every frame for 1/12 s, plays the timeline there, places the shot's camera
-    // and sets the frame's blur (the camera's motion blur, 180° at 100 fps, plus the pulse on a cut)
-    const mb = $('#mbB');
+    // the clock HyperFrames drives: it holds every step for 1/15 s, plays the timeline there, places the shot's camera
+    // and blurs what moved during the shutter: the whole frame for the camera (plus the pulse on a cut), and each
+    // moving thing on its own for its own move
+    const mb = $('#mbB'), defs = $('#mb').parentNode;
+    const MOV = SC.map((s) => $$('.obj, .logo, .print, .disc, .drop, #cRed, #cYel, #sunL', s.cam).map((el, i) => {
+      const wrap = document.createElement('div'), id = `mb${s.id}${i}`;
+      wrap.style.cssText = `position:absolute; inset:0; z-index:${getComputedStyle(el).zIndex}`;
+      el.parentNode.insertBefore(wrap, el);
+      wrap.appendChild(el);
+      defs.insertAdjacentHTML('beforeend', `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="0 0" /></filter>`);
+      return { el, wrap, id, f: defs.lastElementChild.firstElementChild };
+    }));
+    const box = (m) => { const r = m.el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2, r.width + r.height]; };
+    const lens = $('#cLens'), cRed = $('#cRed'), cYel = $('#cYel');
     const render = (t) => {
-      const q = Math.min(D, Math.floor((t + 0.04) * POSTER) / POSTER);
+      const q = Math.min(D, Math.floor((t + 0.03) * POSTER) / POSTER);
+      const si = SC.findIndex((x) => q >= x.a && q < x.b), s = SC[si < 0 ? SC.length - 1 : si], mov = MOV[si < 0 ? SC.length - 1 : si];
+      tl.totalTime(Math.max(0, q - SHUTTER), true);
+      const before = mov.map(box);
       tl.totalTime(q, false);
-      const s = SC.find((x) => q >= x.a && q < x.b) || SC[SC.length - 1];
+      lens.style.transform = `translateX(${gsap.getProperty(cRed, 'x') - gsap.getProperty(cYel, 'x')}px)`;
+      mov.forEach((m, i) => {
+        const [x1, y1, z1] = box(m), [x0, y0, z0] = before[i];
+        const sx = Math.min(70, Math.abs(x1 - x0) / 2.5 + Math.abs(z1 - z0) / 6), sy = Math.min(70, Math.abs(y1 - y0) / 2.5 + Math.abs(z1 - z0) / 6);
+        const on = sx + sy > 0.6;
+        m.wrap.style.filter = on ? `url(#${m.id})` : 'none';
+        if (on) m.f.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
+      });
       const [x, y, k] = camAt(s, q), [x0, y0, k0] = camAt(s, Math.max(s.a, q - SHUTTER));
       s.cam.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${k.toFixed(4)})`;
       s.world.style.transform = `translate(${(x * 0.35).toFixed(2)}px, ${(y * 0.35).toFixed(2)}px) scale(${(1 + (k - 1) * 0.35).toFixed(4)})`;
       const near = cuts.reduce((m, c) => Math.min(m, Math.abs(q - c)), 9);
       const f = near < FLASH[0] ? FLASH[1] * (1 - near / FLASH[0]) : 0;
-      const sx = Math.abs(x - x0) / 2 + Math.abs(k - k0) * 260 + f, sy = Math.abs(y - y0) / 2 + Math.abs(k - k0) * 460 + f;
+      const sx = Math.min(80, Math.abs(x - x0) / 2.5 + Math.abs(k - k0) * 180) + f, sy = Math.min(80, Math.abs(y - y0) / 2.5 + Math.abs(k - k0) * 320) + f;
       mb.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
     };
     const clock = { now: 0 };
