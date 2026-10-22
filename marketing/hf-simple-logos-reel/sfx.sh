@@ -41,5 +41,9 @@ ppop2|Pop/Premium And Smooth Pop.wav|0.989|0.4
 ppop3|Pop/Premium And Smooth Pop.wav|1.985|0.38
 ppop4|Pop/Premium And Smooth Pop.wav|2.988|0.4
 hit|Whoosh hit.wav
+hitcut|Whooshes/Cinematic Low Whoosh.wav
+riser|Risers/Smooth Riser.wav
+whooshcon|Whooshes/High And Fast Whoosh.wav
+bite|crack flash.wav
 LIST
 echo "sounds: $(ls assets/sfx | wc -l)"
