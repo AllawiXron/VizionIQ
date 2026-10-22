@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <title>allawi.psd · ad reel (stills)</title>
+    <style>
+@font-face { font-family:'DG Sahabah'; font-weight:400; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
+/* three frames of the ad reel to agree the look before the build: the hook on the empty wallet, my ad lit while the
+   others go dark, and my portfolio thrown on the table */
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; background:#111 }
+.f { position:relative; width:1080px; height:1920px; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
+.world { position:absolute; inset:0 }
+.world::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38 }
+.lt { position:absolute; border-radius:50%; filter:blur(120px) }
+.t { position:absolute; left:0; right:0; text-align:center; white-space:nowrap; text-shadow:0 6px 18px rgba(0,0,0,.45); line-height:1.2 }
+.k { color:#f08a4b }
+.dirt { position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.5; filter:grayscale(1) brightness(1.9) contrast(1.6) }
+.grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07 }
+.vig { position:absolute; inset:0; box-shadow:inset 0 0 280px 70px rgba(0,0,0,.5) }
+.print { position:absolute; padding:14px; background:#efe7d8; box-shadow:0 30px 50px rgba(0,0,0,.5) }
+.print img { display:block; width:100%; height:100% }
+.sheet { position:absolute; background:#9a968e url(assets/img/paper.jpg) center/cover; background-blend-mode:multiply; filter:grayscale(1) brightness(.62); box-shadow:0 20px 40px rgba(0,0,0,.5) }
+    </style>
+  </head>
+  <body>
+    <!-- 1 · the hook: the line on top, the huge word, the empty wallet standing on it -->
+    <div class="f" id="f1">
+      <div class="world" style="background:#2a1a12"><i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i></div>
+      <div class="t" style="top:300px; font-size:76px">مشروعك متعوب عليه، بس</div>
+      <div class="t" style="top:400px; font-size:330px; color:#f3e4cc">أرباحك</div>
+      <img src="assets/obj/wallet.png" style="position:absolute; left:120px; top:775px; width:840px; transform:rotate(-7deg); filter:drop-shadow(0 50px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4))" />
+      <div class="t k" style="top:1300px; font-size:170px">قليلة؟</div>
+      <div class="dirt"></div><div class="grain"></div><div class="vig"></div>
+    </div>
+
+    <!-- 2 · «يعزلك تماما عن منافسيك»: my ad in the light, plain sheets falling away into the dark -->
+    <div class="f" id="f2">
+      <div class="world" style="background:#16201d"><i class="lt" style="left:180px; top:600px; width:760px; height:900px; background:rgba(240,200,140,.38)"></i></div>
+      <div class="sheet" style="left:-120px; top:620px; width:400px; height:500px; transform:rotate(-14deg)"></div>
+      <div class="sheet" style="left:820px; top:540px; width:380px; height:475px; transform:rotate(11deg)"></div>
+      <div class="sheet" style="left:-60px; top:1250px; width:360px; height:450px; transform:rotate(8deg)"></div>
+      <div class="sheet" style="left:790px; top:1220px; width:400px; height:500px; transform:rotate(-9deg)"></div>
+      <div class="print" style="left:205px; top:600px; width:670px; height:837px; transform:rotate(2deg); box-shadow:0 40px 70px rgba(0,0,0,.65)"><img src="assets/work/sajalreef.jpg" /></div>
+      <div class="t" style="top:300px; font-size:120px">يعزلك <span class="k">تماما</span></div>
+      <div class="t" style="top:1480px; font-size:96px; color:#8c8a84">عن منافسيك</div>
+      <div class="dirt"></div><div class="grain"></div><div class="vig"></div>
+    </div>
+
+    <!-- 3 · «شوف أعمالنا»: the portfolio thrown on the table, one ad on top -->
+    <div class="f" id="f3">
+      <div class="world" style="background:#d4521c"><i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
+      <div class="print" style="left:-40px; top:560px; width:430px; height:537px; transform:rotate(-11deg)"><img src="assets/work/alwaseet.jpg" /></div>
+      <div class="print" style="left:660px; top:500px; width:420px; height:525px; transform:rotate(9deg)"><img src="assets/work/baly.jpg" /></div>
+      <div class="print" style="left:690px; top:1080px; width:440px; height:550px; transform:rotate(-6deg)"><img src="assets/work/sala.jpg" /></div>
+      <div class="print" style="left:-70px; top:1110px; width:420px; height:525px; transform:rotate(7deg)"><img src="assets/work/miswag.jpg" /></div>
+      <div class="print" style="left:250px; top:700px; width:580px; height:725px; transform:rotate(-2.5deg); box-shadow:0 44px 70px rgba(60,10,0,.6)"><img src="assets/work/alfaqma.jpg" /></div>
+      <div class="t" style="top:290px; font-size:150px; color:#2a1208; text-shadow:none">شوف أعمالنا</div>
+      <div class="dirt"></div><div class="grain"></div><div class="vig"></div>
+    </div>
+  </body>
+</html>
