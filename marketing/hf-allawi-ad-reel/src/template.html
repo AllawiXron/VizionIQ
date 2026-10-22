@@ -41,6 +41,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .sheet { position:absolute; z-index:9; background:#9a968e url(assets/img/paper.jpg) center/cover; background-blend-mode:multiply; filter:grayscale(1) brightness(.62); box-shadow:0 20px 40px rgba(0,0,0,.5) }
 .tag { position:absolute; left:0; right:0; z-index:12; text-align:center; font-size:40px; color:#f6ead8; opacity:.85 }
 .obj { position:absolute; z-index:10 }
+.ph img { position:relative; z-index:2; filter:drop-shadow(0 40px 40px rgba(0,0,0,.55)) }
+.ph .scr { position:absolute; z-index:1; left:9.9%; top:2.3%; width:86.2%; height:95.3%; object-fit:cover; border-radius:11% / 5% }
 .caps { position:absolute; inset:0; z-index:30; transform-origin:540px 960px }
 .scrim { position:absolute; z-index:15; left:-200px; right:-200px; top:-200px; height:1100px; background:linear-gradient(rgba(10,6,4,.96), rgba(10,6,4,.92) 55%, rgba(10,6,4,0)) }
 .obj img { display:block; width:100%; filter:drop-shadow(0 46px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4)) }
@@ -50,61 +52,52 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
     <div id="root" data-composition-id="main" data-start="0" data-duration="__D__" data-width="1080" data-height="1920">
       <div id="stage" class="clip" data-start="0" data-duration="__D__" data-track-index="0" style="position:absolute; inset:-100px">
 
-        <!-- A · مشروعك متعوب عليه، بس أرباحك قليلة: the empty wallet slams onto the word -->
+        <!-- A · مشروعك متعوب عليه، بس أرباحك قليلة: hands hold out the box, then the empty wallet slams onto the word and one coin drops in -->
         <div class="sc" id="sA">
           <div class="world" style="background:#2a1a12"><i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i></div>
+          <div class="obj" id="box" style="left:230px; top:820px; width:720px"><img src="assets/el/box-hand.png" /></div>
           <div class="obj" id="wallet" style="left:120px; top:775px; width:840px; transform:rotate(-7deg)"><img src="assets/obj/wallet.png" /></div>
+          <div class="obj" id="coin" style="left:430px; top:700px; width:200px"><img src="assets/el/coin.png" /></div>
         </div>
 
-        <!-- B · عدنا نصمملك موشن جرافيك: my three reels playing on phones -->
+        <!-- B · عدنا نصمملك موشن جرافيك وبوستات إعلانية: an old film camera and three real phones playing my reels -->
         <div class="sc" id="sB">
           <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
-          <div class="shot phone" id="phL" style="left:-10px; top:700px; width:380px; height:676px; transform:rotate(-10deg)"><video id="v1" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="1.7" data-media-start="1.6" data-track-index="2" muted playsinline></video></div>
-          <div class="shot phone" id="phR" style="left:710px; top:700px; width:380px; height:676px; transform:rotate(9deg)"><video id="v2" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="1.7" data-media-start="16.6" data-track-index="3" muted playsinline></video></div>
-          <div class="shot phone" id="phC" style="left:315px; top:600px; width:450px; height:800px; transform:rotate(-1deg); box-shadow:0 50px 80px rgba(0,0,0,.7)"><video id="v3" src="assets/clips/vizion-reel.mp4" data-start="2.6" data-duration="1.7" data-media-start="7.4" data-track-index="4" muted playsinline></video></div>
+          <div class="obj ph" id="phL" style="left:20px; top:700px; width:330px; transform:rotate(-12deg)"><video id="v1" class="scr" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="1.6" data-track-index="2" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph" id="phR" style="left:730px; top:700px; width:330px; transform:rotate(11deg)"><video id="v2" class="scr" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="16.6" data-track-index="3" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph" id="phC" style="left:340px; top:600px; width:400px; transform:rotate(-2deg)"><video id="v3" class="scr" src="assets/clips/vizion-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="7.4" data-track-index="4" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj" id="cam" style="left:-40px; top:1060px; width:460px"><img src="assets/el/film-camera.png" /></div>
         </div>
 
-        <!-- C · وبوستات إعلانية: a flip-book, six of my posts slam down one on top of the other -->
-        <div class="sc" id="sC">
-          <div class="world" style="background:#22140e"><i class="lt" style="left:100px; top:600px; width:900px; height:900px; background:rgba(226,84,27,.3)"></i></div>
-          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(-4deg)"><img src="assets/work/asiacell.jpg" /></div>
-          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(3deg)"><img src="assets/work/qi.jpg" /></div>
-          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(-2deg)"><img src="assets/work/alshifa.jpg" /></div>
-          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(4deg)"><img src="assets/work/optes.jpg" /></div>
-          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(-3deg)"><img src="assets/work/pepsi.jpg" /></div>
-          <div class="print flip" style="left:200px; top:600px; width:680px; height:850px; transform:rotate(1deg); box-shadow:0 44px 70px rgba(0,0,0,.65)"><img src="assets/work/miswag.jpg" /></div>
-        </div>
-
-        <!-- D · تحجي بقوة براندك: the Iraqi Airways concept standing on the word -->
+        <!-- D · تحجي بقوة براندك: an old megaphone blasting the word -->
         <div class="sc" id="sD">
           <div class="world" style="background:#10202a"><i class="lt" style="left:100px; top:500px; width:900px; height:900px; background:rgba(90,150,200,.4)"></i></div>
-          <div class="print" id="pIA" style="left:270px; top:760px; width:540px; height:675px; transform:rotate(5deg); box-shadow:0 40px 70px rgba(0,0,20,.6)"><img src="assets/work/iraqiairways.jpg" /></div>
-          <div class="tag" id="tagD" style="top:1480px; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
+          <div class="obj" id="mega" style="left:120px; top:760px; width:760px; transform:rotate(-8deg)"><img src="assets/el/megaphone.png" /></div>
         </div>
 
-        <!-- E · وتبيع بمكانك: the delivery ad on paper -->
+        <!-- E · وتبيع بمكانك: a shop owner hands over the bag while you are away -->
         <div class="sc inkt" id="sE">
           <div class="world" style="background:#e9dfcf"><i class="lt" style="left:200px; top:600px; width:800px; height:800px; background:rgba(255,250,240,.6)"></i></div>
-          <div class="print" id="pTal" style="left:230px; top:600px; width:620px; height:775px; transform:rotate(-5deg)"><img src="assets/work/talabat.jpg" /></div>
-          <div class="tag" id="tagE" style="top:1470px; color:#1f1510; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
+          <div class="obj" id="owner" style="left:150px; top:560px; width:780px"><img src="assets/el/shop-owner.png" /></div>
         </div>
 
-        <!-- F · حركة تشد العين: the logos reel on a phone, the bite taken out on the beat -->
+        <!-- F · حركة تشد العين: the word, then binoculars come up in front of it -->
         <div class="sc" id="sF">
           <div class="world" style="background:#5e0a14"><i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.55)"></i></div>
-          <div class="shot phone" id="phF" style="left:350px; top:860px; width:380px; height:676px; transform:rotate(5deg)"><video id="v4" src="assets/clips/logos-reel.mp4" data-start="7.74" data-duration="1.4" data-media-start="48.2" data-track-index="5" muted playsinline></video></div>
+          <div class="obj" id="bino" style="left:110px; top:820px; width:860px"><img src="assets/el/binoculars.png" /></div>
         </div>
 
-        <!-- G · فكرة تقنع الزبون: the Al-Waseet ad, the idea from the Nimrud reliefs -->
+        <!-- G · فكرة تقنع الزبون: the bulb flickers on -->
         <div class="sc" id="sG">
-          <div class="world" style="background:#14215e"><i class="lt" style="left:300px; top:400px; width:800px; height:900px; background:rgba(70,100,220,.4)"></i></div>
-          <div class="print" id="pWas" style="left:290px; top:400px; width:600px; height:750px; transform:rotate(3deg)"><img src="assets/work/alwaseet.jpg" /></div>
+          <div class="world" style="background:#14215e"><i class="lt" id="glow" style="left:240px; top:300px; width:700px; height:700px; background:rgba(255,200,90,.0)"></i></div>
+          <div class="obj" id="bulb" style="left:330px; top:300px; width:420px"><img src="assets/el/bulb.png" /></div>
         </div>
 
-        <!-- H · ونتيجة ترفع مبيعاتك: a real tile of my grid with its real views -->
+        <!-- H · ونتيجة ترفع مبيعاتك: the coins rise, the cash lands -->
         <div class="sc inkt" id="sH">
           <div class="world" style="background:#ece3d4"></div>
-          <div class="shot" id="views" style="left:290px; top:740px; width:500px; height:661px; transform:rotate(-3deg)"><img src="assets/shots/views-tile.png" /></div>
+          <div class="obj" id="coins" style="left:170px; top:780px; width:740px"><img src="assets/el/coin-stacks.png" /></div>
+          <div class="obj" id="cash" style="left:520px; top:900px; width:480px; transform:rotate(8deg)"><img src="assets/el/cash-pile.png" /></div>
         </div>
 
         <!-- I · من أول 3 ثواني بإعلانك: the number, the hand with the stopwatch rising beside it -->
@@ -114,66 +107,65 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="obj" id="hand" style="left:600px; top:720px; width:440px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
         </div>
 
-        <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: a macro move across the Saj Al-Reef ad, the food, the offer, the brand -->
+        <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: the magnifier sweeps across, then the handshake -->
         <div class="sc" id="sJ">
-          <div class="world" style="background:#171310"></div>
-          <div id="macro" style="position:absolute; z-index:10; left:0; top:0; width:2700px; height:3375px; transform-origin:0 0; opacity:0"><img src="assets/work/sajalreef.jpg" style="width:100%; height:100%; display:block" /></div>
-          <div class="scrim"></div>
+          <div class="world" style="background:#1d2a22"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(140,200,160,.25)"></i></div>
+          <div class="obj" id="lens" style="left:280px; top:700px; width:560px"><img src="assets/el/magnifier.png" /></div>
+          <div class="obj" id="shake" style="left:90px; top:820px; width:900px"><img src="assets/el/handshake.png" /></div>
         </div>
 
-        <!-- K · ويدخل يطلب منك مباشرة: so close to that ad you only see its order button -->
+        <!-- K · ويدخل يطلب منك مباشرة: a finger presses the red button -->
         <div class="sc" id="sK">
-          <div class="world" style="background:#171310"></div>
-          <div id="btnAd" style="position:absolute; z-index:10; left:173px; top:-2176px; width:2700px; height:3375px; transform:rotate(-3deg); transform-origin:367px 3176px; box-shadow:0 40px 80px rgba(0,0,0,.6)"><img src="assets/work/sajalreef.jpg" style="width:100%; height:100%; display:block" /></div>
-          <div class="scrim"></div>
+          <div class="world" style="background:#171310"><i class="lt" style="left:200px; top:800px; width:700px; height:700px; background:rgba(226,60,40,.3)"></i></div>
+          <div class="obj" id="press" style="left:300px; top:270px; width:520px"><img src="assets/el/button-finger.png" /></div>
         </div>
 
-        <!-- L · يعزلك تماما عن منافسيك: my ad in the light, plain sheets falling away into the dark -->
+        <!-- L · يعزلك تماما عن منافسيك: the king stands in the light, the pawns fall -->
         <div class="sc" id="sL">
           <div class="world" style="background:#16201d"><i class="lt" style="left:180px; top:600px; width:760px; height:900px; background:rgba(240,200,140,.38)"></i></div>
-          <div class="sheet" style="left:-120px; top:620px; width:400px; height:500px; transform:rotate(-14deg)"></div>
-          <div class="sheet" style="left:820px; top:540px; width:380px; height:475px; transform:rotate(11deg)"></div>
-          <div class="sheet" style="left:-60px; top:1250px; width:360px; height:450px; transform:rotate(8deg)"></div>
-          <div class="sheet" style="left:790px; top:1220px; width:400px; height:500px; transform:rotate(-9deg)"></div>
-          <div class="print" id="pBaly" style="left:240px; top:580px; width:600px; height:750px; transform:rotate(2deg); box-shadow:0 40px 70px rgba(0,0,0,.65)"><img src="assets/work/baly.jpg" /></div>
-          <div class="tag" id="tagL" style="top:1515px; opacity:0">إعلان غير رسمي · فكرة وتصميم @allawi.psd</div>
+          <div class="obj pawn" style="left:40px; top:980px; width:200px"><img src="assets/el/chess-pawn.png" /></div>
+          <div class="obj pawn" style="left:220px; top:1060px; width:180px"><img src="assets/el/chess-pawn.png" /></div>
+          <div class="obj pawn" style="left:690px; top:1060px; width:180px"><img src="assets/el/chess-pawn.png" /></div>
+          <div class="obj pawn" style="left:850px; top:980px; width:200px"><img src="assets/el/chess-pawn.png" /></div>
+          <div class="obj" id="king" style="left:420px; top:560px; width:250px"><img src="assets/el/chess-king.png" /></div>
         </div>
 
-        <!-- M · مرة ومرتين وعشرة: the same ad printed again and again -->
+        <!-- M · مرة ومرتين وعشرة: shopping bags, one, two, then a pile -->
         <div class="sc" id="sM">
           <div class="world" style="background:#3a1608"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(226,84,27,.4)"></i></div>
-          <div id="pile"></div>
+          <div id="bags"></div>
         </div>
 
-        <!-- N · لأن شاف براند حقيقي قدامه: my real profile -->
+        <!-- N · لأن شاف براند حقيقي قدامه: the man with the binoculars -->
         <div class="sc" id="sN">
           <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
-          <div class="shot phone" id="phProf" style="left:250px; top:500px; width:580px; height:930px; transform:rotate(-4deg)"><img src="assets/shots/profile.png" /></div>
+          <div class="obj" id="watcher" style="left:300px; top:470px; width:420px"><img src="assets/el/binoculars-man.png" /></div>
         </div>
 
-        <!-- O · plain sheets stream past, then one ad stops dead in front of them -->
+        <!-- O · the crowd walks past without looking; the stop hand slams down; the padlock locks the sale -->
         <div class="sc" id="sO">
-          <div class="world" style="background:#1a1c1d"></div>
-          <div id="stream" style="position:absolute; left:250px; top:-200px; width:580px; filter:url(#vblur)"></div>
-          <div class="print" id="pSala" style="left:200px; top:640px; width:680px; height:850px; transform:rotate(-2deg); box-shadow:0 50px 80px rgba(0,0,0,.7)"><img src="assets/work/sala.jpg" /></div>
+          <div class="world" style="background:#24282a"><i class="lt" style="left:100px; top:700px; width:900px; height:700px; background:rgba(200,200,190,.18)"></i></div>
+          <div class="obj" id="crowd1" style="left:0; top:760px; width:900px"><img src="assets/el/crowd.png" /></div>
+          <div class="obj" id="crowd2" style="left:0; top:720px; width:900px"><img src="assets/el/crowd2.png" /></div>
+          <div class="obj" id="stop" style="left:300px; top:540px; width:480px"><img src="assets/el/stop-hand.png" /></div>
+          <div class="obj" id="lock" style="left:400px; top:640px; width:290px"><img src="assets/el/padlock.png" /></div>
         </div>
 
-        <!-- Q · تواصل ويانا بالخاص: the real buttons of my profile, Contact in the middle -->
+        <!-- Q · تواصل ويانا بالخاص: the receiver swings in -->
         <div class="sc" id="sQ">
-          <div class="world" style="background:#0f1517"><i class="lt" style="left:400px; top:700px; width:700px; height:600px; background:rgba(226,84,27,.3)"></i></div>
-          <div class="shot" id="btns" style="left:-750px; top:760px; width:1900px; height:580px; transform:rotate(-3deg); transform-origin:1290px 290px"><img src="assets/shots/buttons.png" /></div>
+          <div class="world" style="background:#0f1517"><i class="lt" style="left:300px; top:600px; width:700px; height:700px; background:rgba(226,84,27,.3)"></i></div>
+          <div class="obj" id="recv" style="left:250px; top:560px; width:600px"><img src="assets/el/receiver.png" /></div>
         </div>
 
-        <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my portfolio thrown on the table, then my real grid scrolling on a phone, then the handle -->
+        <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my reels on three phones, then the cash register rings, then the handle -->
         <div class="sc dk" id="sR">
           <div class="world" style="background:#d4521c"><i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
-          <div class="print tbl" style="left:-40px; top:560px; width:430px; height:537px; transform:rotate(-11deg)"><img src="assets/work/alwaseet.jpg" /></div>
-          <div class="print tbl" style="left:660px; top:500px; width:420px; height:525px; transform:rotate(9deg)"><img src="assets/work/pepsi.jpg" /></div>
-          <div class="print tbl" style="left:690px; top:1080px; width:440px; height:550px; transform:rotate(-6deg)"><img src="assets/work/asiacell.jpg" /></div>
-          <div class="print tbl" style="left:-70px; top:1110px; width:420px; height:525px; transform:rotate(7deg)"><img src="assets/work/iraqiairways.jpg" /></div>
-          <div class="print tbl" style="left:250px; top:700px; width:580px; height:725px; transform:rotate(-2.5deg); box-shadow:0 44px 70px rgba(60,10,0,.6)"><img src="assets/work/alfaqma.jpg" /></div>
-          <div class="shot phone" id="phGrid" style="left:300px; top:470px; width:480px; height:854px; transform:rotate(-2deg)"><div id="gridScroll" style="position:absolute; left:0; top:0; width:100%"><div style="height:852px; overflow:hidden"><img src="assets/shots/grid-1.png" style="width:100%; height:auto" /></div><div style="height:741px; overflow:hidden"><img src="assets/shots/grid-2.png" style="width:100%; height:auto; margin-top:-111px" /></div></div></div>
-          <div class="cap" id="handle" style="top:1400px; font-size:120px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
+          <div class="obj ph rph" style="left:20px; top:640px; width:330px; transform:rotate(-12deg)"><video id="v4" class="scr" src="assets/clips/logos-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="46.3" data-track-index="5" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph rph" style="left:730px; top:640px; width:330px; transform:rotate(11deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="10.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph rph" style="left:340px; top:560px; width:400px; transform:rotate(-2deg)"><video id="v6" class="scr" src="assets/clips/vizion-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="16.0" data-track-index="7" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj" id="cashfan" style="left:320px; top:560px; width:440px"><img src="assets/el/cash-fan.png" /></div>
+          <div class="obj" id="register" style="left:240px; top:650px; width:600px"><img src="assets/el/register.png" /></div>
+          <div class="cap" id="handle" style="top:1450px; font-size:100px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
         </div>
 
         <div id="dirt"></div>

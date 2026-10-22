@@ -36,17 +36,16 @@
     sc.appendChild(cam);
   });
 
-  // the pile: one ad printed ten times, each copy a little off the last; the stream: plain sheets with no design on them
-  for (let i = 0; i < 10; i++) {
-    $('#pile').insertAdjacentHTML('beforeend', `<div class="print pl" style="left:${270 + Math.sin(i * 2.3) * 70}px; top:${480 + i * 24}px; width:520px; height:650px; transform:rotate(${(Math.sin(i * 1.7) * 9).toFixed(1)}deg)"><img src="assets/work/alfaqma.jpg" /></div>`);
+  // the bags: one, two, then a pile of ten
+  const BAG = ['bag-orange', 'bag-black', 'bag-blue', 'bag-black2'];
+  for (let i = 0; i < 12; i++) {
+    const w = 220 + (i % 3) * 30, x = i < 2 ? [260, 560][i] : 60 + ((i * 197) % 820), y = i < 2 ? 820 : 760 + ((i * 131) % 420);
+    $('#bags').insertAdjacentHTML('beforeend', `<div class="obj bag" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${(Math.sin(i * 1.9) * 12).toFixed(1)}deg)"><img src="assets/el/${BAG[i % 4]}.png" /></div>`);
   }
-  for (let i = 0; i < 9; i++) $('#stream').insertAdjacentHTML('beforeend', '<div class="sheet" style="position:relative; left:0; margin-bottom:60px; width:580px; height:725px; filter:grayscale(1) brightness(.7)"></div>');
 
   // the captions ride their own layer above the camera, which follows the camera less than half as much, so a push-in
   // never carries a line out of the safe area
   $$('.sc').forEach((sc) => { const c = document.createElement('div'); c.className = 'caps'; sc.appendChild(c); });
-  // the dark band behind the top lines of the macro shots goes on the caption layer, over the blurred photo
-  $$('.scrim').forEach((el) => el.closest('.sc').querySelector('.caps').prepend(el));
   // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time, «l» to
   // set the line on the left]
   R.lines.forEach(([sc, top, size, text, times, , align], i) => {
@@ -64,8 +63,7 @@
   // from, «drift» the slow moves in between, «exit» the outer null's move into the cut
   const RIG = {
     A: { from: [0, 0, 70], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
-    B: { from: [-200, 0, 0], settle: 1.2, exit: [[0, 0, -119], 0.5] },
-    C: { from: [0, 0, 220], settle: 0.8, exit: [[0, -378, 0], 0.4] },
+    B: { from: [-200, 0, 0], settle: 1.4, drift: [[4.1, 4.5, [0, 0, 120]]], exit: [[0, -378, 0], 0.4] },
     D: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 220], 0.5] },
     E: { from: [0, 0, -121], settle: 1.0, exit: [[-65, 0, 0], 0.6] },
     F: { from: [85, 0, 0], settle: 1.2, exit: [[0, 0, -103], 0.5] },
@@ -144,108 +142,99 @@
     gsap.set('.obj, .print, .shot', { opacity: 0 });
     SC.slice(1).forEach((s, i) => { tl.set(`#s${SC[i].id}`, { autoAlpha: 0 }, s.a); tl.set(`#s${s.id}`, { autoAlpha: 1 }, s.a); });
 
-    // ── A · the wallet slams onto «أرباحك», shakes empty on «قليلة»
-    tl.set('#wallet', { opacity: 1 }, 0.05);
-    tl.fromTo('#wallet', { y: -1300, rotation: -40 }, { y: 0, rotation: -7, duration: 0.42, ease: SETTLE }, 0.05);
-    tl.to('#wallet', { keyframes: [{ x: -14, duration: 0.05 }, { x: 12, duration: 0.05 }, { x: -6, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 2.1);
+    const enter = (sel, t, from, to = {}, d = 0.5) => { tl.set(sel, { opacity: 1 }, t); tl.fromTo(sel, from, { x: 0, y: 0, rotation: 0, scale: 1, ...to, duration: d, ease: SETTLE }, t); };
+    const leave = (sel, t, to, d = 0.3) => tl.to(sel, { ...to, duration: d, ease: ae(80, 20) }, t);
 
-    // ── B · three phones come up with my reels playing on them
-    [['#phL', 2.66, -10], ['#phR', 2.8, 9], ['#phC', 2.94, -1]].forEach(([s, t, r]) => {
-      tl.set(s, { opacity: 1 }, t);
-      tl.fromTo(s, { y: 1300, rotation: r * 3 }, { y: 0, rotation: r, duration: 0.55, ease: SETTLE }, t);
-    });
+    // ── A · hands hold out the box; on «أرباحك» it is thrown off and the empty wallet slams down; one coin drops in
+    enter('#box', 0.05, { x: 900, y: 120, rotation: 18 }, {}, 0.45);
+    push('#box img', 0.5, 1.6, 1.05);
+    leave('#box', 1.56, { x: -1300, rotation: -30 });
+    enter('#wallet', 1.62, { y: -1300, rotation: -40 }, { rotation: -7 }, 0.32);
+    tl.set('#coin', { opacity: 1 }, 2.1);
+    tl.fromTo('#coin', { y: -900, rotation: -200 }, { y: 300, rotation: 30, duration: 0.32, ease: 'power2.in' }, 2.1);
+    tl.to('#coin', { y: 230, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, 2.42);
+    tl.to('#wallet', { keyframes: [{ x: -12, duration: 0.05 }, { x: 10, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 2.42);
 
-    // ── C · the flip-book: six posts slam down one on top of the other
-    $$('#sC .flip').forEach((el, i) => {
-      const t = 4.28 + i * 0.12;
-      tl.set(el, { opacity: 1 }, t);
-      tl.fromTo(el, { y: -1400, x: (i % 2 ? 1 : -1) * 160 }, { y: 0, x: 0, duration: 0.13, ease: SETTLE }, t);
-    });
+    // ── B · the phones come up with my reels playing, the film camera rolls in; on «وبوستات» the phones turn
+    [['#phL', 2.66, -12], ['#phR', 2.8, 11], ['#phC', 2.94, -2]].forEach(([sel, t, r]) => enter(sel, t, { y: 1300, rotation: r * 3 }, { rotation: r }, 0.55));
+    enter('#cam', 3.45, { x: -700, rotation: -20 }, {}, 0.5);
+    tl.to(['#phL', '#phR', '#phC'], { rotationY: 360, duration: 0.6, ease: ae(60, 100), stagger: 0.08 }, 4.2);
+    tl.to('#cam', { x: -700, rotation: -20, duration: 0.3, ease: ae(80, 20) }, 4.15);
 
-    // ── D · the Iraqi Airways concept rises onto «براندك»
-    tl.set('#pIA', { opacity: 1 }, 5.3);
-    tl.fromTo('#pIA', { y: 1200, rotation: 20 }, { y: 0, rotation: 5, duration: 0.6, ease: SETTLE }, 5.3);
-    punch('#pIA', 6.09, 1.06);
-    tl.to('#tagD', { opacity: 0.85, duration: 0.3 }, 5.7);
+    // ── D · the megaphone swings up and blasts on «براندك»
+    enter('#mega', 5.3, { y: 1100, rotation: 30 }, { rotation: -8 }, 0.5);
+    tl.to('#mega', { keyframes: [{ scale: 1.12, x: -20, duration: 0.07 }, { scale: 0.98, x: 8, duration: 0.07 }, { scale: 1.04, x: -4, duration: 0.07 }, { scale: 1, x: 0, duration: 0.1 }] }, 6.09);
 
-    // ── E · the delivery ad slides in on «وتبيع»
-    tl.set('#pTal', { opacity: 1 }, 6.67);
-    tl.fromTo('#pTal', { x: -1100, rotation: -25 }, { x: 0, rotation: -5, duration: 0.5, ease: SETTLE }, 6.67);
-    tl.to('#tagE', { opacity: 0.85, duration: 0.3 }, 7.0);
+    // ── E · the shop owner comes up and hands the bag over on «بمكانك»
+    enter('#owner', 6.67, { y: 1200 }, {}, 0.5);
+    punch('#owner', 7.09, 1.05);
 
-    // ── F · the logos reel on a phone: the bite lands on «تشد العين»
-    tl.set('#phF', { opacity: 1 }, 7.74);
-    tl.fromTo('#phF', { y: 1100, rotation: 25 }, { y: 0, rotation: 5, duration: 0.5, ease: SETTLE }, 7.74);
-    punch('#phF', 8.37, 1.08);
+    // ── F · the binoculars come up in front of «حركة» on «تشد العين»
+    enter('#bino', 8.3, { y: 1300, rotation: 10 }, {}, 0.45);
+    push('#bino img', 8.75, 9.14, 1.06);
 
-    // ── G · the Al-Waseet ad drops onto «فكرة»
-    tl.set('#pWas', { opacity: 1 }, 9.19);
-    tl.fromTo('#pWas', { y: -1300, rotation: -15 }, { y: 0, rotation: 3, duration: 0.45, ease: SETTLE }, 9.19);
-    push('#pWas', 9.7, 10.72, 1.05);
+    // ── G · the bulb drops on its socket and flickers on
+    enter('#bulb', 9.19, { y: -1100 }, {}, 0.4);
+    tl.fromTo('#bulb img', { filter: 'brightness(.35) drop-shadow(0 40px 40px rgba(0,0,0,.6))' }, { keyframes: [
+      { filter: 'brightness(1.3) drop-shadow(0 0 60px rgba(255,210,120,.9))', duration: 0.05 }, { filter: 'brightness(.5) drop-shadow(0 40px 40px rgba(0,0,0,.6))', duration: 0.06 },
+      { filter: 'brightness(1.25) drop-shadow(0 0 70px rgba(255,210,120,.95))', duration: 0.05 }] }, 9.6);
+    tl.to('#glow', { backgroundColor: 'rgba(255,200,90,.55)', duration: 0.2 }, 9.7);
 
-    // ── H · the real views pop in, punch on «مبيعاتك»
-    pop('#views', 10.78);
-    punch('#views', 11.83, 1.05);
+    // ── H · the coins rise on «ونتيجة», the cash lands on «مبيعاتك»
+    enter('#coins', 10.78, { y: 900 }, {}, 0.55);
+    enter('#cash', 11.83, { y: -1200, rotation: -30 }, { rotation: 8 }, 0.35);
 
     // ── I · the hand comes up with the stopwatch, the «3» bounces in on its word
-    tl.set('#hand', { opacity: 1 }, 12.66);
-    tl.fromTo('#hand', { y: 1200, rotation: 10 }, { y: 0, rotation: -8, duration: 0.6, ease: SETTLE }, 12.66);
+    enter('#hand', 12.66, { y: 1200, rotation: 10 }, { rotation: -8 }, 0.6);
     pop('#n3', 13.17, { rotation: -20 });
 
-    // ── J · a macro move across the Saj Al-Reef ad: the food, then the offer on «الكواليتي», then the brand on «يثق»
-    const view = (fx, fy, k = 1) => ({ x: 540 - fx * 2700 * k, y: 1060 - fy * 3375 * k, scale: k });
-    tl.set('#macro', { opacity: 1 }, 14.42);
-    tl.fromTo('#macro', view(0.5, 0.76, 1.2), { ...view(0.5, 0.72), duration: 0.9, ease: SETTLE }, 14.42);
-    tl.to('#macro', { ...view(0.3, 0.47), duration: 0.5, ease: ae(60, 100) }, 15.3);
-    tl.to('#macro', { ...view(0.9, 0.93), duration: 0.5, ease: ae(60, 100) }, 16.36);
+    // ── J · the magnifier sweeps across on «الكواليتي», then the handshake slams in on «يثق»
+    enter('#lens', 14.9, { x: 900, rotation: 30 }, {}, 0.5);
+    tl.to('#lens', { x: -180, y: -60, rotation: -8, duration: 0.6, ease: ae(40, 100) }, 15.37);
+    tl.to('#lens', { scale: 1.12, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, 15.79);
+    leave('#lens', 16.3, { x: -1300, rotation: -40 });
+    enter('#shake', 16.41, { scale: 2.2 }, {}, 0.3);
+    punch('#shake', 16.69, 1.05);
 
-    // ── K · the order button fills the frame, punches on «مباشرة»
-    tl.set('#btnAd', { opacity: 1 }, 17.5);
-    punch('#btnAd', 18.55, 1.08);
+    // ── K · the finger comes down and presses on «مباشرة»
+    enter('#press', 17.55, { y: -1300 }, {}, 0.5);
+    tl.to('#press', { y: 60, duration: 0.07, ease: 'power2.in', yoyo: true, repeat: 1 }, 18.5);
 
-    // ── L · my ad lands in the light; on «يعزلك» the plain sheets fall away
-    tl.set('#pBaly', { opacity: 1 }, 19.09);
-    tl.fromTo('#pBaly', { y: -1200, rotation: -12 }, { y: 0, rotation: 2, duration: 0.5, ease: SETTLE }, 19.09);
-    tl.to('#tagL', { opacity: 0.85, duration: 0.3 }, 19.6);
-    $$('#sL .sheet').forEach((el, i) => {
-      tl.to(el, { y: 1500, rotation: (i % 2 ? 1 : -1) * 40, duration: 0.7, ease: EXIT }, 21.75 + i * 0.06);
-    });
+    // ── L · the king lands in the light among the pawns; on «يعزلك» the pawns fall
+    enter('#king', 19.09, { y: -1200 }, {}, 0.45);
+    $$('#sL .pawn').forEach((el, i) => enter(el, 19.3 + i * 0.08, { y: 900 }, {}, 0.4));
+    $$('#sL .pawn').forEach((el, i) => tl.to(el, { rotation: (i < 2 ? -1 : 1) * 95, x: (i < 2 ? -1 : 1) * 700, y: -120, duration: 0.45, ease: ae(60, 100) }, 21.75 + i * 0.06));
+    tl.to('#king', { scale: 1.08, duration: 0.5, ease: 'power2.out' }, 21.75);
     tl.set('#L25', { className: 'cap dim' }, 22.6);
 
-    // ── M · one print on «مرة», another on «ومرتين», the rest pile up on «وعشرة»
-    $$('#pile .pl').forEach((el, i) => {
-      const t = i === 0 ? 24.97 : i === 1 ? 25.35 : 25.97 + (i - 2) * 0.06;
-      tl.set(el, { opacity: 1 }, t);
-      tl.fromTo(el, { y: -1400, x: (i % 2 ? 1 : -1) * 200 }, { y: 0, x: 0, duration: 0.35, ease: SETTLE }, t);
-    });
+    // ── M · one bag on «مرة», one on «ومرتين», the pile on «وعشرة»
+    $$('#bags .bag').forEach((el, i) => enter(el, i === 0 ? 24.97 : i === 1 ? 25.35 : 25.97 + (i - 2) * 0.05, { y: -1400, x: (i % 2 ? 1 : -1) * 150 }, {}, 0.35));
 
-    // ── N · my real profile comes up
-    tl.set('#phProf', { opacity: 1 }, 26.66);
-    tl.fromTo('#phProf', { y: 1300, rotation: 12 }, { y: 0, rotation: -4, duration: 0.6, ease: SETTLE }, 26.66);
-    push('#phProf', 27.3, 28.5, 1.05);
+    // ── N · the man with the binoculars rises and leans in
+    enter('#watcher', 26.66, { y: 1300 }, {}, 0.55);
+    push('#watcher', 27.3, 28.5, 1.08);
 
-    // ── O · the plain sheets stream past; on «توقف» my ad slams down and the stream stops
-    tl.fromTo('#stream', { y: 300 }, { y: -2400, duration: 4.6, ease: 'none' }, 28.5);
-    tl.to('#stream', { y: -2700, duration: 0.5, ease: SETTLE }, 33.1);
-    tl.set('#pSala', { opacity: 1 }, 33.05);
-    tl.fromTo('#pSala', { y: -1500, rotation: -20 }, { y: 0, rotation: -2, duration: 0.3, ease: SETTLE }, 33.05);
-    punch('#pSala', 34.05, 1.06);
+    // ── O · the crowd walks past and off; «توقف»: the stop hand slams down; «وتقفل»: the padlock locks
+    tl.set('#crowd1', { opacity: 1 }, 28.5);
+    tl.fromTo('#crowd1', { x: 1300 }, { x: -1400, duration: 4.4, ease: 'none' }, 28.5);
+    tl.set('#crowd2', { opacity: 1 }, 30.6);
+    tl.fromTo('#crowd2', { x: 1300 }, { x: -60, duration: 2.45, ease: 'none' }, 30.6);
+    tl.to('#crowd2', { x: -1400, duration: 0.5, ease: ae(80, 20) }, 33.05);
+    enter('#stop', 33.05, { y: -1400, scale: 1.4 }, {}, 0.25);
+    leave('#stop', 33.95, { y: 1400, rotation: 20 });
+    enter('#lock', 34.05, { y: -1300 }, {}, 0.3);
+    tl.to('#lock', { y: 18, duration: 0.06, yoyo: true, repeat: 1 }, 34.35);
 
-    // ── Q · the real buttons slide in, Contact punches on «بالخاص»
-    tl.set('#btns', { opacity: 1 }, 35.5);
-    tl.fromTo('#btns', { x: 900 }, { x: 0, duration: 0.5, ease: SETTLE }, 35.5);
-    punch('#btns', 36.09, 1.12);
+    // ── Q · the receiver swings in, punches on «بالخاص»
+    enter('#recv', 35.53, { x: 900, rotation: 40 }, {}, 0.5);
+    punch('#recv', 36.09, 1.1);
 
-    // ── R · the portfolio is thrown on the table; on «وخلي» it flies off and my real grid scrolls up on a phone; the handle
-    $$('#sR .tbl').forEach((el, i) => {
-      const t = 36.8 + i * 0.1;
-      tl.set(el, { opacity: 1 }, t);
-      tl.fromTo(el, { x: (i % 2 ? 1 : -1) * 1200, y: 300, rotation: (i % 2 ? 1 : -1) * 40 }, { x: 0, y: 0, rotation: 0, duration: 0.45, ease: SETTLE }, t);
-      tl.to(el, { x: (i % 2 ? 1 : -1) * 1400, y: -400 + i * 200, rotation: (i % 2 ? 1 : -1) * 30, duration: 0.4, ease: ae(70, 30) }, 37.45 + i * 0.03);
-    });
-    tl.set('#phGrid', { opacity: 1 }, 37.55);
-    tl.fromTo('#phGrid', { y: 1300, rotation: 14 }, { y: 0, rotation: -2, duration: 0.6, ease: SETTLE }, 37.55);
-    tl.fromTo('#gridScroll', { y: 0 }, { y: -760, duration: 1.7, ease: ae(33, 100) }, 37.9);
+    // ── R · «شوف أعمالنا»: my reels on the phones; «وخلي»: the phones go and the register drops and rings, cash bursts out; the handle
+    $$('#sR .rph').forEach((el, i) => { enter(el, 36.8 + i * 0.1, { y: 1300, rotation: (i - 1) * 30 }, { rotation: [-12, 11, -2][i] }, 0.5); leave(el, 37.45 + i * 0.03, { y: 1500, rotation: (i - 1) * 40 }, 0.35); });
+    enter('#register', 37.55, { y: -1400 }, {}, 0.35);
+    tl.set('#cashfan', { opacity: 1 }, 38.05);
+    tl.fromTo('#cashfan', { y: 300, scale: 0.4, rotation: -20 }, { y: -140, scale: 1, rotation: 6, duration: 0.5, ease: SETTLE }, 38.05);
+    punch('#register', 38.71, 1.06);
     tl.set('#handle', { opacity: 1 }, 39.55);
     tl.fromTo('#handle', { scale: 0 }, { scale: 1, duration: 1.16, ease: smart(0.16) }, 39.55);
 
@@ -255,7 +244,7 @@
     // and blurs what moved during the shutter: the whole frame for the camera (plus the pulse on a cut), and each
     // moving thing on its own for its own move
     const mb = $('#mbB'), defs = $('#mb').parentNode;
-    const MOV = SC.map((s) => $$('.obj, .print, .shot, #n3, #macro', s.cam).map((el, i) => {
+    const MOV = SC.map((s) => $$('.obj, #n3', s.cam).map((el, i) => {
       const wrap = document.createElement('div'), id = `mb${s.id}${i}`;
       wrap.style.cssText = `position:absolute; inset:0; z-index:${getComputedStyle(el).zIndex}`;
       el.parentNode.insertBefore(wrap, el);
