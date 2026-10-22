@@ -1,6 +1,6 @@
 // The pieces the reel is built from: the clock, the eases, a cut-out with its own motion blur, a phone that plays a
 // reel, and a line of words. Every motion is a function of the time t in seconds, stepped at 15 fps.
-import React from "react";
+import React, { createContext, useContext } from "react";
 import { Img, OffthreadVideo, Sequence, staticFile } from "remotion";
 
 export const FPS = 30, W = 1080, H = 1920, D = 41.2;
@@ -25,6 +25,8 @@ const bez = (x1: number, y1: number, x2: number, y2: number) => (p: number) => {
   return 3 * (1 - u) * (1 - u) * u * y1 + 3 * (1 - u) * u * u * y2 + u * u * u;
 };
 export const ae = (out: number, inn: number) => bez(out / 100, 0, 1 - inn / 100, 1);
+// the speed graphs: snappy entrances, whip-pans, an elastic overshoot, and the ease-in for exits
+export const ENT = bez(0.16, 1, 0.3, 1), WHIP = bez(0.85, 0, 0.15, 1), OVR = bez(0.34, 1.56, 0.64, 1), EXIT = bez(0.7, 0, 0.84, 0);
 export const SOFT = ae(20, 80), AWAY = ae(70, 20), PUSH = ae(62, 62), SETTLE = ae(0, 100), DRIFT = ae(33, 100);
 export const IN2 = (p: number) => p * p, OUT3 = (p: number) => 1 - Math.pow(1 - p, 3);
 export const backOut = (s = 1.7) => (p: number) => { const c = s + 1; return 1 + c * Math.pow(p - 1, 3) + s * Math.pow(p - 1, 2); };
@@ -50,10 +52,15 @@ const blurOf = (p: Pose, q: Pose, w: number) => {
 };
 const tf = (p: Pose) => `translate(${p.x ?? 0}px, ${p.y ?? 0}px) rotate(${p.r ?? 0}deg) scale(${p.s ?? 1})` + (p.ry ? ` perspective(1600px) rotateY(${p.ry}deg)` : "");
 
+// the parallax of the layer a cut-out sits on: the foreground moves a little more than the words when the camera moves
+export const Par = createContext<[number, number]>([0, 0]);
+
 // a cut-out on the beat: one black-and-white treatment for all of them (grey, contrast, the same print grain inside its
 // own outline, one warm shadow), and motion blur along its own move
-export const Cut: React.FC<{ id: string; src: string; w: number; left: number; top: number; t: number; pose: (t: number) => Pose; z?: number; colour?: boolean; children?: React.ReactNode }> = ({ id, src, w, left, top, t, pose, z = 10, colour, children }) => {
-  const p = pose(t), q = pose(t - SHUTTER), o = p.o ?? 1;
+export const Cut: React.FC<{ id: string; src: string; w: number; left: number; top: number; t: number; pose: (t: number) => Pose; z?: number; colour?: boolean; fixed?: boolean; children?: React.ReactNode }> = ({ id, src, w, left, top, t, pose, z = 10, colour, fixed, children }) => {
+  const par = useContext(Par);
+  const p = { ...pose(t) }, q = pose(t - SHUTTER), o = p.o ?? 1;
+  if (!fixed) { p.x = (p.x ?? 0) + par[0]; p.y = (p.y ?? 0) + par[1]; q.x = (q.x ?? 0) + par[0]; q.y = (q.y ?? 0) + par[1]; }
   if (o <= 0.002) return null;
   const [sx, sy] = blurOf(p, q, w), blur = sx + sy > 0.6, url = staticFile("el/" + src);
   return (
@@ -78,8 +85,8 @@ export const Cut: React.FC<{ id: string; src: string; w: number; left: number; t
 
 // what shows on a phone's screen, under the frame: a reel from my page, or a dark screen with words on it
 const screenBox: React.CSSProperties = { position: "absolute", zIndex: 1, left: "9.03%", top: "1.84%", width: "88.04%", height: "96.21%", overflow: "hidden", WebkitMaskImage: `url(${staticFile("el/phone-screen.png")})`, WebkitMaskSize: "100% 100%", maskImage: `url(${staticFile("el/phone-screen.png")})`, maskSize: "100% 100%" };
-export const Screen: React.FC<{ clip?: string; from?: number; dur?: number; at?: number; children?: React.ReactNode }> = ({ clip, from = 0, dur = 1, at = 0, children }) => (
-  <div style={{ ...screenBox, background: INK }}>
+export const Screen: React.FC<{ clip?: string; from?: number; dur?: number; at?: number; bg?: string; children?: React.ReactNode }> = ({ clip, from = 0, dur = 1, at = 0, bg = INK, children }) => (
+  <div style={{ ...screenBox, background: bg }}>
     {clip && (
       <Sequence from={Math.round(from * FPS)} durationInFrames={Math.round(dur * FPS)} layout="none">
         <OffthreadVideo src={staticFile("clips/" + clip)} startFrom={Math.round(at * FPS)} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />

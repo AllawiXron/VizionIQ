@@ -1,289 +1,414 @@
-// My ad reel for the page, built on the Brandek reel's visual language: one orange field for the whole reel, big white
-// words with the key word in my brown, an outlined word or a stretched word where the voice leans on it, and one
-// black-and-white cut-out per idea, anchored to a frame edge and acting on the words. One take: the ten ideas sit in a
-// row on a strip and the camera holds on each while it is spoken, then pushes to the next, right to left. The motion
-// keeps the reel standard: Smart Bounce on the hits, motion blur on the camera and on everything that moves, 15 fps
-// steps. Every cue sits on a word of the voice (word times from the take, after its pauses were tightened).
+// My ad reel for the page: one continuous virtual camera over a big stage. Every group of lines is a shot laid out
+// somewhere on the stage at its own position, tilt and scale; the camera whip-pans to the next one, pushes in through a
+// phone screen into the shot waiting inside it, or pulls back to reveal a bigger one. The words are kinetic type, the
+// black-and-white cut-outs act on them, the background carries a parallax grid of key words under a light that moves
+// with the camera. The frame steps at 15 fps with motion blur on the camera and on every moving cut-out. The script,
+// the voice and every sound cue are the fitted ones (sound.tsx); only the picture follows the rules below.
 import React, { useEffect, useState } from "react";
-import { AbsoluteFill, Audio, Sequence, continueRender, delayRender, staticFile, useCurrentFrame } from "remotion";
-import { AWAY, Burst, Cut, D, DRIFT, FPS, IN2, INK, Line, Pose, PUSH, SETTLE, SHUTTER, SOFT, Screen, ae, bounce, clamp, lerp, mv, punch, stepped } from "./lib";
+import { AbsoluteFill, continueRender, delayRender, staticFile, useCurrentFrame } from "remotion";
+import { Burst, Cut, D, DRIFT, ENT, EXIT, FONT, INK, OVR, Par, Pose, SHUTTER, Screen, WHIP, bounce, clamp, lerp, punch, stepped } from "./lib";
+import { KLine, KW } from "./kinetic";
+import { Sound } from "./sound";
 
-const BEATS = ["A", "B", "D", "F", "I", "J", "L", "M", "O", "R"];
-const ENDS = [2.6, 5.2, 7.74, 12.62, 14.42, 19.04, 23.52, 28.5, 35.48, D];
-const GAP = 1500;
-const beatX = (i: number) => (BEATS.length - 1 - i) * GAP;
-const PRE = 0.35, POST = 0.45;
-// where the camera looks along the strip
-const camAt = (t: number) => {
-  for (let j = 0; j < BEATS.length - 1; j++) {
-    const B = ENDS[j];
-    if (t >= B - PRE && t < B + POST) return lerp(beatX(j), beatX(j + 1), PUSH(clamp((t - (B - PRE)) / (PRE + POST))));
-  }
-  const j = ENDS.findIndex((e) => t < e);
-  return beatX(j < 0 ? BEATS.length - 1 : j);
+// ───────────────────────────── the stage and the camera ─────────────────────────────
+
+type Shot = { id: string; a: number; b: number; cx: number; cy: number; r: number; s: number; tin: "whip" | "push" | "pull" | "slide" };
+const DEG = Math.PI / 180;
+type Place = { cx: number; cy: number; r: number; s: number };
+// a point of a shot's own 1080×1920 frame, on the stage
+const on = (p: Place, lx: number, ly: number): [number, number] => {
+  const dx = (lx - 540) * p.s, dy = (ly - 960) * p.s, c = Math.cos(p.r * DEG), s = Math.sin(p.r * DEG);
+  return [p.cx + dx * c - dy * s, p.cy + dx * s + dy * c];
+};
+// where the screen of a phone sits in its shot, and how wide it is
+const PH = 1500 / 719;
+const screenOf = (left: number, top: number, w: number, rot: number): [number, number, number] => {
+  const h = w * PH, cx = left + w / 2, cy = top + h / 2;
+  const ox = (0.0903 + 0.8804 / 2) * w - w / 2, oy = (0.0184 + 0.9621 / 2) * h - h / 2;
+  const c = Math.cos(rot * DEG), s = Math.sin(rot * DEG);
+  return [cx + ox * c - oy * s, cy + ox * s + oy * c, 0.8804 * w];
 };
 
-// a thing that comes in from an offset and stays, then (optionally) leaves along an offset
-const arrive = (t: number, t0: number, d: number, from: Pose, rest: Pose = {}, leave?: [number, Pose, number?]): Pose => {
+// the shots, laid out one from the last
+const SHOTS: Shot[] = (() => {
+  const L: Shot[] = [];
+  const add = (id: string, a: number, b: number, tin: Shot["tin"], p: Place) => L.push({ id, a, b, tin, ...p });
+  const last = () => L[L.length - 1];
+  const whip = (id: string, a: number, b: number, lx: number, ly: number, dr: number, k = 1) => { const p = last(); const [cx, cy] = on(p, lx, ly); add(id, a, b, "whip", { cx, cy, r: p.r + dr, s: p.s * k }); };
+  const into = (id: string, a: number, b: number, scr: [number, number, number], rot: number) => { const p = last(); const [cx, cy] = on(p, scr[0], scr[1]); add(id, a, b, "push", { cx, cy, r: p.r + rot, s: (p.s * scr[2]) / 1080 }); };
+  // a bigger shot that holds the last one at one of its own points, out of its frame
+  const back = (id: string, a: number, b: number, k: number, lx: number, ly: number, dr: number) => {
+    const p = last(), s = p.s * k, r = p.r + dr, c = Math.cos(r * DEG), sn = Math.sin(r * DEG);
+    const dx = (lx - 540) * s, dy = (ly - 960) * s;
+    add(id, a, b, "pull", { cx: p.cx - (dx * c - dy * sn), cy: p.cy - (dx * sn + dy * c), r, s });
+  };
+  add("A", 0, 2.6, "whip", { cx: 0, cy: 0, r: 0, s: 1 });
+  whip("B", 2.6, 5.2, -1900, 1260, -7);
+  into("D1", 5.2, 6.55, screenOf(290, 820, 500, -2), -2);
+  whip("D2", 6.55, 7.74, 540, 960 + 2500, 6);
+  whip("F", 7.74, 12.62, 540 + 2300, 960 - 500, 9);
+  into("I", 12.62, 14.42, screenOf(190, 620, 700, -3), -3);
+  whip("J1", 14.42, 16.3, 540 - 2300, 960 + 300, -8);
+  back("J2", 16.3, 19.04, 2.3, 540, 960 + 2100, 5);
+  whip("L", 19.04, 23.52, 540 + 300, 960 - 2600, -6);
+  whip("M1", 23.52, 26.5, 540 - 2300, 960 + 100, 8);
+  whip("M2", 26.5, 28.5, 540 + 2000, 960 + 600, -5, 0.92);
+  whip("O1", 28.5, 32.45, 540 - 200, 960 + 2500, 6);
+  back("O2", 32.45, 35.48, 2.0, 540, 960 - 2100, -4);
+  whip("R1", 35.48, 36.65, 540 - 2300, 960, -8);
+  back("R2", 36.65, D, 1.8, 540 + 1700, 960, 4);
+  return L;
+})();
+
+const PRE = 0.28, POST = 0.27, DZ = 0.04, DR = 0.9;
+type Cam = { cx: number; cy: number; r: number; z: number; k: number };
+const camAt = (t: number): Cam => {
+  for (let j = 0; j < SHOTS.length - 1; j++) {
+    const T = SHOTS[j].b;
+    if (t >= T - PRE && t < T + POST) {
+      const A = SHOTS[j], B = SHOTS[j + 1], p = WHIP(clamp((t - (T - PRE)) / (PRE + POST)));
+      const zA = (1 / A.s) * (1 + DZ), zB = 1 / B.s, rA = A.r + DR;
+      let z = Math.exp(lerp(Math.log(zA), Math.log(zB), p));
+      const w = B.tin === "push" ? (z - zA) / (zB - zA) : B.tin === "pull" ? (1 / z - 1 / zA) / (1 / zB - 1 / zA) : p;
+      let r = lerp(rA, B.r, p);
+      if (B.tin === "whip") { r += (j % 2 ? 1 : -1) * 7 * Math.sin(Math.PI * p); z *= 1 - 0.12 * Math.sin(Math.PI * p); }
+      return { cx: lerp(A.cx, B.cx, w), cy: lerp(A.cy, B.cy, w), r, z, k: j + p };
+    }
+  }
+  let k = SHOTS.findIndex((x) => t < x.b);
+  if (k < 0) k = SHOTS.length - 1;
+  const S = SHOTS[k], a0 = k === 0 ? 0 : S.a + POST, a1 = k === SHOTS.length - 1 ? D : S.b - PRE;
+  const q = DRIFT(clamp((t - a0) / Math.max(0.2, a1 - a0)));
+  return { cx: S.cx, cy: S.cy, r: S.r + DR * q, z: (1 / S.s) * (1 + DZ * q), k };
+};
+// a stage point on the screen, through the camera
+const toScreen = (c: Cam, x: number, y: number): [number, number] => {
+  const dx = x - c.cx, dy = y - c.cy, co = Math.cos(-c.r * DEG), si = Math.sin(-c.r * DEG);
+  return [540 + (dx * co - dy * si) * c.z, 960 + (dx * si + dy * co) * c.z];
+};
+// whether a shot can be seen at all
+const visible = (c: Cam, S: Shot) => {
+  const pts = [[-500, -700], [1580, -700], [1580, 2620], [-500, 2620]].map(([x, y]) => toScreen(c, ...on(S, x, y)));
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+  const w = Math.max(...xs) - Math.min(...xs);
+  return Math.max(...xs) > -200 && Math.min(...xs) < 1280 && Math.max(...ys) > -200 && Math.min(...ys) < 2120 && w > 60;
+};
+// how far the camera is from a shot, in the shot's own pixels: the foreground layer moves 14% more than the words
+const parOf = (c: Cam, S: Shot): [number, number] => {
+  const dx = c.cx - S.cx, dy = c.cy - S.cy, co = Math.cos(-S.r * DEG), si = Math.sin(-S.r * DEG);
+  const lx = (dx * co - dy * si) / S.s, ly = (dx * si + dy * co) / S.s;
+  return [clamp(-0.14 * lx, -260, 260), clamp(-0.14 * ly, -260, 260)];
+};
+
+// ───────────────────────────── helpers for the cut-outs ─────────────────────────────
+
+// slam in from an offset with the elastic overshoot, then (optionally) get thrown out
+const slam = (t: number, t0: number, d: number, from: Pose, rest: Pose = {}, leave?: [number, Pose, number?]): Pose => {
   if (t < t0) return { o: 0 };
-  const k = SOFT(clamp((t - t0) / d));
+  const k = OVR(clamp((t - t0) / d));
   const p: Pose = { x: lerp(from.x ?? 0, rest.x ?? 0, k), y: lerp(from.y ?? 0, rest.y ?? 0, k), r: lerp(from.r ?? rest.r ?? 0, rest.r ?? 0, k), s: lerp(from.s ?? 1, rest.s ?? 1, k) };
   if (leave && t >= leave[0]) {
-    const ld = leave[2] ?? 0.4, l = AWAY(clamp((t - leave[0]) / ld));
+    const ld = leave[2] ?? 0.35, l = EXIT(clamp((t - leave[0]) / ld));
     if (t > leave[0] + ld) return { o: 0 };
-    p.x = (p.x ?? 0) + (leave[1].x ?? 0) * l; p.y = (p.y ?? 0) + (leave[1].y ?? 0) * l; p.r = (p.r ?? 0) + (leave[1].r ?? 0) * l;
+    p.x = (p.x ?? 0) + (leave[1].x ?? 0) * l; p.y = (p.y ?? 0) + (leave[1].y ?? 0) * l; p.r = (p.r ?? 0) + (leave[1].r ?? 0) * l; p.s = (p.s ?? 1) * (1 + ((leave[1].s ?? 1) - 1) * l);
   }
   return p;
 };
-const W = (pairs: [string, number][]) => pairs.map(([w, t]) => ({ w, t }));
+// an element waiting in place with a slow float, for when the camera arrives on it
+const wait = (t: number, amp = 10, ph = 0): Pose => ({ y: amp * Math.sin(t * 1.3 + ph), r: 0.6 * Math.sin(t * 0.9 + ph) });
+const W = (pairs: [string, number, KW["v"]?][]): KW[] => pairs.map(([w, t, v]) => ({ w, t, v }));
+const kw = (w: string, t: number, v?: KW["v"], more: Partial<KW> = {}): KW => ({ w, t, v, ...more });
 
-// ── A · مشروعك متعوب عليه، بس أرباحك قليلة: the open, empty wallet; «أرباحك» outlined; one coin drops in on «قليلة»,
-//    bounces off it and flies on with the push into the middle phone
+// ───────────────────────────── the shots ─────────────────────────────
+
+// A · مشروعك متعوب عليه، بس أرباحك قليلة: the wallet waits; «أرباحك» fills in; the coin drops, hits «قليلة؟» and knocks
+//     it crooked, falls into the wallet and the wallet jumps
 const A: React.FC<{ t: number }> = ({ t }) => (
   <>
-    <Line t={t} top={330} size={92} words={W([["مشروعك", 0.0], ["متعوب", 0.56], ["عليه،", 0.88], ["بس", 1.38]])} />
-    <Line t={t} top={440} size={280} words={W([["^أرباحك", 1.66]])} />
-    <Line t={t} top={770} size={200} words={W([["*قليلة؟", 2.1]])} />
-    <Cut id="wallet" src="wallet.png" w={980} left={50} top={1100} t={t} pose={(t) => ({ y: mv(t, 0, 2.6, 110, 0, SETTLE) + 18 * Math.sin(Math.PI * clamp((t - 2.38) / 0.18)) * (t > 2.38 ? 1 : 0), r: mv(t, 0, 2.6, -1, -6, SETTLE) })} />
-    <Cut id="coin" src="coin.png" w={190} left={445} top={990} z={12} colour t={t} pose={(t) => {
-      if (t < 2.1 || t > 3.14) return { o: 0 };
-      if (t < 2.38) { const p = IN2(clamp((t - 2.1) / 0.28)); return { y: lerp(-1300, 0, p), r: lerp(-220, 10, p) }; }
-      if (t < 2.74) { const p = 1 - Math.pow(1 - clamp((t - 2.38) / 0.36), 2); return { x: lerp(0, -700, p), y: lerp(0, -620, p), r: lerp(10, -200, p) }; }
-      const p = IN2(clamp((t - 2.74) / 0.4)); return { x: lerp(-700, -1500, p), y: lerp(-620, -40, p), r: lerp(-200, -380, p), s: lerp(1, 0.6, p) };
+    <KLine t={t} top={330} size={92} words={W([["مشروعك", 0.0], ["متعوب", 0.56], ["عليه،", 0.88], ["بس", 1.38]])} />
+    <KLine t={t} top={430} size={300} words={[kw("أرباحك", 1.66, "fill", { fill: 1.95 })]} />
+    <KLine t={t} top={780} size={210} words={[kw("*قليلة؟", 2.1, "punch", { fx: (t) => (t < 2.28 ? {} : { y: 26 * OVR(clamp((t - 2.28) / 0.3)), r: -8 * OVR(clamp((t - 2.28) / 0.3)) }) })]} />
+    <Cut id="wallet" src="wallet.png" w={1000} left={40} top={1110} t={t} pose={(t) => {
+      const p: Pose = { y: 40 * (1 - DRIFT(clamp(t / 2.4))), r: -6 + 2 * (1 - DRIFT(clamp(t / 2.4))) };
+      if (t > 2.42) { const k = clamp((t - 2.42) / 0.4); p.y = (p.y ?? 0) - 40 * Math.sin(Math.PI * k) * (1 - k); p.r = (p.r ?? 0) + 3 * Math.sin(Math.PI * k); }
+      return p;
+    }} />
+    <Cut id="coin" src="coin.png" w={180} left={450} top={1000} z={14} colour t={t} pose={(t) => {
+      if (t < 1.98 || t > 2.62) return { o: 0 };
+      if (t < 2.28) { const p = clamp((t - 1.98) / 0.3); return { y: lerp(-1350, -200, p * p), r: lerp(-260, -20, p) }; }
+      if (t < 2.42) { const p = clamp((t - 2.28) / 0.14); return { x: lerp(0, 60, p), y: lerp(-200, 40, p * p), r: lerp(-20, 40, p) }; }
+      const p = clamp((t - 2.42) / 0.2); return { x: 60, y: lerp(40, 90, p), s: lerp(1, 0.4, p), o: 1 - p };
     }} />
   </>
 );
 
-// ── B · عدنا نصمملك موشن جرافيك وبوستات إعلانية: «نصمملك» stretches; three phones play my dollar, viZion and logos reels
-const phone = (id: string, left: number, top: number, w: number, r: number, t0: number, t: number, clip: string, at: number, from: number, dur: number, turn?: number) => (
-  <Cut id={id} src="phone.png" w={w} left={left} top={top} t={t} pose={(t) => {
-    const p = arrive(t, t0, 0.65, { y: 1000, r: r * 2.5 }, { r });
-    if (turn && t > turn) p.ry = 360 * ae(60, 100)(clamp((t - turn) / 0.6));
+// the phones with my reels; the middle one's screen wipes to orange before the camera goes into it
+const phone = (id: string, left: number, top: number, w: number, r: number, t: number, t0: number, clip: string, at: number, from: number, dur: number, turn?: number, wipeAt?: number, fixed?: boolean) => (
+  <Cut id={id} src="phone.png" w={w} left={left} top={top} t={t} fixed={fixed} pose={(t) => {
+    const p = t0 <= 0 ? { r } as Pose : slam(t, t0, 0.55, { y: 900, r: r * 3 }, { r });
+    if (turn && t > turn) p.ry = 360 * ENT(clamp((t - turn) / 0.5));
     return p;
   }}>
-    <Screen clip={clip} from={from} dur={dur} at={at} />
+    <Screen clip={clip} from={from} dur={dur} at={at}>
+      {wipeAt !== undefined && t > wipeAt && <div style={{ position: "absolute", inset: 0, zIndex: 5, background: "#e9631f", transform: `translateY(${100 * (1 - ENT(clamp((t - wipeAt) / 0.22)))}%)` }} />}
+    </Screen>
   </Cut>
 );
+
+// B · عدنا نصمملك موشن جرافيك وبوستات إعلانية: the phones wait playing my reels; «نصمملك» stretches; «موشن جرافيك» rides
+//     a bar; the phones turn on «وبوستات»; «إعلانية» fills; the middle screen wipes to orange and the camera goes in
 const B: React.FC<{ t: number }> = ({ t }) => (
   <>
-    <Line t={t} top={300} size={120} stretch={5} out={4.1} words={W([["عدنا", 2.65], ["*نصم~ملك", 2.91]])} />
-    <Line t={t} top={450} size={150} out={4.1} words={W([["موشن", 3.45], ["جرافيك", 3.73]])} />
-    <Line t={t} top={300} size={120} words={W([["وبوستات", 4.2]])} />
-    <Line t={t} top={430} size={190} words={W([["^إعلانية", 4.73]])} />
-    {phone("phL", 20, 960, 400, -10, 2.25, t, "dollar-reel.mp4", 1.3, 2.25, 3.4, 4.2)}
-    {phone("phR", 660, 960, 400, 9, 2.36, t, "logos-reel.mp4", 16.3, 2.25, 3.4, 4.28)}
-    {phone("phC", 290, 820, 500, -2, 2.47, t, "vizion-reel.mp4", 7.1, 2.25, 3.4, 4.36)}
+    <KLine t={t} top={300} size={124} stretch={5} out={4.1} words={W([["عدنا", 2.65], ["*نصم~ملك", 2.91]])} />
+    <KLine t={t} top={470} size={140} out={4.1} words={W([["موشن", 3.45, "bar"], ["جرافيك", 3.73, "bar"]])} />
+    <KLine t={t} top={300} size={124} words={W([["وبوستات", 4.2]])} />
+    <KLine t={t} top={440} size={190} words={[kw("إعلانية", 4.73, "fill", { fill: 4.88 })]} />
+    {phone("phL", 20, 960, 400, -10, t, 2.2, "dollar-reel.mp4", 1.3, 2.2, 3.4, 4.2)}
+    {phone("phR", 660, 960, 400, 9, t, 2.3, "logos-reel.mp4", 16.3, 2.2, 3.4, 4.26)}
+    {phone("phC", 290, 820, 500, -2, t, 0, "vizion-reel.mp4", 7.1, 2.2, 3.0, 4.32, 4.7, true)}
   </>
 );
 
-// ── D · تحجي بقوة براندك، وتبيع بمكانك: the megaphone from the left edge; «براندك» bursts out of its mouth on a dark star;
-//    then the shop owner comes up
-const Dd: React.FC<{ t: number }> = ({ t }) => {
-  const bs = t < 6.5 ? bounce(t, 6.06) : Math.max(0, 1 - IN2(clamp((t - 6.5) / 0.3)));
+// D1 · تحجي بقوة براندك (inside the phone): the megaphone slams in from the left edge; «براندك» is blasted out of its
+//     mouth onto a dark star
+const D1: React.FC<{ t: number }> = ({ t }) => {
+  const bs = t < 6.06 ? 0 : bounce(t, 6.06);
+  const fly = OVR(clamp((t - 6.06) / 0.42));
   return (
     <>
-      <Line t={t} top={300} size={100} out={6.5} words={W([["تحجي", 5.25], ["بقوة", 5.63]])} />
-      <Cut id="mega" src="megaphone.png" w={820} left={-250} top={800} t={t} pose={(t) => {
-        const p = arrive(t, 4.9, 0.7, { x: -600, r: -34 }, { r: -18 }, [6.5, { x: -900, r: -30 }]);
-        p.s = (p.s ?? 1) + punch(t, 6.06, 0.08);
+      <KLine t={t} top={300} size={110} words={W([["تحجي", 5.25], ["بقوة", 5.63, "bar"]])} />
+      <Cut id="mega" src="megaphone.png" w={860} left={-260} top={820} t={t} pose={(t) => {
+        const p = slam(t, 5.22, 0.5, { x: -700, r: -40 }, { r: -18 });
+        if (t > 6.04) { const k = clamp((t - 6.04) / 0.35); p.x = (p.x ?? 0) - 60 * Math.sin(Math.PI * k); p.s = 1 + 0.08 * Math.sin(Math.PI * k); }
         return p;
       }} />
-      <Burst cx={700} cy={760} r={300} s={bs} rot={t * 12} />
-      {t >= 6.06 && t < 6.85 && (
-        <div style={{ position: "absolute", left: 400, top: 640, width: 600, zIndex: 21, textAlign: "center", transform: `scale(${bs})` }}>
-          <Line t={t} top={0} size={200} enter="burst" words={W([["براندك", 6.09]])} />
+      <Burst cx={lerp(470, 700, fly)} cy={lerp(980, 760, fly)} r={310} s={bs} rot={t * 14} />
+      {t >= 6.06 && (
+        <div style={{ position: "absolute", left: lerp(170, 400, fly), top: lerp(860, 640, fly), width: 600, zIndex: 21, transform: `scale(${lerp(0.2, 1, fly)}) rotate(${lerp(-25, -6, fly)}deg)` }}>
+          <div style={{ fontFamily: FONT, fontSize: 200, color: "#fff", textAlign: "center", direction: "rtl", lineHeight: 1.15 }}>براندك</div>
         </div>
       )}
-      <Line t={t} top={300} size={130} words={W([["وتبيع", 6.67], ["*بمكانك", 7.09]])} />
-      <Cut id="owner" src="shop-owner.png" w={900} left={90} top={980} t={t} pose={(t) => {
-        const p = arrive(t, 6.6, 0.6, { y: 900 });
-        p.y = (p.y ?? 0) - 16 * DRIFT(clamp((t - 7.2) / 0.6));
-        return p;
+    </>
+  );
+};
+
+// D2 · وتبيع بمكانك: the shop owner waits with the bag; on «بمكانك» he pushes it at the camera
+const D2: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    <KLine t={t} top={300} size={136} words={[kw("وتبيع", 6.67), kw("*بمكانك", 7.09, "punch")]} />
+    <Cut id="owner" src="shop-owner.png" w={920} left={80} top={960} t={t} pose={(t) => { const p = wait(t, 8); p.s = 1 + punch(t, 7.09, 0.07); p.y = (p.y ?? 0) - 40 * punch(t, 7.09, 1); return p; }} />
+  </>
+);
+
+// F · حركة / فكرة / نتيجة: one big phone; each word rises inside its screen; what it does rides a bar above; its own thing
+//     slams in against the phone and is knocked out by the next; the screen wipes to orange and the camera goes in
+const scr = (t: number, w: string, t0: number, t1: number) => {
+  if (t < t0 || t > t1 + 0.3) return null;
+  const up = 110 * (1 - ENT(clamp((t - t0) / 0.4))), lift = -120 * EXIT(clamp((t - t1) / 0.28));
+  return (
+    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      <div style={{ fontFamily: FONT, fontSize: 130, color: "#fff", direction: "rtl", transform: `translateY(${up + lift}%)` }}>{w}</div>
+    </div>
+  );
+};
+const knock = (t: number, t0: number, t1: number | undefined, from: Pose, rest: Pose, out: Pose): Pose => slam(t, t0, 0.45, from, rest, t1 !== undefined ? [t1, out, 0.3] : undefined);
+const F: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    <KLine t={t} top={300} size={112} out={9.1} words={W([["تشد", 8.37, "bar"], ["*العين", 8.61, "punch"]])} />
+    <KLine t={t} top={300} size={112} out={10.7} words={W([["تقنع", 9.63, "bar"], ["الزبون", 10.03, "bar"]])} />
+    <KLine t={t} top={300} size={112} words={W([["ترفع", 11.45, "bar"], ["*مبيعاتك", 11.83, "punch"]])} />
+    <Cut id="phF" src="phone.png" w={700} left={190} top={620} t={t} fixed pose={() => ({ r: -3 })}>
+      <Screen>
+        {scr(t, "حركة", 7.79, 9.1)}
+        {scr(t, "فكرة", 9.19, 10.7)}
+        {scr(t, "ونتيجة", 10.77, 12.1)}
+        {t > 12.08 && <div style={{ position: "absolute", inset: 0, background: "#e9631f", transform: `translateY(${100 * (1 - ENT(clamp((t - 12.08) / 0.22)))}%)` }} />}
+      </Screen>
+    </Cut>
+    <Cut id="binoF" src="binoculars.png" w={520} left={-120} top={1300} z={14} t={t} pose={(t) => knock(t, 7.79, 9.12, { x: -500, y: 300, r: -30 }, { r: -10 }, { x: -700, r: -40 })} />
+    <Cut id="bulbF" src="bulb.png" w={300} left={760} top={430} z={14} t={t} pose={(t) => knock(t, 9.19, 10.72, { y: -900, r: 30 }, { r: 12 }, { x: 600, y: -300, r: 50 })} />
+    <Cut id="coinsF" src="coin-stacks.png" w={540} left={600} top={1380} z={14} t={t} pose={(t) => knock(t, 10.77, undefined, { x: 500, y: 300, r: 20 }, { r: 6 }, {})} />
+  </>
+);
+
+// I · من أول 3 ثواني بإعلانك (inside the phone): «من» stretches across the frame; «أول» on a pill; the hand brings the
+//     stopwatch and shoves the giant 3
+const I: React.FC<{ t: number }> = ({ t }) => {
+  const shove = t < 13.32 ? 0 : OVR(clamp((t - 13.32) / 0.35));
+  return (
+    <>
+      <KLine t={t} top={290} size={210} stretch={11} words={W([["م~ن", 12.67]])} />
+      <KLine t={t} top={600} size={110} align="r" words={W([["أول", 12.93, "pill"]])} />
+      {t >= 13.17 && (
+        <div style={{ position: "absolute", left: 40, top: 640, zIndex: 9, fontFamily: FONT, fontSize: 820, lineHeight: 1, color: INK, transformOrigin: "50% 70%", transform: `translateX(${-50 * shove}px) scale(${bounce(t, 13.17)}) rotate(${-14 * (1 - clamp((t - 13.17) / 0.2)) - 7 * shove}deg)` }}>3</div>
+      )}
+      <KLine t={t} top={1500} size={104} align="l" words={W([["ثواني", 13.35], ["*بإعلانك", 13.73, "punch"]])} />
+      <Cut id="hand" src="stopwatch-hand.png" w={520} left={620} top={930} t={t} pose={(t) => { const p = slam(t, 12.72, 0.5, { y: 900, x: 200, r: 18 }, { r: -6 }); p.x = (p.x ?? 0) - 40 * Math.sin(Math.PI * clamp((t - 13.17) / 0.3)); return p; }} />
+    </>
+  );
+};
+
+// J1 · الزبون راح يلمس الكواليتي العالي: the magnifier slides its glass onto «الكواليتي» and the word swells under it
+const J1: React.FC<{ t: number }> = ({ t }) => {
+  const sw = t < 15.45 ? 0 : OVR(clamp((t - 15.45) / 0.4));
+  return (
+    <>
+      <KLine t={t} top={300} size={104} words={W([["الزبون", 14.47], ["راح", 14.87], ["يلمس", 15.09]])} />
+      <KLine t={t} top={460} size={150} words={[kw("الكواليتي", 15.37, "up", { fx: () => ({ s: 1 + 0.14 * sw, y: -8 * sw }) })]} />
+      <KLine t={t} top={680} size={150} words={[kw("*العالي", 15.79, "punch")]} />
+      <Cut id="lens" src="magnifier.png" w={520} left={390} top={410} z={32} t={t} pose={(t) => slam(t, 14.62, 0.6, { x: 700, y: 400, r: 30 }, { r: -8 })} />
+    </>
+  );
+};
+
+// J2 · يثق بمنتجك، ويدخل يطلب منك مباشرة: the handshake waits; on «يثق» the hands shake and the words shake with them;
+//     «مباشرة» rides a bar and the hands jump
+const shakeY = (t: number) => (t > 16.75 && t < 17.2 ? 22 * Math.sin(((t - 16.75) / 0.45) * Math.PI * 3) * (1 - (t - 16.75) / 0.45) : 0);
+const J2: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    <KLine t={t} top={300} size={160} out={17.45} words={[kw("يثق", 16.41, "up", { fx: (t) => ({ y: shakeY(t) * 0.6 }) }), kw("*بمنتجك", 16.69, "punch", { fx: (t) => ({ y: shakeY(t) * 0.6 }) })]} />
+    <KLine t={t} top={300} size={112} words={W([["ويدخل", 17.55], ["يطلب", 17.89], ["منك", 18.23]])} />
+    <KLine t={t} top={560} size={210} words={W([["مباشرة", 18.55, "bar"]])} />
+    <Cut id="shake" src="handshake.png" w={1320} left={-120} top={1000} t={t} pose={(t) => { const p = wait(t, 6); p.y = (p.y ?? 0) + shakeY(t); p.s = 1 + punch(t, 18.55, 0.06); return p; }} />
+  </>
+);
+
+// L · لأن ويانا راح يطلع إعلانك بمستوى يعزلك تماما عن منافسيك: the king stands among the pawns; «يعزلك» lands and the
+//     pawns are knocked out to both sides; «تماما» fills; «عن منافسيك» topples over like the pawns did
+const PAWNS: [number, number, number][] = [[40, 1330, 190], [230, 1400, 170], [680, 1400, 170], [850, 1330, 190]];
+const topple = (dir: number) => (t: number) => {
+  if (t < 23.05) return {};
+  const k = clamp((t - 23.05) / 0.45);
+  return { r: dir * 80 * ENT(k), y: 900 * k * k, x: dir * 120 * k };
+};
+const L: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    <KLine t={t} top={300} size={104} out={21.42} words={W([["لأن", 19.09], ["ويانا", 19.65], ["راح", 20.21], ["يطلع", 20.43]])} />
+    <KLine t={t} top={440} size={150} out={21.42} words={W([["إعلانك", 20.69, "bar"], ["بمستوى", 21.13, "bar"]])} />
+    <KLine t={t} top={300} size={180} words={[kw("يعزلك", 21.75, "punch"), kw("تماما", 22.17, "fill", { fill: 22.4 })]} />
+    <KLine t={t} top={540} size={116} dim words={[kw("عن", 22.69, "up", { fx: topple(1) }), kw("منافسيك", 22.77, "up", { fx: topple(-1) })]} />
+    {PAWNS.map(([x, y, w], i) => (
+      <Cut key={i} id={`pawn${i}`} src="chess-pawn.png" w={w} left={x} top={y} t={t} pose={(t) => {
+        if (t < 21.75) return wait(t, 6, i);
+        const l = clamp((t - 21.75 - i * 0.04) / 0.5);
+        if (l >= 1) return { o: 0 };
+        return { x: (i < 2 ? -1 : 1) * 900 * ENT(l), y: -300 * Math.sin(Math.PI * l), r: (i < 2 ? -1 : 1) * 160 * l };
+      }} />
+    ))}
+    <Cut id="king" src="chess-king.png" w={300} left={390} top={860} t={t} pose={(t) => { const p = wait(t, 6); p.s = 1 + punch(t, 21.75, 0.08); return p; }} />
+  </>
+);
+
+// M1 · ويخلي الزبون يشتري منك مرة ومرتين وعشرة: the counts land tilted across the frame with their ×1 ×2 ×10 pills; a bag
+//     drops on each, then the pile, and the pile shoves «وعشرة» up
+const BAG = ["bag-orange.png", "bag-black.png", "bag-blue.png", "bag-black2.png"];
+const PILE: [number, number][] = [[660, 1210], [150, 1300], [20, 1440], [330, 1480], [620, 1460], [850, 1380], [120, 1630], [470, 1650], [760, 1620], [280, 1740], [600, 1770], [900, 1710]];
+const M1: React.FC<{ t: number }> = ({ t }) => {
+  const heave = t < 26.0 ? 0 : OVR(clamp((t - 26.0) / 0.35));
+  return (
+    <>
+      <KLine t={t} top={300} size={100} out={24.72} words={W([["ويخلي", 23.57], ["الزبون", 23.93], ["يشتري", 24.27], ["منك", 24.63]])} />
+      <KLine t={t} top={330} size={180} align="r" rot={-8} words={W([["مرة", 24.97, "punch"], ["×1", 24.97, "pill"]])} />
+      <KLine t={t} top={560} size={180} align="l" rot={5} words={W([["ومرتين", 25.35, "punch"], ["×2", 25.35, "pill"]])} />
+      <KLine t={t} top={800} size={215} rot={-4} words={[kw("*وعشرة", 25.97, "punch", { fx: () => ({ y: -70 * heave }) }), kw("×10", 25.97, "pill", { fx: () => ({ y: -70 * heave }) })]} />
+      {PILE.map(([x, y], i) => {
+        const t0 = i === 0 ? 24.95 : i === 1 ? 25.33 : 25.95 + (i - 2) * 0.04;
+        return <Cut key={i} id={`bag${i}`} src={BAG[i % 4]} w={230 + (i % 3) * 30} left={x} top={y} t={t} pose={(t) => slam(t, t0, 0.42, { y: -1600, r: (i % 2 ? 1 : -1) * 40 }, { r: Math.sin(i * 1.9) * 12 })} />;
+      })}
+    </>
+  );
+};
+
+// M2 · لأن شاف براند حقيقي قدامه: the man with the binoculars waits on the left looking right; «براند» lands where he
+//     looks and he leans in
+const M2: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    <KLine t={t} top={520} size={112} align="r" words={W([["لأن", 26.67], ["شاف", 27.01]])} />
+    <KLine t={t} top={650} size={240} align="r" words={W([["*براند", 27.21, "punch"]])} />
+    <KLine t={t} top={930} size={132} align="r" words={W([["حقيقي", 27.57, "bar"], ["قدامه", 27.97, "bar"]])} />
+    <Cut id="watcher" src="binoculars-man.png" w={560} left={-10} top={430} t={t} pose={(t) => { const p = wait(t, 8); const k = OVR(clamp((t - 27.21) / 0.4)); p.x = 30 * k; p.r = (p.r ?? 0) + 3 * k; return p; }} />
+  </>
+);
+
+// O1 · كافي تضيع جمهورك بتصاميم عادية، الكل يتخطاها، ابدأ اليوم: the crowd walks past along the bottom; on «يتخطاها»
+//     the next crowd walks straight through the words and drags them along
+const O1: React.FC<{ t: number }> = ({ t }) => {
+  const drag = t < 31.0 ? 0 : -260 * ENT(clamp((t - 31.0) / 0.5));
+  return (
+    <>
+      <KLine t={t} top={300} size={112} out={30.6} words={W([["كافي", 28.55], ["تضيع", 28.93], ["*جمهورك", 29.15, "punch"]])} />
+      <KLine t={t} top={450} size={150} out={30.6} words={[kw("بتصاميم", 29.65), kw("عادية", 30.15, "fill")]} />
+      <KLine t={t} top={1000} size={150} out={31.5} x={drag} words={W([["الكل", 30.85], ["يتخطاها", 30.99]])} />
+      <KLine t={t} top={360} size={180} words={W([["ابدأ", 31.63, "punch"], ["اليوم", 32.05, "bar"]])} />
+      <Cut id="crowd1" src="crowd.png" w={1000} left={0} top={1220} t={t} pose={(t) => ({ x: lerp(1100, -1400, clamp((t - 28.3) / 4.2)) })} />
+      <Cut id="crowd2" src="crowd2.png" w={960} left={0} top={1180} z={35} t={t} pose={(t) => (t < 30.6 ? { o: 0 } : { x: lerp(1200, -1300, clamp((t - 30.6) / 2.4)) })} />
+    </>
+  );
+};
+
+// O2 · بتصاميم توقف الزبون وتقفل وياه البيعة: the stop hand slams up and throws «توقف» up; the crowd stops dead against
+//     it; the padlock drops onto «البيعة» and locks it
+const O2: React.FC<{ t: number }> = ({ t }) => {
+  const lockHit = t < 34.37 ? 0 : clamp((t - 34.37) / 0.3);
+  return (
+    <>
+      <KLine t={t} top={300} size={104} words={[kw("بتصاميم", 32.51), kw("*توقف", 33.09, "punch", { fx: (t) => ({ y: t < 33.0 ? 0 : -50 * OVR(clamp((t - 33.0) / 0.3)) }) }), kw("الزبون", 33.51)]} />
+      <KLine t={t} top={470} size={140} words={[kw("وتقفل", 34.05), kw("وياه", 34.61), kw("البيعة", 34.85, "bar", { fx: (t) => ({ x: t < 34.9 ? 0 : 10 * Math.sin((t - 34.9) * 60) * (1 - clamp((t - 34.9) / 0.3)) }) })]} />
+      <Cut id="crowd3" src="crowd2.png" w={960} left={0} top={1180} t={t} pose={(t) => {
+        if (t < 32.2) return { o: 0 };
+        if (t > 33.95) { const l = clamp((t - 33.95) / 0.35); return l >= 1 ? { o: 0 } : { x: 220, y: 900 * EXIT(l) }; }
+        return { x: t < 33.05 ? lerp(1100, 280, clamp((t - 32.2) / 0.85)) : lerp(280, 220, ENT(clamp((t - 33.05) / 0.3))) };
+      }} />
+      <Cut id="stop" src="stop-hand.png" w={760} left={160} top={880} z={12} t={t} pose={(t) => slam(t, 32.98, 0.32, { y: 1000, r: 10 }, {}, [33.95, { y: 1000 }, 0.32])} />
+      <Cut id="lock" src="padlock.png" w={330} left={375} top={760} t={t} pose={(t) => {
+        if (t < 34.05) return { o: 0 };
+        if (t < 34.37) return { y: lerp(-1400, 0, clamp((t - 34.05) / 0.32) ** 2) };
+        return { y: 16 * Math.sin(Math.PI * lockHit), r: t > 34.85 ? 6 * Math.sin((t - 34.85) * 50) * (1 - clamp((t - 34.85) / 0.3)) : 0 };
       }} />
     </>
   );
 };
 
-// ── F · حركة / فكرة / نتيجة: one big phone; each word plays on its screen while what it does is written above, and its
-//    own thing pops in at the phone's corner (binoculars, a bulb, coins)
-const screenWord = (t: number, w: string, t0: number, t1: number) => {
-  if (t < t0 || t > t1 + 0.3) return null;
-  const pin = OUTp(clamp((t - t0) / 0.45)), pout = IN2(clamp((t - t1) / 0.3));
+// R1 · تواصل ويانا بالخاص: the receiver swings in from the right edge and rings on «بالخاص», which sits on a pill
+const R1: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    <KLine t={t} top={300} size={136} words={W([["تواصل", 35.53], ["ويانا", 35.81, "bar"]])} />
+    <KLine t={t} top={700} size={160} align="l" words={W([["بالخاص", 36.09, "pill"]])} />
+    <Cut id="recv" src="receiver.png" w={760} left={520} top={540} t={t} pose={(t) => { const p = slam(t, 35.3, 0.45, { x: 700, r: 40 }, {}); if (t > 36.09) p.r = (p.r ?? 0) + 8 * Math.sin((t - 36.09) * 40) * (1 - clamp((t - 36.09) / 0.45)); return p; }} />
+  </>
+);
+
+// R2 · شوف أعمالنا، وخلي براندك يبيع صح: my reels on the phones, waiting as the camera pulls back; the handle on a pill
+const R2: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    <KLine t={t} top={300} size={150} out={37.45} words={W([["شوف", 36.79], ["*أعمالنا", 36.99, "punch"]])} />
+    <KLine t={t} top={300} size={98} words={W([["وخلي", 37.53], ["براندك", 38.05], ["*يبيع", 38.71, "punch"], ["صح", 39.07, "bar"]])} />
+    <KLine t={t} top={470} size={92} words={[{ w: "@allawi.psd", t: 39.55, v: "pill" }]} />
+    {phone("phL2", 20, 960, 400, -10, t, 36.4, "logos-reel.mp4", 46.0, 36.3, 4.9)}
+    {phone("phR2", 660, 960, 400, 9, t, 36.5, "dollar-reel.mp4", 2.0, 36.3, 4.9)}
+    {phone("phC2", 290, 820, 500, -2, t, 36.6, "vizion-reel.mp4", 7.4, 36.3, 4.9)}
+  </>
+);
+
+const SCENES: Record<string, React.FC<{ t: number }>> = { A, B, D1, D2, F, I, J1, J2, L, M1, M2, O1, O2, R1, R2 };
+
+// ───────────────────────────── the background ─────────────────────────────
+
+// a diagonal grid of my key words at 10%, under a light; both move slower than the stage (each shot has its own anchor)
+const KEYS = "براندك   مبيعات   كواليتي   إعلانك   تصميم   ";
+const Back: React.FC<{ cam: Cam }> = ({ cam }) => {
+  const ax = -300 * cam.k, ay = 140 * cam.k;
+  const lx = 50 + 32 * Math.sin(cam.k * 0.9), ly = 22 + 14 * Math.cos(cam.k * 0.7);
   return (
-    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", direction: "rtl", fontFamily: "'DG Sahabah'", fontSize: 128, color: "#fff", opacity: Math.min(clamp(pin * 1.6), 1 - pout), transform: `translateX(${lerp(300, 0, pin) - 300 * pout}px)` }}>{w}</div>
+    <>
+      <AbsoluteFill style={{ background: `radial-gradient(85% 55% at ${lx}% ${ly}%, rgba(255,170,110,.55) 0%, rgba(255,170,110,0) 70%), linear-gradient(170deg, #f07a2e 0%, #e9631f 48%, #e2541b 100%)` }} />
+      <div style={{ position: "absolute", left: -3600, top: -2400, width: 9000, height: 7000, transformOrigin: "4140px 3360px", transform: `translate(${ax % 2400}px, ${ay % 1520}px) rotate(${-16 - cam.r * 0.4}deg) scale(${Math.pow(cam.z * SHOTS[Math.min(SHOTS.length - 1, Math.round(cam.k))].s, 0.25)})`, color: "rgba(255,255,255,.1)", fontFamily: FONT, fontSize: 118, lineHeight: 1.6, whiteSpace: "nowrap", direction: "rtl" }}>
+        {Array.from({ length: 36 }, (_, i) => <div key={i} style={{ marginRight: (i % 2) * 300 }}>{KEYS.repeat(14)}</div>)}
+      </div>
+      <AbsoluteFill style={{ background: `url(${staticFile("img/paper.jpg")}) center/cover`, mixBlendMode: "multiply", opacity: 0.14 }} />
+    </>
   );
 };
-const OUTp = (p: number) => 1 - Math.pow(1 - p, 3);
-const prop = (id: string, src: string, w: number, left: number, top: number, t: number, t0: number, t1: number | undefined, r: number) => (
-  <Cut id={id} src={src} w={w} left={left} top={top} z={14} t={t} pose={(t) => {
-    if (t < t0) return { o: 0 };
-    if (t1 !== undefined && t > t1 + 0.3) return { o: 0 };
-    const s = bounce(t, t0) * (t1 !== undefined && t > t1 ? 1 - IN2(clamp((t - t1) / 0.3)) : 1);
-    return { s, r: r * (1 - clamp((t - t0) / 0.5)) + r * 0.2 };
-  }} />
-);
-const F: React.FC<{ t: number }> = ({ t }) => (
-  <>
-    <Line t={t} top={300} size={110} out={9.1} words={W([["تشد", 8.37], ["*العين", 8.61]])} />
-    <Line t={t} top={300} size={110} out={10.7} words={W([["تقنع", 9.63], ["الزبون", 10.03]])} />
-    <Line t={t} top={300} size={110} words={W([["ترفع", 11.45], ["*مبيعاتك", 11.83]])} />
-    <Cut id="phF" src="phone.png" w={700} left={190} top={620} t={t} pose={(t) => {
-      const p = arrive(t, 7.4, 0.7, { y: 1000, r: 6 }, { r: -3 });
-      p.s = (p.s ?? 1) + punch(t, 11.83, 0.04);
-      return p;
-    }}>
-      <Screen>
-        {screenWord(t, "حركة", 7.79, 9.1)}
-        {screenWord(t, "فكرة", 9.19, 10.7)}
-        {screenWord(t, "ونتيجة", 10.77, 99)}
-      </Screen>
-    </Cut>
-    {prop("binoF", "binoculars.png", 470, -80, 1330, t, 7.79, 9.1, -12)}
-    {prop("bulbF", "bulb.png", 280, 770, 470, t, 9.19, 10.7, 14)}
-    {prop("coinsF", "coin-stacks.png", 520, 620, 1400, t, 10.77, undefined, 10)}
-  </>
-);
-
-// ── I · من أول 3 ثواني بإعلانك: «من» stretches across the frame on a long line; a giant 3; the stopwatch held up
-const I: React.FC<{ t: number }> = ({ t }) => (
-  <>
-    <Line t={t} top={290} size={200} stretch={11} words={W([["م~ن", 12.67]])} />
-    <Line t={t} top={560} size={150} align="r" words={W([["أول", 12.93]])} />
-    {t >= 13.17 && (
-      <div style={{ position: "absolute", left: 60, top: 600, zIndex: 9, fontFamily: "'DG Sahabah'", fontSize: 820, lineHeight: 1, color: INK, transformOrigin: "50% 60%", transform: `scale(${bounce(t, 13.17)}) rotate(${-14 * (1 - clamp((t - 13.17) / 0.2))}deg)` }}>3</div>
-    )}
-    <Line t={t} top={1440} size={112} align="l" words={W([["ثواني", 13.35], ["*بإعلانك", 13.73]])} />
-    <Cut id="hand" src="stopwatch-hand.png" w={520} left={620} top={930} t={t} pose={(t) => arrive(t, 12.3, 0.7, { y: 900, r: 8 }, { r: -6 })} />
-  </>
-);
-
-// ── J · الكواليتي، يثق، مباشرة: the magnifier settles its glass on «الكواليتي», which grows under it; the handshake comes
-//    up and shakes on «يثق»; «مباشرة» lands over it
-const J: React.FC<{ t: number }> = ({ t }) => (
-  <>
-    <Line t={t} top={300} size={100} out={16.3} words={W([["الزبون", 14.47], ["راح", 14.87], ["يلمس", 15.09]])} />
-    <div style={{ position: "absolute", inset: 0, zIndex: 30, transformOrigin: "700px 520px", transform: `scale(${1 + 0.1 * SOFT(clamp((t - 15.5) / 0.4)) * (t < 16.3 ? 1 : 0)})` }}>
-      <Line t={t} top={430} size={132} out={16.3} words={W([["الكواليتي", 15.37], ["*العالي", 15.79]])} />
-    </div>
-    <Cut id="lens" src="magnifier.png" w={560} left={600} top={370} z={32} t={t} pose={(t) => arrive(t, 14.6, 0.85, { x: 600, y: 220, r: 24 }, { r: -8 }, [16.25, { x: 700, r: 25 }])} />
-    <Line t={t} top={300} size={150} out={17.45} words={W([["يثق", 16.41], ["*بمنتجك", 16.69]])} />
-    <Line t={t} top={300} size={110} words={W([["ويدخل", 17.55], ["يطلب", 17.89], ["منك", 18.23]])} />
-    <Line t={t} top={560} size={230} words={W([["*مباشرة", 18.55]])} />
-    <Cut id="shake" src="handshake.png" w={1300} left={-110} top={1010} t={t} pose={(t) => {
-      const p = arrive(t, 16.3, 0.45, { y: 800 });
-      if (t > 16.75 && t < 17.17) p.y = (p.y ?? 0) + 18 * Math.sin(((t - 16.75) / 0.42) * Math.PI * 2) * (1 - (t - 16.75) / 0.42);
-      p.s = (p.s ?? 1) + punch(t, 18.55, 0.05);
-      return p;
-    }} />
-  </>
-);
-
-// ── L · يعزلك تماما عن منافسيك: the king among the pawns; on «يعزلك» the pawns are knocked out to both sides and
-//    «منافسيك» fills the background
-const PAWNS: [number, number, number][] = [[40, 1330, 190], [230, 1400, 170], [680, 1400, 170], [850, 1330, 190]];
-const L: React.FC<{ t: number }> = ({ t }) => (
-  <>
-    <div style={{ position: "absolute", left: -300, top: -300, width: 1680, height: 2520, zIndex: 1, overflow: "hidden", transform: "rotate(-11deg)", color: "rgba(255,255,255,.09)", fontFamily: "'DG Sahabah'", fontSize: 96, lineHeight: 1.45, whiteSpace: "nowrap", direction: "rtl", opacity: SOFT(clamp((t - 22.6) / 0.6)) }}>
-      {Array.from({ length: 18 }, (_, i) => <div key={i} style={{ marginRight: (i % 2) * 120 }}>{"منافسيك   ".repeat(4)}</div>)}
-    </div>
-    <Line t={t} top={300} size={100} out={21.6} words={W([["لأن", 19.09], ["ويانا", 19.65], ["راح", 20.21], ["يطلع", 20.43]])} />
-    <Line t={t} top={430} size={140} out={21.6} words={W([["إعلانك", 20.69], ["بمستوى", 21.13]])} />
-    <Line t={t} top={300} size={170} words={W([["يعزلك", 21.75], ["^تماما", 22.17]])} />
-    <Line t={t} top={520} size={110} dim words={W([["عن", 22.69], ["منافسيك", 22.77]])} />
-    {PAWNS.map(([x, y, w], i) => (
-      <Cut key={i} id={`pawn${i}`} src="chess-pawn.png" w={w} left={x} top={y} t={t} pose={(t) => arrive(t, 18.8 + i * 0.06, 0.6, { y: 600 }, {}, [21.75 + i * 0.05, { x: (i < 2 ? -1 : 1) * 760, y: -200, r: (i < 2 ? -1 : 1) * 120 }, 0.55])} />
-    ))}
-    <Cut id="king" src="chess-king.png" w={300} left={390} top={860} t={t} pose={(t) => { const p = arrive(t, 18.72, 0.7, { y: 700 }); p.s = (p.s ?? 1) + punch(t, 21.75, 0.06); return p; }} />
-  </>
-);
-
-// ── M · مرة ومرتين وعشرة: the words tilt in, a bag on each, then a pile; then the man with the binoculars looks at «براند»
-const BAG = ["bag-orange.png", "bag-black.png", "bag-blue.png", "bag-black2.png"];
-const PILE: [number, number][] = [[640, 1240], [170, 1260], [20, 1420], [330, 1470], [620, 1450], [840, 1360], [120, 1620], [470, 1640], [760, 1610], [280, 1730], [600, 1760], [900, 1700]];
-const M: React.FC<{ t: number }> = ({ t }) => (
-  <>
-    <Line t={t} top={300} size={100} out={24.72} words={W([["ويخلي", 23.57], ["الزبون", 23.93], ["يشتري", 24.27], ["منك", 24.63]])} />
-    <Line t={t} top={330} size={170} align="r" rot={-6} out={26.5} words={W([["مرة", 24.97]])} />
-    <Line t={t} top={520} size={170} align="l" rot={6} out={26.5} words={W([["ومرتين", 25.35]])} />
-    <Line t={t} top={740} size={260} rot={-3} out={26.5} words={W([["*وعشرة", 25.97]])} />
-    {PILE.map(([x, y], i) => {
-      const t0 = i === 0 ? 24.95 : i === 1 ? 25.33 : 25.95 + (i - 2) * 0.05;
-      return <Cut key={i} id={`bag${i}`} src={BAG[i % 4]} w={220 + (i % 3) * 30} left={x} top={y} t={t} pose={(t) => arrive(t, t0, 0.4, { y: -1500, r: (i % 2 ? 1 : -1) * 20 }, { r: Math.sin(i * 1.9) * 10 }, [26.45, { y: 900 }])} />;
-    })}
-    <Line t={t} top={520} size={110} align="r" words={W([["لأن", 26.67], ["شاف", 27.01]])} />
-    <Line t={t} top={640} size={230} align="r" words={W([["*براند", 27.21]])} />
-    <Line t={t} top={900} size={130} align="r" words={W([["حقيقي", 27.57], ["قدامه", 27.97]])} />
-    <Cut id="watcher" src="binoculars-man.png" w={540} left={0} top={440} t={t} pose={(t) => { const p = arrive(t, 26.6, 0.65, { y: 1000 }); p.y = (p.y ?? 0) - 24 * DRIFT(clamp((t - 27.3) / 1.2)); return p; }} />
-  </>
-);
-
-// ── O · the crowd walks past without looking; «توقف»: the stop hand comes up and the second crowd stops; «وتقفل»: the
-//    padlock drops and locks
-const O: React.FC<{ t: number }> = ({ t }) => (
-  <>
-    <Line t={t} top={300} size={110} out={30.6} words={W([["كافي", 28.55], ["تضيع", 28.93], ["جمهورك", 29.15]])} />
-    <Line t={t} top={440} size={140} out={30.6} words={W([["بتصاميم", 29.65], ["عادية", 30.15]])} />
-    <Line t={t} top={360} size={180} out={31.5} words={W([["الكل", 30.85], ["يتخطاها", 30.99]])} />
-    <Line t={t} top={360} size={170} out={32.45} words={W([["ابدأ", 31.63], ["اليوم", 32.05]])} />
-    <Line t={t} top={300} size={120} words={W([["بتصاميم", 32.51], ["*توقف", 33.09], ["الزبون", 33.51]])} />
-    <Line t={t} top={460} size={130} words={W([["وتقفل", 34.05], ["وياه", 34.61], ["البيعة", 34.85]])} />
-    <Cut id="crowd1" src="crowd.png" w={1000} left={0} top={1200} t={t} pose={(t) => (t < 28.8 || t > 32.0 ? { o: 0 } : { x: mv(t, 28.8, 3.2, 1100, -1100, (p) => p) })} />
-    <Cut id="crowd2" src="crowd2.png" w={960} left={0} top={1160} t={t} pose={(t) => {
-      if (t < 30.7 || t > 34.35) return { o: 0 };
-      const x = t < 33.05 ? mv(t, 30.7, 2.35, 1100, 260, (p) => p) : mv(t, 33.05, 0.3, 260, 200, (p) => 1 - (1 - p) * (1 - p));
-      return { x, y: t > 33.95 ? 900 * AWAY(clamp((t - 33.95) / 0.4)) : 0 };
-    }} />
-    <Cut id="stop" src="stop-hand.png" w={760} left={160} top={900} z={12} t={t} pose={(t) => arrive(t, 33.0, 0.35, { y: 900 }, {}, [33.95, { y: 900 }])} />
-    <Cut id="lock" src="padlock.png" w={330} left={375} top={760} t={t} pose={(t) => {
-      if (t < 34.05) return { o: 0 };
-      if (t < 34.37) return { y: lerp(-1300, 0, IN2(clamp((t - 34.05) / 0.32))) };
-      return { y: 14 * Math.sin(Math.PI * clamp((t - 34.37) / 0.3)) };
-    }} />
-  </>
-);
-
-// ── R · تواصل ويانا بالخاص، شوف أعمالنا، وخلي براندك يبيع صح: the receiver swings in; my reels come up on the phones and
-//    stay to the end; the handle
-const R: React.FC<{ t: number }> = ({ t }) => (
-  <>
-    <Line t={t} top={300} size={130} out={36.65} words={W([["تواصل", 35.53], ["ويانا", 35.81]])} />
-    <Line t={t} top={640} size={220} align="l" out={36.65} words={W([["*بالخاص", 36.09]])} />
-    <Cut id="recv" src="receiver.png" w={760} left={520} top={520} t={t} pose={(t) => { const p = arrive(t, 35.16, 0.7, { x: 700, r: 24 }, {}, [36.6, { x: 700, r: 20 }]); p.s = (p.s ?? 1) + punch(t, 36.09, 0.05); return p; }} />
-    <Line t={t} top={300} size={140} out={37.45} words={W([["شوف", 36.79], ["*أعمالنا", 36.99]])} />
-    <Line t={t} top={300} size={110} words={W([["وخلي", 37.53], ["براندك", 38.05], ["*يبيع", 38.71], ["صح", 39.07]])} />
-    {phone("phL2", 20, 960, 400, -10, 36.68, t, "logos-reel.mp4", 46.0, 36.5, 4.7)}
-    {phone("phR2", 660, 960, 400, 9, 36.8, t, "dollar-reel.mp4", 2.0, 36.5, 4.7)}
-    {phone("phC2", 290, 820, 500, -2, 36.92, t, "vizion-reel.mp4", 7.4, 36.5, 4.7)}
-    {t >= 39.55 && (
-      <div style={{ position: "absolute", left: 0, right: 0, top: 470, zIndex: 31, textAlign: "center", fontFamily: "'DG Sahabah'", fontSize: 100, color: "#fff", direction: "ltr", textShadow: "0 4px 16px rgba(80,25,0,.25)", transform: `scale(${bounce(t, 39.55)})` }}>@allawi.psd</div>
-    )}
-  </>
-);
-
-const SCENES: Record<string, React.FC<{ t: number }>> = { A, B, D: Dd, F, I, J, L, M, O, R };
-
-// the sounds: a pop on every word (the dark key words get the smoother pops), and the cues on the moves and hits
-const NPOP: [string, number][] = [["npop1", 0.24], ["npop2", 0.17], ["npop3", 0.2], ["npop4", 0.18], ["npop5", 0.24]];
-const PPOP: [string, number][] = [["ppop1", 0.19], ["ppop2", 0.13], ["ppop3", 0.17], ["ppop4", 0.13]];
-const WORDS: [number, boolean][] = [
-  [0, false], [0.56, false], [0.88, false], [1.38, false], [1.66, false], [2.1, true], [2.65, false], [2.91, true], [3.45, false], [3.73, false], [4.2, false], [4.73, false],
-  [5.25, false], [5.63, false], [6.09, false], [6.67, false], [7.09, true], [8.37, false], [8.61, true], [9.63, false], [10.03, false], [11.45, false], [11.83, true],
-  [12.67, false], [12.93, false], [13.35, false], [13.73, true], [14.47, false], [14.87, false], [15.09, false], [15.37, false], [15.79, true], [16.41, false], [16.69, true],
-  [17.55, false], [17.89, false], [18.23, false], [18.55, true], [19.09, false], [19.65, false], [20.21, false], [20.43, false], [20.69, false], [21.13, false], [21.75, false],
-  [22.17, false], [22.69, false], [22.77, false], [23.57, false], [23.93, false], [24.27, false], [24.63, false], [24.97, false], [25.35, false], [25.97, true], [26.67, false],
-  [27.01, false], [27.21, true], [27.57, false], [27.97, false], [28.55, false], [28.93, false], [29.15, false], [29.65, false], [30.15, false], [30.85, false], [30.99, false],
-  [31.63, false], [32.05, false], [32.51, false], [33.09, true], [33.51, false], [34.05, false], [34.61, false], [34.85, false], [35.53, false], [35.81, false], [36.09, true],
-  [36.79, false], [36.99, true], [37.53, false], [38.05, false], [38.71, true], [39.07, false],
-];
-const FX: [number, string, number][] = [
-  [0.05, "airy", 0.18], [2.1, "softpop", 0.3], [2.38, "flick", 0.24], [2.25, "smooth", 0.24], [3.08, "mpop", 0.22], [4.2, "simple", 0.18],
-  [4.85, "smooth", 0.24], [5.25, "whooshcon", 0.2], [6.06, "hit", 0.28], [6.5, "simple", 0.2], [7.39, "smooth", 0.24], [7.79, "select", 0.26],
-  [9.19, "select", 0.26], [10.77, "select", 0.26], [11.83, "money", 0.24], [12.27, "smooth", 0.24], [12.66, "gear", 0.2], [13.17, "hit", 0.26],
-  [14.07, "smooth", 0.24], [14.6, "airy", 0.2], [16.3, "simple", 0.2], [16.41, "cinclick", 0.28], [18.55, "cinclick", 0.32], [18.69, "smooth", 0.24],
-  [19.1, "sweet", 0.2], [21.75, "whooshcon", 0.22], [23.17, "smooth", 0.24], [25.97, "money", 0.28], [26.45, "simple", 0.2], [28.15, "smooth", 0.24],
-  [29.0, "data", 0.14], [33.0, "hit", 0.3], [33.95, "simple", 0.18], [34.37, "clickb", 0.34], [35.13, "smooth", 0.24], [35.2, "simple", 0.18],
-  [36.6, "softpop", 0.2], [36.74, "softpop", 0.18], [36.88, "softpop", 0.18], [39.55, "sweet", 0.28],
-];
 
 export const Reel: React.FC = () => {
   const frame = useCurrentFrame();
@@ -293,35 +418,37 @@ export const Reel: React.FC = () => {
     f.load().then((ff) => { document.fonts.add(ff); continueRender(handle); });
   }, [handle]);
   const t = stepped(frame);
-  const cam = camAt(t), cam0 = camAt(Math.max(0, t - SHUTTER));
-  const camBlur = Math.min(7, Math.abs(cam - cam0) / 11);
-  let ni = 0, pi = 0;
+  const cam = camAt(t), prev = camAt(Math.max(0, t - SHUTTER));
+  // the camera's motion blur: how far the middle of the frame travelled on screen during the shutter, plus the zoom
+  const [px, py] = toScreen(prev, cam.cx, cam.cy);
+  const zoomBlur = Math.abs(Math.log(cam.z / prev.z)) * 260 + Math.abs(cam.r - prev.r) * 6;
+  const bx = Math.min(22, Math.abs(px - 540) / 4 + zoomBlur), by = Math.min(22, Math.abs(py - 960) / 4 + zoomBlur);
+  const world = `translate(540px, 960px) scale(${cam.z}) rotate(${-cam.r}deg) translate(${-cam.cx}px, ${-cam.cy}px)`;
   return (
     <AbsoluteFill style={{ background: "#e2541b", overflow: "hidden" }}>
-      <AbsoluteFill style={{ background: "radial-gradient(110% 65% at 20% 6%, #f58a45 0%, rgba(245,138,69,0) 62%), linear-gradient(170deg, #f07a2e 0%, #e9631f 46%, #e2541b 100%)" }} />
-      <AbsoluteFill style={{ background: `url(${staticFile("img/paper.jpg")}) center/cover`, mixBlendMode: "multiply", opacity: 0.16 }} />
+      <Back cam={cam} />
       <svg width={0} height={0} style={{ position: "absolute" }}>
-        <filter id="cam" x="-5%" y="0" width="110%" height="100%" colorInterpolationFilters="sRGB"><feGaussianBlur stdDeviation={`${camBlur.toFixed(2)} 0`} /></filter>
+        <filter id="cam" x="-5%" y="-5%" width="110%" height="110%" colorInterpolationFilters="sRGB"><feGaussianBlur stdDeviation={`${bx.toFixed(2)} ${by.toFixed(2)}`} /></filter>
       </svg>
-      <div style={{ position: "absolute", left: 0, top: 0, width: GAP * BEATS.length, height: 1920, transform: `translateX(${-cam}px)`, filter: camBlur > 0.3 ? "url(#cam)" : undefined }}>
-        {BEATS.map((id, i) => {
-          if (Math.abs(cam - beatX(i)) > GAP + 200) return null;
-          const S = SCENES[id];
-          return (
-            <div key={id} style={{ position: "absolute", left: beatX(i), top: 0, width: 1080, height: 1920 }}>
-              <S t={t} />
-            </div>
-          );
-        })}
-      </div>
-      <div style={{ position: "absolute", top: 190, right: 56, zIndex: 60, fontFamily: "'DG Sahabah'", fontSize: 34, color: "rgba(255,255,255,.9)", direction: "ltr", opacity: 1 - clamp((t - 39.4) / 0.3) }}>@allawi.psd</div>
+      <AbsoluteFill style={{ filter: bx + by > 0.8 ? "url(#cam)" : undefined }}>
+        <div style={{ position: "absolute", left: 0, top: 0, width: 0, height: 0, transformOrigin: "0 0", transform: world }}>
+          {SHOTS.map((S) => {
+            if (t < S.a - 0.45 || t > S.b + 0.45 || !visible(cam, S)) return null;
+            const C = SCENES[S.id];
+            const clip = (S.id === "D1" && t < 5.47) || (S.id === "I" && t < 12.89);
+            return (
+              <div key={S.id} style={{ position: "absolute", left: S.cx - 540, top: S.cy - 960, width: 1080, height: 1920, transformOrigin: "540px 960px", transform: `rotate(${S.r}deg) scale(${S.s})`, overflow: clip ? "hidden" : "visible" }}>
+                <Par.Provider value={parOf(cam, S)}>
+                  <C t={t} />
+                </Par.Provider>
+              </div>
+            );
+          })}
+        </div>
+      </AbsoluteFill>
+      <div style={{ position: "absolute", top: 190, right: 56, zIndex: 60, fontFamily: FONT, fontSize: 34, color: "rgba(255,255,255,.9)", direction: "ltr", opacity: t > 39.4 ? 0 : 1 }}>@allawi.psd</div>
       <AbsoluteFill style={{ background: `url(${staticFile("img/grain.png")}) 0 0/420px`, mixBlendMode: "overlay", opacity: 0.05, pointerEvents: "none" }} />
-      <Audio src={staticFile("voice.wav")} />
-      {WORDS.map(([wt, key], i) => {
-        const [n, v] = key ? PPOP[pi++ % 4] : NPOP[ni++ % 5];
-        return <Sequence key={"w" + i} from={Math.round((wt + 0.02) * FPS)} layout="none"><Audio src={staticFile(`sfx/${n}.wav`)} volume={v} /></Sequence>;
-      })}
-      {FX.map(([ft, n, v], i) => <Sequence key={"f" + i} from={Math.round(ft * FPS)} layout="none"><Audio src={staticFile(`sfx/${n}.wav`)} volume={v} /></Sequence>)}
+      <Sound />
     </AbsoluteFill>
   );
 };
