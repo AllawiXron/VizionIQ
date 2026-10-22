@@ -57,7 +57,7 @@
   // the camera of every shot, in the After Effects project's units: «from» is where the inner null starts and settles
   // from, «drift» the slow moves in between, «exit» the outer null's move into the cut
   const RIG = {
-    A: { from: [0, 0, 200], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
+    A: { from: [0, 0, 70], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
     B: { from: [-200, 0, 0], settle: 1.2, exit: [[0, 0, -119], 0.5] },
     C: { from: [0, 0, 220], settle: 0.8, exit: [[0, -378, 0], 0.4] },
     D: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 220], 0.5] },
@@ -258,7 +258,7 @@
       tl.totalTime(q, false);
       mov.forEach((m, i) => {
         const [x1, y1, z1] = box(m), [x0, y0, z0] = before[i];
-        const sx = Math.min(70, Math.abs(x1 - x0) / 2.5 + Math.abs(z1 - z0) / 6), sy = Math.min(70, Math.abs(y1 - y0) / 2.5 + Math.abs(z1 - z0) / 6);
+        const sx = Math.min(70, Math.abs(x1 - x0) / 2.5 + Math.abs(z1 - z0) / 16), sy = Math.min(70, Math.abs(y1 - y0) / 2.5 + Math.abs(z1 - z0) / 16);
         const on = sx + sy > 0.6;
         m.wrap.style.filter = on ? `url(#${m.id})` : 'none';
         if (on) m.f.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
@@ -268,7 +268,7 @@
       s.world.style.transform = `translate(${(x * 0.35).toFixed(2)}px, ${(y * 0.35).toFixed(2)}px) scale(${(1 + (k - 1) * 0.35).toFixed(4)})`;
       const near = cuts.reduce((m, c) => Math.min(m, Math.abs(q - c)), 9);
       const f = near < FLASH[0] ? FLASH[1] * (1 - near / FLASH[0]) : 0;
-      const sx = Math.min(80, Math.abs(x - x0) / 2.5 + Math.abs(k - k0) * 180) + f, sy = Math.min(80, Math.abs(y - y0) / 2.5 + Math.abs(k - k0) * 320) + f;
+      const sx = Math.min(80, Math.abs(x - x0) / 2.5 + Math.abs(k - k0) * 110) + f, sy = Math.min(80, Math.abs(y - y0) / 2.5 + Math.abs(k - k0) * 190) + f;
       mb.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
     };
     const clock = { now: 0 };
