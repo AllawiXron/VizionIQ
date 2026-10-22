@@ -81,6 +81,9 @@ These are the defaults Claude reaches for when it designs with code. Each one al
   round caps). Emoji as icons. Check and cross glyph pairs for right/wrong.
 - Get icons from the user's hand drawing, a licensed set the user picks, or trace real objects. Never draw a set of
   icons from basic shapes.
+- Icon sets the user picked (22 Oct): Streamline Ultimate Bold Free, Icons8 iOS Glyphs, and a free Figma community
+  pack (1800 icons). Their downloads need the user's account (Icons8 gives free PNGs only, SVG is paid), so list the
+  exact icons needed and ask the user to export them as SVG; credit each set in the caption as its licence asks.
 
 **Diagrams**
 - Diagonal hatching for zones, dashed outlines, thin boxes joined by arrows, grey wireframe bars with a crossed image
