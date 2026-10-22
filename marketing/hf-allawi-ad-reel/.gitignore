@@ -1,0 +1,6 @@
+assets/clips/*.mp4
+renders/*.mp4
+renders/work-*/
+renders/.*-transaction-*/
+.hyperframes/
+assets/voice*
