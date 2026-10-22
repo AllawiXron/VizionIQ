@@ -150,8 +150,12 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 
 ## Reference projects (start from these; copy their structure and look)
 
-- Reel: `marketing/hf-one-second-reel` (HyperFrames, the current standard: one-take camera over paper sheets, word
-  pops with sound, highlighter pen, real voice-over fitted to captions). Its README explains every part.
+- Reel motion (22 Oct, the standard from now on): `marketing/hf-simple-logos-reel`, built on an After Effects project
+  the user sent. A camera per shot that lands fast and settles, then speeds into a hard cut with a 0.3 s blur pulse;
+  letters out of a blur one at a time; Smart Bounce pop-ins; motion blur on the camera and on every moving object;
+  the frame stepping at 15 fps (the user liked 12 but found it laggy on a 30 fps video). Its README gives every number.
+- Earlier reel standard: `marketing/hf-one-second-reel` (HyperFrames: one-take camera over paper sheets, word pops
+  with sound, highlighter pen, real voice-over fitted to captions). Its README explains every part.
 - Collage reel: `marketing/hf-dollar-reel`. Photo post: `marketing/ig-diy-haircut`. Collage post and story:
   `marketing/ig-voice-casting`. Highlights: `marketing/ig-highlights`.
 - Full style description (for another AI too): `marketing/gemini-style-prompt.md`.
