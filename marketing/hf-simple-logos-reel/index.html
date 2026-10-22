@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>allawi.psd · simple logos (reel)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+@font-face { font-family:'DG Sahabah'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
+/* the reference's grammar in my colours: words out of a sideways blur, one hero object with a deep shadow and a slow
+   push, things bursting in from the corners, whips with motion blur, a hard cut into the next colour world */
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
+#root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
+.sc { position:absolute; inset:0; overflow:hidden }
+.world { position:absolute; inset:-60px }
+.world::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38 }
+.lt { position:absolute; border-radius:50%; filter:blur(110px) }
+.brown { background:#2a1a12 }
+.red { background:#7a0b17 }
+#fx { position:absolute; inset:0; pointer-events:none; z-index:50 }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07 }
+#vig { position:absolute; inset:0; box-shadow:inset 0 0 260px 60px rgba(0,0,0,.55) }
+
+.cap { position:absolute; left:60px; right:60px; text-align:center; white-space:nowrap; z-index:20; text-shadow:0 6px 18px rgba(0,0,0,.45) }
+.w { display:inline-block; opacity:0 }
+.k { color:#f08a4b }
+.obj { position:absolute; z-index:10; transform-origin:50% 60% }
+.obj img { display:block; width:100%; filter:drop-shadow(0 40px 36px rgba(0,0,0,.55)) drop-shadow(0 8px 8px rgba(0,0,0,.35)) }
+.logo { position:absolute; z-index:12 }
+.logo img { display:block; width:100%; filter:drop-shadow(0 24px 30px rgba(0,0,0,.5)) }
+.print { position:absolute; z-index:9; padding:10px; background:#efe7d8; box-shadow:0 26px 40px rgba(0,0,0,.55) }
+.print div { width:100%; height:100%; background-size:cover; background-position:center; filter:sepia(.15) }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11.2" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="11.2" data-track-index="0" style="position:absolute; inset:0">
+
+        <!-- A · the hook -->
+        <div class="sc" id="sA">
+          <div class="world brown"><i class="lt" style="left:160px; top:560px; width:900px; height:800px; background:rgba(214,140,80,.32)"></i></div>
+          <div class="cap" id="cA1" style="top:520px; font-size:104px"><span class="w">أي</span> <span class="w">طفل</span> <span class="w">يقدر</span> <span class="w">يرسم</span></div>
+          <div class="cap" id="cA2" style="top:660px; font-size:116px"><span class="w">أشهر</span> <span class="w k">الشعارات</span> <span class="w">بالعالم</span></div>
+          <div class="logo" id="lgApple" style="left:420px; top:960px; width:240px"><img src="assets/logos/apple.svg" style="filter:invert(1) drop-shadow(0 24px 30px rgba(0,0,0,.5))" /></div>
+          <div class="logo" id="lgShell" style="left:130px; top:1080px; width:200px"><img src="assets/logos/shell.svg" /></div>
+          <div class="logo" id="lgCroc" style="left:720px; top:1140px; width:250px"><img src="assets/logos/lacoste-croc.svg" style="filter:brightness(0) invert(.94) drop-shadow(0 20px 24px rgba(0,0,0,.5))" /></div>
+        </div>
+
+        <!-- B · تفاحة، تمساح، صدفة، ثور: one hero after another -->
+        <div class="sc" id="sB">
+          <div class="world brown"><i class="lt" style="left:100px; top:700px; width:960px; height:900px; background:rgba(214,140,80,.36)"></i></div>
+          <div class="cap" id="cB" style="top:430px; font-size:100px"><span class="w">تفاحة،</span> <span class="w">تمساح،</span> <span class="w">صدفة،</span> <span class="w k">ثور</span></div>
+          <div class="cap" id="cC" style="top:430px; font-size:100px"><span class="w">أشياء</span> <span class="w">تشوفها</span> <span class="w">كل</span> <span class="w k">يوم</span></div>
+          <div class="obj" id="oApple" style="left:270px; top:720px; width:540px"><img src="assets/obj/apple.png" /></div>
+          <div class="obj" id="oCroc" style="left:120px; top:760px; width:900px"><img src="assets/obj/croc.png" /></div>
+          <div class="obj" id="oShell" style="left:250px; top:760px; width:580px"><img src="assets/obj/shell.png" /></div>
+          <div class="obj" id="oBull" style="left:200px; top:760px; width:680px"><img src="assets/obj/bull.png" /></div>
+          <!-- the corner burst around the bull -->
+          <div class="obj" id="cApple" style="left:70px; top:640px; width:230px"><img src="assets/obj/apple.png" /></div>
+          <div class="obj" id="cShell" style="left:780px; top:640px; width:230px"><img src="assets/obj/shell.png" /></div>
+          <div class="obj" id="cCroc" style="left:40px; top:1330px; width:380px"><img src="assets/obj/croc.png" /></div>
+          <div class="print" id="cPrint" style="left:640px; top:1300px; width:220px; height:320px; transform:rotate(6deg)"><div style="background-image:url(assets/obj/mermaid.jpg)"></div></div>
+        </div>
+
+        <!-- D · a hard cut into the red world: the logo drops in with its echoes -->
+        <div class="sc" id="sD">
+          <div class="world red"><i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.6)"></i><i class="lt" style="left:500px; top:1300px; width:700px; height:600px; background:rgba(40,0,6,.7)"></i></div>
+          <div class="cap" id="cD1" style="top:420px; font-size:104px"><span class="w">بس</span> <span class="w">ليش</span> <span class="w">هاي</span> <span class="w">صارت</span></div>
+          <div class="cap" id="cD2" style="top:560px; font-size:120px"><span class="w">شعارات</span> <span class="w">ما</span> <span class="w k">تنسى</span></div>
+          <div id="drop" style="position:absolute; left:340px; top:880px; width:400px; z-index:12"></div>
+        </div>
+      </div>
+      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+      <audio id="voice" src="assets/voice.wav" data-start="0" data-duration="11.2" data-track-index="9" data-volume="1"></audio>
+      <audio id="a0-npop1" src="assets/sfx/npop1.wav" data-start="0.02" data-duration="0.16" data-track-index="10" data-volume="0.26"></audio>
+      <audio id="a1-npop2" src="assets/sfx/npop2.wav" data-start="0.26" data-duration="0.18" data-track-index="11" data-volume="0.18"></audio>
+      <audio id="a2-npop3" src="assets/sfx/npop3.wav" data-start="0.90" data-duration="0.17" data-track-index="12" data-volume="0.22"></audio>
+      <audio id="a3-npop4" src="assets/sfx/npop4.wav" data-start="1.32" data-duration="0.16" data-track-index="13" data-volume="0.2"></audio>
+      <audio id="a4-npop5" src="assets/sfx/npop5.wav" data-start="1.68" data-duration="0.15" data-track-index="14" data-volume="0.26"></audio>
+      <audio id="a5-mpop" src="assets/sfx/mpop.wav" data-start="2.10" data-duration="1.25" data-track-index="15" data-volume="0.32"></audio>
+      <audio id="a6-ppop1" src="assets/sfx/ppop1.wav" data-start="2.12" data-duration="0.3" data-track-index="16" data-volume="0.2"></audio>
+      <audio id="a7-softpop" src="assets/sfx/softpop.wav" data-start="2.42" data-duration="0.72" data-track-index="17" data-volume="0.3"></audio>
+      <audio id="a8-npop1" src="assets/sfx/npop1.wav" data-start="2.70" data-duration="0.16" data-track-index="18" data-volume="0.26"></audio>
+      <audio id="a9-softpop" src="assets/sfx/softpop.wav" data-start="2.76" data-duration="0.72" data-track-index="19" data-volume="0.26"></audio>
+      <audio id="a10-flick" src="assets/sfx/flick.wav" data-start="3.16" data-duration="0.552" data-track-index="20" data-volume="0.32"></audio>
+      <audio id="a11-npop2" src="assets/sfx/npop2.wav" data-start="3.46" data-duration="0.18" data-track-index="21" data-volume="0.18"></audio>
+      <audio id="a12-flick" src="assets/sfx/flick.wav" data-start="4.22" data-duration="0.552" data-track-index="22" data-volume="0.26"></audio>
+      <audio id="a13-npop3" src="assets/sfx/npop3.wav" data-start="4.48" data-duration="0.17" data-track-index="23" data-volume="0.22"></audio>
+      <audio id="a14-flick" src="assets/sfx/flick.wav" data-start="5.06" data-duration="0.552" data-track-index="24" data-volume="0.26"></audio>
+      <audio id="a15-npop4" src="assets/sfx/npop4.wav" data-start="5.32" data-duration="0.16" data-track-index="25" data-volume="0.2"></audio>
+      <audio id="a16-flick" src="assets/sfx/flick.wav" data-start="5.76" data-duration="0.552" data-track-index="26" data-volume="0.26"></audio>
+      <audio id="a17-ppop2" src="assets/sfx/ppop2.wav" data-start="6.02" data-duration="0.4" data-track-index="27" data-volume="0.14"></audio>
+      <audio id="a18-npop5" src="assets/sfx/npop5.wav" data-start="6.64" data-duration="0.15" data-track-index="28" data-volume="0.26"></audio>
+      <audio id="a19-softpop" src="assets/sfx/softpop.wav" data-start="6.66" data-duration="0.72" data-track-index="29" data-volume="0.2"></audio>
+      <audio id="a20-softpop" src="assets/sfx/softpop.wav" data-start="6.84" data-duration="0.72" data-track-index="30" data-volume="0.2"></audio>
+      <audio id="a21-softpop" src="assets/sfx/softpop.wav" data-start="7.02" data-duration="0.72" data-track-index="31" data-volume="0.2"></audio>
+      <audio id="a22-npop1" src="assets/sfx/npop1.wav" data-start="7.16" data-duration="0.16" data-track-index="32" data-volume="0.26"></audio>
+      <audio id="a23-softpop" src="assets/sfx/softpop.wav" data-start="7.20" data-duration="0.72" data-track-index="33" data-volume="0.2"></audio>
+      <audio id="a24-npop2" src="assets/sfx/npop2.wav" data-start="7.58" data-duration="0.18" data-track-index="34" data-volume="0.18"></audio>
+      <audio id="a25-ppop3" src="assets/sfx/ppop3.wav" data-start="7.78" data-duration="0.38" data-track-index="35" data-volume="0.18"></audio>
+      <audio id="a26-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="8.26" data-duration="2.616" data-track-index="36" data-volume="0.2"></audio>
+      <audio id="a27-cinclick" src="assets/sfx/cinclick.wav" data-start="8.30" data-duration="0.094" data-track-index="37" data-volume="0.4"></audio>
+      <audio id="a28-npop3" src="assets/sfx/npop3.wav" data-start="8.34" data-duration="0.17" data-track-index="38" data-volume="0.22"></audio>
+      <audio id="a29-npop4" src="assets/sfx/npop4.wav" data-start="8.66" data-duration="0.16" data-track-index="39" data-volume="0.2"></audio>
+      <audio id="a30-cinclick" src="assets/sfx/cinclick.wav" data-start="8.86" data-duration="0.094" data-track-index="40" data-volume="0.25"></audio>
+      <audio id="a31-mpop" src="assets/sfx/mpop.wav" data-start="8.86" data-duration="1.25" data-track-index="41" data-volume="0.36"></audio>
+      <audio id="a32-npop5" src="assets/sfx/npop5.wav" data-start="8.90" data-duration="0.15" data-track-index="42" data-volume="0.26"></audio>
+      <audio id="a33-npop1" src="assets/sfx/npop1.wav" data-start="9.06" data-duration="0.16" data-track-index="43" data-volume="0.26"></audio>
+      <audio id="a34-npop2" src="assets/sfx/npop2.wav" data-start="9.40" data-duration="0.18" data-track-index="44" data-volume="0.18"></audio>
+      <audio id="a35-npop3" src="assets/sfx/npop3.wav" data-start="9.96" data-duration="0.17" data-track-index="45" data-volume="0.22"></audio>
+      <audio id="a36-ppop4" src="assets/sfx/ppop4.wav" data-start="10.14" data-duration="0.4" data-track-index="46" data-volume="0.14"></audio>
+    </div>
+    <script>
+// The reel's motion, copied move for move from the reference reel: words come out of a sideways blur one by one, the
+// hero object holds the centre with a deep shadow and a slow push, objects burst in from the corners with an overshoot,
+// whips carry a motion blur, and a hard cut lands the next colour world with a logo that drops in trailing its echoes.
+// Every cue sits on a word of the voice (faster-whisper word times); build.py reads T for the sounds.
+(function () {
+  const D = 11.2;
+  const T = {
+    a1: [0.0, 0.24, 0.88, 1.3], a2: [1.66, 2.1, 2.68], logos: [2.1, 2.42, 2.76], whipAB: 3.24,
+    b: [3.44, 4.46, 5.3, 6.0], swaps: [4.46, 5.3, 6.0],
+    bOut: 6.48, c: [6.62, 7.14, 7.56, 7.76], burst: [6.66, 6.84, 7.02, 7.2],
+    cut: 8.3, drop: 8.36, d1: [8.32, 8.64, 8.88, 9.04], d2: [9.38, 9.94, 10.12],
+  };
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
+
+  function build() {
+    const tl = gsap.timeline({ paused: true });
+    // a word slides in from the reading side out of a blur, with a small pop
+    const word = (w, t) => {
+      tl.fromTo(w, { opacity: 0, x: -46, filter: 'blur(14px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.32, ease: 'power3.out' }, t);
+      tl.fromTo(w, { scale: 0.86 }, { scale: 1, duration: 0.34, ease: 'back.out(2.2)' }, t);
+    };
+    const words = (sel, times) => $$(sel + ' .w').forEach((w, i) => word(w, times[i]));
+    const out = (sel, t) => tl.to(sel, { opacity: 0, y: -40, filter: 'blur(16px)', duration: 0.22, ease: 'power2.in' }, t);
+    // the hero's slow push and drift while it holds
+    const hold = (sel, t0, t1, r = 2) => tl.fromTo(sel, { scale: 1, rotation: -r / 2 }, { scale: 1.07, rotation: r / 2, duration: t1 - t0, ease: 'none' }, t0);
+    // a whip: out to the left with a smear, in from the right with a smear and a little overshoot in rotation
+    const whipOut = (sel, t) => tl.to(sel, { x: -980, filter: 'blur(26px)', duration: 0.2, ease: 'power2.in' }, t - 0.2);
+    const whipIn = (sel, t) => {
+      tl.fromTo(sel, { x: 980, opacity: 1, rotation: 9, filter: 'blur(26px)' }, { x: 0, rotation: 0, filter: 'blur(0px)', duration: 0.36, ease: 'power3.out' }, t - 0.04);
+    };
+    // scenes on and off
+    gsap.set(['#sB', '#sD'], { autoAlpha: 0 });
+    gsap.set('.obj, .print, .logo', { opacity: 0 });
+
+    // ── A · the hook
+    words('#cA1', T.a1);
+    words('#cA2', T.a2);
+    ['#lgApple', '#lgShell', '#lgCroc'].forEach((s, i) => {
+      tl.fromTo(s, { opacity: 0, scale: 0.2, y: 60, filter: 'blur(10px)' }, { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)', duration: 0.42, ease: 'back.out(2.4)' }, T.logos[i]);
+      tl.to(s, { y: i % 2 ? 10 : -10, rotation: i % 2 ? -3 : 3, duration: T.whipAB - T.logos[i], ease: 'sine.inOut' }, T.logos[i] + 0.42);
+    });
+    tl.fromTo('#sA .world', { scale: 1 }, { scale: 1.08, duration: T.whipAB, ease: 'none' }, 0);
+    // whip into B: the whole frame smears left, B comes in from the right
+    tl.to('#sA', { x: -1100, filter: 'blur(34px)', duration: 0.24, ease: 'power2.in' }, T.whipAB);
+    tl.set('#sA', { autoAlpha: 0 }, T.whipAB + 0.24);
+    tl.set('#sB', { autoAlpha: 1 }, T.whipAB + 0.1);
+    tl.fromTo('#sB', { x: 1100, filter: 'blur(34px)' }, { x: 0, filter: 'blur(0px)', duration: 0.34, ease: 'power3.out' }, T.whipAB + 0.1);
+
+    // ── B · one hero per word
+    words('#cB', T.b);
+    const heroes = ['#oApple', '#oCroc', '#oShell', '#oBull'];
+    tl.set('#oApple', { opacity: 1 }, T.whipAB + 0.1);
+    hold('#oApple img', T.b[0], T.swaps[0]);
+    heroes.slice(1).forEach((s, i) => {
+      const t = T.swaps[i];
+      whipOut(heroes[i], t);
+      tl.set(heroes[i], { opacity: 0 }, t);
+      whipIn(s, t);
+      hold(s + ' img', t, i === 2 ? T.cut : T.swaps[i + 1], 2.5);
+    });
+
+    // ── C · «أشياء تشوفها كل يوم»: the line swaps, the others burst in around the bull
+    out('#cB', T.bOut);
+    words('#cC', T.c);
+    const corners = [['#cApple', -260, -220, -14], ['#cShell', 260, -220, 12], ['#cCroc', -300, 260, -8], ['#cPrint', 280, 260, 6]];
+    corners.forEach(([s, dx, dy, r], i) => {
+      tl.fromTo(s, { opacity: 0, x: dx, y: dy, scale: 0.3, rotation: r * 3, filter: 'blur(14px)' },
+        { opacity: 1, x: 0, y: 0, scale: 1, rotation: r, filter: 'blur(0px)', duration: 0.5, ease: 'back.out(2)' }, T.burst[i]);
+      tl.to(s, { y: (i % 2 ? 1 : -1) * 14, duration: T.cut - T.burst[i] - 0.5, ease: 'sine.inOut' }, T.burst[i] + 0.5);
+    });
+    tl.to('#oBull', { scale: 0.86, y: 40, duration: 0.5, ease: 'power3.out' }, T.burst[0]);
+
+    // ── D · hard cut into the red world, a punch-in out of a blur, and the logo drops in trailing its echoes
+    tl.set('#sB', { autoAlpha: 0 }, T.cut);
+    tl.set('#sD', { autoAlpha: 1 }, T.cut);
+    tl.fromTo('#sD', { scale: 1.16, filter: 'blur(18px)' }, { scale: 1, filter: 'blur(0px)', duration: 0.34, ease: 'power3.out' }, T.cut);
+    words('#cD1', T.d1);
+    words('#cD2', T.d2);
+    const drop = $('#drop');
+    const ECHO = [1, 0.5, 0.32, 0.2, 0.1];
+    ECHO.forEach((o, k) => {
+      const im = document.createElement('img');
+      im.src = 'assets/logos/apple.svg';
+      im.style.cssText = `position:absolute; left:0; top:0; width:100%; filter:invert(1) drop-shadow(0 30px 34px rgba(0,0,0,.5)); z-index:${10 - k}`;
+      drop.appendChild(im);
+      tl.fromTo(im, { y: -1300, opacity: 0 }, { y: 0, opacity: o, duration: 0.5, ease: 'power4.out' }, T.drop + k * 0.05);
+      if (k) tl.to(im, { opacity: 0, duration: 0.25, ease: 'power1.out' }, T.drop + 0.5 + k * 0.05);
+    });
+    const main = drop.firstChild;
+    tl.to(main, { scaleY: 0.9, scaleX: 1.06, transformOrigin: '50% 100%', duration: 0.08, ease: 'power2.out' }, T.drop + 0.5);
+    tl.to(main, { scaleY: 1, scaleX: 1, duration: 0.4, ease: 'back.out(3)' }, T.drop + 0.58);
+    tl.fromTo('#drop', { scale: 1 }, { scale: 1.08, duration: D - T.drop - 0.9, ease: 'none' }, T.drop + 0.9);
+    tl.fromTo('#sD .world', { scale: 1 }, { scale: 1.06, duration: D - T.cut, ease: 'none' }, T.cut);
+
+    tl.to({}, { duration: D }, 0);
+    window.__timelines = window.__timelines || {};
+    window.__timelines['main'] = tl;
+  }
+  document.fonts.ready.then(build);
+})();
+    </script>
+  </body>
+</html>

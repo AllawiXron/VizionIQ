@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>allawi.psd · simple logos (reel)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+@font-face { font-family:'DG Sahabah'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
+/* the reference's grammar in my colours: words out of a sideways blur, one hero object with a deep shadow and a slow
+   push, things bursting in from the corners, whips with motion blur, a hard cut into the next colour world */
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
+#root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
+.sc { position:absolute; inset:0; overflow:hidden }
+.world { position:absolute; inset:-60px }
+.world::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38 }
+.lt { position:absolute; border-radius:50%; filter:blur(110px) }
+.brown { background:#2a1a12 }
+.red { background:#7a0b17 }
+#fx { position:absolute; inset:0; pointer-events:none; z-index:50 }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07 }
+#vig { position:absolute; inset:0; box-shadow:inset 0 0 260px 60px rgba(0,0,0,.55) }
+
+.cap { position:absolute; left:60px; right:60px; text-align:center; white-space:nowrap; z-index:20; text-shadow:0 6px 18px rgba(0,0,0,.45) }
+.w { display:inline-block; opacity:0 }
+.k { color:#f08a4b }
+.obj { position:absolute; z-index:10; transform-origin:50% 60% }
+.obj img { display:block; width:100%; filter:drop-shadow(0 40px 36px rgba(0,0,0,.55)) drop-shadow(0 8px 8px rgba(0,0,0,.35)) }
+.logo { position:absolute; z-index:12 }
+.logo img { display:block; width:100%; filter:drop-shadow(0 24px 30px rgba(0,0,0,.5)) }
+.print { position:absolute; z-index:9; padding:10px; background:#efe7d8; box-shadow:0 26px 40px rgba(0,0,0,.55) }
+.print div { width:100%; height:100%; background-size:cover; background-position:center; filter:sepia(.15) }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="__D__" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="__D__" data-track-index="0" style="position:absolute; inset:0">
+
+        <!-- A · the hook -->
+        <div class="sc" id="sA">
+          <div class="world brown"><i class="lt" style="left:160px; top:560px; width:900px; height:800px; background:rgba(214,140,80,.32)"></i></div>
+          <div class="cap" id="cA1" style="top:520px; font-size:104px"><span class="w">أي</span> <span class="w">طفل</span> <span class="w">يقدر</span> <span class="w">يرسم</span></div>
+          <div class="cap" id="cA2" style="top:660px; font-size:116px"><span class="w">أشهر</span> <span class="w k">الشعارات</span> <span class="w">بالعالم</span></div>
+          <div class="logo" id="lgApple" style="left:420px; top:960px; width:240px"><img src="assets/logos/apple.svg" style="filter:invert(1) drop-shadow(0 24px 30px rgba(0,0,0,.5))" /></div>
+          <div class="logo" id="lgShell" style="left:130px; top:1080px; width:200px"><img src="assets/logos/shell.svg" /></div>
+          <div class="logo" id="lgCroc" style="left:720px; top:1140px; width:250px"><img src="assets/logos/lacoste-croc.svg" style="filter:brightness(0) invert(.94) drop-shadow(0 20px 24px rgba(0,0,0,.5))" /></div>
+        </div>
+
+        <!-- B · تفاحة، تمساح، صدفة، ثور: one hero after another -->
+        <div class="sc" id="sB">
+          <div class="world brown"><i class="lt" style="left:100px; top:700px; width:960px; height:900px; background:rgba(214,140,80,.36)"></i></div>
+          <div class="cap" id="cB" style="top:430px; font-size:100px"><span class="w">تفاحة،</span> <span class="w">تمساح،</span> <span class="w">صدفة،</span> <span class="w k">ثور</span></div>
+          <div class="cap" id="cC" style="top:430px; font-size:100px"><span class="w">أشياء</span> <span class="w">تشوفها</span> <span class="w">كل</span> <span class="w k">يوم</span></div>
+          <div class="obj" id="oApple" style="left:270px; top:720px; width:540px"><img src="assets/obj/apple.png" /></div>
+          <div class="obj" id="oCroc" style="left:120px; top:760px; width:900px"><img src="assets/obj/croc.png" /></div>
+          <div class="obj" id="oShell" style="left:250px; top:760px; width:580px"><img src="assets/obj/shell.png" /></div>
+          <div class="obj" id="oBull" style="left:200px; top:760px; width:680px"><img src="assets/obj/bull.png" /></div>
+          <!-- the corner burst around the bull -->
+          <div class="obj" id="cApple" style="left:70px; top:640px; width:230px"><img src="assets/obj/apple.png" /></div>
+          <div class="obj" id="cShell" style="left:780px; top:640px; width:230px"><img src="assets/obj/shell.png" /></div>
+          <div class="obj" id="cCroc" style="left:40px; top:1330px; width:380px"><img src="assets/obj/croc.png" /></div>
+          <div class="print" id="cPrint" style="left:640px; top:1300px; width:220px; height:320px; transform:rotate(6deg)"><div style="background-image:url(assets/obj/mermaid.jpg)"></div></div>
+        </div>
+
+        <!-- D · a hard cut into the red world: the logo drops in with its echoes -->
+        <div class="sc" id="sD">
+          <div class="world red"><i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.6)"></i><i class="lt" style="left:500px; top:1300px; width:700px; height:600px; background:rgba(40,0,6,.7)"></i></div>
+          <div class="cap" id="cD1" style="top:420px; font-size:104px"><span class="w">بس</span> <span class="w">ليش</span> <span class="w">هاي</span> <span class="w">صارت</span></div>
+          <div class="cap" id="cD2" style="top:560px; font-size:120px"><span class="w">شعارات</span> <span class="w">ما</span> <span class="w k">تنسى</span></div>
+          <div id="drop" style="position:absolute; left:340px; top:880px; width:400px; z-index:12"></div>
+        </div>
+      </div>
+      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+<!--AUDIO-->
+    </div>
+    <script>
+/*TIMELINE*/
+    </script>
+  </body>
+</html>

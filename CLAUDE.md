@@ -145,7 +145,8 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 - Run the file scan in section 1 and the copy checks in section 3 (a script over the rendered text is fine).
 - Look at one contact sheet of the whole piece and ask: could this be from any account or any model? Would a
   designer spot the habits in section 2? If yes, rework those slides before showing the user.
-- Leave out anything made with AI image generators (ChatGPT, Gemini, Midjourney and the like).
+- Leave out anything made with AI image generators (ChatGPT, Gemini, Midjourney and the like), except custom elements the
+  user generates in Gemini on request (22 Oct); strip their metadata like any other image.
 
 ## Reference projects (start from these; copy their structure and look)
 
@@ -196,8 +197,12 @@ It has no «چ» or «گ»: write «ج» on screen («هيج», «حجي») and 
 Keep the grain light (overlay about .07, not moving every frame) and encode at about 10 Mbps: at .32 the user said the
 reel "looks grainy" (15 Oct). For "premium PNG" props, make them (Blender renders with real shadows, noise textures)
 rather than taking packs from Pinterest, which are mostly other people's paid or copyrighted work.
-3D models (22 Oct): don't model them yourself. Tell the user what to search for on Sketchfab (search words, a free
-licence that allows use); the user downloads the models and sends them, then light and render them in Blender.
+3D models (22 Oct): first tell the user what to search for on Sketchfab (search words, a free licence that allows
+use); the user downloads the models and sends them, then light and render them in Blender. Only if the user can't find
+one, model it yourself.
+Elements and PNGs (22 Oct): cut-out items and characters can come from Google images (prefer ones marked free to use,
+note the source). For a custom element nothing real covers, write the user a Gemini prompt and ask them to generate it;
+the user allows these Gemini images in -noAI work.
 
 No prices in reels unless the user asks for them (15 Oct).
 
