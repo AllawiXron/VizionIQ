@@ -55,6 +55,12 @@ Taken from the After Effects project, with its numbers:
 - `npx hyperframes@0.8.162 check`, then `render` (set `HYPERFRAMES_BROWSER_PATH` to the headless shell), then strip
   the file's tags: `ffmpeg -i raw.mp4 -map_metadata -1 -c copy simple-logos-reel.mp4`.
 
+## Cover
+
+`cover.html` is the reel's cover (1080×1920, the text inside the 3:4 crop the profile grid shows): the red world, the
+word عضة and the real apple with its bite standing on it. `assets/obj/apple-cover.png` is the apple with its edge pulled
+in a few pixels so no fringe shows at that size. The render is `renders/cover.png`.
+
 ## Credits
 
 - Sounds: only the user's own pack. No music.
