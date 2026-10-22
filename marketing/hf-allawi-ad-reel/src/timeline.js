@@ -45,6 +45,8 @@
   // the captions ride their own layer above the camera, which follows the camera less than half as much, so a push-in
   // never carries a line out of the safe area
   $$('.sc').forEach((sc) => { const c = document.createElement('div'); c.className = 'caps'; sc.appendChild(c); });
+  // the dark band behind the top lines of the macro shots goes on the caption layer, over the blurred photo
+  $$('.scrim').forEach((el) => el.closest('.sc').querySelector('.caps').prepend(el));
   // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time, «l» to
   // set the line on the left]
   R.lines.forEach(([sc, top, size, text, times, , align], i) => {
@@ -193,8 +195,8 @@
     // ── J · a macro move across the Saj Al-Reef ad: the food, then the offer on «الكواليتي», then the brand on «يثق»
     const view = (fx, fy, k = 1) => ({ x: 540 - fx * 2700 * k, y: 1060 - fy * 3375 * k, scale: k });
     tl.set('#macro', { opacity: 1 }, 14.42);
-    tl.fromTo('#macro', view(0.5, 0.64, 1.2), { ...view(0.5, 0.6), duration: 0.9, ease: SETTLE }, 14.42);
-    tl.to('#macro', { ...view(0.3, 0.46), duration: 0.5, ease: ae(60, 100) }, 15.3);
+    tl.fromTo('#macro', view(0.5, 0.76, 1.2), { ...view(0.5, 0.72), duration: 0.9, ease: SETTLE }, 14.42);
+    tl.to('#macro', { ...view(0.3, 0.47), duration: 0.5, ease: ae(60, 100) }, 15.3);
     tl.to('#macro', { ...view(0.9, 0.93), duration: 0.5, ease: ae(60, 100) }, 16.36);
 
     // ── K · the order button fills the frame, punches on «مباشرة»

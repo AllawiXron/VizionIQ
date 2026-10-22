@@ -42,7 +42,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .tag { position:absolute; left:0; right:0; z-index:12; text-align:center; font-size:40px; color:#f6ead8; opacity:.85 }
 .obj { position:absolute; z-index:10 }
 .caps { position:absolute; inset:0; z-index:30; transform-origin:540px 960px }
-.scrim { position:absolute; z-index:15; left:-200px; right:-200px; top:-200px; height:1000px; background:linear-gradient(rgba(10,6,4,.96), rgba(10,6,4,.9) 50%, rgba(10,6,4,0)) }
+.scrim { position:absolute; z-index:15; left:-200px; right:-200px; top:-200px; height:1100px; background:linear-gradient(rgba(10,6,4,.96), rgba(10,6,4,.92) 55%, rgba(10,6,4,0)) }
 .obj img { display:block; width:100%; filter:drop-shadow(0 46px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4)) }
     </style>
   </head>
@@ -374,6 +374,8 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
   // the captions ride their own layer above the camera, which follows the camera less than half as much, so a push-in
   // never carries a line out of the safe area
   $$('.sc').forEach((sc) => { const c = document.createElement('div'); c.className = 'caps'; sc.appendChild(c); });
+  // the dark band behind the top lines of the macro shots goes on the caption layer, over the blurred photo
+  $$('.scrim').forEach((el) => el.closest('.sc').querySelector('.caps').prepend(el));
   // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time, «l» to
   // set the line on the left]
   R.lines.forEach(([sc, top, size, text, times, , align], i) => {
@@ -522,8 +524,8 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 4.28], ["C", 4.28
     // ── J · a macro move across the Saj Al-Reef ad: the food, then the offer on «الكواليتي», then the brand on «يثق»
     const view = (fx, fy, k = 1) => ({ x: 540 - fx * 2700 * k, y: 1060 - fy * 3375 * k, scale: k });
     tl.set('#macro', { opacity: 1 }, 14.42);
-    tl.fromTo('#macro', view(0.5, 0.64, 1.2), { ...view(0.5, 0.6), duration: 0.9, ease: SETTLE }, 14.42);
-    tl.to('#macro', { ...view(0.3, 0.46), duration: 0.5, ease: ae(60, 100) }, 15.3);
+    tl.fromTo('#macro', view(0.5, 0.76, 1.2), { ...view(0.5, 0.72), duration: 0.9, ease: SETTLE }, 14.42);
+    tl.to('#macro', { ...view(0.3, 0.47), duration: 0.5, ease: ae(60, 100) }, 15.3);
     tl.to('#macro', { ...view(0.9, 0.93), duration: 0.5, ease: ae(60, 100) }, 16.36);
 
     // ── K · the order button fills the frame, punches on «مباشرة»
