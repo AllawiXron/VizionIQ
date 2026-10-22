@@ -164,6 +164,7 @@
     $$('#sL .pawn').forEach((el, i) => enter(el, 19.12 + i * 0.07, { y: 700 }, {}, 0.4));
     $$('#sL .pawn').forEach((el, i) => tl.to(el, { x: (i < 2 ? -1 : 1) * 900, y: -260, rotation: (i < 2 ? -1 : 1) * 140, duration: 0.5, ease: ae(60, 100) }, 21.75 + i * 0.05));
     punch('#king', 21.75, 1.08);
+    tl.set($$('#sL .pawn'), { opacity: 0 }, 22.35);
     tl.to('#patL', { opacity: 1, duration: 0.5 }, 21.8);
     tl.to('#patL', { opacity: 0, duration: 0.25 }, 23.25);
 
