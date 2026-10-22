@@ -39,7 +39,7 @@
   // the bags: one, two, then a pile of ten
   const BAG = ['bag-orange', 'bag-black', 'bag-blue', 'bag-black2'];
   for (let i = 0; i < 12; i++) {
-    const w = 220 + (i % 3) * 30, x = i < 2 ? [260, 560][i] : 60 + ((i * 197) % 820), y = i < 2 ? 820 : 760 + ((i * 131) % 420);
+    const w = 220 + (i % 3) * 30, x = i < 2 ? [260, 560][i] : 60 + ((i * 197) % 780), y = i < 2 ? 760 : 620 + ((i * 131) % 300);
     $('#bags').insertAdjacentHTML('beforeend', `<div class="obj bag" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${(Math.sin(i * 1.9) * 12).toFixed(1)}deg)"><img src="assets/el/${BAG[i % 4]}.png" /></div>`);
   }
 
@@ -65,11 +65,11 @@
     A: { from: [0, 0, 70], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
     B: { from: [-200, 0, 0], settle: 1.4, drift: [[4.1, 4.5, [0, 0, 120]]], exit: [[0, -378, 0], 0.4] },
     D: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 220], 0.5] },
-    E: { from: [0, 0, -121], settle: 1.0, exit: [[-65, 0, 0], 0.6] },
-    F: { from: [85, 0, 0], settle: 1.2, exit: [[0, 0, -103], 0.5] },
+    E: { from: [0, 0, 120], settle: 1.0, exit: [[-65, 0, 0], 0.6] },
+    F: { from: [85, 0, 0], settle: 1.2, exit: [[0, -405, 0], 0.5] },
     G: { from: [0, 0, 168], settle: 1.3, exit: [[0, -405, 0], 0.6] },
     H: { from: [0, 497, 0], settle: 0.8, exit: [[0, 0, -370], 0.44] },
-    I: { from: [0, 0, 192], settle: 1.6, exit: [[0, 319, 0], 0.6] },
+    I: { from: [0, 0, 192], settle: 1.6, exit: [[0, -319, 0], 0.6] },
     J: { from: [0, 0, 60], settle: 1.0, exit: [[0, 0, 120], 0.4] },
     K: { from: [0, 0, 200], settle: 1.2, exit: [[0, 593, 0], 0.6] },
     L: { from: [0, -500, 0], settle: 1.8, drift: [[21.0, 23.0, [0, 0, 80]]], exit: [[376, 0, 0], 0.6] },
@@ -151,8 +151,9 @@
     leave('#box', 1.56, { x: -1300, rotation: -30 });
     enter('#wallet', 1.62, { y: -1300, rotation: -40 }, { rotation: -7 }, 0.32);
     tl.set('#coin', { opacity: 1 }, 2.1);
-    tl.fromTo('#coin', { y: -900, rotation: -200 }, { y: 300, rotation: 30, duration: 0.32, ease: 'power2.in' }, 2.1);
-    tl.to('#coin', { y: 230, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, 2.42);
+    tl.fromTo('#coin', { y: -900, rotation: -200 }, { y: 280, rotation: 30, duration: 0.32, ease: 'power2.in' }, 2.1);
+    tl.to('#coin', { y: -200, x: 420, rotation: 260, duration: 0.3, ease: 'power2.out' }, 2.42);
+    tl.to('#coin', { y: 900, x: 700, rotation: 420, duration: 0.35, ease: 'power2.in' }, 2.72);
     tl.to('#wallet', { keyframes: [{ x: -12, duration: 0.05 }, { x: 10, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 2.42);
 
     // ── B · the phones come up with my reels playing, the film camera rolls in; on «وبوستات» the phones turn
@@ -189,8 +190,10 @@
     pop('#n3', 13.17, { rotation: -20 });
 
     // ── J · the magnifier sweeps across on «الكواليتي», then the handshake slams in on «يثق»
+    enter('#jbag', 14.47, { y: 1200 }, {}, 0.5);
     enter('#lens', 14.9, { x: 900, rotation: 30 }, {}, 0.5);
-    tl.to('#lens', { x: -180, y: -60, rotation: -8, duration: 0.6, ease: ae(40, 100) }, 15.37);
+    tl.to('#lens', { x: -180, y: 160, rotation: -8, duration: 0.6, ease: ae(40, 100) }, 15.37);
+    leave('#jbag', 16.3, { y: 1400 });
     tl.to('#lens', { scale: 1.12, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, 15.79);
     leave('#lens', 16.3, { x: -1300, rotation: -40 });
     enter('#shake', 16.41, { scale: 2.2 }, {}, 0.3);

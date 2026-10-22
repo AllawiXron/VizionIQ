@@ -42,7 +42,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .tag { position:absolute; left:0; right:0; z-index:12; text-align:center; font-size:40px; color:#f6ead8; opacity:.85 }
 .obj { position:absolute; z-index:10 }
 .ph img { position:relative; z-index:2; filter:drop-shadow(0 40px 40px rgba(0,0,0,.55)) }
-.ph .scr { position:absolute; z-index:1; left:9.9%; top:2.3%; width:86.2%; height:95.3%; object-fit:cover; border-radius:11% / 5% }
+.ph .scr { position:absolute; z-index:1; left:9.03%; top:1.84%; width:88.04%; height:96.21%; object-fit:cover; -webkit-mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat; mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat }
 .caps { position:absolute; inset:0; z-index:30; transform-origin:540px 960px }
 .scrim { position:absolute; z-index:15; left:-200px; right:-200px; top:-200px; height:1100px; background:linear-gradient(rgba(10,6,4,.96), rgba(10,6,4,.92) 55%, rgba(10,6,4,0)) }
 .obj img { display:block; width:100%; filter:drop-shadow(0 46px 40px rgba(0,0,0,.6)) drop-shadow(0 10px 10px rgba(0,0,0,.4)) }
@@ -55,7 +55,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
         <!-- A · مشروعك متعوب عليه، بس أرباحك قليلة: hands hold out the box, then the empty wallet slams onto the word and one coin drops in -->
         <div class="sc" id="sA">
           <div class="world" style="background:#2a1a12"><i class="lt" style="left:140px; top:620px; width:900px; height:820px; background:rgba(214,140,80,.34)"></i></div>
-          <div class="obj" id="box" style="left:230px; top:820px; width:720px"><img src="assets/el/box-hand.png" /></div>
+          <div class="obj" id="box" style="left:400px; top:800px; width:780px"><img src="assets/el/box-hand.png" /></div>
           <div class="obj" id="wallet" style="left:120px; top:775px; width:840px; transform:rotate(-7deg)"><img src="assets/obj/wallet.png" /></div>
           <div class="obj" id="coin" style="left:430px; top:700px; width:200px"><img src="assets/el/coin.png" /></div>
         </div>
@@ -66,7 +66,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="obj ph" id="phL" style="left:20px; top:700px; width:330px; transform:rotate(-12deg)"><video id="v1" class="scr" src="assets/clips/dollar-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="1.6" data-track-index="2" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj ph" id="phR" style="left:730px; top:700px; width:330px; transform:rotate(11deg)"><video id="v2" class="scr" src="assets/clips/logos-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="16.6" data-track-index="3" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj ph" id="phC" style="left:340px; top:600px; width:400px; transform:rotate(-2deg)"><video id="v3" class="scr" src="assets/clips/vizion-reel.mp4" data-start="2.6" data-duration="2.6" data-media-start="7.4" data-track-index="4" muted playsinline></video><img src="assets/el/phone.png" /></div>
-          <div class="obj" id="cam" style="left:-40px; top:1060px; width:460px"><img src="assets/el/film-camera.png" /></div>
+          <div class="obj" id="cam" style="left:30px; top:1150px; width:330px"><img src="assets/el/film-camera.png" /></div>
         </div>
 
         <!-- D · تحجي بقوة براندك: an old megaphone blasting the word -->
@@ -78,13 +78,13 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
         <!-- E · وتبيع بمكانك: a shop owner hands over the bag while you are away -->
         <div class="sc inkt" id="sE">
           <div class="world" style="background:#e9dfcf"><i class="lt" style="left:200px; top:600px; width:800px; height:800px; background:rgba(255,250,240,.6)"></i></div>
-          <div class="obj" id="owner" style="left:150px; top:560px; width:780px"><img src="assets/el/shop-owner.png" /></div>
+          <div class="obj" id="owner" style="left:40px; top:830px; width:1000px"><img src="assets/el/shop-owner.png" /></div>
         </div>
 
         <!-- F · حركة تشد العين: the word, then binoculars come up in front of it -->
         <div class="sc" id="sF">
           <div class="world" style="background:#5e0a14"><i class="lt" style="left:150px; top:500px; width:820px; height:820px; background:rgba(214,40,58,.55)"></i></div>
-          <div class="obj" id="bino" style="left:110px; top:820px; width:860px"><img src="assets/el/binoculars.png" /></div>
+          <div class="obj" id="bino" style="left:40px; top:960px; width:1000px"><img src="assets/el/binoculars.png" /></div>
         </div>
 
         <!-- G · فكرة تقنع الزبون: the bulb flickers on -->
@@ -104,20 +104,21 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
         <div class="sc" id="sI">
           <div class="world" style="background:#2a1a12"><i class="lt" style="left:100px; top:400px; width:900px; height:900px; background:rgba(226,84,27,.4)"></i></div>
           <div id="n3" style="position:absolute; z-index:9; left:70px; top:380px; font-size:860px; line-height:1; color:#e2541b; opacity:0">3</div>
-          <div class="obj" id="hand" style="left:600px; top:720px; width:440px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
+          <div class="obj" id="hand" style="left:640px; top:900px; width:520px; transform:rotate(-8deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
         </div>
 
         <!-- J · الزبون راح يلمس الكواليتي العالي، يثق بمنتجك: the magnifier sweeps across, then the handshake -->
         <div class="sc" id="sJ">
           <div class="world" style="background:#1d2a22"><i class="lt" style="left:150px; top:600px; width:800px; height:800px; background:rgba(140,200,160,.25)"></i></div>
+          <div class="obj" id="jbag" style="left:340px; top:760px; width:400px"><img src="assets/el/bag-orange.png" /></div>
           <div class="obj" id="lens" style="left:280px; top:700px; width:560px"><img src="assets/el/magnifier.png" /></div>
-          <div class="obj" id="shake" style="left:90px; top:820px; width:900px"><img src="assets/el/handshake.png" /></div>
+          <div class="obj" id="shake" style="left:-110px; top:700px; width:1300px"><img src="assets/el/handshake.png" /></div>
         </div>
 
         <!-- K · ويدخل يطلب منك مباشرة: a finger presses the red button -->
         <div class="sc" id="sK">
           <div class="world" style="background:#171310"><i class="lt" style="left:200px; top:800px; width:700px; height:700px; background:rgba(226,60,40,.3)"></i></div>
-          <div class="obj" id="press" style="left:300px; top:270px; width:520px"><img src="assets/el/button-finger.png" /></div>
+          <div class="obj" id="press" style="left:560px; top:-120px; width:600px"><img src="assets/el/button-finger.png" /></div>
         </div>
 
         <!-- L · يعزلك تماما عن منافسيك: the king stands in the light, the pawns fall -->
@@ -139,7 +140,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
         <!-- N · لأن شاف براند حقيقي قدامه: the man with the binoculars -->
         <div class="sc" id="sN">
           <div class="world" style="background:#1d1612"><i class="lt" style="left:160px; top:600px; width:800px; height:900px; background:rgba(226,84,27,.28)"></i></div>
-          <div class="obj" id="watcher" style="left:300px; top:470px; width:420px"><img src="assets/el/binoculars-man.png" /></div>
+          <div class="obj" id="watcher" style="left:370px; top:400px; width:340px"><img src="assets/el/binoculars-man.png" /></div>
         </div>
 
         <!-- O · the crowd walks past without looking; the stop hand slams down; the padlock locks the sale -->
@@ -147,22 +148,22 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="world" style="background:#24282a"><i class="lt" style="left:100px; top:700px; width:900px; height:700px; background:rgba(200,200,190,.18)"></i></div>
           <div class="obj" id="crowd1" style="left:0; top:760px; width:900px"><img src="assets/el/crowd.png" /></div>
           <div class="obj" id="crowd2" style="left:0; top:720px; width:900px"><img src="assets/el/crowd2.png" /></div>
-          <div class="obj" id="stop" style="left:300px; top:540px; width:480px"><img src="assets/el/stop-hand.png" /></div>
+          <div class="obj" id="stop" style="left:190px; top:1000px; width:700px"><img src="assets/el/stop-hand.png" /></div>
           <div class="obj" id="lock" style="left:400px; top:640px; width:290px"><img src="assets/el/padlock.png" /></div>
         </div>
 
         <!-- Q · تواصل ويانا بالخاص: the receiver swings in -->
         <div class="sc" id="sQ">
           <div class="world" style="background:#0f1517"><i class="lt" style="left:300px; top:600px; width:700px; height:700px; background:rgba(226,84,27,.3)"></i></div>
-          <div class="obj" id="recv" style="left:250px; top:560px; width:600px"><img src="assets/el/receiver.png" /></div>
+          <div class="obj" id="recv" style="left:470px; top:520px; width:700px"><img src="assets/el/receiver.png" /></div>
         </div>
 
         <!-- R · شوف أعمالنا، وخلي براندك يبيع صح: my reels on three phones, then the cash register rings, then the handle -->
         <div class="sc dk" id="sR">
           <div class="world" style="background:#d4521c"><i class="lt" style="left:200px; top:-100px; width:900px; height:800px; background:rgba(255,150,80,.5)"></i><i class="lt" style="left:-300px; top:1300px; width:900px; height:700px; background:rgba(120,30,0,.45)"></i></div>
           <div class="obj ph rph" style="left:20px; top:640px; width:330px; transform:rotate(-12deg)"><video id="v4" class="scr" src="assets/clips/logos-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="46.3" data-track-index="5" muted playsinline></video><img src="assets/el/phone.png" /></div>
-          <div class="obj ph rph" style="left:730px; top:640px; width:330px; transform:rotate(11deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="10.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
-          <div class="obj ph rph" style="left:340px; top:560px; width:400px; transform:rotate(-2deg)"><video id="v6" class="scr" src="assets/clips/vizion-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="16.0" data-track-index="7" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph rph" style="left:730px; top:640px; width:330px; transform:rotate(11deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="2.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          <div class="obj ph rph" style="left:340px; top:560px; width:400px; transform:rotate(-2deg)"><video id="v6" class="scr" src="assets/clips/vizion-reel.mp4" data-start="36.74" data-duration="1.0" data-media-start="7.6" data-track-index="7" muted playsinline></video><img src="assets/el/phone.png" /></div>
           <div class="obj" id="cashfan" style="left:320px; top:560px; width:440px"><img src="assets/el/cash-fan.png" /></div>
           <div class="obj" id="register" style="left:240px; top:650px; width:600px"><img src="assets/el/register.png" /></div>
           <div class="cap" id="handle" style="top:1450px; font-size:100px; direction:ltr; opacity:0"><span class="w">@allawi.psd</span></div>
@@ -322,7 +323,7 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
       <audio id="a146-sweet" src="assets/sfx/sweet.wav" data-start="39.55" data-duration="1.076" data-track-index="156" data-volume="0.3"></audio>
     </div>
     <script>
-window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 6.62], ["E", 6.62, 7.74], ["F", 7.74, 9.14], ["G", 9.14, 10.72], ["H", 10.72, 12.62], ["I", 12.62, 14.42], ["J", 14.42, 17.5], ["K", 17.5, 19.04], ["L", 19.04, 23.52], ["M", 23.52, 26.62], ["N", 26.62, 28.5], ["O", 28.5, 35.48], ["Q", 35.48, 36.74], ["R", 36.74, 40.8]], "lines": [["A", 300, 76, "مشروعك متعوب عليه، بس", [0.0, 0.56, 0.88, 1.38]], ["A", 400, 330, "أرباحك", [1.66]], ["A", 1300, 170, "*قليلة؟", [2.1]], ["B", 300, 124, "عدنا *نصمملك", [2.65, 2.91], 4.1], ["B", 1440, 110, "موشن جرافيك", [3.45, 3.73], 4.1], ["B", 300, 130, "وبوستات إعلانية", [4.2, 4.73]], ["D", 300, 96, "تحجي بقوة", [5.25, 5.63]], ["D", 400, 310, "براندك", [6.09]], ["E", 300, 150, "وتبيع بمكانك", [6.67, 7.09]], ["F", 390, 400, "حركة", [7.79]], ["F", 300, 84, "تشد *العين", [8.37, 8.61]], ["G", 1130, 330, "فكرة", [9.19]], ["G", 1480, 80, "تقنع الزبون", [9.63, 10.03]], ["H", 300, 330, "ونتيجة", [10.77]], ["H", 1420, 96, "ترفع *مبيعاتك", [11.45, 11.83]], ["I", 300, 96, "من أول", [12.67, 12.93]], ["I", 1490, 104, "ثواني بإعلانك", [13.35, 13.73], null, "l"], ["J", 300, 104, "الزبون راح يلمس", [14.47, 14.87, 15.09], 16.3], ["J", 430, 120, "الكواليتي *العالي", [15.37, 15.79], 16.3], ["J", 300, 120, "يثق بمنتجك", [16.41, 16.69]], ["K", 1330, 96, "ويدخل يطلب منك", [17.55, 17.89, 18.23]], ["K", 1440, 150, "*مباشرة", [18.55]], ["L", 300, 104, "لأن ويانا راح يطلع", [19.09, 19.65, 20.21, 20.43], 21.6], ["L", 430, 104, "إعلانك بمستوى", [20.69, 21.13], 21.6], ["L", 300, 120, "يعزلك *تماما", [21.75, 22.17]], ["L", 1380, 96, "عن منافسيك", [22.69, 22.77]], ["M", 300, 96, "ويخلي الزبون يشتري منك", [23.57, 23.93, 24.27, 24.63], 24.9], ["M", 290, 110, "مرة ومرتين", [24.97, 25.35]], ["M", 1370, 220, "*وعشرة", [25.97]], ["N", 300, 110, "لأن شاف براند", [26.67, 27.01, 27.21]], ["N", 1470, 110, "*حقيقي قدامه", [27.57, 27.97]], ["O", 300, 104, "كافي تضيع جمهورك", [28.55, 28.93, 29.15], 30.6], ["O", 430, 104, "بتصاميم عادية", [29.65, 30.15], 30.6], ["O", 1500, 110, "الكل يتخطاها", [30.85, 30.99], 31.5], ["O", 300, 110, "ابدأ اليوم", [31.63, 32.05], 32.45], ["O", 300, 104, "بتصاميم *توقف الزبون", [32.51, 33.09, 33.51]], ["O", 1520, 100, "وتقفل وياه البيعة", [34.05, 34.61, 34.85]], ["Q", 300, 120, "تواصل ويانا", [35.53, 35.81]], ["Q", 1450, 140, "*بالخاص", [36.09]], ["R", 290, 150, "شوف أعمالنا", [36.79, 36.99], 37.45], ["R", 290, 110, "وخلي براندك *يبيع صح", [37.53, 38.05, 38.71, 39.07]]], "fx": [[0.05, "flick", 0.3], [0.42, "cinclick", 0.34], [1.6, "flick", 0.26], [2.1, "money", 0.22], [2.12, "softpop", 0.3], [2.6, "fastwhoosh", 0.22], [2.66, "softpop", 0.24], [2.8, "softpop", 0.2], [2.94, "softpop", 0.2], [4.2, "simple", 0.22], [4.25, "cinclick", 0.22], [5.2, "smooth", 0.24], [5.3, "whooshcon", 0.2], [6.62, "cinclick", 0.3], [6.68, "simple", 0.22], [7.74, "hitcut", 0.3], [8.26, "bite", 0.4], [9.14, "cinclick", 0.3], [9.19, "select", 0.3], [9.2, "flick", 0.24], [9.3, "select2", 0.22], [10.72, "cinclick", 0.3], [10.78, "mpop", 0.28], [11.83, "ppop3", 0.22], [12.62, "fastwhoosh", 0.24], [12.68, "gear", 0.28], [13.17, "hit", 0.26], [14.42, "cinclick", 0.3], [15.37, "smooth", 0.2], [15.6, "airy", 0.2], [16.41, "mpop", 0.3], [17.5, "hitcut", 0.3], [18.55, "cinclick", 0.36], [19.04, "smooth", 0.24], [19.12, "sweet", 0.22], [21.75, "whooshcon", 0.24], [23.52, "cinclick", 0.3], [24.97, "mpop", 0.26], [25.35, "mpop", 0.26], [25.97, "money", 0.3], [26.62, "fastwhoosh", 0.22], [26.7, "softpop", 0.22], [28.5, "cinfast", 0.24], [29.0, "data", 0.18], [33.09, "cinclick", 0.3], [33.09, "hit", 0.32], [34.05, "cinclick", 0.3], [34.1, "clickb", 0.4], [35.48, "cinclick", 0.3], [36.09, "click2", 0.4], [36.74, "flick", 0.3], [36.8, "softpop", 0.2], [36.9, "softpop", 0.2], [37.0, "softpop", 0.2], [37.1, "softpop", 0.2], [37.2, "mpop", 0.24], [37.45, "mainwhoosh", 0.24], [37.6, "smooth", 0.22], [38.1, "money", 0.32], [39.55, "sweet", 0.3]]};
+window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 6.62], ["E", 6.62, 7.74], ["F", 7.74, 9.14], ["G", 9.14, 10.72], ["H", 10.72, 12.62], ["I", 12.62, 14.42], ["J", 14.42, 17.5], ["K", 17.5, 19.04], ["L", 19.04, 23.52], ["M", 23.52, 26.62], ["N", 26.62, 28.5], ["O", 28.5, 35.48], ["Q", 35.48, 36.74], ["R", 36.74, 40.8]], "lines": [["A", 300, 76, "مشروعك متعوب عليه، بس", [0.0, 0.56, 0.88, 1.38]], ["A", 400, 330, "أرباحك", [1.66]], ["A", 1300, 170, "*قليلة؟", [2.1]], ["B", 300, 124, "عدنا *نصمملك", [2.65, 2.91], 4.1], ["B", 1440, 110, "موشن جرافيك", [3.45, 3.73], 4.1], ["B", 300, 130, "وبوستات إعلانية", [4.2, 4.73]], ["D", 300, 96, "تحجي بقوة", [5.25, 5.63]], ["D", 400, 310, "براندك", [6.09]], ["E", 300, 150, "وتبيع بمكانك", [6.67, 7.09]], ["F", 390, 400, "حركة", [7.79]], ["F", 300, 84, "تشد *العين", [8.37, 8.61]], ["G", 1130, 330, "فكرة", [9.19]], ["G", 1480, 80, "تقنع الزبون", [9.63, 10.03]], ["H", 300, 330, "ونتيجة", [10.77]], ["H", 1420, 96, "ترفع *مبيعاتك", [11.45, 11.83]], ["I", 300, 96, "من أول", [12.67, 12.93]], ["I", 1490, 104, "ثواني بإعلانك", [13.35, 13.73], null, "l"], ["J", 300, 104, "الزبون راح يلمس", [14.47, 14.87, 15.09], 16.3], ["J", 430, 120, "الكواليتي *العالي", [15.37, 15.79], 16.3], ["J", 300, 120, "يثق بمنتجك", [16.41, 16.69]], ["K", 1330, 96, "ويدخل يطلب منك", [17.55, 17.89, 18.23]], ["K", 1440, 150, "*مباشرة", [18.55]], ["L", 300, 104, "لأن ويانا راح يطلع", [19.09, 19.65, 20.21, 20.43], 21.6], ["L", 430, 104, "إعلانك بمستوى", [20.69, 21.13], 21.6], ["L", 300, 120, "يعزلك *تماما", [21.75, 22.17]], ["L", 1380, 96, "عن منافسيك", [22.69, 22.77]], ["M", 300, 96, "ويخلي الزبون يشتري منك", [23.57, 23.93, 24.27, 24.63], 24.9], ["M", 290, 110, "مرة ومرتين", [24.97, 25.35]], ["M", 1370, 220, "*وعشرة", [25.97]], ["N", 300, 110, "لأن شاف براند", [26.67, 27.01, 27.21]], ["N", 1460, 110, "*حقيقي قدامه", [27.57, 27.97]], ["O", 300, 104, "كافي تضيع جمهورك", [28.55, 28.93, 29.15], 30.6], ["O", 430, 104, "بتصاميم عادية", [29.65, 30.15], 30.6], ["O", 1500, 110, "الكل يتخطاها", [30.85, 30.99], 31.5], ["O", 300, 110, "ابدأ اليوم", [31.63, 32.05], 32.45], ["O", 300, 104, "بتصاميم *توقف الزبون", [32.51, 33.09, 33.51]], ["O", 1520, 100, "وتقفل وياه البيعة", [34.05, 34.61, 34.85]], ["Q", 300, 120, "تواصل ويانا", [35.53, 35.81]], ["Q", 1450, 140, "*بالخاص", [36.09]], ["R", 290, 150, "شوف أعمالنا", [36.79, 36.99], 37.45], ["R", 290, 110, "وخلي براندك *يبيع صح", [37.53, 38.05, 38.71, 39.07]]], "fx": [[0.05, "flick", 0.3], [0.42, "cinclick", 0.34], [1.6, "flick", 0.26], [2.1, "money", 0.22], [2.12, "softpop", 0.3], [2.6, "fastwhoosh", 0.22], [2.66, "softpop", 0.24], [2.8, "softpop", 0.2], [2.94, "softpop", 0.2], [4.2, "simple", 0.22], [4.25, "cinclick", 0.22], [5.2, "smooth", 0.24], [5.3, "whooshcon", 0.2], [6.62, "cinclick", 0.3], [6.68, "simple", 0.22], [7.74, "hitcut", 0.3], [8.26, "bite", 0.4], [9.14, "cinclick", 0.3], [9.19, "select", 0.3], [9.2, "flick", 0.24], [9.3, "select2", 0.22], [10.72, "cinclick", 0.3], [10.78, "mpop", 0.28], [11.83, "ppop3", 0.22], [12.62, "fastwhoosh", 0.24], [12.68, "gear", 0.28], [13.17, "hit", 0.26], [14.42, "cinclick", 0.3], [15.37, "smooth", 0.2], [15.6, "airy", 0.2], [16.41, "mpop", 0.3], [17.5, "hitcut", 0.3], [18.55, "cinclick", 0.36], [19.04, "smooth", 0.24], [19.12, "sweet", 0.22], [21.75, "whooshcon", 0.24], [23.52, "cinclick", 0.3], [24.97, "mpop", 0.26], [25.35, "mpop", 0.26], [25.97, "money", 0.3], [26.62, "fastwhoosh", 0.22], [26.7, "softpop", 0.22], [28.5, "cinfast", 0.24], [29.0, "data", 0.18], [33.09, "cinclick", 0.3], [33.09, "hit", 0.32], [34.05, "cinclick", 0.3], [34.1, "clickb", 0.4], [35.48, "cinclick", 0.3], [36.09, "click2", 0.4], [36.74, "flick", 0.3], [36.8, "softpop", 0.2], [36.9, "softpop", 0.2], [37.0, "softpop", 0.2], [37.1, "softpop", 0.2], [37.2, "mpop", 0.24], [37.45, "mainwhoosh", 0.24], [37.6, "smooth", 0.22], [38.1, "money", 0.32], [39.55, "sweet", 0.3]]};
 // The motion of my ad reel, on the reel standard (see ../hf-simple-logos-reel/README.md, Motion): every shot rides a
 // camera on two nulls that lands fast and settles, then speeds into the cut; each cut gets a 0.3 s box-blur pulse;
 // letters come out of a blur one at a time, 4.8 frames apart (TextEvo); things pop in with Smart Bounce (amplitude 50,
@@ -364,7 +365,7 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
   // the bags: one, two, then a pile of ten
   const BAG = ['bag-orange', 'bag-black', 'bag-blue', 'bag-black2'];
   for (let i = 0; i < 12; i++) {
-    const w = 220 + (i % 3) * 30, x = i < 2 ? [260, 560][i] : 60 + ((i * 197) % 820), y = i < 2 ? 820 : 760 + ((i * 131) % 420);
+    const w = 220 + (i % 3) * 30, x = i < 2 ? [260, 560][i] : 60 + ((i * 197) % 780), y = i < 2 ? 760 : 620 + ((i * 131) % 300);
     $('#bags').insertAdjacentHTML('beforeend', `<div class="obj bag" style="left:${x}px; top:${y}px; width:${w}px; transform:rotate(${(Math.sin(i * 1.9) * 12).toFixed(1)}deg)"><img src="assets/el/${BAG[i % 4]}.png" /></div>`);
   }
 
@@ -390,11 +391,11 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     A: { from: [0, 0, 70], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
     B: { from: [-200, 0, 0], settle: 1.4, drift: [[4.1, 4.5, [0, 0, 120]]], exit: [[0, -378, 0], 0.4] },
     D: { from: [0, 300, 0], settle: 1.0, exit: [[0, 0, 220], 0.5] },
-    E: { from: [0, 0, -121], settle: 1.0, exit: [[-65, 0, 0], 0.6] },
-    F: { from: [85, 0, 0], settle: 1.2, exit: [[0, 0, -103], 0.5] },
+    E: { from: [0, 0, 120], settle: 1.0, exit: [[-65, 0, 0], 0.6] },
+    F: { from: [85, 0, 0], settle: 1.2, exit: [[0, -405, 0], 0.5] },
     G: { from: [0, 0, 168], settle: 1.3, exit: [[0, -405, 0], 0.6] },
     H: { from: [0, 497, 0], settle: 0.8, exit: [[0, 0, -370], 0.44] },
-    I: { from: [0, 0, 192], settle: 1.6, exit: [[0, 319, 0], 0.6] },
+    I: { from: [0, 0, 192], settle: 1.6, exit: [[0, -319, 0], 0.6] },
     J: { from: [0, 0, 60], settle: 1.0, exit: [[0, 0, 120], 0.4] },
     K: { from: [0, 0, 200], settle: 1.2, exit: [[0, 593, 0], 0.6] },
     L: { from: [0, -500, 0], settle: 1.8, drift: [[21.0, 23.0, [0, 0, 80]]], exit: [[376, 0, 0], 0.6] },
@@ -476,8 +477,9 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     leave('#box', 1.56, { x: -1300, rotation: -30 });
     enter('#wallet', 1.62, { y: -1300, rotation: -40 }, { rotation: -7 }, 0.32);
     tl.set('#coin', { opacity: 1 }, 2.1);
-    tl.fromTo('#coin', { y: -900, rotation: -200 }, { y: 300, rotation: 30, duration: 0.32, ease: 'power2.in' }, 2.1);
-    tl.to('#coin', { y: 230, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, 2.42);
+    tl.fromTo('#coin', { y: -900, rotation: -200 }, { y: 280, rotation: 30, duration: 0.32, ease: 'power2.in' }, 2.1);
+    tl.to('#coin', { y: -200, x: 420, rotation: 260, duration: 0.3, ease: 'power2.out' }, 2.42);
+    tl.to('#coin', { y: 900, x: 700, rotation: 420, duration: 0.35, ease: 'power2.in' }, 2.72);
     tl.to('#wallet', { keyframes: [{ x: -12, duration: 0.05 }, { x: 10, duration: 0.05 }, { x: 0, duration: 0.05 }] }, 2.42);
 
     // ── B · the phones come up with my reels playing, the film camera rolls in; on «وبوستات» the phones turn
@@ -514,8 +516,10 @@ window.REEL = {"D": 41.2, "scenes": [["A", 0, 2.6], ["B", 2.6, 5.2], ["D", 5.2, 
     pop('#n3', 13.17, { rotation: -20 });
 
     // ── J · the magnifier sweeps across on «الكواليتي», then the handshake slams in on «يثق»
+    enter('#jbag', 14.47, { y: 1200 }, {}, 0.5);
     enter('#lens', 14.9, { x: 900, rotation: 30 }, {}, 0.5);
-    tl.to('#lens', { x: -180, y: -60, rotation: -8, duration: 0.6, ease: ae(40, 100) }, 15.37);
+    tl.to('#lens', { x: -180, y: 160, rotation: -8, duration: 0.6, ease: ae(40, 100) }, 15.37);
+    leave('#jbag', 16.3, { y: 1400 });
     tl.to('#lens', { scale: 1.12, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, 15.79);
     leave('#lens', 16.3, { x: -1300, rotation: -40 });
     enter('#shake', 16.41, { scale: 2.2 }, {}, 0.3);
