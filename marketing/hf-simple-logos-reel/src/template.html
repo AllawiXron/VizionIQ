@@ -7,13 +7,16 @@
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
 @font-face { font-family:'DG Sahabah'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
-/* the reference's grammar in my colours: words out of a sideways blur, one hero object with a deep shadow and a slow
-   push, things bursting in from the corners, whips with motion blur, hard cuts into the next colour world */
+/* the motion of the After Effects project the user sent, in my colours: a camera per shot, letters out of a blur,
+   a blur pulse on every cut, 12 fps steps, a grunge layer on multiply over everything */
 * { margin:0; padding:0; box-sizing:border-box }
 html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 #root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#f6ead8 }
 .sc { position:absolute; inset:0; overflow:hidden }
-.world { position:absolute; inset:-60px }
+.world { position:absolute; inset:-220px; transform-origin:50% 50% }
+.world .lt { margin:160px 0 0 160px }
+.cam { position:absolute; inset:0; transform-origin:540px 960px }
+#stage { filter:url(#mb) }
 .world::after { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.38 }
 .lt { position:absolute; border-radius:50%; filter:blur(110px) }
 .brown { background:#2a1a12 } .red { background:#7a0b17 } .paper { background:#e9dfcf } .green { background:#0d3526 }
@@ -21,10 +24,12 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
 .black::after { opacity:.12 }
 #fx { position:absolute; inset:0; pointer-events:none; z-index:50 }
 #grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07 }
+#dirt { position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.5; filter:grayscale(1) brightness(1.9) contrast(1.6) }
 #vig { position:absolute; inset:0; box-shadow:inset 0 0 260px 60px rgba(0,0,0,.5) }
 
 .cap { position:absolute; left:50px; right:50px; text-align:center; white-space:nowrap; z-index:20; text-shadow:0 6px 18px rgba(0,0,0,.45); line-height:1.2 }
-.w { display:inline-block; opacity:0 }
+.w { display:inline-block }
+.l { opacity:0 }
 .k { color:#f08a4b }
 .inkt .cap { color:#1f1510; text-shadow:0 4px 14px rgba(255,240,220,.35) } .inkt .k { color:#b9461c }
 .orange .cap, #sQ .cap { color:#2a1208; text-shadow:none } #sQ .k { color:#fbf0e0 }
@@ -157,7 +162,8 @@ html, body { width:1080px; height:1920px; overflow:hidden; background:#1c120d }
           <div class="cap" id="handle" style="top:1240px; font-size:92px; direction:ltr"><span class="w">@allawi.psd</span></div>
         </div>
       </div>
-      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+      <div id="fx"><div id="dirt"></div><div id="grain"></div><div id="vig"></div></div>
+      <svg width="0" height="0" style="position:absolute"><filter id="mb" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feGaussianBlur id="mbB" stdDeviation="0 0" edgeMode="duplicate" /></filter></svg>
 <!--AUDIO-->
     </div>
     <script>

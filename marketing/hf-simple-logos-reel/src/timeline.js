@@ -1,42 +1,111 @@
-// The reel's motion, copied move for move from the reference reel: words come out of a sideways blur one by one, the
-// hero object holds the centre with a deep shadow and a slow push, objects burst in from the corners with an overshoot,
-// whips carry a motion blur, hard cuts land in the next colour world, a logo drops in trailing its echoes, a row of
-// logos slides past, a word falls apart. Every cue sits on a word of the voice (src/reel.json, made from the word times
-// in src/words.json); build.py reads the same file for the sounds.
+// The reel's motion, rebuilt on the After Effects project the user sent (comp «01»): every shot rides a camera on two
+// nulls that lands fast and settles, then speeds into the cut; each cut gets a 0.3 s box-blur pulse (radius 0, 6, 0);
+// letters come out of a blur one at a time, 4.8 frames apart (TextEvo); things pop in with Smart Bounce (amplitude 50,
+// frequency 2, decay 4); the whole frame steps at 12 fps (Posterize Time) and carries a grunge layer on multiply.
+// Every cue sits on a word of the voice (src/reel.json, made from the word times in src/words.json); build.py reads the
+// same file for the sounds.
 (function () {
   const R = window.REEL, D = R.D;
   const $ = (s) => document.querySelector(s);
-  const $$ = (s) => [...document.querySelectorAll(s)];
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const POSTER = 12, ZOOM = 1050, SHUTTER = 1 / 200, FLASH = [0.15, 6];
+
+  // After Effects' temporal ease as a curve: outgoing influence of the first key, incoming influence of the second
+  const bez = (x1, y1, x2, y2) => (p) => {
+    if (p <= 0) return 0;
+    if (p >= 1) return 1;
+    let lo = 0, hi = 1, u = p;
+    for (let i = 0; i < 32; i++) {
+      u = (lo + hi) / 2;
+      if (3 * (1 - u) * (1 - u) * u * x1 + 3 * (1 - u) * u * u * x2 + u * u * u < p) lo = u; else hi = u;
+    }
+    return 3 * (1 - u) * (1 - u) * u * y1 + 3 * (1 - u) * u * u * y2 + u * u * u;
+  };
+  const ae = (out, inn) => bez(out / 100, 0, 1 - inn / 100, 1);
+  const SETTLE = ae(0, 100), EXIT = ae(100, 0.01), DRIFT = ae(33, 100), EVO = ae(0.1, 100), HOLD = ae(17, 17);
+  // Smart Bounce, «Elastic»: the keyframed move, then the overshoot v·amp·sin(2π·f·t)/e^(decay·t) for a second
+  const smart = (k) => (p) => { const t = p * (k + 1); return t < k ? t / k : 1 + 0.05 / k * Math.sin(4 * Math.PI * (t - k)) / Math.exp(4 * (t - k)); };
+
+  // each scene's contents ride on a camera layer; its colour world, far behind, moves a third as much
+  $$('.sc').forEach((sc) => {
+    const cam = document.createElement('div');
+    cam.className = 'cam';
+    [...sc.children].filter((c) => !c.classList.contains('world')).forEach((c) => cam.appendChild(c));
+    sc.appendChild(cam);
+  });
 
   // the captions, from reel.json: [scene, top, size, text («*» marks the coloured word), word times, out time]
   R.lines.forEach(([sc, top, size, text, times], i) => {
     const d = document.createElement('div');
     d.className = 'cap'; d.id = 'L' + i;
     d.style.cssText = `top:${top}px; font-size:${size}px`;
-    d.innerHTML = text.split(' ').map((w) => w[0] === '*' ? `<span class="w k">${w.slice(1)}</span>` : `<span class="w">${w}</span>`).join(' ');
-    $('#s' + sc).appendChild(d);
+    d.innerHTML = text.split(' ').map((w) => {
+      const k = w[0] === '*', s = k ? w.slice(1) : w;
+      return `<span class="w${k ? ' k' : ''}">${[...s].map((c) => `<span class="l">${c}</span>`).join('')}</span>`;
+    }).join(' ');
+    $(`#s${sc} .cam`).appendChild(d);
   });
 
+  // the camera of every shot, in the project's units: «from» is where the inner null starts and settles from, «drift»
+  // the slow moves in between, «exit» the outer null's move into the cut. Shot by shot from comp «01», with the push-ins
+  // kept under 220 so the captions stay inside the frame.
+  const RIG = {
+    A: { from: [0, 0, 200], settle: 1.49, exit: [[-127, 0, 0], 0.34] },
+    B: { from: [-200, 0, 0], settle: 1.74, drift: [[4.4, 6.9, [0, 0, 82]]], exit: [[0, 0, -119], 0.68] },
+    Dr: { from: [0, 0, 220], settle: 1.06, exit: [[0, -378, 0], 0.48] },
+    E: { from: [0, 300, 0], settle: 1.11, exit: [[0, 0, 220], 0.6] },
+    F: { from: [0, 0, -121], settle: 2.21, exit: [[-65, 0, 0], 1.12] },
+    G: { from: [85, 0, 0], settle: 2.63, drift: [[17.4, 19.6, [0, 0, 120]]], exit: [[0, 0, -103], 0.74] },
+    H: { from: [0, 0, 168], settle: 2.13, exit: [[0, -405, 0], 0.88] },
+    I: { from: [0, 497, 0], settle: 0.8, drift: [[25.6, 26.7, [0, 0, 60]]], exit: [[0, 0, -370], 0.44] },
+    J: { from: [0, 0, 192], settle: 2.3, exit: [[0, 319, 0], 0.75] },
+    K: { from: [0, -300, 0], settle: 2.48, drift: [[31.0, 32.6, [0, 0, 82]]], exit: [[0, 0, -161], 0.9] },
+    L: { from: [0, 0, 200], settle: 2.13, exit: [[0, 593, 0], 0.75] },
+    M: { from: [0, -691, 0], settle: 2.08, exit: [[376, 0, 0], 0.71] },
+    N: { from: [-196, 0, 0], settle: 5.0, exit: [[102, 0, 0], 0.87] },
+    O: { from: [0, 0, 200], settle: 4.74, drift: [[49.4, 52.9, [0, 0, 70]]], exit: [[0, 0, -122], 0.74] },
+    P: { from: [0, 0, 180], settle: 2.5, exit: [[0, 0, -231], 0.85] },
+    Q: { from: [0, 0, 220], settle: 2.63, drift: [[62.6, 66.6, [0, 0, -43], HOLD]] },
+  };
+  const SC = R.scenes.map(([id, a, b], i) => {
+    const r = RIG[id], moves = [];
+    moves.push([a, a + r.settle, r.from.map((v) => -v), SETTLE]);
+    (r.drift || []).forEach(([t0, t1, d, e]) => moves.push([t0, t1, d, e || DRIFT]));
+    if (r.exit) moves.push([b - r.exit[1], b, r.exit[0], EXIT]);
+    return { id, a, b: i === R.scenes.length - 1 ? D : b, from: r.from, moves, cam: $(`#s${id} .cam`), world: $(`#s${id} .world`) };
+  });
+  const camAt = (s, t) => {
+    const c = [...s.from];
+    s.moves.forEach(([t0, t1, d, e]) => { const k = e((t - t0) / (t1 - t0)); c[0] += d[0] * k; c[1] += d[1] * k; c[2] += d[2] * k; });
+    const sc = ZOOM / (ZOOM - c[2]);
+    return [-c[0] * sc, -c[1] * sc, sc];
+  };
+  const cuts = SC.slice(1).map((s) => s.a);
+
   function build() {
-    // a line wider than the safe width shrinks to fit (the words are laid out already, only hidden)
+    // a line wider than the safe width shrinks to fit (the letters are laid out already, only hidden)
     $$('.cap').forEach((c) => {
-      const w = c.scrollWidth, max = 960;
+      const w = c.scrollWidth, max = 920;
       if (w > max) c.style.fontSize = (parseFloat(c.style.fontSize) * max / w).toFixed(1) + 'px';
     });
     const tl = gsap.timeline({ paused: true });
     const at = (t) => Math.max(0, t);
-    // a word slides in from the reading side out of a blur, with a small pop
-    const word = (w, t) => {
-      tl.fromTo(w, { opacity: 0, x: -46, filter: 'blur(14px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.32, ease: 'power3.out' }, at(t));
-      tl.fromTo(w, { scale: 0.86 }, { scale: 1, duration: 0.34, ease: 'back.out(2.2)' }, at(t));
-    };
+    // TextEvo: each letter runs the same one-second curve out of a blur, 4.8 frames (at 100 fps) after the one before
+    const word = (w, t) => $$('.l', w).forEach((l, j) => {
+      tl.fromTo(l, { opacity: 0, filter: 'blur(18px)' }, { opacity: 1, filter: 'blur(0px)', duration: 1, ease: EVO }, at(t + j * 0.048));
+    });
     R.lines.forEach(([, , , , times, outT], i) => {
       $$(`#L${i} .w`).forEach((w, j) => word(w, times[j]));
       if (outT) tl.to(`#L${i}`, { opacity: 0, y: -40, filter: 'blur(16px)', duration: 0.22, ease: 'power2.in' }, outT);
     });
-    const pop = (sel, t, from = {}) => tl.fromTo(sel, { opacity: 0, scale: 0.2, y: 60, filter: 'blur(10px)', ...from },
-      { opacity: 1, scale: 1, x: 0, y: 0, rotation: 0, filter: 'blur(0px)', duration: 0.42, ease: 'back.out(2.4)' }, t);
+    // Smart Bounce: scale 0 to 100 in 0.16 s and rotation 20 to 0 in 0.09 s, then the elastic overshoot
+    const pop = (sel, t, from = {}) => {
+      tl.set(sel, { opacity: 1, filter: 'blur(0px)' }, t);
+      tl.fromTo(sel, { scale: 0 }, { scale: 1, duration: 1.16, ease: smart(0.16) }, t);
+      tl.fromTo(sel, { rotation: from.rotation ?? 20 }, { rotation: 0, duration: 1.09, ease: smart(0.09) }, t);
+      tl.fromTo(sel, { x: from.x || 0, y: from.y || 0 }, { x: 0, y: 0, duration: 0.6, ease: SETTLE }, t);
+    };
     const push = (sel, t0, t1, s = 1.07, r = 0) => tl.fromTo(sel, { scale: 1, rotation: -r / 2 }, { scale: s, rotation: r / 2, duration: t1 - t0, ease: 'none' }, t0);
     const punch = (sel, t, s = 1.18) => { tl.to(sel, { scale: s, duration: 0.08, ease: 'power2.out' }, t); tl.to(sel, { scale: 1, duration: 0.4, ease: 'back.out(3)' }, t + 0.08); };
     // an object drops in from above trailing four ghost copies of itself, then squashes on landing
@@ -56,41 +125,14 @@
       return main;
     };
 
-    // ── scenes and the transitions between them
-    const S = Object.fromEntries(R.scenes.map(([id, a, b]) => [id, [a, b]]));
+    // ── scenes: hard cuts, the camera and the blur pulse do the rest
     gsap.set('.sc', { autoAlpha: 0 });
     gsap.set('#sA', { autoAlpha: 1 });
     gsap.set('.obj, .print, .logo, .disc', { opacity: 0 });
-    R.scenes.forEach(([id, a, b]) => tl.fromTo(`#s${id} .world`, { scale: 1 }, { scale: 1.06, duration: b - a + 0.4, ease: 'none' }, a));
-    const show = (b, t) => tl.set(`#s${b}`, { autoAlpha: 1 }, t);
-    const hide = (a, t) => tl.set(`#s${a}`, { autoAlpha: 0 }, t);
-    const TR = {
-      whipH: (a, b, t) => {
-        tl.to(`#s${a}`, { x: -1100, filter: 'blur(34px)', duration: 0.24, ease: 'power2.in' }, t - 0.12); hide(a, t + 0.12); show(b, t);
-        tl.fromTo(`#s${b}`, { x: 1100, filter: 'blur(34px)' }, { x: 0, filter: 'blur(0px)', duration: 0.34, ease: 'power3.out' }, t);
-      },
-      whipV: (a, b, t) => {
-        tl.to(`#s${a}`, { y: -1950, filter: 'blur(34px)', duration: 0.24, ease: 'power2.in' }, t - 0.12); hide(a, t + 0.12); show(b, t);
-        tl.fromTo(`#s${b}`, { y: 1950, filter: 'blur(34px)' }, { y: 0, filter: 'blur(0px)', duration: 0.36, ease: 'power3.out' }, t);
-      },
-      cut: (a, b, t) => {
-        hide(a, t); show(b, t);
-        tl.fromTo(`#s${b}`, { scale: 1.16, filter: 'blur(18px)' }, { scale: 1, filter: 'blur(0px)', duration: 0.34, ease: 'power3.out' }, t);
-      },
-      zoom: (a, b, t) => {
-        tl.to(`#s${a}`, { scale: 2.4, filter: 'blur(30px)', opacity: 0, duration: 0.3, ease: 'power2.in' }, t - 0.3); hide(a, t); show(b, t);
-        tl.fromTo(`#s${b}`, { scale: 0.7, filter: 'blur(22px)' }, { scale: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, t);
-      },
-    };
-    [['A', 'B', 'whipH'], ['B', 'Dr', 'cut'], ['Dr', 'E', 'whipV'], ['E', 'F', 'cut'], ['F', 'G', 'whipH'], ['G', 'H', 'whipV'],
-     ['H', 'I', 'cut'], ['I', 'J', 'cut'], ['J', 'K', 'zoom'], ['K', 'L', 'whipH'], ['L', 'M', 'whipH'], ['M', 'N', 'cut'],
-     ['N', 'O', 'cut'], ['O', 'P', 'whipV'], ['P', 'Q', 'whipH']].forEach(([a, b, k]) => TR[k](a, b, S[b][0]));
+    SC.slice(1).forEach((s, i) => { tl.set(`#s${SC[i].id}`, { autoAlpha: 0 }, s.a); tl.set(`#s${s.id}`, { autoAlpha: 1 }, s.a); });
 
     // ── A · three logos spring in under the hook
-    [['#lgApple', 2.1], ['#lgShell', 2.42], ['#lgCroc', 2.76]].forEach(([s, t], i) => {
-      pop(s, t);
-      tl.to(s, { y: i % 2 ? 10 : -10, rotation: i % 2 ? -3 : 3, duration: 3.02 - t, ease: 'sine.inOut' }, t + 0.42);
-    });
+    [['#lgApple', 2.1], ['#lgShell', 2.42], ['#lgCroc', 2.76]].forEach(([s, t]) => pop(s, t));
 
     // ── B · one hero per word: each whips out to the left as the next whips in from the right
     const heroes = ['#oApple', '#oCroc', '#oShell', '#oBull'], swaps = [4.24, 5.08, 5.78];
@@ -160,7 +202,7 @@
     tl.fromTo('#frameK', { opacity: 1, scale: 1.3, rotation: -8, filter: 'blur(12px)' }, { scale: 1, rotation: -2, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, 29.5);
     push('#frameK', 29.9, 33.1, 1.06);
     pop('#discK', 30.68, { rotation: -30 });
-    tl.to('#discK', { rotation: 6, duration: 2.2, ease: 'sine.inOut' }, 31.1);
+    tl.to('#discK', { rotation: 6, duration: 1.3, ease: 'sine.inOut' }, 31.8);
 
     // ── L · the bulls charge in from both sides and collide, the sun comes up, the logo
     tl.fromTo('#bullL', { opacity: 1, x: -900, filter: 'blur(22px)' }, { x: 0, filter: 'blur(0px)', duration: 0.42, ease: 'power4.out' }, 33.21);
@@ -229,8 +271,28 @@
     tl.set('#handle .w', { opacity: 1 }, 65.3);
 
     tl.to({}, { duration: D }, 0);
+
+    // the clock HyperFrames drives: it holds every frame for 1/12 s, plays the timeline there, places the shot's camera
+    // and sets the frame's blur (the camera's motion blur, 180° at 100 fps, plus the pulse on a cut)
+    const mb = $('#mbB');
+    const render = (t) => {
+      const q = Math.min(D, Math.floor((t + 0.04) * POSTER) / POSTER);
+      tl.totalTime(q, false);
+      const s = SC.find((x) => q >= x.a && q < x.b) || SC[SC.length - 1];
+      const [x, y, k] = camAt(s, q), [x0, y0, k0] = camAt(s, Math.max(s.a, q - SHUTTER));
+      s.cam.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${k.toFixed(4)})`;
+      s.world.style.transform = `translate(${(x * 0.35).toFixed(2)}px, ${(y * 0.35).toFixed(2)}px) scale(${(1 + (k - 1) * 0.35).toFixed(4)})`;
+      const near = cuts.reduce((m, c) => Math.min(m, Math.abs(q - c)), 9);
+      const f = near < FLASH[0] ? FLASH[1] * (1 - near / FLASH[0]) : 0;
+      const sx = Math.abs(x - x0) / 2 + Math.abs(k - k0) * 260 + f, sy = Math.abs(y - y0) / 2 + Math.abs(k - k0) * 460 + f;
+      mb.setAttribute('stdDeviation', `${sx.toFixed(2)} ${sy.toFixed(2)}`);
+    };
+    const clock = { now: 0 };
+    Object.defineProperty(clock, 't', { get() { return this.now; }, set(v) { this.now = v; render(v); } });
+    const main = gsap.timeline({ paused: true });
+    main.fromTo(clock, { t: 0 }, { t: D, duration: D, ease: 'none' }, 0);
     window.__timelines = window.__timelines || {};
-    window.__timelines['main'] = tl;
+    window.__timelines['main'] = main;
   }
   document.fonts.ready.then(build);
 })();
