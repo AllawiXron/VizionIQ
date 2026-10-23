@@ -33,6 +33,7 @@ w, h = PX * CM, int(PX * WD)
 tape = Image.new('RGB', (w, h), (200, 132, 6))
 d = ImageDraw.Draw(tape)
 font = ImageFont.truetype(FILES + 'brand/3- Fonts/LamaSans-BoldCondensed.ttf', int(h * 0.42))
+font3 = ImageFont.truetype(FILES + 'brand/3- Fonts/LamaSans-BoldCondensed.ttf', int(h * 0.31))
 for mm in range(0, CM * 10 + 1, 5):
     x = mm * PX / 10
     long = mm % 10 == 0
@@ -43,8 +44,9 @@ for mm in range(0, CM * 10 + 1, 5):
     if long and 0 < mm < CM * 10:
         n = mm // 10
         col = (190, 30, 28) if n % 10 == 0 else (24, 20, 16)
-        tb = d.textbbox((0, 0), str(n), font=font)
-        d.text((x - (tb[2] - tb[0]) / 2 - PX * 0.5 + PX * 0.5, h / 2 - (tb[3] - tb[1]) / 2 - tb[1]), str(n), font=font, fill=col)
+        fnt = font if n < 100 else font3                 # three-digit numbers set smaller so they keep their own centimetre
+        tb = d.textbbox((0, 0), str(n), font=fnt)
+        d.text((x - (tb[2] - tb[0]) / 2, h / 2 - (tb[3] - tb[1]) / 2 - tb[1]), str(n), font=fnt, fill=col)
 t = np.asarray(tape).astype(np.float32)
 # woven fabric: fine noise and a faint weave so the ink doesn't look printed by a computer
 rng = np.random.default_rng(3)

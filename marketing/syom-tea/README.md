@@ -92,6 +92,9 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   alone in Blender with a camera solved to the layout (a stand-in box hides it behind the pouch and throws the pouch's
   cast shadow), a walnut table warped into that camera's perspective, green plaster wall with a warm light behind the
   pouch and the palm shadow out of focus, contact/cast/ambient shadows, rim light, type in Lama Sans, one grade with
-  grain over everything. Build: `cd adD && python3 cut.py`, `blender -b -P tape.py -- cut/tape-shadow.png 96`,
-  `blender -b -P tape.py -- cut/tape.png 96 tapeonly`, `blender -b -P tape.py -- cut/tape-full.png 96 full`, `python3 compose.py`, then from this folder
+  grain over everything. Build: `cd adD && python3 cut.py`, `blender -b -P tape.py -- cut/tape-shadow.png 128 shadow`,
+  `blender -b -P tape.py -- cut/tape-back.png 128 back`, `blender -b -P tape.py -- cut/tape-front.png 128 front`, `python3 compose.py`, then from this folder
   `node render.cjs adD/ad.html && python3 adD/grade.py out/syom-adD-story.png out/syom-adD-story.png`.
+  The tape is one loose loop round the pouch's foot, wider than its base, as if it slipped off. It renders in two
+  halves: the back half goes under the pouch photo (the photo's outline hides it) and the front half over it, split
+  where the loop lies on the table beside the pouch, so it never seems to pass through the pouch.

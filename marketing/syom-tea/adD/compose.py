@@ -29,7 +29,7 @@ def darken(dst, amount):
 
 
 # Blender writes its own notes into the PNGs it renders: keep only the pixels
-for f in ('cut/tape.png', 'cut/tape-shadow.png', 'cut/tape-full.png'):
+for f in ('cut/tape-shadow.png', 'cut/tape-back.png', 'cut/tape-front.png'):
     im = Image.open(f).convert('RGBA')
     Image.frombytes('RGBA', im.size, im.tobytes()).save(f, optimize=True)
 
@@ -87,8 +87,8 @@ ao = np.exp(-(((xx - 690) / 380) ** 2 + ((yy - 1590) / 95) ** 2))
 darken(img, cv2.GaussianBlur(ao, (0, 0), 30) * 0.42)
 
 # ---------- cast shadows of pouch and tape, from the render (tape+shadow minus tape) ----------
-ts = rgba('cut/tape-shadow.png'); to = rgba('cut/tape.png')
-sh = np.clip(ts[..., 3] - to[..., 3], 0, 1)
+ts = rgba('cut/tape-shadow.png'); tb = rgba('cut/tape-back.png'); tfr = rgba('cut/tape-front.png')
+sh = np.clip(ts[..., 3] - np.maximum(tb[..., 3], tfr[..., 3]), 0, 1)
 sh = cv2.GaussianBlur(sh, (0, 0), 2.5)
 darken(img, sh * 0.62 * (1 - wall_mask))
 
@@ -149,20 +149,16 @@ over_c = np.zeros((H, W), np.float32)
 ys, xs = slice(py + 4, py + 4 + ph), slice(px, px + pw)
 over_c[ys, xs] = pa * base_rows
 contact = cv2.GaussianBlur(over_c, (0, 0), 3)
+# the back half of the fallen tape goes under the pouch, so the photo's own outline hides it
+over(img, np.clip(tb[..., :3] * np.array([1.08, 1.02, 0.9]), 0, 1), tb[..., 3])
 darken(img, contact * 0.85)
 over(img, prgb, pa, px, py)
 pouch_canvas = np.zeros((H, W, 3), np.float32)
 over(pouch_canvas, np.ones((ph, pw, 3), np.float32), pa, px, py)
 pouch_canvas = pouch_canvas[..., 0]
 
-# ---------- tape ----------
-# the stand-in box doesn't follow the photo's outline exactly, so take what it hid and give back the parts that
-# fall outside the real pouch
-tf = rgba('cut/tape-full.png')
-behind = np.clip(tf[..., 3] - to[..., 3], 0, 1) * (1 - pouch_canvas)
-ta = np.clip(to[..., 3] + behind, 0, 1)
-trgb = np.where(to[..., 3:4] > 0.02, to[..., :3], tf[..., :3])
-over(img, np.clip(trgb * np.array([1.08, 1.02, 0.9]), 0, 1), ta)
+# ---------- tape: the front half of the loop, over the pouch's foot ----------
+over(img, np.clip(tfr[..., :3] * np.array([1.08, 1.02, 0.9]), 0, 1), tfr[..., 3])
 
 # ---------- loose tea and rose petals spilled over the base and the tape ----------
 hb = Image.open('cut/herbs.png')

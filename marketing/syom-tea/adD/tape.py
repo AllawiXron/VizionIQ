@@ -1,5 +1,5 @@
 # The tailor's tape for ad D, rendered alone so it can be laid into the photo composite:
-#   blender -b -P tape.py -- <out.png> [samples] [proxy|tapeonly|full]
+#   blender -b -P tape.py -- <out.png> [samples] [proxy|shadow|back|front]
 # The camera is solved so the pouch base centre lands at (700, 1560) and the pouch stands about 900 px tall.
 # A box stands where the pouch photo goes: it hides the tape behind the pouch and throws the pouch's shadow onto a
 # shadow catcher, so the PNG holds the tape plus the shadows of tape and pouch on the table. With "proxy" the box
@@ -11,8 +11,12 @@ argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 OUT = os.path.abspath(argv[0] if argv else 'cut/tape.png')
 SAMPLES = int(argv[1]) if len(argv) > 1 else 128
 PROXY = len(argv) > 2 and argv[2] == 'proxy'
-NOFLOOR = len(argv) > 2 and argv[2] in ('tapeonly', 'full')   # the tape without the shadow catcher, to split tape from shadows
-FULL = len(argv) > 2 and argv[2] == 'full'   # the whole tape (the stand-in only casts its shadow), cut against the real pouch photo later
+MODE = argv[2] if len(argv) > 2 else 'shadow'
+# shadow: tape and shadows on the table (the stand-in hides what is behind it)
+# back / front: only the half of the loop behind / in front of the pouch, no table; the back half goes under the pouch
+#               photo, so the photo's own outline hides it, and the front half goes over it
+NOFLOOR = MODE in ('back', 'front')
+FULL = MODE in ('back', 'front')
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -101,16 +105,24 @@ def on_table(u, v):
     return o + d * t
 
 
-# the path is laid out in frame pixels, all of it on the table in front of the pouch (its front base edge runs from
-# (529, 1637) to (958, 1536)), so nothing passes behind it: in from the bottom left, along the front of the pouch,
-# and a loose curl at the right with the brass end lying back toward the left. (u, v, roll)
-LAYOUT = [(-160, 2080, 0), (60, 1950, 0), (250, 1830, 0), (410, 1728, 0), (548, 1664, 0.06), (660, 1632, 0),
-          (770, 1606, 0), (870, 1582, 0), (950, 1566, 0.16), (1012, 1582, 0.40), (1042, 1624, 0.30),
-          (1018, 1666, 0.06), (952, 1684, 0), (892, 1676, 0)]
+# the tape slipped off the pouch and dropped round its foot: in from the bottom left (laid out in frame pixels), then
+# one loose loop round the base in the pouch's own frame, wider than the 20 x 7 cm base so its far left and right
+# lie on the table beside the pouch, and on round to the front where the end lies over the first pass.
+LEAD = [(-160, 2080), (60, 1955), (250, 1842), (400, 1752)]
 ctrl = []   # world (x, y, z, roll)
-for u, v, roll in LAYOUT:
+for u, v in LEAD:
     q = on_table(u, v)
-    ctrl.append((q.x, q.y, 0.0003 + 0.005 * roll, roll))
+    ctrl.append((q.x, q.y, 0.0003, 0))
+A_, B_, CX_ = 0.182, 0.098, -0.030       # centred a little left so the right side stays in frame
+for k in range(0, 24):
+    deg = 222 + k * 17.0                             # 222 .. 613 degrees: front left, front, right, back, left, and across the start
+    th = math.radians(deg)
+    r = 1 + 0.09 * (deg - 222) / 391 + 0.035 * math.sin(2.3 * th + 0.8)
+    x, y = CX_ + A_ * r * math.cos(th), B_ * r * math.sin(th)
+    z = 0.0003 + (0.0007 if deg > 560 else 0)        # the second pass lies on top of the first
+    roll = 0.22 * math.sin(math.radians(deg - 222) * 2.2) if deg > 590 else 0
+    q = M @ Vector((x, y, 0))
+    ctrl.append((q.x, q.y, z + 0.004 * abs(roll), roll))
 
 
 def catmull(pts, step=0.0025):
@@ -130,6 +142,9 @@ def catmull(pts, step=0.0025):
 
 print('CTRL', [tuple(round(c) for c in px(Vector(p[:3]))) for p in ctrl])
 path = catmull(ctrl)
+_Mi = M.inverted()
+_cross = [px(path[i][0]) for i in range(1, len(path)) if ((_Mi @ path[i][0]).y > 0) != ((_Mi @ path[i - 1][0]).y > 0)]
+print('SPLIT', [tuple(round(c) for c in v) for v in _cross])
 bm = bmesh.new(); uvl = bm.loops.layers.uv.new('UVMap')
 rows, L, prev = [], 0.0, None
 for i, (q, roll) in enumerate(path):
@@ -140,7 +155,13 @@ for i, (q, roll) in enumerate(path):
         L += (q - prev).length
     prev = q
     rows.append((bm.verts.new(q - side * TW / 2), bm.verts.new(q + side * TW / 2), L))
-for a, b in zip(rows, rows[1:]):
+Minv = M.inverted()
+behind = [(Minv @ q).y > 0.0 for q, _ in path]       # the half of the loop on the far side of the pouch
+for i, (a, b) in enumerate(zip(rows, rows[1:])):
+    back = behind[i] or behind[i + 1]
+    front = not (behind[i] and behind[i + 1])
+    if (MODE == 'back' and not back) or (MODE == 'front' and not front):
+        continue
     f = bm.faces.new((a[0], b[0], b[1], a[1]))
     for loop, uv in zip(f.loops, ((a[2], 0), (b[2], 0), (b[2], 1), (a[2], 1))):
         loop[uvl].uv = (uv[0] / 1.5 + 0.03, uv[1])
@@ -165,8 +186,11 @@ cap.scale = (0.007, TW + 0.0008, TT + 0.0005)
 cap.rotation_euler = (0, 0, math.atan2(end_t.y, end_t.x))
 mb = bpy.data.materials.new('Brass'); mb.use_nodes = True
 pb = mb.node_tree.nodes['Principled BSDF']
-pb.inputs['Base Color'].default_value = (0.86, 0.62, 0.30, 1); pb.inputs['Metallic'].default_value = 0.55; pb.inputs['Roughness'].default_value = 0.42
+pb.inputs['Base Color'].default_value = (0.66, 0.46, 0.20, 1); pb.inputs['Metallic'].default_value = 0.75; pb.inputs['Roughness'].default_value = 0.34
 cap.data.materials.append(mb)
+cap.visible_shadow = False        # a sheet this thin barely shades the tape under it
+if MODE == 'back':
+    cap.hide_render = True
 
 # ---------- light: low warm sun from the left (late afternoon), soft fill from the room ----------
 direction = Vector((0.82, 0.38, -0.43)).normalized()
