@@ -21,6 +21,16 @@ any code. Check the lines marked (confirm) and fix them if they are out of date.
 - One follow-up at most, with something new (a sample or a recent work). Then stop.
 - Don't promise results (sales, followers) or invent past clients.
 
+## How to sell design (value first)
+- Sell what the design does with their ad money: it stops the scroll, makes the page look like the leading name in its
+  field, and earns more DMs for the same spend. Not "posts" and not a price per picture.
+- Diagnose first: look at their page and ads, name the one thing costing them (weak first frame, no clear offer,
+  cheap look next to competitors), then offer the fix.
+- Proof before price: samples made from their own products, recent client work, the big-brand concepts.
+- Lower the risk: the 3-post trial, with the first design setting the style before the rest.
+- Bonuses only from what Ali really includes (confirm: story 9:16 resize, ad copy, a check against Meta ad rules).
+- Path: free sample → 3-post trial → regular monthly work (confirm the monthly package and its price).
+
 ## Cold pitches to pages
 - Look at the page first and name one real, specific thing about it.
 - Make 1 or 2 sample designs from their own products before writing, and send them with the pitch.

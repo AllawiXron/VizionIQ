@@ -154,6 +154,20 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 - Leave out anything made with AI image generators (ChatGPT, Gemini, Midjourney and the like), except custom elements the
   user generates in Gemini on request (22 Oct); strip their metadata like any other image.
 
+## Selling: offers, hooks and DMs (Ali asked for this approach, 23 Oct)
+
+- Build offers, reel scripts, posts and pitches on Hormozi's $100M Offers and $100M Leads. Raise the outcome the buyer
+  wants and their confidence in getting it (real proof, the free trial, a first test design); cut the wait and the
+  effort (ready templates, IQD calculators, done-for-you copy). Stack bonuses only from what Ali really includes.
+- Reels and posts: hook in the first second that names the viewer or their pain, hold them with an open loop and real
+  proof, give a real insight before the call to action. Match the copy to the viewer's awareness stage and the
+  market's sophistication (Schwartz); move leads up a ladder, from free sample or trial to paid work (Brunson); give
+  each brand one clear difference from its competitors (Neumeier).
+- DMs: diagnose first (what they sell, where it breaks), give one sharp insight, then the offer. Calm, no pressure.
+- The honesty rules above still win: no invented guarantees, tiers, bonuses, results or prices, and no promised sales.
+  Natural Iraqi dialect, never translated marketing clichés, and hooks follow -noAI section 3 (no question answered by
+  itself, no "not just X, but Y"). Each brief has a "How to sell" section for its business.
+
 ## Reference projects (start from these; copy their structure and look)
 
 - Reel motion (22 Oct, the standard from now on): `marketing/hf-simple-logos-reel`, built on an After Effects project
