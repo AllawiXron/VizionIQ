@@ -290,7 +290,7 @@ function sceneHook(t) {
   });
 }
 function lineWidthAt(t) {
-  if (t < 1) return lerp(LINE_W0, LINE_W1, expo(seg(t, 0, 0.45)));
+  if (t < 1) return lerp(LINE_W0, LINE_W1, expoInOut(seg(t, 0, 0.5)));   // starts as slowly as it ended, so the loop meets
   return LINE_W1;
 }
 // the three coloured pieces of the line (right to left: green, amber, red) and where they go
@@ -533,7 +533,7 @@ function sceneField(t) {
   y = lerp(y, LINE_Y - 4, fold); h = lerp(h, 8, fold); x = lerp(x, W / 2 - LINE_W1 / 2, fold); w = lerp(w, LINE_W1, fold);
   if (w <= 0) return;
   ctx.fillStyle = GREEN; rrect(x, y, w, h, Math.min(4, h / 2)); ctx.fill();
-  if (grow <= 0) return;
+  if (grow <= 0 || fold > 0.8) return;     // near the end of the fold only the green band is left
   ctx.save(); rrect(x, y, w, h, 0); ctx.clip();
   // Iraq's summers since 2019 rise as white bars; the counter runs through them
   const yrs = D.years, BW = 76, GAP = 30, X0 = 960, BOT = 1500, HMAX = 620;
@@ -592,8 +592,8 @@ window.seek = function (t) {
   sceneIraqText(t);
   sceneBars(t);
   sceneSearch(t);
+  sceneEnd(t);          // under the field, so the page and its title appear as the green folds away
   sceneField(t);
-  sceneEnd(t);
 };
 window.ready = Promise.all(['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik`, 'العراق ٨٧ 4K'))).then(() => { window.seek(0); return true; });
 </script>
