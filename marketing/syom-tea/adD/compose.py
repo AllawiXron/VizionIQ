@@ -118,15 +118,14 @@ sh = cv2.GaussianBlur(sh, (0, 0), 2.5)
 darken(img, sh * 0.62 * (1 - wall_mask))
 
 # ---------- pouch ----------
-# the brand's doypack mockup, facing the camera. Placed so its bottom edge sits on the stand-in's base in the tape
-# render: the fold between gusset and front (x 150, y 1073 in the cut-out) on the stand-in's front-left corner, scaled
-# so the front's right corner (703, 1002) lands on its front-right corner
-po = Image.open('cut/pouch-front.png')
+# the brand's doypack mockup, its front panel straightened square to the camera (cut.py). Its foot, (0, 1052) to
+# (592, 1052) in the cut-out, goes on the stand-in's front base corners in the tape render
+po = Image.open('cut/pouch-straight.png')
 (flx, fly), (frx, fry) = CAM['front_left'], CAM['front_right']
-S_ = np.hypot(frx - flx, fry - fly) / np.hypot(703 - 150, 1002 - 1073)
+S_ = np.hypot(frx - flx, fry - fly) / 592
 ph, pw = round(po.height * S_), round(po.width * S_)
 po = np.asarray(po.resize((pw, ph), Image.LANCZOS)).astype(np.float32) / 255
-px, py = OFF + round(flx - 150 * S_), round(fly - 1073 * S_)
+px, py = OFF + round(flx), round((fly + fry) / 2 - 1052 * S_)
 prgb, pa = po[..., :3], po[..., 3]
 prgb = np.clip(prgb * np.array([1.04, 1.0, 0.93]), 0, 1)
 # key light from the left warms the lit side; the right edge picks up the warm wall light as a rim

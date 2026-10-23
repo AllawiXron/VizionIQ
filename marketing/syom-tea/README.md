@@ -108,3 +108,7 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   generated and stay out. tape.py solves the camera to BX, BY, PH and writes cut/camera.json; compose.py reads it
   for the table's perspective and where the pouch goes.
   The client left the angle to the user: straight on, so the whole print faces the reader.
+- Client round 3 (23 Oct): the product reads premium now. He asked for the answer line under the headline (so the
+  question and its answer sit together, the left side keeps the 100% and the call to action) and the pouch fully
+  straight. cut.py warps the mockup's front panel square to the camera (cut/pouch-straight.png); the stand-in faces
+  the camera (-6 degrees) and the loop starts in front so the tape crosses itself on the open table.

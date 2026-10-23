@@ -28,11 +28,11 @@ bpy.ops.object.camera_add(location=(-0.05, -1.05, 0.34))
 cam = bpy.context.object; sc.camera = cam
 cam.data.sensor_width = 36; cam.data.sensor_fit = 'AUTO'
 sc.render.resolution_x, sc.render.resolution_y = 1080, 1920
-# the pouch stand-in: 20 x 10 x 34 cm, turned 18 degrees, front to camera right: its base corners land on the
-# base corners of the brand's doypack mockup (cut/pouch-front.png) as compose.py places it
+# the pouch stand-in: 19.4 x 10 x 34 cm, square to the camera (turned -6 degrees to face it): its front base corners
+# land on the foot of the straightened pouch (cut/pouch-straight.png) as compose.py places it
 PX = 0.06                      # the pouch stands 6 cm right of the scene centre
-ROT = math.radians(18)
-W, D, H = 0.20, 0.10, 0.34
+ROT = math.radians(-6)
+W, D, H = 0.194, 0.10, 0.34
 bpy.ops.mesh.primitive_cube_add(size=1, location=(PX, 0, H / 2))
 box = bpy.context.object; box.name = 'PouchStandIn'
 box.scale = (W, D, H); box.rotation_euler = (0, 0, ROT)
@@ -66,7 +66,7 @@ def px(v):
 
 
 # the stand-in's base centre lands at (BX, BY) and the pouch stands PH px tall
-BX, BY, PH = 740, 1600, 800
+BX, BY, PH = 740, 1630, 780
 bpy.context.view_layer.update()
 base_w = box.matrix_world @ Vector((0, 0, -0.5))
 top_w = box.matrix_world @ Vector((0, 0, 0.5))
@@ -119,19 +119,19 @@ def on_table(u, v):
 # the tape slipped off the pouch and dropped round its foot: in from the bottom left (laid out in frame pixels), then
 # one loose loop round the base in the pouch's own frame, wider than the 20 x 7 cm base so its far left and right
 # lie on the table beside the pouch, and on round to the front where the end lies over the first pass.
-LEAD = [(-160, 2110), (60, 1990), (260, 1880), (440, 1790)]
+LEAD = [(-160, 2110), (80, 1990), (300, 1880), (480, 1790)]
 ctrl = []   # world (x, y, z, roll)
 for u, v in LEAD:
     q = on_table(u, v)
     ctrl.append((q.x, q.y, 0.0003, 0))
-A_, B_, CX_ = 0.156, 0.086, 0.004        # snug round the 20 x 10 cm base
+A_, B_, CX_ = 0.140, 0.084, -0.006       # snug round the 19.4 x 10 cm base
 for k in range(0, 24):
-    deg = 222 + k * 17.0                             # 222 .. 613 degrees: front left, front, right, back, left, and across the start
+    deg = 252 + k * 16.6                             # 252 .. 634 degrees: front, right, back, left, and across the start, in the open in front
     th = math.radians(deg)
-    r = 1 + 0.06 * (deg - 222) / 391 + 0.035 * math.sin(2.3 * th + 0.8)
+    r = 1 + 0.06 * (deg - 252) / 382 + 0.035 * math.sin(2.3 * th + 0.8)
     x, y = CX_ + A_ * r * math.cos(th), B_ * r * math.sin(th)
-    z = 0.0003 + (0.0007 if deg > 560 else 0)        # the second pass lies on top of the first
-    roll = 0.22 * math.sin(math.radians(deg - 222) * 2.2) if deg > 590 else 0
+    z = 0.0003 + (0.0007 if deg > 590 else 0)        # the second pass lies on top of the first
+    roll = 0.22 * math.sin(math.radians(deg - 252) * 2.2) if deg > 615 else 0
     q = M @ Vector((x, y, 0))
     ctrl.append((q.x, q.y, z + 0.004 * abs(roll), roll))
 
