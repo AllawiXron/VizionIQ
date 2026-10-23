@@ -53,3 +53,7 @@ any code. Check the lines marked (confirm) and fix them if they are out of date.
 - Reel sound: only Ali's own sound packs, no stock or generated music unless Ali sends a track.
 - Building reels and designs happens in Claude Code on the repo (it has the fonts, sound packs and transitions).
   In this Project, write ideas, scripts, captions and replies.
+- For a new post or ad, pitch 3 distinct concepts first: where the product, props and surface sit; the light and mood;
+  where the Arabic headline and call to action sit around the product. Ali picks one before anything is built. It must
+  read as a Photoshop studio composite (product grounded on a real surface, real shadows, props overlapping it), never
+  as a web layout with cards, pill buttons or icons.

@@ -9,8 +9,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - When the user says "don't waste usage" or sends a lead or caption question, answer in text: no tools, no reading code.
 - Lead replies: viZion leads follow `marketing/vizion-sales-brief.md`; design-page leads and captions follow
   `marketing/allawi-psd-brief.md`. Iraqi dialect, short; gender-neutral wording when you don't know who is writing.
-- For a new reel or design: show the idea or 2–3 still frames first, build after the user approves, then one draft render.
-  For a small change, make one pass and one render; don't re-check everything.
+- For a new reel: show the idea or 2–3 still frames first, build after the user approves, then one draft render. For a
+  new post or ad: pitch 3 concepts in text first (see "Post and ad designs" below). For a small change, make one pass
+  and one render; don't re-check everything.
 - The user asked to save usage while keeping the work at its best (20 Oct): read only the code that draws the piece,
   look at one big render to find issues, fix in one pass, then check the result on one contact sheet of slides, not each.
 - Documents and proposals (20 Oct): the user wants them to look made by a professional document designer, not AI,
@@ -167,6 +168,28 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 - The honesty rules above still win: no invented guarantees, tiers, bonuses, results or prices, and no promised sales.
   Natural Iraqi dialect, never translated marketing clichés, and hooks follow -noAI section 3 (no question answered by
   itself, no "not just X, but Y"). Each brief has a "How to sell" section for its business.
+
+## Post and ad designs: pitch first, then a studio composite (23 Oct)
+
+- Every new post or ad starts with 3 distinct concepts in text, no code and no render. For each: where the product,
+  props, surface and background depth sit; the light (direction, colour, mood); how the Arabic headline, subtext and
+  call to action sit around the product (asymmetric, rule of thirds). Build only the one the user picks.
+- It must read as a Photoshop studio composite or commercial product photo (the user's reference: a SYOM tea ad, the
+  pouch on a table next to the teapot, cups and spilled herbs), never as a web layout. Banned: cards and panels,
+  backdrop blur, frames, pill buttons or badges, dashed or glowing boxes, line icons, checkmarks, emojis, title >
+  image > button stacked in the centre, plain two-colour gradients or flat fills.
+- Products sit on a real surface (wood, marble, stone, a studio table) or are shot from a strong camera angle, with
+  foreground props (herbs, petals, steam, drops) overlapping their base. Each object gets three shadows: a tight dark
+  contact shadow (2–4 px blur), a cast shadow away from the light (15–35 px), and a wide soft ambient shadow under the
+  group (60 px+, low opacity). Rim light and colour-matched glow on the cut-outs so they don't look pasted on.
+- Background in 4+ layers: the brand's base colour, an off-centre spotlight behind the product (broken by texture,
+  never a smooth even radial), leaf or window shadow at 8–15 % (multiply or soft-light) and a vignette.
+- Type: the brand guideline's fonts and colours; logo in a corner; a bold headline in the empty space opposite the
+  product; a calm call to action at the bottom or a corner with no box; line height 1.2–1.35, short lines.
+- Finish with one grade over the whole canvas (gentle S curve, warm/cool split, about 2.5 % mono grain) so text,
+  background and photos share one texture.
+- Material is real: the client's product photos, licensed photos (credit them), Blender renders or elements the user
+  generates; leaf shadows from real photos or scans, not drawn shapes. If a needed photo is missing, ask for it.
 
 ## Reference projects (start from these; copy their structure and look)
 
