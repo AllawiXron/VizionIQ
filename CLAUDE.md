@@ -204,6 +204,9 @@ These are the defaults Claude reaches for when it designs with code. Each one al
   the user sent. A camera per shot that lands fast and settles, then speeds into a hard cut with a 0.3 s blur pulse;
   letters out of a blur one at a time; Smart Bounce pop-ins; motion blur on the camera and on every moving object;
   the frame stepping at 15 fps (the user liked 12 but found it laggy on a 30 fps video). Its README gives every number.
+- Code-built reels with an After Effects handoff (23 Oct): `marketing/ae-core-reel`, a GSAP engine (camera rig, eases,
+  kinetic type, depth layers, one master timeline on the voice) that renders in the browser and writes an ExtendScript
+  that rebuilds the same reel as an AE project. The user asked for this over plain CSS transitions.
 - Earlier reel standard: `marketing/hf-one-second-reel` (HyperFrames: one-take camera over paper sheets, word pops
   with sound, highlighter pen, real voice-over fitted to captions). Its README explains every part.
 - Collage reel: `marketing/hf-dollar-reel`. Photo post: `marketing/ig-diy-haircut`. Collage post and story:
