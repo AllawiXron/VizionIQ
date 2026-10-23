@@ -3,8 +3,6 @@
 A 1920×1080 thumbnail for the UnlockX menu video, built from the centre-hero layout (concept C of the three I pitched).
 Upload `out/r6-unlock-all.jpg` (YouTube takes thumbnails up to 2 MB); `out/r6-unlock-all.png` is the lossless copy.
 
-The idea: Sledge opens doors with his hammer in the game, so here he has just sheared a padlock off with it.
-
 ## Layers, back to front
 
 1. The House map painting, scaled to 1080 px high and softened (the source is only 766 px wide), graded to dusk.
@@ -18,8 +16,8 @@ The idea: Sledge opens doors with his hammer in the game, so here he has just sh
    in front of its top edge and the torso hides the Account tab.
 4. Sledge, cut from the key art, sharpened, with a cold rim from the floodlights on his top edges and a warm one from
    the map on the undersides of his arms.
-5. The brass padlock with its shackle sheared, both stubs pointing back at the hammer face. Welding sparks burst from
-   the point of contact, and saw sparks fly in at the bottom right.
+5. Welding sparks burst off the hammer face, and saw sparks fly in at the bottom right. (A broken padlock flew off the
+   hammer in the first draft; it looked odd and came out.)
 6. `finish.py`: a gentle S curve, cooler shadows and warmer highlights, a little more saturation where there is colour
    already, and about 2.5 % mono grain.
 
@@ -52,6 +50,6 @@ name can go on the hero's gear.
 ## Sources
 
 - Sledge key art, the House map painting and the menu screenshot came with the brief.
-- Padlock: rawpixel, CC0 (photo px936843). Welding sparks: rawpixel, "Welder Sparks", CC0. Saw sparks: StockSnap,
+- Brass texture in the title: a padlock photo on rawpixel, CC0 (px936843). Welding sparks: rawpixel, "Welder Sparks", CC0. Saw sparks: StockSnap,
   "Sparks Saw" (DC05713422), CC0.
 - Fonts: Big Shoulders Display and Plus Jakarta Sans, SIL Open Font License, from Google Fonts.

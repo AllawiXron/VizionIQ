@@ -61,38 +61,8 @@ mp = Image.open('src/house-map.jpg').convert('RGB')
 mp = mp.resize((round(mp.width * 1080 / mp.height), 1080), Image.LANCZOS)
 save(blur(np.asarray(mp).astype(np.float32) / 255, 3.5), 'img/map.jpg', quality=92)
 
-# Padlock: the brass lock from the photo with its shackle sheared where it crossed the CD. The CD and the key go.
-pl = load('src/padlock-photo.jpg')
-pm = load('src/padlock-mask.png', 'L')
-M = pm > .5
-r = 26
-disk = (np.add.outer(np.arange(-r, r + 1) ** 2, np.arange(-r, r + 1) ** 2) <= r * r)
-O = ndi.binary_opening(M, disk)
-lab, _ = ndi.label(O)
-cd = ndi.binary_dilation(lab == lab[200, 200], iterations=3)
-H, W = M.shape
-yy, xx = np.mgrid[:H, :W]
-# key side: the body's lower right edge runs from (970, 446) to (771, 682); keep the side the body centre is on
-(x1, y1), (x2, y2) = (970, 446), (771, 682)
-side = (x2 - x1) * (yy - y1) - (y2 - y1) * (xx - x1)
+# Brushed brass from the body of a padlock photo, turned so the brush lines run across; it fills the title.
 cx, cy = 800, 470
-keep_sign = np.sign((x2 - x1) * (cy - y1) - (y2 - y1) * (cx - x1))
-half = side * keep_sign > -4 * np.hypot(x2 - x1, y2 - y1)
-lab2, n = ndi.label(M & ~cd & half)
-body = lab2 == lab2[cy, cx]
-near = ndi.binary_dilation(body, iterations=45)
-keep = body.copy()
-for i in range(1, n + 1):                                   # the free end of the shackle stands just off the body
-    c = lab2 == i
-    if c.sum() > 400 and (c & near).any():
-        keep |= c
-region = blur(keep.astype(np.float32), .8)
-a = pm * region
-ys, xs = np.nonzero(a > .02)
-b = (xs.min() - 4, ys.min() - 4, xs.max() + 5, ys.max() + 5)
-save(np.dstack([pl, a])[b[1]:b[3], b[0]:b[2]], 'img/padlock.png')
-
-# Brushed brass from the lock body, turned so the brush lines run across; it fills the title.
 br = Image.open('src/padlock-photo.jpg').convert('RGB').rotate(-40, center=(cx, cy), resample=Image.BICUBIC)
 br = br.crop((cx - 95, cy - 70, cx + 95, cy + 70)).resize((1900, 700), Image.BICUBIC)
 br.save('img/brass.jpg', quality=92)
