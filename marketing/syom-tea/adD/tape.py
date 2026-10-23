@@ -92,24 +92,25 @@ def smooth(a, b, x):
     return t * t * (3 - 2 * t)
 
 
+def on_table(u, v):
+    """the point on the table seen at pixel (u, v)"""
+    f = cam.data.lens / 36 * 1920
+    d = cam.matrix_world.to_3x3() @ Vector(((u - 540 + cam.data.shift_x * 1920) / f, (960 + cam.data.shift_y * 1920 - v) / f, -1))
+    o = cam.matrix_world.translation
+    t = -o.z / d.z
+    return o + d * t
+
+
+# the path is laid out in frame pixels, all of it on the table in front of the pouch (its front base edge runs from
+# (529, 1637) to (958, 1536)), so nothing passes behind it: in from the bottom left, along the front of the pouch,
+# and a loose curl at the right with the brass end lying back toward the left. (u, v, roll)
+LAYOUT = [(-160, 2080, 0), (60, 1950, 0), (250, 1830, 0), (410, 1728, 0), (548, 1664, 0.06), (660, 1632, 0),
+          (770, 1606, 0), (870, 1582, 0), (950, 1566, 0.16), (1012, 1582, 0.40), (1042, 1624, 0.30),
+          (1018, 1666, 0.06), (952, 1684, 0), (892, 1676, 0)]
 ctrl = []   # world (x, y, z, roll)
-# the end runs in from the bottom left of the frame toward the front of the pouch
-for p in [(-0.26, -0.60, 0.0003, 0), (-0.13, -0.44, 0.0003, 0), (-0.05, -0.30, 0.0004, 0.12), (0.02, -0.18, 0.0003, 0)]:
-    ctrl.append(p)
-# then a loose turn round the foot, starting in front, round the right, behind, and up the left side where it leans
-for k in range(0, 21):
-    deg = 250 + k * 18                               # 250 .. 610 degrees in the pouch's own frame
-    th = math.radians(deg)
-    lean = smooth(500, 525, deg) * (1 - smooth(560, 585, deg))
-    r = 1 + 0.06 * math.sin(2.7 * th + 0.4)
-    ax, by = 0.128 * r, 0.092 * r
-    x, y = ax * math.cos(th), by * math.sin(th)
-    if lean > 0:                                     # pulled in against the side gusset and standing on its edge
-        x = x * (1 - 0.12 * lean)
-    roll = -1.25 * lean
-    z = 0.0003 + 0.010 * lean + (0.0011 if deg > 585 else 0)
-    q = M @ Vector((x, y, 0))
-    ctrl.append((q.x, q.y, z, roll))
+for u, v, roll in LAYOUT:
+    q = on_table(u, v)
+    ctrl.append((q.x, q.y, 0.0003 + 0.005 * roll, roll))
 
 
 def catmull(pts, step=0.0025):
@@ -127,6 +128,7 @@ def catmull(pts, step=0.0025):
     return res
 
 
+print('CTRL', [tuple(round(c) for c in px(Vector(p[:3]))) for p in ctrl])
 path = catmull(ctrl)
 bm = bmesh.new(); uvl = bm.loops.layers.uv.new('UVMap')
 rows, L, prev = [], 0.0, None
@@ -156,13 +158,14 @@ p.inputs['Roughness'].default_value = 0.7; p.inputs['Sheen Weight'].default_valu
 tape.data.materials.append(m)
 # the brass cap on the end that lies in front
 end_q, end_t = path[-1][0], (path[-1][0] - path[-6][0]).normalized()
-bpy.ops.mesh.primitive_cube_add(size=1, location=end_q + end_t * 0.004 + Vector((0, 0, 0.0012)))
+# a thin brass sheet folded over the last 7 mm of the tape, not a block
+bpy.ops.mesh.primitive_cube_add(size=1, location=end_q - end_t * 0.0032 + Vector((0, 0, end_q.z + TT * 0.5)))
 cap = bpy.context.object; cap.name = 'BrassCap'
-cap.scale = (0.008, TW + 0.001, 0.0016)
+cap.scale = (0.007, TW + 0.0008, TT + 0.0005)
 cap.rotation_euler = (0, 0, math.atan2(end_t.y, end_t.x))
 mb = bpy.data.materials.new('Brass'); mb.use_nodes = True
 pb = mb.node_tree.nodes['Principled BSDF']
-pb.inputs['Base Color'].default_value = (0.62, 0.42, 0.16, 1); pb.inputs['Metallic'].default_value = 1; pb.inputs['Roughness'].default_value = 0.32
+pb.inputs['Base Color'].default_value = (0.86, 0.62, 0.30, 1); pb.inputs['Metallic'].default_value = 0.55; pb.inputs['Roughness'].default_value = 0.42
 cap.data.materials.append(mb)
 
 # ---------- light: low warm sun from the left (late afternoon), soft fill from the room ----------

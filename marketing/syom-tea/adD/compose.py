@@ -166,16 +166,19 @@ over(img, np.clip(trgb * np.array([1.08, 1.02, 0.9]), 0, 1), ta)
 
 # ---------- loose tea and rose petals spilled over the base and the tape ----------
 hb = Image.open('cut/herbs.png')
-hw = 430
+hw = 400
 hh = round(hb.height * hw / hb.width)
 hb = np.asarray(hb.resize((hw, hh), Image.LANCZOS)).astype(np.float32) / 255
-hx, hy = 690, 1598
+hx, hy = 735, 1688
 hrgb = np.clip(hb[..., :3] * np.array([1.04, 0.98, 0.86]) * 0.92, 0, 1)
 ha = hb[..., 3].copy()
 hhsv = cv2.cvtColor((hb[..., :3] * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
 sliver = (hhsv[..., 2] < 80) & ((hhsv[..., 0] > 75) & (hhsv[..., 0] < 125))      # dark blue-teal: the pouch, not leaves
 ha *= 1 - cv2.GaussianBlur(sliver.astype(np.float32), (0, 0), 1.5)
-ha *= np.clip(np.linspace(-0.25, 3.5, hh), 0, 1)[:, None]                       # the top of the spill thins out
+edge_noise = cv2.GaussianBlur(rng.normal(0, 1, (1, hw)).astype(np.float32), (0, 0), 9)[0]
+edge_noise = edge_noise / (np.abs(edge_noise).max() + 1e-6)
+top = np.linspace(0, 1, hh)[:, None] * 3.2 - 0.6 + 0.55 * edge_noise[None, :]           # an uneven top edge
+ha *= np.clip(top, 0, 1) ** 1.3
 hsh = np.zeros((H, W, 3), np.float32)
 over(hsh, np.ones((hh, hw, 3), np.float32), ha, hx + 4, hy + 5)
 hsh = hsh[..., 0]
