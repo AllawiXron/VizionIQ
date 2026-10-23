@@ -43,7 +43,7 @@ const DAYS_N = ['يوم', 'يومان', 'أيام', 'يوما'];
 const nTests = n => `${ar(n)} ${counted(n, TESTS)}`;
 
 function norm(s) {
-  return String(s).replace(/[ً-ْـ]/g, '')
+  return String(s).replace(/[\u064B-\u0652\u0640]/g, '')
     .replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/ؤ/g, 'و').replace(/ئ/g, 'ي')
     .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g, ' ').trim();
 }
