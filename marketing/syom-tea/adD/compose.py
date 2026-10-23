@@ -39,12 +39,25 @@ for f in (f'cut/tape-shadow{SUF}.png', f'cut/tape-back{SUF}.png', f'cut/tape-fro
     im = Image.open(f).convert('RGBA')
     Image.frombytes('RGBA', im.size, im.tobytes()).save(f, optimize=True)
 
+import json
+CAM = json.load(open('cut/camera.json'))      # written by tape.py: where its camera puts the table and the stand-in
+(TBX, TBY), (TTX, TTY) = CAM['base'], CAM['top']
+K = (TBY - TTY) / 900                          # the layout below was drawn for a 900 px pouch based at (700, 1560)
+
+
+def T(x, y):
+    return TBX + K * (x - 700), TBY + K * (y - 1560)
+
+
 yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
 xx -= OFF                                        # x in the Story's frame, so every position below stays as it was
 
 # the wall meets the table along the line the tape render's camera gives
+(_bx0, _by0), (_bx1, _by1) = CAM['table'][3], CAM['table'][2]
+
+
 def wall_line(x):
-    return 1350.4 + (x + 1507.5) * (1256.0 - 1350.4) / (2581.2 + 1507.5)
+    return _by0 + (x - _bx0) * (_by1 - _by0) / (_bx1 - _bx0)
 
 wall_mask = (yy < wall_line(xx)).astype(np.float32)
 
@@ -56,7 +69,8 @@ relief = 1 + 0.55 * (nor[..., 0] * -0.55 + nor[..., 1] * 0.25)
 green = np.array([1, 77, 64], np.float32) / 255
 wall = green[None, None] * relief[..., None]
 # a warm patch of window light on the wall behind the pouch, off centre to the right; falling away to the top
-glow = np.exp(-(((xx - 760) / 470) ** 2 + ((yy - 1020) / 560) ** 2))
+_gx, _gy = T(760, 1020)
+glow = np.exp(-(((xx - _gx) / 470) ** 2 + ((yy - _gy) / 560) ** 2))
 wall = wall * (0.55 + 0.75 * glow[..., None]) + np.array([0.20, 0.13, 0.05]) * (glow ** 2)[..., None] * 0.55
 wall *= (0.78 + 0.22 * np.clip(yy / 1100, 0, 1))[..., None]
 
@@ -68,13 +82,15 @@ mos = np.tile(wood, (2, 3, 1))
 mw, mh = int(2.2 / 0.75 * tile), int(1.07 / 0.75 * tile)
 mos = mos[:mh, :mw]
 src = np.float32([[0, mh], [mw, mh], [mw, 0], [0, 0]])
-dst = np.float32([[-6790.6, 3266.6], [6376.9, 2291.4], [2581.2, 1256.0], [-1507.5, 1350.4]])
+dst = np.float32(CAM['table'])
 Hm = cv2.getPerspectiveTransform(src, dst)
 Hm = np.float32([[1, 0, OFF], [0, 1, 0], [0, 0, 1]]) @ Hm
 table = cv2.warpPerspective(mos, Hm, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+table = np.clip(np.nan_to_num(table), 0, 1)   # the rows near the horizon fall outside the warp
 table = table ** 1.35 * np.array([0.66, 0.50, 0.38]) * 1.15     # oiled, darker, warmer
 # window light from the left across the table, strongest round the pouch, the front edge falling into shade
-tl = np.exp(-(((xx - 620) / 620) ** 2 + ((yy - 1560) / 300) ** 2))
+_lx, _ly = T(620, 1560)
+tl = np.exp(-(((xx - _lx) / 620) ** 2 + ((yy - _ly) / 300) ** 2))
 table *= (0.42 + 0.85 * tl[..., None])
 table *= (1 - 0.35 * np.clip((yy - 1650) / 270, 0, 1))[..., None]
 # the shadow where the table meets the wall
@@ -91,7 +107,8 @@ gobo = cv2.GaussianBlur(gobo, (0, 0), 16)
 darken(img, (1 - gobo) * 0.22)
 
 # ---------- ambient occlusion under the whole group ----------
-ao = np.exp(-(((xx - 690) / 380) ** 2 + ((yy - 1590) / 95) ** 2))
+_ax, _ay = T(690, 1590)
+ao = np.exp(-(((xx - _ax) / (380 * K)) ** 2 + ((yy - _ay) / (95 * K)) ** 2))
 darken(img, cv2.GaussianBlur(ao, (0, 0), 30) * 0.42)
 
 # ---------- cast shadows of pouch and tape, from the render (tape+shadow minus tape) ----------
@@ -101,55 +118,42 @@ sh = cv2.GaussianBlur(sh, (0, 0), 2.5)
 darken(img, sh * 0.62 * (1 - wall_mask))
 
 # ---------- pouch ----------
-po = Image.open('cut/pouch.png')
-# placed so its bottom edge sits on the stand-in's base in the tape render: the front-left corner (x 300, y 2465
-# in the cut-out) on (529, 1637), the top on y 660, at 0.3962 scale
-S_ = 0.3962
+# the brand's doypack mockup, facing the camera. Placed so its bottom edge sits on the stand-in's base in the tape
+# render: the fold between gusset and front (x 150, y 1073 in the cut-out) on the stand-in's front-left corner, scaled
+# so the front's right corner (703, 1002) lands on its front-right corner
+po = Image.open('cut/pouch-front.png')
+(flx, fly), (frx, fry) = CAM['front_left'], CAM['front_right']
+S_ = np.hypot(frx - flx, fry - fly) / np.hypot(703 - 150, 1002 - 1073)
 ph, pw = round(po.height * S_), round(po.width * S_)
 po = np.asarray(po.resize((pw, ph), Image.LANCZOS)).astype(np.float32) / 255
-px, py = OFF + 529 - round(300 * S_), 1637 - round(2465 * S_)
+px, py = OFF + round(flx - 150 * S_), round(fly - 1073 * S_)
 prgb, pa = po[..., :3], po[..., 3]
-prgb = np.clip(prgb * np.array([1.05, 1.0, 0.90]) * 0.93, 0, 1)
-# the bottom fold still carries the white sweep it was shot on: take it down into the table's shade
-fold = np.clip((np.linspace(0, 1, ph)[:, None] - 0.905) / 0.07, 0, 1)
-prgb = prgb * (1 - fold[..., None] * 0.55) + np.array([0.10, 0.07, 0.05]) * fold[..., None] * 0.55
-# pale, grey pixels in the bottom tenth are the sweep seen through the gusset gap: make them the shade under the fold
-phsv = cv2.cvtColor((np.clip(prgb, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
-gap = (phsv[..., 2] > 95) & (phsv[..., 1] < 70) & (np.linspace(0, 1, ph)[:, None] > 0.90) & (np.linspace(0, 1, pw)[None, :] < 0.30)
-gap = cv2.GaussianBlur(cv2.dilate(gap.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(np.float32), (0, 0), 2)
-prgb = prgb * (1 - gap[..., None]) + np.array([0.05, 0.035, 0.025]) * gap[..., None]
+prgb = np.clip(prgb * np.array([1.04, 1.0, 0.93]), 0, 1)
 # key light from the left warms the lit side; the right edge picks up the warm wall light as a rim
 gx = np.linspace(0, 1, pw)[None, :]
 prgb = prgb * (1 + 0.10 * (1 - gx)[..., None] * np.array([1.0, 0.9, 0.7]))
 edge = np.clip(pa - cv2.erode(pa, np.ones((9, 9), np.uint8)), 0, 1)
-# the shadow-side edge still carries a sliver of the white sweep: take it down into the room's green shade
+# the shadow-side edge still carries a sliver of the cream ground: take it down into the room's green shade
 spill = cv2.GaussianBlur(edge, (0, 0), 2) * np.clip((0.6 - gx) / 0.6, 0, 1)
-# and near the base the whole outline (both sides) is sweep-white: take it into the table's shade
+# and near the base the whole outline (both sides) is cream: take it into the table's shade
 lowrows = np.clip((np.linspace(0, 1, ph)[:, None] - 0.80) / 0.08, 0, 1)
 lowrows = np.maximum(lowrows, 0.75 * ((gx < 0.12) | (gx > 0.9)))   # the side edges carry it all the way up
 spill = np.maximum(spill, cv2.GaussianBlur(np.clip(pa - cv2.erode(pa, np.ones((15, 15), np.uint8)), 0, 1), (0, 0), 3) * lowrows)
 prgb = prgb * (1 - spill[..., None] * 0.7) + np.array([0.04, 0.07, 0.06]) * spill[..., None] * 0.7
-# any pale grey left right on the outline is the sweep, not the foil: fill it from the foil just inside
+# any pale left right on the outline is the cream ground, not the foil: fill it from the foil just inside
 ehsv = cv2.cvtColor((np.clip(prgb, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
 rim_zone = np.clip(pa - cv2.erode(pa, np.ones((11, 11), np.uint8)), 0, 1) > 0.02
 pale = ((ehsv[..., 2] > 135) & (ehsv[..., 1] < 70) & rim_zone).astype(np.uint8)
 pale = cv2.dilate(pale, np.ones((3, 3), np.uint8))
 filled = cv2.inpaint((np.clip(prgb, 0, 1) * 255).astype(np.uint8), pale, 7, cv2.INPAINT_TELEA).astype(np.float32) / 255
-# the right edge near the base catches the sweep more: a wider, softer pass there
+# the right edge near the base catches the cream more: a wider, softer pass there
 rz = (np.clip(pa - cv2.erode(pa, np.ones((17, 17), np.uint8)), 0, 1) > 0.02) & (gx > 0.88) & (np.linspace(0, 1, ph)[:, None] > 0.6)
 pale = np.maximum(pale, cv2.dilate(((ehsv[..., 2] > 100) & (ehsv[..., 1] < 90) & rz).astype(np.uint8), np.ones((3, 3), np.uint8)))
-filled = cv2.inpaint((np.clip(prgb, 0, 1) * 255).astype(np.uint8), pale, 9, cv2.INPAINT_TELEA).astype(np.float32) / 255
-# a dust speck low on the front panel, left of centre, in the original shot
-dl = cv2.cvtColor((np.clip(prgb, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2GRAY).astype(np.float32)
-win = (slice(int(ph * 0.87), int(ph * 0.94)), slice(int(pw * 0.20), int(pw * 0.31)))
-local = dl[win] - cv2.GaussianBlur(dl[win], (0, 0), 6)
-speck = np.zeros_like(pale); speck[win] = cv2.dilate((local < -14).astype(np.uint8), np.ones((5, 5), np.uint8))
-pale = np.maximum(pale, speck)
 filled = cv2.inpaint((np.clip(prgb, 0, 1) * 255).astype(np.uint8), pale, 9, cv2.INPAINT_TELEA).astype(np.float32) / 255
 pm = cv2.GaussianBlur(pale.astype(np.float32), (0, 0), 1.0)[..., None]
 prgb = prgb * (1 - pm) + filled * pm
 edge = cv2.GaussianBlur(edge, (0, 0), 3) * np.clip((gx - 0.55) / 0.45, 0, 1) * (np.linspace(0.5, 1, ph)[:, None]) * np.clip((0.95 - np.linspace(0, 1, ph)[:, None]) / 0.12, 0, 1)
-prgb = np.clip(prgb + edge[..., None] * np.array([0.55, 0.40, 0.22]) * 0.35, 0, 1)
+prgb = np.clip(prgb + edge[..., None] * np.array([0.55, 0.40, 0.22]) * 0.15, 0, 1)
 # contact shadow: tight and dark right under the base
 contact = np.zeros((H, W), np.float32)
 base_rows = np.zeros_like(pa); base_rows[int(ph * 0.93):] = 1
@@ -170,10 +174,11 @@ over(img, np.clip(tfr[..., :3] * np.array([1.08, 1.02, 0.9]), 0, 1), tfr[..., 3]
 
 # ---------- loose tea and rose petals spilled over the base and the tape ----------
 hb = Image.open('cut/herbs.png')
-hw = 400
+hw = round(400 * K)
 hh = round(hb.height * hw / hb.width)
 hb = np.asarray(hb.resize((hw, hh), Image.LANCZOS)).astype(np.float32) / 255
-hx, hy = OFF + 735, 1688
+hx, hy = (round(v) for v in T(735, 1688))
+hx += OFF
 hrgb = np.clip(hb[..., :3] * np.array([1.04, 0.98, 0.86]) * 0.92, 0, 1)
 ha = hb[..., 3].copy()
 hhsv = cv2.cvtColor((hb[..., :3] * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
@@ -193,14 +198,15 @@ over(img, hrgb, ha, hx, hy)
 sm = hb[:, :int(hw * 0.42)]
 sm = cv2.resize(sm, (int(sm.shape[1] * 0.85), int(sm.shape[0] * 0.85)), interpolation=cv2.INTER_AREA).copy()
 sm[..., 3] *= np.clip(np.linspace(1.6, -0.2, sm.shape[1]), 0, 1)[None, :]   # thin out toward the cut edge
-sx, sy = OFF + 455, 1690
+sx, sy = (round(v) for v in T(455, 1690))
+sx += OFF
 ssh = np.zeros((H, W, 3), np.float32)
 over(ssh, np.ones(sm.shape[:2] + (3,), np.float32), sm[..., 3], sx + 4, sy + 5)
 darken(img, cv2.GaussianBlur(ssh[..., 0], (0, 0), 3) * 0.6)
 over(img, np.clip(sm[..., :3] * np.array([1.04, 0.98, 0.86]) * 0.9, 0, 1), sm[..., 3], sx, sy)
 
 # ---------- subtle vignette ----------
-r = np.sqrt(((xx - 600) / 820) ** 2 + ((yy - 1150) / 1250) ** 2)
+r = np.sqrt(((xx - 600) / 820) ** 2 + ((yy - 1150) / 1250) ** 2)   # the frame's own vignette, not the scene's
 darken(img, np.clip((r - 0.62) / 0.6, 0, 1) ** 1.6 * 0.38)
 
 Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8)).save(f'plate{SUF}.png', optimize=True)

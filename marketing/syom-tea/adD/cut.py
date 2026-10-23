@@ -1,5 +1,6 @@
 # Cut-outs from the client's shoot for ad D (run ../fetch.sh first):
 #   cut/pouch.png  the pouch at three-quarter angle (DSC05052), cut along its outline
+#   cut/pouch-front.png  the pouch facing the camera, from the brand's own doypack mockup (8- Mockups), on its cream ground
 #   cut/herbs.png  the loose tea and rose petals spilled at the foot of the pouch in DSC05104
 #   (a cut of the cup in DSC05263 was tried and dropped: the cream cup does not key off the pale sweep)
 import numpy as np, cv2
@@ -65,3 +66,19 @@ sizes = nd.sum(herb, lab, range(1, n + 1))
 herb = np.isin(lab, np.nonzero(sizes > 12)[0] + 1)
 alpha = cv2.GaussianBlur(herb.astype(np.float32) * 255, (0, 0), 0.7)
 print('herbs', save(a, alpha, 'cut/herbs.png'))
+
+# pouch facing the camera: the brand's doypack mockup, dark on a flat cream ground (252, 238, 222)
+MOCK = '../files/brand/8- Mockups/Doypack_Mockup_final1.png'
+im = Image.open(MOCK).convert('RGB')
+im = im.resize((im.width // 2, im.height // 2), Image.LANCZOS)
+a = np.asarray(im).astype(np.float32)
+d = np.sqrt(((a - np.array([252, 238, 222], np.float32)) ** 2).sum(2))
+m = biggest(nd.binary_opening(lum(a) < 120, iterations=2))
+ys, xs = np.nonzero(m)
+hull = Image.new('L', (a.shape[1], a.shape[0]), 0)
+ImageDraw.Draw(hull).polygon([tuple(p) for p in np.c_[xs, ys][ConvexHull(np.c_[xs, ys]).vertices]], fill=255)
+mask = (np.asarray(hull) > 0) & (d > 40)
+mask = nd.binary_fill_holes(nd.binary_closing(mask, iterations=2))
+alpha = cv2.GaussianBlur(mask.astype(np.float32) * 255, (0, 0), 0.8)
+alpha = np.clip((alpha - 60) * 1.4, 0, 255)
+print('pouch-front', save(a, alpha, 'cut/pouch-front.png'))

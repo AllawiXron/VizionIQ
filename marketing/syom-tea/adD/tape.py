@@ -1,6 +1,6 @@
 # The tailor's tape for ad D, rendered alone so it can be laid into the photo composite:
 #   blender -b -P tape.py -- <out.png> [samples] [proxy|shadow|back|front] [extra px each side]
-# The camera is solved so the pouch base centre lands at (700, 1560) and the pouch stands about 900 px tall.
+# The camera is solved so the pouch base centre lands at (BX, BY) and the pouch stands PH px tall.
 # A box stands where the pouch photo goes: it hides the tape behind the pouch and throws the pouch's shadow onto a
 # shadow catcher, so the PNG holds the tape plus the shadows of tape and pouch on the table. With "proxy" the box
 # renders white instead, to check that the pouch photo lines up.
@@ -28,10 +28,11 @@ bpy.ops.object.camera_add(location=(-0.05, -1.05, 0.34))
 cam = bpy.context.object; sc.camera = cam
 cam.data.sensor_width = 36; cam.data.sensor_fit = 'AUTO'
 sc.render.resolution_x, sc.render.resolution_y = 1080, 1920
-# the pouch stand-in: 20 x 7 x 34 cm (the gusset as deep as it shows in DSC05052), turned 30 degrees, front to camera right
+# the pouch stand-in: 20 x 10 x 34 cm, turned 18 degrees, front to camera right: its base corners land on the
+# base corners of the brand's doypack mockup (cut/pouch-front.png) as compose.py places it
 PX = 0.06                      # the pouch stands 6 cm right of the scene centre
-ROT = math.radians(30)
-W, D, H = 0.20, 0.07, 0.34
+ROT = math.radians(18)
+W, D, H = 0.20, 0.10, 0.34
 bpy.ops.mesh.primitive_cube_add(size=1, location=(PX, 0, H / 2))
 box = bpy.context.object; box.name = 'PouchStandIn'
 box.scale = (W, D, H); box.rotation_euler = (0, 0, ROT)
@@ -64,6 +65,8 @@ def px(v):
     return Vector((540 + c.x / -c.z * f - cam.data.shift_x * 1920, 960 - c.y / -c.z * f + cam.data.shift_y * 1920))
 
 
+# the stand-in's base centre lands at (BX, BY) and the pouch stands PH px tall
+BX, BY, PH = 740, 1600, 800
 bpy.context.view_layer.update()
 base_w = box.matrix_world @ Vector((0, 0, -0.5))
 top_w = box.matrix_world @ Vector((0, 0, 0.5))
@@ -73,11 +76,11 @@ bpy.context.view_layer.update()
 print('START', tuple(px(base_w)), tuple(px(top_w)))
 for _ in range(40):
     b_, t_ = px(base_w), px(top_w)
-    cam.data.lens *= min(max(900 / max(b_.y - t_.y, 1), 0.7), 1.4)
+    cam.data.lens *= min(max(PH / max(b_.y - t_.y, 1), 0.7), 1.4)
     bpy.context.view_layer.update()
     b_ = px(base_w)
-    cam.data.shift_x += (b_.x - 700) / 1920
-    cam.data.shift_y += (1560 - b_.y) / 1920
+    cam.data.shift_x += (b_.x - BX) / 1920
+    cam.data.shift_y += (BY - b_.y) / 1920
     bpy.context.view_layer.update()
 b_, t_ = px(base_w), px(top_w)
 print('CAM lens %.2f shift %.4f %.4f base %s top %s' % (cam.data.lens, cam.data.shift_x, cam.data.shift_y, tuple(round(c) for c in b_), tuple(round(c) for c in t_)))
@@ -85,6 +88,14 @@ WALL_Y = 0.45
 print('TABLE', [tuple(round(c, 1) for c in px((x, y, 0))) for x, y in ((-1.0, -0.62), (1.2, -0.62), (1.2, WALL_Y), (-1.0, WALL_Y))])
 print('WALLTOP', [tuple(round(c, 1) for c in px((x, WALL_Y, 1.0))) for x in (-1.0, 1.2)])
 print('BOX', [tuple(round(c) for c in px(box.matrix_world @ Vector((sx, sy, sz)))) for sx in (-.5, .5) for sy in (-.5, .5) for sz in (-.5, .5)])
+# what compose.py needs from this camera: where the table's corners land (for the walnut's perspective) and the
+# stand-in's base corners (where the pouch photo goes)
+import json
+json.dump({'table': [list(px((x, y, 0))) for x, y in ((-1.0, -0.62), (1.2, -0.62), (1.2, WALL_Y), (-1.0, WALL_Y))],
+           'front_left': list(px(box.matrix_world @ Vector((-.5, -.5, -.5)))),
+           'front_right': list(px(box.matrix_world @ Vector((.5, -.5, -.5)))),
+           'base': list(px(base_w)), 'top': list(px(top_w))},
+          open(os.path.join(HERE, 'cut', 'camera.json'), 'w'), indent=1)
 
 # ---------- the tape ----------
 TW, TT = 0.020, 0.0005
@@ -108,12 +119,12 @@ def on_table(u, v):
 # the tape slipped off the pouch and dropped round its foot: in from the bottom left (laid out in frame pixels), then
 # one loose loop round the base in the pouch's own frame, wider than the 20 x 7 cm base so its far left and right
 # lie on the table beside the pouch, and on round to the front where the end lies over the first pass.
-LEAD = [(-160, 2080), (60, 1955), (250, 1842), (400, 1752)]
+LEAD = [(-160, 2110), (60, 1990), (260, 1880), (440, 1790)]
 ctrl = []   # world (x, y, z, roll)
 for u, v in LEAD:
     q = on_table(u, v)
     ctrl.append((q.x, q.y, 0.0003, 0))
-A_, B_, CX_ = 0.156, 0.072, 0.006        # snug round the 20 x 7 cm base
+A_, B_, CX_ = 0.156, 0.086, 0.004        # snug round the 20 x 10 cm base
 for k in range(0, 24):
     deg = 222 + k * 17.0                             # 222 .. 613 degrees: front left, front, right, back, left, and across the start
     th = math.radians(deg)
