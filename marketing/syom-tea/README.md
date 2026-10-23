@@ -59,5 +59,11 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
 - اسألينا عن سيوم ونرتبلج كلشي
 
 ## Where it stands (23 Oct)
-Waiting on the client: is his idea 4 the one to start with, and which call to action. Then: design that ad in
-both sizes as still drafts for the user to approve, then the other four.
+- The client approved the notes (no calories, soft CTA, no منحفات, lead with natural Korean herbs).
+- His call to action, used on every ad: راسلينا وخلي الباقي على سيوم
+- Ad 1 is his idea 4 (وزنج مضايقج؟ اشربي سيوم وادخلي عالم الرشاقة من اليوم). The user told him the Story version
+  comes first so he can approve the style; his copywriter's final text for the other ads comes post by post after.
+- Meta's personal attributes rule rejects ads that ask her about her own weight (وزنج مضايقج؟ reads like "Are you
+  overweight?"). Raised with the user before designing.
+- Brand guide look: deep green fields, the gold/apricot tone, Lama Sans Bold, the leaf figure-eight element and
+  Pattern 01/02, real tea photos. Shoot: pouch, cups and loose tea on a white sweep (good for clean cut-outs).
