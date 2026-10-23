@@ -159,8 +159,8 @@ pouch = bpy.data.objects.new('Pouch', mesh); sc.collection.objects.link(pouch)
 for f in mesh.polygons:
     f.use_smooth = True
 sub = pouch.modifiers.new('Smooth', 'SUBSURF'); sub.levels = 1; sub.render_levels = 2
-tx = bpy.data.textures.new('Crinkle', 'CLOUDS'); tx.noise_scale = 0.035; tx.noise_depth = 3
-dsp = pouch.modifiers.new('Crinkle', 'DISPLACE'); dsp.texture = tx; dsp.strength = 0.0016; dsp.mid_level = 0.5
+tx = bpy.data.textures.new('Crinkle', 'CLOUDS'); tx.noise_scale = 0.06; tx.noise_depth = 3
+dsp = pouch.modifiers.new('Crinkle', 'DISPLACE'); dsp.texture = tx; dsp.strength = 0.0007; dsp.mid_level = 0.5
 POUCH_ROT = math.radians(-24)
 POUCH_LOC = Vector((0.062, 0.035, 0))
 pouch.rotation_euler = (0, 0, POUCH_ROT); pouch.location = POUCH_LOC
@@ -308,6 +308,9 @@ sc.cycles.use_denoising = True
 sc.render.resolution_x, sc.render.resolution_y = 1080, 1920
 sc.render.resolution_percentage = SCALE
 sc.render.use_stamp = False
+for k in dir(sc.render):                      # no render notes (date, time, camera, samples) in the PNG
+    if k.startswith('use_stamp_'):
+        setattr(sc.render, k, False)
 sc.render.image_settings.file_format = 'PNG'
 sc.render.image_settings.color_mode = 'RGB'
 sc.view_settings.view_transform = 'AgX'
