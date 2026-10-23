@@ -1,13 +1,13 @@
-# Vector tiles for the site, in one PMTiles file: the measured squares as points, roads cut at the square
+# Vector tiles for the site, as PMTiles: the measured squares as points, roads cut at the square
 # edges and carrying each square's speed, and water.
-# python3 build/tiles.py  ->  site/tiles/iraq.pmtiles
+# python3 build/tiles.py  ->  site/tiles/iraq-a.pmtiles (z4-11), iraq-b (z12), iraq-c (z13)
 import gzip, math, os, time
 import numpy as np
 import duckdb, shapely, shapely.wkb
 import mapbox_vector_tile
 from shapely.geometry import box
 from shapely.strtree import STRtree
-from pmtiles.tile import zxy_to_tileid, TileType, Compression
+from pmtiles.tile import zxy_to_tileid, tileid_to_zxy, TileType, Compression
 from pmtiles.writer import Writer
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,6 +15,7 @@ D = lambda *p: os.path.join(ROOT, *p)
 R = 6378137.0
 Z16 = 16
 MINZ, MAXZ = 4, 13
+PARTS = [(4, 11, 'iraq-a'), (12, 12, 'iraq-b'), (13, 13, 'iraq-c')]
 RANK = {'motorway': 1, 'trunk': 1, 'motorway_link': 1, 'trunk_link': 1, 'primary': 2, 'primary_link': 2,
         'secondary': 3, 'secondary_link': 3, 'tertiary': 4, 'tertiary_link': 4,
         'unclassified': 5, 'residential': 5, 'living_street': 5}
@@ -185,16 +186,19 @@ def main():
                 count += 1
         print('z', z, count, 'tiles', round(sum(len(v) for k, v in tiles.items()) / 1e6, 1), 'MB so far', round(time.time() - t0), 's')
 
-    with open(D('site', 'tiles', 'iraq.pmtiles'), 'wb') as f:
-        w = Writer(f)
-        for tid in sorted(tiles):
-            w.write_tile(tid, tiles[tid])
-        w.finalize({'tile_type': TileType.MVT, 'tile_compression': Compression.GZIP, 'min_zoom': MINZ, 'max_zoom': MAXZ,
-                    'min_lon_e7': int(lon0 * 1e7), 'min_lat_e7': int(lat0 * 1e7), 'max_lon_e7': int(lon1 * 1e7), 'max_lat_e7': int(lat1 * 1e7),
-                    'center_zoom': 6, 'center_lon_e7': int(44.0 * 1e7), 'center_lat_e7': int(33.2 * 1e7)},
-                   {'vector_layers': [{'id': k, 'fields': {}} for k in ('sq', 'rd', 'wt', 'rv')],
-                    'attribution': 'Ookla, OpenStreetMap contributors'})
-    print('written', round(os.path.getsize(D('site', 'tiles', 'iraq.pmtiles')) / 1e6, 1), 'MB')
+    # three files by zoom, each under 15 MB, so hosts with a per-file limit take them too
+    for z0, z1, name in PARTS:
+        with open(D('site', 'tiles', f'{name}.pmtiles'), 'wb') as f:
+            w = Writer(f)
+            for tid in sorted(tiles):
+                if z0 <= tileid_to_zxy(tid)[0] <= z1:
+                    w.write_tile(tid, tiles[tid])
+            w.finalize({'tile_type': TileType.MVT, 'tile_compression': Compression.GZIP, 'min_zoom': z0, 'max_zoom': z1,
+                        'min_lon_e7': int(lon0 * 1e7), 'min_lat_e7': int(lat0 * 1e7), 'max_lon_e7': int(lon1 * 1e7), 'max_lat_e7': int(lat1 * 1e7),
+                        'center_zoom': 6, 'center_lon_e7': int(44.0 * 1e7), 'center_lat_e7': int(33.2 * 1e7)},
+                       {'vector_layers': [{'id': k, 'fields': {}} for k in ('sq', 'rd', 'wt', 'rv')],
+                        'attribution': 'Ookla, OpenStreetMap contributors'})
+        print(name, round(os.path.getsize(D('site', 'tiles', f'{name}.pmtiles')) / 1e6, 1), 'MB')
 
 
 if __name__ == '__main__':

@@ -92,7 +92,7 @@ function style(base) {
     version: 8,
     sources: {
       ground: { type: 'image', url: base + 'tiles/ground.jpg', coordinates: [[37.5, 38.5], [50.0, 38.5], [50.0, 28.0], [37.5, 28.0]] },
-      iq: { type: 'vector', url: 'pmtiles://' + base + 'tiles/iraq.pmtiles' },
+      iq: { type: 'vector', tiles: ['iq://t/{z}/{x}/{y}'], minzoom: 4, maxzoom: 13, bounds: [38.6, 28.9, 48.9, 37.5] },
       focus: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } },
       pick: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } },
     },
@@ -122,11 +122,49 @@ function style(base) {
   };
 }
 
+// The map comes in three files by zoom. Each is read in pieces where the host answers range requests,
+// and fetched once whole where it does not.
+class TileFile {
+  constructor(url) { this.url = url; this.whole = null; }
+  getKey() { return this.url; }
+  async getBytes(offset, length, signal) {
+    if (!this.whole) {
+      if (this.url.endsWith('.txt')) {
+        this.whole = fetch(this.url).then(r => { if (!r.ok) throw new Error(`${this.url}: ${r.status}`); return r.text(); }).then(unbase64);
+      } else {
+        const r = await fetch(this.url, { headers: { Range: `bytes=${offset}-${offset + length - 1}` }, signal });
+        if (r.status === 206) return { data: await r.arrayBuffer() };
+        if (!r.ok) throw new Error(`${this.url}: ${r.status}`);
+        if (!this.whole) this.whole = r.arrayBuffer();
+      }
+      this.whole.catch(() => { this.whole = null; });   // a cancelled or failed download is tried again next time
+    }
+    const b = await this.whole;
+    return { data: b.slice(offset, offset + length) };
+  }
+}
+// hosts that serve no binary files get the same tiles as base64 text (a .txt part), decoded once here
+function unbase64(s) {
+  const bin = atob(s.trim()), out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out.buffer;
+}
+// [lowest zoom, highest zoom, first tile column, last tile column, file]
+const PARTS = window.TILE_PARTS || [[4, 11, 0, 1e9, 'tiles/iraq-a.pmtiles'], [12, 12, 0, 1e9, 'tiles/iraq-b.pmtiles'], [13, 13, 0, 1e9, 'tiles/iraq-c.pmtiles']];
+function tileProtocol(base) {
+  const files = PARTS.map(([a, b, x0, x1, u]) => ({ a, b, x0, x1, pm: new pmtiles.PMTiles(new TileFile(base + u)) }));
+  return async (params, abort) => {
+    const [z, x, y] = params.url.split('/').slice(-3).map(Number);
+    const f = files.find(f => z >= f.a && z <= f.b && x >= f.x0 && x <= f.x1);
+    const t = f && await f.pm.getZxy(z, x, y, abort && abort.signal);
+    return { data: t ? new Uint8Array(t.data) : new Uint8Array(0) };
+  };
+}
+
 let map;
 function initMap() {
-  const protocol = new pmtiles.Protocol();
-  maplibregl.addProtocol('pmtiles', protocol.tilev4 || protocol.tile);
   const base = new URL('.', location.href).href;
+  maplibregl.addProtocol('iq', tileProtocol(base));
   map = new maplibregl.Map({
     container: 'map', style: style(base), bounds: homeBounds(), fitBoundsOptions: { padding: framePadding('home') },
     minZoom: 4.2, maxZoom: 16.5, maxBounds: [[30, 20], [58, 47]], attributionControl: false,
@@ -227,7 +265,7 @@ function quadBounds(q) {
 }
 
 function onMapClick(e) {
-  if (location.hash.startsWith('#/exams') || location.hash.startsWith('#/about')) return;
+  if (current().startsWith('/exams') || current().startsWith('/about')) return;
   const P = S.mode, C = P === 'f' ? 'a' : 'b';
   if (map.getZoom() < 9) { map.easeTo({ center: e.lngLat, zoom: Math.max(10.5, map.getZoom() + 3), duration: 700 }); return; }
   const r = 6, feats = map.queryRenderedFeatures([[e.point.x - r, e.point.y - r], [e.point.x + r, e.point.y + r]], { layers: ['sq-hit'] });
@@ -329,7 +367,7 @@ function wireSearch(root) {
   input.addEventListener('keydown', e => {
     if (e.key === 'ArrowDown') { sel = Math.min(results.length - 1, sel + 1); draw(); e.preventDefault(); }
     else if (e.key === 'ArrowUp') { sel = Math.max(-1, sel - 1); draw(); e.preventDefault(); }
-    else if (e.key === 'Enter' && results.length) { location.hash = href(results[Math.max(0, sel)]).slice(1); input.blur(); }
+    else if (e.key === 'Enter' && results.length) { input.blur(); navigate(href(results[Math.max(0, sel)])); }
   });
 }
 
@@ -594,11 +632,32 @@ function drawTeaser() {
   drawMornings(c, rows, 2, null, 0.8, 0.8, false);
 }
 
-// ---------- routing ----------
+// ---------- routing: kept in the page, mirrored into the address where the browser allows it ----------
+
+let route = location.hash.startsWith('#/') ? location.hash : '#/';
+const current = () => decodeURIComponent(route.replace(/^#/, '')) || '/';
+function navigate(h) {
+  if (h === route) return;
+  route = h;
+  try { history.pushState(null, '', h); } catch (e) { /* some frames refuse; the page keeps its own route */ }
+  render(true);
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="#/"]');
+  if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey) return;
+  e.preventDefault();
+  navigate(a.getAttribute('href'));
+});
+function fromAddress() {
+  const h = location.hash.startsWith('#/') ? location.hash : '#/';
+  if (h !== route) { route = h; render(true); }
+}
+addEventListener('popstate', fromAddress);
+addEventListener('hashchange', fromAddress);
 
 let lastRoute = '';
 async function render(move = true) {
-  const h = decodeURIComponent(location.hash.replace(/^#/, '')) || '/';
+  const h = current();
   document.body.dataset.view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h.startsWith('/exams') ? 'exams' : h.startsWith('/about') ? 'about' : 'home';
   const dim = document.body.dataset.view === 'exams' || document.body.dataset.view === 'about';
   labelBox.style.opacity = dim ? 0 : 1;
@@ -606,7 +665,7 @@ async function render(move = true) {
   document.getElementById('map').style.opacity = dim ? 0.35 : 1;
   if (h.startsWith('/p/') || h.startsWith('/g/')) {
     const id = h.slice(3), p = h.startsWith('/g/') ? govById(id) : S.byId.get(id);
-    if (!p) { location.hash = '#/'; return; }
+    if (!p) { route = '#/'; return render(true); }
     sheet.innerHTML = placeHTML(p);
     if (move || lastRoute !== h) {
       sheet.scrollTop = 0;
@@ -640,7 +699,6 @@ async function render(move = true) {
 // ---------- start ----------
 
 document.querySelectorAll('.modes button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
-addEventListener('hashchange', () => render(true));
 let sc;
 sheet.addEventListener('scroll', () => { clearTimeout(sc); sc = setTimeout(() => { chooseLabels(); placeLabels(); }, 120); }, { passive: true });
 let rs;

@@ -8,8 +8,10 @@ faster, dim ember means slow, dark means no measurements. Everything on screen i
 
 ## The site (`site/`)
 
-A static site, no build step: `site/index.html`, `app.js`, `app.css`, data in `site/data/`, the map in
-`site/tiles/iraq.pmtiles` (34.7 MB, read with range requests) and `site/tiles/ground.jpg`. MapLibre GL JS 4.7.1 and
+A static site, no build step: `site/index.html`, `app.js`, `app.css`, data in `site/data/`, the map in three
+PMTiles files by zoom (`site/tiles/iraq-a.pmtiles` z4 to 11, `iraq-b` z12, `iraq-c` z13, 34.7 MB together, each under
+15 MB) and `site/tiles/ground.jpg`. The page reads a tile file in pieces where the host answers range requests and
+fetches it whole where it does not, and keeps its own page routing so it also works inside a frame. MapLibre GL JS 4.7.1 and
 PMTiles 3.2.1 are kept in `site/vendor/` with their licences, so nothing loads from outside.
 
 - **Map:** the measured squares are points of light at country scale; from city scale the light runs along the real
@@ -29,7 +31,11 @@ Rebuild everything, in order: `python3 data/fetch.py` (boundaries, IODA, base la
 `python3 build/osm_places.py`, `python3 build/places.py`, `python3 build/exams.py`, `python3 build/tiles.py`,
 `python3 build/ground.py` (needs `pip install duckdb shapely pyshp scipy mapbox-vector-tile pmtiles`).
 Try it locally with `node build/serve.cjs` (Python's http.server can't do range requests) and open
-http://localhost:8765.
+http://localhost:8765; add `--no-range` to act like a host without range requests.
+
+A private test page of the whole site is published as one HTML file with its data and tiles beside it:
+`python3 build/artifact.py <out dir>` writes the page (CSS, fonts and script inline, MapLibre and PMTiles from cdnjs
+and jsDelivr) and the tiles as base64 text parts of at most 15 MB, for a host that serves no binary files.
 
 To publish: any static host that serves range requests (Vercel, Netlify, GitHub Pages, Cloudflare Pages). On Vercel,
 make a new project from this repo with the root directory `marketing/iraq-internet-map/site` and no build command;
