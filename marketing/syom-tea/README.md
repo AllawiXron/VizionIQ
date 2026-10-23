@@ -1,0 +1,61 @@
+# Syom Tea: Meta ads
+
+Client job for @allawi.psd (Oct 2026). The client found the page and wants 5 ad designs with their copy for
+Syom Tea. The work is -noAI.
+
+Client files: `./fetch.sh` pulls both Drive folders into `files/` (not in git). `files/brand/7- Brand
+Guidelines/Syom Brand Guideline.pdf` is the 39-page guide; the new pack photos are in `files/shoot/Product Photo
+Session/photos- New pack/`.
+
+## The product
+- Syom Tea, a herbal tea for appetite control and safe weight loss. The page sells this one product only.
+- Just relaunched in a new green pouch (the old pack is in `photos- old pack`, don't use it in the ads).
+- Ingredients from the back of the pouch (DSC05045): شاي سيجاك الكوري، بتلات الورد، شاي نوكتشا
+  (check the spelling against the pouch photo before using it in an ad).
+- The pouch says 2 kcal per cup; the client's old copy said zero calories. The client doesn't want calories
+  mentioned in the ads at all.
+- No lab test or registration certificate, so no "no side effects" or "100% safe" claims. Lead with natural
+  Korean herbs and keep health claims soft.
+
+## The brief
+- 5 ads for Meta Ads Manager only (dark posts), not posted on the page. The goal is sales: she reads the ad,
+  understands the product and its value, and sends a message to ask the price. No prices in the ads.
+- Every ad in two sizes: 1080x1350 for the feed and 1080x1920 for Stories and Reels.
+- Audience: women 20 to 45. All ad copy in the feminine form, Iraqi dialect.
+- Banned word: منحف, and words from its root (منحفات, تنحيف). Women here fear it after fake chemical products.
+  Write وتخافين من المنتجات الكيميائية instead of وتخافين المنحفات.
+- Look: high-end, clean, natural, trustworthy. Never a cheap weight-loss ad.
+- Follow the brand guide exactly, not the allawi.psd paper style:
+  - green #014D40, gold #E8B06F, Lily White #FFFEBA
+  - Lama Sans (files/brand/3- Fonts), the leaf logo (svg folder), the gold line, the patterns (Pattern 02)
+- Meta rules: adults only, no before/after photos, nothing that makes women feel bad about their bodies.
+- Quality over speed, no deadline.
+
+## Ideas
+The client picks one idea from ten (the 5 below and 5 of his own) to design first.
+
+Mine:
+1. The new look: the new pouch on deep green with the gold line around it.
+   سيوم بحلته الجديدة / جودة أعلى ومكونات أنقى وأقوى
+2. Appetite: the cup of tea with the pouch (DSC05263), steam curling like the leaf in the logo.
+   ناقصتج شوية إرادة؟ هاج الإرادة بكوب / سيوم يساعدج تتحكمين بشهيتج بأمان
+3. The fear of chemicals: mostly type on green with the brand pattern and a small pouch.
+   خايفة من المنتجات الكيميائية؟ / سيوم أعشاب كورية طبيعية 100%
+4. Daily ritual: a woman's hand holding the cup, the pouch behind it, warm light (a shoot photo if one fits).
+   كوب واحد يوميا خطوتج نحو أفضل نسخة منج (their slogan is Crafted for your best self)
+5. Clear ingredients: a close-up of the herbs and rose petals with the list.
+   مكوناته واضحة شوفيها بعينج
+
+A calories comparison idea (a cup of Syom next to a latte) was dropped when the client said no calories.
+
+His: the start of his list was cut off in the recording; his idea 4 is
+وزنج مضايقج؟ اشربي سيوم وادخلي عالم الرشاقة من اليوم, and one of his lines is ويعطي إحساس بالشبع.
+
+Call to action options sent to him (all soft, since the ad has its own Send Message button):
+- راسلينا ونحجزلج كل التفاصيل
+- تحبين تعرفين أكثر؟ دزيلنا رسالة
+- اسألينا عن سيوم ونرتبلج كلشي
+
+## Where it stands (23 Oct)
+Waiting on the client: is his idea 4 the one to start with, and which call to action. Then: design that ad in
+both sizes as still drafts for the user to approve, then the other four.
