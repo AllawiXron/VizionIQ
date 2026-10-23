@@ -72,3 +72,13 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   DSC05976 laid beside it, the headline printed on the surface in multiply so the palm and window shadows cross the
   letters, and the pouch lying on the headline. `cd ad1 && python3 build.py` makes the photo layers; `node render.cjs`
   renders it.
+- Ad 1 direction A (flat lay) was not liked either. The client's own ads look like the Sept 4 post on syom_iraq: a full
+  scene with depth (pouch, cast-iron teapot and cups on a wooden tray, deep green behind, warm light).
+- Ad B (`adB/`, chosen 23 Oct): a 3D scene in Blender 4.2. The pouch is modelled as a box-bottom pouch at the die-cut
+  proportions and wrapped in the client's print strip, gold ink metallic. A yellow tailor's tape has fallen loose
+  around its foot and trails off the right edge. Smoked walnut table, green plaster wall, warm window light cut by
+  the palm and window shadow taken from DSC05178, a warm glow behind the pouch. The headline is painted on the wall
+  (it takes the light); the rest of the copy is laid over the wall left of the pouch.
+  Build: `./fetch.sh`, `adB/fetch-textures.sh`, `cd adB && python3 prep.py && node shot.cjs`
+  (NODE_PATH=/opt/node-tools/node_modules), `blender -b -P scene.py -- render/scene.png 100 128`, then
+  `node render.cjs` from this folder.

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Syom headline</title>
+<style>
+  @font-face { font-family: Lama; font-weight: 900; src: url('../files/brand/3- Fonts/LamaSans-Black.ttf'); }
+  html, body { margin: 0; background: transparent; }
+  /* painted on the wall in the 3D scene: tex/headline.png */
+  .f { display: inline-block; padding: 40px 60px; font-family: Lama; font-weight: 900; font-synthesis: none; color: #ffebea; }
+  .f p { margin: 0; font-size: 520px; line-height: 1.04; letter-spacing: -6px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="f" id="headline"><p>وزنج</p><p>مضايقج؟</p></div>
+<script>document.fonts.ready.then(() => setTimeout(() => (document.body.dataset.ready = '1'), 200));</script>
+</body>
+</html>
