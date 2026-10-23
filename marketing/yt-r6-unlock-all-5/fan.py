@@ -1,5 +1,5 @@
 """The magician's fan: five operator cards from the operators screen, fanned out of the operator's raised hand.
-Writes img/operator.jpg (the art at frame size) and img/fan.png (the cards with his hand back on top of them).
+Writes img/operator.jpg (the art at frame size), img/operator-cut.png (him alone) and img/fan.png (the cards with his hand back on top of them).
 - Cards: cut from src/operators-unlocked.jpg (110 x 183 px each there), scaled to 420 px tall and sharpened, thin dark
   edge, small rounded corners like a printed card.
 - Fan: pivoted in his palm, -22° to +68°, the cards starting just above the palm so the spread at face height is
@@ -31,6 +31,7 @@ bg = arr(art)
 bg = np.clip(bg + .4 * (bg - blur(bg, 1.2)), 0, 1)
 save(bg, 'img/operator.jpg', quality=94)
 mask = arr(Image.open('src/operator-mask.png').convert('L').resize((W, H), Image.LANCZOS))
+save(np.dstack([bg, mask]), 'img/operator-cut.png')      # him alone, in front of the title
 
 shot = Image.open('src/operators-unlocked.jpg').convert('RGB')
 cols = [43 + 119.8 * i for i in range(11)]
