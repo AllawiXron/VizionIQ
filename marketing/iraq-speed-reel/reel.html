@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>سطر السرعة</title>
+<style>
+  @font-face { font-family: Rubik; src: url(../iraq-internet-map/site/fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; }
+  @font-face { font-family: Rubik; src: url(../iraq-internet-map/site/fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; }
+  @font-face { font-family: Rubik; src: url(../iraq-internet-map/site/fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; }
+  @font-face { font-family: Rubik; src: url(../iraq-internet-map/site/fonts/Rubik-Latin-700.woff2) format('woff2'); font-weight: 500 800; unicode-range: U+0000-00FF; }
+  html, body { margin: 0; background: #fff; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="data.js"></script>
+<script>
+// «سطر السرعة»: one line becomes a speed bar, two places, Karrada's streets, Iraq in 3D, the site's search box,
+// Iraq's summers since 2019, and the line again. 15 s at 120 BPM; every style is a function of t inside seek(t).
+const W = 1080, H = 1920, FPS = 60;
+const INK = '#14202b', RED = '#d2483f', AMBER = '#e3b021', GREEN = '#12795a', WHITE = '#ffffff', GREY = '#d5dade', SOFT = '#6c7783';
+const c = document.getElementById('c'), ctx = c.getContext('2d');
+const D = window.DATA;
+
+// ---------- time ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, t0, d) => clamp((t - t0) / d);
+const expo = x => x <= 0 ? 0 : x >= 1 ? 1 : (1 - Math.pow(2, -10 * x)) / (1 - Math.pow(2, -10));
+const expoIn = x => x <= 0 ? 0 : x >= 1 ? 1 : (Math.pow(2, 10 * x) - 1) / 1023;
+const expoInOut = x => x <= 0 ? 0 : x >= 1 ? 1 : x < 0.5 ? expoIn(2 * x) / 2 : 0.5 + expo(2 * x - 1) / 2;
+// a critically damped spring: fast, then settles without overshoot
+const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);
+const lerp = (a, b, k) => a + (b - a) * k;
+const band = v => v < 25 ? RED : v < 50 ? AMBER : GREEN;
+const AR = n => String(Math.round(n)).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const arNum = n => new Intl.NumberFormat('ar-IQ-u-nu-arab').format(Math.round(n));
+function mix(a, b, k) {
+  const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const A = p(a), B = p(b);
+  return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * k)).join(',')})`;
+}
+const shade = (hex, k) => mix(hex, '#000000', k);
+
+// ---------- drawing ----------
+// text with a directional motion blur along its own speed (vx, vy in px per frame), squash, and clip.
+// The copies are averaged on their own layer ('lighter' sums alpha-weighted copies), so a fast word smears smoothly
+// and fades at both ends of its path, instead of stacking into stripes.
+const layer = document.createElement('canvas'); layer.width = W; layer.height = H;
+const lctx = layer.getContext('2d');
+function text(str, x, y, o = {}) {
+  const a = o.alpha == null ? 1 : o.alpha;
+  if (a <= 0.003 || !str) return;
+  const vx = o.vx || 0, vy = o.vy || 0, sm = Math.hypot(vx, vy) * 0.8;
+  const n = Math.max(1, Math.min(32, Math.round(sm / 1.5)));
+  const g = n === 1 ? ctx : lctx;
+  if (n > 1) { lctx.setTransform(1, 0, 0, 1, 0, 0); lctx.clearRect(0, 0, W, H); lctx.globalCompositeOperation = 'lighter'; }
+  g.save();
+  if (o.clip) { g.beginPath(); g.rect(...o.clip); g.clip(); }
+  g.font = `${o.weight || 800} ${o.size}px Rubik`;
+  g.textAlign = o.align || 'right'; g.direction = 'rtl'; g.textBaseline = 'alphabetic';
+  g.fillStyle = o.color || INK;
+  g.globalAlpha = n === 1 ? a : a / n;
+  for (let i = 0; i < n; i++) {
+    const k = n === 1 ? 0 : i / (n - 1) - 0.5;
+    g.save();
+    g.translate(x - vx * 0.8 * k, y - vy * 0.8 * k);
+    if (o.sy != null || o.s != null) g.scale(o.s == null ? 1 : o.s, (o.s == null ? 1 : o.s) * (o.sy == null ? 1 : o.sy));
+    g.fillText(str, 0, 0);
+    g.restore();
+  }
+  g.restore();
+  if (n > 1) { lctx.globalCompositeOperation = 'source-over'; ctx.drawImage(layer, 0, 0); }
+}
+const tw = (str, size, weight = 800) => { ctx.font = `${weight} ${size}px Rubik`; return ctx.measureText(str).width; };
+function rrect(x, y, w, h, r) {
+  r = Math.min(r, Math.abs(h) / 2, Math.abs(w) / 2);
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, r);
+}
+// velocity of a position function, in px per output frame
+const vel = (f, t) => { const a = f(t), b = f(t - 1 / FPS); return [a[0] - b[0], a[1] - b[1]]; };
+
+// ---------- the line ----------
+const LINE_Y = 1000, LINE_W0 = 120, LINE_W1 = 840;
+function drawLine(cx, w, y, col, thick = 8, alpha = 1) {
+  if (w <= 0.5) return;
+  ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = col;
+  rrect(cx - w / 2, y - thick / 2, w, thick, thick / 2); ctx.fill(); ctx.restore();
+}
+
+// ---------- the digits ٨٧ from Rubik's outlines (digits run left to right) ----------
+const DIG = D.digits;                     // [٨, ٧]
+const DIG_ADV = DIG[0].w;
+function digitRings(scale, x0, yb) {
+  // x0: left edge of ٨; yb: baseline. Returns rings of screen points.
+  const out = [];
+  DIG.forEach((g, gi) => g.rings.forEach(r => out.push(r.map(([px, py]) => [x0 + (gi * DIG_ADV + px) * scale, yb - py * scale]))));
+  return out;
+}
+let digBox = null;
+(() => {
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  DIG.forEach((g, gi) => g.rings.forEach(r => r.forEach(([px, py]) => { x0 = Math.min(x0, gi * DIG_ADV + px); x1 = Math.max(x1, gi * DIG_ADV + px); y0 = Math.min(y0, py); y1 = Math.max(y1, py); })));
+  digBox = { x0, x1, y0, y1 };
+})();
+function fillRings(rings, col, alpha = 1) {
+  ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = col; ctx.beginPath();
+  for (const r of rings) { r.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); }
+  ctx.fill('nonzero'); ctx.restore();
+}
+// the giant ٨٧, centred
+const GIANT_S = 0.7, GIANT_CY = 1010;
+const giantX0 = () => W / 2 - (digBox.x0 + digBox.x1) / 2 * GIANT_S;
+const giantYb = () => GIANT_CY + (digBox.y0 + digBox.y1) / 2 * GIANT_S;
+
+// ---------- Karrada on screen ----------
+const KB = D.karrada.box, KLAT = (KB[1] + KB[3]) / 2, KCOS = Math.cos(KLAT * Math.PI / 180);
+const MAP_H = 1180, MAP_CY = 1070;
+const kScale = MAP_H / (KB[3] - KB[1]);
+const kProj = ([lon, lat]) => [W / 2 + (lon - (KB[0] + KB[2]) / 2) * kScale * KCOS, MAP_CY - (lat - KLAT) * kScale];
+const kRing = D.karrada.ring.map(kProj);
+function inPoly(ring, x, y) {
+  let hit = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i], [xj, yj] = ring[j];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) hit = !hit;
+  }
+  return hit;
+}
+const len = pts => { let s = 0; for (let i = 1; i < pts.length; i++) s += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); return s; };
+function resample(pts, n, closed = false) {
+  const P = closed ? pts.concat([pts[0]]) : pts;
+  const cum = [0]; for (let i = 1; i < P.length; i++) cum.push(cum[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
+  const L = cum[cum.length - 1], out = [];
+  for (let k = 0; k < n; k++) {
+    const d = closed ? L * k / n : L * k / (n - 1);
+    let i = 1; while (i < cum.length - 1 && cum[i] < d) i++;
+    const f = (d - cum[i - 1]) / Math.max(1e-9, cum[i] - cum[i - 1]);
+    out.push([lerp(P[i - 1][0], P[i][0], f), lerp(P[i - 1][1], P[i][1], f)]);
+  }
+  return out;
+}
+const RANKW = { 1: 9, 2: 7, 3: 5, 4: 3.6, 5: 2.4 };
+const streets = D.streets.map(s => {
+  const pts = s.p.map(kProj), mid = pts[Math.floor(pts.length / 2)];
+  return { pts, f: s.f, r: s.r, w: RANKW[s.r] || 2.4, col: s.f >= 0 ? band(s.f) : GREY, inside: inPoly(kRing, mid[0], mid[1]), L: len(pts),
+           d: Math.hypot(mid[0] - W / 2, mid[1] - MAP_CY), lonlat: s.p };
+});
+const DMAX = Math.max(...streets.map(s => s.d));
+// the strands: the outline of ٨٧ cut into pieces, each flying to one of the main roads
+const N_STR = 120, M = 16;
+const mains = streets.filter(s => s.r <= 2 && s.L > 40).sort((a, b) => b.L - a.L).slice(0, N_STR);
+const strands = (() => {
+  const rings = digitRings(GIANT_S, giantX0(), giantYb());
+  const per = rings.map(r => len(r.concat([r[0]])));
+  const total = per.reduce((a, b) => a + b, 0);
+  const src = [];
+  rings.forEach((r, ri) => {
+    const k = Math.max(1, Math.round(N_STR * per[ri] / total));
+    const pts = resample(r, k * (M - 1), true);
+    for (let i = 0; i < k; i++) {
+      const piece = []; for (let j = 0; j <= M - 1; j++) piece.push(pts[(i * (M - 1) + j) % pts.length]);
+      src.push(piece);
+    }
+  });
+  src.length = Math.min(src.length, mains.length);
+  const ang = (pts, cx, cy) => { const m = pts[Math.floor(pts.length / 2)]; return Math.atan2(m[1] - cy, m[0] - cx); };
+  const S = src.map(p => ({ p, a: ang(p, W / 2, GIANT_CY) })).sort((a, b) => a.a - b.a);
+  const T = mains.slice(0, S.length).map(s => ({ s, a: ang(s.pts, W / 2, MAP_CY) })).sort((a, b) => a.a - b.a);
+  return S.map((x, i) => ({ src: x.p, dst: resample(T[i].s.pts, M), street: T[i].s, delay: i / S.length }));
+})();
+const mainSet = new Set(strands.map(s => s.street));
+
+function strokePts(pts, w, col, alpha = 1, upto = 1) {
+  if (alpha <= 0.003 || upto <= 0) return;
+  ctx.save(); ctx.globalAlpha = alpha; ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  if (upto >= 1) pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+  else {
+    const total = len(pts) * upto; let acc = 0; ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) {
+      const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+      if (acc + d >= total) { const f = (total - acc) / d; ctx.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); break; }
+      ctx.lineTo(pts[i][0], pts[i][1]); acc += d;
+    }
+  }
+  ctx.stroke(); ctx.restore();
+}
+
+// ---------- Iraq: the site's governorate shapes in world units (400 wide), and Karrada inside them ----------
+const GM = D.govmap;
+const G_LON0 = 38.75, G_LON1 = 48.65, G_LAT1 = 37.4, G_KX = Math.cos(33.2 * Math.PI / 180), G_S = 400 / ((G_LON1 - G_LON0) * G_KX);
+const toWorld = ([lon, lat]) => [(lon - G_LON0) * G_KX * G_S, (G_LAT1 - lat) * G_S];
+const govs = GM.shapes.map(g => ({ ...g, polys: g.polys.filter(p => p.length > 2) })).sort((a, b) => b.d - a.d);
+govs.forEach((g, i) => { g.rank = i; g.col = band(g.d); });
+const WC = [GM.w / 2, GM.h / 2];
+const kWorld = toWorld([(KB[0] + KB[2]) / 2, KLAT]);
+const kWorldSpan = toWorld([KB[0], KB[3]]).map((v, i) => Math.abs(v - toWorld([KB[2], KB[1]])[i]));
+streets.forEach(s => { s.world = s.lonlat.map(toWorld); });
+const IRAQ_Z = 2.4, IRAQ_C = [540, 1080];
+
+// 3D camera: world (x, y, height) -> screen, with zoom, a turn about the vertical and a tilt back
+function project(x, y, h, cam) {
+  const X = (x - cam.cx) * cam.z, Y = (y - cam.cy) * cam.z, Z = h * cam.z;
+  const cg = Math.cos(cam.g), sg = Math.sin(cam.g);
+  const x1 = X * cg - Y * sg, y1 = X * sg + Y * cg;
+  const ca = Math.cos(cam.a), sa = Math.sin(cam.a);
+  const yr = y1 * ca - Z * sa, zr = y1 * sa + Z * ca;
+  const s = 2600 / (2600 - zr);
+  return [cam.sx + x1 * s, cam.sy + yr * s, zr];
+}
+function drawIraq(cam, heights, alpha = 1, edge = 1) {
+  const faces = [];
+  for (const g of govs) {
+    const h = heights(g);
+    for (const poly of g.polys) {
+      const top = poly.map(([x, y]) => project(x, y, h, cam));
+      if (h > 0.3) {
+        const base = poly.map(([x, y]) => project(x, y, 0, cam));
+        for (let i = 0; i < poly.length; i++) {
+          const j = (i + 1) % poly.length;
+          const q = [base[i], base[j], top[j], top[i]];
+          // face shade from its direction in the world: walls facing the light (south east) are lighter
+          const nx = poly[j][1] - poly[i][1], ny = -(poly[j][0] - poly[i][0]);
+          const lit = clamp(0.5 + 0.5 * (nx * 0.6 + ny * 0.8) / Math.max(1e-6, Math.hypot(nx, ny)));
+          faces.push({ q, z: (q[0][2] + q[1][2] + q[2][2] + q[3][2]) / 4 - 0.01, col: shade(g.col, 0.42 - 0.26 * lit), side: true });
+        }
+      }
+      faces.push({ q: top, z: top.reduce((s, p) => s + p[2], 0) / top.length + h * cam.z * 0.5, col: g.col, side: false });
+    }
+  }
+  faces.sort((a, b) => a.z - b.z);
+  ctx.save(); ctx.globalAlpha = alpha; ctx.lineJoin = 'round';
+  for (const f of faces) {
+    ctx.beginPath(); f.q.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath();
+    ctx.fillStyle = f.col; ctx.fill();
+    if (!f.side && edge > 0) { ctx.strokeStyle = 'rgba(255,255,255,' + edge + ')'; ctx.lineWidth = 2; ctx.stroke(); }
+    else if (f.side) { ctx.strokeStyle = f.col; ctx.lineWidth = 0.6; ctx.stroke(); }
+  }
+  ctx.restore();
+}
+
+// ---------- the ranked bars (data) and the search box (UI) ----------
+const ROW0 = 430, ROWH = 62, BAR_R = 690, BAR_MAX = 520, BAR_H = 30;
+const rowY = i => ROW0 + i * ROWH;
+const barRect = g => [BAR_R - BAR_MAX * g.d / govs[0].d, rowY(g.rank) - BAR_H / 2, BAR_MAX * g.d / govs[0].d, BAR_H];
+const BOX = [90, 700, 900, 140];
+function polyToRect(poly, rect, n = 48) {
+  // both resampled from their top-right point, going the same way round
+  let p = poly.slice();
+  const area = p.reduce((s, q, i) => { const r = p[(i + 1) % p.length]; return s + q[0] * r[1] - r[0] * q[1]; }, 0);
+  if (area < 0) p.reverse();
+  let k = 0, best = -1e9; p.forEach(([x, y], i) => { const sc = x - y; if (sc > best) { best = sc; k = i; } });
+  p = p.slice(k).concat(p.slice(0, k));
+  const [x, y, w, h] = rect;
+  const R = [[x + w, y], [x + w, y + h], [x, y + h], [x, y]];
+  return [resample(p, n, true), resample(R, n, true)];
+}
+let govMorph = null;
+function flatGov() {
+  const cam = { cx: WC[0], cy: WC[1], z: IRAQ_Z, g: 0, a: 0, sx: IRAQ_C[0], sy: IRAQ_C[1] };
+  return govs.map(g => {
+    const big = g.polys.reduce((a, b) => (len(b) > len(a) ? b : a));
+    const scr = big.map(([x, y]) => project(x, y, 0, cam));
+    return polyToRect(scr, barRect(g));
+  });
+}
+function fillPts(pts, col, alpha = 1) {
+  ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = col; ctx.beginPath();
+  pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.fill(); ctx.restore();
+}
+
+// ---------- scenes ----------
+function sceneHook(t) {
+  // the line grows; three lines of type rise out of it, each pushing the last one up
+  const words = [['الإنترنت', 150, 0.5], ['مو نفس السرعة', 104, 1.0], ['بكل العراق.', 104, 1.5]];
+  const YB = 920, out = seg(t, 2.0, 0.34);
+  const e = words.map(w => spring(seg(t, w[2], 0.34)));
+  const baseOf = (i, tt) => {
+    const ee = words.map(w => spring(seg(tt, w[2], 0.34)));
+    let y = YB + (1 - ee[i]) * words[i][1] * 1.15;
+    for (let j = i + 1; j < words.length; j++) y -= words[j][1] * 1.24 * ee[j];
+    const o = expoIn(seg(tt, 2.0 + 0.03 * i, 0.22));
+    return [960, y - 1700 * o];
+  };
+  words.forEach((w, i) => {
+    if (e[i] <= 0) return;
+    const p = baseOf(i, t), v = vel(tt => baseOf(i, tt), t);
+    text(w[0], p[0], p[1], { size: w[1], vx: v[0], vy: v[1], clip: out > 0 ? null : [0, 0, W, LINE_Y - 8] });
+  });
+}
+function lineWidthAt(t) {
+  if (t < 1) return lerp(LINE_W0, LINE_W1, expo(seg(t, 0, 0.45)));
+  return LINE_W1;
+}
+// the three coloured pieces of the line (right to left: green, amber, red) and where they go
+const PIECES = [[GREEN, 680, 960], [AMBER, 400, 680], [RED, 120, 400]];
+function scenePieces(t) {
+  if (t < 1.5) {                            // one ink line
+    drawLine(W / 2, lineWidthAt(t), LINE_Y, INK);
+    return;
+  }
+  const gap = 14 * expo(seg(t, 1.5, 0.25));
+  PIECES.forEach(([col, a, b], i) => {
+    const k = expo(seg(t, 1.5 + 0.06 * i, 0.22));
+    let x0 = a + gap / 2, x1 = b - gap / 2, y = LINE_Y, th = 8;
+    const go = spring(seg(t, 2.14, 0.34));
+    if (i === 1) {                          // amber closes up
+      const s = expo(seg(t, 2.0, 0.24)), m = (x0 + x1) / 2; x0 = lerp(x0, m, s); x1 = lerp(x1, m, s);
+    } else {
+      const ty = i === 0 ? 860 : 1180;
+      y = lerp(LINE_Y, ty, go); th = lerp(8, BAR_TH, go);
+      const wNow = x1 - x0, target = i === 0 ? 280 : 280;
+      x1 = lerp(x1, 960, go); x0 = x1 - lerp(wNow, target, go);
+      // the bars take their speeds
+      const want = i === 0 ? 840 * 87 / 100 : 840 * 4 / 100;
+      const ti = i === 0 ? 2.5 : 3.0, s = spring(seg(t, ti, 0.36));
+      x0 = x1 - lerp(x1 - x0, want, s);
+      // and fall away before the giant number
+      const gone = expoIn(seg(t, 3.5, 0.28)); x0 = lerp(x0, x1, gone);
+    }
+    if (x1 - x0 > 0.5) { ctx.fillStyle = mix(INK, col, k); rrect(x0, y - th / 2, x1 - x0, th, Math.min(th / 2, 6)); ctx.fill(); }
+  });
+}
+const BAR_TH = 30;
+function scenePlaces(t) {
+  if (t < 2.4 || t > 4.3) return;
+  const out = expoIn(seg(t, 3.5, 0.3));
+  // names rise out of their bars
+  [['الكرادة', 860, 2.5], ['الصقلاوية', 1180, 3.0]].forEach(([n, by, t0], i) => {
+    const e = spring(seg(t, t0, 0.32));
+    if (e <= 0) return;
+    const f = tt => { const ee = spring(seg(tt, t0, 0.32)), oo = expoIn(seg(tt, 3.38 + 0.03 * i, 0.18)); return [960 + 1000 * oo, by - 40 + (1 - ee) * 110]; };
+    const p = f(t), v = vel(f, t);
+    text(n, p[0], p[1], { size: 100, vx: v[0], vy: v[1], clip: [0, 0, W, by - BAR_TH / 2 - 2] });
+  });
+  // Saqlawiya's number sits at the end of its stub; the unit under both
+  const s4 = spring(seg(t, 3.05, 0.3));
+  if (s4 > 0) {
+    const f = tt => { const oo = expoIn(seg(tt, 3.38, 0.18)); return [960 - 840 * 4 / 100 - 26, 1180 + 36 + 1000 * oo]; };
+    const p = f(t), v = vel(f, t);
+    text(AR(4 * expo(seg(t, 3.05, 0.25))), p[0], p[1], { size: 100, vx: v[0], vy: v[1], alpha: s4, color: RED });
+    const u = spring(seg(t, 3.15, 0.3)), fu = tt => [960, 1310 + (1 - spring(seg(tt, 3.15, 0.3))) * 40 + 1000 * expoIn(seg(tt, 3.38, 0.18))];
+    const pu = fu(t), vu = vel(fu, t);
+    text('ميغابت في الثانية', pu[0], pu[1], { size: 46, weight: 500, color: SOFT, alpha: u, vx: vu[0], vy: vu[1] });
+  }
+}
+// Karrada's ٨٧: small at the end of its bar, then the whole screen
+function digitsPlacement(t) {
+  const xr = 960 - 840 * 87 / 100 - 26, s0 = 0.1, yb0 = 860 + 36;
+  const x00 = xr - (digBox.x1) * s0;
+  const k = expo(seg(t, 3.5, 0.45));
+  return { s: lerp(s0, GIANT_S, k), x0: lerp(x00, giantX0(), k), yb: lerp(yb0, giantYb(), k), k };
+}
+function sceneDigits(t) {
+  if (t < 2.55 || t > 4.35) return;
+  const count = expo(seg(t, 2.55, 0.4));
+  if (t < 3.0 && count < 1) {               // counting up, set as text until it reaches ٨٧
+    const n = 87 * count;
+    text(AR(n), 960 - 840 * 87 / 100 - 26, 860 + 36, { size: 100, color: GREEN, alpha: spring(seg(t, 2.55, 0.2)) });
+    return;
+  }
+  const p = digitsPlacement(t);
+  const col = mix(GREEN, INK, expo(seg(t, 3.5, 0.3)));
+  const fade = 1 - expo(seg(t, 4.0, 0.42));
+  fillRings(digitRings(p.s, p.x0, p.yb), col, fade);
+}
+function sceneStreets(t) {
+  if (t < 4.0 || t > 6.7) return;
+  // the camera pulls back from Karrada to Iraq from 6.0
+  const zk = 1000 / kWorldSpan[0], z = Math.exp(lerp(Math.log(zk), Math.log(IRAQ_Z), expoInOut(seg(t, 6.0, 0.5))));
+  const zoomed = t >= 6.0;
+  const cmx = lerp(kWorld[0], WC[0], expoInOut(seg(t, 6.0, 0.5))), cmy = lerp(kWorld[1], WC[1], expoInOut(seg(t, 6.0, 0.5)));
+  const toScr = zoomed ? (s => s.world.map(([x, y]) => [lerp(W / 2, IRAQ_C[0], expoInOut(seg(t, 6.0, 0.5))) + (x - cmx) * z, lerp(MAP_CY, IRAQ_C[1], expoInOut(seg(t, 6.0, 0.5))) + (y - cmy) * z])) : (s => s.pts);
+  const wk = zoomed ? z / zk : 1, fadeOut = zoomed ? 1 - expo(seg(t, 6.15, 0.3)) : 1;
+  // minor streets draw in from the centre outward
+  for (const s of streets) {
+    if (mainSet.has(s)) continue;
+    const ts = 4.85 + 0.5 * s.d / DMAX, up = expo(seg(t, ts, 0.32));
+    if (up <= 0) continue;
+    strokePts(toScr(s), Math.max(0.6, s.w * wk), s.col, (s.inside ? 1 : 0.34) * fadeOut, up);
+  }
+  // the strands of the digits fly to the main roads
+  strands.forEach(st => {
+    const t0 = 4.0 + 0.42 * st.delay, e = spring(seg(t, t0, 0.8));
+    const s = st.street;
+    let pts;
+    if (e >= 1) pts = zoomed ? toScr({ world: resample(s.world, M) }) : st.dst;
+    else {
+      const th = 0.35 * Math.sin(Math.PI * e);
+      pts = st.src.map((p, j) => {
+        const q = st.dst[j], x = lerp(p[0], q[0], e) - W / 2, y = lerp(p[1], q[1], e) - 1040;
+        return [W / 2 + x * Math.cos(th) - y * Math.sin(th), 1040 + x * Math.sin(th) + y * Math.cos(th)];
+      });
+    }
+    const w = lerp(10, s.w, e) * (e >= 1 ? wk : 1);
+    strokePts(pts, Math.max(0.6, w), mix(INK, s.col, expo(e)), lerp(1, s.inside ? 1 : 0.34, e) * fadeOut);
+  });
+  // Karrada's outline
+  const ring = zoomed ? toScr({ world: D.karrada.ring.map(toWorld) }) : kRing;
+  strokePts(ring.concat([ring[0]]), zoomed ? Math.max(1, 5 * wk) : 5, INK, fadeOut, expo(seg(t, 5.0, 0.42)));
+}
+function sceneKarradaLabel(t) {
+  if (t < 5.4 || t > 6.5) return;
+  const f = (tt, d, base) => { const e = spring(seg(tt, 5.5 + d, 0.32)), o = expoIn(seg(tt, 6.0 + d, 0.28)); return [960, base + (1 - e) * 70 - 1100 * o]; };
+  const a = f(t, 0, 360), va = vel(tt => f(tt, 0, 360), t), b = f(t, 0.06, 438), vb = vel(tt => f(tt, 0.06, 438), t);
+  text('الكرادة', a[0], a[1], { size: 110, vx: va[0], vy: va[1], alpha: spring(seg(t, 5.5, 0.2)) });
+  text('٨٧ ميغابت في الثانية', b[0], b[1], { size: 56, weight: 700, color: GREEN, vx: vb[0], vy: vb[1], alpha: spring(seg(t, 5.56, 0.2)) });
+}
+function cam3d(t) {
+  const tilt = spring(seg(t, 6.5, 0.5)), back = expo(seg(t, 8.0, 0.26));
+  const k = tilt * (1 - back);
+  return { cx: WC[0], cy: WC[1], z: lerp(IRAQ_Z, 2.0, k), g: lerp(0, -0.18, k) - 0.05 * seg(t, 6.9, 1.1) * (1 - back), a: lerp(0, 1.0, k), sx: IRAQ_C[0], sy: lerp(IRAQ_C[1], 1130, k) };
+}
+function sceneIraq(t) {
+  if (t < 6.05 || t > 8.3) return;
+  const appear = expo(seg(t, 6.12, 0.36));
+  const cam = cam3d(t);
+  const back = expo(seg(t, 8.0, 0.22));
+  const heights = g => g.d * 1.55 * spring(seg(t, 7.0 + 0.022 * g.rank, 0.42)) * (1 - back);
+  drawIraq(cam, heights, appear, 1);
+}
+function sceneIraqText(t) {
+  if (t < 6.9 || t > 9.7) return;
+  // «١٨ محافظة» and the million tests, then pushed up by the ranking title
+  const push = spring(seg(t, 8.0, 0.34)), out = expoIn(seg(t, 9.5, 0.28));
+  const f1 = tt => [960, 330 + (1 - spring(seg(tt, 7.0, 0.32))) * 90 - 700 * spring(seg(tt, 8.0, 0.34))];
+  const f2 = tt => [960, 408 + (1 - spring(seg(tt, 7.5, 0.32))) * 60 - 700 * spring(seg(tt, 8.02, 0.34))];
+  const a = f1(t), b = f2(t), va = vel(f1, t), vb = vel(f2, t);
+  text('١٨ محافظة', a[0], a[1], { size: 120, vx: va[0], vy: va[1], alpha: spring(seg(t, 7.0, 0.2)) });
+  text('من أكثر من مليون اختبار سرعة', b[0], b[1], { size: 52, weight: 500, color: SOFT, vx: vb[0], vy: vb[1], alpha: spring(seg(t, 7.5, 0.2)) });
+  const f3 = tt => [960, 330 + 120 * (1 - spring(seg(tt, 8.0, 0.34))) - 900 * expoIn(seg(tt, 9.5, 0.28))];
+  const c3 = f3(t), v3 = vel(f3, t);
+  if (push > 0) text('من الأسرع إلى الأبطأ', c3[0], c3[1], { size: 76, vx: v3[0], vy: v3[1], alpha: push });
+}
+function sceneBars(t) {
+  if (t < 8.0 || t > 10.1) return;
+  if (!govMorph) govMorph = flatGov();
+  const conv = seg(t, 9.5, 0.4);
+  govs.forEach((g, i) => {
+    const [P, R] = govMorph[i];
+    const e = spring(seg(t, 8.12 + 0.012 * g.rank, 0.4));
+    let pts = P.map((p, j) => [lerp(p[0], R[j][0], e), lerp(p[1], R[j][1], e)]);
+    // into the search box
+    const k = expoInOut(seg(t, 9.5 + 0.008 * g.rank, 0.36));
+    if (k > 0) {
+      const [bx, by, bw, bh] = BOX, B = resample([[bx + bw, by], [bx + bw, by + bh], [bx, by + bh], [bx, by]], 48, true);
+      pts = pts.map((p, j) => [lerp(p[0], B[j][0], k), lerp(p[1], B[j][1], k)]);
+    }
+    // highlight the fastest and the slowest
+    const hi = i === 0 ? spring(seg(t, 9.0, 0.2)) * (1 - spring(seg(t, 9.42, 0.2))) : i === govs.length - 1 ? spring(seg(t, 9.2, 0.2)) * (1 - spring(seg(t, 9.42, 0.2))) : 0;
+    const dim = (spring(seg(t, 9.0, 0.2)) * (1 - spring(seg(t, 9.42, 0.2)))) * (hi > 0.01 ? 0 : 0.6);
+    fillPts(pts, mix(g.col, WHITE, k * 0.999), 1 - dim * (1 - k));
+  });
+  // names and numbers
+  govs.forEach((g, i) => {
+    const e = spring(seg(t, 8.5 + 0.012 * g.rank, 0.34)); if (e <= 0) return;
+    const o = expoIn(seg(t, 9.5, 0.26));
+    const y = rowY(g.rank) + 15;
+    const hi = i === 0 ? spring(seg(t, 9.0, 0.2)) * (1 - spring(seg(t, 9.42, 0.2))) : i === govs.length - 1 ? spring(seg(t, 9.2, 0.2)) * (1 - spring(seg(t, 9.42, 0.2))) : 0;
+    const dimOn = spring(seg(t, 9.0, 0.2)) * (1 - spring(seg(t, 9.42, 0.2)));
+    const a = e * (1 - (hi > 0.01 ? 0 : 0.6 * dimOn));
+    const fx = tt => [960 + 80 * (1 - spring(seg(tt, 8.5 + 0.012 * g.rank, 0.34))) + 900 * expoIn(seg(tt, 9.5, 0.26)), y];
+    const p = fx(t), v = vel(fx, t);
+    text(g.n, p[0], p[1], { size: 42, weight: 700, alpha: a, vx: v[0], vy: v[1], s: 1 + 0.22 * hi });
+    const [bx] = barRect(g);
+    text(AR(g.d * expo(seg(t, 8.5 + 0.012 * g.rank, 0.4))), bx - 14 - 900 * o, y, { size: 42, weight: 700, color: g.col === AMBER ? '#8a6a06' : g.col, alpha: a, s: 1 + 0.22 * hi });
+  });
+}
+const TYPED = [[10.5, 'ا'], [10.58, 'ال'], [10.66, 'الك'], [10.74, 'الكر'], [10.9, 'الكرا'], [10.98, 'الكراد'], [11.06, 'الكرادة']];
+function sceneSearch(t) {
+  if (t < 9.85 || t > 12.3) return;
+  const [bx, by, bw, bh] = BOX, on = expo(seg(t, 9.82, 0.2));
+  // the box
+  ctx.save(); ctx.globalAlpha = on;
+  rrect(bx, by, bw, bh, 28); ctx.fillStyle = WHITE; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = INK; ctx.stroke();
+  rrect(bx + 12, by + 12, 210, bh - 24, 20); ctx.fillStyle = INK; ctx.fill();
+  ctx.restore();
+  text('ابحث', bx + 117, by + 88, { size: 52, weight: 700, color: WHITE, align: 'center', alpha: on });
+  const title = tt => [960, 600 + (1 - spring(seg(tt, 10.0, 0.32))) * 70];
+  const tp = title(t), tv = vel(title, t);
+  text('اكتب اسم منطقتك', tp[0], tp[1], { size: 76, vx: tv[0], vy: tv[1], alpha: spring(seg(t, 10.0, 0.2)) });
+  const typed = TYPED.filter(([tt]) => t >= tt).pop();
+  if (!typed) text('اكتب اسم الحي أو المدينة', bx + bw - 30, by + 88, { size: 44, weight: 500, color: '#8a939c', alpha: on });
+  else {
+    text(typed[1], bx + bw - 30, by + 90, { size: 56, weight: 700 });
+    const cw = tw(typed[1], 56, 700);
+    ctx.fillStyle = INK; ctx.fillRect(bx + bw - 30 - cw - 10, by + 38, 4, 64);
+  }
+  // results drop down, the first one opens into the answer
+  const drop = spring(seg(t, 11.12, 0.3)), open = spring(seg(t, 11.5, 0.38));
+  if (drop > 0) {
+    const y0 = by + bh + 22, h1 = lerp(0, 290, drop), h = lerp(h1, 680, open);
+    ctx.save(); rrect(bx, y0, bw, h, 26); ctx.fillStyle = WHITE; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#cfd5da'; ctx.stroke(); ctx.clip();
+    const press = spring(seg(t, 11.32, 0.15));
+    ctx.fillStyle = '#eef1f3'; ctx.globalAlpha = press * (1 - open); ctx.fillRect(bx, y0, bw, 145); ctx.globalAlpha = 1;
+    const ra = 1 - expo(seg(t, 11.5, 0.2));
+    [['الكرادة', '٨٧', 0], ['كرادة مريم', '٨١', 1]].forEach(([n, v, i]) => {
+      const yy = y0 + 70 + i * 145;
+      text(n, bx + bw - 34, yy, { size: 52, weight: 700, alpha: ra });
+      text('حي في بغداد', bx + bw - 34, yy + 46, { size: 34, weight: 500, color: SOFT, alpha: ra });
+      text(v, bx + 40, yy + 22, { size: 62, color: GREEN, align: 'left', alpha: ra });
+    });
+    if (i => 0, ctx.fillStyle = '#e3e6e9', drop > 0.5 && ra > 0) { ctx.globalAlpha = ra; ctx.fillRect(bx + 30, y0 + 145, bw - 60, 2); ctx.globalAlpha = 1; }
+    ctx.restore();
+    // the answer, the way the site gives it
+    if (open > 0) {
+      const a = open, fy = (tt, base, d) => base + (1 - spring(seg(tt, 11.55 + d, 0.34))) * 60;
+      text('معدل سرعة التنزيل في الكرادة', bx + bw - 40, fy(t, y0 + 90, 0), { size: 40, weight: 500, color: SOFT, alpha: a });
+      text('٨٧', bx + bw - 40, fy(t, y0 + 400, 0.03), { size: 320, alpha: a });
+      text('ميغابت في الثانية', bx + bw - 40, fy(t, y0 + 480, 0.06), { size: 50, weight: 500, color: '#46525e', alpha: a });
+      const vy = fy(t, y0 + 580, 0.09);
+      text('جيد، يكفي لفيديو 4K على أكثر من جهاز', bx + bw - 40, vy, { size: 42, weight: 500, color: '#46525e', alpha: a });
+      text('جيد', bx + bw - 40, vy, { size: 42, weight: 700, color: GREEN, alpha: a });
+    }
+  }
+}
+// where the green word's underline sits, so the field can grow out of it
+function greenSeed(t) {
+  const [bx, by, bw, bh] = BOX, y0 = by + bh + 22, vy = y0 + 580;
+  const w = tw('جيد', 42, 700);
+  return [bx + bw - 40 - w, vy + 14, w, 9];
+}
+function sceneField(t) {
+  if (t < 11.7 || t > 14.4) return;
+  const grow = expoInOut(seg(t, 12.0, 0.3));
+  const [sx, sy, sw, sh] = greenSeed(t);
+  const ul = spring(seg(t, 11.72, 0.22));
+  let x = sx + sw * (1 - ul), y = sy, w = sw * ul, h = sh;
+  x = lerp(x, 0, grow); y = lerp(y, 0, grow); w = lerp(w, W, grow); h = lerp(h, H, grow);
+  // the field folds back into the line at the end
+  const fold = expoInOut(seg(t, 14.0, 0.3));
+  y = lerp(y, LINE_Y - 4, fold); h = lerp(h, 8, fold); x = lerp(x, W / 2 - LINE_W1 / 2, fold); w = lerp(w, LINE_W1, fold);
+  if (w <= 0) return;
+  ctx.fillStyle = GREEN; rrect(x, y, w, h, Math.min(4, h / 2)); ctx.fill();
+  if (grow <= 0) return;
+  ctx.save(); rrect(x, y, w, h, 0); ctx.clip();
+  // Iraq's summers since 2019 rise as white bars; the counter runs through them
+  const yrs = D.years, BW = 76, GAP = 30, X0 = 960, BOT = 1500, HMAX = 620;
+  const step = clamp(Math.floor((t - 13.0) / 0.065), -1, yrs.length - 1);
+  yrs.forEach((v, i) => {
+    const e = spring(seg(t, 12.3 + 0.05 * i, 0.36)); if (e <= 0) return;
+    const bh2 = HMAX * v / yrs[yrs.length - 1] * e, bx2 = X0 - (i + 1) * BW - i * GAP;
+    const lit = t >= 13.0 ? (i <= step ? 1 : 0.42) : 0.55;
+    ctx.globalAlpha = lit; ctx.fillStyle = WHITE; rrect(bx2, BOT - bh2, BW, bh2, 4); ctx.fill(); ctx.globalAlpha = 1;
+    text(AR(2019 + i), bx2 + BW / 2, BOT + 50, { size: 30, weight: 500, color: WHITE, align: 'center', alpha: 0.8 * e });
+  });
+  const la = tt => [960, 420 + (1 - spring(seg(tt, 12.12, 0.32))) * 70];
+  const pa = la(t), va = vel(la, t);
+  text('كان معدل العراق ١٧ ميغابت', pa[0], pa[1], { size: 62, weight: 700, color: WHITE, vx: va[0], vy: va[1], alpha: spring(seg(t, 12.12, 0.2)) });
+  if (t >= 12.95) {
+    const v = step < 0 ? yrs[0] : yrs[step], last = step === yrs.length - 1;
+    const pop = last ? 1 + 0.06 * (1 - spring(seg(t, 13.5, 0.3))) : 1;
+    const fb = tt => [960, 760 + (1 - spring(seg(tt, 12.95, 0.3))) * 80];
+    const pb = fb(t), vb = vel(fb, t);
+    text(AR(v), pb[0], pb[1], { size: 330, color: WHITE, vx: vb[0], vy: vb[1], s: pop, alpha: spring(seg(t, 12.95, 0.15)) });
+    text(`ميغابت بصيف ${AR(2019 + Math.max(0, step))}`, 960, 850, { size: 58, weight: 700, color: WHITE, alpha: spring(seg(t, 13.0, 0.2)) });
+  }
+  ctx.restore();
+}
+function sceneEnd(t) {
+  if (t < 14.0) return;
+  // the title rises out of the line, then the whole group squashes back into it
+  const close = expoIn(seg(t, 14.5, 0.32));
+  const sq = y => LINE_Y + (y - LINE_Y) * (1 - close);
+  const up = [['سرعة الإنترنت', 136, 14.06, 760], ['في العراق', 136, 14.12, 912]];
+  up.forEach(([s, size, t0, yb]) => {
+    const f = tt => [960, sq(yb + (1 - spring(seg(tt, t0, 0.3))) * 150)];
+    const p = f(t), v = vel(f, t);
+    text(s, p[0], p[1], { size, vx: v[0], vy: v[1], sy: 1 - close, alpha: spring(seg(t, t0, 0.3)), clip: [0, 0, W, LINE_Y - 8] });
+  });
+  const f2 = tt => [960, sq(1088 - (1 - spring(seg(tt, 14.18, 0.3))) * 70)];
+  const p2 = f2(t), v2 = vel(f2, t);
+  text('اعرف سرعة منطقتك، الرابط بالبايو', p2[0], p2[1], { size: 50, weight: 500, color: SOFT, vx: v2[0], vy: v2[1], sy: 1 - close, alpha: spring(seg(t, 14.18, 0.3)), clip: [0, LINE_Y + 8, W, H] });
+  // the line: green from the field, ink again, and back to its first width
+  const ink = expo(seg(t, 14.25, 0.3)), shrink = expoInOut(seg(t, 14.6, 0.4));
+  drawLine(W / 2, lerp(LINE_W1, LINE_W0, shrink), LINE_Y, mix(GREEN, INK, ink));
+}
+
+// ---------- seek ----------
+window.seek = function (t) {
+  t = ((t % 15) + 15) % 15;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = WHITE; ctx.fillRect(0, 0, W, H);
+  if (t < 4.0) scenePieces(t);
+  sceneHook(t);
+  scenePlaces(t);
+  sceneDigits(t);
+  sceneStreets(t);
+  sceneKarradaLabel(t);
+  sceneIraq(t);
+  sceneIraqText(t);
+  sceneBars(t);
+  sceneSearch(t);
+  sceneField(t);
+  sceneEnd(t);
+};
+window.ready = Promise.all(['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik`, 'العراق ٨٧ 4K'))).then(() => { window.seek(0); return true; });
+</script>
+</body>
+</html>
