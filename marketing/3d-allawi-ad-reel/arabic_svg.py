@@ -55,6 +55,23 @@ def shape(text, path=FONT):
     return buf.glyph_infos, buf.glyph_positions
 
 
+def merge(glyphs, close=0.004):
+    from shapely.geometry import Polygon, MultiPolygon
+    from shapely.ops import unary_union
+    parts = []
+    for loops in glyphs:
+        g = None
+        for l in loops:
+            p = Polygon(l).buffer(0)
+            g = p if g is None else g.symmetric_difference(p)
+        if g is not None and not g.is_empty:
+            parts.append(g.buffer(close))
+    word = unary_union(parts).buffer(-close)
+    polys = word.geoms if isinstance(word, MultiPolygon) else [word]
+    r = lambda ring: [(round(a, 5), round(b, 5)) for a, b in list(ring.coords)[:-1]]
+    return [[r(p.exterior)] + [r(h) for h in p.interiors] for p in polys if p.area > 1e-5]
+
+
 def svg(text, out, path=FONT):
     tt = TTFont(path)
     gs, names = tt.getGlyphSet(), tt.getGlyphOrder()
@@ -77,9 +94,10 @@ def svg(text, out, path=FONT):
     with open(out, "w") as f:
         f.write(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {x} {h}" width="{x}" height="{h}"><title>{text}</title>'
                 f'<g id="word" fill="#000">{"".join(paths)}</g></svg>')
-    # in em units, baseline at y = 0, y up
+    # in em units, baseline at y = 0, y up; "shapes" is the whole word merged into clean outlines with holes, so joined
+    # letters become one solid with no seam where the glyphs meet
     with open(out.replace(".svg", ".json"), "w") as f:
-        json.dump({"text": text, "width": x / upm, "glyphs": glyphs}, f)
+        json.dump({"text": text, "width": x / upm, "glyphs": glyphs, "shapes": merge(glyphs)}, f)
     return x / upm, h / upm, asc / upm
 
 
