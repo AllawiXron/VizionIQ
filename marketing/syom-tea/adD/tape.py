@@ -12,7 +12,7 @@ OUT = os.path.abspath(argv[0] if argv else 'cut/tape.png')
 SAMPLES = int(argv[1]) if len(argv) > 1 else 128
 PROXY = len(argv) > 2 and argv[2] == 'proxy'
 NOFLOOR = len(argv) > 2 and argv[2] in ('tapeonly', 'full')   # the tape without the shadow catcher, to split tape from shadows
-FULL = len(argv) > 2 and argv[2] == 'full'   # no stand-in either: the whole tape, cut against the real pouch photo later
+FULL = len(argv) > 2 and argv[2] == 'full'   # the whole tape (the stand-in only casts its shadow), cut against the real pouch photo later
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -43,7 +43,7 @@ else:
     ho = nt.nodes.new('ShaderNodeHoldout'); nt.links.new(ho.outputs[0], out.inputs['Surface'])
 box.data.materials.append(m)
 if FULL:
-    box.hide_render = True
+    box.visible_camera = False     # unseen, but it still throws the pouch's shadow across the tape
 
 bpy.ops.mesh.primitive_plane_add(size=6, location=(0, 0, 0))
 floor = bpy.context.object; floor.name = 'Table'

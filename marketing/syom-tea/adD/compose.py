@@ -127,6 +127,17 @@ rim_zone = np.clip(pa - cv2.erode(pa, np.ones((11, 11), np.uint8)), 0, 1) > 0.02
 pale = ((ehsv[..., 2] > 135) & (ehsv[..., 1] < 70) & rim_zone).astype(np.uint8)
 pale = cv2.dilate(pale, np.ones((3, 3), np.uint8))
 filled = cv2.inpaint((np.clip(prgb, 0, 1) * 255).astype(np.uint8), pale, 7, cv2.INPAINT_TELEA).astype(np.float32) / 255
+# the right edge near the base catches the sweep more: a wider, softer pass there
+rz = (np.clip(pa - cv2.erode(pa, np.ones((17, 17), np.uint8)), 0, 1) > 0.02) & (gx > 0.88) & (np.linspace(0, 1, ph)[:, None] > 0.6)
+pale = np.maximum(pale, cv2.dilate(((ehsv[..., 2] > 100) & (ehsv[..., 1] < 90) & rz).astype(np.uint8), np.ones((3, 3), np.uint8)))
+filled = cv2.inpaint((np.clip(prgb, 0, 1) * 255).astype(np.uint8), pale, 9, cv2.INPAINT_TELEA).astype(np.float32) / 255
+# a dust speck low on the front panel, left of centre, in the original shot
+dl = cv2.cvtColor((np.clip(prgb, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2GRAY).astype(np.float32)
+win = (slice(int(ph * 0.87), int(ph * 0.94)), slice(int(pw * 0.20), int(pw * 0.31)))
+local = dl[win] - cv2.GaussianBlur(dl[win], (0, 0), 6)
+speck = np.zeros_like(pale); speck[win] = cv2.dilate((local < -14).astype(np.uint8), np.ones((5, 5), np.uint8))
+pale = np.maximum(pale, speck)
+filled = cv2.inpaint((np.clip(prgb, 0, 1) * 255).astype(np.uint8), pale, 9, cv2.INPAINT_TELEA).astype(np.float32) / 255
 pm = cv2.GaussianBlur(pale.astype(np.float32), (0, 0), 1.0)[..., None]
 prgb = prgb * (1 - pm) + filled * pm
 edge = cv2.GaussianBlur(edge, (0, 0), 3) * np.clip((gx - 0.55) / 0.45, 0, 1) * (np.linspace(0.5, 1, ph)[:, None]) * np.clip((0.95 - np.linspace(0, 1, ph)[:, None]) / 0.12, 0, 1)
@@ -151,8 +162,6 @@ tf = rgba('cut/tape-full.png')
 behind = np.clip(tf[..., 3] - to[..., 3], 0, 1) * (1 - pouch_canvas)
 ta = np.clip(to[..., 3] + behind, 0, 1)
 trgb = np.where(to[..., 3:4] > 0.02, to[..., :3], tf[..., :3])
-# what the stand-in hid sat in the pouch's own shadow
-trgb = trgb * (1 - (behind / np.maximum(ta, 1e-3))[..., None] * 0.55)
 over(img, np.clip(trgb * np.array([1.08, 1.02, 0.9]), 0, 1), ta)
 
 # ---------- loose tea and rose petals spilled over the base and the tape ----------
