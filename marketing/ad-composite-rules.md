@@ -41,3 +41,27 @@ Always:
 
 These sit alongside the -noAI rules in /CLAUDE.md. Where they meet: the studio light behind the product is a lit
 area in a real scene (not an even radial gradient as the whole background), and the vignette stays subtle.
+
+## The approved standard: Syom Tea ad 1 (`marketing/syom-tea/adD`)
+Approved by the client on 23 Oct with no changes. Start every new ad post from it.
+
+How it is built:
+- Product: the cleanest real image of the product, facing the camera. The client's shoot photos looked tired and
+  leaned back; the brand's own mockup, its front panel warped square to the camera (`cut.py`), read as premium.
+- Prop: rendered alone in Blender (`tape.py`). Its camera is solved so a stand-in box lands exactly on the product
+  photo's base; it writes `cut/camera.json`, which `compose.py` reads for the table's perspective and where the
+  product goes. Passes: shadow (shadow catcher), back (goes under the product photo), front (goes over it).
+- Scene (`compose.py`): CC0 walnut and plaster textures in that perspective, a warm light behind the product, a
+  soft palm shadow, contact/cast/ambient shadows, rim light, loose tea from the shoot overlapping the base.
+- Type (`ad.html`, `ad-post.html`): logo top left, a huge headline top right, its answer right under it, the claim
+  and the call to action beside the product, no boxes. `grade.py` puts one grade and grain over everything.
+- Feed post: render the same scene wider (`tape.py ... 228`, `compose.py 228`), then frame it tight on the product
+  so there is no empty wall or table.
+
+Lessons from the rounds with the user and the client:
+- Zoom into every place where things meet before sending (base, edges, shadows, overlaps). Things the user had to
+  point out: a floating product, tape that seemed to pass through it, a hand-darkened shadow patch, white halos.
+- A prop that goes behind a cut-out must pass behind it out on the table, never at its corners.
+- Don't mirror a product photo to change its angle (the print reads backwards).
+- The question and its answer sit together; the claim and the call to action go beside the product.
+- No AI-generated images, even from the client's own folders (two Syom mockups look generated).

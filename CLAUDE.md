@@ -163,6 +163,11 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 
 ## Reference projects (start from these; copy their structure and look)
 
+- Ad posts (23 Oct, the standard from now on): `marketing/syom-tea/adD`, the Syom Tea ad the client approved with
+  no changes (`out/syom-adD-story.png`, `out/syom-adD-post.png`). A photo composite: the brand's own product image
+  facing the camera, a prop rendered alone in Blender with a camera solved to the layout, a real wood and plaster
+  scene in that perspective, three shadows, rim light, brand type, one grade with grain. Its build and the lessons
+  are in `marketing/ad-composite-rules.md` and `marketing/syom-tea/README.md`.
 - Reel motion (22 Oct, the standard from now on): `marketing/hf-simple-logos-reel`, built on an After Effects project
   the user sent. A camera per shot that lands fast and settles, then speeds into a hard cut with a 0.3 s blur pulse;
   letters out of a blur one at a time; Smart Bounce pop-ins; motion blur on the camera and on every moving object;
