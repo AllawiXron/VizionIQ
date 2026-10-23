@@ -82,3 +82,8 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   Build: `./fetch.sh`, `adB/fetch-textures.sh`, `cd adB && python3 prep.py && node shot.cjs`
   (NODE_PATH=/opt/node-tools/node_modules), `blender -b -P scene.py -- render/scene.png 100 128`, then
   `node render.cjs` from this folder.
+- Ad C (`adC/`, 23 Oct): the same idea in 2D, no 3D render. The pouch photo (DSC05046) cut along its outline on the
+  brand green, the window and palm light from DSC05178 laid over the green (soft-light), and the tape drawn as one
+  SVG path: half-cm and cm ticks from dashed strokes, a number every cm along the path (red every ten), round the
+  front of the pouch, behind it and back to its brass end. `cd adC && python3 prep.py`, then
+  `node render.cjs adC/ad.html` from this folder.
