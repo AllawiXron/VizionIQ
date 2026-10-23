@@ -195,7 +195,7 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 
 - YouTube gaming thumbnails (23 Oct): 1920×1080, three layouts pitched in text first (split, menu showcase, centre
   hero), then the picked one built as a layered composite. Rules and reference notes: `marketing/yt-r6-unlock-all`
-  (then `-2` to `-4`). Every element needs an obvious meaning: the user had a sheared padlock and sparks removed as "weird".
+  (then `-2` to `-5`). Every element needs an obvious meaning: the user had a sheared padlock and sparks removed as "weird".
   The user wants a clever idea in each one and textured title type, not flat gradient fills (23 Oct). A concrete
   title broken by the hammer was rejected; `-4` now has Sledge smashing a locked operators screen (grey cards with
   padlocks) open onto the same operators unlocked in colour, which the user picked.
