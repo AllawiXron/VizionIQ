@@ -43,7 +43,7 @@
       parent: shot, shot, plane: "fg", stack: 50, name: `foreground ${src.replace(".png", "")}`,
       box: [w, w * Core.size(src)[1] / Core.size(src)[0]], anchor: [w / 2, (w * Core.size(src)[1]) / Core.size(src)[0] / 2],
       v: { x: lx, y: ly, z: -0.375 * M.camera.zoom, rotation: rot }, life: [t0, t1],
-      data: { src, defocus: 14, shadow: false },
+      data: { src, defocus: 14, shadow: false, colour: true },
     });
     M.tl.fromTo(n.v, { rotation: rot }, { rotation: rot + 24, duration: t1 - t0, ease: "glide" }, t0);
     return n;

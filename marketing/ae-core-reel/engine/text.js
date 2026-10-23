@@ -45,6 +45,8 @@
       return { cx: b.left + b.width / 2 - px, cy: b.top + b.height / 2 - py, w: b.width, h: b.height, base: base - (b.top + b.height / 2) };
     });
     meter.removeChild(line);
+    const lo = Math.min(...words.map((w) => px + w.cx - w.w / 2)), hi = Math.max(...words.map((w) => px + w.cx + w.w / 2));
+    if (words.length && (lo < 24 || hi > 1056)) console.warn(`line runs off the frame (${Math.round(lo)}..${Math.round(hi)}): ${o.words.map((w) => w.w).join(" ")}`);
     return { px, py: o.top + py, words };
   }
 
