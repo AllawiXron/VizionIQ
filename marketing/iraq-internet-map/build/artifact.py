@@ -69,13 +69,13 @@ def main(out_dir):
     css = open(S('app.css'), encoding='utf-8').read()
     css = re.sub(r"url\(fonts/([\w-]+\.woff2)\)",
                  lambda m: 'url(data:font/woff2;base64,' + base64.b64encode(open(S('fonts', m.group(1)), 'rb').read()).decode() + ')', css)
-    css = css.replace(":root {", ":root {\n  color-scheme: dark;", 1)
+    css = css.replace(":root {", ":root {\n  color-scheme: light;", 1)
     mlcss = open(S('vendor', 'maplibre-gl.css'), encoding='utf-8').read()
     html = open(S('index.html'), encoding='utf-8').read()
     body = html.split('<body>', 1)[1].split('</body>', 1)[0]
     body = re.sub(r'\s*<script src="[^"]+"></script>', '', body)
     app = open(S('app.js'), encoding='utf-8').read()
-    page = ['<title>خريطة الإنترنت في العراق</title>',
+    page = ['<title>سرعة الإنترنت في العراق</title>',
             '<style>', mlcss, css, 'html { direction: rtl; }', '</style>',
             "<script>document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl';</script>",
             body.strip()]

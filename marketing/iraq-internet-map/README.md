@@ -1,65 +1,62 @@
-# خريطة الإنترنت في العراق (Iraq internet map)
+# سرعة الإنترنت في العراق (Iraq internet speeds)
 
-A public site that shows how fast home internet really is in every part of Iraq, made for the Minister of
-Communications' call (Mustafa Sanad, Oct 2026) for local software built by Iraqis. Idea and design: @allawi.psd.
-
-The look: Iraq at night seen from above, where the light is internet speed instead of electricity. Brighter means
-faster, dim ember means slow, dark means no measurements. Everything on screen is real data or real geography.
+A public site where anyone types the name of their area and sees how fast its internet really is, from tests people
+ran themselves, compared with their governorate and with Iraq. Made for the Minister of Communications' call (Mustafa
+Sanad, Oct 2026) for local software built by Iraqis. Idea and design: @allawi.psd.
 
 ## The site (`site/`)
 
-A static site, no build step: `site/index.html`, `app.js`, `app.css`, data in `site/data/`, the map in three
-PMTiles files by zoom (`site/tiles/iraq-a.pmtiles` z4 to 11, `iraq-b` z12, `iraq-c` z13, 34.7 MB together, each under
-15 MB) and `site/tiles/ground.jpg`. The page reads a tile file in pieces where the host answers range requests and
-fetches it whole where it does not, and keeps its own page routing so it also works inside a frame. MapLibre GL JS 4.7.1 and
-PMTiles 3.2.1 are kept in `site/vendor/` with their licences, so nothing loads from outside. The first page needs only
-`govs.json`, `country.json` and `exams.json` (21 KB); the map libraries and the 4,300 areas in `places.json` load after it
-is on screen, and area pages wait for them.
+Rebuilt a third time on 23 Oct as "result first", after the user found the night-map version confusing and weird (a
+dark map, too much on one page, no clear sense of what the site is for). The approved stills are
+`out/redesign-1-home.png` and `out/redesign-2-area.png` (`redesign/`). The exam-day internet cuts are left out of the
+site on the user's decision; their data stays in `data/exams.json`.
 
-The page reads top to bottom in plain sentences (rebuilt 23 Oct after the user found the first version confusing:
-no colour key, numbers without labels, text floating over the map):
-- **Home:** what the site does in one sentence, a real search box with examples, the البيت / الموبايل switch, then
-  the map on the first screen with its colour key and controls (on phones it sits in the page and moves with two
-  fingers; ملء الشاشة opens it full screen), Iraq's number big with its other numbers as labelled rows, the
-  governorates as a ranked table, and the exam days as a small table.
-- **Area pages** (`#/p/<osm id>`, `#/g/<governorate>`): one answer sentence (معدل سرعة تنزيل ... يبلغ ٨٧ ميغابت), how it
-  compares with its governorate and Iraq and what share of areas it beats, a scale with the three marks, the map
-  focused on the area, home and mobile side by side in one table, the summer of every year since 2019, nearby areas.
-- **Exams** (`#/exams`): the days, usual hours and total per year, then one line of light per morning from 04:00 to
-  10:00, stacked tight as in the still so the cut reads as one dark column (the month is written on its first exam,
-  the hours at both ends); tap a day for its date and exact times. On desktop the exams and About pages take the
-  whole window, since the speed map has nothing to say there.
-- Brightness and colour on the map are download speed; ember is slow, white is fast, dark is no tests. Tap a square
-  for its speed and test count. No area shows a number from fewer than 10 tests.
-- Kufi headings set their digits in Markazi; numbers never sit next to each other across a comma (Arabic bidi
-  joins them into one number).
-- Ranked lists give the test count under every name, and equal numbers share a place. A governorate's place in the
-  order says when a neighbour is within 5%.
-
-Type runs in five steps (13, 15, 18, 21 and 26 px) plus the headline and the 88 px number; units sit under their labels
-so numbers share one edge; rules only in tables. `build/design-audit.cjs --out <dir>` screenshots every page at three
-sizes and measures the type styles, gaps, text measure and edges for a design review.
+- **Home** (`#/`): the headline says what the site does, then a large search box with examples, then Iraq's number
+  (62 Mbps) with a plain verdict (جيد، يكفي لفيديو 4K على أكثر من جهاز) and the 2019 figure, then the 18 governorates
+  as a map coloured by speed (tap one to open it). Home loads three small files and no map library.
+- **Area and governorate pages** (`#/p/<osm id>`, `#/g/<governorate>`): the area's number in one size, its verdict,
+  three bars against its governorate and Iraq, the share of areas it beats (or a governorate's place among the 18,
+  saying when a neighbour is within 5%), its streets on a light map coloured by speed, home and mobile side by side,
+  the summer of every year since 2019, and nearby areas or the governorate's areas with test counts.
+- **Governorates** (`#/govs`) as a ranked list, and **About** (`#/about`) with the sources, the method, what each
+  verdict word means and the limits of the data.
+- The البيت / الموبايل switch sits above every number it changes. No area shows a number from fewer than 10 tests.
+- Verdict words come from what a speed is enough for at home, on Netflix's figures (5 Mbps per screen for HD, 15 for
+  4K): under 10 بطيء، 10 to 25 مقبول، 25 to 50 متوسط، 50 to 100 جيد، above 100 سريع جدا.
+- Colour is speed on a log scale: red `#d2483f` (5), orange `#ea8a2e` (15), amber `#e3b021` (35), green `#5aa85e` (70),
+  deep green `#12795a` (150). Text is ink `#14202b` on white; the colour is never the only cue (each number is written).
+- Type: Rubik (SIL OFL, `site/fonts/`), chosen for a clear speed-test feel, round shapes that read well on cheap phone
+  screens, and Arabic digits that stay legible at 13 px and at 96 px.
+- The street map is MapLibre GL JS 4.7.1 with PMTiles 3.2.1 (`site/vendor/`, with licences), loaded only on area
+  pages. In the page it is a still picture the page scrolls over; a tap or «افتح الخريطة كاملة» opens it full screen,
+  where it moves and a tap on a street gives its 500 m square's speed and test count. Streets from squares with few
+  tests are drawn fainter. On wide screens the map sits beside the numbers and stays in view.
+- Tiles: three PMTiles files by zoom (`site/tiles/iraq-a.pmtiles` z4 to 11, `iraq-b` z12, `iraq-c` z13, 34.7 MB
+  together), read in pieces where the host answers range requests and whole where it does not. The page keeps its
+  own routing so it also works inside a frame.
 
 Test it before showing anyone: `NODE_PATH=/opt/node-tools/node_modules node build/check.cjs --out <dir>` drives every
-page and interaction at phone, tablet and desktop sizes and on slow 4G, with screenshots and automatic layout and
-Arabic checks. Then look at every screenshot as an Iraqi on a phone, as the minister, as a designer, as someone checking
-the numbers against `site/data/`, and for contrast and tap sizes.
+page and interaction at phone, tablet and desktop sizes and on slow 4G (home text in about 1.3 s, ready in about
+3 s), with screenshots and automatic layout and Arabic checks. `build/design-audit.cjs --out <dir>` screenshots every
+page at three sizes and measures type styles, gaps, text measure and edges for a design review.
 
 Rebuild everything, in order: `python3 data/fetch.py` (boundaries, IODA, base layers), `python3 build/ookla_years.py`,
-`python3 build/osm_places.py`, `python3 build/places.py`, `python3 build/exams.py`, `python3 build/tiles.py`,
-`python3 build/ground.py` (needs `pip install duckdb shapely pyshp scipy mapbox-vector-tile pmtiles`).
+`python3 build/osm_places.py`, `python3 build/places.py`, `python3 build/govmap.py`, `python3 build/exams.py`,
+`python3 build/tiles.py` (needs `pip install duckdb shapely pyshp scipy mapbox-vector-tile pmtiles`).
+`build/ground.py` made the relief plate of the night version and is no longer used by the site.
 Try it locally with `node build/serve.cjs` (Python's http.server can't do range requests) and open
 http://localhost:8765; add `--no-range` to act like a host without range requests.
 
 A private test page of the whole site is published as one HTML file with its data and tiles beside it:
 `python3 build/artifact.py <out dir>` writes the page (CSS, fonts and script inline, MapLibre and PMTiles from cdnjs
 and jsDelivr) and the tiles as base64 text parts of at most 15 MB, for a host that serves no binary files.
+`node build/og.cjs` renders the share image `site/og.jpg` from the home page.
 
 To publish: any static host that serves range requests (Vercel, Netlify, GitHub Pages, Cloudflare Pages). On Vercel,
 make a new project from this repo with the root directory `marketing/iraq-internet-map/site` and no build command;
 it stays separate from the viZion site.
 
-## The three stills (`out/`, 1170 x 2532, phone at 3x)
+## The three night stills (`out/`, 1170 x 2532, phone at 3x; the first direction, kept for the record)
 
 1. **The country** (`still-1-country.png`): every 500 m square measured by Ookla between Jul and Sep 2026 as a point
    of light, main roads from OpenStreetMap carrying the light of the squares they pass. National average 62 Mbps,
@@ -76,16 +73,12 @@ Rebuild: `python3 data/fetch.py` (data and base layers), `python3 stills/maps.py
 `NODE_PATH=/opt/node-tools/node_modules node stills/render.cjs`. Check the Arabic with
 `node ../tools/textcheck.cjs stills/screens.html '.screen'`.
 
-## Type and colour
+## Type and colour of the night stills
 
-- **Reem Kufi** (headlines and big numbers): a geometric Kufi. The Kufic script is named after Kufa in Iraq, and
-  its square construction echoes the 500 m squares the data comes in. Its Arabic digits read well only at large
-  sizes, so years and small numbers are set in Markazi.
-- **Markazi Text** (text, labels, years): a Naskh text face the user picked for the ministry identity work.
-- Both are SIL OFL, files in `fonts/`.
-- Light ramp from slow to fast: ember `#6e1c08`, orange `#e2681c`, amber `#ffb856`, warm white `#fff4de`. Ground: a
-  cold night blue-black with NASA's real relief pressed into it. Big numbers take the light colour of their own speed.
-- Digits are Arabic-Indic and months are the Iraqi names (تموز، آب، أيلول).
+- Reem Kufi for headlines and Markazi Text for text and numbers (SIL OFL, `fonts/`); a light ramp from ember
+  `#6e1c08` through orange and amber to warm white `#fff4de` on a night blue-black ground with NASA's relief. The site
+  no longer uses either; it is set in Rubik on white (see above).
+- Digits are Arabic-Indic and months are the Iraqi names (تموز، آب، أيلول), on the site too.
 
 ## What the data says (checked 23 Oct 2026)
 
@@ -111,18 +104,19 @@ Rebuild: `python3 data/fetch.py` (data and base layers), `python3 stills/maps.py
 - Speedtest by Ookla Global Fixed and Mobile Network Performance Maps, CC BY-NC-SA 4.0: credit Ookla, no
   commercial use, and anything made from it is shared under the same licence. If the ministry wants to buy the
   site, the Ookla layer has to be replaced with data the ministry owns.
-- IODA (Georgia Tech): outage events and raw signals through its public API. Its terms of use still need checking
-  before the site goes public.
+- IODA (Georgia Tech): outage events and raw signals through its public API, for the exam-day cuts, which the site
+  does not show. Check its terms before using them anywhere public.
 - OpenStreetMap contributors, ODbL: roads and water through the HOT export on HDX (7 Oct 2026), places and
   Karrada's boundary through Nominatim.
-- NASA GIBS: ASTER GDEM shaded relief and VIIRS Black Marble (only the neighbours' faint lights are used).
+- NASA GIBS: ASTER GDEM shaded relief and VIIRS Black Marble, in the night stills only.
 - Natural Earth (public domain): Iraq's outline and the rivers.
 - OCHA, Iraq Subnational Administrative Boundaries (COD-AB) on HDX, CC BY-IGO: the governorates (Halabja is still
   inside Sulaymaniyah there).
 
 ## Still to do
 
-- Publish it (see above) and check it on a real phone over Iraqi internet; the 34.7 MB tile file loads in small pieces.
+- Publish it (see above) and check it on a real phone over Iraqi internet; the home page needs no tiles, an area page
+  reads only the pieces around it.
 - A speed test button only if a test server inside Iraq is available (check Cloudflare's open speed test first).
-- Check IODA's terms, add Halabja as its own governorate, then the reel and the letter to the minister.
+- Add Halabja as its own governorate, then the reel and the letter to the minister.
 - Kurdish-only names in OSM (no Arabic form) are shown as written in Kurdish.

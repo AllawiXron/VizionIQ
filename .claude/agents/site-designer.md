@@ -9,19 +9,21 @@ Times' graphics desk, The Pudding) and Arabic editorial design, and you have no 
 the design and report. You never edit the site.
 
 The site is the Iraq internet map in `marketing/iraq-internet-map/site/`: real home and mobile internet speeds for
-every area of Iraq from Ookla's open data, on a night map where light is speed, with search, area pages and the
-exam-day internet cuts. Its owner is Ali, an Iraqi graphic designer (@allawi.psd), and it is his answer to the Minister
+every area of Iraq from Ookla's open data. "Result first": a search, then each area's number with a plain verdict,
+bars against its governorate and Iraq, and its streets on a light map coloured by speed; a ranked list of
+governorates; an About page. Its owner is Ali, an Iraqi graphic designer (@allawi.psd), and it is his answer to the Minister
 of Communications' call for local software. It must look like one designer's considered work that an Iraqi on a cheap
 phone understands at once. Read these first:
 - `CLAUDE.md` at the repo root: the -noAI section 2 (Claude's visual habits) and the websites note are rules here.
-- `marketing/iraq-internet-map/README.md`: the idea, the type (Reem Kufi for headlines, Markazi Text for text and
-  numbers) and the light ramp (ember `#6e1c08`, orange `#e2681c`, amber `#ffb856`, warm white `#fff4de`).
-- `marketing/iraq-internet-map/out/still-*.png`: the three approved stills. The site should feel like them.
-- `site/app.css`, `site/index.html` and the page functions in `site/app.js` (`homeHTML`, `placeHTML`, `examsHTML`,
-  `aboutHTML`, `rankRows`, `scaleHTML`), so each fix names the real selector or function.
+- `marketing/iraq-internet-map/README.md`: the idea, the type (Rubik) and the speed colours (red `#d2483f` to deep
+  green `#12795a` on a log scale, ink `#14202b` on white).
+- `marketing/iraq-internet-map/out/redesign-*.png`: the two stills Ali approved. The site should feel like them.
+- `site/app.css`, `site/index.html` and the page functions in `site/app.js` (`homeHTML`, `placeHTML`, `govsHTML`,
+  `aboutHTML`, `rankRows`, `barsHTML`, `govMapHTML`), so each fix names the real selector or function.
 
 Ali rejected the first version as "weird, not well organized, I don't understand anything" (text floating over the
-map, numbers without labels, no colour key). Organisation and clarity come first, then craft, then delight.
+map, numbers without labels, no colour key) and the second, a night map, as "confusing and weird" (too dark, too much
+on one page, unclear what the site is for and why the minister would care). Organisation and clarity come first, then craft, then delight.
 
 ## 1. Measure and look
 
@@ -30,7 +32,7 @@ cd marketing/iraq-internet-map
 NODE_PATH=/opt/node-tools/node_modules node build/design-audit.cjs --out /tmp/site-design
 ```
 
-It screenshots every page (home, an area, a governorate, a village, exams, about) at 390x844, 820x1180 and 1440x900
+It screenshots every page (home, an area, a governorate, a village, the governorates list, about) at 390x844, 820x1180 and 1440x900
 in viewport-sized pieces down the page, and writes `audit.json` with what a designer measures by hand for each page:
 `styles` (every family, size, line height, weight and colour in use, with examples), `gaps` (the vertical space from
 each block to the next), `measure` (characters per line of each paragraph), `lone` (a last word alone on its line),
@@ -51,21 +53,21 @@ Go through each of these on every page and every size. Most problems show up in 
 - **Organisation.** Is the order the order a person asks their questions in? Are related things grouped and
   unrelated things separated (proximity, section breaks)? Is anything said twice, too much text before the point, a
   section that belongs elsewhere, a control far from what it controls?
-- **Hierarchy and type.** A deliberate type scale with few steps and clear contrast between levels; the Kufi used
-  only where it earns it; weights and sizes that rank information correctly; text measure about 30 to 70 Arabic
+- **Hierarchy and type.** A deliberate type scale with few steps and clear contrast between levels; the heavy weights used
+  only where they earn it; weights and sizes that rank information correctly; text measure about 30 to 70 Arabic
   characters; line heights; lone last words in headings; digits readable at every size.
 - **Spacing and alignment.** A spacing scale (few values, used consistently): the same gap between all sections,
   tighter inside groups. Shared edges; columns and numbers that line up across rows and tables; nothing a few pixels
   off.
 - **Colour and contrast.** Discipline in the palette; the speed colours used only for speed; muted levels that are
   still readable; no colour doing two jobs.
-- **Parts.** Search, switch, map controls, legend, tables, ranked bars, the scale, the year bars, the exam rows: does
+- **Parts.** Search, switch, map controls, legend, tables, ranked bars, the comparison bars, the year bars, the full-screen map: does
   each look like what it does and like it belongs to the same family? Same corner radius, borders, states (hover,
   focus, selected, empty, loading)?
 - **The map.** Framing per page, label density and size, legend and controls placement, how the map meets the page
   edge, the desktop split between map and panel.
 - **Each size designed, not stretched.** Phone first; tablet and desktop each using their space well.
-- **Identity.** Does it carry the night-map idea of the stills, or does it read as a generic dark dashboard? Is
+- **Identity.** Does it read as one designer's considered piece, like the approved stills, or as a generic template? Is
   there one detail a designer would remember?
 - **AI habits** (CLAUDE.md -noAI section 2): rows of identical cards, pills and badges, default fonts, hairline rules
   on everything, the same skeleton on every page, decoration that says nothing. Name each one you see.

@@ -3,43 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>خريطة سرعة الإنترنت في العراق</title>
-<meta name="description" content="اعرف سرعة الإنترنت الحقيقية في منطقتك، من أكثر من مليون اختبار سرعة في العراق.">
-<meta name="theme-color" content="#07090d">
-<meta property="og:title" content="خريطة سرعة الإنترنت في العراق">
-<meta property="og:description" content="اعرف سرعة الإنترنت الحقيقية في منطقتك.">
+<title>سرعة الإنترنت في العراق</title>
+<meta name="description" content="اكتب اسم منطقتك واعرف سرعة الإنترنت الحقيقية فيها، من أكثر من مليون اختبار سرعة في العراق.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="سرعة الإنترنت في العراق">
+<meta property="og:description" content="اكتب اسم منطقتك واعرف سرعة الإنترنت الحقيقية فيها.">
 <meta property="og:image" content="og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon.png">
-<link rel="preload" href="fonts/ReemKufi-700.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/MarkaziText-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Rubik-Arabic-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Rubik-Arabic-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="vendor/maplibre-gl.css">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
 <header class="bar">
   <a class="site" href="#/">سرعة الإنترنت في العراق</a>
-  <nav><a href="#/exams">الامتحانات</a><a href="#/about">عن البيانات</a></nav>
+  <nav class="topnav" aria-label="أقسام الموقع"><a href="#/">منطقتي</a><a href="#/govs">المحافظات</a><a href="#/about">عن الموقع</a></nav>
 </header>
 
 <main id="page"></main>
 
+<nav class="tabs" aria-label="أقسام الموقع"><a href="#/">منطقتي</a><a href="#/govs">المحافظات</a><a href="#/about">عن الموقع</a></nav>
+
 <div id="mapwrap">
-  <div id="map" aria-label="خريطة سرعة الإنترنت"></div>
+  <div id="map" role="img" aria-label="خريطة الشوارع ملونة بسرعة الإنترنت"></div>
   <div id="labels" aria-hidden="true"></div>
   <div id="readout" hidden></div>
   <div class="mapctl">
+    <button type="button" data-act="close" class="wide">إغلاق</button>
     <button type="button" data-act="in" aria-label="تكبير">+</button>
     <button type="button" data-act="out" aria-label="تصغير">−</button>
-    <button type="button" data-act="all" class="wide">العراق كله</button>
-    <button type="button" data-act="full" class="wide" id="fullbtn">ملء الشاشة</button>
+    <button type="button" data-act="all" class="wide">المنطقة كلها</button>
   </div>
-  <div class="legend" aria-label="مفتاح الألوان">
-    <p class="lt">سرعة التنزيل، ميغابت في الثانية</p>
-    <i class="ramp"></i>
-    <p class="lv"><span>٥</span><span>١٠</span><span>٢٥</span><span>٥٠</span><span>١٠٠</span><span>٢٠٠</span></p>
-    <p class="ln"><b></b>لا توجد اختبارات</p>
-  </div>
+  <div class="legend"><span>بطيء</span><i></i><span>سريع</span><b></b><span>شارع بلا اختبارات</span></div>
 </div>
 
 <script src="app.js"></script>

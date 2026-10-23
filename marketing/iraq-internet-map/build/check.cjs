@@ -27,7 +27,7 @@ function pageChecks() {
   const vis = el => { const r = el.getBoundingClientRect(), s = getComputedStyle(el); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
   const textOf = el => [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
   for (const el of document.querySelectorAll('#page *, .bar *')) {
-    if (!vis(el)) continue;
+    if (!vis(el) || el.closest('.vh, .reg')) continue;     // labels for screen readers and trademark marks are small on purpose
     const s = getComputedStyle(el), r = el.getBoundingClientRect(), t = textOf(el);
     if (t && parseFloat(s.fontSize) < 12) out.push({ kind: 'tiny-text', detail: `${parseFloat(s.fontSize)}px: ${t.slice(0, 60)}` });
     if (t && (s.overflow === 'hidden' || s.textOverflow === 'ellipsis') && el.scrollWidth > el.clientWidth + 1)
@@ -149,25 +149,19 @@ function pageChecks() {
       if (before === after) throw new Error('answer did not change');
       return after;
     });
-    await step('tap a street shows its square', async () => {
-      const box = await page.evaluate(() => { const m = document.getElementById('map').getBoundingClientRect(); return { x: m.left + m.width / 2, y: m.top + m.height / 2, top: m.top }; });
-      if (box.top > v.height * 0.7) { await page.evaluate(() => document.querySelector('#page .mapslot, #map').scrollIntoView({ block: 'center' })); await page.waitForTimeout(600); }
-      const b2 = await page.evaluate(() => { const m = document.getElementById('map').getBoundingClientRect(); return { x: m.left + m.width / 2, y: m.top + m.height / 2 }; });
-      await page.mouse.click(b2.x, b2.y);
+    await step('the map opens full screen and a tap shows its square', async () => {
+      await page.click('#fullbtn');
+      await page.waitForTimeout(1500);
+      const full = await page.evaluate(() => { const r = document.getElementById('mapwrap').getBoundingClientRect(); return [r.width, r.height]; });
+      if (full[0] < v.width - 2 || full[1] < v.height - 2) throw new Error('map is ' + full.join('x'));
+      await page.mouse.click(v.width / 2, v.height / 2);
       await page.waitForTimeout(900);
       const t = await page.$eval('#readout', e => e.hidden ? '' : e.innerText);
-      await shot('tap');
+      await shot('fullscreen');
+      await page.click('[data-act="close"]');
+      await page.waitForTimeout(500);
       if (!t) throw new Error('no readout after a tap');
       return t.replace(/\s+/g, ' ');
-    });
-    await step('full screen map opens and closes', async () => {
-      await page.click('#fullbtn');
-      await page.waitForTimeout(800);
-      const full = await page.evaluate(() => { const r = document.getElementById('mapwrap').getBoundingClientRect(); return [r.width, r.height]; });
-      await shot('fullscreen');
-      await page.click('#fullbtn');
-      await page.waitForTimeout(500);
-      if (full[0] < v.width - 2 || full[1] < v.height - 2) throw new Error('map is ' + full.join('x'));
     });
     await step('governorate page', async () => {
       await go('#/g/baghdad', 3500);
@@ -182,16 +176,14 @@ function pageChecks() {
       const h1 = await page.$eval('.h1', e => e.innerText);
       return h1;
     });
-    await step('exams page and tapping a day', async () => {
-      await go('#/exams', 1500);
-      await page.click('.ex-year .ex-row[data-i="4"]');
-      await page.waitForTimeout(300);
-      const t = await page.$eval('.ex-year .ex-day', e => e.innerText);
-      if (!/[٠-٩]:[٠-٩]/.test(t)) throw new Error('no times after tapping: ' + t);
-      return t;
+    await step('the governorates tab lists all 18', async () => {
+      await go('#/govs', 1500);
+      const n = await page.$$eval('.rank a', as => as.length);
+      if (n !== 18) throw new Error(n + ' rows');
+      return n + ' rows';
     });
-    await checks('exams');
-    await scrollShots('exams');
+    await checks('governorates');
+    await scrollShots('governorates');
     await step('about page', async () => { await go('#/about', 1200); });
     await checks('about');
     await scrollShots('about');

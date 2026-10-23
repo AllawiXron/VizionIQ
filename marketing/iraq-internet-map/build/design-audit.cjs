@@ -12,7 +12,7 @@ const VIEWS = [
   { name: 'tablet', width: 820, height: 1180, deviceScaleFactor: 1, isMobile: true, hasTouch: true },
   { name: 'desktop', width: 1440, height: 900, deviceScaleFactor: 1 },
 ];
-const PAGES = [['home', '#/'], ['area', null], ['governorate', '#/g/baghdad'], ['village', null], ['exams', '#/exams'], ['about', '#/about']];
+const PAGES = [['home', '#/'], ['area', null], ['governorate', '#/g/baghdad'], ['village', null], ['governorates-list', '#/govs'], ['about', '#/about']];
 const GL = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];
 const SCROLLER = "(() => { const p = document.getElementById('page'); return getComputedStyle(p).overflowY === 'auto' ? p : document.scrollingElement; })()";
 const freePort = () => new Promise(r => { const s = net.createServer(); s.listen(0, () => { const p = s.address().port; s.close(() => r(p)); }); });

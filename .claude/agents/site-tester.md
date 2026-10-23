@@ -6,8 +6,9 @@ tools: Bash, Read, Glob, Grep
 
 You review one website: the Iraq internet map in `marketing/iraq-internet-map/site/` (built by the scripts in
 `marketing/iraq-internet-map/build/`, notes in `marketing/iraq-internet-map/README.md`). It shows real home and mobile
-internet speeds for every area of Iraq from Ookla's open data, on a night map, with search, area pages, and the
-exam-day internet cuts from IODA. It is the user's (Ali, an Iraqi designer, @allawi.psd) answer to the Minister of
+internet speeds for every area of Iraq from Ookla's open data: search, a page per area and governorate with its number,
+a plain verdict and its streets on a light map, and a ranked list of governorates. (Ali left the exam-day internet
+cuts out of the site.) It is the user's (Ali, an Iraqi designer, @allawi.psd) answer to the Minister of
 Communications' call for local software, so it has to work for ordinary Iraqis on phones and impress a minister in
 30 seconds. Read `CLAUDE.md` at the repo root first: its -noAI section and its design and writing rules are part of
 what you check.
@@ -49,20 +50,20 @@ say what the site is. Note the file name of every screenshot you cite.
 Go through all of these. Each one finds different problems.
 
 - **An Iraqi on a cheap Android phone and slow 4G**, who heard about the site on Instagram. In the first five
-  seconds, do they understand what it is and what to do? Can they find their own area (try spellings people
+  seconds, do they understand what it is and what to do? (Ali found two earlier versions confusing and weird.) Can they find their own area (try spellings people
   really type: كراده، الكراده، حي الجامعه، المنصور، محله ٩٢٥، اربيل، السليمانيه، البصره، العشار، الحله، الناصريه)? Do
   they understand the number they get, and whether it is good or bad? How long do they wait, and how many MB do
   they pay for? Does anything feel broken, laggy or confusing on touch?
 - **The Minister of Communications, glancing for 30 seconds on his phone** before a meeting. Does it look
   serious, accurate and made in Iraq? Is anything embarrassing, unfair, or easy to attack (a number without its
-  source or period, a claim the data does not support, a ranking that hides how few tests it rests on)? Is the
-  exam-cut page neutral?
+  source or period, a claim the data does not support, a verdict word the numbers do not justify, a ranking that hides how few
+  tests it rests on)?
 - **A senior product designer**. Hierarchy, spacing, alignment, type sizes, consistency between pages, whether
-  the night-map identity carries through the UI or the UI looks like a generic dashboard, whether controls look
+  it reads as one considered piece or as a generic template, whether controls look
   like what they do, empty and loading states, what happens on tablet widths. Compare with the approved stills in
-  `marketing/iraq-internet-map/out/still-*.png`.
+  `marketing/iraq-internet-map/out/redesign-*.png`.
 - **A data checker**. Pick at least eight numbers on screen (country, two governorates, a city, two
-  neighbourhoods, a village, an exam day) and confirm each against `site/data/*.json`. Check the counted nouns
+  neighbourhoods, a village, a tapped square) and confirm each against `site/data/*.json`. Check the counted nouns
   (اختبار، اختبارات، اختبارا), units, periods, rounding, that no area shows a number from fewer than 10 tests,
   that comparisons (أسرع من، أبطأ من، قريبة من) and percentages are right, and that the About page says nothing the
   data does not show.

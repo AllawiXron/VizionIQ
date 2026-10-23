@@ -46,7 +46,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   The night-map version of the Iraq internet map was still "confusing and weird" to the user after both reviews (dark
   map, too much on one page, unclear what the site is for and why the minister would care). Next version is "result
   first": a light page in Rubik, search then the area's number with a plain verdict, governorates on their own tab
-  (stills in `marketing/iraq-internet-map/redesign/`); build it only after the user approves the stills.
+  (stills in `marketing/iraq-internet-map/redesign/`). The user approved the stills and asked to leave the exam-day
+  internet cuts out of the site, since the ministry orders them (23 Oct).
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
