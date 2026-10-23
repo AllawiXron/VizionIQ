@@ -87,3 +87,11 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   SVG path: half-cm and cm ticks from dashed strokes, a number every cm along the path (red every ten), round the
   front of the pouch, behind it and back to its brass end. `cd adC && python3 prep.py`, then
   `node render.cjs adC/ad.html` from this folder.
+- Ad D (`adD/`, 23 Oct), concept 1 of the three pitched under `../ad-composite-rules.md`: a photo composite.
+  Cut-outs from the shoot (pouch at three-quarter DSC05052, loose tea and petals from DSC05104), the tape rendered
+  alone in Blender with a camera solved to the layout (a stand-in box hides it behind the pouch and throws the pouch's
+  cast shadow), a walnut table warped into that camera's perspective, green plaster wall with a warm light behind the
+  pouch and the palm shadow out of focus, contact/cast/ambient shadows, rim light, type in Lama Sans, one grade with
+  grain over everything. Build: `cd adD && python3 cut.py`, `blender -b -P tape.py -- cut/tape-shadow.png 96`,
+  `blender -b -P tape.py -- cut/tape.png 96 tapeonly`, `python3 compose.py`, then from this folder
+  `node render.cjs adD/ad.html && python3 adD/grade.py out/syom-adD-story.png out/syom-adD-story.png`.
