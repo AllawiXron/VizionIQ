@@ -23,8 +23,12 @@ site on the user's decision; their data stays in `data/exams.json`.
 - The البيت / الموبايل switch sits above every number it changes. No area shows a number from fewer than 10 tests.
 - Verdict words come from what a speed is enough for at home, on Netflix's figures (5 Mbps per screen for HD, 15 for
   4K): under 10 بطيء، 10 to 25 مقبول، 25 to 50 متوسط، 50 to 100 جيد، above 100 سريع جدا.
-- Colour is speed on a log scale: red `#d2483f` (5), orange `#ea8a2e` (15), amber `#e3b021` (35), green `#5aa85e` (70),
-  deep green `#12795a` (150). Text is ink `#14202b` on white; the colour is never the only cue (each number is written).
+- Colour follows the same five bands as the words, on the page and on the maps: red `#d2483f`, orange `#ea8a2e`, amber
+  `#e3b021`, green `#5aa85e`, deep green `#12795a`. Under every number the five bands sit in a row with their speeds and
+  a mark where the number falls; it is also the key under every map. Text is ink `#14202b` on white.
+- A number from fewer than 30 tests is set in grey and says it is rough, and leaves out the share of areas it beats
+  (which counts only areas with 30 tests or more). Twin places in OSM (حطين and حي حطين, Arabic and Kurdish
+  spellings) with the same squares and numbers within 300 m are merged in `build/places.py`.
 - Type: Rubik (SIL OFL, `site/fonts/`), chosen for a clear speed-test feel, round shapes that read well on cheap phone
   screens, and Arabic digits that stay legible at 13 px and at 96 px.
 - The street map is MapLibre GL JS 4.7.1 with PMTiles 3.2.1 (`site/vendor/`, with licences), loaded only on area
@@ -51,6 +55,10 @@ A private test page of the whole site is published as one HTML file with its dat
 `python3 build/artifact.py <out dir>` writes the page (CSS, fonts and script inline, MapLibre and PMTiles from cdnjs
 and jsDelivr) and the tiles as base64 text parts of at most 15 MB, for a host that serves no binary files.
 `node build/og.cjs` renders the share image `site/og.jpg` from the home page.
+
+Before sharing the link, set `og:image` in `site/index.html` to the full address of `og.jpg` on the real domain and
+add `og:url` (WhatsApp and Facebook previews need absolute addresses), then run `check.cjs --base <live url>`; on a host
+without range requests an area page costs about 20 MB instead of 1 MB.
 
 To publish: any static host that serves range requests (Vercel, Netlify, GitHub Pages, Cloudflare Pages). On Vercel,
 make a new project from this repo with the root directory `marketing/iraq-internet-map/site` and no build command;

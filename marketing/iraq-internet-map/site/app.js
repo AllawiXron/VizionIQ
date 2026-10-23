@@ -10,32 +10,32 @@ const ar = n => NUM.format(Math.round(n));
 const arDigits = s => String(s).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-// speed as colour: red when slow, green when fast, on a log scale through 5, 15, 35, 70 and 150 Mbps
-const STOPS = [[5, [210, 72, 63]], [15, [234, 138, 46]], [35, [227, 176, 33]], [70, [90, 168, 94]], [150, [18, 121, 90]]];
-function speedRGB(v) {
-  const t = Math.log(Math.max(v, 5));
-  for (let i = 0; i < STOPS.length - 1; i++) {
-    const [a, ca] = STOPS[i], [b, cb] = STOPS[i + 1];
-    if (t <= Math.log(b)) { const k = (t - Math.log(a)) / (Math.log(b) - Math.log(a)); return ca.map((c, j) => Math.round(c + (cb[j] - c) * k)); }
-  }
-  return STOPS[STOPS.length - 1][1];
-}
-const speedColour = v => `rgb(${speedRGB(v).join(',')})`;
-const RAMP_CSS = `linear-gradient(to left, ${STOPS.map(([v], i) => `${speedColour(v)} ${i * 25}%`).join(', ')})`;
-
-// a speed in plain words, from what it is enough for at home (Netflix asks 5 Mbps per screen for HD and 15 for 4K)
+// five speed bands: the colour and the word change at the same speeds (10, 25, 50 and 100 Mbps).
+// The words say what a speed is enough for, on Netflix's figures: 5 Mbps per screen for HD, 15 for 4K.
 const BANDS = [
-  [10, 'بطيء', 'يكفي للتصفح وفيديو بدقة عادية على جهاز واحد', '#b3362e'],
-  [25, 'مقبول', 'يكفي لفيديو HD على جهاز أو جهازين', '#a8561a'],
-  [50, 'متوسط', 'يكفي لفيديو 4K على جهاز أو جهازين', '#866608'],
-  [100, 'جيد', 'يكفي لفيديو 4K على أكثر من جهاز', '#2f7d45'],
-  [Infinity, 'سريع جدا', 'يكفي لبيت كامل يشاهد 4K ويحمل ملفات كبيرة', '#10664c'],
+  { max: 10, word: 'بطيء', range: 'أقل من ١٠', fill: '#d2483f', text: '#b3362e', home: 'يكفي للتصفح وفيديو بدقة عادية على جهاز واحد' },
+  { max: 25, word: 'مقبول', range: '١٠ إلى ٢٥', fill: '#ea8a2e', text: '#a8561a', home: 'يكفي لفيديو HD على جهاز أو جهازين' },
+  { max: 50, word: 'متوسط', range: '٢٥ إلى ٥٠', fill: '#e3b021', text: '#866608', home: 'يكفي لفيديو 4K على جهاز أو جهازين' },
+  { max: 100, word: 'جيد', range: '٥٠ إلى ١٠٠', fill: '#5aa85e', text: '#2f7d45', home: 'يكفي لفيديو 4K على أكثر من جهاز' },
+  { max: Infinity, word: 'سريع جدا', range: 'فوق ١٠٠', fill: '#12795a', text: '#10664c', home: 'يكفي لبيت كامل يشاهد 4K ويحمل ملفات كبيرة' },
 ];
+const bandOf = v => BANDS.find(b => v < b.max);
+const speedColour = v => bandOf(v).fill;
+const phoneLine = v => v < 5 ? 'لا يكفي لفيديو HD على الهاتف' : v < 15 ? 'يكفي لفيديو HD على الهاتف' : 'يكفي لفيديو 4K على الهاتف';
 const verdictHTML = v => {
-  const [, word, line, colour] = BANDS.find(b => v < b[0]);
-  return `<p class="verdict"><i style="background:${speedColour(v)}"></i><span><strong style="color:${colour}">${word}</strong>، ${line}</span></p>`;
+  const b = bandOf(v);
+  return `<p class="verdict"><strong style="color:${b.text}">${b.word}</strong>، ${S.mode === 'm' ? phoneLine(v) : b.home}</p>`;
 };
-const keyHTML = () => `<p class="key" aria-hidden="true"><span>بطيء</span><i style="background:${RAMP_CSS}"></i><span>سريع</span></p>`;
+// the five bands in a row with their speeds, and a mark at this place's speed: the key and the reading in one
+function bandsHTML(v) {
+  let mark = '';
+  if (v != null) {
+    const i = BANDS.indexOf(bandOf(v)), lo = i ? BANDS[i - 1].max : 0, hi = Number.isFinite(BANDS[i].max) ? BANDS[i].max : 250;
+    mark = `<em style="right:${(i + Math.min(1, (v - lo) / (hi - lo))) / BANDS.length * 100}%"></em>`;
+  }
+  return `<div class="bands" aria-hidden="true">${BANDS.map(b => `<div><i style="background:${b.fill}"></i><b>${b.word}</b><span>${b.range}</span></div>`).join('')}${mark}</div>`;
+}
+const noDataHTML = () => `<p class="nodata" aria-hidden="true"><i></i>شارع بلا اختبارات</p>`;
 
 // Arabic counted nouns: 1, 2, 3 to 10, 11 to 99, and hundreds follow the last two digits
 function counted(n, [one, two, few, many]) {
@@ -60,25 +60,24 @@ const bare = s => norm(s).split(' ').map(w => w.replace(/^ال/, '')).join(' ');
 // ---------- state ----------
 
 const S = { mode: 'f', places: [], govs: [], byId: new Map(), country: null, govmap: null, areas: {}, focus: null, focusBounds: null, pick: null };
-const PERIOD = { f: 'اختبارات تموز إلى أيلول ٢٠٢٦', m: 'اختبارات تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦، وهي أقل بكثير من اختبارات البيت' };
+const PERIOD = { f: 'تموز إلى أيلول ٢٠٢٦', m: 'تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦' };
 const KIND = { f: 'إنترنت البيت', m: 'إنترنت الموبايل' };
-const MIN_TESTS = 10;
+const MIN_TESTS = 10, FEW_TESTS = 30;     // under 10 tests no number is shown; under 30 it is marked as rough
 const IRAQ = [[38.8, 29.05], [48.6, 37.4]];
 const EMPTY = { type: 'FeatureCollection', features: [] };
 const page = document.getElementById('page');
 
 // ---------- the light street map ----------
 
-const L = Math.log;
-const colourExpr = P => ['interpolate', ['linear'], ['ln', ['max', ['get', P], 1]],
-  L(5), 'rgb(210,72,63)', L(15), 'rgb(234,138,46)', L(35), 'rgb(227,176,33)', L(70), 'rgb(90,168,94)', L(150), 'rgb(18,121,90)'];
-// a street whose square has few tests is drawn fainter
+const colourExpr = P => ['step', ['get', P], BANDS[0].fill, 10, BANDS[1].fill, 25, BANDS[2].fill, 50, BANDS[3].fill, 100, BANDS[4].fill];
+// a street or square with few tests is drawn fainter
 const sureExpr = C => ['interpolate', ['linear'], ['get', C], 1, 0.35, 10, 1];
 const has = P => ['>=', ['get', P], 0];
 const rank = (a, b, c, d, e) => ['match', ['get', 'r'], 1, a, 2, b, 3, c, 4, d, e];
 const roadWidth = () => ['interpolate', ['exponential', 1.6], ['zoom'],
   5, rank(0.8, 0.5, 0.4, 0.3, 0.2), 10, rank(2, 1.6, 1.2, 0.9, 0.6), 13, rank(4, 3.4, 2.6, 2, 1.4), 16, rank(9, 7, 5.5, 4.4, 3.2)];
 const ROUND = { 'line-cap': 'round', 'line-join': 'round' };
+const dotOpacity = C => ['interpolate', ['linear'], ['zoom'], 4, ['*', 0.85, sureExpr(C)], 8, ['*', 0.45, sureExpr(C)], 10, ['*', 0.24, sureExpr(C)], 11, ['*', 0.2, sureExpr(C)]];
 
 function style() {
   const P = S.mode, C = P === 'f' ? 'a' : 'b';
@@ -95,9 +94,10 @@ function style() {
       { id: 'rivers', type: 'line', source: 'iq', 'source-layer': 'rv', maxzoom: 12,
         paint: { 'line-color': '#cddfe9', 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 1, 11, 3] } },
       { id: 'roads', type: 'line', source: 'iq', 'source-layer': 'rd', layout: ROUND, paint: { 'line-color': '#d6dadf', 'line-width': roadWidth() } },
-      { id: 'dots', type: 'circle', source: 'iq', 'source-layer': 'sq', maxzoom: 11, filter: has(P),
-        paint: { 'circle-color': colourExpr(P), 'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 1.2, 8, 1.6, 10.5, 2],
-                 'circle-opacity': ['interpolate', ['linear'], ['zoom'], 4, 0.85, 8, 0.45, 10, 0.2, 11, 0] } },
+      // each tested square: a dot at country scale, a soft patch about its own size once streets show
+      { id: 'dots', type: 'circle', source: 'iq', 'source-layer': 'sq', filter: has(P),
+        paint: { 'circle-color': colourExpr(P), 'circle-radius': ['interpolate', ['exponential', 2], ['zoom'], 4, 1.2, 8, 1.6, 10, 2, 11, 4, 13, 16, 16, 128],
+                 'circle-opacity': dotOpacity(C) } },
       { id: 'speed', type: 'line', source: 'iq', 'source-layer': 'rd', filter: has(P), layout: ROUND,
         paint: { 'line-color': colourExpr(P), 'line-opacity': sureExpr(C), 'line-width': roadWidth() } },
       { id: 'sq-hit', type: 'circle', source: 'iq', 'source-layer': 'sq', minzoom: 9, filter: has(P),
@@ -159,8 +159,9 @@ const loadLibs = () => LIBS.reduce((p, src) => p.then(() => new Promise((res, re
 
 function placeMap() {
   const slot = page.querySelector('.plate');
+  if (full) return !!slot;
   if (slot) { if (wrap.parentNode !== slot) slot.appendChild(wrap); }
-  else { closeFull(); if (wrap.parentNode !== document.body) document.body.appendChild(wrap); }
+  else if (wrap.parentNode !== document.body) document.body.appendChild(wrap);
   if (map) map.resize();
   return !!slot;
 }
@@ -188,15 +189,18 @@ function makeMap() {
 
 function frame(bounds, animate) {
   const cam = map.cameraForBounds(bounds, { padding: full ? { top: 70, bottom: 90, left: 20, right: 20 } : 14,
-    maxZoom: S.focus && S.focus.k === 'gov' ? 9.5 : 15 });
+    maxZoom: !S.focus ? 15 : S.focus.k === 'gov' ? 9.5 : S.focus.r ? 13 : 15 });
   if (!cam) return;
   if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) map.easeTo({ ...cam, duration: 600 });
   else map.jumpTo(cam);
 }
+let pushedFull = false;
 function openFull() {
   if (full || !map) return;
   full = true;
+  document.body.appendChild(wrap);       // out of the page, so nothing on it can sit above the map
   wrap.classList.add('full');
+  try { history.pushState({ full: 1 }, '', route); pushedFull = true; } catch (e) { pushedFull = false; }
   document.documentElement.style.overflow = 'hidden';
   setHandlers(true);
   map.resize();
@@ -210,21 +214,24 @@ function closeFull() {
   document.documentElement.style.overflow = '';
   setHandlers(false);
   hideReadout();
-  map.resize();
+  placeMap();
   frame(S.focusBounds || IRAQ);
+  chooseLabels(); placeLabels();
   const b = document.getElementById('fullbtn'); if (b) b.focus();
 }
+// closing goes back one step when opening added one, so the phone's back button and إغلاق do the same thing
+const leaveFull = () => { if (pushedFull) history.back(); else closeFull(); };
 
 wrap.querySelector('.mapctl').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b || !map) return;
   const act = b.dataset.act;
-  if (act === 'close') closeFull();
+  if (act === 'close') leaveFull();
   else if (act === 'in') map.zoomIn();
   else if (act === 'out') map.zoomOut();
   else if (act === 'all') frame(S.focusBounds || IRAQ, true);
 });
-wrap.querySelector('.legend i').style.background = RAMP_CSS;
-addEventListener('keydown', e => { if (e.key === 'Escape' && full) closeFull(); });
+wrap.querySelector('.legend').innerHTML = bandsHTML(null) + noDataHTML();
+addEventListener('keydown', e => { if (e.key === 'Escape' && full) leaveFull(); });
 
 function setMode(m) {
   if (S.mode === m) return;
@@ -234,6 +241,7 @@ function setMode(m) {
     map.setPaintProperty('speed', 'line-color', colourExpr(m));
     map.setPaintProperty('speed', 'line-opacity', sureExpr(C));
     map.setPaintProperty('dots', 'circle-color', colourExpr(m));
+    map.setPaintProperty('dots', 'circle-opacity', dotOpacity(C));
     for (const id of ['speed', 'dots', 'sq-hit']) map.setFilter(id, has(m));
   }
   hideReadout();
@@ -257,7 +265,7 @@ function chooseLabels() {
   }
   cands.sort((a, b) => a.pri - b.pri || ((b.p.f || { t: 0 }).t - (a.p.f || { t: 0 }).t));
   // keep clear of the buttons and the key on the whole-screen map
-  const taken = full ? [{ x0: 0, x1: W, y0: 0, y1: 64 }, { x0: W - 290, x1: W, y0: H - 90, y1: H }] : [];
+  const taken = full ? [{ x0: 0, x1: W, y0: 0, y1: 64 }, { x0: W - 450, x1: W, y0: H - 100, y1: H }] : [];
   const out = [];
   for (const c of cands) {
     if (S.focus && c.p.id === S.focus.id) continue;
@@ -375,8 +383,8 @@ function search(q) {
     const keys = p._k || (p._k = [p.n, ...(p.a || [])].map(n => bare(n).toLowerCase()));
     let s = Math.max(...keys.map(key => match(key, k, words)));
     if (!s) continue;
-    if (p.k === 'gov') s += 30; else if (p.k === 'city') s += 20; else if (p.k === 'town') s += 8;
-    s += Math.log10(1 + ((p.f || {}).t || 0));
+    if (p.k === 'gov') s += 30; else if (p.k === 'city') s += 15; else if (p.k === 'town') s += 3;
+    s += 2 * Math.log10(1 + ((p.f || {}).t || 0));
     scored.push([s, p]);
   }
   // a name that only contains the letters inside another word (حله inside محله) shows only when nothing better does
@@ -438,19 +446,41 @@ function kindLine(p) {
 }
 const kindShort = p => ({ city: 'مدينة', town: 'بلدة', village: 'قرية', hamlet: 'قرية' })[p.k] || '';
 const nameIn = p => p.k === 'gov' ? `محافظة ${p.n}` : p.n;
-function percentile(v) {
-  const all = S.places.map(p => stat(p)).filter(Boolean).map(s => s.d);
-  return Math.round(all.filter(d => d < v).length / all.length * 100);
+function standing(v) {
+  const all = S.places.map(p => stat(p)).filter(s => s && s.t >= FEW_TESTS).map(s => s.d);
+  const below = Math.round(all.filter(d => d < v).length / all.length * 100);
+  if (below >= 99) return 'من أسرع ١٪ من مناطق العراق المقاسة.';
+  if (below <= 1) return 'من أبطأ ١٪ من مناطق العراق المقاسة.';
+  return below >= 50 ? `أسرع من ${ar(below)}٪ من مناطق العراق المقاسة.` : `أبطأ من ${ar(100 - below)}٪ من مناطق العراق المقاسة.`;
 }
+// a point inside an outline (the outer rings of a polygon or multipolygon)
+function inside(geom, x, y) {
+  const polys = geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates;
+  return polys.some(([ring]) => {
+    let hit = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [xi, yi] = ring[i], [xj, yj] = ring[j];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) hit = !hit;
+    }
+    return hit;
+  });
+}
+const km = (a, b) => Math.hypot((a.x - b.x) * 111.32 * Math.cos(b.y * Math.PI / 180), (a.y - b.y) * 111.32);
+const kmText = d => `${arDigits(d.toFixed(1)).replace('.', '٫')} كم`;
 
 // ---------- pages ----------
 
-const foot = `<p class="foot">السرعات من Speedtest by Ookla، والشوارع والأحياء من مساهمي OpenStreetMap. <a href="#/about">من أين جاءت الأرقام</a><br>
+const foot = (about = true) => `<p class="foot">السرعات من Speedtest by Ookla، والشوارع والأحياء من مساهمي OpenStreetMap.${about ? ' <a href="#/about">من أين جاءت الأرقام</a>' : ''}<br>
   فكرة وتصميم <bdi dir="ltr">@allawi.psd</bdi></p>`;
 const modesHTML = () => `<div class="modes" role="group" aria-label="نوع الاتصال">
   <button type="button" data-mode="f" aria-pressed="${S.mode === 'f'}" class="${S.mode === 'f' ? 'on' : ''}">إنترنت البيت</button>
-  <button type="button" data-mode="m" aria-pressed="${S.mode === 'm'}" class="${S.mode === 'm' ? 'on' : ''}">إنترنت الموبايل</button></div>
-  <p class="period">${PERIOD[S.mode]}</p>`;
+  <button type="button" data-mode="m" aria-pressed="${S.mode === 'm'}" class="${S.mode === 'm' ? 'on' : ''}">إنترنت الموبايل</button></div>`;
+const searchHTML = (hint, label) => `<form class="search${label ? ' again' : ''}" role="search" autocomplete="off">
+    ${label ? `<h2>${label}</h2>` : ''}<label for="q" class="vh">اسم الحي أو المدينة أو المحافظة</label>
+    <div class="box"><input id="q" type="search" placeholder="${hint}" enterkeyhint="search"
+      role="combobox" aria-controls="hits" aria-autocomplete="list" aria-expanded="false"><button type="submit">ابحث</button></div>
+    <div class="hits" id="hits" role="listbox" aria-label="نتائج البحث"></div>
+  </form>`;
 const tryLinks = () => {
   const ps = ['الكرادة', 'المنصور', 'البصرة', 'أربيل', 'الموصل'].map(n => S.places.find(p => p.n === n && p.k !== 'village')).filter(Boolean);
   return ps.length ? 'جرب' + ps.map(p => `<a href="${href(p)}">${esc(p.n)}</a>`).join('') : '';
@@ -462,13 +492,13 @@ function barsHTML(rows) {
     `<i style="width:${Math.max(3, r.v / max * 100)}%;background:${speedColour(r.v)}"></i><b>${ar(r.v)}</b>`).join('')}</div>`;
 }
 function rankRows(list, opts = {}) {
-  const max = Math.max(...list.map(p => stat(p).d), 1);
+  const max = Math.max(...list.map(p => stat(p).d), 1), pos0 = opts.pos !== false;
   let pos = 0, prev = null;
-  return `<div class="rank">` + list.map((p, i) => {
+  return `<div class="rank${pos0 ? '' : ' nopos'}"><p class="rank-hd"><span>${opts.head || ''}</span><span>ميغابت في الثانية</span></p>` + list.map((p, i) => {
     const st = stat(p), v = Math.round(st.d);
     if (v !== prev) { pos = i + 1; prev = v; }        // equal numbers on screen share a place
-    const sub = [opts.kind && kindShort(p), nTests(st.t)].filter(Boolean).join('، ');
-    return `<a href="${href(p)}"><span class="pos">${opts.pos === false ? '' : ar(pos)}</span>` +
+    const sub = [opts.kind && kindShort(p), opts.from && kmText(km(p, opts.from)), nTests(st.t)].filter(Boolean).join('، ');
+    return `<a href="${href(p)}">${pos0 ? `<span class="pos">${ar(pos)}</span>` : ''}` +
       `<span class="nm"><b>${esc(p.n)}</b><small>${esc(sub)}</small></span>` +
       `<i class="tr" style="width:${Math.max(3, st.d / max * 100)}%;background:${speedColour(st.d)}"></i>` +
       `<span class="v">${ar(st.d)}</span></a>`;
@@ -489,86 +519,103 @@ function govMapHTML() {
     const g = govById(s.id), st = stat(g);
     return `<a href="#/g/${s.id}" aria-label="${esc(g.n)}${st ? '، ' + ar(st.d) + ' ميغابت' : ''}"><path d="${s.d}" fill="${st ? speedColour(st.d) : '#d6dadf'}"/></a>`;
   }).join('');
-  // the fastest, the two slowest, Baghdad and Basra are named on the map
+  // the fastest, the two slowest, Baghdad and Basra are named; the others carry their number only
   const ranked = S.govs.filter(g => stat(g)).sort((a, b) => stat(b).d - stat(a).d);
   const named = [ranked[0], govById('baghdad'), govById('albasrah'), ranked[ranked.length - 2], ranked[ranked.length - 1]]
     .filter((g, i, a) => g && stat(g) && a.indexOf(g) === i);
-  const tags = named.map(g => {
-    const s = gm.shapes.find(x => x.id === g.id), x = Math.min(Math.max(s.x, 44), gm.w - 44);
-    return `<span class="tag" style="left:${x / gm.w * 100}%;top:${s.y / gm.h * 100}%">${esc(g.n)} ${ar(stat(g).d)}</span>`;
+  const tags = gm.shapes.map(s => {
+    const g = govById(s.id), st = stat(g); if (!st) return '';
+    const name = named.includes(g), x = name ? Math.min(Math.max(s.x, 44), gm.w - 44) : s.x;
+    return `<span class="tag${name ? '' : ' n'}" style="left:${x / gm.w * 100}%;top:${s.y / gm.h * 100}%">${name ? esc(g.n) + ' ' : ''}${ar(st.d)}</span>`;
   }).join('');
   return `<svg viewBox="0 0 ${gm.w} ${gm.h}" role="group" aria-label="محافظات العراق ملونة بمعدل السرعة">${paths}</svg>${tags}`;
 }
 
 function homeHTML() {
-  const c = S.country, st = c[S.mode], h0 = (S.mode === 'f' ? c.h : c.mh || [])[0];
+  const c = S.country, st = c[S.mode], hist = (S.mode === 'f' ? c.h : c.mh) || [];
+  const trend = !hist[0] ? '' : S.mode === 'f' ? `كان المعدل ${ar(hist[0][0])} ميغابت في صيف ٢٠١٩`
+    : `كان معدل الموبايل ${ar(hist[0][0])} ميغابت في صيف ٢٠١٩، و${ar(hist[hist.length - 1][0])} في صيف ٢٠٢٦`;
   return `<div class="cols">
   <h1 class="h1">اعرف سرعة الإنترنت الحقيقية في منطقتك</h1>
   <p class="intro">من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم في كل محافظات العراق.</p>
-  <form class="search" role="search" autocomplete="off">
-    <label for="q" class="vh">اسم الحي أو المدينة أو المحافظة</label>
-    <div class="box"><input id="q" type="search" placeholder="اكتب اسم الحي أو المدينة" enterkeyhint="search"
-      role="combobox" aria-controls="hits" aria-autocomplete="list" aria-expanded="false"><button type="submit">ابحث</button></div>
-    <div class="hits" id="hits" role="listbox" aria-label="نتائج البحث"></div>
-  </form>
+  ${searchHTML('اكتب اسم الحي أو المدينة')}
   <p class="tries">${tryLinks()}</p>
 
   <section class="iraq">
     ${modesHTML()}
     <div class="answer">
-      <p class="label">معدل سرعة التنزيل في العراق</p>
+      <p class="label">معدل سرعة التنزيل في العراق، ${PERIOD[S.mode]}</p>
       <p class="num">${ar(st.d)}<small>ميغابت في الثانية</small></p>
       ${verdictHTML(st.d)}
-      ${h0 ? `<p class="trend">كان المعدل ${ar(h0[0])} ميغابت في صيف ٢٠١٩</p>` : ''}
+      ${bandsHTML(st.d)}
+      ${trend ? `<p class="trend">${trend}</p>` : ''}
     </div>
   </section>
 
   <section class="side">
     <h2>المحافظات على الخريطة</h2>
-    <p class="small">كل محافظة بلون معدل السرعة فيها. اضغط على محافظة لترى مدنها وأحياءها.</p>
+    <p class="small">اضغط على محافظة لترى مدنها وأحياءها.</p>
     <div class="govmap">${govMapHTML()}</div>
-    ${keyHTML()}
     <a class="more" href="#/govs">كل المحافظات من الأسرع إلى الأبطأ</a>
   </section>
+
+  <section>
+    <h2>${KIND[S.mode]} في العراق منذ ٢٠١٩</h2>
+    <p class="small">معدل سرعة التنزيل في صيف كل سنة، من تموز إلى أيلول، بالميغابت.</p>
+    ${yearsHTML(hist)}
+  </section>
   </div>
-  ${foot}`;
+  ${foot()}`;
 }
 
 function govsHTML() {
   const govs = S.govs.filter(g => stat(g)).sort((a, b) => stat(b).d - stat(a).d);
-  return `
+  return `<div class="cols">
   <h1 class="h1">المحافظات من الأسرع إلى الأبطأ</h1>
-  <p class="intro">معدل سرعة التنزيل في كل محافظة، وتحت كل اسم عدد الاختبارات. اضغط على محافظة لترى مدنها وأحياءها.</p>
+  <p class="intro">معدل سرعة تنزيل ${KIND[S.mode]} في كل محافظة، ${PERIOD[S.mode]}، وتحت كل اسم عدد الاختبارات. اضغط على محافظة لترى مدنها وأحياءها.</p>
   ${modesHTML()}
-  ${rankRows(govs)}
+  ${rankRows(govs, { head: 'المحافظة' })}
   <p class="note">حدود المحافظات من مكتب الأمم المتحدة لتنسيق الشؤون الإنسانية، وفيها حلبجة ما تزال ضمن السليمانية.</p>
-  ${foot}`;
+  <section class="side">
+    <div class="govmap">${govMapHTML()}</div>
+  </section>
+  </div>
+  ${foot()}`;
 }
 
-function placeHTML(p) {
+function placeHTML(p, geom) {
   const isGov = p.k === 'gov', g = isGov ? null : govById(p.g);
   const st = stat(p), gs = g && stat(g), cs = stat(S.country);
   let head;
   if (st) {
+    const few = st.t < FEW_TESTS;
     const rows = [{ n: p.n, v: st.d, me: true }];
     if (gs) rows.push({ n: g.n === p.n ? `محافظة ${g.n}` : g.n, v: gs.d });
     rows.push({ n: 'العراق', v: cs.d });
-    let line;
+    let line = '';
     if (isGov) {
-      const ranked = S.govs.filter(x => stat(x)).sort((a, b) => stat(b).d - stat(a).d), order = ranked.indexOf(p);
-      // a place in the order means little when a neighbour is within 5%
-      const close = [ranked[order - 1], ranked[order + 1]].filter(x => x && Math.abs(stat(x).d - st.d) / st.d < 0.05);
-      line = `تأتي ${ORDINAL[order]} بين ${ar(S.govs.length)} محافظة` + (close.length ? `، بفارق صغير عن ${close.map(x => x.n).join(' و')}.` : '.');
-    } else {
-      line = `أسرع من ${ar(percentile(st.d))}٪ من مناطق العراق المقاسة.`;
-    }
+      const ranked = S.govs.filter(x => stat(x)).sort((a, b) => stat(b).d - stat(a).d), r = x => Math.round(stat(x).d);
+      const pos = ranked.findIndex(x => r(x) === r(p)), order = ranked.indexOf(p), N = ar(S.govs.length);
+      const ties = ranked.filter(x => x !== p && r(x) === r(p));
+      if (ties.length) line = `تتساوى مع ${ties.map(x => x.n).join(' و')} في المرتبة ${ORDINAL[pos]} بين ${N} محافظة.`;
+      else {
+        // a place in the order means little when a neighbour is within 5%, so the page names it
+        const near = x => x && Math.abs(stat(x).d - st.d) / st.d < 0.05;
+        const bits = [];
+        if (near(ranked[order - 1])) bits.push(`قبلها ${ranked[order - 1].n} (${ar(stat(ranked[order - 1]).d)})`);
+        if (near(ranked[order + 1])) bits.push(`${bits.length ? 'و' : ''}بعدها ${ranked[order + 1].n} (${ar(stat(ranked[order + 1]).d)})`);
+        line = `تأتي ${ORDINAL[order]} بين ${N} محافظة` + (bits.length ? `، ${bits.join(' ')} بفارق صغير.` : '.');
+      }
+    } else if (!few) line = standing(st.d);
     head = `
     <div class="answer">
-      <p class="label">معدل سرعة التنزيل</p>
-      <p class="num">${ar(st.d)}<small>ميغابت في الثانية</small></p>
+      <p class="label">معدل سرعة التنزيل، ${PERIOD[S.mode]}</p>
+      <p class="num${few ? ' rough' : ''}">${ar(st.d)}<small>ميغابت في الثانية</small></p>
+      <p class="tests">${few ? `من ${nTests(st.t)} فقط، فالرقم تقريبي` : `من ${nTests(st.t)}`}</p>
       ${verdictHTML(st.d)}
+      ${bandsHTML(st.d)}
     </div>
-    <section class="compare"><p class="label">مقارنة بالمعدل</p>${barsHTML(rows)}<p>${line}</p></section>`;
+    <section class="compare"><p class="label">مقارنة بالمعدل</p>${barsHTML(rows)}${line ? `<p>${line}</p>` : ''}</section>`;
   } else {
     const ref = gs || cs;
     head = `
@@ -584,67 +631,75 @@ function placeHTML(p) {
       <tr><td>سرعة الرفع<small>ميغابت في الثانية</small></td><td>${cell(fsF, 'u')}</td><td>${cell(fsM, 'u')}</td></tr>
       <tr><td>البنغ<small>ملي ثانية، والأقل أفضل</small></td><td>${cell(fsF, 'l')}</td><td>${cell(fsM, 'l')}</td></tr>
       <tr><td>عدد الاختبارات</td><td>${cell(fsF, 't')}</td><td>${cell(fsM, 't')}</td></tr>
-    </table>
-    <p class="note">البيت من تموز إلى أيلول ٢٠٢٦، والموبايل من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦. لا أعرض رقما من أقل من ${ar(MIN_TESTS)} اختبارات.</p>`;
+    </table>`;
 
-  let list = '';
+  // the areas inside this one, then the ones around it, with how far each is
+  let lists = '';
   if (isGov) {
     const inGov = S.places.filter(x => x.g === p.id && stat(x)).sort((a, b) => stat(b).t - stat(a).t).slice(0, 20)
       .sort((a, b) => stat(b).d - stat(a).d);
-    if (inGov.length) list = `<section><h2>مدن وأحياء في المحافظة</h2><p class="small">أكثر عشرين منطقة فيها اختبارات، من الأسرع إلى الأبطأ.</p>${rankRows(inGov, { kind: true })}</section>`;
+    if (inGov.length) lists = `<section><h2>مدن وأحياء في المحافظة</h2><p class="small">أكثر عشرين منطقة فيها اختبارات، من الأسرع إلى الأبطأ.</p>${rankRows(inGov, { kind: true, head: 'المنطقة' })}</section>`;
   } else {
-    const near = S.places.filter(x => x !== p && x.g === p.g && stat(x))
-      .map(x => [Math.hypot((x.x - p.x) * 0.84, x.y - p.y), x]).sort((a, b) => a[0] - b[0]).slice(0, 8).map(a => a[1])
+    const others = S.places.filter(x => x !== p && x.g === p.g && stat(x));
+    const within = geom ? others.filter(x => inside(geom, x.x, x.y)) : [];
+    const inner = within.sort((a, b) => stat(b).t - stat(a).t).slice(0, 12).sort((a, b) => stat(b).d - stat(a).d);
+    const around = others.filter(x => !within.includes(x)).map(x => [km(x, p), x]).sort((a, b) => a[0] - b[0]).slice(0, 8).map(a => a[1])
       .sort((a, b) => stat(b).d - stat(a).d);
-    if (near.length) list = `<section><h2>مناطق قريبة</h2>${rankRows(near, { kind: true, pos: false })}</section>`;
+    if (inner.length) lists += `<section><h2>أحياء داخل ${esc(p.n)}</h2>${rankRows(inner, { kind: true, pos: false, head: 'الحي' })}</section>`;
+    if (around.length) lists += `<section><h2>مناطق قريبة</h2>${rankRows(around, { kind: true, pos: false, from: p, head: 'المنطقة' })}</section>`;
   }
+  const kindWord = p.k === 'city' ? 'المدينة' : p.k === 'town' ? 'البلدة' : p.k === 'village' || p.k === 'hamlet' ? 'القرية' : 'الحي';
   const how = isGov ? 'حسبت المعدل من كل المربعات التي يقع مركزها داخل حدود المحافظة.'
-    : p.r ? `حسبت المعدل من المربعات التي تقع ضمن ${arDigits(String(p.r).replace('.', '٫'))} كم من مركز ${p.k === 'city' ? 'المدينة' : p.k === 'town' ? 'البلدة' : p.k === 'village' || p.k === 'hamlet' ? 'القرية' : 'الحي'}، لأن OpenStreetMap لا يرسم حدودها.`
+    : p.r ? `حسبت المعدل من المربعات التي تقع ضمن ${kmText(p.r)} من مركز ${kindWord}، لأن OpenStreetMap لا يرسم حدودها.`
     : 'حسبت المعدل من المربعات التي يقع مركزها داخل حدودها كما يرسمها OpenStreetMap.';
+  const cap = isGov ? 'كل نقطة مربع عرضه نحو نصف كيلومتر بلون سرعة الإنترنت فيه، والباهتة فيها اختبارات قليلة، والمحافظة داخل الخط الأسود.'
+    : `كل شارع بلون سرعة الإنترنت في المربع الذي يمر فيه، والباهت فيه اختبارات قليلة، ${p.r ? `والدائرة السوداء على بعد ${kmText(p.r)} من مركز ${kindWord}.` : `و${esc(p.n)} داخل الخط الأسود.`}`;
 
+  const mapSec = `<section class="side">
+    <h2>${esc(p.n)} على الخريطة</h2>
+    <div class="plate"></div>
+    ${bandsHTML(null)}${noDataHTML()}
+    <p class="cap">${cap}</p>
+    <button type="button" class="more" id="fullbtn">افتح الخريطة كاملة</button>
+  </section>`;
+  const rest = `<section><h2>البيت والموبايل</h2>${table}</section>
+  <section><h2>إنترنت البيت منذ ٢٠١٩</h2><p class="small">معدل سرعة التنزيل في صيف كل سنة، من تموز إلى أيلول، بالميغابت.</p>${yearsHTML(p.h || [])}</section>`;
   return `<div class="cols">
   <p class="crumb"><a href="#/">العراق</a>${g ? `<span>‹</span><a href="${href(g)}">${esc(g.n)}</a>` : ''}</p>
   <h1 class="h1 area">${esc(p.n)}</h1>
   <p class="kind">${esc(kindLine(p))}</p>
   ${modesHTML()}
   ${head}
-  <section class="side">
-    <h2>${esc(p.n)} على الخريطة</h2>
-    <div class="plate"></div>
-    <button type="button" class="plate-open" id="fullbtn">افتح الخريطة كاملة</button>
-    <p class="cap">كل شارع بلون سرعة الإنترنت في المربع الذي يمر فيه، و${isGov ? 'المحافظة' : esc(p.n)} داخل الخط الأسود.</p>
-    ${keyHTML()}
-  </section>
-  <section><h2>البيت والموبايل</h2>${table}</section>
-  <section><h2>إنترنت البيت منذ ٢٠١٩</h2><p class="small">معدل سرعة التنزيل في صيف كل سنة، من تموز إلى أيلول، بالميغابت.</p>${yearsHTML(p.h || [])}</section>
-  ${list}
-  <section><h2>كيف حسبت هذا الرقم</h2><p class="note">${how} الاختبارات أجراها أشخاص بأنفسهم على تطبيق Speedtest، فهي لا تقيس كل بيت.</p></section>
+  ${isGov ? lists + mapSec + rest : mapSec + rest + lists}
+  <section><h2>كيف حسبت هذا الرقم</h2><p class="note">${how} الاختبارات أجراها أشخاص بأنفسهم على تطبيق Speedtest، فهي لا تقيس كل بيت. أرقام البيت من تموز إلى أيلول ٢٠٢٦، وأرقام الموبايل من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦ لأن اختباراتها أقل بكثير. لا أعرض رقما من أقل من ${ar(MIN_TESTS)} اختبارات، وأقول عن الرقم إنه تقريبي حين تكون اختباراته أقل من ${ar(FEW_TESTS)}.</p></section>
+  ${searchHTML('اكتب اسم الحي أو المدينة', 'ابحث عن منطقة أخرى')}
   </div>
-  ${foot}`;
+  ${foot()}`;
 }
 
 function aboutHTML() {
   return `
   <article class="prose">
     <h1 class="h1">عن هذا الموقع</h1>
-    <p>صنعت هذا الموقع لأعرف سرعة الإنترنت الحقيقية في كل منطقة من العراق، من بيانات مفتوحة يستطيع أي شخص أن يتحقق منها. تكتب اسم منطقتك فيظهر معدل سرعتها ومقارنتها بمحافظتها وبالعراق، وكيف تغيرت منذ صيف ٢٠١٩.</p>
+    <p>صنعت هذا الموقع ليعرف أي شخص في العراق سرعة الإنترنت الحقيقية في منطقته، من بيانات مفتوحة يمكن التحقق منها. تكتب اسم منطقتك فيظهر معدل سرعتها ومقارنتها بمحافظتها وبالعراق، وكيف تغيرت منذ صيف ٢٠١٩.</p>
     <h2>من أين جاءت السرعات</h2>
     <p>من بيانات Ookla المفتوحة، الشركة التي تملك تطبيق Speedtest. تقسم Ookla الأرض إلى مربعات عرض كل منها نحو نصف كيلومتر، وتنشر لكل مربع معدل سرعة التنزيل والرفع والبنغ وعدد الاختبارات. في العراق ${ar(S.country.f.q)} مربعا فيها اختبارات على الإنترنت الثابت بين تموز وأيلول ٢٠٢٦، وأكثر من مليون اختبار.</p>
     <p>رقم كل حي أو مدينة هو معدل مربعاته، موزونا بعدد الاختبارات في كل مربع. أرقام الموبايل تجمع سنة كاملة، من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦، لأن اختباراتها أقل بكثير. لا أعرض رقما لأي منطقة فيها أقل من ${ar(MIN_TESTS)} اختبارات.</p>
     <h2>ماذا تعني الكلمة تحت الرقم</h2>
-    <p>أصف كل سرعة بما تكفي له في البيت، على أساس ما توصي به Netflix، وهو ٥ ميغابت لكل شاشة تعرض فيديو HD و١٥ ميغابت لكل شاشة تعرض 4K. أقل من ١٠ ميغابت بطيء، ومن ١٠ إلى ٢٥ مقبول، ومن ٢٥ إلى ٥٠ متوسط، ومن ٥٠ إلى ١٠٠ جيد، وما فوق ١٠٠ سريع جدا.</p>
+    <p>أصف كل سرعة بما تكفي له في البيت، على أساس ما توصي به Netflix، وهو ٥ ميغابت لكل شاشة تعرض فيديو HD و١٥ ميغابت لكل شاشة تعرض 4K. أقل من ١٠ ميغابت بطيء، ومن ١٠ إلى ٢٥ مقبول، ومن ٢٥ إلى ٥٠ متوسط، ومن ٥٠ إلى ١٠٠ جيد، وما فوق ١٠٠ سريع جدا. وعلى الموبايل أقول ما تكفي له السرعة على شاشة هاتف واحد. ولكل كلمة لون واحد في الموقع كله وعلى الخرائط.</p>
+    ${bandsHTML(null)}
     <h2>حدود هذه الأرقام</h2>
     <p>الاختبارات أجراها أشخاص اختاروا أن يقيسوا سرعتهم، فهي لا تقيس كل بيت ولا كل شارع، واختبارات البيوت تشمل الهواتف المتصلة بشبكة البيت. عدد الاختبارات زاد نحو مرتين ونصف بين صيف ٢٠٢٥ وصيف ٢٠٢٦، وهذا يغير من تقيسهم الأرقام.</p>
     <p>لا أقارن بين شركات الإنترنت. البيانات المفتوحة لا تذكر الشركة، والمصدر الآخر الذي يذكرها (M-Lab) يقيس العراق إلى خوادم خارج العراق يتأخر الرد منها ١١٠ إلى ١٦٠ ملي ثانية، فتخرج أرقامه أقل بكثير من الواقع.</p>
     <h2>الخرائط</h2>
     <p>الشوارع والأنهار والأحياء من OpenStreetMap، وحدود المحافظات من مكتب الأمم المتحدة لتنسيق الشؤون الإنسانية (OCHA)، وفيها حلبجة ما تزال ضمن محافظة السليمانية.</p>
     <h2>من صنعه</h2>
-    <p>الفكرة والتصميم لعلي، انستغرام <bdi dir="ltr">@allawi.psd</bdi></p>
+    <p>الفكرة والتصميم لعلي، إنستغرام <bdi dir="ltr">@allawi.psd</bdi></p>
     <h2>المصادر والرخص</h2>
     <p class="src">Speedtest<span class="reg">®</span> by Ookla<span class="reg">®</span> Global Fixed and Mobile Network Performance Maps. Based on analysis by Ookla of Speedtest Intelligence<span class="reg">®</span> data for Q4 2025 to Q3 2026, and Q3 of each year from 2019. Provided by Ookla and accessed 23 October 2026. Licensed CC BY-NC-SA 4.0; Ookla trademarks used under license.</p>
     <p class="src">Map data © OpenStreetMap contributors, ODbL, through the Humanitarian OpenStreetMap Team exports. Rivers: Natural Earth. Governorates: OCHA, Iraq Subnational Administrative Boundaries (COD-AB), CC BY-IGO. Type: Rubik (SIL OFL). Map rendering: MapLibre GL JS and PMTiles (BSD-3-Clause).</p>
   </article>
-  ${foot}`;
+  ${foot(false)}`;
 }
 
 // ---------- routing: kept in the page, mirrored into the address where the browser allows it ----------
@@ -668,7 +723,7 @@ function fromAddress() {
   const h = location.hash.startsWith('#/') ? location.hash : '#/';
   if (h !== route) { route = h; render(true); }
 }
-addEventListener('popstate', fromAddress);
+addEventListener('popstate', () => { if (full) { pushedFull = false; closeFull(); return; } fromAddress(); });
 addEventListener('hashchange', fromAddress);
 
 let lastRoute = '';
@@ -681,14 +736,17 @@ async function render(move = true) {
     a.classList.toggle('on', on);
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
+  if (full) closeFull();
   const keepScroll = !move || lastRoute === h, y = scrollY;
-  let p = null;
+  let p = null, geom = null;
   if (view === 'place') {
     await placesReady;                    // an area needs its neighbours, a governorate its areas
     const id = h.slice(3);
     p = h.startsWith('/g/') ? govById(id) : S.byId.get(id);
     if (!p) { route = '#/'; return render(true); }
-    page.innerHTML = placeHTML(p);
+    geom = await areaOf(p).catch(() => null);
+    page.innerHTML = placeHTML(p, geom);
+    wireSearch();
     document.title = `${p.n}، سرعة الإنترنت`;
   } else if (view === 'govs') { page.innerHTML = govsHTML(); document.title = 'المحافظات، سرعة الإنترنت في العراق'; }
   else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن موقع سرعة الإنترنت في العراق'; }
@@ -701,7 +759,6 @@ async function render(move = true) {
   wrap.querySelector('[data-act="all"]').textContent = p.k === 'gov' ? 'المحافظة كلها' : 'المنطقة كلها';
   if (lastRoute !== h || !S.focus) {
     hideReadout();
-    const geom = await areaOf(p);
     if (geom) setFocus(p, geom);
     else { clearFocus(); S.focusBounds = [[p.x - 0.02, p.y - 0.02], [p.x + 0.02, p.y + 0.02]]; }
   }

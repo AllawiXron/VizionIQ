@@ -26,6 +26,10 @@ DIGITS = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
 # a bigger place wins a shared name: a village called الفلوجه must not hide the city of Fallujah
 RANK = {'city': 0, 'town': 1, 'suburb': 2, 'quarter': 2, 'neighbourhood': 3, 'area': 3, 'village': 4, 'hamlet': 5}
 # OSM entries tagged as places that are really buildings or institutions
+# spellings people type that OSM does not carry, and an alias that sends a search to the wrong place
+EXTRA_NAMES = {'الكرادة': ['كرادة داخل', 'كرادة خارج']}
+DROP_NAMES = {'نهر العشار'}
+KURDISH_LETTERS = re.compile('[ەێۆڵڕڤ]')
 JUNK = re.compile(r'^(برج|جامعة|كلية|مدرسة|مستشفى|مسجد|جامع|محطة|شركة|معمل|مصفى)\s|/')
 
 
@@ -105,7 +109,7 @@ class Index:
 
 
 def circle(lon, lat, km):
-    return Polygon([(lon + km / (111.32 * COS) * math.cos(a), lat + km / 111.32 * math.sin(a)) for a in np.linspace(0, 2 * math.pi, 33)])
+    return Polygon([(lon + km / (111.32 * COS) * math.cos(a), lat + km / 111.32 * math.sin(a)) for a in np.linspace(0, 2 * math.pi, 65)])
 
 
 def main():
@@ -190,6 +194,28 @@ def main():
             towns_in.append((cd['name'], prep(area)))
         places.append(place)
 
+    # OSM often maps one place twice (حطين and حي حطين, an Arabic and a Kurdish spelling); the same squares and the same
+    # numbers within 300 m are one place, named in Arabic where there is a choice, with the other name kept for search
+    groups, kept = {}, []
+    for p in places:
+        s0 = p['f'] or p['m']
+        k = (p['g'], s0['d'], s0['t'], s0['q'])
+        twin = next((o for o in groups.get(k, []) if abs(o['x'] - p['x']) < 0.0035 and abs(o['y'] - p['y']) < 0.003), None)
+        if not twin:
+            groups.setdefault(k, []).append(p); kept.append(p); continue
+        if KURDISH_LETTERS.search(twin['n']) and not KURDISH_LETTERS.search(p['n']):
+            twin['n'], p['n'] = p['n'], twin['n']
+        twin['a'] = sorted(set(twin.get('a', []) + [p['n']] + p.get('a', [])) - {twin['n']})
+    print(len(places) - len(kept), 'places merged into their twins')
+    places = kept
+    for p in places:
+        extra = EXTRA_NAMES.get(p['n'], []) if p['k'] != 'village' else []
+        names = [n for n in p.get('a', []) + extra if n not in DROP_NAMES and n != p['n']]
+        if names:
+            p['a'] = sorted(set(names))
+        else:
+            p.pop('a', None)
+
     # the town or city each neighbourhood and village belongs to, for the second line under its name
     towns = [p for p in places if p['k'] in ('city', 'town')]
     tt = STRtree([Point(p['x'], p['y']) for p in towns])
@@ -222,7 +248,9 @@ def main():
     # outlines, one file per governorate, loaded when a place there is opened
     by_gov = {}
     for p in places:
-        a = p.pop('_area').simplify(0.0003, preserve_topology=True)
+        a = p.pop('_area')
+        if not p['r']:                       # outlines are simplified; circles keep their round shape
+            a = a.simplify(0.0003, preserve_topology=True)
         by_gov.setdefault(p['g'], {})[p['id']] = json.loads(json.dumps(mapping(a)), parse_float=lambda v: round(float(v), 5))
     for (name, g) in govs:
         by_gov.setdefault(GOV_SLUG[name], {})[GOV_SLUG[name]] = json.loads(json.dumps(mapping(g.simplify(0.003))), parse_float=lambda v: round(float(v), 4))
