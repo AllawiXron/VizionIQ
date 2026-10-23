@@ -48,6 +48,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   first": a light page in Rubik, search then the area's number with a plain verdict, governorates on their own tab
   (stills in `marketing/iraq-internet-map/redesign/`). The user approved the stills and asked to leave the exam-day
   internet cuts out of the site, since the ministry orders them (23 Oct).
+- Reels for the minister and the public (23 Oct): the 15 s, 120 BPM showreel for the Iraq internet map
+  (`marketing/iraq-speed-reel`) was "too rushed, not well explained, badly made". Slow down: one idea per scene, every
+  sentence on screen long enough to read twice, the real site shown (a screen recording) instead of abstract morphs,
+  and plain words that say what the site is and why it matters.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat

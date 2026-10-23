@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>three frames</title>
+<style>
+@font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; }
+@font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; }
+@font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; }
+* { box-sizing: border-box; } body { margin: 0; background: #8b939a; font-family: Rubik; color: #14202b; }
+.row { display: flex; gap: 60px; padding: 60px; }
+.f { position: relative; width: 1080px; height: 1920px; background: #fff; overflow: hidden; }
+p { margin: 0; }
+.big { position: absolute; right: 90px; left: 90px; font-weight: 800; line-height: 1.22; }
+.small { position: absolute; right: 90px; font-weight: 700; }
+.phone { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 64px; border: 16px solid #14202b; overflow: hidden; background: #fff;
+         box-shadow: 0 40px 80px rgba(20,32,43,.18); }
+.phone img { display: block; width: 100%; }
+.bars { position: absolute; left: 110px; right: 110px; bottom: 380px; height: 640px; display: flex; flex-direction: row; align-items: flex-end; gap: 30px; }
+.bars div { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 14px; }
+.bars i { width: 100%; background: #fff; border-radius: 4px; }
+.bars span { color: rgba(255,255,255,.8); font-size: 30px; font-weight: 500; }
+</style></head><body><div class="row">
+
+<div class="f" id="a">
+  <p class="big" style="top:520px;font-size:104px">سويت موقع يبين سرعة الإنترنت الحقيقية بكل منطقة بالعراق</p>
+  <div style="position:absolute;right:90px;top:1130px;width:900px;height:8px;background:#14202b;border-radius:4px"></div>
+  <p class="small" style="top:1180px;font-size:52px;color:#12795a">سرعة الإنترنت في العراق</p>
+</div>
+
+<div class="f" id="b">
+  <p class="big" style="top:250px;font-size:92px">تكتب اسم منطقتك</p>
+  <p class="small" style="top:385px;font-size:44px;font-weight:500;color:#46525e">بأي جهاز، من المتصفح</p>
+  <div class="phone" style="top:520px;width:640px;height:1300px"><img src="site-search.png"></div>
+</div>
+
+<div class="f" id="c" style="background:#12795a;color:#fff">
+  <p class="small" style="top:300px;font-size:58px">معدل سرعة الإنترنت بالعراق</p>
+  <p class="big" style="top:400px;font-size:120px">من ١٧ ميغابت<br>إلى ٦٢</p>
+  <p class="small" style="top:720px;font-size:46px;font-weight:500;color:rgba(255,255,255,.85)">صيف ٢٠١٩ وصيف ٢٠٢٦، من اختبارات الناس</p>
+  <div class="bars" id="bars"></div>
+</div>
+
+</div>
+<script>
+const ys=[17.1,23.9,27.0,25.7,36.3,44.1,46.3,61.9];
+const ar=n=>String(n).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+document.getElementById('bars').innerHTML=ys.map((v,i)=>`<div><i style="height:${v/61.9*560}px;opacity:${i===0||i===7?1:.55}"></i><span>${ar(2019+i)}</span></div>`).join('');
+</script>
+</body></html>
