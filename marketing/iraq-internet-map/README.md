@@ -12,7 +12,9 @@ A static site, no build step: `site/index.html`, `app.js`, `app.css`, data in `s
 PMTiles files by zoom (`site/tiles/iraq-a.pmtiles` z4 to 11, `iraq-b` z12, `iraq-c` z13, 34.7 MB together, each under
 15 MB) and `site/tiles/ground.jpg`. The page reads a tile file in pieces where the host answers range requests and
 fetches it whole where it does not, and keeps its own page routing so it also works inside a frame. MapLibre GL JS 4.7.1 and
-PMTiles 3.2.1 are kept in `site/vendor/` with their licences, so nothing loads from outside.
+PMTiles 3.2.1 are kept in `site/vendor/` with their licences, so nothing loads from outside. The first page needs only
+`govs.json`, `country.json` and `exams.json` (21 KB); the map libraries and the 4,300 areas in `places.json` load after it
+is on screen, and area pages wait for them.
 
 The page reads top to bottom in plain sentences (rebuilt 23 Oct after the user found the first version confusing:
 no colour key, numbers without labels, text floating over the map):
@@ -28,6 +30,13 @@ no colour key, numbers without labels, text floating over the map):
   for its speed and test count. No area shows a number from fewer than 10 tests.
 - Kufi headings set their digits in Markazi; numbers never sit next to each other across a comma (Arabic bidi
   joins them into one number).
+- Ranked lists give the test count under every name, and equal numbers share a place. A governorate's place in the
+  order says when a neighbour is within 5%.
+
+Test it before showing anyone: `NODE_PATH=/opt/node-tools/node_modules node build/check.cjs --out <dir>` drives every
+page and interaction at phone, tablet and desktop sizes and on slow 4G, with screenshots and automatic layout and
+Arabic checks. Then look at every screenshot as an Iraqi on a phone, as the minister, as a designer, as someone checking
+the numbers against `site/data/`, and for contrast and tap sizes.
 
 Rebuild everything, in order: `python3 data/fetch.py` (boundaries, IODA, base layers), `python3 build/ookla_years.py`,
 `python3 build/osm_places.py`, `python3 build/places.py`, `python3 build/exams.py`, `python3 build/tiles.py`,
@@ -50,7 +59,8 @@ it stays separate from the viZion site.
    17 in summer 2019.
 2. **A neighbourhood** (`still-2-karrada.png`): Baghdad's real streets (OpenStreetMap) glowing with the speed of the
    square each street sits in; Karrada at full light, the rest of the city held down. Karrada 87 Mbps from 4,678
-   tests (16 in summer 2019), Baghdad 70, Iraq 62.
+   tests (16 in summer 2019), Baghdad 70, Iraq 62. (The still used the older geoBoundaries governorates; with OCHA's
+   the site gives Baghdad 67.)
 3. **Exam mornings** (`still-3-exams.png`): one line of light per exam morning from 04:00 to 10:00, right to left,
    dimming when Iraqi networks stop answering IODA's probes. 2025: 32 mornings, 06:00 to 08:00 each time. 2026: 34
    mornings, an hour and a half until July, then 40 minutes from 26 Aug. Written neutrally, dates and minutes only.
@@ -76,8 +86,9 @@ Rebuild: `python3 data/fetch.py` (data and base layers), `python3 stills/maps.py
   have 10+ tests. Dense enough for neighbourhoods in the cities; small towns (Ramadi, Rutba, Mosul old city) are thin
   and should show as one number per town.
 - **Ookla mobile:** 78,000 tests, only 1,632 squares with 10+ tests. Governorate or city level only.
-- **Fastest and slowest governorates (fixed):** Sulaymaniyah 90.6 Mbps, Basra 71.5, Baghdad 69.8 ... Diyala 38.5,
-  Anbar 30.5.
+- **Fastest and slowest governorates (fixed, OCHA boundaries):** Sulaymaniyah 89.3 Mbps, Basra 71.5, Baghdad 67.1
+  (438,000 tests), Erbil 65.3 ... Anbar 31.5, Diyala 30.3. geoBoundaries' Baghdad covered only 912 km² of the city, which
+  put Dora, Saydiya and Zafaraniya outside it; OCHA's is the whole governorate.
 - **Trend, third quarter:** fixed 17.1 (2019) to 61.9 Mbps (2026); mobile 10.5 to 62.8. The tests also jumped from
   425,000 to 1.07 million in a year, which changes who is measured.
 - **M-Lab:** not used. Its public statistics stop at December 2024, Iraqi tests travel 110 to 160 ms to servers in
@@ -98,8 +109,9 @@ Rebuild: `python3 data/fetch.py` (data and base layers), `python3 stills/maps.py
 - OpenStreetMap contributors, ODbL: roads and water through the HOT export on HDX (7 Oct 2026), places and
   Karrada's boundary through Nominatim.
 - NASA GIBS: ASTER GDEM shaded relief and VIIRS Black Marble (only the neighbours' faint lights are used).
-- Natural Earth (public domain): Iraq's outline and the rivers. geoBoundaries IRQ ADM1: governorates (Halabja is
-  still inside Sulaymaniyah there; a newer boundary is needed).
+- Natural Earth (public domain): Iraq's outline and the rivers.
+- OCHA, Iraq Subnational Administrative Boundaries (COD-AB) on HDX, CC BY-IGO: the governorates (Halabja is still
+  inside Sulaymaniyah there).
 
 ## Still to do
 

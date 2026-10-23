@@ -1,6 +1,6 @@
 # One-file version of the site for a host that takes a page body plus published files, allows scripts only from
 # public CDNs and serves no binary files: the CSS, fonts and app script go inline, MapLibre and PMTiles load from
-# cdnjs and jsDelivr (the same files as site/vendor/), and the tiles go as base64 text parts of at most 15 MB.
+# cdnjs and jsDelivr after the first page is drawn (the same files as site/vendor/), and the tiles go as base64 text parts of at most 15 MB.
 # python3 build/artifact.py <out dir>  ->  <out dir>/iraq-internet-map.html and <out dir>/tiles/*.txt
 import base64, json, os, re, sys
 from pmtiles.reader import Reader, MmapSource, all_tiles
@@ -79,8 +79,8 @@ def main(out_dir):
             '<style>', mlcss, css, 'html { direction: rtl; }', '</style>',
             "<script>document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl';</script>",
             body.strip()]
-    page += [f'<script src="{u}"></script>' for u in CDN]
-    page += ['<script>window.TILE_PARTS = ' + json.dumps(parts) + ';</script>', '<script>', app, '</script>']
+    page += ['<script>window.MAP_LIBS = ' + json.dumps(CDN) + '; window.TILE_PARTS = ' + json.dumps(parts) + ';</script>',
+             '<script>', app, '</script>']
     out = os.path.join(out_dir, 'iraq-internet-map.html')
     open(out, 'w', encoding='utf-8').write('\n'.join(page) + '\n')
     print(out, round(os.path.getsize(out) / 1e3), 'KB')

@@ -202,22 +202,26 @@ function pageChecks() {
     await ctx.close();
   }
 
-  // slow 4G on a phone: how long until the country map has its first lights
+  // slow 4G on a phone: how long until the page has its text, then the map and the area names
   if (!process.argv.includes('--fast')) {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
     const page = await ctx.newPage();
     const cdp = await ctx.newCDPSession(page);
     await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: 1.6e6 / 8, uploadThroughput: 0.75e6 / 8 });
     let bytes = 0;
-    page.on('response', async r => { bytes += +(r.headers()['content-length'] || 0); });
+    page.on('requestfinished', async r => { const z = await r.sizes().catch(() => null); if (z) bytes += z.responseBodySize + z.responseHeadersSize; });
     const t0 = Date.now();
     await page.goto(base + '#/');
+    await page.waitForFunction(() => document.body.dataset.text === '1', null, { timeout: 120000 }).catch(() => {});
+    const text = Date.now() - t0;
+    const f0 = path.join(OUT, 'slow4g-text.png');
+    await page.screenshot({ path: f0 });
     await page.waitForFunction(() => document.body.dataset.ready === '1', null, { timeout: 120000 }).catch(() => {});
     const ready = Date.now() - t0;
     await page.waitForTimeout(8000);
     const f = path.join(OUT, 'slow4g-home.png');
     await page.screenshot({ path: f });
-    report.slow4g = { readyMs: ready, bytesAfter8s: bytes, shot: f };
+    report.slow4g = { textMs: text, readyMs: ready, bytesAfter8s: bytes, shots: [f0, f] };
     await ctx.close();
   }
 
@@ -235,6 +239,6 @@ function pageChecks() {
     if (R.errors.length) console.log('  console errors:', R.errors.slice(0, 5).join(' | '));
     if (R.failed.length) console.log('  failed requests:', R.failed.slice(0, 5).join(' | '));
   }
-  if (report.slow4g) console.log(`\n== slow 4G phone: ready in ${report.slow4g.readyMs} ms, ${(report.slow4g.bytesAfter8s / 1e6).toFixed(1)} MB in the first 8 s after ready`);
+  if (report.slow4g) console.log(`\n== slow 4G phone: text in ${report.slow4g.textMs} ms, map and areas ready in ${report.slow4g.readyMs} ms, ${(report.slow4g.bytesAfter8s / 1e6).toFixed(1)} MB by 8 s after ready`);
   console.log(`\nreport and screenshots: ${OUT}`);
 })();

@@ -1,8 +1,8 @@
 # Rebuilds data/ and base/ from the public sources.
 # python3 data/fetch.py   (pip install duckdb shapely pyshp; base/ is large and stays out of git)
-import json, os, subprocess, time, urllib.parse, datetime as dt
+import json, os, subprocess, time, urllib.parse, zipfile, datetime as dt
 import duckdb
-from shapely.geometry import shape, Point
+from shapely.geometry import shape, mapping, Point
 from shapely.ops import unary_union
 from shapely.prepared import prep
 from shapely.strtree import STRtree
@@ -16,6 +16,10 @@ GIBS = ('https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&R
         '&LAYERS={layer}&SRS=EPSG:4326&BBOX={bbox}&WIDTH={w}&HEIGHT={h}&FORMAT=image/png&STYLES=')
 HOT = 'https://production-raw-data-api.s3.amazonaws.com/ISO3/IRQ/_layers/osm/{layer}.parquet'
 UA = 'iraq-internet-map/0.1 (vizioniraq@gmail.com)'
+OCHA_NAMES = {'Al-Anbar': 'Al-Anbar', 'Al-Basrah': 'Al-Basrah', 'Al-Muthanna': 'Al-Muthanna', 'Al-Najaf': 'An-Najaf',
+              'Al-Qadissiya': 'Al-Qadisiyah', 'Al-Sulaymaniyah': 'Al-Sulaimaniyah', 'Babil': 'Babil', 'Baghdad': 'Baghdad', 'Diyala': 'Diyala',
+              'Duhok': 'Dohuk', 'Erbil': 'Erbil', 'Kerbala': 'Karbala', 'Kirkuk': 'Kirkuk', 'Maysan': 'Maysan', 'Ninewa': 'Ninawa',
+              'Salah Al-Din': 'Salah al-Din', 'Thi Qar': 'Dhi Qar', 'Wassit': 'Wasit'}
 # IODA's certificate chains to emSign, which some trust stores lack; Mozilla's list from curl.se has it
 CA = D('base', 'mozilla-ca.pem')
 
@@ -58,12 +62,20 @@ def main():
     os.makedirs(D('base'), exist_ok=True)
     con = duckdb.connect(); con.sql('INSTALL httpfs; LOAD httpfs;')
 
-    # governorates (geoBoundaries, from Wikimedia Commons): Halabja is still inside Sulaymaniyah in this release
+    # governorates: OCHA's COD-AB on HDX, under the names the site uses (Halabja is still inside Sulaymaniyah there)
     adm = D('data', 'irq_adm1.geojson')
     if not os.path.exists(adm):
-        meta = json.loads(curl('https://www.geoboundaries.org/api/current/gbOpen/IRQ/ADM1/'))
-        url = meta['simplifiedGeometryGeoJSON'].replace('github.com/wmgeolab/geoBoundaries/raw/', 'media.githubusercontent.com/media/wmgeolab/geoBoundaries/')
-        curl(url, adm)
+        pkg = json.loads(curl('https://data.humdata.org/api/3/action/package_show?id=cod-ab-irq'))['result']
+        url = next(r['url'] for r in pkg['resources'] if r['url'].endswith('irq_admin_boundaries.geojson.zip'))
+        z = D('base', 'irq_admin_boundaries.geojson.zip'); curl(url, z)
+        with zipfile.ZipFile(z) as zf:
+            src = json.loads(zf.read(next(n for n in zf.namelist() if n.endswith('irq_admin1.geojson'))))
+        out = {'type': 'FeatureCollection', 'features': []}
+        for f in src['features']:
+            p = f['properties']; g = shape(f['geometry']).simplify(0.0003, preserve_topology=True)
+            out['features'].append({'type': 'Feature', 'properties': {'shapeName': OCHA_NAMES[p['adm1_name']], 'pcode': p['adm1_pcode'], 'source': 'OCHA COD-AB'},
+                                    'geometry': json.loads(json.dumps(mapping(g)), parse_float=lambda v: round(float(v), 5))})
+        json.dump(out, open(adm, 'w'), separators=(',', ':'))
     govs = [(f['properties']['shapeName'], shape(f['geometry'])) for f in json.load(open(adm))['features']]
 
     # Ookla: the latest quarter for the maps, and the third quarter of every year for the trend

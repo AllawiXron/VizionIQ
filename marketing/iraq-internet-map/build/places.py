@@ -1,5 +1,5 @@
 # Every searchable area with its numbers: governorates, cities, towns, villages and neighbourhoods.
-# python3 build/places.py  ->  site/data/places.json, site/data/areas/<gov>.json, site/data/country.json
+# python3 build/places.py  ->  site/data/places.json, govs.json, country.json and areas/<gov>.json
 import glob, json, math, os, re
 import numpy as np
 import duckdb
@@ -23,6 +23,10 @@ RADIUS = {'city': 4.0, 'town': 2.0, 'village': 0.9, 'hamlet': 0.6, 'suburb': 1.2
 ZOOM = {'gov': 8, 'city': 11.5, 'town': 12.5, 'village': 13.5, 'hamlet': 14, 'suburb': 13.5, 'neighbourhood': 14.2, 'quarter': 14, 'area': 14}
 MIN_TESTS = 10
 DIGITS = str.maketrans('0123456789', '٠١٢٣٤٥٦٧٨٩')
+# a bigger place wins a shared name: a village called الفلوجه must not hide the city of Fallujah
+RANK = {'city': 0, 'town': 1, 'suburb': 2, 'quarter': 2, 'neighbourhood': 3, 'area': 3, 'village': 4, 'hamlet': 5}
+# OSM entries tagged as places that are really buildings or institutions
+JUNK = re.compile(r'^(برج|جامعة|كلية|مدرسة|مستشفى|مسجد|جامع|محطة|شركة|معمل|مصفى)\s|/')
 
 
 KURDISH = set('ەێۆڵڕھڤېۊ')
@@ -46,8 +50,21 @@ def city_radius(pop):
         return 4.0
 
 
+def others(p, name):
+    """Every other name OSM gives the place (Kurdish, English, older Arabic spellings), for search."""
+    seen, out = {name}, []
+    for k in ('name', 'name_ar', 'name:ar', 'name_en', 'name:en', 'name_latin'):
+        v = p.get(k)
+        if v:
+            for part in str(v).split(' - '):
+                part = ' '.join(part.replace('\u200e', '').replace('\u200f', '').split())
+                if part and part not in seen:
+                    seen.add(part); out.append(part)
+    return out
+
+
 def norm(s):
-    s = re.sub('[ً-ْـ]', '', s)
+    s = re.sub('[\u064B-\u0652\u0640]', '', s)
     s = s.translate(str.maketrans({'أ': 'ا', 'إ': 'ا', 'آ': 'ا', 'ة': 'ه', 'ى': 'ي', 'ؤ': 'و', 'ئ': 'ي'}))
     s = s.translate(str.maketrans('٠١٢٣٤٥٦٧٨٩', '0123456789'))
     return re.sub(r'^(ال)', '', s.strip())
@@ -122,26 +139,35 @@ def main():
             kind = p.get('place') or 'area'
             if kind not in RADIUS:
                 kind = 'area'
-            cand.append({'id': f"{p.get('osm_type', '')[:1]}{p.get('osm_id')}", 'name': name, 'kind': kind, 'geom': g})
+            cand.append({'id': f"{p.get('osm_type', '')[:1]}{p.get('osm_id')}", 'name': name, 'kind': kind, 'geom': g, 'alt': others(p, name)})
     c = duckdb.connect(); c.sql('LOAD spatial')
-    for oid, p_ar, p_name, place, pop, wkb in c.sql(f"""SELECT id, name_ar, name, place, population, ST_AsWKB(geom) FROM '{D('base', 'osm_places.parquet')}'
+    for oid, p_ar, p_name, p_en, place, pop, wkb in c.sql(f"""SELECT id, name_ar, name, name_en, place, population, ST_AsWKB(geom) FROM '{D('base', 'osm_places.parquet')}'
                                                 WHERE place IN ('city','town','village','hamlet','suburb','neighbourhood','quarter')""").fetchall():
-        name = arabic({'name_ar': p_ar, 'name': p_name})
+        props = {'name_ar': p_ar, 'name': p_name, 'name_en': p_en}
+        name = arabic(props)
         if not name:
             continue
+        if place == 'city' and name.startswith('مدينة ') and len(name) > 7:
+            name = name[6:]                      # «مدينة سامراء» is Samarra itself
         cand.append({'id': f'p{oid}', 'name': name, 'kind': place, 'geom': shapely.wkb.loads(bytes(wkb)),
-                     'r': city_radius(pop) if place == 'city' else None})
+                     'r': city_radius(pop) if place == 'city' else None, 'pop': float(pop) if (pop or '').isdigit() else 0,
+                     'alt': others(props, name)})
+    cand = [cd for cd in cand if not JUNK.search(cd['name'])]
 
     # areas: an OSM outline when there is one, otherwise a circle by kind; tiny outlines grow to at least one square
-    places, seen = [], {}
-    for cd in sorted(cand, key=lambda c: 0 if c['geom'].geom_type in ('Polygon', 'MultiPolygon') else 1):
+    places, seen, towns_in = [], {}, []
+    order = lambda c: (RANK[c['kind']], 0 if c['geom'].geom_type in ('Polygon', 'MultiPolygon') else 1, -c.get('pop', 0))
+    for cd in sorted(cand, key=order):
         g = cd['geom']; pt = g.representative_point()
         key = norm(cd['name'])
-        reach = 0.12 if cd['kind'] in ('city', 'town') else 0.02
-        near = [o for o in seen.get(key, []) if abs(o.x - pt.x) < reach and abs(o.y - pt.y) < reach]
+        near = [o for o, reach in seen.get(key, []) if abs(o.x - pt.x) < reach and abs(o.y - pt.y) < reach]
         if near:
             continue
-        seen.setdefault(key, []).append(pt)
+        seen.setdefault(key, []).append((pt, 0.12 if cd['kind'] in ('city', 'town') else 0.02))
+        # OSM tags many city districts (Basra's العشار, المعقل) as villages; inside a city or town they are neighbourhoods
+        home = next((t for t in towns_in if t[1].contains(pt)), None) if cd['kind'] not in ('city', 'town') else None
+        if home and cd['kind'] in ('village', 'hamlet'):
+            cd['kind'] = 'neighbourhood'
         if g.geom_type in ('Polygon', 'MultiPolygon') and g.area > 0:
             area = g if g.area * 111.32 ** 2 * COS > 0.25 else g.buffer(0.004)
         else:
@@ -152,16 +178,23 @@ def main():
         fs = fixed.stats(fixed.inside(area)); ms = mobile.stats(mobile.inside(area))
         if not ((fs and fs['t'] >= MIN_TESTS) or (ms and ms['t'] >= MIN_TESTS)):
             continue
-        places.append({'id': cd['id'], 'n': cd['name'], 'k': cd['kind'], 'g': GOV_SLUG[gov],
-                       'x': round(pt.x, 5), 'y': round(pt.y, 5), 'z': ZOOM[cd['kind']],
-                       'f': fs, 'm': ms, 'h': history(area), 'r': None if g.geom_type in ('Polygon', 'MultiPolygon') else (cd.get('r') or RADIUS[cd['kind']]),
-                       '_area': area})
+        place = {'id': cd['id'], 'n': cd['name'], 'k': cd['kind'], 'g': GOV_SLUG[gov],
+                 'x': round(pt.x, 5), 'y': round(pt.y, 5), 'z': ZOOM[cd['kind']],
+                 'f': fs, 'm': ms, 'h': history(area), 'r': None if g.geom_type in ('Polygon', 'MultiPolygon') else (cd.get('r') or RADIUS[cd['kind']]),
+                 '_area': area}
+        if cd.get('alt'):
+            place['a'] = cd['alt']
+        if home and home[0] != cd['name']:
+            place['c'] = home[0]
+        if cd['kind'] in ('city', 'town'):
+            towns_in.append((cd['name'], prep(area)))
+        places.append(place)
 
     # the town or city each neighbourhood and village belongs to, for the second line under its name
     towns = [p for p in places if p['k'] in ('city', 'town')]
     tt = STRtree([Point(p['x'], p['y']) for p in towns])
     for p in places:
-        if p['k'] in ('city', 'town'):
+        if p['k'] in ('city', 'town') or p.get('c'):
             continue
         i = tt.nearest(Point(p['x'], p['y']))
         t = towns[i]
@@ -197,7 +230,9 @@ def main():
         json.dump(v, open(D('site', 'data', 'areas', f'{k}.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 
     places.sort(key=lambda p: -(p['f'] or {'t': 0})['t'])
-    json.dump({'govs': gov_out, 'places': places}, open(D('site', 'data', 'places.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+    # the governorates load first and draw the home page; the places follow for search and the area pages
+    json.dump({'govs': gov_out}, open(D('site', 'data', 'govs.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+    json.dump({'places': places}, open(D('site', 'data', 'places.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
     kinds = {}
     for p in places:
         kinds[p['k']] = kinds.get(p['k'], 0) + 1

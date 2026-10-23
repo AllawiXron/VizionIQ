@@ -178,8 +178,17 @@ function placeMap() {
   return wrap.style.display !== 'none';
 }
 
+// the map libraries load after the first page is on screen
+const LIBS = window.MAP_LIBS || ['vendor/maplibre-gl.js', 'vendor/pmtiles.js'];
+const loadLibs = () => LIBS.reduce((p, src) => p.then(() => new Promise((res, rej) => {
+  const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error(src)); document.head.appendChild(s);
+})), Promise.resolve());
+
 function ensureMap() {
-  if (mapReady) return mapReady;
+  if (!mapReady) mapReady = loadLibs().then(makeMap);
+  return mapReady;
+}
+function makeMap() {
   const base = new URL('.', location.href).href;
   maplibregl.addProtocol('iq', tileProtocol(base));
   map = new maplibregl.Map({
@@ -198,14 +207,14 @@ function ensureMap() {
   map.on('move', () => { placeLabels(); placeReadout(); });
   map.on('moveend', () => { chooseLabels(); placeLabels(); placeReadout(); });
   map.on('click', onMapClick);
-  mapReady = new Promise(res => map.once('load', () => { chooseLabels(); placeLabels(); res(); }));
-  return mapReady;
+  return new Promise(res => map.once('load', () => { chooseLabels(); placeLabels(); res(); }));
 }
 
 function frame(bounds, opts = {}) {
   const cam = map.cameraForBounds(bounds, { padding: framePadding(), maxZoom: opts.maxZoom || 20 });
   if (!cam) return;
-  if (opts.duration === 0) map.jumpTo(cam); else map.flyTo({ ...cam, duration: opts.duration || 1200, essential: true });
+  if (opts.duration === 0 || matchMedia('(prefers-reduced-motion: reduce)').matches) map.jumpTo(cam);
+  else map.flyTo({ ...cam, duration: opts.duration || 1200 });
 }
 function framePadding() {
   return isWide() ? { top: 60, bottom: 130, left: 60, right: 60 } : { top: 56, bottom: 104, left: 16, right: 16 };
@@ -270,12 +279,12 @@ function chooseLabels() {
   for (const c of cands) {
     if (S.focus && c.p.id === S.focus.id) continue;
     const pt = map.project([c.p.x, c.p.y]);
-    if (pt.x < -40 || pt.x > W + 40 || pt.y < 0 || pt.y > H + 20) continue;
     const fs = c.cls === 'big' ? 14.5 : 13;
     const w = c.p.n.length * fs * 0.52 + 10, h = fs + 8;
     const side = z < 10 ? 1 : 0;                       // 1: set to the left of the light, 0: centred on it
     const cx = side ? pt.x - 9 - w / 2 : pt.x;
     const r = { x0: cx - w / 2, x1: cx + w / 2, y0: pt.y - h / 2, y1: pt.y + h / 2 };
+    if (r.x0 < 4 || r.x1 > W - 4 || r.y0 < 4 || r.y1 > H - 4) continue;   // a label cut at the edge reads as another name
     if (taken.some(t => r.x0 < t.x1 && r.x1 > t.x0 && r.y0 < t.y1 && r.y1 > t.y0)) continue;
     taken.push(r); c.side = side; out.push(c);
     if (out.length >= 60) break;
@@ -331,6 +340,7 @@ function showPick(b) {
     geometry: { type: 'LineString', coordinates: [[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]], [b[0], b[1]]] } }] : [] });
   const p = S.pick;
   readout.innerHTML = p.empty ? 'لا توجد اختبارات في هذا المربع'
+    : p.n < MIN_TESTS ? `اختبارات هذا المربع قليلة (${ar(p.n)})<br><span class="small">لا تكفي لرقم يعتمد عليه</span>`
     : `هذا المربع <b style="color:${speedColour(p.v)}">${ar(p.v)}</b> ميغابت<br><span class="small">من ${nTests(p.n)}</span>`;
   readout.hidden = false;
   placeReadout();
@@ -372,40 +382,49 @@ function boundsOf(geom) {
 
 // ---------- search ----------
 
+function match(key, k, words) {
+  if (key === k) return 100;
+  if (key.startsWith(k)) return 60;
+  if (words.every(w => key.split(' ').some(x => x.startsWith(w)))) return 40;
+  return key.includes(k) ? 20 : 0;
+}
 function search(q) {
-  const k = bare(q);
+  const k = bare(q).toLowerCase();
   if (!k) return [];
   const words = k.split(' ');
   const scored = [];
   for (const p of S.govs.concat(S.places)) {
-    const key = p._k || (p._k = bare(p.n));
-    let s = 0;
-    if (key === k) s = 100;
-    else if (key.startsWith(k)) s = 60;
-    else if (words.every(w => key.split(' ').some(x => x.startsWith(w)))) s = 40;
-    else if (key.includes(k)) s = 20;
+    const keys = p._k || (p._k = [p.n, ...(p.a || [])].map(n => bare(n).toLowerCase()));
+    let s = Math.max(...keys.map(key => match(key, k, words)));
     if (!s) continue;
     if (p.k === 'gov') s += 30; else if (p.k === 'city') s += 20; else if (p.k === 'town') s += 8;
     s += Math.log10(1 + ((p.f || {}).t || 0));
     scored.push([s, p]);
   }
-  return scored.sort((a, b) => b[0] - a[0]).slice(0, 8).map(x => x[1]);
+  // a name that only contains the letters inside another word (حله inside محله) shows only when nothing better does
+  const good = scored.some(x => x[0] >= 40);
+  return scored.filter(x => !good || x[0] >= 40).sort((a, b) => b[0] - a[0]).slice(0, 8).map(x => x[1]);
 }
 
+let redrawHits = () => {};
 function wireSearch() {
   const input = document.getElementById('q'), list = document.querySelector('#page .hits');
   if (!input) return;
   let sel = -1, results = [];
   const draw = () => {
-    if (!input.value.trim()) { list.classList.remove('open'); list.innerHTML = ''; return; }
+    if (!input.value.trim()) { list.classList.remove('open'); list.innerHTML = ''; input.setAttribute('aria-expanded', 'false'); return; }
+    if (!S.places.length) { list.classList.add('open'); list.innerHTML = '<div class="none">أحمل أسماء المناطق، لحظة...</div>'; return; }
     results = search(input.value);
     list.classList.add('open');
+    input.setAttribute('aria-expanded', results.length ? 'true' : 'false');
     list.innerHTML = results.length ? results.map((p, i) => {
       const st = stat(p);
-      return `<a href="${href(p)}" class="${i === sel ? 'sel' : ''}"><b>${esc(p.n)}</b><i>${esc(kindLine(p))}</i>` +
+      return `<a href="${href(p)}" role="option" id="hit${i}" aria-selected="${i === sel}" class="${i === sel ? 'sel' : ''}"><b>${esc(p.n)}</b><i>${esc(kindLine(p))}</i>` +
         `<em style="color:${st ? speedColour(st.d) : 'var(--faint)'}">${st ? ar(st.d) : '–'}<small>ميغابت</small></em></a>`;
     }).join('') : '<div class="none">لم أجد هذا الاسم. جرب اسم المدينة أو المحافظة، أو اكتبه بطريقة أخرى.</div>';
+    if (sel >= 0) input.setAttribute('aria-activedescendant', 'hit' + sel); else input.removeAttribute('aria-activedescendant');
   };
+  redrawHits = draw;
   input.addEventListener('input', () => { sel = -1; draw(); });
   input.addEventListener('keydown', e => {
     if (e.key === 'ArrowDown') { sel = Math.min(results.length - 1, sel + 1); draw(); e.preventDefault(); }
@@ -448,22 +467,26 @@ function percentile(v) {
 
 const page = document.getElementById('page');
 const foot = `<p class="foot">السرعات من Speedtest by Ookla، والشوارع والأحياء من مساهمي OpenStreetMap، والانقطاعات من IODA.
-  <a href="#/about">من أين جاءت الأرقام</a><br>فكرة وتصميم @allawi.psd</p>`;
+  <a href="#/about">من أين جاءت الأرقام</a><br>فكرة وتصميم <bdi dir="ltr">@allawi.psd</bdi></p>`;
 const modesHTML = () => `<div class="modes" role="group" aria-label="نوع الاتصال">
   <button type="button" data-mode="f" class="${S.mode === 'f' ? 'on' : ''}">إنترنت البيت</button>
   <button type="button" data-mode="m" class="${S.mode === 'm' ? 'on' : ''}">إنترنت الموبايل</button></div>
   <p class="modes-hint">${S.mode === 'f' ? 'خطوط الإنترنت الثابتة في البيوت والمحلات، تموز إلى أيلول ٢٠٢٦.' : 'شبكات الموبايل، تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦. اختباراتها أقل، فتظهر الخريطة متقطعة.'}</p>`;
-const tryLinks = () => ['الكرادة', 'المنصور', 'زيونة', 'البصرة', 'أربيل', 'الموصل']
-  .map(n => S.places.find(p => p.n === n && (p.k !== 'village'))).filter(Boolean)
-  .map(p => `<a href="${href(p)}">${esc(p.n)}</a>`).join('');
+const tryLinks = () => {
+  const ps = ['الكرادة', 'المنصور', 'زيونة', 'البصرة', 'أربيل', 'الموصل'].map(n => S.places.find(p => p.n === n && p.k !== 'village')).filter(Boolean);
+  return ps.length ? 'جرب ' + ps.map(p => `<a href="${href(p)}">${esc(p.n)}</a>`).join('') : '';
+};
 
 function rankRows(list, opts = {}) {
   const max = Math.max(...list.map(p => stat(p).d), 1);
-  return `<div class="rank"><div class="hd"><span>${opts.pos === false ? '' : '#'}</span><span>${opts.head || 'المنطقة'}</span><span></span><span>ميغابت</span></div>` +
+  let pos = 0, prev = null;
+  return `<div class="rank"><div class="hd"><span></span><span>${opts.head || 'المنطقة'}</span><span></span><span>ميغابت</span></div>` +
     list.map((p, i) => {
-      const st = stat(p), col = speedColour(st.d);
-      return `<a href="${href(p)}"><span class="pos">${opts.pos === false ? '' : ar(i + 1)}</span>` +
-        `<span class="nm">${esc(p.n)}${opts.kind ? `<small>${esc(kindShort(p))}</small>` : ''}</span>` +
+      const st = stat(p), col = speedColour(st.d), v = Math.round(st.d);
+      if (v !== prev) { pos = i + 1; prev = v; }        // equal numbers on screen share a place
+      const sub = [opts.kind && kindShort(p), nTests(st.t)].filter(Boolean).join('، ');
+      return `<a href="${href(p)}"><span class="pos">${opts.pos === false ? '' : ar(pos)}</span>` +
+        `<span class="nm"><b>${esc(p.n)}</b><small>${esc(sub)}</small></span>` +
         `<i class="tr" style="width:${Math.max(3, st.d / max * 100)}%;background:${col}"></i>` +
         `<span class="v" style="color:${col}">${ar(st.d)}</span></a>`;
     }).join('') + '</div>';
@@ -490,7 +513,8 @@ function clock(minAfter4) {
   return `${arDigits(h)}:${arDigits(String(mm).padStart(2, '0'))}`;
 }
 const dayName = d => { const t = new Date(d + 'T12:00:00'); return `${DAYS[t.getDay()]} ${arDigits(t.getDate())} ${MONTHS[t.getMonth()]}`; };
-const winText = main => main.map(w => `من ${clock(w.cut[0])} إلى ${clock(w.cut[1])}`).join('، ثم ');
+const shortDate = d => { const t = new Date(d + 'T12:00:00'); return `${arDigits(t.getDate())} ${MONTHS[t.getMonth()]}`; };
+const winText = main => main.map((w, i) => `من ${clock(w.cut[0])} إلى ${clock(w.cut[1])}${i < main.length - 1 ? ` حتى ${shortDate(w.last)}` : ''}`).join('، ثم ');
 
 function homeHTML() {
   const c = S.country, st = c[S.mode], h = S.mode === 'f' ? c.h : c.mh;
@@ -498,13 +522,15 @@ function homeHTML() {
   const ex = examYears();
   return `
   <h1 class="h1">اعرف سرعة الإنترنت في منطقتك</h1>
+  <p class="headline-num"><b style="color:${speedColour(st.d)}">${ar(st.d)}</b><span>ميغابت في الثانية، معدل سرعة تنزيل ${KIND[S.mode]} في العراق</span></p>
   <p class="lede">الأرقام من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم على تطبيق Speedtest في كل محافظات العراق. ابحث عن منطقتك، أو قرب الخريطة واضغط على أي مكان.</p>
   <div class="search">
     <label for="q">اسم الحي أو المدينة أو المحافظة</label>
-    <input id="q" type="search" placeholder="مثلا الكرادة" autocomplete="off" enterkeyhint="search">
-    <div class="hits"></div>
+    <input id="q" type="search" placeholder="مثلا الكرادة" autocomplete="off" enterkeyhint="search"
+      role="combobox" aria-controls="hits" aria-autocomplete="list" aria-expanded="false">
+    <div class="hits" id="hits" role="listbox" aria-label="نتائج البحث"></div>
   </div>
-  <p class="tries">جرب ${tryLinks()}</p>
+  <p class="tries">${tryLinks()}</p>
   ${modesHTML()}
   <div class="mapslot"></div>
   <p class="maphint">كل نقطة ضوء مربع عرضه نصف كيلومتر، ولونها سرعة التنزيل فيه. الأحمر الخافت بطيء، والأصفر متوسط، والأبيض سريع. في المدن يمشي الضوء على الشوارع.</p>
@@ -525,7 +551,7 @@ function homeHTML() {
     <h2 class="h2">المحافظات من الأسرع إلى الأبطأ</h2>
     <p class="small">معدل سرعة التنزيل في ${KIND[S.mode]}. اضغط على محافظة لترى مدنها وأحياءها.</p>
     ${rankRows(govs, { head: 'المحافظة' })}
-    <p class="note">حدود المحافظات من geoBoundaries، وفيها حلبجة ما تزال ضمن السليمانية.</p>
+    <p class="note">حدود المحافظات من OCHA، وفيها حلبجة ما تزال ضمن السليمانية. عدد الاختبارات تحت كل اسم.</p>
   </section>
 
   <section>
@@ -542,14 +568,31 @@ function homeHTML() {
 
 function scaleHTML(marks) {
   const max = Math.ceil(Math.max(...marks.map(m => m.v)) * 1.2 / 25) * 25;
-  const sorted = [...marks].sort((a, b) => a.v - b.v);
-  // a marker whose label would collide with its neighbour goes below the line
-  sorted.forEach((m, i) => { m.low = i > 0 && !sorted[i - 1].low && (m.v - sorted[i - 1].v) / max < 0.22; });
+  const cs = getComputedStyle(page), W = Math.max(280, page.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+  // each label takes the first row, and there the first side of its mark, where it stays on the page and touches no other
+  const rows = [[], [], []];
+  for (const m of marks) m.x = m.v / max * W;                  // x counts from the right, where the scale starts
+  for (const m of [...marks].sort((a, b) => (b.main ? 1 : 0) - (a.main ? 1 : 0) || a.v - b.v)) {
+    m.text = `${m.label} (${ar(m.v)})`;
+    const w = m.text.length * 7.4 + 6, x = m.x;
+    const spans = { c: [x - w / 2, x + w / 2], r: [x, x + w], l: [x - w, x] };
+    // the first row below the line also keeps clear of the marks still to come, whose long ticks may pass through it
+    const fits = (r, a) => spans[a][0] >= 0 && spans[a][1] <= W && rows[r].every(o => spans[a][1] + 10 < o[0] || spans[a][0] > o[1] + 10) &&
+      (r !== 1 || marks.every(o => o === m || o.row !== undefined || o.x < spans[a][0] - 6 || o.x > spans[a][1] + 6));
+    let pick = null;
+    for (let r = 0; r < 3 && !pick; r++) for (const a of ['c', 'r', 'l']) if (fits(r, a)) { pick = [r, a]; break; }
+    [m.row, m.anchor] = pick || [2, x < w / 2 ? 'r' : x > W - w / 2 ? 'l' : 'c'];
+    rows[m.row].push(spans[m.anchor]);
+  }
+  const used = Math.max(...marks.map(m => m.row));
   const stops = [];
   for (let i = 0; i <= 10; i++) stops.push(`rgb(${rampRGB(speedV(i / 10 * max)).join(',')}) ${i * 10}%`);
-  return `<div class="scale" aria-hidden="true"><i class="track" style="background:linear-gradient(to left, ${stops.join(', ')})"></i>` +
-    marks.map(m => `<div class="mk${m.low ? ' low' : ''}" style="right:${m.v / max * 100}%"><b style="color:${m.main ? speedColour(m.v) : 'var(--muted)'}">${esc(m.label)} (${ar(m.v)})</b><i style="background:${m.main ? speedColour(m.v) : 'var(--muted)'}"></i></div>`).join('') +
-    `<div class="ends"><span>${ar(max)} ميغابت</span><span>٠</span></div></div>`;
+  return `<div class="scale rows${used}" aria-hidden="true"><i class="track" style="background:linear-gradient(to left, ${stops.join(', ')})"></i>` +
+    marks.map(m => {
+      const col = m.main ? speedColour(m.v) : 'var(--muted)';
+      return `<div class="mk r${m.row} a${m.anchor}" style="right:${m.v / max * 100}%"><b style="color:${col}">${esc(m.text)}</b><i style="background:${col}"></i></div>`;
+    }).join('') +
+    `<div class="ends"><span>٠</span><span>${ar(max)} ميغابت</span></div></div>`;
 }
 
 function placeHTML(p) {
@@ -558,18 +601,21 @@ function placeHTML(p) {
   const where = nameIn(p);
   let answer, comp = '', scale = '';
   if (st) {
-    answer = `معدل سرعة تنزيل ${KIND[S.mode]} في ${esc(where)} يبلغ <span class="big" style="color:${speedColour(st.d)}">${ar(st.d)}</span> ميغابت في الثانية.`;
+    answer = `معدل سرعة تنزيل ${KIND[S.mode]} في ${esc(where)}<span class="big" style="color:${speedColour(st.d)}">${ar(st.d)}<small>ميغابت في الثانية</small></span>`;
     const parts = [];
     if (gs) parts.push(`${versus(st.d, gs.d)} معدل محافظة ${esc(g.n)} (${ar(gs.d)})`);
     parts.push(`${versus(st.d, cs.d)} معدل العراق (${ar(cs.d)})`);
     if (isGov) {
-      const order = S.govs.filter(x => stat(x)).sort((a, b) => stat(b).d - stat(a).d).indexOf(p);
-      comp = `${parts.join('، و')}، وهي ${ORDINAL[order]} بين ١٨ محافظة.`;
+      const ranked = S.govs.filter(x => stat(x)).sort((a, b) => stat(b).d - stat(a).d), order = ranked.indexOf(p);
+      // a place in the order means little when a neighbour is within 5%
+      const close = [ranked[order - 1], ranked[order + 1]].filter(x => x && Math.abs(stat(x).d - st.d) / st.d < 0.05);
+      comp = `${parts.join('، و')}، وتأتي ${ORDINAL[order]} بين ${ar(S.govs.length)} محافظة` +
+        (close.length ? ` بفارق صغير عن ${close.map(x => x.n).join(' و')}.` : '.');
     } else {
       comp = `${parts.join('، و')}، وأسرع من ${ar(percentile(st.d))}٪ من المناطق المقاسة في العراق.`;
     }
     const marks = [{ label: p.n, v: st.d, main: true }];
-    if (gs) marks.push({ label: g.n, v: gs.d });
+    if (gs) marks.push({ label: g.n === p.n ? `محافظة ${g.n}` : g.n, v: gs.d });
     marks.push({ label: 'العراق', v: cs.d });
     scale = scaleHTML(marks);
   } else {
@@ -630,6 +676,9 @@ function placeHTML(p) {
   ${foot}`;
 }
 
+const hourAxis = label => `<div class="ex-axis" aria-hidden="true"><span>${label}</span><div class="ax">${[4, 5, 6, 7, 8, 9, 10].map(h =>
+  `<span style="right:${(h - 4) / 6 * 100}%">${arDigits(h)}</span>`).join('')}</div></div>`;
+
 function examsHTML() {
   const ex = examYears();
   return `
@@ -644,11 +693,11 @@ function examsHTML() {
   ${ex.map(e => `
     <section class="ex-year" data-year="${e.y}">
       <h2 class="h2">${head(arDigits(e.y))}</h2>
-      <p class="small">${ar(e.rows.length)} ${counted(e.rows.length, DAYS_N)} انقطاع</p>
-      <div class="ex-axis"><span class="small">اليوم</span><div class="ax">${[4, 5, 6, 7, 8, 9, 10].map(h =>
-        `<span style="right:${(h - 4) / 6 * 100}%">${arDigits(h)}</span>`).join('')}</div></div>
-      ${e.rows.map((r, i) => `<div class="ex-row" data-i="${i}"><span class="d">${dayName(r.d)}</span><canvas></canvas></div>`).join('')}
-      <p class="ex-day">اضغط على أي يوم لترى وقت الانقطاع.</p>
+      <p class="small">انقطع في ${ar(e.rows.length)} ${counted(e.rows.length, DAYS_N)}. اضغط على أي يوم لترى وقت الانقطاع.</p>
+      ${hourAxis('اليوم')}
+      ${e.rows.map((r, i) => `<button type="button" class="ex-row" data-i="${i}" aria-pressed="false"><span class="d">${dayName(r.d)}</span><canvas aria-hidden="true"></canvas></button>`).join('')}
+      ${hourAxis('')}
+      <p class="ex-day" aria-live="polite" hidden></p>
     </section>`).join('')}
   <p class="note">الأرقام فوق الخطوط ساعات الصباح بتوقيت بغداد، من الرابعة إلى العاشرة. يبدأ الخط مضيئا ويعتم حين تنزل الشبكات التي ترد إلى أقل من ٦٠٪ مما كانت عليه قبل السادسة في الصباح نفسه.</p>
   ${foot}`;
@@ -664,17 +713,17 @@ function aboutHTML() {
     <p>من بيانات Ookla المفتوحة، الشركة التي تملك تطبيق Speedtest. تقسم Ookla الأرض إلى مربعات عرض كل منها نحو نصف كيلومتر، وتنشر لكل مربع معدل سرعة التنزيل والرفع والبنغ وعدد الاختبارات. في العراق ${ar(S.country.f.q)} مربعا فيها اختبارات على الإنترنت الثابت بين تموز وأيلول ٢٠٢٦، وأكثر من مليون اختبار.</p>
     <p>رقم كل حي أو مدينة هو معدل مربعاته، موزونا بعدد الاختبارات في كل مربع. أرقام الموبايل تجمع سنة كاملة، من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦، لأن اختباراتها أقل بكثير. لا أعرض رقما لأي منطقة فيها أقل من ${ar(MIN_TESTS)} اختبارات.</p>
     <h2 class="h2">حدود هذه الأرقام</h2>
-    <p>الاختبارات أجراها أشخاص اختاروا أن يقيسوا سرعتهم، فهي لا تقيس كل بيت ولا كل شارع، واختبارات البيوت تشمل الهواتف المتصلة بشبكة البيت. عدد الاختبارات تضاعف بين ٢٠٢٥ و٢٠٢٦، وهذا يغير من تقيسهم الأرقام.</p>
-    <p>لا أقارن بين شركات الإنترنت. البيانات المفتوحة لا تذكر الشركة، والمصدر الآخر الذي يذكرها (M-Lab) يقيس العراق إلى خوادم بعيدة في الدوحة وتل أبيب وأثينا، فتخرج أرقامه أقل بكثير من الواقع.</p>
+    <p>الاختبارات أجراها أشخاص اختاروا أن يقيسوا سرعتهم، فهي لا تقيس كل بيت ولا كل شارع، واختبارات البيوت تشمل الهواتف المتصلة بشبكة البيت. عدد الاختبارات زاد نحو مرتين ونصف بين صيف ٢٠٢٥ وصيف ٢٠٢٦، وهذا يغير من تقيسهم الأرقام.</p>
+    <p>لا أقارن بين شركات الإنترنت. البيانات المفتوحة لا تذكر الشركة، والمصدر الآخر الذي يذكرها (M-Lab) يقيس العراق إلى خوادم خارج العراق يتأخر الرد منها ١١٠ إلى ١٦٠ ملي ثانية، فتخرج أرقامه أقل بكثير من الواقع.</p>
     <h2 class="h2">انقطاع الامتحانات</h2>
     <p>من مرصد IODA في معهد جورجيا للتقنية، الذي يرسل قياسات إلى عناوين الشبكات العراقية كل عشر دقائق. أعرض ما ردت به هذه الشبكات من الرابعة إلى العاشرة صباحا في كل يوم امتحان، مقارنة بما كان قبل السادسة، من دون أي تعليق.</p>
     <h2 class="h2">الخرائط</h2>
-    <p>الشوارع والأنهار والأحياء من OpenStreetMap، والأرض من صور ناسا للتضاريس وأضواء المدن، وحدود العراق من Natural Earth، وحدود المحافظات من geoBoundaries، وفيها حلبجة ما تزال ضمن محافظة السليمانية.</p>
+    <p>الشوارع والأنهار والأحياء من OpenStreetMap، والأرض من صور ناسا للتضاريس وأضواء المدن، وحدود العراق من Natural Earth، وحدود المحافظات من مكتب الأمم المتحدة لتنسيق الشؤون الإنسانية (OCHA)، وفيها حلبجة ما تزال ضمن محافظة السليمانية.</p>
     <h2 class="h2">من صنعها</h2>
-    <p>الفكرة والتصميم لعلي، انستغرام @allawi.psd</p>
+    <p>الفكرة والتصميم لعلي، انستغرام <bdi dir="ltr">@allawi.psd</bdi></p>
     <h2 class="h2">المصادر والرخص</h2>
     <p class="src">Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps. Based on analysis by Ookla of Speedtest Intelligence® data for Q4 2025 to Q3 2026, and Q3 of each year from 2019. Provided by Ookla and accessed 23 October 2026. Licensed CC BY-NC-SA 4.0; Ookla trademarks used under license.</p>
-    <p class="src">Map data © OpenStreetMap contributors, ODbL, through the Humanitarian OpenStreetMap Team exports. Internet outage data: IODA, Georgia Institute of Technology. NASA GIBS: ASTER GDEM shaded relief, VIIRS Black Marble. Natural Earth. geoBoundaries (CC BY 4.0). Map rendering: MapLibre GL JS and PMTiles (BSD-3-Clause).</p>
+    <p class="src">Map data © OpenStreetMap contributors, ODbL, through the Humanitarian OpenStreetMap Team exports. Internet outage data: IODA, Georgia Institute of Technology. NASA GIBS: ASTER GDEM shaded relief, VIIRS Black Marble. Natural Earth. Governorates: OCHA, Iraq Subnational Administrative Boundaries (COD-AB), CC BY-IGO. Map rendering: MapLibre GL JS and PMTiles (BSD-3-Clause).</p>
   </article>
   ${foot}`;
 }
@@ -709,8 +758,9 @@ function wireExams() {
     draw();
     box.addEventListener('click', e => {
       const el = e.target.closest('.ex-row'); if (!el) return;
-      sel = +el.dataset.i; els.forEach((x, i) => x.classList.toggle('sel', i === sel)); draw();
+      sel = +el.dataset.i; els.forEach((x, i) => { x.classList.toggle('sel', i === sel); x.setAttribute('aria-pressed', i === sel); }); draw();
       const r = rows[sel];
+      el.after(day); day.hidden = false;           // the times sit right under the day that was tapped
       day.textContent = r.cut ? `${dayName(r.d)} ${arDigits(box.dataset.year)}، انقطع من ${clock(r.cut[0])} إلى ${clock(r.cut[1])}، وبقيت ${ar(r.low * 100)}٪ من الشبكات العراقية ترد.`
         : `${dayName(r.d)}، لم يظهر انقطاع واضح.`;
     });
@@ -748,6 +798,7 @@ async function render(move = true) {
   const keepScroll = !move || lastRoute === h;
   const y = isWide() ? page.scrollTop : scrollY;
   let p = null;
+  if (view === 'place') await placesReady;
   if (view === 'place') {
     const id = h.slice(3);
     p = h.startsWith('/g/') ? govById(id) : S.byId.get(id);
@@ -770,7 +821,7 @@ async function render(move = true) {
       const geom = await areaOf(p);
       if (geom) { setFocus(p, geom); frame(S.focusBounds, { maxZoom: p.k === 'gov' ? 9.5 : 15, duration: lastRoute ? 1200 : 0 }); }
       else { clearFocus(); map.flyTo({ center: [p.x, p.y], zoom: p.z }); }
-    } else if (view === 'home' || !lastRoute) { clearFocus(); frame(IRAQ, { duration: lastRoute ? 1200 : 0 }); }
+    } else { clearFocus(); frame(IRAQ, { duration: lastRoute ? 1200 : 0 }); }
   }
   lastRoute = h;
   chooseLabels(); placeLabels();
@@ -784,9 +835,19 @@ addEventListener('resize', () => {
   rs = setTimeout(() => { placeMap(); if (current().startsWith('/exams')) wireExams(); if (map) { chooseLabels(); placeLabels(); } }, 200);
 });
 
-Promise.all(['data/places.json', 'data/country.json', 'data/exams.json'].map(u => fetch(u).then(r => r.json()))).then(([pl, country, exams]) => {
-  S.govs = pl.govs; S.places = pl.places; S.country = country; S.exams = exams;
+const getJSON = u => fetch(u).then(r => { if (!r.ok) throw new Error(`${u}: ${r.status}`); return r.json(); });
+const placesReady = getJSON('data/places.json').then(pl => {
+  S.places = pl.places;
   for (const p of S.places) S.byId.set(p.id, p);
-  return render(true);
+  const tries = page.querySelector('.tries');
+  if (tries) tries.innerHTML = tryLinks();
+  redrawHits();
+  if (map) { chooseLabels(); placeLabels(); }
+});
+Promise.all(['data/govs.json', 'data/country.json', 'data/exams.json'].map(getJSON)).then(([gv, country, exams]) => {
+  S.govs = gv.govs; S.country = country; S.exams = exams;
+  const shown = render(true);
+  document.body.dataset.text = '1';
+  return Promise.all([shown, placesReady]);
 }).then(() => { document.body.dataset.ready = '1'; });
 })();
