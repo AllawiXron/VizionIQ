@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>R6 Unlock All 4</title>
+<style>
+@font-face { font-family: Shoulders; src: url(fonts/BigShouldersDisplay-VF.ttf); font-weight: 100 900; }
+@font-face { font-family: Jakarta; src: url(fonts/PlusJakartaSans-VF.ttf); font-weight: 200 800; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; }
+.f { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #d9b94a; }
+.f > * { position: absolute; }
+
+/* 1. background: the poster's own yellow, grain and streaks */
+.bg { inset: 0; }
+
+/* 2. the menu, rebuilt from the screenshot: the frame he bursts out of */
+.menu { left: 136px; top: 333px; width: 1396px; height: 1127px; transform-origin: 50% 50%;
+  transform: perspective(2400px) scale(1.023) rotateY(8deg) rotateX(2deg) rotateZ(-2deg); }
+.c { position: absolute; width: 1px; height: 1px; }
+.panel { position: absolute; inset: 0; background: #0b0b0e; border-radius: 22px; font-family: Jakarta; font-weight: 700; color: #f1eef4;
+  box-shadow: 0 0 0 5px rgba(255, 250, 230, .55), 0 50px 90px rgba(70, 52, 0, .5), 0 12px 24px rgba(40, 30, 0, .35); }
+.panel > * { position: absolute; }
+.p-logo { left: 45px; top: 34px; font-size: 41px; }
+.p-tab { top: 20px; height: 75px; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #c9c5d0; }
+.p-tab.on { left: 622px; width: 258px; background: #1d1d23; border-radius: 16px; color: #f6f3f8; }
+.p-tab.on::after { content: ''; position: absolute; left: 34px; right: 34px; bottom: 2px; height: 6px; border-radius: 3px; background: #f7dfee; }
+.rule { left: 30px; right: 30px; height: 2px; background: #26262c; }
+.sec { left: 44px; font-size: 40px; color: #d9d5de; display: flex; align-items: center; gap: 26px; }
+.sec::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: #f4f1f6; }
+.lab { left: 46px; font-size: 38px; }
+.val { right: 48px; font-size: 38px; }
+.box { left: 1295px; top: 240px; width: 51px; height: 51px; border-radius: 9px; background: #f7dcec;
+  box-shadow: 0 0 26px rgba(247, 210, 232, .55); }
+.box::after { content: ''; position: absolute; left: 17px; top: 9px; width: 12px; height: 23px; border: solid #17121a; border-width: 0 5px 5px 0; transform: rotate(42deg); }
+.track { left: 80px; width: 1258px; height: 13px; border-radius: 7px; background: #1e1e24; }
+.track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: #f6e0ee; }
+.knob { width: 56px; height: 56px; border-radius: 50%; background: #fbfafc; box-shadow: 0 0 0 5px #3a3940, 0 0 20px rgba(255, 255, 255, .25); }
+.note { left: 46px; top: 548px; font-size: 34px; color: #9a97a2; }
+.key { left: 1085px; width: 266px; height: 83px; border-radius: 13px; background: #1b1c21; border: 2px solid #26272d;
+  display: flex; align-items: center; justify-content: center; font-size: 37px; }
+.foot { top: 1058px; font-size: 33px; color: #8e8b96; }
+
+
+
+
+/* 3. Sledge, mirrored: inside the menu, bursting out through its top and right edges */
+.sledge { left: 400px; top: 124px; width: 1700px; filter: drop-shadow(-16px 26px 24px rgba(10, 12, 20, .45)); }
+
+/* 4. title */
+.t { right: 34px; top: 10px; font: 900 190px/1 Shoulders; letter-spacing: -3px; white-space: nowrap; }
+.t span { display: block; }
+.t .back { color: #160a02; -webkit-text-stroke: 16px #0d111c;
+  text-shadow: 1px 3px 0 #6a4f0d, 2px 6px 0 #6a4f0d, 3px 9px 0 #5e460b, 4px 12px 0 #523d09, 5px 15px 0 #47350a,
+    6px 18px 0 #3d2d08, 7px 21px 0 #322506, 0 34px 40px rgba(60, 44, 0, .55), 0 60px 90px rgba(60, 44, 0, .3); }
+.t .face { position: absolute; left: 0; top: 0;
+  background: url(img/steel.jpg) center / 100% 100%, linear-gradient(180deg, #3a4560 0%, #26304a 40%, #182033 75%, #0f1524 100%);
+  background-blend-mode: soft-light, normal; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.t .shine { position: absolute; left: 0; top: 0; color: transparent;
+  background: linear-gradient(180deg, rgba(160, 180, 220, .45) 0%, rgba(160, 180, 220, 0) 18%);
+  -webkit-background-clip: text; background-clip: text; mix-blend-mode: screen; }
+
+
+/* finish */
+.vig { inset: 0; background:
+  linear-gradient(0deg, rgba(60, 40, 0, .28) 0%, rgba(60, 40, 0, 0) 18%),
+  linear-gradient(90deg, rgba(60, 40, 0, .22) 0%, rgba(60, 40, 0, 0) 12%, rgba(60, 40, 0, 0) 88%, rgba(60, 40, 0, .22) 100%); }
+</style>
+</head>
+<body>
+<div class="f" id="thumb">
+  <img class="bg" src="img/bg.jpg">
+
+  <div class="menu"><div class="panel">
+    <i class="c" style="left:0;top:0"></i><i class="c" style="right:0;top:0"></i><i class="c" style="right:0;bottom:0"></i><i class="c" style="left:0;bottom:0"></i>
+    <div class="p-logo">UnlockX</div>
+    <div class="p-tab on">Recoil</div>
+    <div class="p-tab" style="left:930px;width:150px">HUD</div>
+    <div class="p-tab" style="left:1170px;width:180px">Account</div>
+    <div class="rule" style="top:121px"></div>
+    <div class="sec" style="top:160px">General</div>
+    <div class="lab" style="top:245px">Enabled</div>
+    <div class="box"></div>
+    <div class="lab" style="top:322px">Keep</div><div class="val" style="top:322px">0.69</div>
+    <div class="track" style="top:384px"><i style="width:868px"></i></div>
+    <div class="knob" style="left:921px;top:362px"></div>
+    <div class="lab" style="top:435px">Step</div><div class="val" style="top:435px">0.34</div>
+    <div class="track" style="top:499px"><i style="width:858px"></i></div>
+    <div class="knob" style="left:911px;top:477px"></div>
+    <div class="note">0 = full kill, 1 = no effect</div>
+    <div class="sec" style="top:655px">Hotkeys</div>
+    <div class="lab" style="top:740px">Tighten</div><div class="key" style="top:720px">F1</div>
+    <div class="lab" style="top:838px">Weaken</div><div class="key" style="top:818px">F2</div>
+    <div class="lab" style="top:934px">Disable</div><div class="key" style="top:917px">End</div>
+    <div class="rule" style="top:1034px"></div>
+    <div class="foot" style="left:46px">INSERT to hide</div>
+    <div class="foot" style="right:46px;color:#c6c3cc">welcome, <span style="color:#f1eef4">LCKYLucky</span></div>
+  </div></div>
+
+  <img class="sledge" src="img/sledge.png">
+
+  <div class="t"><span class="back">UNLOCK ALL</span><span class="face">UNLOCK ALL</span><span class="shine">UNLOCK ALL</span></div>
+
+  <div class="vig"></div>
+</div>
+<script>
+// Past the menu's right edge only the hammer and his arms come out: below them he is hidden behind that edge,
+// measured from the turned panel's corners.
+function clipSledge() {
+  const f = document.getElementById('thumb').getBoundingClientRect();
+  const c = [...document.querySelectorAll('.c')].map((e) => { const r = e.getBoundingClientRect(); return [r.left - f.left, r.top - f.top]; });
+  const [tr, br] = [c[1], c[2]];
+  const xr = (y) => tr[0] + (br[0] - tr[0]) * (y - tr[1]) / (br[1] - tr[1]);
+  const cut = 975;
+  const s = document.querySelector('.sledge'), ox = s.offsetLeft, oy = s.offsetTop;
+  const p = [[-1000, -1000], [3000, -1000], [3000, cut], [xr(cut), cut], [xr(3000), 3000], [-1000, 3000]]
+    .map(([x, y]) => `${x - ox}px ${y - oy}px`);
+  s.style.clipPath = `polygon(${p.join(',')})`;
+}
+Promise.all([document.fonts.load('900 228px Shoulders'), document.fonts.load('700 38px Jakarta')])
+  .then(() => Promise.all([...document.images].map((i) => i.decode())))
+  .then(() => { clipSledge(); document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
