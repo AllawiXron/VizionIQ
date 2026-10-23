@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ad Reel Engine</title>
+<style>
+  html, body { margin: 0; background: #1f1510; }
+  #viewport { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #e2541b; }
+  body.preview { display: grid; place-items: center; min-height: 100vh; overflow: hidden; }
+  body.preview #viewport { transform: scale(var(--fit)); transform-origin: 50% 50%; cursor: pointer; margin: calc((1920px * var(--fit) - 1920px) / 2) calc((1080px * var(--fit) - 1080px) / 2); }
+</style>
+</head>
+<body>
+<div id="viewport"></div>
+<script>document.documentElement.style.setProperty("--fit", Math.min(innerWidth / 1080, innerHeight / 1920).toFixed(4));</script>
+<script src="engine/vendor/gsap.min.js"></script>
+<script src="engine/vendor/CustomEase.min.js"></script>
+<script src="engine/ease.js"></script>
+<script src="engine/camera.js"></script>
+<script src="engine/master.js"></script>
+<script src="engine/text.js"></script>
+<script src="engine/env.js"></script>
+<script src="engine/exporter.js"></script>
+<script src="reel/sound.js"></script>
+<script src="reel/reel.js"></script>
+</body>
+</html>
