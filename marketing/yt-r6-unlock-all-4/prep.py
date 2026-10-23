@@ -1,4 +1,4 @@
-"""Builds the layers in img/ from the poster art in src/.
+"""Builds Sledge (img/sledge.png) from the poster art in src/.
 The cut-out mask (src/sledge-mask.png) is kept, so this runs on Pillow, numpy, scipy and OpenCV.
 python prep.py"""
 import cv2
@@ -21,29 +21,6 @@ def screen(base, light):
 art = arr(Image.open('src/sledge-poster.jpg').convert('RGB'))
 A = arr(Image.open('src/sledge-mask.png').convert('L'))
 H, W = A.shape
-
-# Background: the poster's yellow with Sledge painted out. The hole is filled from the clean yellow around it only
-# (no dark streaks pulled in), then grain at the strength measured on the poster itself.
-hole = ndi.binary_dilation(A > .05, iterations=80)          # wide enough to take the poster's light halo with him
-lum = art.mean(2)
-valid = (~hole) & (lum > .42)
-# diffuse the known yellow into the hole at 1/8 size, then bring it back up
-f = 8
-sv = cv2.resize(valid.astype(np.float32), (W // f, H // f), interpolation=cv2.INTER_AREA) > .99
-sc = cv2.resize(art, (W // f, H // f), interpolation=cv2.INTER_AREA)
-fl = np.where(sv[..., None], sc, sc[sv].mean(0))
-for _ in range(400):
-    fl = np.where(sv[..., None], sc, blur(fl, 2))
-fill = blur(cv2.resize(fl, (W, H), interpolation=cv2.INTER_CUBIC), 4)
-patch = art[300:650, 1760:1990]                              # clean yellow, right edge of the poster
-amp = float((patch - blur(patch, 2)).std())
-rng = np.random.default_rng(3)
-grain = blur(rng.normal(0, 1, (H, W)).astype(np.float32), .6)
-fill = np.clip(fill + grain[..., None] * amp * 1.6, 0, 1)
-m = blur(hole.astype(np.float32), 24)[..., None]
-bg = art * (1 - m) + fill * m
-bg = cv2.resize(bg, (1920, 1080), interpolation=cv2.INTER_AREA)
-save(bg, 'img/bg.jpg', quality=93)
 
 # Sledge: a thin yellow edge, the poster's own yellow, so the navy figure stays apart from the dark menu behind him.
 # Strongest on top and on the side facing the swing (his left, our left).
