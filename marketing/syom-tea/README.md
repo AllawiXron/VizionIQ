@@ -10,8 +10,10 @@ Session/photos- New pack/`.
 ## The product
 - Syom Tea, a herbal tea for appetite control and safe weight loss. The page sells this one product only.
 - Just relaunched in a new green pouch (the old pack is in `photos- old pack`, don't use it in the ads).
-- Ingredients from the back of the pouch (DSC05045): شاي سيجاك الكوري، بتلات الورد، شاي نوكتشا
-  (check the spelling against the pouch photo before using it in an ad).
+- Back of the pouch (DSC05045): Korean Sejak Green Tea, Rosa Petals, Nokcha Tea (in Arabic: شاي سيجاك الكوري
+  الأخضر، بتلات الورد، شاي نوكتشا). About 60 cups a pouch, 3.33 g a cup, a teaspoon in boiling water, steep a few
+  minutes. The label says Made in China, so say Korean tea or Korean blend, not made in Korea. The pouch itself
+  makes no weight-loss claim; it sells calm and taste.
 - The pouch says 2 kcal per cup; the client's old copy said zero calories. The client doesn't want calories
   mentioned in the ads at all.
 - No lab test or registration certificate, so no "no side effects" or "100% safe" claims. Lead with natural
