@@ -102,8 +102,9 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   128 <pass> 228` for shadow, back and front, `python3 compose.py 228` (plate-228.png, 1536x1920), then
   `node render.cjs adD/ad-post.html && python3 adD/grade.py out/syom-adD-post.png out/syom-adD-post.png`.
 - Client notes on ad D (23 Oct): drop the line about chemical products; set اشربي سيوم and وادخلي عالم الرشاقة من
-  اليوم as two bigger lines (عالم stays with الرشاقة); move 100% أعشاب كورية طبيعية elsewhere (now under the logo);
+  اليوم as two bigger lines (عالم stays with الرشاقة); move 100% أعشاب كورية طبيعية elsewhere (the client then suggested beside the pouch, where it now sits);
   the shoot photo of the pouch looked tired and leaned back, so the pouch is now the brand's own doypack mockup
   (8- Mockups/Doypack_Mockup_final1.png) facing the camera. The two other mockups (Untitled-2, freepik_edit) look
   generated and stay out. tape.py solves the camera to BX, BY, PH and writes cut/camera.json; compose.py reads it
   for the table's perspective and where the pouch goes.
+  The client left the angle to the user: straight on, so the whole print faces the reader.
