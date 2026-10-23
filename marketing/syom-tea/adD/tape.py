@@ -113,11 +113,11 @@ ctrl = []   # world (x, y, z, roll)
 for u, v in LEAD:
     q = on_table(u, v)
     ctrl.append((q.x, q.y, 0.0003, 0))
-A_, B_, CX_ = 0.182, 0.098, -0.030       # centred a little left so the right side stays in frame
+A_, B_, CX_ = 0.156, 0.072, 0.006        # snug round the 20 x 7 cm base
 for k in range(0, 24):
     deg = 222 + k * 17.0                             # 222 .. 613 degrees: front left, front, right, back, left, and across the start
     th = math.radians(deg)
-    r = 1 + 0.09 * (deg - 222) / 391 + 0.035 * math.sin(2.3 * th + 0.8)
+    r = 1 + 0.06 * (deg - 222) / 391 + 0.035 * math.sin(2.3 * th + 0.8)
     x, y = CX_ + A_ * r * math.cos(th), B_ * r * math.sin(th)
     z = 0.0003 + (0.0007 if deg > 560 else 0)        # the second pass lies on top of the first
     roll = 0.22 * math.sin(math.radians(deg - 222) * 2.2) if deg > 590 else 0
@@ -142,9 +142,6 @@ def catmull(pts, step=0.0025):
 
 print('CTRL', [tuple(round(c) for c in px(Vector(p[:3]))) for p in ctrl])
 path = catmull(ctrl)
-_Mi = M.inverted()
-_cross = [px(path[i][0]) for i in range(1, len(path)) if ((_Mi @ path[i][0]).y > 0) != ((_Mi @ path[i - 1][0]).y > 0)]
-print('SPLIT', [tuple(round(c) for c in v) for v in _cross])
 bm = bmesh.new(); uvl = bm.loops.layers.uv.new('UVMap')
 rows, L, prev = [], 0.0, None
 for i, (q, roll) in enumerate(path):
@@ -155,8 +152,13 @@ for i, (q, roll) in enumerate(path):
         L += (q - prev).length
     prev = q
     rows.append((bm.verts.new(q - side * TW / 2), bm.verts.new(q + side * TW / 2), L))
-Minv = M.inverted()
-behind = [(Minv @ q).y > 0.0 for q, _ in path]       # the half of the loop on the far side of the pouch
+# the back half runs from the loop's rightmost point to its leftmost, as seen by the camera: there the tape lies on
+# the table furthest from the pouch's outline, so the two halves meet in the open
+_x = [px(q).x for q, _ in path]
+_n = len(path)
+i_r = max(range(_n // 4, 3 * _n // 4), key=lambda i: _x[i])
+i_l = min(range(i_r, _n), key=lambda i: _x[i])
+behind = [i_r < i < i_l for i in range(_n)]
 for i, (a, b) in enumerate(zip(rows, rows[1:])):
     back = behind[i] or behind[i + 1]
     front = not (behind[i] and behind[i + 1])
