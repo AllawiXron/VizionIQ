@@ -30,6 +30,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   (staging, light, type layout) and wait for the user's pick before building; then build it as a grounded Photoshop
   studio composite (real surface, three shadows per object, layered lit background, rim light, asymmetric brand
   type, one final grade with grain), never a web layout.
+- Check before sending, every time (23 Oct): zoom into every place where things meet (product base on the
+  surface, cut-out edges, shadows, props overlapping) at 2x and fix halos, white edges, gaps, floating objects
+  and stray marks before the user sees the image. The user should never have to point them out.
 - Design effort (22 Oct): a photo with a text block on it looks lazy to the user. Each slide needs real design work:
   objects cut from big licensed photos and lit with real shadows, a colour world per subject, huge type the object
   overlaps, a visual idea (e.g. the logo's bite cut out of a real apple), and a different composition per slide

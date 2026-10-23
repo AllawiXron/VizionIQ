@@ -29,7 +29,7 @@ def darken(dst, amount):
 
 
 # Blender writes its own notes into the PNGs it renders: keep only the pixels
-for f in ('cut/tape.png', 'cut/tape-shadow.png'):
+for f in ('cut/tape.png', 'cut/tape-shadow.png', 'cut/tape-full.png'):
     im = Image.open(f).convert('RGBA')
     Image.frombytes('RGBA', im.size, im.tobytes()).save(f, optimize=True)
 
@@ -105,15 +105,32 @@ prgb = np.clip(prgb * np.array([1.05, 1.0, 0.90]) * 0.93, 0, 1)
 # the bottom fold still carries the white sweep it was shot on: take it down into the table's shade
 fold = np.clip((np.linspace(0, 1, ph)[:, None] - 0.905) / 0.07, 0, 1)
 prgb = prgb * (1 - fold[..., None] * 0.55) + np.array([0.10, 0.07, 0.05]) * fold[..., None] * 0.55
+# pale, grey pixels in the bottom tenth are the sweep seen through the gusset gap: make them the shade under the fold
+phsv = cv2.cvtColor((np.clip(prgb, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
+gap = (phsv[..., 2] > 95) & (phsv[..., 1] < 70) & (np.linspace(0, 1, ph)[:, None] > 0.90) & (np.linspace(0, 1, pw)[None, :] < 0.30)
+gap = cv2.GaussianBlur(cv2.dilate(gap.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(np.float32), (0, 0), 2)
+prgb = prgb * (1 - gap[..., None]) + np.array([0.05, 0.035, 0.025]) * gap[..., None]
 # key light from the left warms the lit side; the right edge picks up the warm wall light as a rim
 gx = np.linspace(0, 1, pw)[None, :]
 prgb = prgb * (1 + 0.10 * (1 - gx)[..., None] * np.array([1.0, 0.9, 0.7]))
 edge = np.clip(pa - cv2.erode(pa, np.ones((9, 9), np.uint8)), 0, 1)
 # the shadow-side edge still carries a sliver of the white sweep: take it down into the room's green shade
 spill = cv2.GaussianBlur(edge, (0, 0), 2) * np.clip((0.6 - gx) / 0.6, 0, 1)
-prgb = prgb * (1 - spill[..., None] * 0.6) + np.array([0.02, 0.10, 0.08]) * spill[..., None] * 0.6
-edge = cv2.GaussianBlur(edge, (0, 0), 3) * np.clip((gx - 0.55) / 0.45, 0, 1) * (np.linspace(0.5, 1, ph)[:, None])
-prgb = np.clip(prgb + edge[..., None] * np.array([0.55, 0.40, 0.22]) * 0.55, 0, 1)
+# and near the base the whole outline (both sides) is sweep-white: take it into the table's shade
+lowrows = np.clip((np.linspace(0, 1, ph)[:, None] - 0.80) / 0.08, 0, 1)
+lowrows = np.maximum(lowrows, 0.75 * ((gx < 0.12) | (gx > 0.9)))   # the side edges carry it all the way up
+spill = np.maximum(spill, cv2.GaussianBlur(np.clip(pa - cv2.erode(pa, np.ones((15, 15), np.uint8)), 0, 1), (0, 0), 3) * lowrows)
+prgb = prgb * (1 - spill[..., None] * 0.7) + np.array([0.04, 0.07, 0.06]) * spill[..., None] * 0.7
+# any pale grey left right on the outline is the sweep, not the foil: fill it from the foil just inside
+ehsv = cv2.cvtColor((np.clip(prgb, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
+rim_zone = np.clip(pa - cv2.erode(pa, np.ones((11, 11), np.uint8)), 0, 1) > 0.02
+pale = ((ehsv[..., 2] > 135) & (ehsv[..., 1] < 70) & rim_zone).astype(np.uint8)
+pale = cv2.dilate(pale, np.ones((3, 3), np.uint8))
+filled = cv2.inpaint((np.clip(prgb, 0, 1) * 255).astype(np.uint8), pale, 7, cv2.INPAINT_TELEA).astype(np.float32) / 255
+pm = cv2.GaussianBlur(pale.astype(np.float32), (0, 0), 1.0)[..., None]
+prgb = prgb * (1 - pm) + filled * pm
+edge = cv2.GaussianBlur(edge, (0, 0), 3) * np.clip((gx - 0.55) / 0.45, 0, 1) * (np.linspace(0.5, 1, ph)[:, None]) * np.clip((0.95 - np.linspace(0, 1, ph)[:, None]) / 0.12, 0, 1)
+prgb = np.clip(prgb + edge[..., None] * np.array([0.55, 0.40, 0.22]) * 0.35, 0, 1)
 # contact shadow: tight and dark right under the base
 contact = np.zeros((H, W), np.float32)
 base_rows = np.zeros_like(pa); base_rows[int(ph * 0.93):] = 1
@@ -123,18 +140,33 @@ over_c[ys, xs] = pa * base_rows
 contact = cv2.GaussianBlur(over_c, (0, 0), 3)
 darken(img, contact * 0.85)
 over(img, prgb, pa, px, py)
+pouch_canvas = np.zeros((H, W, 3), np.float32)
+over(pouch_canvas, np.ones((ph, pw, 3), np.float32), pa, px, py)
+pouch_canvas = pouch_canvas[..., 0]
 
 # ---------- tape ----------
-over(img, np.clip(to[..., :3] * np.array([1.08, 1.02, 0.9]), 0, 1), to[..., 3])
+# the stand-in box doesn't follow the photo's outline exactly, so take what it hid and give back the parts that
+# fall outside the real pouch
+tf = rgba('cut/tape-full.png')
+behind = np.clip(tf[..., 3] - to[..., 3], 0, 1) * (1 - pouch_canvas)
+ta = np.clip(to[..., 3] + behind, 0, 1)
+trgb = np.where(to[..., 3:4] > 0.02, to[..., :3], tf[..., :3])
+# what the stand-in hid sat in the pouch's own shadow
+trgb = trgb * (1 - (behind / np.maximum(ta, 1e-3))[..., None] * 0.55)
+over(img, np.clip(trgb * np.array([1.08, 1.02, 0.9]), 0, 1), ta)
 
 # ---------- loose tea and rose petals spilled over the base and the tape ----------
 hb = Image.open('cut/herbs.png')
 hw = 430
 hh = round(hb.height * hw / hb.width)
 hb = np.asarray(hb.resize((hw, hh), Image.LANCZOS)).astype(np.float32) / 255
-hx, hy = 690, 1574
+hx, hy = 690, 1598
 hrgb = np.clip(hb[..., :3] * np.array([1.04, 0.98, 0.86]) * 0.92, 0, 1)
-ha = hb[..., 3]
+ha = hb[..., 3].copy()
+hhsv = cv2.cvtColor((hb[..., :3] * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
+sliver = (hhsv[..., 2] < 80) & ((hhsv[..., 0] > 75) & (hhsv[..., 0] < 125))      # dark blue-teal: the pouch, not leaves
+ha *= 1 - cv2.GaussianBlur(sliver.astype(np.float32), (0, 0), 1.5)
+ha *= np.clip(np.linspace(-0.25, 3.5, hh), 0, 1)[:, None]                       # the top of the spill thins out
 hsh = np.zeros((H, W, 3), np.float32)
 over(hsh, np.ones((hh, hw, 3), np.float32), ha, hx + 4, hy + 5)
 hsh = hsh[..., 0]

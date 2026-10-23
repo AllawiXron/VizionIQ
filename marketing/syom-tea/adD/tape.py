@@ -1,5 +1,5 @@
 # The tailor's tape for ad D, rendered alone so it can be laid into the photo composite:
-#   blender -b -P tape.py -- <out.png> [samples] [proxy|tapeonly]
+#   blender -b -P tape.py -- <out.png> [samples] [proxy|tapeonly|full]
 # The camera is solved so the pouch base centre lands at (700, 1560) and the pouch stands about 900 px tall.
 # A box stands where the pouch photo goes: it hides the tape behind the pouch and throws the pouch's shadow onto a
 # shadow catcher, so the PNG holds the tape plus the shadows of tape and pouch on the table. With "proxy" the box
@@ -11,7 +11,8 @@ argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 OUT = os.path.abspath(argv[0] if argv else 'cut/tape.png')
 SAMPLES = int(argv[1]) if len(argv) > 1 else 128
 PROXY = len(argv) > 2 and argv[2] == 'proxy'
-NOFLOOR = len(argv) > 2 and argv[2] == 'tapeonly'   # the tape without the shadow catcher, to split tape from shadows
+NOFLOOR = len(argv) > 2 and argv[2] in ('tapeonly', 'full')   # the tape without the shadow catcher, to split tape from shadows
+FULL = len(argv) > 2 and argv[2] == 'full'   # no stand-in either: the whole tape, cut against the real pouch photo later
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -41,6 +42,8 @@ if PROXY:
 else:
     ho = nt.nodes.new('ShaderNodeHoldout'); nt.links.new(ho.outputs[0], out.inputs['Surface'])
 box.data.materials.append(m)
+if FULL:
+    box.hide_render = True
 
 bpy.ops.mesh.primitive_plane_add(size=6, location=(0, 0, 0))
 floor = bpy.context.object; floor.name = 'Table'
@@ -149,7 +152,7 @@ p = m.node_tree.nodes['Principled BSDF']
 tt = m.node_tree.nodes.new('ShaderNodeTexImage')
 tt.image = bpy.data.images.load(os.path.join(HERE, '..', 'adB', 'tex', 'tape.png'))
 m.node_tree.links.new(tt.outputs['Color'], p.inputs['Base Color'])
-p.inputs['Roughness'].default_value = 0.7; p.inputs['Sheen Weight'].default_value = 0.4
+p.inputs['Roughness'].default_value = 0.7; p.inputs['Sheen Weight'].default_value = 0.08
 tape.data.materials.append(m)
 # the brass cap on the end that lies in front
 end_q, end_t = path[-1][0], (path[-1][0] - path[-6][0]).normalized()
