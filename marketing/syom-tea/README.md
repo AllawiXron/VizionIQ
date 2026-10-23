@@ -112,3 +112,5 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   question and its answer sit together, the left side keeps the 100% and the call to action) and the pouch fully
   straight. cut.py warps the mockup's front panel square to the camera (cut/pouch-straight.png); the stand-in faces
   the camera (-6 degrees) and the loop starts in front so the tape crosses itself on the open table.
+- Ad 1 approved by the client (23 Oct): out/syom-adD-story.png and out/syom-adD-post.png, no more changes. The other
+  four ads follow the same scene and look, built from his copywriter's text when it comes.
