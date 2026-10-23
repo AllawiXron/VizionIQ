@@ -1,5 +1,5 @@
 # The tailor's tape for ad D, rendered alone so it can be laid into the photo composite:
-#   blender -b -P tape.py -- <out.png> [samples] [proxy|shadow|back|front]
+#   blender -b -P tape.py -- <out.png> [samples] [proxy|shadow|back|front] [extra px each side]
 # The camera is solved so the pouch base centre lands at (700, 1560) and the pouch stands about 900 px tall.
 # A box stands where the pouch photo goes: it hides the tape behind the pouch and throws the pouch's shadow onto a
 # shadow catcher, so the PNG holds the tape plus the shadows of tape and pouch on the table. With "proxy" the box
@@ -214,5 +214,8 @@ for k in dir(sc.render):
         setattr(sc.render, k, False)
 sc.render.image_settings.file_format = 'PNG'; sc.render.image_settings.color_mode = 'RGBA'
 sc.view_settings.view_transform = 'AgX'; sc.view_settings.look = 'AgX - Medium High Contrast'
+# a wider frame for the feed post: the camera fits the 1920 px height, so widening only adds room at the sides
+EXT = int(argv[3]) if len(argv) > 3 else 0
+sc.render.resolution_x = 1080 + 2 * EXT
 sc.render.filepath = OUT
 bpy.ops.render.render(write_still=True)

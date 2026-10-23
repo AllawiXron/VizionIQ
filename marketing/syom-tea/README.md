@@ -98,3 +98,6 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   The tape is one loose loop round the pouch's foot, wider than its base, as if it slipped off. It renders in two
   halves: the back half goes under the pouch photo (the photo's outline hides it) and the front half over it, split
   where the loop lies on the table beside the pouch, so it never seems to pass through the pouch.
+  Feed post (4:5): the same scene framed 228 px wider on each side, `blender -b -P tape.py -- cut/tape-<pass>-228.png
+  128 <pass> 228` for shadow, back and front, `python3 compose.py 228` (plate-228.png, 1536x1920), then
+  `node render.cjs adD/ad-post.html && python3 adD/grade.py out/syom-adD-post.png out/syom-adD-post.png`.

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Syom ad D post</title>
+<style>
+  @font-face { font-family: Lama; font-weight: 900; src: url('../files/brand/3- Fonts/LamaSans-Black.ttf'); }
+  @font-face { font-family: Lama; font-weight: 700; src: url('../files/brand/3- Fonts/LamaSans-Bold.ttf'); }
+  @font-face { font-family: Lama; font-weight: 500; src: url('../files/brand/3- Fonts/LamaSans-Medium.ttf'); }
+  :root { --lily: #ffebea; --gold: #e8b06f; }
+  body { margin: 0; background: #222; }
+  .f { position: relative; overflow: hidden; font-family: Lama; font-synthesis: none; color: var(--lily); }
+  .f > * { position: absolute; margin: 0; }
+  /* the same scene as the Story, framed wider (plate-228.png, 1536x1920) and set at 1080x1350 */
+  #syom-adD-post { width: 1080px; height: 1350px; }
+  .plate { inset: 0; width: 100%; height: 100%; }
+
+  .logo { left: 46px; top: 54px; width: 176px; }
+  .head { right: 44px; top: 42px; font-weight: 900; font-size: 150px; line-height: 1.03; letter-spacing: -2px; text-align: right; }
+  .head span { display: block; white-space: nowrap; }
+
+  .col { right: 668px; top: 486px; width: 330px; }
+  .col > * { margin: 0; }
+  .q { font-weight: 700; font-size: 36px; line-height: 1.24; }
+  .b { margin-top: 14px !important; font-weight: 500; font-size: 27px; line-height: 1.35; opacity: .9; }
+  .herb { margin-top: 24px !important; font-weight: 700; font-size: 26px; line-height: 1.25; }
+  .herb b { display: block; font-weight: 900; font-size: 62px; line-height: 1; color: var(--gold); }
+
+  .cta { right: 668px; top: 952px; font-weight: 900; font-size: 34px; line-height: 1.25; white-space: nowrap; }
+  .cta::before { content: ''; display: block; width: 60px; height: 3px; margin: 0 0 14px auto; background: var(--gold); }
+</style>
+</head>
+<body>
+<div class="f" id="syom-adD-post">
+  <img class="plate" src="plate-228.png" alt="">
+  <img class="logo" src="logo.svg" alt="">
+  <p class="head"><span>وزنج</span><span>مضايقج؟</span></p>
+  <div class="col">
+    <p class="q">وتخافين من المنتجات الكيميائية؟</p>
+    <p class="b">اشربي سيوم وادخلي عالم الرشاقة من اليوم</p>
+    <p class="herb"><b>100%</b>أعشاب كورية طبيعية</p>
+  </div>
+  <p class="cta">راسلينا وخلي<br>الباقي على سيوم</p>
+</div>
+<script>document.fonts.ready.then(() => setTimeout(() => (document.body.dataset.ready = '1'), 300));</script>
+</body>
+</html>

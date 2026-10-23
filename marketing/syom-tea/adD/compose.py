@@ -1,9 +1,15 @@
 # Ad D photo plate: builds plate.png (1080x1920) from the cut-outs and the tape render, layer by layer.
+#   python3 compose.py            -> plate.png, the Story
+#   python3 compose.py 228        -> plate-228.png, the same scene with the frame 228 px wider on each side
+#                                    (1536x1920 = 4:5, for the feed post; tape renders from tape.py ... 228)
 # Needs cut/ (cut.py, tape.py), ../adB/tex (prep.py and fetch-textures.sh).
+import sys
 import numpy as np, cv2
 from PIL import Image
 
-W, H = 1080, 1920
+OFF = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+SUF = f'-{OFF}' if OFF else ''
+W, H = 1080 + 2 * OFF, 1920
 TEX = '../adB/tex/'
 rng = np.random.default_rng(7)
 
@@ -29,11 +35,12 @@ def darken(dst, amount):
 
 
 # Blender writes its own notes into the PNGs it renders: keep only the pixels
-for f in ('cut/tape-shadow.png', 'cut/tape-back.png', 'cut/tape-front.png'):
+for f in (f'cut/tape-shadow{SUF}.png', f'cut/tape-back{SUF}.png', f'cut/tape-front{SUF}.png'):
     im = Image.open(f).convert('RGBA')
     Image.frombytes('RGBA', im.size, im.tobytes()).save(f, optimize=True)
 
 yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+xx -= OFF                                        # x in the Story's frame, so every position below stays as it was
 
 # the wall meets the table along the line the tape render's camera gives
 def wall_line(x):
@@ -44,7 +51,7 @@ wall_mask = (yy < wall_line(xx)).astype(np.float32)
 # ---------- wall: plaster in the brand green, relief lit from the left ----------
 nor = np.asarray(Image.open(TEX + 'plastered_wall_02_nor_gl.jpg').convert('RGB')).astype(np.float32) / 127.5 - 1
 nor = cv2.resize(nor, (900, 900), interpolation=cv2.INTER_AREA)
-nor = np.tile(nor, (3, 2, 1))[:H, :W]
+nor = np.tile(nor, (3, 3, 1))[:H, :W]
 relief = 1 + 0.55 * (nor[..., 0] * -0.55 + nor[..., 1] * 0.25)
 green = np.array([1, 77, 64], np.float32) / 255
 wall = green[None, None] * relief[..., None]
@@ -63,6 +70,7 @@ mos = mos[:mh, :mw]
 src = np.float32([[0, mh], [mw, mh], [mw, 0], [0, 0]])
 dst = np.float32([[-6790.6, 3266.6], [6376.9, 2291.4], [2581.2, 1256.0], [-1507.5, 1350.4]])
 Hm = cv2.getPerspectiveTransform(src, dst)
+Hm = np.float32([[1, 0, OFF], [0, 1, 0], [0, 0, 1]]) @ Hm
 table = cv2.warpPerspective(mos, Hm, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
 table = table ** 1.35 * np.array([0.66, 0.50, 0.38]) * 1.15     # oiled, darker, warmer
 # window light from the left across the table, strongest round the pouch, the front edge falling into shade
@@ -87,7 +95,7 @@ ao = np.exp(-(((xx - 690) / 380) ** 2 + ((yy - 1590) / 95) ** 2))
 darken(img, cv2.GaussianBlur(ao, (0, 0), 30) * 0.42)
 
 # ---------- cast shadows of pouch and tape, from the render (tape+shadow minus tape) ----------
-ts = rgba('cut/tape-shadow.png'); tb = rgba('cut/tape-back.png'); tfr = rgba('cut/tape-front.png')
+ts = rgba(f'cut/tape-shadow{SUF}.png'); tb = rgba(f'cut/tape-back{SUF}.png'); tfr = rgba(f'cut/tape-front{SUF}.png')
 sh = np.clip(ts[..., 3] - np.maximum(tb[..., 3], tfr[..., 3]), 0, 1)
 sh = cv2.GaussianBlur(sh, (0, 0), 2.5)
 darken(img, sh * 0.62 * (1 - wall_mask))
@@ -99,7 +107,7 @@ po = Image.open('cut/pouch.png')
 S_ = 0.3962
 ph, pw = round(po.height * S_), round(po.width * S_)
 po = np.asarray(po.resize((pw, ph), Image.LANCZOS)).astype(np.float32) / 255
-px, py = 529 - round(300 * S_), 1637 - round(2465 * S_)
+px, py = OFF + 529 - round(300 * S_), 1637 - round(2465 * S_)
 prgb, pa = po[..., :3], po[..., 3]
 prgb = np.clip(prgb * np.array([1.05, 1.0, 0.90]) * 0.93, 0, 1)
 # the bottom fold still carries the white sweep it was shot on: take it down into the table's shade
@@ -165,7 +173,7 @@ hb = Image.open('cut/herbs.png')
 hw = 400
 hh = round(hb.height * hw / hb.width)
 hb = np.asarray(hb.resize((hw, hh), Image.LANCZOS)).astype(np.float32) / 255
-hx, hy = 735, 1688
+hx, hy = OFF + 735, 1688
 hrgb = np.clip(hb[..., :3] * np.array([1.04, 0.98, 0.86]) * 0.92, 0, 1)
 ha = hb[..., 3].copy()
 hhsv = cv2.cvtColor((hb[..., :3] * 255).astype(np.uint8), cv2.COLOR_RGB2HSV).astype(np.float32)
@@ -185,7 +193,7 @@ over(img, hrgb, ha, hx, hy)
 sm = hb[:, :int(hw * 0.42)]
 sm = cv2.resize(sm, (int(sm.shape[1] * 0.85), int(sm.shape[0] * 0.85)), interpolation=cv2.INTER_AREA).copy()
 sm[..., 3] *= np.clip(np.linspace(1.6, -0.2, sm.shape[1]), 0, 1)[None, :]   # thin out toward the cut edge
-sx, sy = 455, 1690
+sx, sy = OFF + 455, 1690
 ssh = np.zeros((H, W, 3), np.float32)
 over(ssh, np.ones(sm.shape[:2] + (3,), np.float32), sm[..., 3], sx + 4, sy + 5)
 darken(img, cv2.GaussianBlur(ssh[..., 0], (0, 0), 3) * 0.6)
@@ -195,5 +203,5 @@ over(img, np.clip(sm[..., :3] * np.array([1.04, 0.98, 0.86]) * 0.9, 0, 1), sm[..
 r = np.sqrt(((xx - 600) / 820) ** 2 + ((yy - 1150) / 1250) ** 2)
 darken(img, np.clip((r - 0.62) / 0.6, 0, 1) ** 1.6 * 0.38)
 
-Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8)).save('plate.png', optimize=True)
+Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8)).save(f'plate{SUF}.png', optimize=True)
 print('ok')
