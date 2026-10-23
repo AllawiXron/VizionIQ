@@ -16,12 +16,11 @@ Upload `out/r6-unlock-all.jpg` (YouTube takes thumbnails up to 2 MB); `out/r6-un
    in front of its top edge and the torso hides the Account tab.
 4. Sledge, cut from the key art, sharpened, with a cold rim from the floodlights on his top edges and a warm one from
    the map on the undersides of his arms.
-5. Welding sparks burst off the hammer face, and saw sparks fly in at the bottom right. (A broken padlock flew off the
-   hammer in the first draft; it looked odd and came out.)
-6. `finish.py`: a gentle S curve, cooler shadows and warmer highlights, a little more saturation where there is colour
+5. `finish.py`: a gentle S curve, cooler shadows and warmer highlights, a little more saturation where there is colour
    already, and about 2.5 % mono grain.
 
-No ESP lines: the menu has none, so the thumbnail does not show them.
+No ESP lines: the menu has none, so the thumbnail does not show them. The first draft had a broken padlock and sparks
+flying off the hammer; they didn't say anything about the video and came out.
 
 ## Rebuild
 
@@ -50,6 +49,5 @@ name can go on the hero's gear.
 ## Sources
 
 - Sledge key art, the House map painting and the menu screenshot came with the brief.
-- Brass texture in the title: a padlock photo on rawpixel, CC0 (px936843). Welding sparks: rawpixel, "Welder Sparks", CC0. Saw sparks: StockSnap,
-  "Sparks Saw" (DC05713422), CC0.
+- Brass texture in the title: a padlock photo on rawpixel, CC0 (px936843). 
 - Fonts: Big Shoulders Display and Plus Jakarta Sans, SIL Open Font License, from Google Fonts.

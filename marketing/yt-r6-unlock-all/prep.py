@@ -67,12 +67,4 @@ br = Image.open('src/padlock-photo.jpg').convert('RGB').rotate(-40, center=(cx, 
 br = br.crop((cx - 95, cy - 70, cx + 95, cy + 70)).resize((1900, 700), Image.BICUBIC)
 br.save('img/brass.jpg', quality=92)
 
-# Sparks: crushed to black so they can be screened. Welding burst (origin bottom right of the crop) and saw sparks.
-sw = load('src/sparks-welding.jpg')[0:470, 0:560]
-sw = np.clip((sw - .24) / .64, 0, 1) ** 1.3
-yy, xx = np.mgrid[:470, :560]
-hand = np.clip(np.minimum((xx - 400) / 40, (yy - 235) / 40), 0, 1)       # the welder's glove and torch
-save(sw * (1 - hand[..., None]) * feather(470, 560, 60), 'img/sparks-burst.jpg', quality=92)
-ss = load('src/sparks-saw.jpg')[:, 0:830]
-save(np.clip((ss - .26) / .64, 0, 1) ** 1.3 * feather(640, 830, 120), 'img/sparks-fall.jpg', quality=92)
 print('ok')
