@@ -26,6 +26,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   material (phone screenshots, the user's PSDs and work), not drawn diagrams, and keep clear of the habits in -noAI
   section 2. First tries: `marketing/ig-design-guides` (too many of those habits) and `marketing/ig-design-tips`
   (collage with before/after mock-ups, rejected).
+- Ad posts and social graphics (23 Oct): follow `marketing/ad-composite-rules.md` every time. Pitch 3 concepts
+  (staging, light, type layout) and wait for the user's pick before building; then build it as a grounded Photoshop
+  studio composite (real surface, three shadows per object, layered lit background, rim light, asymmetric brand
+  type, one final grade with grain), never a web layout.
 - Design effort (22 Oct): a photo with a text block on it looks lazy to the user. Each slide needs real design work:
   objects cut from big licensed photos and lit with real shadows, a colour world per subject, huge type the object
   overlaps, a visual idea (e.g. the logo's bite cut out of a real apple), and a different composition per slide
