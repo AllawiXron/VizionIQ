@@ -7,49 +7,44 @@
   @font-face { font-family: Lama; font-weight: 900; src: url('../files/brand/3- Fonts/LamaSans-Black.ttf'); }
   @font-face { font-family: Lama; font-weight: 700; src: url('../files/brand/3- Fonts/LamaSans-Bold.ttf'); }
   @font-face { font-family: Lama; font-weight: 500; src: url('../files/brand/3- Fonts/LamaSans-Medium.ttf'); }
-  :root { --green: #014d40; --gold: #e8b06f; --lily: #ffebea; }
+  :root { --green: #014d40; --gold: #e8b06f; }
   body { margin: 0; background: #222; }
-  .f { position: relative; overflow: hidden; background: var(--green); font-family: Lama; font-synthesis: none; }
-  .f * { box-sizing: border-box; }
+  .f { position: relative; overflow: hidden; font-family: Lama; font-synthesis: none; }
+  .f > * { position: absolute; }
   #syom-ad1-story { width: 1080px; height: 1920px; }
 
-  .logo { position: absolute; top: 262px; right: 52px; width: 220px; }
-  .herb { position: absolute; top: 400px; right: 52px; width: 250px; margin: 0; color: var(--gold); font-weight: 700; font-size: 38px; line-height: 1.3; }
-  .herb::after { content: ''; display: block; width: 90px; height: 2px; margin: 22px 0 0 auto; background: var(--gold); }
+  /* the photo, then everything printed on its surface (multiply keeps the palm and window shadows on the ink),
+     then the pouch from the same frame laid back on top of the headline */
+  .scene, .pouch { inset: 0; width: 100%; height: 100%; }
+  .ink { inset: 0; mix-blend-mode: multiply; color: var(--green); }
+  .ink > * { position: absolute; margin: 0; }
 
-  .drop { position: absolute; left: 76px; top: 0; width: 760px; height: 1173px; overflow: visible; }
-  .pouch { position: absolute; left: 722px; top: 628px; width: 300px; filter: drop-shadow(-16px 30px 26px rgba(0, 22, 17, .55)); }
+  .h1 { right: 50px; top: 232px; font-weight: 900; font-size: 246px; line-height: 1; letter-spacing: -3px; }
+  .h2 { right: 44px; top: 524px; font-weight: 900; font-size: 246px; line-height: 1; letter-spacing: -3px; white-space: nowrap; }
 
-  .head { position: absolute; top: 1150px; right: 52px; left: 52px; color: var(--lily); }
-  .head h1 { margin: 0; font-weight: 900; font-size: 150px; line-height: 1.1; letter-spacing: -1px; }
-  .head .q { margin: 12px 0 0; font-weight: 700; font-size: 47px; color: var(--gold); }
-  .head .b { margin: 6px 0 0; font-weight: 500; font-size: 45px; line-height: 1.35; }
-  .head .cta { margin: 26px 0 0; padding-top: 22px; border-top: 2px solid var(--gold); display: inline-block; font-weight: 700; font-size: 44px; }
+  .copy { right: 50px; top: 830px; width: 400px; }
+  .copy .q { margin: 0; font-weight: 700; font-size: 46px; line-height: 1.22; }
+  .copy .b { margin: 22px 0 0 auto; width: 330px; font-weight: 500; font-size: 38px; line-height: 1.35; }
+  .herb { right: 50px; top: 1206px; width: 290px; font-weight: 700; font-size: 36px; line-height: 1.25; }
+  .herb b { display: block; font-weight: 900; font-size: 86px; line-height: 1; color: var(--gold); }
+  .cta { right: 50px; top: 1430px; font-weight: 900; font-size: 44px; line-height: 1.25; white-space: nowrap; }
+  .cta::before { content: ''; display: block; width: 84px; height: 4px; margin: 0 0 18px auto; background: var(--gold); }
 </style>
 </head>
 <body>
 <div class="f" id="syom-ad1-story">
-  <!-- the brand's drop shape hanging from the top edge as a window onto the shoot photo, its gold line traced around it -->
-  <svg class="drop" viewBox="20 -190 920 1420" preserveAspectRatio="xMidYMin meet">
-    <defs>
-      <clipPath id="dropClip">
-        <path id="dropPath" d="m720.82,240.69c-93.92-122.9-190.83-249.75-204.93-430.9l-71.77-.36c-13.94,181.32-110.95,308.3-204.98,431.37-94.17,123.25-183.13,239.68-183.13,399.07,0,186.04,159.46,426.25,205.34,491.66l13.35,19.06h410.67l14-20.05c23.43-33.47,74.56-109.9,119.93-201.08,45.24-91.18,84.71-197.11,84.71-289.58,0-159.4-88.97-275.88-183.18-399.19Z"/>
-      </clipPath>
-    </defs>
-    <image href="img/tea.jpg" x="20" y="-190" width="920" height="1360" preserveAspectRatio="xMidYMid slice" clip-path="url(#dropClip)"/>
-    <use href="#dropPath" fill="none" stroke="#e8b06f" stroke-width="4" transform="translate(480 480) scale(1.045) translate(-480 -480)"/>
-  </svg>
-
-  <img class="logo" src="../files/brand/1- Logo/svg/Logo Variations - RGB-02.svg" alt="">
-  <p class="herb">أعشاب كورية طبيعية 100%</p>
-  <img class="pouch" src="img/pouch.png" alt="">
-
-  <div class="head">
-    <h1>وزنج مضايقج؟</h1>
-    <p class="q">وتخافين من المنتجات الكيميائية؟</p>
-    <p class="b">اشربي سيوم وادخلي عالم الرشاقة من اليوم</p>
-    <p class="cta">راسلينا وخلي الباقي على سيوم</p>
+  <img class="scene" src="img/scene.jpg" alt="">
+  <div class="ink">
+    <p class="h1">وزنج</p>
+    <p class="h2">مضايقج؟</p>
+    <div class="copy">
+      <p class="q">وتخافين من<br>المنتجات الكيميائية؟</p>
+      <p class="b">اشربي سيوم وادخلي عالم الرشاقة من اليوم</p>
+    </div>
+    <p class="herb"><b>100%</b>أعشاب كورية طبيعية</p>
+    <p class="cta">راسلينا وخلي<br>الباقي على سيوم</p>
   </div>
+  <img class="pouch" src="img/pouch.png" alt="">
 </div>
 <script>document.fonts.ready.then(() => setTimeout(() => (document.body.dataset.ready = '1'), 300));</script>
 </body>

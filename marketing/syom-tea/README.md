@@ -67,3 +67,8 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   overweight?"). Raised with the user before designing.
 - Brand guide look: deep green fields, the gold/apricot tone, Lama Sans Bold, the leaf figure-eight element and
   Pattern 01/02, real tea photos. Shoot: pouch, cups and loose tea on a white sweep (good for clean cut-outs).
+- Ad 1 Story (`ad1/`, 23 Oct): the first try (photo in the brand's drop shape over flat green, text stacked under it)
+  was rejected as basic. Now a flat lay built on DSC05178: the pouch where it was shot, the cup and loose tea from
+  DSC05976 laid beside it, the headline printed on the surface in multiply so the palm and window shadows cross the
+  letters, and the pouch lying on the headline. `cd ad1 && python3 build.py` makes the photo layers; `node render.cjs`
+  renders it.
