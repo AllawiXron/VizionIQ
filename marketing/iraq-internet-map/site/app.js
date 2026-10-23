@@ -7,10 +7,14 @@ const LN4 = Math.log(4), LN200 = Math.log(200), SPAN = LN200 - LN4;
 const RAMP = [[0, [110, 28, 8]], [0.35, [226, 104, 28]], [0.65, [255, 184, 86]], [1, [255, 244, 222]]];
 const MONTHS = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'];
 const DAYS = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+const ORDINAL = ['الأولى', 'الثانية', 'الثالثة', 'الرابعة', 'الخامسة', 'السادسة', 'السابعة', 'الثامنة', 'التاسعة', 'العاشرة', 'الحادية عشرة',
+  'الثانية عشرة', 'الثالثة عشرة', 'الرابعة عشرة', 'الخامسة عشرة', 'السادسة عشرة', 'السابعة عشرة', 'الثامنة عشرة'];
 const NUM = new Intl.NumberFormat('ar-IQ-u-nu-arab', { maximumFractionDigits: 0 });
 const ar = n => NUM.format(Math.round(n));
 const arDigits = s => String(s).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// digits inside a Kufi heading are set in the text face, whose numerals read plainly
+const head = s => esc(s).replace(/[٠-٩0-9]+/g, d => `<span class="n">${d}</span>`);
 
 const speedV = mbps => Math.max(0, Math.min(1, (Math.log(Math.max(mbps, 1)) - LN4) / SPAN));
 function rampRGB(t) {
@@ -21,7 +25,8 @@ function rampRGB(t) {
   }
   return RAMP[RAMP.length - 1][1];
 }
-const speedColour = mbps => `rgb(${rampRGB(speedV(mbps)).join(',')})`;
+// numbers on the page take the colour of their own speed, lifted a little so slow ones stay readable on the dark ground
+const speedColour = mbps => `rgb(${rampRGB(0.18 + 0.82 * speedV(mbps)).join(',')})`;
 
 // Arabic counted nouns: 1, 2, 3 to 10, 11 to 99, and hundreds follow the last two digits
 function counted(n, [one, two, few, many]) {
@@ -34,13 +39,11 @@ function counted(n, [one, two, few, many]) {
   return one;
 }
 const TESTS = ['اختبار', 'اختباران', 'اختبارات', 'اختبارا'];
-const SQUARES = ['مربع', 'مربعان', 'مربعات', 'مربعا'];
-const MORNINGS = ['صباح', 'صباحان', 'صباحات', 'صباحا'];
+const DAYS_N = ['يوم', 'يومان', 'أيام', 'يوما'];
 const nTests = n => `${ar(n)} ${counted(n, TESTS)}`;
-const nSquares = n => `${ar(n)} ${counted(n, SQUARES)}`;
 
 function norm(s) {
-  return String(s).replace(/[\u064B-\u0652\u0640]/g, '')
+  return String(s).replace(/[ً-ْـ]/g, '')
     .replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/ؤ/g, 'و').replace(/ئ/g, 'ي')
     .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g, ' ').trim();
 }
@@ -50,11 +53,12 @@ const bare = s => norm(s).split(' ').map(w => w.replace(/^ال/, '')).join(' ');
 
 const S = { mode: 'f', places: [], govs: [], byId: new Map(), country: null, exams: [], areas: {}, focus: null, pick: null };
 const PERIOD = { f: 'تموز إلى أيلول ٢٠٢٦', m: 'تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦' };
+const KIND = { f: 'إنترنت البيت', m: 'إنترنت الموبايل' };
 const MIN_TESTS = 10;
 const isWide = () => matchMedia('(min-width: 900px)').matches;
 const IRAQ = [[38.8, 29.05], [48.6, 37.4]];
 
-// ---------- map ----------
+// ---------- map style ----------
 
 const lnP = P => ['ln', ['max', ['get', P], 1]];
 const colourExpr = P => ['interpolate', ['linear'], lnP(P),
@@ -87,7 +91,7 @@ function paint(P, C) {
 }
 
 function style(base) {
-  const P = 'f', C = 'a', p = paint(P, C);
+  const P = S.mode, C = P === 'f' ? 'a' : 'b', p = paint(P, C);
   return {
     version: 8,
     sources: {
@@ -116,14 +120,14 @@ function style(base) {
         paint: { 'circle-radius': ['interpolate', ['exponential', 2], ['zoom'], 9, 1.2, 16, 154], 'circle-opacity': 0 } },
       { id: 'focus-mask', type: 'fill', source: 'focus', filter: ['==', ['get', 'role'], 'mask'], paint: { 'fill-color': '#07090d', 'fill-opacity': 0.62 } },
       { id: 'focus-line', type: 'line', source: 'focus', filter: ['==', ['get', 'role'], 'edge'],
-        paint: { 'line-color': 'rgba(255,184,86,0.5)', 'line-width': 1, 'line-dasharray': [1, 0] } },
-      { id: 'pick', type: 'line', source: 'pick', paint: { 'line-color': 'rgba(255,244,222,0.85)', 'line-width': 1.2 } },
+        paint: { 'line-color': 'rgba(255,184,86,0.6)', 'line-width': 1.2 } },
+      { id: 'pick', type: 'line', source: 'pick', paint: { 'line-color': 'rgba(255,244,222,0.9)', 'line-width': 1.4 } },
     ],
   };
 }
 
-// The map comes in three files by zoom. Each is read in pieces where the host answers range requests,
-// and fetched once whole where it does not.
+// ---------- map tiles: three files by zoom, read in pieces where the host allows range requests, whole where not ----------
+
 class TileFile {
   constructor(url) { this.url = url; this.whole = null; }
   getKey() { return this.url; }
@@ -161,44 +165,85 @@ function tileProtocol(base) {
   };
 }
 
-let map;
-function initMap() {
+// ---------- the map: inside the page on phones, beside it on wide screens ----------
+
+const wrap = document.getElementById('mapwrap');
+let map, mapReady;
+function placeMap() {
+  const slot = document.querySelector('#page .mapslot');
+  if (isWide()) { if (wrap.parentNode !== document.body) document.body.appendChild(wrap); wrap.style.display = ''; }
+  else if (slot) { if (wrap.parentNode !== slot) slot.appendChild(wrap); wrap.style.display = ''; }
+  else { wrap.classList.remove('full'); wrap.style.display = 'none'; }
+  if (map) map.resize();
+  return wrap.style.display !== 'none';
+}
+
+function ensureMap() {
+  if (mapReady) return mapReady;
   const base = new URL('.', location.href).href;
   maplibregl.addProtocol('iq', tileProtocol(base));
   map = new maplibregl.Map({
-    container: 'map', style: style(base), bounds: homeBounds(), fitBoundsOptions: { padding: framePadding('home') },
+    container: 'map', style: style(base), bounds: IRAQ, fitBoundsOptions: { padding: framePadding() },
     minZoom: 4.2, maxZoom: 16.5, maxBounds: [[30, 20], [58, 47]], attributionControl: false,
     dragRotate: false, pitchWithRotate: false, renderWorldCopies: false, fadeDuration: 0,
+    cooperativeGestures: !isWide(),
+    locale: {
+      'CooperativeGesturesHandler.MobileHelpText': 'حرك الخريطة بإصبعين',
+      'CooperativeGesturesHandler.WindowsHelpText': 'اضغط Ctrl مع التمرير لتكبير الخريطة',
+      'CooperativeGesturesHandler.MacHelpText': 'اضغط ⌘ مع التمرير لتكبير الخريطة',
+    },
   });
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
-  map.on('move', placeLabels);
+  map.on('move', () => { placeLabels(); placeReadout(); });
   map.on('moveend', () => { chooseLabels(); placeLabels(); placeReadout(); });
-  map.on('move', placeReadout);
   map.on('click', onMapClick);
-  map.on('load', () => { chooseLabels(); placeLabels(); });
+  mapReady = new Promise(res => map.once('load', () => { chooseLabels(); placeLabels(); res(); }));
+  return mapReady;
 }
 
-function frame(bounds, padding, opts = {}) {
-  const cam = map.cameraForBounds(bounds, { padding, maxZoom: opts.maxZoom || 20 });
+function frame(bounds, opts = {}) {
+  const cam = map.cameraForBounds(bounds, { padding: framePadding(), maxZoom: opts.maxZoom || 20 });
   if (!cam) return;
-  if (opts.duration === 0) map.jumpTo(cam); else map.flyTo({ ...cam, duration: opts.duration || 1400, essential: true });
+  if (opts.duration === 0) map.jumpTo(cam); else map.flyTo({ ...cam, duration: opts.duration || 1200, essential: true });
 }
-const homeBounds = () => isWide() ? IRAQ : [[43.1, 30.45], [47.85, 37.15]];
-function framePadding(kind) {
-  const w = innerWidth, h = innerHeight;
-  if (isWide()) return { top: 70, bottom: 60, left: 60, right: 520 };
-  if (kind === 'home') return { top: h * 0.40, bottom: h * 0.16, left: w * 0.30, right: w * 0.12 };
-  return { top: Math.min(230, h * 0.28), bottom: Math.min(250, h * 0.3), left: 24, right: 24 };
+function framePadding() {
+  return isWide() ? { top: 60, bottom: 130, left: 60, right: 60 } : { top: 56, bottom: 104, left: 16, right: 16 };
 }
+
+wrap.querySelector('.mapctl').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || !map) return;
+  const act = b.dataset.act;
+  if (act === 'in') map.zoomIn();
+  else if (act === 'out') map.zoomOut();
+  else if (act === 'all') { frame(S.focus ? S.focusBounds : IRAQ); }
+  else if (act === 'full') {
+    const on = !wrap.classList.contains('full');
+    wrap.classList.toggle('full', on);
+    document.documentElement.style.overflow = on ? 'hidden' : '';
+    b.textContent = on ? 'إغلاق' : 'ملء الشاشة';
+    map.resize();
+    if (map.cooperativeGestures) on ? map.cooperativeGestures.disable() : map.cooperativeGestures.enable();
+  }
+});
+
+// the colour key, drawn from the same scale as the map
+(function legend() {
+  const ticks = [5, 10, 25, 50, 100, 200];
+  const stops = [];
+  for (let i = 0; i <= 10; i++) stops.push(`rgb(${rampRGB(i / 10).join(',')}) ${i * 10}%`);
+  wrap.querySelector('.ramp').style.background = `linear-gradient(to left, ${stops.join(', ')})`;
+  wrap.querySelector('.lv').innerHTML = ticks.map(t => `<span style="left:${(1 - speedV(t)) * 100}%">${ar(t)}</span>`).join('');
+})();
 
 function setMode(m) {
   if (S.mode === m) return;
   S.mode = m;
-  document.querySelectorAll('.modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
-  const P = m, C = m === 'f' ? 'a' : 'b', p = paint(P, C);
-  for (const [id, props] of Object.entries(p)) for (const [k, v] of Object.entries(props)) map.setPaintProperty(id, k, v);
-  for (const id of ['rd-wide', 'rd-glow', 'sq-glow', 'sq-core', 'sq-hit']) map.setFilter(id, has(P));
+  if (map) {
+    const P = m, C = m === 'f' ? 'a' : 'b', p = paint(P, C);
+    for (const [id, props] of Object.entries(p)) for (const [k, v] of Object.entries(props)) map.setPaintProperty(id, k, v);
+    for (const id of ['rd-wide', 'rd-glow', 'sq-glow', 'sq-core', 'sq-hit']) map.setFilter(id, has(P));
+  }
   hideReadout();
   render(false);
 }
@@ -210,8 +255,8 @@ let shown = [];
 const LABEL_RULE = { city: [4.5, 1], town: [8.6, 2], suburb: [11.4, 3], quarter: [11.6, 3], area: [11.8, 3], neighbourhood: [12.6, 4], village: [11.2, 5], hamlet: [12.4, 6] };
 
 function chooseLabels() {
-  if (!map || !S.places.length) return;
-  const z = map.getZoom(), W = innerWidth, H = innerHeight;
+  if (!map || !S.places.length || wrap.style.display === 'none') return;
+  const z = map.getZoom(), W = map.getContainer().clientWidth, H = map.getContainer().clientHeight;
   const cands = [];
   for (const p of S.places) {
     const rule = LABEL_RULE[p.k]; if (!rule || z < rule[0]) continue;
@@ -219,22 +264,21 @@ function chooseLabels() {
     cands.push({ p, pri: rule[1], cls: p.k === 'city' && (p.f && p.f.t > 15000) ? 'big' : '' });
   }
   cands.sort((a, b) => a.pri - b.pri || ((b.p.f || { t: 0 }).t - (a.p.f || { t: 0 }).t));
-  // keep labels out from under the page's own text
-  const taken = [...sheet.querySelectorAll('.hit, .more')].map(el => el.getBoundingClientRect())
-    .filter(r => r.width && r.bottom > 0 && r.top < H).map(r => ({ x0: r.left - 6, x1: r.right + 6, y0: r.top - 6, y1: r.bottom + 6 }));
+  // keep clear of the controls and the colour key
+  const taken = [{ x0: 0, x1: 250, y0: 0, y1: 52 }, { x0: W - 240, x1: W, y0: H - 100, y1: H }];
   const out = [];
   for (const c of cands) {
     if (S.focus && c.p.id === S.focus.id) continue;
     const pt = map.project([c.p.x, c.p.y]);
-    if (pt.x < -40 || pt.x > W + 40 || pt.y < 60 || pt.y > H + 20) continue;
-    const fs = c.cls === 'big' ? 14 : 12.5;
+    if (pt.x < -40 || pt.x > W + 40 || pt.y < 0 || pt.y > H + 20) continue;
+    const fs = c.cls === 'big' ? 14.5 : 13;
     const w = c.p.n.length * fs * 0.52 + 10, h = fs + 8;
     const side = z < 10 ? 1 : 0;                       // 1: set to the left of the light, 0: centred on it
     const cx = side ? pt.x - 9 - w / 2 : pt.x;
     const r = { x0: cx - w / 2, x1: cx + w / 2, y0: pt.y - h / 2, y1: pt.y + h / 2 };
     if (taken.some(t => r.x0 < t.x1 && r.x1 > t.x0 && r.y0 < t.y1 && r.y1 > t.y0)) continue;
     taken.push(r); c.side = side; out.push(c);
-    if (out.length >= 70) break;
+    if (out.length >= 60) break;
   }
   labelBox.textContent = '';
   shown = out.map(c => {
@@ -265,7 +309,6 @@ function quadBounds(q) {
 }
 
 function onMapClick(e) {
-  if (current().startsWith('/exams') || current().startsWith('/about')) return;
   const P = S.mode, C = P === 'f' ? 'a' : 'b';
   if (map.getZoom() < 9) { map.easeTo({ center: e.lngLat, zoom: Math.max(10.5, map.getZoom() + 3), duration: 700 }); return; }
   const r = 6, feats = map.queryRenderedFeatures([[e.point.x - r, e.point.y - r], [e.point.x + r, e.point.y + r]], { layers: ['sq-hit'] });
@@ -287,29 +330,29 @@ function showPick(b) {
   map.getSource('pick').setData({ type: 'FeatureCollection', features: b ? [{ type: 'Feature', properties: {},
     geometry: { type: 'LineString', coordinates: [[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]], [b[0], b[1]]] } }] : [] });
   const p = S.pick;
-  readout.innerHTML = p.empty ? `<span>لا توجد ${S.mode === 'f' ? 'اختبارات' : 'اختبارات موبايل'} في هذا المربع</span>`
-    : `<b style="color:${speedColour(p.v)}">${ar(p.v)}</b><span>ميغابت، من ${nTests(p.n)}</span>`;
+  readout.innerHTML = p.empty ? 'لا توجد اختبارات في هذا المربع'
+    : `هذا المربع <b style="color:${speedColour(p.v)}">${ar(p.v)}</b> ميغابت<br><span class="small">من ${nTests(p.n)}</span>`;
   readout.hidden = false;
   placeReadout();
 }
 function placeReadout() {
   if (!S.pick || readout.hidden) return;
   const pt = map.project(S.pick.lngLat);
-  readout.style.left = pt.x + 'px'; readout.style.top = (pt.y - 6) + 'px';
+  readout.style.left = pt.x + 'px'; readout.style.top = pt.y + 'px';
 }
 function hideReadout() {
   S.pick = null; readout.hidden = true;
   if (map && map.getSource('pick')) map.getSource('pick').setData({ type: 'FeatureCollection', features: [] });
 }
 
-// ---------- focus on an area: the rest of the map held down, as in a darkroom ----------
+// ---------- focus on an area: the rest of the map held down ----------
 
 async function areaOf(p) {
   if (!S.areas[p.g]) S.areas[p.g] = await fetch(`data/areas/${p.g}.json`).then(r => r.json());
   return S.areas[p.g][p.id];
 }
 function setFocus(p, geom) {
-  S.focus = p;
+  S.focus = p; S.focusBounds = boundsOf(geom);
   const world = [[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]];
   const rings = geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates;
   const mask = { type: 'Feature', properties: { role: 'mask' }, geometry: { type: 'Polygon', coordinates: [world, ...rings.map(r => r[0])] } };
@@ -349,8 +392,8 @@ function search(q) {
   return scored.sort((a, b) => b[0] - a[0]).slice(0, 8).map(x => x[1]);
 }
 
-function wireSearch(root) {
-  const input = root.querySelector('input'), list = root.querySelector('.hits');
+function wireSearch() {
+  const input = document.getElementById('q'), list = document.querySelector('#page .hits');
   if (!input) return;
   let sel = -1, results = [];
   const draw = () => {
@@ -358,10 +401,10 @@ function wireSearch(root) {
     results = search(input.value);
     list.classList.add('open');
     list.innerHTML = results.length ? results.map((p, i) => {
-      const st = stat(p), v = st ? st.d : null;
-      return `<a href="${href(p)}" class="${i === sel ? 'sel' : ''}"><b>${esc(p.n)}</b><i>${esc(kindLine(p, true))}</i>` +
-        `<em style="color:${v != null ? speedColour(v) : 'var(--faint)'}">${v != null ? ar(v) : ''}</em></a>`;
-    }).join('') : '<div class="none">لم أجد هذا الاسم. جرب اسم المدينة أو المحافظة.</div>';
+      const st = stat(p);
+      return `<a href="${href(p)}" class="${i === sel ? 'sel' : ''}"><b>${esc(p.n)}</b><i>${esc(kindLine(p))}</i>` +
+        `<em style="color:${st ? speedColour(st.d) : 'var(--faint)'}">${st ? ar(st.d) : '–'}<small>ميغابت</small></em></a>`;
+    }).join('') : '<div class="none">لم أجد هذا الاسم. جرب اسم المدينة أو المحافظة، أو اكتبه بطريقة أخرى.</div>';
   };
   input.addEventListener('input', () => { sel = -1; draw(); });
   input.addEventListener('keydown', e => {
@@ -379,257 +422,299 @@ function stat(p, mode = S.mode) {
   const s = p && p[mode];
   return s && s.t >= MIN_TESTS ? s : null;
 }
-function kindLine(p, short) {
+function kindLine(p) {
   if (p.k === 'gov') return 'محافظة';
   const g = govById(p.g), gn = g ? g.n : '';
-  const inGov = gn ? `محافظة ${gn}` : '';
   switch (p.k) {
-    case 'city': return short ? `مدينة، ${inGov}` : `مدينة في ${inGov}`;
-    case 'town': return short ? `بلدة، ${inGov}` : `بلدة في ${inGov}`;
-    case 'village': case 'hamlet': return p.c ? `قرية قرب ${p.c}، ${gn}` : `قرية في ${inGov}`;
-    default: return p.c ? (p.c === gn ? `حي في ${gn}` : `حي في ${p.c}، ${gn}`) : `حي في ${inGov}`;
+    case 'city': return `مدينة في محافظة ${gn}`;
+    case 'town': return `بلدة في محافظة ${gn}`;
+    case 'village': case 'hamlet': return p.c ? `قرية قرب ${p.c}، محافظة ${gn}` : `قرية في محافظة ${gn}`;
+    default: return p.c && p.c !== gn ? `حي في ${p.c}، محافظة ${gn}` : `حي في ${gn}`;
   }
 }
+const nameIn = p => p.k === 'gov' ? `محافظة ${p.n}` : p.n;
 
-// ---------- the sheet ----------
-
-const sheet = document.getElementById('sheet');
-const modeWord = () => S.mode === 'f' ? 'إنترنت البيوت' : 'إنترنت الموبايل';
-
-function homeHTML() {
-  const c = S.country, st = c[S.mode], h = S.mode === 'f' ? c.h : c.mh;
-  const lede = S.mode === 'f'
-    ? 'أكثر من مليون اختبار سرعة على الإنترنت الثابت بين تموز وأيلول ٢٠٢٦. كل ضوء مربع عرضه نصف كيلومتر، والأسرع أقوى ضوءا.'
-    : 'أكثر من مئتي ألف اختبار سرعة على شبكات الموبايل خلال سنة، من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦. اختبارات الموبايل أقل، لذلك تظهر المدن متقطعة.';
-  const govs = S.govs.filter(g => stat(g)).sort((a, b) => stat(b).d - stat(a).d);
-  const max = Math.max(...govs.map(g => stat(g).d));
-  return `
-  <section class="first">
-    <div class="top hit">
-      <h1 class="h1">كل ضوء هنا<br>سرعة إنترنت</h1>
-      <p class="lede">${lede}</p>
-      <div class="search"><input type="search" placeholder="اكتب اسم منطقتك" aria-label="ابحث عن منطقة" autocomplete="off" enterkeyhint="search"><div class="hits"></div></div>
-      <p class="credit">السرعات من Ookla، والطرق والأحياء من OpenStreetMap</p>
-    </div>
-    <div class="bottom">
-      <div class="figure left hit">
-        <div class="num" style="color:${speedColour(st.d)}">${ar(st.d)}</div>
-        <p class="unit">ميغابت في الثانية، معدل العراق<br>كان ${ar(h[0][0])} في صيف ٢٠١٩</p>
-        <a class="cue" href="#/" data-scroll>المحافظات من الأسرع إلى الأبطأ</a>
-      </div>
-    </div>
-  </section>
-  <div class="more" id="more">
-    <section>
-      <h2>المحافظات</h2>
-      <p class="sub">معدل التنزيل في ${modeWord()}، ${PERIOD[S.mode]}. اضغط على محافظة لترى مدنها وأحياءها.</p>
-      <div class="rank">${govs.map(g => rankRow(g, max)).join('')}</div>
-      <p class="note">حدود المحافظات من geoBoundaries، وفيها حلبجة ما تزال ضمن السليمانية.</p>
-    </section>
-    <section>
-      <a class="teaser" href="#/exams"><h2>صباحات الامتحانات</h2><canvas id="teaser"></canvas>
-      <p>${ar(S.exams.filter(e => e.d.startsWith('2025')).length)} صباحا في ٢٠٢٥ و${ar(S.exams.filter(e => e.d.startsWith('2026')).length)} صباحا في ٢٠٢٦ انقطع فيها الإنترنت عن أغلب العراق.</p></a>
-    </section>
-    <section class="links">
-      <a href="#/about">عن هذه الخريطة ومن أين جاءت الأرقام</a>
-    </section>
-    <p class="foot">فكرة وتصميم @allawi.psd<br>السرعات من Speedtest by Ookla، والطرق والأحياء من مساهمي OpenStreetMap، والانقطاعات من IODA.</p>
-  </div>`;
+// how a number compares: faster, slower, or about the same (within 5%)
+function versus(v, ref) {
+  const r = (v - ref) / ref;
+  return Math.abs(r) < 0.05 ? 'قريبة من' : r > 0 ? 'أسرع من' : 'أبطأ من';
+}
+function percentile(v) {
+  const all = S.places.map(p => stat(p)).filter(Boolean).map(s => s.d);
+  return Math.round(all.filter(d => d < v).length / all.length * 100);
 }
 
-function rankRow(p, max) {
-  const st = stat(p), col = speedColour(st.d);
-  return `<a href="${href(p)}"><span class="nm">${esc(p.n)}</span>` +
-    `<span class="v" style="color:${col}">${ar(st.d)}</span>` +
-    `<i class="tr" style="width:${Math.max(4, st.d / max * 100)}%;background:${col};box-shadow:0 0 8px ${col}"></i></a>`;
+// ---------- pages ----------
+
+const page = document.getElementById('page');
+const foot = `<p class="foot">السرعات من Speedtest by Ookla، والشوارع والأحياء من مساهمي OpenStreetMap، والانقطاعات من IODA.
+  <a href="#/about">من أين جاءت الأرقام</a><br>فكرة وتصميم @allawi.psd</p>`;
+const modesHTML = () => `<div class="modes" role="group" aria-label="نوع الاتصال">
+  <button type="button" data-mode="f" class="${S.mode === 'f' ? 'on' : ''}">إنترنت البيت</button>
+  <button type="button" data-mode="m" class="${S.mode === 'm' ? 'on' : ''}">إنترنت الموبايل</button></div>
+  <p class="modes-hint">${S.mode === 'f' ? 'خطوط الإنترنت الثابتة في البيوت والمحلات، تموز إلى أيلول ٢٠٢٦.' : 'شبكات الموبايل، تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦. اختباراتها أقل، فتظهر الخريطة متقطعة.'}</p>`;
+const tryLinks = () => ['الكرادة', 'المنصور', 'زيونة', 'البصرة', 'أربيل', 'الموصل']
+  .map(n => S.places.find(p => p.n === n && (p.k !== 'village'))).filter(Boolean)
+  .map(p => `<a href="${href(p)}">${esc(p.n)}</a>`).join('');
+
+function rankRows(list, opts = {}) {
+  const max = Math.max(...list.map(p => stat(p).d), 1);
+  return `<div class="rank"><div class="hd"><span>${opts.pos === false ? '' : '#'}</span><span>${opts.head || 'المنطقة'}</span><span></span><span>ميغابت</span></div>` +
+    list.map((p, i) => {
+      const st = stat(p), col = speedColour(st.d);
+      return `<a href="${href(p)}"><span class="pos">${opts.pos === false ? '' : ar(i + 1)}</span>` +
+        `<span class="nm">${esc(p.n)}${opts.kind ? `<small>${esc(kindShort(p))}</small>` : ''}</span>` +
+        `<i class="tr" style="width:${Math.max(3, st.d / max * 100)}%;background:${col}"></i>` +
+        `<span class="v" style="color:${col}">${ar(st.d)}</span></a>`;
+    }).join('') + '</div>';
 }
+const kindShort = p => ({ city: 'مدينة', town: 'بلدة', village: 'قرية', hamlet: 'قرية' })[p.k] || '';
 
-function placeHTML(p) {
-  const st = stat(p), g = p.k === 'gov' ? null : govById(p.g), gs = g && stat(g), cs = stat(S.country);
-  const name = esc(p.n), len = p.n.length;
-  const cls = len > 16 ? 'pname vlong' : len > 10 ? 'pname long' : 'pname';
-  const fallback = !st && S.mode === 'm' ? (gs || cs) : null;
-  const big = st ? `<div class="num xl" style="color:${speedColour(st.d)}">${ar(st.d)}</div><p class="unit">ميغابت في الثانية</p>
-      <p class="basis">معدل التنزيل في ${modeWord()} من ${nTests(st.t)} في ${nSquares(st.q)}، ${PERIOD[S.mode]}</p>`
-    : `<p class="thin">لا تكفي اختبارات ${S.mode === 'm' ? 'الموبايل' : 'إنترنت البيوت'} هنا لرقم أثق به.${fallback ? ` معدل ${g ? 'المحافظة' : 'العراق'} ${ar(fallback.d)} ميغابت.` : ''}</p>`;
-  const compare = `<div class="compare">${g && gs ? `<a href="${href(g)}"><b style="color:${speedColour(gs.d)}">${ar(gs.d)}</b><span>${esc(g.n)}</span></a>` : ''}` +
-    `<a href="#/"><b style="color:${speedColour(cs.d)}">${ar(cs.d)}</b><span>العراق</span></a></div>`;
-
-  const fs = stat(p, 'f');
-  const hist = p.h || [];
-  const hmax = Math.max(...hist.filter(Boolean).map(h => h[0]), 1);
-  const years = hist.map((h, i) => {
-    const y = 2019 + i;
-    if (!h) return `<div><b style="color:var(--faint)">–</b><i style="height:3px;background:var(--line)"></i><span>${arDigits(y)}</span></div>`;
-    const col = speedColour(h[0]);
-    return `<div><b style="color:${col}">${ar(h[0])}</b><i style="height:${Math.max(3, h[0] / hmax * 46)}px;margin-top:${46 - Math.max(3, h[0] / hmax * 46)}px;background:${col};box-shadow:0 0 10px ${col}"></i><span>${arDigits(y)}</span></div>`;
-  }).join('');
-
-  const facts = st ? `<div class="facts"><div><b>${ar(st.u)}</b><span>ميغابت رفع</span></div><div><b>${ar(st.l)}</b><span>ملي ثانية تأخير</span></div>` +
-    `<div><b>${ar(st.t)}</b><span>${counted(st.t, TESTS)}</span></div></div>` : '';
-
-  let list = '';
-  if (p.k === 'gov') {
-    const inGov = S.places.filter(x => x.g === p.id && stat(x)).sort((a, b) => b[S.mode].t - a[S.mode].t).slice(0, 16);
-    const max = Math.max(...inGov.map(x => stat(x).d), 1);
-    if (inGov.length) list = `<section><h2>أكثر مناطقها اختبارا</h2><div class="rank">${inGov.map(x => rankRow(x, max)).join('')}</div></section>`;
-  } else {
-    const near = S.places.filter(x => x !== p && x.g === p.g && stat(x))
-      .map(x => [Math.hypot((x.x - p.x) * 0.84, x.y - p.y), x]).sort((a, b) => a[0] - b[0]).slice(0, 8).map(a => a[1]);
-    const max = Math.max(...near.map(x => stat(x).d), 1);
-    if (near.length) list = `<section><h2>قريب منها</h2><div class="rank">${near.map(x => rankRow(x, max)).join('')}</div></section>`;
-  }
-  const how = p.k === 'gov' ? 'حسبت المعدل من كل المربعات التي يقع مركزها داخل حدود المحافظة.'
-    : p.r ? `حسبت المعدل من المربعات التي تقع ضمن ${arDigits(String(p.r).replace('.', '٫'))} كم من مركز ${p.k === 'city' ? 'المدينة' : p.k === 'town' ? 'البلدة' : p.k === 'village' || p.k === 'hamlet' ? 'القرية' : 'الحي'}، لأن OpenStreetMap لا يرسم حدودها.`
-    : 'حسبت المعدل من المربعات التي يقع مركزها داخل حدودها كما يرسمها OpenStreetMap.';
-
-  return `
-  <section class="first firstp">
-    <div class="top hit">
-      <a class="back" href="#/">العراق</a>
-      <h1 class="${cls}">${name}</h1>
-      <p class="kind">${esc(kindLine(p))}</p>
-    </div>
-    <div class="bottom">
-      <div class="figure left hit">${big}</div>
-      <div class="hit">${compare}</div>
-    </div>
-  </section>
-  <div class="more">
-    <section>
-      <h2>${S.mode === 'f' ? 'تفاصيل' : 'تفاصيل الموبايل'}</h2>
-      ${facts || '<p class="sub">لا أرقام كافية هنا.</p>'}
-    </section>
-    <section>
-      <h2>إنترنت البيوت منذ ٢٠١٩</h2>
-      <p class="sub">معدل التنزيل في صيف كل سنة، من تموز إلى أيلول.${fs ? '' : ' الاختبارات هنا قليلة.'}</p>
-      <div class="years">${years}</div>
-    </section>
-    ${list}
-    <section>
-      <p class="note">${how} الاختبارات أجراها أشخاص بأنفسهم على تطبيق Speedtest، فهي لا تقيس كل بيت، وكل مربع عرضه نصف كيلومتر.</p>
-      <p class="note"><a href="#/about" style="border-bottom:1px solid var(--line)">من أين جاءت الأرقام</a></p>
-    </section>
-  </div>`;
-}
-
-function examsHTML() {
-  const ys = ['2025', '2026'].map(y => S.exams.filter(e => e.d.startsWith(y)));
-  const cap = { 2025: 'من السادسة إلى الثامنة كل مرة', 2026: 'ساعة ونصف حتى تموز، ثم أربعون دقيقة من ٢٦ آب' };
-  return `
-  <section class="exams">
-    <div class="pad">
-      <a class="back" href="#/">العراق</a>
-      <h1 style="margin-top:6px">صباحات الامتحانات</h1>
-      <p class="intro">كل خط صباح امتحان من الرابعة فجرا إلى العاشرة، ويخفت حين تختفي شبكات العراق من الإنترنت. اضغط على خط لترى يومه.</p>
-    </div>
-    ${ys.map((rows, i) => {
-      const y = 2025 + i;
-      const d0 = new Date(rows[0].d), d1 = new Date(rows[rows.length - 1].d);
-      return `<div class="yr" data-year="${y}">
-        <div class="yh"><b>${arDigits(y)}</b></div>
-        <p class="cap" style="padding-top:6px">${ar(rows.length)} ${counted(rows.length, MORNINGS)}، ${cap[y]}</p>
-        <div class="ticks"></div>
-        <canvas></canvas>
-        <p class="ends">الأيام من الأعلى إلى الأسفل، من ${arDigits(d0.getDate())} ${MONTHS[d0.getMonth()]} إلى ${arDigits(d1.getDate())} ${MONTHS[d1.getMonth()]}</p>
-        <p class="day"></p>
-      </div>`;
-    }).join('')}
-    <p class="src">المصدر IODA في معهد جورجيا للتقنية. ضوء كل خط نسبة الشبكات العراقية التي ردت على القياس، مقارنة بما كان قبل السادسة في الصباح نفسه. الخط من اليمين إلى اليسار، من الرابعة إلى العاشرة بتوقيت بغداد.</p>
-  </section>`;
-}
-
-function aboutHTML() {
-  return `
-  <article class="about">
-    <a class="back" href="#/">العراق</a>
-    <h1 style="margin-top:6px">عن هذه الخريطة</h1>
-    <p>جمعت هذه الخريطة من بيانات مفتوحة يستطيع أي شخص أن يتحقق منها، لأعرف سرعة الإنترنت الحقيقية في كل منطقة من العراق بدل الأرقام العامة. كل ضوء فيها مربع عرضه نصف كيلومتر، وكل شارع يأخذ سرعة المربع الذي يمر فيه.</p>
-    <h2>السرعات</h2>
-    <p>أرقام إنترنت البيوت من بيانات Ookla المفتوحة للفترة من تموز إلى أيلول ٢٠٢٦: أكثر من مليون اختبار سرعة على الإنترنت الثابت في ${ar(S.country.f.q)} مربعا داخل العراق. الأرقام معدلات موزونة بعدد الاختبارات في كل مربع.</p>
-    <p>أرقام الموبايل من الفترة نفسها مضافا إليها الأشهر التسعة التي قبلها، من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦، لأن اختبارات الموبايل أقل بكثير. لا أعرض رقما لأي منطقة فيها أقل من ${ar(MIN_TESTS)} اختبارات.</p>
-    <h2>حدود هذه الأرقام</h2>
-    <p>الاختبارات أجراها أشخاص اختاروا أن يقيسوا سرعتهم على تطبيق Speedtest، فهي لا تقيس كل بيت ولا كل شارع، واختبارات البيوت تشمل الهواتف المتصلة بشبكة البيت. عدد الاختبارات تضاعف بين ٢٠٢٥ و٢٠٢٦، وهذا يغير من تقيسهم الأرقام.</p>
-    <p>لا أقارن بين شركات الإنترنت. البيانات المفتوحة لا تذكر الشركة، والمصدر الآخر الذي يذكرها (M-Lab) يقيس العراق إلى خوادم بعيدة في الدوحة وتل أبيب وأثينا، فتخرج أرقامه أقل بكثير من الواقع.</p>
-    <h2>صباحات الامتحانات</h2>
-    <p>من مرصد IODA في معهد جورجيا للتقنية، الذي يرسل قياسات إلى عناوين الشبكات العراقية كل عشر دقائق. أرسم ما ردت به هذه الشبكات من الرابعة إلى العاشرة صباحا في كل يوم امتحان، مقارنة بما كان قبل السادسة. لم أضف تعليقا على هذه الأيام، الأرقام وحدها.</p>
-    <h2>الخرائط</h2>
-    <p>الشوارع والأنهار والأحياء من OpenStreetMap، والأرض من صور ناسا للتضاريس وأضواء المدن، وحدود العراق من Natural Earth، وحدود المحافظات من geoBoundaries، وفيها حلبجة ما تزال ضمن محافظة السليمانية.</p>
-    <h2>من صنعها</h2>
-    <p>الفكرة والتصميم لعلي، انستغرام @allawi.psd</p>
-    <h2>المصادر والرخص</h2>
-    <p class="small">Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps. Based on analysis by Ookla of Speedtest Intelligence® data for Q4 2025 to Q3 2026, and Q3 of each year from 2019. Provided by Ookla and accessed 23 October 2026. Licensed CC BY-NC-SA 4.0; Ookla trademarks used under license.</p>
-    <p class="small">Map data © OpenStreetMap contributors, ODbL, through the Humanitarian OpenStreetMap Team exports. Internet outage data: IODA, Georgia Institute of Technology. NASA GIBS: ASTER GDEM shaded relief, VIIRS Black Marble. Natural Earth. geoBoundaries (CC BY 4.0). Map rendering: MapLibre GL JS and PMTiles (BSD-3-Clause).</p>
-  </article>`;
-}
-
-// ---------- exam lines ----------
-
-function drawMornings(canvas, rows, rowH, selected, thick = 1.6, gain = 1, glow = true) {
-  const dpr = Math.min(2, devicePixelRatio || 1), W = canvas.clientWidth, H = rows.length * rowH + 8;
-  canvas.style.height = H + 'px';
-  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-  const off = document.createElement('canvas'); off.width = canvas.width; off.height = canvas.height;
-  const o = off.getContext('2d');
-  const img = o.createImageData(off.width, off.height), px = img.data;
-  const lineH = Math.max(1, Math.round(thick * dpr));
-  rows.forEach((r, i) => {
-    const y0 = Math.round((4 + i * rowH) * dpr);
-    const n = r.v.length;
-    for (let x = 0; x < off.width; x++) {
-      const t = (1 - x / (off.width - 1)) * (n - 1), a = Math.floor(t), f = t - a;
-      const va = r.v[a] == null ? 1 : r.v[a], vb = r.v[Math.min(n - 1, a + 1)] == null ? va : r.v[Math.min(n - 1, a + 1)];
-      const v = Math.max(0, Math.min(1.05, va + (vb - va) * f));
-      const lum = (0.08 + 0.92 * Math.pow(v, 2.2)) * (selected === i ? 1.35 : 1) * gain;
-      const c = rampRGB(0.12 + 0.58 * Math.pow(v, 1.6));
-      for (let k = 0; k < lineH; k++) {
-        const j = ((y0 + k) * off.width + x) * 4;
-        px[j] = Math.min(255, c[0] * lum); px[j + 1] = Math.min(255, c[1] * lum); px[j + 2] = Math.min(255, c[2] * lum); px[j + 3] = 255;
-      }
+function examYears() {
+  return ['2025', '2026'].map(y => {
+    const rows = S.exams.filter(e => e.d.startsWith(y));
+    const mins = rows.filter(r => r.cut).reduce((s, r) => s + r.cut[1] - r.cut[0], 0);
+    // the usual windows, in the order they first appear
+    const wins = [];
+    for (const r of rows) {
+      if (!r.cut) continue;
+      const k = r.cut.join('-'), w = wins.find(w => w.k === k);
+      if (w) { w.n++; w.last = r.d; } else wins.push({ k, cut: r.cut, n: 1, first: r.d, last: r.d });
     }
+    const main = wins.filter(w => w.n >= Math.max(3, rows.length * 0.15));
+    return { y, rows, hours: mins / 60, main };
   });
-  o.putImageData(img, 0, 0);
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.globalCompositeOperation = 'lighter';
-  if (glow && 'filter' in ctx) { ctx.filter = `blur(${3 * dpr}px)`; ctx.globalAlpha = 0.9; ctx.drawImage(off, 0, 0); ctx.filter = 'none'; ctx.globalAlpha = 1; }
-  ctx.drawImage(off, 0, 0);
-  ctx.globalCompositeOperation = 'source-over';
 }
-
 function clock(minAfter4) {
   const m = 240 + minAfter4, h = Math.floor(m / 60), mm = m % 60;
   return `${arDigits(h)}:${arDigits(String(mm).padStart(2, '0'))}`;
 }
+const dayName = d => { const t = new Date(d + 'T12:00:00'); return `${DAYS[t.getDay()]} ${arDigits(t.getDate())} ${MONTHS[t.getMonth()]}`; };
+const winText = main => main.map(w => `من ${clock(w.cut[0])} إلى ${clock(w.cut[1])}`).join('، ثم ');
 
-function wireExams() {
-  for (const box of sheet.querySelectorAll('.yr')) {
-    const y = box.dataset.year, rows = S.exams.filter(e => e.d.startsWith(y));
-    const canvas = box.querySelector('canvas'), day = box.querySelector('.day'), ticks = box.querySelector('.ticks');
-    const rowH = isWide() ? 7 : 6;
-    let sel = null;
-    const W = () => canvas.clientWidth;
-    ticks.innerHTML = [[6, '٦ صباحا'], [8, '٨'], [10, '١٠']].map(([h, t]) =>
-      `<span style="left:${Math.max(14, Math.min(W() - 14, W() - (h - 4) / 6 * W()))}px">${t}</span>`).join('');
-    const draw = () => drawMornings(canvas, rows, rowH, sel);
-    draw();
-    const pickRow = e => {
-      const r = canvas.getBoundingClientRect(), i = Math.max(0, Math.min(rows.length - 1, Math.floor((e.clientY - r.top - 4) / rowH)));
-      sel = i; draw();
-      const row = rows[i], d = new Date(row.d + 'T12:00:00');
-      day.textContent = `${DAYS[d.getDay()]} ${arDigits(d.getDate())} ${MONTHS[d.getMonth()]}: ` + (row.cut
-        ? `انقطع من ${clock(row.cut[0])} إلى ${clock(row.cut[1])}، وبقيت ${ar(row.low * 100)}٪ من الشبكات`
-        : 'لم يظهر انقطاع واضح');
-    };
-    canvas.addEventListener('click', pickRow);
-    canvas.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') pickRow(e); });
+function homeHTML() {
+  const c = S.country, st = c[S.mode], h = S.mode === 'f' ? c.h : c.mh;
+  const govs = S.govs.filter(g => stat(g)).sort((a, b) => stat(b).d - stat(a).d);
+  const ex = examYears();
+  return `
+  <h1 class="h1">اعرف سرعة الإنترنت في منطقتك</h1>
+  <p class="lede">الأرقام من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم على تطبيق Speedtest في كل محافظات العراق. ابحث عن منطقتك، أو قرب الخريطة واضغط على أي مكان.</p>
+  <div class="search">
+    <label for="q">اسم الحي أو المدينة أو المحافظة</label>
+    <input id="q" type="search" placeholder="مثلا الكرادة" autocomplete="off" enterkeyhint="search">
+    <div class="hits"></div>
+  </div>
+  <p class="tries">جرب ${tryLinks()}</p>
+  ${modesHTML()}
+  <div class="mapslot"></div>
+  <p class="maphint">كل نقطة ضوء مربع عرضه نصف كيلومتر، ولونها سرعة التنزيل فيه. الأحمر الخافت بطيء، والأصفر متوسط، والأبيض سريع. في المدن يمشي الضوء على الشوارع.</p>
+
+  <section>
+    <h2 class="h2">العراق كله</h2>
+    <dl class="facts">
+      <div><dt>معدل سرعة التنزيل</dt><dd style="color:${speedColour(st.d)}">${ar(st.d)}<small>ميغابت في الثانية</small></dd></div>
+      <div><dt>معدل سرعة الرفع</dt><dd>${ar(st.u)}<small>ميغابت في الثانية</small></dd></div>
+      <div><dt>البنغ (زمن الاستجابة)</dt><dd>${ar(st.l)}<small>ملي ثانية</small></dd></div>
+      <div><dt>سرعة التنزيل في صيف ٢٠١٩</dt><dd>${ar(h[0][0])}<small>ميغابت في الثانية</small></dd></div>
+      <div><dt>عدد الاختبارات</dt><dd>${ar(st.t)}</dd></div>
+    </dl>
+    <p class="note">${KIND[S.mode]}، ${PERIOD[S.mode]}. المعدل موزون بعدد الاختبارات في كل مربع.</p>
+  </section>
+
+  <section>
+    <h2 class="h2">المحافظات من الأسرع إلى الأبطأ</h2>
+    <p class="small">معدل سرعة التنزيل في ${KIND[S.mode]}. اضغط على محافظة لترى مدنها وأحياءها.</p>
+    ${rankRows(govs, { head: 'المحافظة' })}
+    <p class="note">حدود المحافظات من geoBoundaries، وفيها حلبجة ما تزال ضمن السليمانية.</p>
+  </section>
+
+  <section>
+    <h2 class="h2">انقطاع الإنترنت في أيام الامتحانات</h2>
+    <p class="small">ينقطع الإنترنت عن أغلب العراق في صباح كل امتحان وزاري.</p>
+    <table class="tbl exsum">
+      <tr><th>السنة</th><th>أيام الانقطاع</th><th>الوقت المعتاد</th></tr>
+      ${ex.map(e => `<tr><td>${arDigits(e.y)}</td><td>${ar(e.rows.length)}</td><td style="font-size:15px">${winText(e.main)}</td></tr>`).join('')}
+    </table>
+    <a class="more-link" href="#/exams">كل الأيام بالتاريخ والساعة</a>
+  </section>
+  ${foot}`;
+}
+
+function scaleHTML(marks) {
+  const max = Math.ceil(Math.max(...marks.map(m => m.v)) * 1.2 / 25) * 25;
+  const sorted = [...marks].sort((a, b) => a.v - b.v);
+  // a marker whose label would collide with its neighbour goes below the line
+  sorted.forEach((m, i) => { m.low = i > 0 && !sorted[i - 1].low && (m.v - sorted[i - 1].v) / max < 0.22; });
+  const stops = [];
+  for (let i = 0; i <= 10; i++) stops.push(`rgb(${rampRGB(speedV(i / 10 * max)).join(',')}) ${i * 10}%`);
+  return `<div class="scale" aria-hidden="true"><i class="track" style="background:linear-gradient(to left, ${stops.join(', ')})"></i>` +
+    marks.map(m => `<div class="mk${m.low ? ' low' : ''}" style="right:${m.v / max * 100}%"><b style="color:${m.main ? speedColour(m.v) : 'var(--muted)'}">${esc(m.label)} (${ar(m.v)})</b><i style="background:${m.main ? speedColour(m.v) : 'var(--muted)'}"></i></div>`).join('') +
+    `<div class="ends"><span>${ar(max)} ميغابت</span><span>٠</span></div></div>`;
+}
+
+function placeHTML(p) {
+  const isGov = p.k === 'gov', g = isGov ? null : govById(p.g);
+  const st = stat(p), gs = g && stat(g), cs = stat(S.country);
+  const where = nameIn(p);
+  let answer, comp = '', scale = '';
+  if (st) {
+    answer = `معدل سرعة تنزيل ${KIND[S.mode]} في ${esc(where)} يبلغ <span class="big" style="color:${speedColour(st.d)}">${ar(st.d)}</span> ميغابت في الثانية.`;
+    const parts = [];
+    if (gs) parts.push(`${versus(st.d, gs.d)} معدل محافظة ${esc(g.n)} (${ar(gs.d)})`);
+    parts.push(`${versus(st.d, cs.d)} معدل العراق (${ar(cs.d)})`);
+    if (isGov) {
+      const order = S.govs.filter(x => stat(x)).sort((a, b) => stat(b).d - stat(a).d).indexOf(p);
+      comp = `${parts.join('، و')}، وهي ${ORDINAL[order]} بين ١٨ محافظة.`;
+    } else {
+      comp = `${parts.join('، و')}، وأسرع من ${ar(percentile(st.d))}٪ من المناطق المقاسة في العراق.`;
+    }
+    const marks = [{ label: p.n, v: st.d, main: true }];
+    if (gs) marks.push({ label: g.n, v: gs.d });
+    marks.push({ label: 'العراق', v: cs.d });
+    scale = scaleHTML(marks);
+  } else {
+    const ref = gs || cs;
+    answer = `لا توجد اختبارات كافية لـ${KIND[S.mode]} في ${esc(where)} لرقم يعتمد عليه.`;
+    comp = `معدل ${gs ? 'محافظة ' + esc(g.n) : 'العراق'} ${ar(ref.d)} ميغابت في الثانية.${S.mode === 'm' ? ' جرب إنترنت البيت.' : ''}`;
+  }
+
+  const fsF = stat(p, 'f'), fsM = stat(p, 'm');
+  const cell = (s, k, unit) => s ? `${ar(s[k])}${unit ? ` <small>${unit}</small>` : ''}` : '<small>لا تكفي</small>';
+  const table = `<table class="tbl">
+      <tr><th></th><th>إنترنت البيت</th><th>إنترنت الموبايل</th></tr>
+      <tr><td>سرعة التنزيل</td><td style="color:${fsF ? speedColour(fsF.d) : ''}">${cell(fsF, 'd', 'ميغابت')}</td><td style="color:${fsM ? speedColour(fsM.d) : ''}">${cell(fsM, 'd', 'ميغابت')}</td></tr>
+      <tr><td>سرعة الرفع</td><td>${cell(fsF, 'u', 'ميغابت')}</td><td>${cell(fsM, 'u', 'ميغابت')}</td></tr>
+      <tr><td>البنغ</td><td>${cell(fsF, 'l', 'ملي ثانية')}</td><td>${cell(fsM, 'l', 'ملي ثانية')}</td></tr>
+      <tr><td>عدد الاختبارات</td><td>${cell(fsF, 't')}</td><td>${cell(fsM, 't')}</td></tr>
+    </table>
+    <p class="note">إنترنت البيت من تموز إلى أيلول ٢٠٢٦، والموبايل من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦. لا أعرض رقما من أقل من ${ar(MIN_TESTS)} اختبارات.</p>`;
+
+  const hist = p.h || [];
+  const hmax = Math.max(...hist.filter(Boolean).map(h => h[0]), 1);
+  const years = hist.map((h, i) => {
+    const y = arDigits(2019 + i);
+    if (!h) return `<div><b style="color:var(--faint)">–</b><i style="height:2px;background:var(--line)"></i><span>${y}</span></div>`;
+    const col = speedColour(h[0]);
+    return `<div><b style="color:${col}">${ar(h[0])}</b><i style="height:${Math.max(3, h[0] / hmax * 100)}px;background:${col}"></i><span>${y}</span></div>`;
+  }).join('');
+
+  let list = '';
+  if (isGov) {
+    const inGov = S.places.filter(x => x.g === p.id && stat(x)).sort((a, b) => stat(b, S.mode).t - stat(a, S.mode).t).slice(0, 20)
+      .sort((a, b) => stat(b).d - stat(a).d);
+    if (inGov.length) list = `<section><h2 class="h2">مدن وأحياء في المحافظة</h2><p class="small">أكثر عشرين منطقة فيها اختبارات، من الأسرع إلى الأبطأ.</p>${rankRows(inGov, { kind: true })}</section>`;
+  } else {
+    const near = S.places.filter(x => x !== p && x.g === p.g && stat(x))
+      .map(x => [Math.hypot((x.x - p.x) * 0.84, x.y - p.y), x]).sort((a, b) => a[0] - b[0]).slice(0, 8).map(a => a[1])
+      .sort((a, b) => stat(b).d - stat(a).d);
+    if (near.length) list = `<section><h2 class="h2">مناطق قريبة</h2>${rankRows(near, { kind: true, pos: false })}</section>`;
+  }
+  const how = isGov ? 'حسبت المعدل من كل المربعات التي يقع مركزها داخل حدود المحافظة.'
+    : p.r ? `حسبت المعدل من المربعات التي تقع ضمن ${arDigits(String(p.r).replace('.', '٫'))} كم من مركز ${p.k === 'city' ? 'المدينة' : p.k === 'town' ? 'البلدة' : p.k === 'village' || p.k === 'hamlet' ? 'القرية' : 'الحي'}، لأن OpenStreetMap لا يرسم حدودها.`
+    : 'حسبت المعدل من المربعات التي يقع مركزها داخل حدودها كما يرسمها OpenStreetMap.';
+
+  return `
+  <p class="crumbs"><a href="#/">العراق</a>${g ? `<span>‹</span><a href="${href(g)}">${esc(g.n)}</a>` : ''}</p>
+  <h1 class="h1">${head(p.n)}</h1>
+  <p class="kind">${esc(kindLine(p))}</p>
+  <p class="answer">${answer}</p>
+  <p class="small">${comp}</p>
+  ${scale}
+  ${modesHTML()}
+  <div class="mapslot"></div>
+  <p class="maphint">${isGov ? 'المحافظة مضاءة بحدودها.' : 'المنطقة مضاءة بحدودها وما حولها معتم.'} قرب الخريطة واضغط على أي شارع لترى سرعة مربعه.</p>
+  <section><h2 class="h2">الأرقام</h2>${table}</section>
+  <section><h2 class="h2">إنترنت البيت منذ <span class="n">٢٠١٩</span></h2><p class="small">معدل سرعة التنزيل في صيف كل سنة، من تموز إلى أيلول، بالميغابت.</p><div class="years">${years}</div></section>
+  ${list}
+  <section><h2 class="h2">كيف حسبت هذا الرقم</h2><p class="note">${how} الاختبارات أجراها أشخاص بأنفسهم على تطبيق Speedtest، فهي لا تقيس كل بيت.</p></section>
+  ${foot}`;
+}
+
+function examsHTML() {
+  const ex = examYears();
+  return `
+  <p class="crumbs"><a href="#/">العراق</a></p>
+  <h1 class="h1">انقطاع الإنترنت في أيام الامتحانات</h1>
+  <p class="lede">ينقطع الإنترنت عن أغلب العراق في صباح كل امتحان وزاري. هذه الأيام كما سجلها مرصد IODA في معهد جورجيا للتقنية، الذي يقيس كل عشر دقائق كم شبكة عراقية ترد على الإنترنت.</p>
+  <table class="tbl exsum">
+    <tr><th>السنة</th><th>أيام الانقطاع</th><th>الوقت المعتاد</th><th>المجموع</th></tr>
+    ${ex.map(e => `<tr><td>${arDigits(e.y)}</td><td>${ar(e.rows.length)}</td><td style="font-size:15px">${winText(e.main)}</td><td>${ar(e.hours)} <small>ساعة</small></td></tr>`).join('')}
+  </table>
+  <div class="ex-key"><span><i style="background:${speedColour(80)}"></i>الإنترنت يعمل</span><span><i style="background:#3a1a0e"></i>منقطع</span></div>
+  ${ex.map(e => `
+    <section class="ex-year" data-year="${e.y}">
+      <h2 class="h2">${head(arDigits(e.y))}</h2>
+      <p class="small">${ar(e.rows.length)} ${counted(e.rows.length, DAYS_N)} انقطاع</p>
+      <div class="ex-axis"><span class="small">اليوم</span><div class="ax">${[4, 5, 6, 7, 8, 9, 10].map(h =>
+        `<span style="right:${(h - 4) / 6 * 100}%">${arDigits(h)}</span>`).join('')}</div></div>
+      ${e.rows.map((r, i) => `<div class="ex-row" data-i="${i}"><span class="d">${dayName(r.d)}</span><canvas></canvas></div>`).join('')}
+      <p class="ex-day">اضغط على أي يوم لترى وقت الانقطاع.</p>
+    </section>`).join('')}
+  <p class="note">الأرقام فوق الخطوط ساعات الصباح بتوقيت بغداد، من الرابعة إلى العاشرة. يبدأ الخط مضيئا ويعتم حين تنزل الشبكات التي ترد إلى أقل من ٦٠٪ مما كانت عليه قبل السادسة في الصباح نفسه.</p>
+  ${foot}`;
+}
+
+function aboutHTML() {
+  return `
+  <p class="crumbs"><a href="#/">العراق</a></p>
+  <article class="prose">
+    <h1 class="h1">عن هذه الخريطة</h1>
+    <p>جمعت هذه الخريطة من بيانات مفتوحة يستطيع أي شخص أن يتحقق منها، لأعرف سرعة الإنترنت الحقيقية في كل منطقة من العراق بدل الأرقام العامة.</p>
+    <h2 class="h2">من أين جاءت السرعات</h2>
+    <p>من بيانات Ookla المفتوحة، الشركة التي تملك تطبيق Speedtest. تقسم Ookla الأرض إلى مربعات عرض كل منها نحو نصف كيلومتر، وتنشر لكل مربع معدل سرعة التنزيل والرفع والبنغ وعدد الاختبارات. في العراق ${ar(S.country.f.q)} مربعا فيها اختبارات على الإنترنت الثابت بين تموز وأيلول ٢٠٢٦، وأكثر من مليون اختبار.</p>
+    <p>رقم كل حي أو مدينة هو معدل مربعاته، موزونا بعدد الاختبارات في كل مربع. أرقام الموبايل تجمع سنة كاملة، من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦، لأن اختباراتها أقل بكثير. لا أعرض رقما لأي منطقة فيها أقل من ${ar(MIN_TESTS)} اختبارات.</p>
+    <h2 class="h2">حدود هذه الأرقام</h2>
+    <p>الاختبارات أجراها أشخاص اختاروا أن يقيسوا سرعتهم، فهي لا تقيس كل بيت ولا كل شارع، واختبارات البيوت تشمل الهواتف المتصلة بشبكة البيت. عدد الاختبارات تضاعف بين ٢٠٢٥ و٢٠٢٦، وهذا يغير من تقيسهم الأرقام.</p>
+    <p>لا أقارن بين شركات الإنترنت. البيانات المفتوحة لا تذكر الشركة، والمصدر الآخر الذي يذكرها (M-Lab) يقيس العراق إلى خوادم بعيدة في الدوحة وتل أبيب وأثينا، فتخرج أرقامه أقل بكثير من الواقع.</p>
+    <h2 class="h2">انقطاع الامتحانات</h2>
+    <p>من مرصد IODA في معهد جورجيا للتقنية، الذي يرسل قياسات إلى عناوين الشبكات العراقية كل عشر دقائق. أعرض ما ردت به هذه الشبكات من الرابعة إلى العاشرة صباحا في كل يوم امتحان، مقارنة بما كان قبل السادسة، من دون أي تعليق.</p>
+    <h2 class="h2">الخرائط</h2>
+    <p>الشوارع والأنهار والأحياء من OpenStreetMap، والأرض من صور ناسا للتضاريس وأضواء المدن، وحدود العراق من Natural Earth، وحدود المحافظات من geoBoundaries، وفيها حلبجة ما تزال ضمن محافظة السليمانية.</p>
+    <h2 class="h2">من صنعها</h2>
+    <p>الفكرة والتصميم لعلي، انستغرام @allawi.psd</p>
+    <h2 class="h2">المصادر والرخص</h2>
+    <p class="src">Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps. Based on analysis by Ookla of Speedtest Intelligence® data for Q4 2025 to Q3 2026, and Q3 of each year from 2019. Provided by Ookla and accessed 23 October 2026. Licensed CC BY-NC-SA 4.0; Ookla trademarks used under license.</p>
+    <p class="src">Map data © OpenStreetMap contributors, ODbL, through the Humanitarian OpenStreetMap Team exports. Internet outage data: IODA, Georgia Institute of Technology. NASA GIBS: ASTER GDEM shaded relief, VIIRS Black Marble. Natural Earth. geoBoundaries (CC BY 4.0). Map rendering: MapLibre GL JS and PMTiles (BSD-3-Clause).</p>
+  </article>
+  ${foot}`;
+}
+
+// ---------- exam rows ----------
+
+function drawRow(canvas, r, selected) {
+  const dpr = Math.min(2, devicePixelRatio || 1), W = canvas.clientWidth, H = canvas.clientHeight;
+  if (!W) return;
+  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  const ctx = canvas.getContext('2d'), n = r.v.length, cw = canvas.width, mid = canvas.height / 2;
+  ctx.fillStyle = 'rgba(239,230,214,0.05)';
+  ctx.fillRect(0, mid - 2 * dpr, cw, 4 * dpr);
+  for (let x = 0; x < cw; x++) {
+    // time runs right to left: 04:00 at the right edge, 10:00 at the left
+    const t = (1 - x / (cw - 1)) * (n - 1), a = Math.floor(t), f = t - a;
+    const va = r.v[a] == null ? 1 : r.v[a], vb = r.v[Math.min(n - 1, a + 1)] == null ? va : r.v[Math.min(n - 1, a + 1)];
+    const v = va + (vb - va) * f;
+    const on = v >= 0.6;
+    const c = on ? rampRGB(0.5 + 0.35 * Math.min(1, v)) : [58, 26, 14];
+    ctx.fillStyle = `rgba(${c.join(',')},${on ? (selected ? 1 : 0.85) : 1})`;
+    ctx.fillRect(x, mid - (selected ? 2.5 : 1.5) * dpr, 1, (selected ? 5 : 3) * dpr);
   }
 }
 
-function drawTeaser() {
-  const c = document.getElementById('teaser'); if (!c) return;
-  const rows = S.exams;
-  drawMornings(c, rows, 2, null, 0.8, 0.8, false);
+function wireExams() {
+  for (const box of page.querySelectorAll('.ex-year')) {
+    const rows = S.exams.filter(e => e.d.startsWith(box.dataset.year));
+    const els = [...box.querySelectorAll('.ex-row')], day = box.querySelector('.ex-day');
+    let sel = -1;
+    const draw = () => els.forEach((el, i) => drawRow(el.querySelector('canvas'), rows[i], i === sel));
+    draw();
+    box.addEventListener('click', e => {
+      const el = e.target.closest('.ex-row'); if (!el) return;
+      sel = +el.dataset.i; els.forEach((x, i) => x.classList.toggle('sel', i === sel)); draw();
+      const r = rows[sel];
+      day.textContent = r.cut ? `${dayName(r.d)} ${arDigits(box.dataset.year)}، انقطع من ${clock(r.cut[0])} إلى ${clock(r.cut[1])}، وبقيت ${ar(r.low * 100)}٪ من الشبكات العراقية ترد.`
+        : `${dayName(r.d)}، لم يظهر انقطاع واضح.`;
+    });
+  }
 }
 
 // ---------- routing: kept in the page, mirrored into the address where the browser allows it ----------
@@ -644,9 +729,9 @@ function navigate(h) {
 }
 document.addEventListener('click', e => {
   const a = e.target.closest && e.target.closest('a[href^="#/"]');
-  if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey) return;
-  e.preventDefault();
-  navigate(a.getAttribute('href'));
+  if (a && !e.defaultPrevented && !e.metaKey && !e.ctrlKey) { e.preventDefault(); navigate(a.getAttribute('href')); return; }
+  const m = e.target.closest && e.target.closest('.modes button');
+  if (m) setMode(m.dataset.mode);
 });
 function fromAddress() {
   const h = location.hash.startsWith('#/') ? location.hash : '#/';
@@ -658,57 +743,50 @@ addEventListener('hashchange', fromAddress);
 let lastRoute = '';
 async function render(move = true) {
   const h = current();
-  document.body.dataset.view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h.startsWith('/exams') ? 'exams' : h.startsWith('/about') ? 'about' : 'home';
-  const dim = document.body.dataset.view === 'exams' || document.body.dataset.view === 'about';
-  labelBox.style.opacity = dim ? 0 : 1;
-  if (map && map.isStyleLoaded()) map.setPaintProperty('focus-mask', 'fill-opacity', 0.62);
-  document.getElementById('map').style.opacity = dim ? 0.35 : 1;
-  if (h.startsWith('/p/') || h.startsWith('/g/')) {
-    const id = h.slice(3), p = h.startsWith('/g/') ? govById(id) : S.byId.get(id);
+  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h.startsWith('/exams') ? 'exams' : h.startsWith('/about') ? 'about' : 'home';
+  document.querySelectorAll('.bar nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + h));
+  const keepScroll = !move || lastRoute === h;
+  const y = isWide() ? page.scrollTop : scrollY;
+  let p = null;
+  if (view === 'place') {
+    const id = h.slice(3);
+    p = h.startsWith('/g/') ? govById(id) : S.byId.get(id);
     if (!p) { route = '#/'; return render(true); }
-    sheet.innerHTML = placeHTML(p);
-    if (move || lastRoute !== h) {
-      sheet.scrollTop = 0;
-      hideReadout();
+    page.innerHTML = placeHTML(p);
+    document.title = `${p.n}، سرعة الإنترنت`;
+  } else if (view === 'exams') { page.innerHTML = examsHTML(); document.title = 'انقطاع الإنترنت في أيام الامتحانات'; }
+  else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن خريطة سرعة الإنترنت في العراق'; }
+  else { page.innerHTML = homeHTML(); document.title = 'خريطة سرعة الإنترنت في العراق'; wireSearch(); }
+  if (keepScroll) { isWide() ? (page.scrollTop = y) : scrollTo(0, y); } else { page.scrollTop = 0; scrollTo(0, 0); }
+  if (view === 'exams') requestAnimationFrame(wireExams);
+
+  const visible = placeMap();
+  if (!visible && !map) { lastRoute = h; return; }
+  await ensureMap();
+  placeMap();
+  if (move && lastRoute !== h) {
+    hideReadout();
+    if (p) {
       const geom = await areaOf(p);
-      if (geom) {
-        setFocus(p, geom);
-        frame(boundsOf(geom), framePadding('place'), { maxZoom: p.k === 'gov' ? 9.5 : 15, duration: lastRoute ? 1400 : 0 });
-      } else map.flyTo({ center: [p.x, p.y], zoom: p.z, duration: 1400 });
-    }
-  } else if (h.startsWith('/exams')) {
-    sheet.innerHTML = examsHTML(); sheet.scrollTop = 0; clearFocus(); hideReadout();
-    requestAnimationFrame(wireExams);
-  } else if (h.startsWith('/about')) {
-    sheet.innerHTML = aboutHTML(); sheet.scrollTop = 0; clearFocus(); hideReadout();
-  } else {
-    sheet.innerHTML = homeHTML();
-    wireSearch(sheet);
-    requestAnimationFrame(drawTeaser);
-    const cue = sheet.querySelector('[data-scroll]');
-    if (cue) cue.addEventListener('click', e => { e.preventDefault(); document.getElementById('more').scrollIntoView({ behavior: 'smooth' }); });
-    if (move && lastRoute !== h) {
-      sheet.scrollTop = 0; clearFocus();
-      frame(homeBounds(), framePadding('home'), { duration: lastRoute ? 1400 : 0 });
-    }
+      if (geom) { setFocus(p, geom); frame(S.focusBounds, { maxZoom: p.k === 'gov' ? 9.5 : 15, duration: lastRoute ? 1200 : 0 }); }
+      else { clearFocus(); map.flyTo({ center: [p.x, p.y], zoom: p.z }); }
+    } else if (view === 'home' || !lastRoute) { clearFocus(); frame(IRAQ, { duration: lastRoute ? 1200 : 0 }); }
   }
   lastRoute = h;
-  if (map) { chooseLabels(); placeLabels(); }
+  chooseLabels(); placeLabels();
 }
 
 // ---------- start ----------
 
-document.querySelectorAll('.modes button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
-let sc;
-sheet.addEventListener('scroll', () => { clearTimeout(sc); sc = setTimeout(() => { chooseLabels(); placeLabels(); }, 120); }, { passive: true });
 let rs;
-addEventListener('resize', () => { clearTimeout(rs); rs = setTimeout(() => { if (document.body.dataset.view === 'exams') wireExams(); }, 200); });
+addEventListener('resize', () => {
+  clearTimeout(rs);
+  rs = setTimeout(() => { placeMap(); if (current().startsWith('/exams')) wireExams(); if (map) { chooseLabels(); placeLabels(); } }, 200);
+});
 
-initMap();
 Promise.all(['data/places.json', 'data/country.json', 'data/exams.json'].map(u => fetch(u).then(r => r.json()))).then(([pl, country, exams]) => {
   S.govs = pl.govs; S.places = pl.places; S.country = country; S.exams = exams;
   for (const p of S.places) S.byId.set(p.id, p);
-  const go = () => render(true).then(() => { document.body.dataset.ready = '1'; });
-  if (map.loaded()) go(); else map.once('load', go);
-});
+  return render(true);
+}).then(() => { document.body.dataset.ready = '1'; });
 })();

@@ -14,18 +14,20 @@ PMTiles files by zoom (`site/tiles/iraq-a.pmtiles` z4 to 11, `iraq-b` z12, `iraq
 fetches it whole where it does not, and keeps its own page routing so it also works inside a frame. MapLibre GL JS 4.7.1 and
 PMTiles 3.2.1 are kept in `site/vendor/` with their licences, so nothing loads from outside.
 
-- **Map:** the measured squares are points of light at country scale; from city scale the light runs along the real
-  streets (OpenStreetMap), each street piece cut at the square edges and carrying that square's speed. Brighter is
-  faster, ember is slow, dark is no tests. Tap a square for its speed and test count.
-- **البيوت / الموبايل:** home internet is Jul to Sep 2026; mobile combines Oct 2025 to Sep 2026 because it has far
-  fewer tests. No area shows a number with fewer than 10 tests.
-- **Search and pages:** 4,351 places with Arabic names (OSM cities, towns, villages, neighbourhoods and Baghdad's
-  numbered mahallas) plus the 18 governorates, each at `#/p/<osm id>` or `#/g/<governorate>`. A page holds the speed,
-  upload, delay and test count, home internet in the summer of every year since 2019, the governorate and Iraq to
-  compare, and the nearest places. Areas use OSM's outline when it has one, otherwise a circle (cities by population,
-  3 to 10 km). The rest of the map is held down around the open area.
-- **Exam mornings** (`#/exams`): every morning as a line of light, tap one for its date, cut times and how many
-  networks still answered. **About** (`#/about`): sources, method and limits in the user's own voice.
+The page reads top to bottom in plain sentences (rebuilt 23 Oct after the user found the first version confusing:
+no colour key, numbers without labels, text floating over the map):
+- **Home:** what the site does in one sentence, a real search box with examples, the البيت / الموبايل switch, the
+  map with its colour key and controls (on phones it sits in the page and moves with two fingers; ملء الشاشة opens it
+  full screen), Iraq's numbers as labelled rows, the governorates as a ranked table, and the exam days as a small table.
+- **Area pages** (`#/p/<osm id>`, `#/g/<governorate>`): one answer sentence (معدل سرعة تنزيل ... يبلغ ٨٧ ميغابت), how it
+  compares with its governorate and Iraq and what share of areas it beats, a scale with the three marks, the map
+  focused on the area, home and mobile side by side in one table, the summer of every year since 2019, nearby areas.
+- **Exams** (`#/exams`): the days, usual hours and total per year, then every day as a labelled row (date, line from
+  04:00 to 10:00, dark where the internet was cut); tap a day for its exact times.
+- Brightness and colour on the map are download speed; ember is slow, white is fast, dark is no tests. Tap a square
+  for its speed and test count. No area shows a number from fewer than 10 tests.
+- Kufi headings set their digits in Markazi; numbers never sit next to each other across a comma (Arabic bidi
+  joins them into one number).
 
 Rebuild everything, in order: `python3 data/fetch.py` (boundaries, IODA, base layers), `python3 build/ookla_years.py`,
 `python3 build/osm_places.py`, `python3 build/places.py`, `python3 build/exams.py`, `python3 build/tiles.py`,
