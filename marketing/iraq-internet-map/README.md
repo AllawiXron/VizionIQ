@@ -6,6 +6,35 @@ Communications' call (Mustafa Sanad, Oct 2026) for local software built by Iraqi
 The look: Iraq at night seen from above, where the light is internet speed instead of electricity. Brighter means
 faster, dim ember means slow, dark means no measurements. Everything on screen is real data or real geography.
 
+## The site (`site/`)
+
+A static site, no build step: `site/index.html`, `app.js`, `app.css`, data in `site/data/`, the map in
+`site/tiles/iraq.pmtiles` (34.7 MB, read with range requests) and `site/tiles/ground.jpg`. MapLibre GL JS 4.7.1 and
+PMTiles 3.2.1 are kept in `site/vendor/` with their licences, so nothing loads from outside.
+
+- **Map:** the measured squares are points of light at country scale; from city scale the light runs along the real
+  streets (OpenStreetMap), each street piece cut at the square edges and carrying that square's speed. Brighter is
+  faster, ember is slow, dark is no tests. Tap a square for its speed and test count.
+- **البيوت / الموبايل:** home internet is Jul to Sep 2026; mobile combines Oct 2025 to Sep 2026 because it has far
+  fewer tests. No area shows a number with fewer than 10 tests.
+- **Search and pages:** 4,351 places with Arabic names (OSM cities, towns, villages, neighbourhoods and Baghdad's
+  numbered mahallas) plus the 18 governorates, each at `#/p/<osm id>` or `#/g/<governorate>`. A page holds the speed,
+  upload, delay and test count, home internet in the summer of every year since 2019, the governorate and Iraq to
+  compare, and the nearest places. Areas use OSM's outline when it has one, otherwise a circle (cities by population,
+  3 to 10 km). The rest of the map is held down around the open area.
+- **Exam mornings** (`#/exams`): every morning as a line of light, tap one for its date, cut times and how many
+  networks still answered. **About** (`#/about`): sources, method and limits in the user's own voice.
+
+Rebuild everything, in order: `python3 data/fetch.py` (boundaries, IODA, base layers), `python3 build/ookla_years.py`,
+`python3 build/osm_places.py`, `python3 build/places.py`, `python3 build/exams.py`, `python3 build/tiles.py`,
+`python3 build/ground.py` (needs `pip install duckdb shapely pyshp scipy mapbox-vector-tile pmtiles`).
+Try it locally with `node build/serve.cjs` (Python's http.server can't do range requests) and open
+http://localhost:8765.
+
+To publish: any static host that serves range requests (Vercel, Netlify, GitHub Pages, Cloudflare Pages). On Vercel,
+make a new project from this repo with the root directory `marketing/iraq-internet-map/site` and no build command;
+it stays separate from the viZion site.
+
 ## The three stills (`out/`, 1170 x 2532, phone at 3x)
 
 1. **The country** (`still-1-country.png`): every 500 m square measured by Ookla between Jul and Sep 2026 as a point
@@ -47,7 +76,9 @@ Rebuild: `python3 data/fetch.py` (data and base layers), `python3 stills/maps.py
   Doha, Tel Aviv or Athens (median 2.7 Mbps against Ookla's 44 in 2024), and one network holds 38% of all tests.
   A provider ranking from it would be unfair, so the site has no provider ranking and no M-Lab test button.
 - **IODA:** exam cuts at 06:00 confirmed on the raw signal; at the deepest point only 27 to 38% of Iraqi networks
-  answered. In 2026 BGP routes no longer drop during the cut, only the probes do.
+  answered. In 2026 BGP routes no longer drop during the cut, only the probes do. Measured on the raw signal (below
+  60% of the level before 06:00), the cuts add up to about 64 hours over 32 mornings in 2025 and 33 hours over 34
+  mornings in 2026; IODA's own event list gives about 70 and 38.
 
 ## Sources and licences (credit them on the site)
 
@@ -64,6 +95,7 @@ Rebuild: `python3 data/fetch.py` (data and base layers), `python3 stills/maps.py
 
 ## Still to do
 
-- The interactive site: search by area, a page per governorate and town, the mobile layer, the trend since 2019.
+- Publish it (see above) and check it on a real phone over Iraqi internet; the 34.7 MB tile file loads in small pieces.
 - A speed test button only if a test server inside Iraq is available (check Cloudflare's open speed test first).
 - Check IODA's terms, add Halabja as its own governorate, then the reel and the letter to the minister.
+- Kurdish-only names in OSM (no Arabic form) are shown as written in Kurdish.
