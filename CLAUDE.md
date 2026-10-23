@@ -43,6 +43,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   (`.claude/agents/site-tester.md`, which runs `marketing/iraq-internet-map/build/check.cjs`) and fix what it finds.
   Then the site-designer agent (`.claude/agents/site-designer.md`, which runs `build/design-audit.cjs` there): a senior
   designer's review of hierarchy, organisation, spacing, type and the -noAI habits; fix what it finds (23 Oct).
+  The night-map version of the Iraq internet map was still "confusing and weird" to the user after both reviews (dark
+  map, too much on one page, unclear what the site is for and why the minister would care). Next version is "result
+  first": a light page in Rubik, search then the area's number with a plain verdict, governorates on their own tab
+  (stills in `marketing/iraq-internet-map/redesign/`); build it only after the user approves the stills.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
