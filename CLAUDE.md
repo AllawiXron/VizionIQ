@@ -37,6 +37,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   white type with dark key words, black-and-white cut-outs anchored to the frame edges and acting on the words, ideas
   pushing each other out; no dark or muddy backgrounds, heavy vignettes, blur transitions or one poster per sentence.
   Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it.
+- Websites and tools (23 Oct): the user found the first Iraq internet map "weird" and could not understand it (text
+  floating over the map, numbers without labels, no colour key). Say what the page does in one sentence, label every
+  number, give every map a key, keep a plain top-to-bottom order. Before showing a site, run the site-tester agent
+  (`.claude/agents/site-tester.md`, which runs `marketing/iraq-internet-map/build/check.cjs`) and fix what it finds.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
