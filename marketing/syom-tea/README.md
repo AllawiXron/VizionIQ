@@ -28,7 +28,7 @@ Session/photos- New pack/`.
   Write وتخافين من المنتجات الكيميائية instead of وتخافين المنحفات.
 - Look: high-end, clean, natural, trustworthy. Never a cheap weight-loss ad.
 - Follow the brand guide exactly, not the allawi.psd paper style:
-  - green #014D40, gold #E8B06F, Lily White #FFFEBA
+  - green #014D40, gold #E8B06F, Lily White #FFEBEA
   - Lama Sans (files/brand/3- Fonts), the leaf logo (svg folder), the gold line, the patterns (Pattern 02)
 - Meta rules: adults only, no before/after photos, nothing that makes women feel bad about their bodies.
 - Quality over speed, no deadline.
