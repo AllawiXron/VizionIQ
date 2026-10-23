@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <title>R6 Unlock All 4</title>
 <style>
-@font-face { font-family: Shoulders; src: url(fonts/BigShouldersDisplay-VF.ttf); font-weight: 100 900; }
 @font-face { font-family: Jakarta; src: url(fonts/PlusJakartaSans-VF.ttf); font-weight: 200 800; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #000; }
@@ -14,12 +13,11 @@ body { background: #000; }
 /* 1. background: the poster's own yellow, grain and streaks */
 .bg { inset: 0; }
 
-/* 2. the menu, rebuilt from the screenshot: the frame he bursts out of */
-.menu { left: 136px; top: 333px; width: 1396px; height: 1127px; transform-origin: 50% 50%;
-  transform: perspective(2400px) scale(1.023) rotateY(8deg) rotateX(2deg) rotateZ(-2deg); }
-.c { position: absolute; width: 1px; height: 1px; }
+/* 2. the menu, rebuilt from the Recoil tab screenshot, top left */
+.menu { left: 34px; top: 46px; width: 1396px; height: 1127px; transform-origin: 0 0;
+  transform: perspective(2400px) scale(.45) rotateY(10deg) rotateZ(-3deg); }
 .panel { position: absolute; inset: 0; background: #0b0b0e; border-radius: 22px; font-family: Jakarta; font-weight: 700; color: #f1eef4;
-  box-shadow: 0 0 0 5px rgba(255, 250, 230, .55), 0 50px 90px rgba(70, 52, 0, .5), 0 12px 24px rgba(40, 30, 0, .35); }
+  box-shadow: 0 0 0 5px rgba(255, 250, 230, .5), 0 50px 90px rgba(70, 52, 0, .5), 0 12px 24px rgba(40, 30, 0, .35); }
 .panel > * { position: absolute; }
 .p-logo { left: 45px; top: 34px; font-size: 41px; }
 .p-tab { top: 20px; height: 75px; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #c9c5d0; }
@@ -41,30 +39,15 @@ body { background: #000; }
   display: flex; align-items: center; justify-content: center; font-size: 37px; }
 .foot { top: 1058px; font-size: 33px; color: #8e8b96; }
 
-
-
-
-/* 3. Sledge, mirrored: inside the menu, bursting out through its top and right edges */
-.sledge { left: 400px; top: 124px; width: 1700px; filter: drop-shadow(-16px 26px 24px rgba(10, 12, 20, .45)); }
-
-/* 4. title */
-.t { right: 34px; top: 10px; font: 900 190px/1 Shoulders; letter-spacing: -3px; white-space: nowrap; }
-.t span { display: block; }
-.t .back { color: #160a02; -webkit-text-stroke: 16px #0d111c;
-  text-shadow: 1px 3px 0 #6a4f0d, 2px 6px 0 #6a4f0d, 3px 9px 0 #5e460b, 4px 12px 0 #523d09, 5px 15px 0 #47350a,
-    6px 18px 0 #3d2d08, 7px 21px 0 #322506, 0 34px 40px rgba(60, 44, 0, .55), 0 60px 90px rgba(60, 44, 0, .3); }
-.t .face { position: absolute; left: 0; top: 0;
-  background: url(img/steel.jpg) center / 100% 100%, linear-gradient(180deg, #3a4560 0%, #26304a 40%, #182033 75%, #0f1524 100%);
-  background-blend-mode: soft-light, normal; -webkit-background-clip: text; background-clip: text; color: transparent; }
-.t .shine { position: absolute; left: 0; top: 0; color: transparent;
-  background: linear-gradient(180deg, rgba(160, 180, 220, .45) 0%, rgba(160, 180, 220, 0) 18%);
-  -webkit-background-clip: text; background-clip: text; mix-blend-mode: screen; }
-
+/* 3. Sledge, his hammer face on the C; 4. the concrete title in front of him, broken where the hammer comes
+   through, and the pieces flying out (title.py) */
+.sledge { left: 320px; top: 68px; width: 1800px; filter: drop-shadow(0 22px 30px rgba(40, 30, 0, .45)); }
+.title, .chunks { inset: 0; }
 
 /* finish */
 .vig { inset: 0; background:
-  linear-gradient(0deg, rgba(60, 40, 0, .28) 0%, rgba(60, 40, 0, 0) 18%),
-  linear-gradient(90deg, rgba(60, 40, 0, .22) 0%, rgba(60, 40, 0, 0) 12%, rgba(60, 40, 0, 0) 88%, rgba(60, 40, 0, .22) 100%); }
+  linear-gradient(0deg, rgba(60, 40, 0, .26) 0%, rgba(60, 40, 0, 0) 16%),
+  linear-gradient(90deg, rgba(60, 40, 0, .2) 0%, rgba(60, 40, 0, 0) 10%, rgba(60, 40, 0, 0) 90%, rgba(60, 40, 0, .2) 100%); }
 </style>
 </head>
 <body>
@@ -72,7 +55,6 @@ body { background: #000; }
   <img class="bg" src="img/bg.jpg">
 
   <div class="menu"><div class="panel">
-    <i class="c" style="left:0;top:0"></i><i class="c" style="right:0;top:0"></i><i class="c" style="right:0;bottom:0"></i><i class="c" style="left:0;bottom:0"></i>
     <div class="p-logo">UnlockX</div>
     <div class="p-tab on">Recoil</div>
     <div class="p-tab" style="left:930px;width:150px">HUD</div>
@@ -98,28 +80,15 @@ body { background: #000; }
   </div></div>
 
   <img class="sledge" src="img/sledge.png">
-
-  <div class="t"><span class="back">UNLOCK ALL</span><span class="face">UNLOCK ALL</span><span class="shine">UNLOCK ALL</span></div>
+  <img class="title" src="img/title.png">
+  <img class="chunks" src="img/chunks.png">
 
   <div class="vig"></div>
 </div>
 <script>
-// Past the menu's right edge only the hammer and his arms come out: below them he is hidden behind that edge,
-// measured from the turned panel's corners.
-function clipSledge() {
-  const f = document.getElementById('thumb').getBoundingClientRect();
-  const c = [...document.querySelectorAll('.c')].map((e) => { const r = e.getBoundingClientRect(); return [r.left - f.left, r.top - f.top]; });
-  const [tr, br] = [c[1], c[2]];
-  const xr = (y) => tr[0] + (br[0] - tr[0]) * (y - tr[1]) / (br[1] - tr[1]);
-  const cut = 975;
-  const s = document.querySelector('.sledge'), ox = s.offsetLeft, oy = s.offsetTop;
-  const p = [[-1000, -1000], [3000, -1000], [3000, cut], [xr(cut), cut], [xr(3000), 3000], [-1000, 3000]]
-    .map(([x, y]) => `${x - ox}px ${y - oy}px`);
-  s.style.clipPath = `polygon(${p.join(',')})`;
-}
-Promise.all([document.fonts.load('900 228px Shoulders'), document.fonts.load('700 38px Jakarta')])
+document.fonts.load('700 38px Jakarta')
   .then(() => Promise.all([...document.images].map((i) => i.decode())))
-  .then(() => { clipSledge(); document.body.dataset.ready = '1'; });
+  .then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
 </html>

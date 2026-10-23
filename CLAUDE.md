@@ -196,6 +196,8 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 - YouTube gaming thumbnails (23 Oct): 1920×1080, three layouts pitched in text first (split, menu showcase, centre
   hero), then the picked one built as a layered composite. Rules and reference notes: `marketing/yt-r6-unlock-all`
   (then `-2` to `-4`). Every element needs an obvious meaning: the user had a sheared padlock and sparks removed as "weird".
+  The user wants a clever idea in each one and textured title type, not flat gradient fills (23 Oct): in `-4` the
+  title is concrete and Sledge's hammer breaks the C of LOCK, pieces from the letter itself flying out.
 
 - Reel motion (22 Oct, the standard from now on): `marketing/hf-simple-logos-reel`, built on an After Effects project
   the user sent. A camera per shot that lands fast and settles, then speeds into a hard cut with a 0.3 s blur pulse;

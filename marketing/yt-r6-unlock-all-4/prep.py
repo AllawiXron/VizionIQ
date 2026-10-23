@@ -18,10 +18,8 @@ def blur(a, s):
 def screen(base, light):
     return 1 - (1 - base) * (1 - light)
 
-# Mirrored, so the swing goes to the right and the hammer leaves the menu through its right edge, away from the
-# labels on the menu's left.
-art = arr(Image.open('src/sledge-poster.jpg').convert('RGB'))[:, ::-1]
-A = arr(Image.open('src/sledge-mask.png').convert('L'))[:, ::-1]
+art = arr(Image.open('src/sledge-poster.jpg').convert('RGB'))
+A = arr(Image.open('src/sledge-mask.png').convert('L'))
 H, W = A.shape
 
 # Background: the poster's yellow with Sledge painted out. The hole is filled from the clean yellow around it only
@@ -37,7 +35,7 @@ fl = np.where(sv[..., None], sc, sc[sv].mean(0))
 for _ in range(400):
     fl = np.where(sv[..., None], sc, blur(fl, 2))
 fill = blur(cv2.resize(fl, (W, H), interpolation=cv2.INTER_CUBIC), 4)
-patch = art[40:440, 40:440]                                   # clean yellow, top left of the mirrored poster
+patch = art[300:650, 1760:1990]                              # clean yellow, right edge of the poster
 amp = float((patch - blur(patch, 2)).std())
 rng = np.random.default_rng(3)
 grain = blur(rng.normal(0, 1, (H, W)).astype(np.float32), .6)
@@ -48,12 +46,12 @@ bg = cv2.resize(bg, (1920, 1080), interpolation=cv2.INTER_AREA)
 save(bg, 'img/bg.jpg', quality=93)
 
 # Sledge: a thin yellow edge, the poster's own yellow, so the navy figure stays apart from the dark menu behind him.
-# Strongest on top and on the side facing the swing.
+# Strongest on top and on the side facing the swing (his left, our left).
 def edge(dy, dx, w):
     e = np.clip(A - ndi.shift(A, (dy, dx), order=1), 0, 1)
     return blur(e, w) * A ** 3
 
-rim = np.maximum.reduce([edge(6, 0, 1.2), edge(0, -6, 1.2) * .8, edge(0, 6, 1.2) * .55])
+rim = np.maximum.reduce([edge(6, 0, 1.2), edge(0, 6, 1.2) * .8, edge(0, -6, 1.2) * .55])
 im = screen(art, rim[..., None] * np.array([.96, .84, .36]) * .9)
 im = np.clip(im + .35 * (im - blur(im, 1.2)), 0, 1)
 save(np.dstack([im, A]), 'img/sledge.png')
