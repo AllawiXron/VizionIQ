@@ -41,6 +41,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   floating over the map, numbers without labels, no colour key). Say what the page does in one sentence, label every
   number, give every map a key, keep a plain top-to-bottom order. Before showing a site, run the site-tester agent
   (`.claude/agents/site-tester.md`, which runs `marketing/iraq-internet-map/build/check.cjs`) and fix what it finds.
+  Then the site-designer agent (`.claude/agents/site-designer.md`, which runs `build/design-audit.cjs` there): a senior
+  designer's review of hierarchy, organisation, spacing, type and the -noAI habits; fix what it finds (23 Oct).
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
