@@ -94,10 +94,12 @@ darken(img, sh * 0.62 * (1 - wall_mask))
 
 # ---------- pouch ----------
 po = Image.open('cut/pouch.png')
-ph = 900
-pw = round(po.width * ph / po.height)
+# placed so its bottom edge sits on the stand-in's base in the tape render: the front-left corner (x 300, y 2465
+# in the cut-out) on (529, 1637), the top on y 660, at 0.3962 scale
+S_ = 0.3962
+ph, pw = round(po.height * S_), round(po.width * S_)
 po = np.asarray(po.resize((pw, ph), Image.LANCZOS)).astype(np.float32) / 255
-px, py = 700 - pw // 2, 1560 - ph + 10
+px, py = 529 - round(300 * S_), 1637 - round(2465 * S_)
 prgb, pa = po[..., :3], po[..., 3]
 prgb = np.clip(prgb * np.array([1.05, 1.0, 0.90]) * 0.93, 0, 1)
 # the bottom fold still carries the white sweep it was shot on: take it down into the table's shade

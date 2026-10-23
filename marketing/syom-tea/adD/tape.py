@@ -23,10 +23,10 @@ bpy.ops.object.camera_add(location=(-0.05, -1.05, 0.34))
 cam = bpy.context.object; sc.camera = cam
 cam.data.sensor_width = 36; cam.data.sensor_fit = 'AUTO'
 sc.render.resolution_x, sc.render.resolution_y = 1080, 1920
-# the pouch stand-in: box pouch 17 x 10 x 34 cm, turned 30 degrees so its front faces camera right
+# the pouch stand-in: 20 x 7 x 34 cm (the gusset as deep as it shows in DSC05052), turned 30 degrees, front to camera right
 PX = 0.06                      # the pouch stands 6 cm right of the scene centre
 ROT = math.radians(30)
-W, D, H = 0.17, 0.10, 0.34
+W, D, H = 0.20, 0.07, 0.34
 bpy.ops.mesh.primitive_cube_add(size=1, location=(PX, 0, H / 2))
 box = bpy.context.object; box.name = 'PouchStandIn'
 box.scale = (W, D, H); box.rotation_euler = (0, 0, ROT)
@@ -102,7 +102,7 @@ for k in range(0, 21):
     ax, by = 0.128 * r, 0.092 * r
     x, y = ax * math.cos(th), by * math.sin(th)
     if lean > 0:                                     # pulled in against the side gusset and standing on its edge
-        x = x * (1 - 0.22 * lean)
+        x = x * (1 - 0.12 * lean)
     roll = -1.25 * lean
     z = 0.0003 + 0.010 * lean + (0.0011 if deg > 585 else 0)
     q = M @ Vector((x, y, 0))
