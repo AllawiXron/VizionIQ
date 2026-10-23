@@ -15,6 +15,8 @@ const VIEWS = [
 ];
 const GL = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];
 
+// the element that scrolls: the side panel on desktop map pages, the window everywhere else
+const SCROLLER = "(() => { const p = document.getElementById('page'); return getComputedStyle(p).overflowY === 'auto' ? p : document.scrollingElement; })()";
 const freePort = () => new Promise(r => { const s = net.createServer(); s.listen(0, () => { const p = s.address().port; s.close(() => r(p)); }); });
 
 // checks that run inside the page and return plain findings
@@ -94,13 +96,13 @@ function pageChecks() {
     const checks = async label => { R.findings[label] = await page.evaluate(pageChecks); };
     const scrollShots = async label => {
       // viewport-sized pictures down the page; a full-page capture would stretch the map, whose height follows the window
-      const h = await page.evaluate(() => (innerWidth >= 900 ? document.getElementById('page').scrollHeight : document.documentElement.scrollHeight));
+      const h = await page.evaluate(`${SCROLLER}.scrollHeight`);
       for (let y = 0, i = 0; y < h && i < 6; y += v.height * 0.9, i++) {
-        await page.evaluate(y => { innerWidth >= 900 ? (document.getElementById('page').scrollTop = y) : scrollTo(0, y); }, y);
+        await page.evaluate(`${SCROLLER}.scrollTop = ${y}`);
         await page.waitForTimeout(500);
         await shot(`${label}-${i + 1}`);
       }
-      await page.evaluate(() => { innerWidth >= 900 ? (document.getElementById('page').scrollTop = 0) : scrollTo(0, 0); });
+      await page.evaluate(`${SCROLLER}.scrollTop = 0`);
     };
     const go = async (hash, wait = 3000) => { await page.evaluate(h => { location.hash = h; }, hash); await page.waitForTimeout(wait); };
 

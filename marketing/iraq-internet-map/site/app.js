@@ -175,7 +175,7 @@ function placeMap() {
   else if (slot) { if (wrap.parentNode !== slot) slot.appendChild(wrap); wrap.style.display = ''; }
   else { wrap.classList.remove('full'); wrap.style.display = 'none'; }
   if (map) map.resize();
-  return wrap.style.display !== 'none';
+  return wrap.style.display !== 'none' && !(isWide() && document.body.classList.contains('nomap'));
 }
 
 // the map libraries load after the first page is on screen
@@ -279,14 +279,14 @@ function chooseLabels() {
   for (const c of cands) {
     if (S.focus && c.p.id === S.focus.id) continue;
     const pt = map.project([c.p.x, c.p.y]);
-    const fs = c.cls === 'big' ? 14.5 : 13;
+    const fs = c.cls === 'big' ? 15 : 13, off = c.cls === 'big' ? 18 : 9;
     const w = c.p.n.length * fs * 0.52 + 10, h = fs + 8;
     const side = z < 10 ? 1 : 0;                       // 1: set to the left of the light, 0: centred on it
-    const cx = side ? pt.x - 9 - w / 2 : pt.x;
+    const cx = side ? pt.x - off - w / 2 : pt.x;
     const r = { x0: cx - w / 2, x1: cx + w / 2, y0: pt.y - h / 2, y1: pt.y + h / 2 };
     if (r.x0 < 4 || r.x1 > W - 4 || r.y0 < 4 || r.y1 > H - 4) continue;   // a label cut at the edge reads as another name
     if (taken.some(t => r.x0 < t.x1 && r.x1 > t.x0 && r.y0 < t.y1 && r.y1 > t.y0)) continue;
-    taken.push(r); c.side = side; out.push(c);
+    taken.push(r); c.side = side; c.off = off; out.push(c);
     if (out.length >= 60) break;
   }
   labelBox.textContent = '';
@@ -295,14 +295,14 @@ function chooseLabels() {
     el.className = 'lbl' + (c.cls ? ' ' + c.cls : '');
     el.textContent = c.p.n;
     labelBox.appendChild(el);
-    return { el, p: c.p, side: c.side };
+    return { el, p: c.p, side: c.side, off: c.off };
   });
 }
 
 function placeLabels() {
   for (const s of shown) {
     const pt = map.project([s.p.x, s.p.y]);
-    s.el.style.transform = s.side ? `translate(${pt.x - 9}px, ${pt.y}px) translate(-100%, -50%)` : `translate(${pt.x}px, ${pt.y}px) translate(-50%, -50%)`;
+    s.el.style.transform = s.side ? `translate(${pt.x - s.off}px, ${pt.y}px) translate(-100%, -50%)` : `translate(${pt.x}px, ${pt.y}px) translate(-50%, -50%)`;
   }
 }
 
@@ -514,7 +514,7 @@ function clock(minAfter4) {
 }
 const dayName = d => { const t = new Date(d + 'T12:00:00'); return `${DAYS[t.getDay()]} ${arDigits(t.getDate())} ${MONTHS[t.getMonth()]}`; };
 const shortDate = d => { const t = new Date(d + 'T12:00:00'); return `${arDigits(t.getDate())} ${MONTHS[t.getMonth()]}`; };
-const winText = main => main.map((w, i) => `من ${clock(w.cut[0])} إلى ${clock(w.cut[1])}${i < main.length - 1 ? ` حتى ${shortDate(w.last)}` : ''}`).join('، ثم ');
+const winText = main => main.map((w, i) => `من ${clock(w.cut[0])} إلى ${clock(w.cut[1])}${i < main.length - 1 ? ` حتى ${shortDate(w.last)}` : ''}`).join('،<br>ثم ');
 
 function homeHTML() {
   const c = S.country, st = c[S.mode], h = S.mode === 'f' ? c.h : c.mh;
@@ -522,8 +522,6 @@ function homeHTML() {
   const ex = examYears();
   return `
   <h1 class="h1">اعرف سرعة الإنترنت في منطقتك</h1>
-  <p class="headline-num"><b style="color:${speedColour(st.d)}">${ar(st.d)}</b><span>ميغابت في الثانية، معدل سرعة تنزيل ${KIND[S.mode]} في العراق</span></p>
-  <p class="lede">الأرقام من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم على تطبيق Speedtest في كل محافظات العراق. ابحث عن منطقتك، أو قرب الخريطة واضغط على أي مكان.</p>
   <div class="search">
     <label for="q">اسم الحي أو المدينة أو المحافظة</label>
     <input id="q" type="search" placeholder="مثلا الكرادة" autocomplete="off" enterkeyhint="search"
@@ -533,33 +531,32 @@ function homeHTML() {
   <p class="tries">${tryLinks()}</p>
   ${modesHTML()}
   <div class="mapslot"></div>
-  <p class="maphint">كل نقطة ضوء مربع عرضه نصف كيلومتر، ولونها سرعة التنزيل فيه. الأحمر الخافت بطيء، والأصفر متوسط، والأبيض سريع. في المدن يمشي الضوء على الشوارع.</p>
+  <p class="maphint">كل نقطة ضوء مربع عرضه نصف كيلومتر، وفي المدن يمشي الضوء على الشوارع. قرب الخريطة واضغط على أي نقطة لترى سرعتها.</p>
 
   <section>
     <h2 class="h2">العراق كله</h2>
+    <p class="answer">معدل سرعة تنزيل ${KIND[S.mode]} في العراق<span class="big" style="color:${speedColour(st.d)}">${ar(st.d)}<small>ميغابت في الثانية</small></span></p>
     <dl class="facts">
-      <div><dt>معدل سرعة التنزيل</dt><dd style="color:${speedColour(st.d)}">${ar(st.d)}<small>ميغابت في الثانية</small></dd></div>
-      <div><dt>معدل سرعة الرفع</dt><dd>${ar(st.u)}<small>ميغابت في الثانية</small></dd></div>
-      <div><dt>البنغ (زمن الاستجابة)</dt><dd>${ar(st.l)}<small>ملي ثانية</small></dd></div>
-      <div><dt>سرعة التنزيل في صيف ٢٠١٩</dt><dd>${ar(h[0][0])}<small>ميغابت في الثانية</small></dd></div>
+      <div><dt>معدل سرعة الرفع<small>ميغابت في الثانية</small></dt><dd>${ar(st.u)}</dd></div>
+      <div><dt>البنغ، أي زمن الاستجابة<small>ملي ثانية</small></dt><dd>${ar(st.l)}</dd></div>
+      <div><dt>سرعة التنزيل في صيف ٢٠١٩<small>ميغابت في الثانية</small></dt><dd>${ar(h[0][0])}</dd></div>
       <div><dt>عدد الاختبارات</dt><dd>${ar(st.t)}</dd></div>
     </dl>
-    <p class="note">${KIND[S.mode]}، ${PERIOD[S.mode]}. المعدل موزون بعدد الاختبارات في كل مربع.</p>
+    <p class="note">الاختبارات أجراها الناس بأنفسهم على تطبيق Speedtest، والمعدل موزون بعدد الاختبارات في كل مربع.</p>
   </section>
 
   <section>
     <h2 class="h2">المحافظات من الأسرع إلى الأبطأ</h2>
     <p class="small">معدل سرعة التنزيل في ${KIND[S.mode]}. اضغط على محافظة لترى مدنها وأحياءها.</p>
     ${rankRows(govs, { head: 'المحافظة' })}
-    <p class="note">حدود المحافظات من OCHA، وفيها حلبجة ما تزال ضمن السليمانية. عدد الاختبارات تحت كل اسم.</p>
   </section>
 
   <section>
     <h2 class="h2">انقطاع الإنترنت في أيام الامتحانات</h2>
     <p class="small">ينقطع الإنترنت عن أغلب العراق في صباح كل امتحان وزاري.</p>
     <table class="tbl exsum">
-      <tr><th>السنة</th><th>أيام الانقطاع</th><th>الوقت المعتاد</th></tr>
-      ${ex.map(e => `<tr><td>${arDigits(e.y)}</td><td>${ar(e.rows.length)}</td><td style="font-size:15px">${winText(e.main)}</td></tr>`).join('')}
+      <tr><th>السنة</th><th>الأيام</th><th>الوقت المعتاد</th></tr>
+      ${ex.map(e => `<tr><td>${arDigits(e.y)}</td><td>${ar(e.rows.length)}</td><td class="win">${winText(e.main)}</td></tr>`).join('')}
     </table>
     <a class="more-link" href="#/exams">كل الأيام بالتاريخ والساعة</a>
   </section>
@@ -587,7 +584,7 @@ function scaleHTML(marks) {
   const used = Math.max(...marks.map(m => m.row));
   const stops = [];
   for (let i = 0; i <= 10; i++) stops.push(`rgb(${rampRGB(speedV(i / 10 * max)).join(',')}) ${i * 10}%`);
-  return `<div class="scale rows${used}" aria-hidden="true"><i class="track" style="background:linear-gradient(to left, ${stops.join(', ')})"></i>` +
+  return `<div class="scale rows${used}" role="img" aria-label="${esc(marks.map(m => m.text).join('، '))}"><i class="track" style="background:linear-gradient(to left, ${stops.join(', ')})"></i>` +
     marks.map(m => {
       const col = m.main ? speedColour(m.v) : 'var(--muted)';
       return `<div class="mk r${m.row} a${m.anchor}" style="right:${m.v / max * 100}%"><b style="color:${col}">${esc(m.text)}</b><i style="background:${col}"></i></div>`;
@@ -603,8 +600,8 @@ function placeHTML(p) {
   if (st) {
     answer = `معدل سرعة تنزيل ${KIND[S.mode]} في ${esc(where)}<span class="big" style="color:${speedColour(st.d)}">${ar(st.d)}<small>ميغابت في الثانية</small></span>`;
     const parts = [];
-    if (gs) parts.push(`${versus(st.d, gs.d)} معدل محافظة ${esc(g.n)} (${ar(gs.d)})`);
-    parts.push(`${versus(st.d, cs.d)} معدل العراق (${ar(cs.d)})`);
+    if (gs) parts.push(`${versus(st.d, gs.d)} معدل محافظة ${esc(g.n)}`);
+    parts.push(`${versus(st.d, cs.d)} معدل العراق`);
     if (isGov) {
       const ranked = S.govs.filter(x => stat(x)).sort((a, b) => stat(b).d - stat(a).d), order = ranked.indexOf(p);
       // a place in the order means little when a neighbour is within 5%
@@ -625,12 +622,12 @@ function placeHTML(p) {
   }
 
   const fsF = stat(p, 'f'), fsM = stat(p, 'm');
-  const cell = (s, k, unit) => s ? `${ar(s[k])}${unit ? ` <small>${unit}</small>` : ''}` : '<small>لا تكفي</small>';
+  const cell = (s, k) => s ? ar(s[k]) : '<small>لا تكفي</small>';
   const table = `<table class="tbl">
       <tr><th></th><th>إنترنت البيت</th><th>إنترنت الموبايل</th></tr>
-      <tr><td>سرعة التنزيل</td><td style="color:${fsF ? speedColour(fsF.d) : ''}">${cell(fsF, 'd', 'ميغابت')}</td><td style="color:${fsM ? speedColour(fsM.d) : ''}">${cell(fsM, 'd', 'ميغابت')}</td></tr>
-      <tr><td>سرعة الرفع</td><td>${cell(fsF, 'u', 'ميغابت')}</td><td>${cell(fsM, 'u', 'ميغابت')}</td></tr>
-      <tr><td>البنغ</td><td>${cell(fsF, 'l', 'ملي ثانية')}</td><td>${cell(fsM, 'l', 'ملي ثانية')}</td></tr>
+      <tr><td>سرعة التنزيل<small>ميغابت في الثانية</small></td><td style="color:${fsF ? speedColour(fsF.d) : ''}">${cell(fsF, 'd')}</td><td style="color:${fsM ? speedColour(fsM.d) : ''}">${cell(fsM, 'd')}</td></tr>
+      <tr><td>سرعة الرفع<small>ميغابت في الثانية</small></td><td>${cell(fsF, 'u')}</td><td>${cell(fsM, 'u')}</td></tr>
+      <tr><td>البنغ<small>ملي ثانية</small></td><td>${cell(fsF, 'l')}</td><td>${cell(fsM, 'l')}</td></tr>
       <tr><td>عدد الاختبارات</td><td>${cell(fsF, 't')}</td><td>${cell(fsM, 't')}</td></tr>
     </table>
     <p class="note">إنترنت البيت من تموز إلى أيلول ٢٠٢٦، والموبايل من تشرين الأول ٢٠٢٥ إلى أيلول ٢٠٢٦. لا أعرض رقما من أقل من ${ar(MIN_TESTS)} اختبارات.</p>`;
@@ -661,23 +658,29 @@ function placeHTML(p) {
 
   return `
   <p class="crumbs"><a href="#/">العراق</a>${g ? `<span>‹</span><a href="${href(g)}">${esc(g.n)}</a>` : ''}</p>
-  <h1 class="h1">${head(p.n)}</h1>
+  <h1 class="h1 place">${head(p.n)}</h1>
   <p class="kind">${esc(kindLine(p))}</p>
-  <p class="answer">${answer}</p>
-  <p class="small">${comp}</p>
-  ${scale}
   ${modesHTML()}
+  <p class="answer">${answer}</p>
+  <p class="comp">${comp}</p>
+  ${scale}
   <div class="mapslot"></div>
   <p class="maphint">${isGov ? 'المحافظة مضاءة بحدودها.' : 'المنطقة مضاءة بحدودها وما حولها معتم.'} قرب الخريطة واضغط على أي شارع لترى سرعة مربعه.</p>
-  <section><h2 class="h2">الأرقام</h2>${table}</section>
+  <section><h2 class="h2">البيت والموبايل</h2>${table}</section>
   <section><h2 class="h2">إنترنت البيت منذ <span class="n">٢٠١٩</span></h2><p class="small">معدل سرعة التنزيل في صيف كل سنة، من تموز إلى أيلول، بالميغابت.</p><div class="years">${years}</div></section>
   ${list}
   <section><h2 class="h2">كيف حسبت هذا الرقم</h2><p class="note">${how} الاختبارات أجراها أشخاص بأنفسهم على تطبيق Speedtest، فهي لا تقيس كل بيت.</p></section>
   ${foot}`;
 }
 
-const hourAxis = label => `<div class="ex-axis" aria-hidden="true"><span>${label}</span><div class="ax">${[4, 5, 6, 7, 8, 9, 10].map(h =>
+const hourAxis = () => `<div class="ex-axis" aria-hidden="true"><span></span><div class="ax">${[4, 5, 6, 7, 8, 9, 10].map(h =>
   `<span style="right:${(h - 4) / 6 * 100}%">${arDigits(h)}</span>`).join('')}</div></div>`;
+
+// the month is written on the first exam of each month, the other rows carry the day alone
+function rowDate(d, prev) {
+  const t = new Date(d + 'T12:00:00');
+  return prev && prev.d.slice(0, 7) === d.slice(0, 7) ? arDigits(t.getDate()) : shortDate(d);
+}
 
 function examsHTML() {
   const ex = examYears();
@@ -686,20 +689,20 @@ function examsHTML() {
   <h1 class="h1">انقطاع الإنترنت في أيام الامتحانات</h1>
   <p class="lede">ينقطع الإنترنت عن أغلب العراق في صباح كل امتحان وزاري. هذه الأيام كما سجلها مرصد IODA في معهد جورجيا للتقنية، الذي يقيس كل عشر دقائق كم شبكة عراقية ترد على الإنترنت.</p>
   <table class="tbl exsum">
-    <tr><th>السنة</th><th>أيام الانقطاع</th><th>الوقت المعتاد</th><th>المجموع</th></tr>
-    ${ex.map(e => `<tr><td>${arDigits(e.y)}</td><td>${ar(e.rows.length)}</td><td style="font-size:15px">${winText(e.main)}</td><td>${ar(e.hours)} <small>ساعة</small></td></tr>`).join('')}
+    <tr><th>السنة</th><th>الأيام</th><th>الوقت المعتاد</th><th>المجموع</th></tr>
+    ${ex.map(e => `<tr><td>${arDigits(e.y)}</td><td>${ar(e.rows.length)}</td><td class="win">${winText(e.main)}</td><td>${ar(e.hours)} <small>ساعة</small></td></tr>`).join('')}
   </table>
-  <div class="ex-key"><span><i style="background:${speedColour(80)}"></i>الإنترنت يعمل</span><span><i style="background:#3a1a0e"></i>منقطع</span></div>
+  <div class="ex-key"><span><i style="background:${speedColour(80)}"></i>الإنترنت يعمل</span><span><i style="background:#3a1a0e"></i>منقطع، ترد أقل من ٦٠٪ من الشبكات</span></div>
   ${ex.map(e => `
     <section class="ex-year" data-year="${e.y}">
       <h2 class="h2">${head(arDigits(e.y))}</h2>
       <p class="small">انقطع في ${ar(e.rows.length)} ${counted(e.rows.length, DAYS_N)}. اضغط على أي يوم لترى وقت الانقطاع.</p>
-      ${hourAxis('اليوم')}
-      ${e.rows.map((r, i) => `<button type="button" class="ex-row" data-i="${i}" aria-pressed="false"><span class="d">${dayName(r.d)}</span><canvas aria-hidden="true"></canvas></button>`).join('')}
-      ${hourAxis('')}
+      <p class="ex-cap">الساعة صباحا بتوقيت بغداد</p>
+      ${hourAxis()}
+      ${e.rows.map((r, i) => `<button type="button" class="ex-row" data-i="${i}" aria-pressed="false" aria-label="${dayName(r.d)}"><span class="d" aria-hidden="true">${rowDate(r.d, e.rows[i - 1])}</span><canvas aria-hidden="true"></canvas></button>`).join('')}
+      ${hourAxis()}
       <p class="ex-day" aria-live="polite" hidden></p>
     </section>`).join('')}
-  <p class="note">الأرقام فوق الخطوط ساعات الصباح بتوقيت بغداد، من الرابعة إلى العاشرة. يبدأ الخط مضيئا ويعتم حين تنزل الشبكات التي ترد إلى أقل من ٦٠٪ مما كانت عليه قبل السادسة في الصباح نفسه.</p>
   ${foot}`;
 }
 
@@ -722,7 +725,7 @@ function aboutHTML() {
     <h2 class="h2">من صنعها</h2>
     <p>الفكرة والتصميم لعلي، انستغرام <bdi dir="ltr">@allawi.psd</bdi></p>
     <h2 class="h2">المصادر والرخص</h2>
-    <p class="src">Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps. Based on analysis by Ookla of Speedtest Intelligence® data for Q4 2025 to Q3 2026, and Q3 of each year from 2019. Provided by Ookla and accessed 23 October 2026. Licensed CC BY-NC-SA 4.0; Ookla trademarks used under license.</p>
+    <p class="src">Speedtest<span class="reg">®</span> by Ookla<span class="reg">®</span> Global Fixed and Mobile Network Performance Maps. Based on analysis by Ookla of Speedtest Intelligence<span class="reg">®</span> data for Q4 2025 to Q3 2026, and Q3 of each year from 2019. Provided by Ookla and accessed 23 October 2026. Licensed CC BY-NC-SA 4.0; Ookla trademarks used under license.</p>
     <p class="src">Map data © OpenStreetMap contributors, ODbL, through the Humanitarian OpenStreetMap Team exports. Internet outage data: IODA, Georgia Institute of Technology. NASA GIBS: ASTER GDEM shaded relief, VIIRS Black Marble. Natural Earth. Governorates: OCHA, Iraq Subnational Administrative Boundaries (COD-AB), CC BY-IGO. Map rendering: MapLibre GL JS and PMTiles (BSD-3-Clause).</p>
   </article>
   ${foot}`;
@@ -734,9 +737,7 @@ function drawRow(canvas, r, selected) {
   const dpr = Math.min(2, devicePixelRatio || 1), W = canvas.clientWidth, H = canvas.clientHeight;
   if (!W) return;
   canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-  const ctx = canvas.getContext('2d'), n = r.v.length, cw = canvas.width, mid = canvas.height / 2;
-  ctx.fillStyle = 'rgba(239,230,214,0.05)';
-  ctx.fillRect(0, mid - 2 * dpr, cw, 4 * dpr);
+  const ctx = canvas.getContext('2d'), n = r.v.length, cw = canvas.width, mid = canvas.height / 2, th = (selected ? 10 : 7) * dpr;
   for (let x = 0; x < cw; x++) {
     // time runs right to left: 04:00 at the right edge, 10:00 at the left
     const t = (1 - x / (cw - 1)) * (n - 1), a = Math.floor(t), f = t - a;
@@ -745,7 +746,7 @@ function drawRow(canvas, r, selected) {
     const on = v >= 0.6;
     const c = on ? rampRGB(0.5 + 0.35 * Math.min(1, v)) : [58, 26, 14];
     ctx.fillStyle = `rgba(${c.join(',')},${on ? (selected ? 1 : 0.85) : 1})`;
-    ctx.fillRect(x, mid - (selected ? 2.5 : 1.5) * dpr, 1, (selected ? 5 : 3) * dpr);
+    ctx.fillRect(x, mid - th / 2, 1, th);
   }
 }
 
@@ -795,8 +796,9 @@ async function render(move = true) {
   const h = current();
   const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h.startsWith('/exams') ? 'exams' : h.startsWith('/about') ? 'about' : 'home';
   document.querySelectorAll('.bar nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + h));
+  document.body.classList.toggle('nomap', view === 'exams' || view === 'about');
   const keepScroll = !move || lastRoute === h;
-  const y = isWide() ? page.scrollTop : scrollY;
+  const y = page.scrollTop || scrollY;
   let p = null;
   if (view === 'place') await placesReady;
   if (view === 'place') {
@@ -808,11 +810,11 @@ async function render(move = true) {
   } else if (view === 'exams') { page.innerHTML = examsHTML(); document.title = 'انقطاع الإنترنت في أيام الامتحانات'; }
   else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن خريطة سرعة الإنترنت في العراق'; }
   else { page.innerHTML = homeHTML(); document.title = 'خريطة سرعة الإنترنت في العراق'; wireSearch(); }
-  if (keepScroll) { isWide() ? (page.scrollTop = y) : scrollTo(0, y); } else { page.scrollTop = 0; scrollTo(0, 0); }
+  if (keepScroll) { page.scrollTop = y; scrollTo(0, y); } else { page.scrollTop = 0; scrollTo(0, 0); }
   if (view === 'exams') requestAnimationFrame(wireExams);
 
   const visible = placeMap();
-  if (!visible && !map) { lastRoute = h; return; }
+  if (!visible) { if (map) clearFocus(); lastRoute = h; return; }
   await ensureMap();
   placeMap();
   if (move && lastRoute !== h) {
@@ -823,6 +825,8 @@ async function render(move = true) {
       else { clearFocus(); map.flyTo({ center: [p.x, p.y], zoom: p.z }); }
     } else { clearFocus(); frame(IRAQ, { duration: lastRoute ? 1200 : 0 }); }
   }
+  // the frame button goes back to what this page is about
+  wrap.querySelector('[data-act="all"]').textContent = !S.focus ? 'العراق كله' : S.focus.k === 'gov' ? 'المحافظة كلها' : 'المنطقة كلها';
   lastRoute = h;
   chooseLabels(); placeLabels();
 }

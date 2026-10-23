@@ -14,6 +14,7 @@ const VIEWS = [
 ];
 const PAGES = [['home', '#/'], ['area', null], ['governorate', '#/g/baghdad'], ['village', null], ['exams', '#/exams'], ['about', '#/about']];
 const GL = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];
+const SCROLLER = "(() => { const p = document.getElementById('page'); return getComputedStyle(p).overflowY === 'auto' ? p : document.scrollingElement; })()";
 const freePort = () => new Promise(r => { const s = net.createServer(); s.listen(0, () => { const p = s.address().port; s.close(() => r(p)); }); });
 
 function measure() {
@@ -21,8 +22,9 @@ function measure() {
   const vis = el => { const r = el.getBoundingClientRect(), s = getComputedStyle(el); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
   const ownText = el => [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').replace(/\s+/g, ' ').trim();
   const label = el => el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : '');
-  const pageTop = root.getBoundingClientRect().top - (innerWidth >= 900 ? 0 : 0) + (innerWidth >= 900 ? root.scrollTop : scrollY);
-  const abs = r => ({ top: Math.round(r.top + (innerWidth >= 900 ? root.scrollTop : scrollY) - pageTop), right: Math.round(r.right), left: Math.round(r.left), h: Math.round(r.height), w: Math.round(r.width) });
+  const sc = getComputedStyle(root).overflowY === 'auto' ? root : document.scrollingElement;
+  const pageTop = root.getBoundingClientRect().top + sc.scrollTop;
+  const abs = r => ({ top: Math.round(r.top + sc.scrollTop - pageTop), right: Math.round(r.right), left: Math.round(r.left), h: Math.round(r.height), w: Math.round(r.width) });
 
   // every text style in use: family, size, weight, line height, colour
   const styles = {};
@@ -82,7 +84,7 @@ function measure() {
     if (s.backgroundColor !== 'rgba(0, 0, 0, 0)') colours['fill ' + s.backgroundColor] = (colours['fill ' + s.backgroundColor] || 0) + 1;
     if (s.borderTopWidth !== '0px' && s.borderTopStyle !== 'none') colours[`border ${s.borderTopWidth} ${s.borderTopColor}`] = (colours[`border ${s.borderTopWidth} ${s.borderTopColor}`] || 0) + 1;
   }
-  return { width: innerWidth, pageHeight: innerWidth >= 900 ? root.scrollHeight : document.documentElement.scrollHeight, styles, gaps, measure: measureRows, lone, rightEdges: edges, colours };
+  return { width: innerWidth, pageHeight: sc.scrollHeight, styles, gaps, measure: measureRows, lone, rightEdges: edges, colours };
 }
 
 (async () => {
@@ -113,13 +115,13 @@ function measure() {
       const m = await page.evaluate(measure);
       const shots = [];
       for (let y = 0, i = 0; y < m.pageHeight && i < 8; y += v.height * 0.85, i++) {
-        await page.evaluate(y => { innerWidth >= 900 ? (document.getElementById('page').scrollTop = y) : scrollTo(0, y); }, y);
+        await page.evaluate(`${SCROLLER}.scrollTop = ${y}`);
         await page.waitForTimeout(450);
         const f = path.join(OUT, `${v.name}-${name}-${i + 1}.png`);
         await page.screenshot({ path: f });
         shots.push(path.basename(f));
       }
-      await page.evaluate(() => { innerWidth >= 900 ? (document.getElementById('page').scrollTop = 0) : scrollTo(0, 0); });
+      await page.evaluate(`${SCROLLER}.scrollTop = 0`);
       report.pages[`${v.name}/${name}`] = { hash, shots, ...m };
     }
     await ctx.close();

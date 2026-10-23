@@ -18,20 +18,27 @@ is on screen, and area pages wait for them.
 
 The page reads top to bottom in plain sentences (rebuilt 23 Oct after the user found the first version confusing:
 no colour key, numbers without labels, text floating over the map):
-- **Home:** what the site does in one sentence, a real search box with examples, the البيت / الموبايل switch, the
-  map with its colour key and controls (on phones it sits in the page and moves with two fingers; ملء الشاشة opens it
-  full screen), Iraq's numbers as labelled rows, the governorates as a ranked table, and the exam days as a small table.
+- **Home:** what the site does in one sentence, a real search box with examples, the البيت / الموبايل switch, then
+  the map on the first screen with its colour key and controls (on phones it sits in the page and moves with two
+  fingers; ملء الشاشة opens it full screen), Iraq's number big with its other numbers as labelled rows, the
+  governorates as a ranked table, and the exam days as a small table.
 - **Area pages** (`#/p/<osm id>`, `#/g/<governorate>`): one answer sentence (معدل سرعة تنزيل ... يبلغ ٨٧ ميغابت), how it
   compares with its governorate and Iraq and what share of areas it beats, a scale with the three marks, the map
   focused on the area, home and mobile side by side in one table, the summer of every year since 2019, nearby areas.
-- **Exams** (`#/exams`): the days, usual hours and total per year, then every day as a labelled row (date, line from
-  04:00 to 10:00, dark where the internet was cut); tap a day for its exact times.
+- **Exams** (`#/exams`): the days, usual hours and total per year, then one line of light per morning from 04:00 to
+  10:00, stacked tight as in the still so the cut reads as one dark column (the month is written on its first exam,
+  the hours at both ends); tap a day for its date and exact times. On desktop the exams and About pages take the
+  whole window, since the speed map has nothing to say there.
 - Brightness and colour on the map are download speed; ember is slow, white is fast, dark is no tests. Tap a square
   for its speed and test count. No area shows a number from fewer than 10 tests.
 - Kufi headings set their digits in Markazi; numbers never sit next to each other across a comma (Arabic bidi
   joins them into one number).
 - Ranked lists give the test count under every name, and equal numbers share a place. A governorate's place in the
   order says when a neighbour is within 5%.
+
+Type runs in five steps (13, 15, 18, 21 and 26 px) plus the headline and the 88 px number; units sit under their labels
+so numbers share one edge; rules only in tables. `build/design-audit.cjs --out <dir>` screenshots every page at three
+sizes and measures the type styles, gaps, text measure and edges for a design review.
 
 Test it before showing anyone: `NODE_PATH=/opt/node-tools/node_modules node build/check.cjs --out <dir>` drives every
 page and interaction at phone, tablet and desktop sizes and on slow 4G, with screenshots and automatic layout and
