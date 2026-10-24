@@ -643,7 +643,7 @@ function startPing() {
 const ms = v => `${ar(v)} ملي ثانية`;
 function pingAdvice(t) {
   const jump = t.busy != null ? t.busy - t.idle : 0;
-  if (t.busy != null && jump > 60) return `البنك عندك يقفز من ${ar(t.idle)} إلى ${ar(t.busy)} لما الخط مشغول. يعني إذا أحد بالبيت يشاهد أو يحمل وانت تلعب، راح تحس باللاك. راوتر يدعم QoS أو SQM يخلي اللعب أول، أو العب بكيبل وخلي التحميل لوقت ثاني.`;
+  if (t.busy != null && jump > 60) return `والخط فارغ البنك عندك ${ar(t.idle)} بس. يعني إذا أحد بالبيت يشاهد أو يحمل وانت تلعب، راح تحس باللاگ. راوتر يدعم QoS أو SQM يخلي اللعب أول، أو العب بكيبل وخلي التحميل لوقت ثاني.`;
   if (t.jitter > 15) return `البنك عندك يتذبذب بحدود ${ar(t.jitter)} ملي ثانية بين فحص وفحص، وهذا يحسسك بتقطيع حتى لو الرقم واطي. الكيبل بدل الواي فاي يخففه كثير.`;
   if (t.idle >= 50) return 'البنك عالي حتى والخط فارغ، فالمشكلة غالبا من الشبكة نفسها مو من البيت. قارن بنك منطقتك بالجدول تحت، وإذا هي أحسن منك كلم شركتك.';
   return 'البنك عندك ثابت وما يقفز كثير لما الخط مشغول، وهذا أهم شي للعب.';
@@ -668,11 +668,13 @@ function pingHTML() {
   else if (t.phase === 'failed') test = `<p class="intro">ما كمل الفحص، يمكن انقطع الاتصال. جرب مرة ثانية.</p><button type="button" class="go" data-act="ping"><span>افحص مرة ثانية</span></button>`;
   else {
     const cell = (k, label, v) => `<div class="${t.phase === k ? 'now' : v == null ? 'wait' : ''}"><span>${label}</span><b>${v != null ? ms(v) : t.phase === k ? 'يقيس' : 'بعده'}</b></div>`;
-    const big = t.phase === 'done' ? t.idle : t.live != null ? t.live : null;
-    test = `<p class="label test-now">${t.phase === 'idle' ? 'البنك مالتك هسه، والخط فارغ' : t.phase === 'busy' ? 'البنك مالتك وقت التحميل' : 'البنك مالتك'}</p>
+    // when the ping jumps under load, that jump is the result that matters, so it stays the big number
+    const bloat = t.phase === 'done' && t.busy != null && t.busy - t.idle > 60;
+    const big = t.phase === 'done' ? (bloat ? t.busy : t.idle) : t.live != null ? t.live : null;
+    test = `<p class="label test-now">${t.phase === 'idle' ? 'البنك مالتك هسه، والخط فارغ' : t.phase === 'busy' || bloat ? 'البنك مالتك وقت التحميل' : 'البنك مالتك'}</p>
       <p class="num" ${big != null ? `style="color:${pingOf(t.phase === 'busy' && t.live != null ? t.live : big).text}"` : ''}>${big != null ? ar(big) : '٠'}<small>ملي ثانية</small></p>
       <div class="three">${cell('idle', 'والخط فارغ', t.idle)}<div class="${t.jitter == null ? 'wait' : ''}"><span>التذبذب</span><b>${t.jitter != null ? ms(t.jitter) : 'بعده'}</b></div>${cell('busy', 'وقت التحميل', t.busy)}</div>
-      ${t.phase === 'done' ? `<p class="test-verdict" style="color:${pingOf(t.idle).text}">${pingOf(t.idle).word}، ${pingOf(t.idle).line}</p>
+      ${t.phase === 'done' ? `<p class="test-verdict" style="color:${pingOf(big).text}">${bloat ? `البنك يقفز من ${ar(t.idle)} إلى ${ar(t.busy)} لما الخط مشغول (سبب اللاگ)` : `${pingOf(t.idle).word}، ${pingOf(t.idle).line}`}</p>
       <p class="intro">${pingAdvice(t)}</p>
       <div class="two"><button type="button" class="dark" data-act="shareping">شارك النتيجة</button><button type="button" class="light" data-act="ping">افحص مرة ثانية</button></div>`
       : '<p class="small">خلي الصفحة مفتوحة. بالخطوة الثانية نحمل شوية حتى نشوف البنك لما الخط مشغول.</p>'}`;
@@ -988,7 +990,7 @@ async function shareCard(o) {
 
 // ---------- pages ----------
 
-const foot = (about = true) => `<p class="foot">السرعات من Speedtest by Ookla، والشوارع والأحياء من مساهمي OpenStreetMap.${about ? ' <a href="#/about">من أين جاءت الأرقام</a>' : ''}<br>
+const foot = (about = true) => `<p class="foot">السرعات من Speedtest by Ookla، والشوارع والأحياء من مساهمي OpenStreetMap.${about ? '<br><a href="#/about">من أين جاءت الأرقام</a>' : ''}<br>
   فكرة وتصميم <bdi dir="ltr">@allawi.psd</bdi></p>`;
 const modesHTML = () => `<div class="modes" role="group" aria-label="نوع الاتصال">
   <button type="button" data-mode="f" aria-pressed="${S.mode === 'f'}" class="${S.mode === 'f' ? 'on' : ''}">إنترنت البيت</button>

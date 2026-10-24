@@ -434,8 +434,11 @@ function pingCard(t, t0, y, name, v, label) {
   softCard(ctx, x, y, w, h, 26, al);
   text(label, x + w - 48, y + 84, { size: 40, weight: 500, color: SOFT, alpha: al });
   text(name, x + w - 48, y + 190, { size: 92, weight: 800, alpha: al });
-  text(AR(v), x + 48, y + 230, { size: 210, weight: 800, color: PING_TEXT(v), align: 'left', alpha: al });
-  text('ms', x + 48 + tw(AR(v), 210) + 8, y + 230, { size: 56, weight: 700, color: SOFT, align: 'left', dir: 'ltr', alpha: al });
+  // ms sits 6 px after the ink of the number, the same for every number
+  ctx.font = '800 210px Rubik'; ctx.direction = 'ltr'; ctx.textAlign = 'left';
+  const ink = ctx.measureText(AR(v)).actualBoundingBoxRight;
+  text(AR(v), x + 48, y + 230, { size: 210, weight: 800, color: PING_TEXT(v), align: 'left', dir: 'ltr', alpha: al });
+  text('ms', x + 48 + ink + 6, y + 230, { size: 56, weight: 700, color: SOFT, align: 'left', dir: 'ltr', alpha: al });
   const bk = smooth(seg(t, t0 + 0.25, 0.6)), bw = (w - 88) * Math.min(1, v / 50) * bk;
   ctx.fillStyle = '#eef0f2'; rrect(ctx, x + 44, y + h - 62, w - 88, 16, 8); ctx.fill();
   ctx.fillStyle = PING_FILL(v); rrect(ctx, x + w - 44 - bw, y + h - 62, Math.max(bw, 1), 16, 8); ctx.fill();
@@ -535,12 +538,13 @@ function drawGovs(t, oy, z, zp, focus, outl, ga) {
       if (sul) c = mix(g.col, FIELD, smooth(seg(zp, 0.15, 0.6)));
       ctx.save(); ctx.globalAlpha = a * ga; ctx.fillStyle = c; ctx.fill(); ctx.restore();
     }
+    if (zp > 0) return;   // no outlines while the camera dives, so nothing echoes in the blur
     ctx.save(); ctx.globalAlpha = outl * ga; ctx.lineWidth = 2.2 / Math.sqrt(z); ctx.lineJoin = 'round'; ctx.strokeStyle = e > 0.4 ? WHITE : '#b9c0c8'; ctx.stroke(); ctx.restore();
   });
 }
 function scene6(t, cy, cv, rt) {
   const oy = 9600 - cy; if (oy > H || oy < -H || t > 30.05) return;
-  const zp = seg(t, 29.2, 0.75), z = Math.pow(18, 1 - Math.pow(1 - zp, 3)), mv = smooth(clamp(zp * 1.4)), clear = 1 - smooth(seg(t, 28.85, 0.33));   // the card, key and border leave before the zoom
+  const zp = seg(t, 29.2, 0.75), z = Math.pow(25, 1 - Math.pow(1 - zp, 3)), mv = smooth(clamp(zp * 1.4)), clear = 1 - smooth(seg(t, 28.85, 0.33));   // the card, key and border leave before the zoom
   ctx.save();
   if (z > 1.0001) { ctx.translate(lerp(ZOOM_AT[0], W / 2, mv), lerp(ZOOM_AT[1] + oy, H / 2, mv)); ctx.scale(z, z); ctx.translate(-ZOOM_AT[0], -(ZOOM_AT[1] + oy)); }
   if (clear > 0) captions(t, [[26.05, 'بيانات ميدانية جاهزة أمام وزارة الاتصالات: وين الخلل، ويا محافظة تحتاج أولوية؟']], oy, z > 1 ? [0, 0] : cv, { size: 64, y: 286 });
@@ -550,7 +554,7 @@ function scene6(t, cy, cv, rt) {
     const N = 8, sv = ctx; ml.setTransform(1, 0, 0, 1, 0, 0); ml.clearRect(0, 0, W, H); ml.globalCompositeOperation = 'lighter';
     ctx = ml;
     for (let j = 0; j < N; j++) {
-      const tj = t - j / (180 * N), zpj = seg(tj, 29.2, 0.75), zj = Math.pow(18, 1 - Math.pow(1 - zpj, 3)), mj = smooth(clamp(zpj * 1.4));
+      const tj = t - j / (180 * N), zpj = seg(tj, 29.2, 0.75), zj = Math.pow(25, 1 - Math.pow(1 - zpj, 3)), mj = smooth(clamp(zpj * 1.4));
       ml.setTransform(1, 0, 0, 1, 0, 0); ml.translate(lerp(ZOOM_AT[0], W / 2, mj), lerp(ZOOM_AT[1] + oy, H / 2, mj)); ml.scale(zj, zj); ml.translate(-ZOOM_AT[0], -(ZOOM_AT[1] + oy));
       drawGovs(t, oy, zj, zpj, focus, outl, 1 / N);
     }
@@ -592,7 +596,7 @@ function scene6(t, cy, cv, rt) {
     ctx.restore();
   }
   ctx.restore();
-  const cover = smooth(seg(t, 29.72, 0.23));
+  const cover = smooth(seg(t, 29.8, 0.15));
   if (cover > 0) { ctx.save(); ctx.globalAlpha = cover; ctx.fillStyle = FIELD; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 }
 const LINE_Y = 666;
