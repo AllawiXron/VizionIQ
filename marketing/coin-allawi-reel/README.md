@@ -70,6 +70,36 @@ Scripts > Run Script File… and pick the script. Every cue lands as a green aud
 time, with the time and kind in the layer comment. Above them, the null `SFX_TIMELINE` has a green marker per cue,
 as long as the sound. With `allawi-orange-coin.mp4` beside the script, a new comp also gets the reel as a picture layer.
 
+## EffectCraft project
+
+`effectcraft/` turns the reel into an editable EffectCraft project (`.ecproj`), since After Effects' own `.aep`
+can't be written outside After Effects:
+
+- `describe.js` runs inside `reel.html` and reads every element as a layer:
+  - every word becomes a DG Sahabah text layer, set on its baseline with a right-to-left paragraph;
+  - each cut-out becomes footage with its two drop shadows, and the white block, the stamp's frame and the phones
+    become shape layers;
+  - each clipped scene (the orange, the panel, the dark stage, the page coming back, the last orange) becomes a
+    comp with its circle or diagonal as an animated mask;
+  - the page camera and the camera worlds over the page and the stage become nulls;
+  - the phones are 3D comps playing my reels behind a 1400 px camera.
+
+  Every pose is sampled at 60 fps and keyed only where a straight line between keys would miss it (about 10,000
+  linear keys, position split into X and Y). A comp made for one piece gets room around it, so the dots under a
+  final ya and the phones' shadows aren't cut at its edge.
+- `export.cjs` writes `out/ec/reel.json` and `out/ec/footage` (cut-outs, paper, the phone reels without tags, the
+  two drawings as PNGs, the voice and the 47 sound cues).
+- `build_reel.jsx` builds the project through EffectCraft's scripting (its After Effects object model). The voice
+  sits at the bottom of the main comp, then the cues as green layers, and `SFX_TIMELINE` has a green marker per cue.
+- `pack.sh` runs all of it with `effectcraft-cli`, makes the footage paths relative to the project file (it then
+  opens wherever the folder is unzipped), checks nothing is missing and writes
+  `out/allawi_orange_coin_EffectCraft.zip`. `compare.sh` renders frames of the project next to the same frames of
+  the page.
+
+To open it: install `fonts/DG-Sahabah-Reg.ttf`, unzip, and open `allawi_orange_coin.ecproj`. What comes out close
+rather than exact: the page's blur that follows each element's speed is the layers' motion blur, and the 3D page
+tilt and the phones share one camera instead of a perspective each.
+
 ## Credits
 
 - The empty wallet: rawpixel, CC0. The other cut-outs are ones I picked and cut out myself.
