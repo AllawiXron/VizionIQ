@@ -582,6 +582,116 @@ function startTest() {
   });
 }
 
+
+// ---------- ping for games: the area's ping, your own ping idle and while the line is busy, and who has the lowest ----------
+
+const PING = [
+  { max: 15, word: 'ممتاز للألعاب', fill: '#12795a', text: '#10664c', line: 'ما راح تحس بتأخير باللعب' },
+  { max: 30, word: 'جيد للألعاب', fill: '#5aa85e', text: '#2f7d45', line: 'مناسب لأغلب الألعاب أونلاين' },
+  { max: 50, word: 'مقبول', fill: '#e3b021', text: '#866608', line: 'تلعب عادي، بس بالألعاب السريعة ممكن تحس بتأخير بسيط' },
+  { max: 80, word: 'عالي', fill: '#ea8a2e', text: '#a8561a', line: 'تحس بتأخير باللعب، خصوصا بألعاب التصويب' },
+  { max: Infinity, word: 'عالي جدا', fill: '#d2483f', text: '#b3362e', line: 'اللعب أونلاين راح يكون صعب ويتقطع' },
+];
+const pingOf = v => PING.find(b => v < b.max);
+S.ping = null;          // { phase, idle, jitter, busy, live }
+let pingRun = null;
+async function pingSeries(n, gap, signal, each) {
+  const out = [];
+  for (let i = 0; i < n && !signal.aborted; i++) {
+    const t0 = performance.now();
+    try {
+      const r = await fetch(`${CF}/__down?bytes=0&n=${Math.random()}`, { cache: 'no-store', signal });
+      await r.arrayBuffer();
+      const srv = /dur=([\d.]+)/.exec(r.headers.get('server-timing') || '');
+      const v = Math.max(1, performance.now() - t0 - (srv ? +srv[1] : 0));
+      if (i) { out.push(v); each && each(v, out); }
+    } catch (e) { if (signal.aborted) break; }
+    if (gap) await new Promise(r => setTimeout(r, gap));
+  }
+  return out;
+}
+async function measurePing(t, signal) {
+  const tick = () => { if (route === '#/ping') drawPing(); };
+  // idle: 25 pings; jitter is how much one differs from the next
+  const idle = await pingSeries(26, 60, signal, (v, all) => { t.live = v; t.idle = median(all); tick(); });
+  if (signal.aborted || idle.length < 5) throw new Error('ping');
+  t.idle = median(idle);
+  t.jitter = idle.slice(1).reduce((a, v, i) => a + Math.abs(v - idle[i]), 0) / (idle.length - 1);
+  t.phase = 'busy'; t.live = null; tick();
+  // busy: the same pings while three downloads fill the line for six seconds
+  const ctl = new AbortController(), stop = () => ctl.abort();
+  signal.addEventListener('abort', stop);
+  const load = async () => { while (!ctl.signal.aborted) { const r = await fetch(`${CF}/__down?bytes=25000000&n=${Math.random()}`, { cache: 'no-store', signal: ctl.signal }); const rd = r.body.getReader(); for (;;) { const { done } = await rd.read(); if (done) break; } } };
+  const loads = [load(), load(), load()].map(p => p.catch(() => {}));
+  setTimeout(stop, 6500);
+  await new Promise(r => setTimeout(r, 800));
+  const busy = await pingSeries(18, 150, ctl.signal, (v, all) => { t.live = v; t.busy = median(all); tick(); });
+  stop(); await Promise.all(loads);
+  if (signal.aborted) return;
+  t.busy = busy.length ? median(busy) : null;
+  t.live = null; t.phase = 'done';
+}
+function startPing() {
+  if (pingRun) pingRun.abort();
+  pingRun = new AbortController();
+  const t = S.ping = { phase: 'idle', idle: null, jitter: null, busy: null, live: null };
+  drawPing();
+  measurePing(t, pingRun.signal).then(() => { if (S.ping === t) drawPing(); }).catch(() => {
+    if (S.ping === t && !pingRun.signal.aborted) { t.phase = 'failed'; drawPing(); }
+  });
+}
+const ms = v => `${ar(v)} ملي ثانية`;
+function pingAdvice(t) {
+  const jump = t.busy != null ? t.busy - t.idle : 0;
+  if (t.busy != null && jump > 60) return `البنك عندك يقفز من ${ar(t.idle)} إلى ${ar(t.busy)} لما الخط مشغول. يعني إذا أحد بالبيت يشاهد أو يحمل وانت تلعب، راح تحس باللاك. راوتر يدعم QoS أو SQM يخلي اللعب أول، أو العب بكيبل وخلي التحميل لوقت ثاني.`;
+  if (t.jitter > 15) return `البنك عندك يتذبذب بحدود ${ar(t.jitter)} ملي ثانية بين فحص وفحص، وهذا يحسسك بتقطيع حتى لو الرقم واطي. الكيبل بدل الواي فاي يخففه كثير.`;
+  if (t.idle >= 50) return 'البنك عالي حتى والخط فارغ، فالمشكلة غالبا من الشبكة نفسها مو من البيت. قارن بنك منطقتك بالجدول تحت، وإذا هي أحسن منك كلم شركتك.';
+  return 'البنك عندك ثابت وما يقفز كثير لما الخط مشغول، وهذا أهم شي للعب.';
+}
+function placeRows(list, mode) {
+  return `<ol class="plist">${list.map((p, i) => { const v = p[mode].l, b = pingOf(v);
+    return `<li><span class="pos">${ar(i + 1)}</span><a href="${href(p)}">${esc(p.n)}${p.k !== 'gov' ? `<small>${esc((govById(p.g) || {}).n || '')}</small>` : ''}</a><b style="color:${b.text}">${ar(v)}</b></li>`; }).join('')}</ol>`;
+}
+function pingHTML() {
+  const m = S.mode, a = areaFor(S.me && S.me.p), st = stat(a), aName = areaName(a), t = S.ping;
+  const g = S.me && S.me.p ? (S.me.p.k === 'gov' ? S.me.p : govById(S.me.p.g)) : null;
+  const pb = pingOf(st.l);
+  const ok = p => { const x = stat(p, m); return x && x.t >= FEW_TESTS && x.l != null; };
+  const byPing = (x, y) => x[m].l - y[m].l || y[m].t - x[m].t;
+  // names people know: no numbered محلة, no names in another script, neighbourhoods in the governorate and towns for Iraq
+  const known = p => !/[0-9٠-٩&ەێۆڕڵ]/.test(p.n);
+  const inGov = g ? S.places.filter(p => p.g === g.id && ok(p) && known(p) && ['quarter', 'suburb', 'neighbourhood', 'town', 'city'].includes(p.k)).sort(byPing).slice(0, 10) : [];
+  const iraqBest = S.places.filter(p => ok(p) && known(p) && (p.k === 'city' || p.k === 'town')).sort(byPing).slice(0, 10);
+  const govsRank = S.govs.filter(ok).sort(byPing);
+  let test;
+  if (!t) test = `<button type="button" class="go" data-act="ping"><span>افحص البنك مالتك</span><em>١٥ ثانية</em></button>`;
+  else if (t.phase === 'failed') test = `<p class="intro">ما كمل الفحص، يمكن انقطع الاتصال. جرب مرة ثانية.</p><button type="button" class="go" data-act="ping"><span>افحص مرة ثانية</span></button>`;
+  else {
+    const cell = (k, label, v) => `<div class="${t.phase === k ? 'now' : v == null ? 'wait' : ''}"><span>${label}</span><b>${v != null ? ms(v) : t.phase === k ? 'يقيس' : 'بعده'}</b></div>`;
+    const big = t.phase === 'done' ? t.idle : t.live != null ? t.live : null;
+    test = `<p class="label test-now">${t.phase === 'idle' ? 'البنك مالتك هسه، والخط فارغ' : t.phase === 'busy' ? 'البنك مالتك وقت التحميل' : 'البنك مالتك'}</p>
+      <p class="num" ${big != null ? `style="color:${pingOf(t.phase === 'busy' && t.live != null ? t.live : big).text}"` : ''}>${big != null ? ar(big) : '٠'}<small>ملي ثانية</small></p>
+      <div class="three">${cell('idle', 'والخط فارغ', t.idle)}<div class="${t.jitter == null ? 'wait' : ''}"><span>التذبذب</span><b>${t.jitter != null ? ms(t.jitter) : 'بعده'}</b></div>${cell('busy', 'وقت التحميل', t.busy)}</div>
+      ${t.phase === 'done' ? `<p class="test-verdict" style="color:${pingOf(t.idle).text}">${pingOf(t.idle).word}، ${pingOf(t.idle).line}</p>
+      <p class="intro">${pingAdvice(t)}</p>
+      <div class="two"><button type="button" class="dark" data-act="shareping">شارك النتيجة</button><button type="button" class="light" data-act="ping">افحص مرة ثانية</button></div>`
+      : '<p class="small">خلي الصفحة مفتوحة. بالخطوة الثانية نحمل شوية حتى نشوف البنك لما الخط مشغول.</p>'}`;
+  }
+  return `<div class="cols"><section class="ping">
+    <p class="hook">بنك ${KIND[m]} ${bi(a)}</p>
+    <p class="num big-area" style="color:${pb.text}">${ar(st.l)}<small>ملي ثانية</small></p>
+    <p class="ask" style="color:${pb.text}">${pb.word}</p>
+    <p class="intro">${pb.line}. الرقم معدل ${nTests(st.t)} ${bi(a)}، إلى أقرب خادم فحص.</p>
+    ${modesHTML()}
+    <section class="ptest">${test}</section>
+    ${g && inGov.length ? `<section><h2>أقل بنك بمحافظة ${esc(g.n)}</h2><p class="small">المناطق اللي بيها ${ar(FEW_TESTS)} اختبار أو أكثر، بالملي ثانية.</p>${placeRows(inGov, m)}</section>` : ''}
+    <section><h2>أقل بنك بمدن العراق</h2>${placeRows(iraqBest, m)}</section>
+    <section><h2>المحافظات من الأقل بنك</h2>${placeRows(govsRank, m)}</section>
+    <p class="note">البنك هنا إلى أقرب خادم فحص، وغالبا يكون داخل العراق، مو إلى سيرفر اللعبة. سيرفرات الألعاب أبعد فيطلع البنك باللعبة أعلى، بس المنطقة اللي بنكها أقل هنا عادة تكون أحسن باللعب. فحصك يقيس إلى أقرب خادم لشركة Cloudflare.</p>
+  </section></div>${foot()}`;
+}
+function drawPing() { if (route !== '#/ping') return; const y = scrollY, b = page.querySelector('.ptest'); if (!b) return; const tmp = document.createElement('div'); tmp.innerHTML = pingHTML(); const nb = tmp.querySelector('.ptest'); b.replaceWith(nb); scrollTo(0, y); }
+
 const dec = v => v < 10 ? arDigits(v.toFixed(1)).replace('.', '٫') : ar(v);
 function times(k) {
   const n = Math.round(k);
@@ -619,9 +729,10 @@ function meBlock() {
     <p class="intro">افحصه بعشرين ثانية. إذا طلع أبطأ من منطقتك فالبطء غالبا من الخط أو الراوتر أو الباقة، وإذا المنطقة كلها بطيئة فتبديل الراوتر ما يفيد.</p>
     <a class="go" href="#/test" data-go="1"><span>ابدأ الفحص</span><em>٢٠ ثانية</em></a>
     <div class="me-place"><span>منطقتك${src ? '، ' + src : ''}</span><b>${esc(areaName(a))}</b></div>
-    <p class="small me-change"><button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button> أو ابحث عن منطقتك تحت واضغط افحص خطك هنا.</p>`;
+    <p class="small me-change"><button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button> أو ابحث عن منطقتك تحت واضغط افحص خطك هنا.</p>
+    <a class="more gamers" href="#/ping">تلعب أونلاين؟ شوف البنك بمنطقتك ووين أقل بنك بالعراق</a>`;
 }
-function redrawMe() { const b = page.querySelector('#me'); if (b) b.innerHTML = meBlock(); if (route === '#/test') drawTest(); }
+function redrawMe() { const b = page.querySelector('#me'); if (b) b.innerHTML = meBlock(); if (route === '#/test') drawTest(); if (route === '#/ping') render(false); }
 
 function testHTML() {
   const t = S.test, a = areaFor(S.me && S.me.p), st = stat(a), aName = bi(a), aShort = a === S.country ? 'العراق' : a.n;
@@ -650,34 +761,44 @@ function testHTML() {
     <p class="note">الرفع عندك ${dec(t.up)} ميغابت${st.u ? ` ومعدل ${esc(aShort)} ${ar(st.u)}` : ''}، والبنك ${dec(t.ping)} ملي ثانية.</p>
     <h2 class="todo">شنو تسوي</h2><p class="intro">${v.todo}</p>
     <div class="two"><button type="button" class="dark" data-act="share">شارك النتيجة</button><a class="light" href="#/test" data-go="1">افحص مرة ثانية</a></div>
+    <a class="more gamers" href="#/ping">تلعب أونلاين؟ افحص البنك وقت التحميل</a>
     ${modesHTML()}${top}${testNote()}`;
 }
 const testNote = () => `<p class="note">الفحص يقيس من جهازك إلى أقرب خادم لشركة Cloudflare، وأرقام المناطق من اختبارات Speedtest، فممكن يكون بينهم فرق بسيط. على خط سريع يستهلك الفحص حوالي ١٠٠ ميغابايت.</p>`;
 function drawTest() { const b = page.querySelector('#test'); if (b) b.innerHTML = testHTML(); }
 
 // the result as a picture for a story or a chat, in the colour of its band
-async function shareResult() {
+async function shareResult(kind) {
+  const a = areaFor(S.me && S.me.p), st = stat(a), aShort = a === S.country ? 'العراق' : a.n;
+  if (kind === 'ping') {
+    const t = S.ping; if (!t || t.phase !== 'done') return;
+    const pb = pingOf(t.idle), them = a === S.country ? 'معدل العراق' : 'معدل منطقتي';
+    return shareCard({ fill: pb.fill, head: a === S.country ? 'البنك عندي بالعراق' : `البنك عندي ${bi(a)}`, big: ar(t.idle), unit: 'ملي ثانية',
+      say: `${them} ${ar(st.l)}${t.busy != null ? `، ووقت التحميل يصير عندي ${ar(t.busy)}` : ''}.`, cta: 'افحص البنك مالتك', light: pb.word === 'مقبول' });
+  }
   const t = S.test; if (!t || t.phase !== 'done') return;
-  const a = areaFor(S.me && S.me.p), st = stat(a), aShort = a === S.country ? 'العراق' : a.n, b = bandOf(t.down);
+  const b = bandOf(t.down), r = t.down / st.d, them = a === S.country ? 'معدل العراق' : 'جيراني';
+  const say = r < 0.6 ? `ومعدل ${aShort} ${ar(st.d)}. يعني خطي أبطأ من ${them} ${times(st.d / t.down)}.` : r <= 1.4 ? `ومعدل ${aShort} ${ar(st.d)}. خطي مثل ${them}.` : `ومعدل ${aShort} ${ar(st.d)}. خطي أسرع من ${them}.`;
+  return shareCard({ fill: b.fill, head: a === S.country ? 'خطي بالعراق' : `خطي ${bi(a)}`, big: dec(t.down), unit: 'ميغابت في الثانية', say, cta: 'افحص خطك',
+    light: b.word === 'متوسط' || b.word === 'مقبول' });
+}
+async function shareCard(o) {
   await Promise.all(['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik`, 'خطي ١٢')));
   const c = document.createElement('canvas'); c.width = 1080; c.height = 1920;
-  const g = c.getContext('2d'), light = b.word === 'متوسط' || b.word === 'مقبول', fg = light ? '#14202b' : '#ffffff';
-  g.fillStyle = b.fill; g.fillRect(0, 0, 1080, 1920);
+  const g = c.getContext('2d'), fg = o.light ? '#14202b' : '#ffffff';
+  g.fillStyle = o.fill; g.fillRect(0, 0, 1080, 1920);
   g.direction = 'rtl'; g.textAlign = 'right'; g.fillStyle = fg;
   const line = (txt, y, size, w = 500, alpha = 1) => { g.globalAlpha = alpha; g.font = `${w} ${size}px Rubik`; g.fillText(txt, 980, y); g.globalAlpha = 1; };
-  line(a === S.country ? 'خطي بالعراق' : `خطي ${bi(a)}`, 470, 56, 500, 0.9);
-  line(dec(t.down), 900, 400, 800);
-  line('ميغابت في الثانية', 1010, 56, 500);
+  line(o.head, 470, 56, 500, 0.9);
+  line(o.big, 900, 400, 800);
+  line(o.unit, 1010, 56, 500);
   g.globalAlpha = 0.55; g.fillRect(100, 1090, 880, 6); g.globalAlpha = 1;
-  const r = t.down / st.d;
-  const them = a === S.country ? 'معدل العراق' : 'جيراني';
-  const say = r < 0.6 ? `ومعدل ${aShort} ${ar(st.d)}. يعني خطي أبطأ من ${them} ${times(st.d / t.down)}.` : r <= 1.4 ? `ومعدل ${aShort} ${ar(st.d)}. خطي مثل ${them}.` : `ومعدل ${aShort} ${ar(st.d)}. خطي أسرع من ${them}.`;
   g.font = '700 64px Rubik';
-  const words = say.split(' '); let ln = '', y = 1210;
+  const words = o.say.split(' '); let ln = '', y = 1210;
   for (const w of words) { const tt = ln ? ln + ' ' + w : w; if (g.measureText(tt).width > 880) { g.fillText(ln, 980, y); ln = w; y += 88; } else ln = tt; }
   if (ln) g.fillText(ln, 980, y);
   line('سرعة الإنترنت في العراق', 1780, 50, 700);
-  g.textAlign = 'left'; g.font = '500 46px Rubik'; g.fillText('افحص خطك', 100, 1780);
+  g.textAlign = 'left'; g.font = '500 46px Rubik'; g.fillText(o.cta, 100, 1780);
   const blob = await new Promise(res => c.toBlob(res, 'image/png'));
   const file = new File([blob], 'internet-speed.png', { type: 'image/png' });
   if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === 'AbortError') return; } }
@@ -834,6 +955,7 @@ function placeHTML(p, geom) {
       ${bandsHTML(st.d)}
     </div>
     <a class="go testlink" href="#/test" data-go="1" data-me="${isGov ? 'g:' : ''}${esc(p.id)}"><span>افحص خطك وقارنه ب${esc(isGov ? 'المحافظة' : p.n)}</span><em>٢٠ ثانية</em></a>
+    <a class="more gamers" href="#/ping" data-me="${isGov ? 'g:' : ''}${esc(p.id)}">البنك للألعاب ${esc(isGov ? 'بالمحافظة' : 'ب' + p.n)} ${ar(st.l)} ملي ثانية، ${pingOf(st.l).word}</a>
     <section class="compare"><p class="label">مقارنة بالمعدل</p>${barsHTML(rows)}${line ? `<p>${line}</p>` : ''}</section>`;
   } else {
     const ref = gs || cs;
@@ -939,8 +1061,8 @@ document.addEventListener('click', e => {
     if (a.dataset.go) { if (route === '#/test') { startTest(); return; } S.goTest = true; }
     navigate(a.getAttribute('href')); return;
   }
-  const act = e.target.closest && e.target.closest('[data-act="locate"], [data-act="share"]');
-  if (act) { if (act.dataset.act === 'locate') locateMe(); else shareResult(); return; }
+  const act = e.target.closest && e.target.closest('[data-act="locate"], [data-act="share"], [data-act="ping"], [data-act="shareping"]');
+  if (act) { const k = act.dataset.act; if (k === 'locate') locateMe(); else if (k === 'ping') startPing(); else shareResult(k === 'shareping' ? 'ping' : 'line'); return; }
   const m = e.target.closest && e.target.closest('.modes button');
   if (m) { setMode(m.dataset.mode); return; }
   if (e.target.closest && e.target.closest('#fullbtn')) ensureMap().then(openFull);
@@ -955,8 +1077,9 @@ addEventListener('hashchange', fromAddress);
 let lastRoute = '';
 async function render(move = true) {
   const h = current();
-  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : 'home';
+  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : h === '/ping' ? 'ping' : 'home';
   if (view !== 'test' && testRun) { testRun.abort(); testRun = null; if (S.test && S.test.phase !== 'done') S.test = null; }
+  if (view !== 'ping' && pingRun) { pingRun.abort(); pingRun = null; if (S.ping && S.ping.phase !== 'done') S.ping = null; }
   const tab = view === 'govs' || h.startsWith('/g/') ? '#/govs' : view === 'about' ? '#/about' : '#/';
   document.querySelectorAll('.tabs a, .topnav a').forEach(a => {
     const on = a.getAttribute('href') === tab;
@@ -977,6 +1100,7 @@ async function render(move = true) {
     document.title = `${p.n}، سرعة الإنترنت`;
   } else if (view === 'govs') { page.innerHTML = govsHTML(); document.title = 'المحافظات، سرعة الإنترنت في العراق'; }
   else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن موقع سرعة الإنترنت في العراق'; }
+  else if (view === 'ping') { await placesReady; page.innerHTML = pingHTML(); document.title = 'البنك للألعاب، سرعة الإنترنت في العراق'; }
   else if (view === 'test') {
     page.innerHTML = `<div class="cols"><section class="test" id="test"></section></div>${foot()}`;
     document.title = 'افحص خطك، سرعة الإنترنت في العراق';

@@ -266,3 +266,19 @@ h2.todo { margin-top: 24px; }
 .two .dark { background: var(--ink); color: #fff; border: 0; }
 .two .light { border: 2px solid var(--ink); color: var(--ink); background: #fff; }
 .test .modes { margin-top: 26px; }
+
+/* ping for games */
+button.go { width: 100%; border: 0; font: inherit; font-size: 19px; font-weight: 700; cursor: pointer; }
+.ping { margin-top: 22px; }
+.ping .hook { font-size: 20px; line-height: 1.35; font-weight: 500; color: var(--ink2); }
+.ping .ask { margin-top: 6px; }
+.ping .modes { margin-top: 18px; }
+.ptest { margin-top: 22px; padding-top: 4px; }
+.ping section h2 { margin-top: 34px; }
+.plist { list-style: none; margin: 10px 0 0; padding: 0; max-width: 520px; }
+.plist li { display: grid; grid-template-columns: 28px minmax(0, 1fr) 52px; gap: 10px; align-items: center; min-height: 52px; border-bottom: 1px solid var(--line); }
+.plist .pos { font-size: 15px; color: var(--soft); }
+.plist a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 17px; font-weight: 500; color: var(--ink); text-decoration: none; }
+.plist a small { margin-inline-start: 8px; font-size: 14px; font-weight: 400; color: var(--soft); }
+.plist b { text-align: left; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.more.gamers { display: block; max-width: 460px; }
