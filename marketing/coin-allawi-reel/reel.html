@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<title>The Orange Coin</title>
+<style>
+  @font-face { font-family: "DG Sahabah"; src: url("../brand-fonts/DG-Sahabah-Reg.ttf"); font-weight: 400; }
+  html, body { margin: 0; background: #1f1510; }
+  #frame { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #f1e9dd; }
+  #stage, .layer { position: absolute; inset: 0; transform-origin: 540px 960px; }
+  .paper { position: absolute; inset: 0; background: url("../rm-allawi-ad-reel/public/img/paper.jpg") center/cover; mix-blend-mode: multiply; opacity: .32; }
+  .it { position: absolute; left: 0; top: 0; will-change: transform; }
+  .line { position: absolute; left: 70px; right: 70px; white-space: nowrap; direction: rtl; font-family: "DG Sahabah"; font-weight: 400; font-synthesis: none; line-height: 1.22; }
+  .w { display: inline-block; position: relative; }
+  img.png { display: block; width: 100%; }
+</style>
+</head>
+<body>
+<div id="frame"><div id="stage"></div></div>
+<svg width="0" height="0" style="position:absolute"><defs id="filters"></defs></svg>
+<script>
+// The Orange Coin: my ad reel as one take. One orange coin carries the viewer from a weak ad to a sale: it drops into
+// the wallet, flips into the circle that opens the orange world, shrinks into a window and into the icon of a card,
+// comes back as the circle that opens the last scene and ends as the dot of @allawi.psd. The last frame is the first.
+// Every style is a function of t in seek(t): springs and exponential eases written as functions of time, blur that
+// follows each element's own speed and direction. The voice and the cues are the fitted ones.
+const W = 1080, H = 1920, DT = 1 / 60;
+const EL = "../rm-allawi-ad-reel/public/el/";
+const ORANGE = "#e2541b", BROWN = "#1f1510", CREAM = "#f1e9dd", WHITE = "#fffaf3";
+
+// ───── time and easing ─────
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const k = (t, t0, d) => clamp((t - t0) / d);
+const expoOut = (p) => (p >= 1 ? 1 : 1 - Math.pow(2, -10 * p));
+const expoIn = (p) => (p <= 0 ? 0 : Math.pow(2, 10 * (p - 1)));
+const expoInOut = (p) => (p <= 0 ? 0 : p >= 1 ? 1 : p < 0.5 ? Math.pow(2, 20 * p - 10) / 2 : (2 - Math.pow(2, -20 * p + 10)) / 2);
+// a spring in seconds since it started: damped enough to land without bouncing (about 3% past the mark, once)
+const spring = (s, z = 0.78, w = 15) => {
+  if (s <= 0) return 0;
+  const wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * s) * (Math.cos(wd * s) + ((z * w) / wd) * Math.sin(wd * s));
+};
+const mv = (t, t0, d, a, b, ease = expoOut) => lerp(a, b, ease(k(t, t0, d)));
+
+// ───── elements: every one has a life and a pose(t); blur comes from the pose a frame earlier ─────
+const stage = document.getElementById("stage"), defs = document.getElementById("filters");
+const items = [];
+const div = (css, parent = stage, html = "") => {
+  const d = document.createElement("div");
+  d.style.cssText = css;
+  d.innerHTML = html;
+  parent.appendChild(d);
+  return d;
+};
+function layer(clip) {
+  const el = div("", stage);
+  el.className = "layer";
+  const L = { el, clip, life: [0, 99] };
+  items.push({ layer: L });
+  return L;
+}
+let fid = 0;
+function blurOf(el) {
+  if (!el._f) {
+    const f = document.createElementNS("http://www.w3.org/2000/svg", "filter");
+    f.id = "b" + fid++;
+    f.setAttribute("x", "-30%"); f.setAttribute("y", "-30%"); f.setAttribute("width", "160%"); f.setAttribute("height", "160%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    el._g = document.createElementNS("http://www.w3.org/2000/svg", "feGaussianBlur");
+    f.appendChild(el._g);
+    defs.appendChild(f);
+    el._f = f.id;
+  }
+  return el._f;
+}
+// an absolute piece: x, y is its centre on the frame
+function piece(parent, html, w, life, pose, css = "") {
+  const el = div(`width:${w}px;${css}`, parent.el || parent, html);
+  el.className = "it";
+  items.push({ el, life, pose, abs: true });
+  return el;
+}
+const png = (parent, name, w, life, pose, css = "") => piece(parent, `<img class="png" src="${EL}${name}.png">`, w, life, pose, css);
+
+// a line of words set right to left; each word comes in on its own time and leaves with the line
+function line(parent, words, { top, size, align = "r", out, exit = "up", gap = 0.24, colour = BROWN }) {
+  const el = div(`top:${top}px;font-size:${size}px;text-align:${align === "r" ? "right" : align === "l" ? "left" : "center"}`, parent.el || parent);
+  el.className = "line";
+  const made = words.map((wd, i) => {
+    const s = document.createElement("span");
+    s.className = "w";
+    s.textContent = wd.w;
+    s.style.color = wd.c || colour;
+    if (i) s.style.marginRight = `${gap}em`;
+    if (wd.box) Object.assign(s.style, wd.box);
+    el.appendChild(s);
+    const end = out !== undefined ? out + 0.45 : wd.until ?? 99;
+    const ent = ENTRY[wd.in || "blur"];
+    items.push({
+      el: s, life: [wd.t, end], pose: (t) => {
+        const p = ent(t - wd.t);
+        if (out !== undefined && t > out) Object.assign(p, merge(p, EXIT[wd.exit || exit](t - out, i)));
+        return wd.fx ? merge(p, wd.fx(t)) : p;
+      },
+    });
+    return s;
+  });
+  return { el, words: made };
+}
+const merge = (a, b) => ({ x: (a.x || 0) + (b.x || 0), y: (a.y || 0) + (b.y || 0), s: (a.s ?? 1) * (b.s ?? 1), r: (a.r || 0) + (b.r || 0), o: (a.o ?? 1) * (b.o ?? 1), b: (a.b || 0) + (b.b || 0), ry: (a.ry || 0) + (b.ry || 0) });
+// how a word arrives: out of a blur, rising on a spring, pushed in from the side, dropped, stamped
+const ENTRY = {
+  blur: (s) => { const p = expoOut(clamp(s / 0.45)); return { y: 26 * (1 - p), s: 1.14 - 0.14 * p, o: clamp(s / 0.12), b: 24 * (1 - p) }; },
+  rise: (s) => { const p = spring(s); return { y: 150 * (1 - p), o: clamp(s / 0.1) }; },
+  side: (s) => { const p = spring(s, 0.82, 13); return { x: -220 * (1 - p), o: clamp(s / 0.1) }; },
+  drop: (s) => { const p = spring(s, 0.8, 14); return { y: -320 * (1 - p), o: clamp(s / 0.08) }; },
+  stamp: (s) => { const p = expoOut(clamp(s / 0.22)); return { s: 2.1 - 1.1 * p, r: -7 * p, o: clamp(s / 0.06) }; },
+};
+const EXIT = {
+  up: (s, i) => { const p = expoIn(clamp((s - i * 0.03) / 0.32)); return { y: -110 * p, o: 1 - p, b: 16 * p }; },
+  left: (s, i) => { const p = expoIn(clamp((s - i * 0.02) / 0.4)); return { x: -1300 * p }; },
+  down: (s, i) => { const p = expoIn(clamp((s - i * 0.03) / 0.3)); return { y: 140 * p, o: 1 - p, b: 14 * p }; },
+};
+
+// ───── drawing a frame ─────
+function poseCss(it, p) {
+  const tr = it.abs
+    ? `translate(${(p.x ?? 0).toFixed(2)}px,${(p.y ?? 0).toFixed(2)}px) translate(-50%,-50%)`
+    : `translate(${(p.x ?? 0).toFixed(2)}px,${(p.y ?? 0).toFixed(2)}px)`;
+  const persp = p.rx || p.ry ? ` perspective(1400px) rotateX(${(p.rx || 0).toFixed(2)}deg) rotateY(${(p.ry || 0).toFixed(2)}deg)` : "";
+  return `${tr} rotate(${(p.r || 0).toFixed(3)}deg) scale(${(p.s ?? 1).toFixed(4)})${persp}`;
+}
+// the camera: a small push on every word of the voice, which settles back before the next
+let BEATS = [];
+function camera(t) {
+  let s = 1;
+  for (const b of BEATS) {
+    const d = t - b;
+    if (d < 0 || d > 1.6) continue;
+    s += 0.011 * expoOut(clamp(d / 0.3)) * (1 - expoInOut(clamp((d - 0.35) / 1.2)));
+  }
+  return s;
+}
+function seek(t) {
+  stage.style.transform = `scale(${camera(t).toFixed(5)})`;
+  for (const it of items) {
+    if (it.layer) {
+      const L = it.layer, c = L.clip(t);
+      L.el.style.display = c === null ? "none" : "";
+      if (c !== null) L.el.style.clipPath = c || "";
+      continue;
+    }
+    const el = it.el;
+    if (t < it.life[0] || t >= it.life[1]) { el.style.display = "none"; continue; }
+    const p = it.pose(t);
+    if ((p.o ?? 1) <= 0.003) { el.style.display = "none"; continue; }
+    el.style.display = "";
+    const q = it.pose(t - DT);
+    el.style.transform = poseCss(it, p);
+    el.style.opacity = (p.o ?? 1) >= 1 ? "" : (p.o ?? 1).toFixed(3);
+    if (p.clip) el.style.clipPath = p.clip;
+    // blur along the move: how far it went in one frame on each axis, plus any blur it carries on purpose
+    const ds = Math.abs((p.s ?? 1) - (q.s ?? 1)) * (el.offsetWidth || 300) * 0.5;
+    const bx = Math.min(40, Math.abs((p.x ?? 0) - (q.x ?? 0)) * 0.45 + ds * 0.3 + (p.b || 0));
+    const by = Math.min(40, Math.abs((p.y ?? 0) - (q.y ?? 0)) * 0.45 + ds * 0.3 + (p.b || 0));
+    if (bx + by > 0.7) {
+      const f = blurOf(el);
+      el._g.setAttribute("stdDeviation", `${bx.toFixed(2)} ${by.toFixed(2)}`);
+      el.style.filter = `url(#${f})`;
+    } else el.style.filter = "";
+  }
+}
+window.seek = seek;
+
+const circle = (r, x, y) => `circle(${Math.max(0, r).toFixed(1)}px at ${x.toFixed(1)}px ${y.toFixed(1)}px)`;
+const at = (x, y) => ({ x, y });
+const shadow = "filter:drop-shadow(0 26px 30px rgba(60,25,5,.28)) drop-shadow(0 4px 5px rgba(60,25,5,.3))";
+const SH = (html) => `<div style="${shadow}">${html}</div>`;
+const pngS = (parent, name, w, life, pose) => piece(parent, SH(`<img class="png" src="${EL}${name}.png">`), w, life, pose);
+
+function build() {
+  const base = { el: stage };
+  div("", stage).className = "paper";
+
+  // ═════ A · مشروعك متعوب عليه، بس أرباحك قليلة ═════
+  line(base, [{ w: "مشروعك", t: 0.0 }], { top: 300, size: 180, out: 2.5 });
+  line(base, [{ w: "متعوب", t: 0.56 }, { w: "عليه،", t: 0.88 }], { top: 510, size: 180, out: 2.5 });
+  line(base, [{ w: "بس", t: 1.38 }, { w: "أرباحك", t: 1.66, c: ORANGE }], { top: 720, size: 180, out: 2.5 });
+  const wallet = (t) => ({ ...at(470, 1420 + 950 * (1 - spring(t - 0.15, 0.85, 11)) - (t > 2.2 ? 26 * Math.sin(Math.PI * k(t, 2.2, 0.3)) : 0)), r: -6 + 2 * (1 - spring(t - 0.15)), o: 1 });
+  // the coin drops in behind the wallet's front, then flips back out of it and becomes the orange circle
+  const coinPose = (t) => {
+    if (t < 2.2) { const p = expoIn(k(t, 1.9, 0.3)); return { ...at(470, lerp(120, 1330, p)), r: lerp(-120, 0, p), s: 1 }; }
+    const p = expoOut(k(t, 2.26, 0.22));
+    return { ...at(lerp(470, 540, p), lerp(1330, 1000, p)), ry: 90 * k(t, 2.3, 0.18), s: lerp(1, 1.25, p) };
+  };
+  pngS(base, "coin", 240, [1.9, 2.48], coinPose);
+  pngS(base, "wallet", 820, [0, 2.6], wallet);
+  // «قليلة؟» stamped on the wallet
+  piece(base, `<div style="font:400 150px 'DG Sahabah';font-synthesis:none;color:${ORANGE};border:10px solid ${ORANGE};border-radius:26px;padding:0 34px 10px;white-space:nowrap;direction:rtl;background:rgba(241,233,221,.0)">قليلة؟</div>`, 0, [2.1, 2.6], (t) => {
+    const p = expoOut(k(t, 2.1, 0.2));
+    return { ...at(560, 1330), s: 2.2 - 1.2 * p, r: -9 * p, o: clamp((t - 2.1) / 0.05) };
+  }, "width:auto");
+
+  // ═════ B · عدنا نصمملك موشن جرافيك وبوستات إعلانية (the orange world, opened by the coin) ═════
+  const OR = layer((t) => {
+    if (t < 2.47 || t >= 7.86) return null;
+    if (t < 6.35) { const p = expoInOut(k(t, 2.47, 0.5)); return circle(lerp(150, 2300, p), 540, 1000); }
+    if (t < 7.55) { const p = expoInOut(k(t, 6.35, 0.45)); return circle(lerp(2300, 330, p), 540, 1150); }
+    const p = expoInOut(k(t, 7.55, 0.3));
+    return circle(lerp(330, 74, p), lerp(540, 850, p), lerp(1150, 640, p));
+  });
+  div(`position:absolute;inset:0;background:${ORANGE}`, OR.el);
+  div("", OR.el).className = "paper";
+  // the disc that the coin flips into, before the circle opens out of it
+  piece(base, `<div style="width:300px;height:300px;border-radius:50%;background:${ORANGE}"></div>`, 300, [2.39, 2.48], (t) => ({ ...at(540, 1000), ry: 90 - 90 * k(t, 2.39, 0.08), s: 1 }));
+
+  line(OR, [{ w: "عدنا", t: 2.65, c: WHITE }, { w: "نصمملك", t: 2.91, c: BROWN }], { top: 520, size: 170, align: "c", out: 4.08 });
+  const motion = line(OR, [{ w: "موشن", t: 3.45, c: ORANGE }, { w: "جرافيك", t: 3.73, c: ORANGE }], { top: 770, size: 148, align: "c", out: 4.08 });
+  // the white block the words sit on, drawn across one word at a time
+  piece(OR, `<div style="height:200px;background:${WHITE};border-radius:22px"></div>`, 900, [3.4, 4.5], (t) => {
+    const a = expoOut(k(t, 3.42, 0.3)) * 0.47 + expoOut(k(t, 3.7, 0.3)) * 0.53;
+    const out = expoIn(k(t, 4.08, 0.3));
+    return { ...at(540, 862 - 110 * out), clip: `inset(0 0 0 ${(100 - 100 * a).toFixed(2)}%)`, o: 1 - out };
+  });
+  motion.el.style.zIndex = 2;
+  // a dotted orbit drawn around the words, and the film camera riding it
+  piece(OR, `<svg width="1000" height="760" viewBox="0 0 1000 760"><ellipse cx="500" cy="380" rx="470" ry="330" fill="none" stroke="${WHITE}" stroke-width="7" stroke-linecap="round" stroke-dasharray="0.1 22" stroke-opacity=".7" pathLength="1000"/></svg>`, 1000, [2.7, 4.4], (t) => {
+    return { ...at(540, 780), r: -8, o: 1 - expoIn(k(t, 4.05, 0.3)), clip: `inset(0 ${(100 - 100 * expoOut(k(t, 2.75, 1.1))).toFixed(1)}% 0 0)` };
+  });
+  pngS(OR, "film-camera", 330, [2.75, 4.4], (t) => {
+    const a = -Math.PI * 0.15 + Math.PI * 1.55 * expoOut(k(t, 2.75, 1.4)) + 0.2 * k(t, 4.0, 0.4);
+    const ex = expoIn(k(t, 4.02, 0.32));
+    return { ...at(540 + 470 * Math.cos(a) + 900 * ex, 780 + 330 * Math.sin(a) * Math.cos(0.14) - 60), r: -8 + 10 * Math.sin(a), s: 1 };
+  });
+  line(OR, [{ w: "وبوستات", t: 4.2, c: WHITE }], { top: 470, size: 170, align: "c", out: 5.12 });
+  line(OR, [{ w: "إعلانية", t: 4.73, c: BROWN, in: "drop" }], { top: 680, size: 260, align: "c", out: 5.12 });
+  pngS(OR, "box-hand", 1000, [4.15, 5.5], (t) => ({ ...at(lerp(-560, 380, spring(t - 4.2, 0.82, 12)) - 1100 * expoIn(k(t, 5.1, 0.35)), 1440 - 30 * expoOut(k(t, 4.73, 0.3)) + 30 * expoInOut(k(t, 5.0, 0.3))), r: -4 }));
+
+  // ═════ D1 · تحجي بقوة براندك ═════
+  line(OR, [{ w: "تحجي", t: 5.25, c: WHITE }, { w: "بقوة", t: 5.63, c: BROWN }], { top: 330, size: 180, out: 6.25 });
+  pngS(OR, "megaphone", 760, [5.15, 6.6], (t) => ({ ...at(lerp(-420, 250, spring(t - 5.2, 0.82, 12)) - 60 * Math.sin(Math.PI * k(t, 6.04, 0.3)) - 900 * expoIn(k(t, 6.28, 0.3)), 1130), r: -16, s: 1 + 0.06 * Math.sin(Math.PI * k(t, 6.04, 0.3)) }));
+  // «براندك» blasted out of the megaphone's mouth along a dotted trail
+  piece(OR, `<svg width="560" height="360" viewBox="0 0 560 360"><path d="M20 340 Q 260 300 540 30" fill="none" stroke="${WHITE}" stroke-width="7" stroke-linecap="round" stroke-dasharray="0.1 22" stroke-opacity=".75"/></svg>`, 560, [6.05, 6.6], (t) => ({ ...at(780, 900), o: 1 - expoIn(k(t, 6.28, 0.3)), clip: `inset(${(100 - 100 * expoOut(k(t, 6.06, 0.3))).toFixed(1)}% 0 0 0)` }));
+  piece(OR, `<div style="font:400 250px 'DG Sahabah';font-synthesis:none;color:${WHITE};white-space:nowrap;direction:rtl">براندك</div>`, 0, [6.06, 6.62], (t) => {
+    const p = expoOut(k(t, 6.06, 0.42));
+    return { ...at(lerp(560, 600, p), lerp(1050, 720, p)), s: lerp(0.15, 1, p), r: lerp(-30, -6, p), y: lerp(1050, 720, p) - 700 * expoIn(k(t, 6.3, 0.3)) };
+  }, "width:auto");
+
+  // ═════ D2 · وتبيع بمكانك: the orange shrinks to a window with the shop owner in it ═════
+  line(base, [{ w: "وتبيع", t: 6.67 }], { top: 300, size: 170, out: 7.55 });
+  const place = line(base, [{ w: "بمكانك", t: 7.09, c: ORANGE, in: "rise" }], { top: 500, size: 230, out: 7.55 });
+  piece(base, `<svg width="560" height="40" viewBox="0 0 560 40"><path d="M10 26 Q 280 4 550 22" fill="none" stroke="${ORANGE}" stroke-width="12" stroke-linecap="round"/></svg>`, 560, [7.2, 8.0], (t) => ({ ...at(560, 820), clip: `inset(0 0 0 ${(100 - 100 * expoOut(k(t, 7.22, 0.35))).toFixed(1)}%)`, o: 1 - expoIn(k(t, 7.55, 0.3)) }));
+  png(OR, "shop-owner", 760, [6.55, 7.6], (t) => ({ ...at(560, 1300 + 500 * (1 - spring(t - 6.6, 0.85, 11)) + 600 * expoIn(k(t, 7.45, 0.2))) }));
+
+  // ═════ F · حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك: one card per promise ═════
+  const F = { el: div("position:absolute;inset:0", stage) };
+  items.push({ el: F.el, life: [7.8, 12.75], pose: (t) => ({ ...at(0, 120 * expoIn(k(t, 12.25, 0.45))), rx: 72 * expoIn(k(t, 12.25, 0.45)), o: 1 - expoIn(k(t, 12.45, 0.25)) }) });
+  F.el.style.transformOrigin = "540px 1500px";
+  const cards = [
+    { t: 7.79, icon: "binoculars", title: "حركة", sub: [["تشد", 8.37], ["العين", 8.61]] },
+    { t: 9.19, icon: "bulb", title: "فكرة", sub: [["تقنع", 9.63], ["الزبون", 10.03]] },
+    { t: 10.77, icon: "register", title: "ونتيجة", sub: [["ترفع", 11.45], ["مبيعاتك", 11.83]] },
+  ];
+  cards.forEach((c, i) => {
+    const later = cards.slice(i + 1).map((d) => d.t);
+    const card = piece(F, `
+      <div style="position:relative;width:900px;height:300px;background:${WHITE};border-radius:44px;box-shadow:0 30px 60px rgba(60,25,5,.16),0 3px 8px rgba(60,25,5,.12);direction:rtl;font-family:'DG Sahabah';font-synthesis:none">
+        <div style="position:absolute;right:46px;top:76px;width:148px;height:148px;border-radius:50%;background:${ORANGE};overflow:hidden">
+          <img src="${EL}${c.icon}.png" style="position:absolute;left:50%;top:54%;width:120px;transform:translate(-50%,-50%)">
+        </div>
+        <div style="position:absolute;right:236px;top:28px;font-size:118px;line-height:1.2;color:${BROWN}">${c.title}</div>
+        <div class="sub" style="position:absolute;right:240px;top:172px;font-size:74px;line-height:1.2;color:${ORANGE}">${c.sub.map(([w]) => `<span style="display:inline-block;margin-left:.22em">${w}</span>`).join("")}</div>
+      </div>`, 900, [c.t, 12.8], (t) => {
+      // each new card lands on the stack and pushes the earlier ones back and up
+      const back = later.reduce((n, lt) => n + expoOut(k(t, lt, 0.45)), 0);
+      const p = spring(t - c.t, 0.84, 12);
+      return { ...at(540, 700 + 420 * (1 - p) - 92 * back), s: (0.86 + 0.14 * p) * Math.pow(0.9, back), o: clamp((t - c.t) / 0.12) * Math.pow(0.55, back) };
+    });
+    card.style.zIndex = 10 + i;
+    card.querySelectorAll(".sub span").forEach((s, j) => items.push({ el: s, life: [c.sub[j][1], 99], pose: (t) => ENTRY.blur(t - c.sub[j][1]) }));
+  });
+  // the bag waiting under the cards, and three dots that fill one per card
+  pngS(F, "bag-orange", 430, [7.8, 12.8], (t) => ({ ...at(540, 1270 + 300 * (1 - spring(t - 7.85, 0.85, 11))), s: 1 + 0.05 * Math.sin(Math.PI * k(t, 11.83, 0.3)), r: 3 }));
+  cards.forEach((c, i) => piece(F, `<div style="width:30px;height:30px;border-radius:50%;background:${ORANGE}"></div>`, 30, [c.t, 12.8], (t) => ({ ...at(540 + (i - 1) * -60, 1600), s: spring(t - c.t, 0.8, 16) })));
+  cards.forEach((c, i) => piece(F, `<div style="width:30px;height:30px;border-radius:50%;border:4px solid ${ORANGE};box-sizing:border-box"></div>`, 30, [7.8, 12.8], () => ({ ...at(540 + (i - 1) * -60, 1600) })));
+
+  // ═════ I · من أول 3 ثواني بإعلانك: the cards fall flat into a floor and a giant 3 stands up off it ═════
+  line(base, [{ w: "من", t: 12.67 }, { w: "أول", t: 12.93, c: ORANGE }], { top: 300, size: 190, out: 14.3 });
+  piece(base, `<div style="font:400 820px/1 'DG Sahabah';font-synthesis:none;color:${ORANGE}">3</div>`, 0, [13.1, 14.55], (t) => ({ ...at(420, 1010), rx: -90 + 90 * spring(t - 13.17, 0.8, 13), s: 1 + 3.5 * expoIn(k(t, 14.25, 0.3)), o: 1 - expoIn(k(t, 14.38, 0.15)) }), "width:auto;transform-origin:50% 92%");
+  line(base, [{ w: "ثواني", t: 13.35 }, { w: "بإعلانك", t: 13.73, c: ORANGE, in: "side" }], { top: 1360, size: 150, out: 14.3 });
+  pngS(base, "stopwatch-hand", 470, [12.7, 14.5], (t) => ({ ...at(820, 1280 + 900 * (1 - spring(t - 12.75, 0.84, 11)) + 1000 * expoIn(k(t, 14.2, 0.3))), r: -8 }));
+
+  // ═════ J1 · الزبون راح يلمس الكواليتي العالي: the magnifier's glass grows the word under it ═════
+  line(base, [{ w: "الزبون", t: 14.47 }, { w: "راح", t: 14.87 }, { w: "يلمس", t: 15.09 }], { top: 330, size: 150, out: 16.05 });
+  const qOpts = { top: 800, size: 230, align: "c", out: 16.05 };
+  line(base, [{ w: "الكواليتي", t: 15.37 }], qOpts);
+  line(base, [{ w: "العالي", t: 15.79, c: ORANGE, in: "rise" }], { top: 1080, size: 230, align: "c", out: 16.05 });
+  const MAG = 640, glass = (p) => ({ x: p.x - 0.2 * MAG, y: p.y - 0.185 * MAG * (1430 / 1500) });
+  const magPose = (t) => ({ ...at(lerp(1500, 680, spring(t - 14.6, 0.84, 10)) - 120 * expoInOut(k(t, 15.3, 0.6)), 1060 - 70 * expoInOut(k(t, 15.3, 0.6)) - 1300 * expoIn(k(t, 15.95, 0.35))), r: -6 });
+  // the same word again, larger, seen only through the glass
+  const lens = line(base, [{ w: "الكواليتي", t: 15.37 }], qOpts);
+  lens.el.style.zIndex = 5;
+  lens.el.style.background = CREAM;
+  items.push({ el: lens.el, life: [15.37, 16.5], pose: (t) => {
+    const g = glass(magPose(t)), r = 0.247 * MAG;
+    return { clip: `circle(${(r / 1.55).toFixed(1)}px at ${(g.x - 70).toFixed(1)}px ${(g.y - 800).toFixed(1)}px)`, s: 1.55, ox: g.x, oy: g.y };
+  }, origin: true });
+  pngS(base, "magnifier", MAG, [14.55, 16.4], magPose).style.zIndex = 6;
+
+  // ═════ J2 · يثق بمنتجك، ويدخل يطلب منك مباشرة: a diagonal orange panel sweeps in ═════
+  const diag = (p, q) => `polygon(${lerp(1700, -900, p)}px 0, ${lerp(1700, -900, q)}px 0, ${lerp(2400, -200, q)}px 1920px, ${lerp(2400, -200, p)}px 1920px)`;
+  const J2 = layer((t) => {
+    if (t < 16.02 || t >= 19.45) return null;
+    if (t < 19.0) return diag(-0.1, expoInOut(k(t, 16.02, 0.42)));
+    return diag(expoInOut(k(t, 19.0, 0.42)), 1.1);
+  });
+  div(`position:absolute;inset:0;background:${ORANGE}`, J2.el);
+  div("", J2.el).className = "paper";
+  line(J2, [{ w: "يثق", t: 16.41, c: WHITE, in: "stamp", fx: (t) => ({ y: 18 * Math.sin(Math.PI * 4 * k(t, 16.75, 0.45)) * (1 - k(t, 16.75, 0.45)) }) }], { top: 300, size: 330, align: "c", out: 17.45 });
+  line(J2, [{ w: "بمنتجك", t: 16.69, c: BROWN, in: "rise" }], { top: 740, size: 220, align: "c", out: 17.45 });
+  line(J2, [{ w: "ويدخل", t: 17.55, c: WHITE }, { w: "يطلب", t: 17.89, c: WHITE }, { w: "منك", t: 18.23, c: WHITE }], { top: 330, size: 124, out: 18.9 });
+  line(J2, [{ w: "مباشرة", t: 18.55, c: BROWN, in: "drop" }], { top: 560, size: 260, align: "c", out: 18.9 });
+  pngS(J2, "handshake", 1180, [16.35, 19.3], (t) => ({ ...at(540, 1330 + 700 * (1 - spring(t - 16.4, 0.86, 11)) + 22 * Math.sin(Math.PI * 4 * k(t, 16.75, 0.45)) * (1 - k(t, 16.75, 0.45))), s: 1 + 0.05 * Math.sin(Math.PI * k(t, 18.55, 0.3)) }));
+
+  // ═════ L · لأن ويانا راح يطلع إعلانك بمستوى يعزلك تماما عن منافسيك ═════
+  line(base, [{ w: "لأن", t: 19.09 }, { w: "ويانا", t: 19.65 }, { w: "راح", t: 20.21 }, { w: "يطلع", t: 20.43 }], { top: 300, size: 140, out: 21.5 });
+  line(base, [{ w: "إعلانك", t: 20.69, c: ORANGE }, { w: "بمستوى", t: 21.13 }], { top: 490, size: 148, out: 21.5 });
+  line(base, [{ w: "يعزلك", t: 21.75, c: ORANGE, in: "stamp" }], { top: 300, size: 260, align: "c", out: 23.35 });
+  line(base, [{ w: "تماما", t: 22.17, in: "rise" }], { top: 610, size: 200, align: "c", out: 23.35 });
+  line(base, [{ w: "عن", t: 22.69 }, { w: "منافسيك", t: 22.77 }], { top: 860, size: 140, align: "c", out: 23.05, exit: "left" });
+  pngS(base, "chess-king", 260, [19.0, 23.6], (t) => ({ ...at(540, 1330 + 800 * (1 - spring(t - 19.1, 0.85, 11)) + 900 * expoIn(k(t, 23.3, 0.3))), s: 1 + 0.06 * Math.sin(Math.PI * k(t, 21.75, 0.3)) }));
+  [[-1, 300, 0.0], [-1, 170, 0.06], [1, 170, 0.03], [1, 300, 0.09]].forEach(([side, dx, d], i) => pngS(base, "chess-pawn", 150, [19.0, 23.6], (t) => ({
+    ...at(540 + side * dx + side * 470 * expoOut(k(t, 21.75 + d, 0.6)), 1430 + 700 * (1 - spring(t - 19.2 - d, 0.85, 11)) + 900 * expoIn(k(t, 23.3, 0.3))), r: side * 14 * expoOut(k(t, 21.75 + d, 0.6)),
+  })));
+
+  // ═════ M1 · ويخلي الزبون يشتري منك مرة ومرتين وعشرة: the frame splits into three panels on brown ═════
+  const M = layer((t) => (t < 23.45 || t >= 28.5 ? null : ""));
+  div(`position:absolute;inset:0;background:${BROWN}`, M.el);
+  const PW = 312, GAP = 24, PX = [540 + PW + GAP, 540, 540 - PW - GAP];
+  const panelRect = (i, t) => {
+    const split = expoInOut(k(t, 23.5, 0.55));
+    const grow = i === 2 ? expoInOut(k(t, 26.45, 0.5)) : 0;
+    const full = { l: i === 0 ? 720 : i === 1 ? 360 : 0, r: i === 0 ? 1080 : i === 1 ? 720 : 360, t: 0, b: 1920 };
+    const box = { l: PX[i] - PW / 2, r: PX[i] + PW / 2, t: 620, b: 1520 };
+    const m = (a, b) => lerp(a, b, split);
+    const cur = { l: m(full.l, box.l), r: m(full.r, box.r), t: m(full.t, box.t), b: m(full.b, box.b) };
+    return { l: lerp(cur.l, 0, grow), r: lerp(cur.r, 1080, grow), t: lerp(cur.t, 0, grow), b: lerp(cur.b, 1920, grow), rad: 36 * split * (1 - grow) };
+  };
+  [0, 1, 2].forEach((i) => {
+    const p = div(`position:absolute;inset:0;background:${CREAM}`, M.el);
+    div("", p).className = "paper";
+    items.push({ el: p, life: [23.45, 28.5], pose: (t) => {
+      const R = panelRect(i, t);
+      return { clip: `inset(${R.t.toFixed(1)}px ${(1080 - R.r).toFixed(1)}px ${(1920 - R.b).toFixed(1)}px ${R.l.toFixed(1)}px round ${R.rad.toFixed(1)}px)` };
+    }, still: true });
+  });
+  line(M, [{ w: "ويخلي", t: 23.57, c: WHITE }, { w: "الزبون", t: 23.93, c: WHITE }], { top: 260, size: 120, align: "c", out: 26.35 });
+  line(M, [{ w: "يشتري", t: 24.27, c: ORANGE }, { w: "منك", t: 24.63, c: WHITE }], { top: 410, size: 120, align: "c", out: 26.35 });
+  // what each panel fills with: one bag, two bags, ten
+  const BAGS = ["bag-orange", "bag-black", "bag-blue", "bag-black2"];
+  const fill = [[[0, 0, 210]], [[-60, -20, 170], [60, 30, 170]], [[-90, -150, 110], [0, -170, 110], [90, -140, 110], [-100, -20, 110], [0, -30, 110], [95, -10, 110], [-95, 110, 110], [5, 100, 110], [95, 120, 110], [0, 220, 110]]];
+  const when = [24.97, 25.35, 25.97];
+  fill.forEach((bags, i) => bags.forEach(([dx, dy, w], j) => pngS(M, BAGS[(i + j) % 4], w, [when[i] - 0.05, 26.9], (t) => ({
+    ...at(PX[i] + dx, 1010 + dy - 900 * (1 - spring(t - when[i] - j * 0.03, 0.84, 13)) + 1300 * expoIn(k(t, i === 2 ? 26.45 : 26.3, i === 2 ? 0.4 : 0.28))), r: Math.sin(i * 3 + j * 1.9) * 10,
+  }))));
+  [["مرة", 24.97], ["ومرتين", 25.35], ["وعشرة", 25.97]].forEach(([w, t0], i) => piece(M, `<div style="font:400 92px/1.2 'DG Sahabah';font-synthesis:none;color:${i === 2 ? ORANGE : BROWN};white-space:nowrap;direction:rtl">${w}</div>`, 0, [t0, 26.7], (t) => merge(at(PX[i], 1400), merge(ENTRY.rise(t - t0), EXIT.down(t - 26.4, 0))), "width:auto"));
+
+  // ═════ M2 · لأن شاف براند حقيقي قدامه: the third panel opens to the whole frame ═════
+  line(M, [{ w: "لأن", t: 26.67 }, { w: "شاف", t: 27.01 }], { top: 430, size: 150, out: 28.3 });
+  line(M, [{ w: "براند", t: 27.21, c: ORANGE, in: "stamp" }], { top: 620, size: 300, out: 28.3 });
+  line(M, [{ w: "حقيقي", t: 27.57 }, { w: "قدامه", t: 27.97 }], { top: 1010, size: 140, out: 28.3 });
+  png(M, "binoculars-man", 470, [26.6, 28.6], (t) => ({ ...at(lerp(-300, 230, spring(t - 26.65, 0.86, 10)) - 800 * expoIn(k(t, 28.2, 0.3)), 1180), r: 2 * expoOut(k(t, 27.21, 0.4)) }));
+
+  // ═════ O1 · كافي تضيع جمهورك بتصاميم عادية، الكل يتخطاها، ابدأ اليوم ═════
+  line(base, [{ w: "كافي", t: 28.55 }, { w: "تضيع", t: 28.93 }], { top: 300, size: 170, out: 29.55 });
+  line(base, [{ w: "جمهورك", t: 29.15, c: ORANGE, in: "rise" }], { top: 520, size: 260, out: 29.55 });
+  line(base, [{ w: "بتصاميم", t: 29.65 }, { w: "عادية", t: 30.15, c: ORANGE }], { top: 800, size: 160, align: "c", out: 30.62, exit: "left" });
+  line(base, [{ w: "الكل", t: 30.85 }, { w: "يتخطاها", t: 30.99 }], { top: 330, size: 150, out: 31.5 });
+  line(base, [{ w: "ابدأ", t: 31.63, c: ORANGE, in: "stamp" }, { w: "اليوم", t: 32.05 }], { top: 500, size: 250, align: "c", out: 32.4 });
+  png(base, "crowd", 1100, [28.3, 32.9], (t) => ({ ...at(lerp(1700, -700, k(t, 28.3, 4.4)), 1530) }));
+  png(base, "crowd2", 1080, [30.5, 34.6], (t) => {
+    if (t < 33.05) return { ...at(lerp(1700, 560, expoOut(k(t, 30.55, 2.6))), 1520) };
+    return { ...at(560 - 40 * expoOut(k(t, 33.05, 0.3)), 1520 + 900 * expoIn(k(t, 33.95, 0.4))) };
+  }).style.zIndex = 4;
+
+  // ═════ O2 · بتصاميم توقف الزبون وتقفل وياه البيعة ═════
+  line(base, [{ w: "بتصاميم", t: 32.51 }], { top: 300, size: 160, out: 35.25 });
+  line(base, [{ w: "توقف", t: 33.09, c: ORANGE, in: "stamp" }, { w: "الزبون", t: 33.51 }], { top: 490, size: 172, out: 35.25 });
+  pngS(base, "stop-hand", 640, [32.9, 34.5], (t) => ({ ...at(560, 1500 + 900 * (1 - spring(t - 32.98, 0.84, 14)) + 1100 * expoIn(k(t, 33.95, 0.4))), r: 4 })).style.zIndex = 5;
+  line(base, [{ w: "وتقفل", t: 34.05 }, { w: "وياه", t: 34.61 }], { top: 790, size: 160, out: 35.25 });
+  line(base, [{ w: "البيعة", t: 34.85, c: ORANGE, in: "stamp" }], { top: 990, size: 230, align: "c", out: 35.25 });
+  pngS(base, "padlock", 280, [34.0, 35.6], (t) => ({ ...at(540, lerp(-500, 1450, expoIn(k(t, 34.05, 0.32))) - 30 * Math.sin(Math.PI * k(t, 34.37, 0.25))), r: 5 * Math.sin(Math.PI * 3 * k(t, 34.85, 0.35)) * (1 - k(t, 34.85, 0.35)) }));
+
+  // ═════ R1 · تواصل ويانا بالخاص: the coin's circle opens again from the padlock ═════
+  const R = layer((t) => {
+    if (t < 35.25) return null;
+    if (t < 39.4) return circle(lerp(0, 2300, expoInOut(k(t, 35.25, 0.5))), 540, 1450);
+    if (t < 40.2) { const p = expoInOut(k(t, 39.4, 0.6)); return circle(lerp(2300, 22, p), lerp(540, 540, p), lerp(1450, 760, p)); }
+    if (t < 40.95) return circle(22, 540, 760);
+    return circle(lerp(22, 0, expoIn(k(t, 40.95, 0.2))), 540, 760);
+  });
+  div(`position:absolute;inset:0;background:${ORANGE}`, R.el);
+  div("", R.el).className = "paper";
+  line(R, [{ w: "تواصل", t: 35.53, c: WHITE }, { w: "ويانا", t: 35.81, c: BROWN }], { top: 340, size: 200, out: 36.6 });
+  line(R, [{ w: "بالخاص", t: 36.09, c: WHITE, in: "stamp" }], { top: 590, size: 250, align: "c", out: 36.6 });
+  pngS(R, "receiver", 600, [35.3, 36.95], (t) => ({ ...at(lerp(1500, 760, spring(t - 35.4, 0.84, 11)) + 900 * expoIn(k(t, 36.55, 0.35)), 1300), r: lerp(40, 0, spring(t - 35.4, 0.84, 11)) + 8 * Math.sin(Math.PI * 6 * k(t, 36.09, 0.45)) * (1 - k(t, 36.09, 0.45)) }));
+
+  // ═════ R2 · شوف أعمالنا، وخلي براندك يبيع صح ═════
+  line(R, [{ w: "شوف", t: 36.79, c: WHITE }, { w: "أعمالنا", t: 36.99, c: BROWN, in: "rise" }], { top: 560, size: 180, align: "c", out: 37.45 });
+  line(R, [{ w: "وخلي", t: 37.53, c: WHITE }, { w: "براندك", t: 38.05, c: WHITE }], { top: 520, size: 160, align: "c", out: 39.3 });
+  line(R, [{ w: "يبيع", t: 38.71, c: BROWN, in: "stamp" }, { w: "صح", t: 39.07, c: WHITE }], { top: 760, size: 250, align: "c", out: 39.3 });
+  pngS(R, "cash-fan", 620, [36.95, 39.6], (t) => ({ ...at(540, 1380 + 900 * (1 - spring(t - 37.0, 0.84, 12)) + 1100 * expoIn(k(t, 39.2, 0.35))), r: -10 + 8 * Math.sin(Math.PI * k(t, 38.71, 0.3)) }));
+
+  // ═════ end title: the dot is the coin; the frame folds back to the first one ═════
+  const gone = (t) => 1 - expoIn(k(t, 40.85, 0.3));
+  piece(base, `<div style="font:400 140px/1.2 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:ltr">@allawi.psd</div>`, 0, [39.75, 41.3], (t) => ({ ...merge(at(540, 930), ENTRY.blur(t - 39.8)), o: clamp((t - 39.8) / 0.15) * gone(t), b: 24 * (1 - expoOut(k(t, 39.8, 0.45))) + 20 * (1 - gone(t)) }), "width:auto");
+  piece(base, `<div style="font:400 92px/1.25 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:rtl">وخلي براندك <span style="color:${ORANGE}">يبيع صح</span></div>`, 0, [39.95, 41.3], (t) => ({ ...merge(at(540, 1095), ENTRY.rise(t - 40.0)), o: clamp((t - 40.0) / 0.1) * gone(t) }), "width:auto");
+  piece(base, `<div style="font:400 50px/1.3 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:rtl;opacity:.8">موشن جرافيك <span style="color:${ORANGE}">&nbsp;&#9679;&nbsp;</span> بوستات <span style="color:${ORANGE}">&nbsp;&#9679;&nbsp;</span> إعلانات</div>`, 0, [40.15, 41.3], (t) => ({ ...merge(at(540, 1215), ENTRY.blur(t - 40.2)), o: clamp((t - 40.2) / 0.12) * gone(t) }), "width:auto");
+
+  BEATS = (window.SOUND ? window.SOUND.WORDS.map((w) => w[0]) : []);
+}
+
+// the lens copy scales about the glass, so its origin moves with it
+const _seek = seek;
+window.seek = (t) => {
+  _seek(t);
+  for (const it of items) if (it.origin && it.el.style.display !== "none") {
+    const p = it.pose(t);
+    it.el.style.transformOrigin = `${(p.ox - 70).toFixed(1)}px ${(p.oy - 800).toFixed(1)}px`;
+    it.el.style.transform = `scale(${p.s})`;
+    it.el.style.filter = "";
+  }
+};
+
+window.ready = (async () => {
+  await document.fonts.load("400 100px 'DG Sahabah'");
+  await new Promise((r) => { const s = document.createElement("script"); s.src = "../ae-core-reel/reel/sound.js"; s.onload = r; s.onerror = r; document.head.appendChild(s); });
+  build();
+  await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
+  const q = new URLSearchParams(location.search);
+  window.seek(q.has("t") ? +q.get("t") : 0);
+  return true;
+})();
+</script>
+</body>
+</html>

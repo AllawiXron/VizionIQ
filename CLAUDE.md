@@ -39,6 +39,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   pushing each other out; no dark or muddy backgrounds, heavy vignettes, blur transitions or one poster per sentence.
   Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it. No phone mock-ups (23 Oct:
   "ugly weird phones"): big type that fills the frame, each image doing one physical thing on its word.
+- Ad reel direction (24 Oct): the user turned down the Brandek-style engine version, a 3D product look and a Blender
+  paper-stage test, and asked for the motion of a premium ad he sent (BlueVisa): every scene grows out of the last
+  (circle morphs, cards stacking, diagonal panel wipes, a lens, three panels, a dot that becomes the end title), clean
+  big type, no cuts, crossfades, glows or bounces. Built as `marketing/coin-allawi-reel` (60 fps, 3 subframes).
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
