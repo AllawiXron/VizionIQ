@@ -474,6 +474,217 @@ function inside(geom, x, y) {
 const km = (a, b) => Math.hypot((a.x - b.x) * 111.32 * Math.cos(b.y * Math.PI / 180), (a.y - b.y) * 111.32);
 const kmText = d => `${arDigits(d.toFixed(1)).replace('.', '٫')} كم`;
 
+
+// ---------- your line against your area: a speed test in the browser to Cloudflare's nearest server ----------
+
+const CF = 'https://speed.cloudflare.com';
+S.me = null;            // { p, src: 'net' | 'gps' | 'pick' }: the area your line is compared with
+S.test = null;          // { phase, ping, down, up, live, done }
+let testRun = null;
+const nearest = (x, y, ok) => {
+  let best = null, bd = Infinity;
+  for (const p of S.places.concat(S.govs)) { if (!ok(p)) continue; const d = km(p, { x, y }); if (d < bd) { bd = d; best = p; } }
+  return best;
+};
+const areaFor = p => {
+  // an area without enough tests is compared with its governorate, then with Iraq
+  if (p && stat(p)) return p;
+  const g = p && p.k !== 'gov' ? govById(p.g) : null;
+  return g && stat(g) ? g : S.country;
+};
+const areaName = a => a === S.country ? 'العراق' : a.k === 'gov' ? `محافظة ${a.n}` : a.n;
+const bi = a => a === S.country ? 'بالعراق' : a.k === 'gov' ? `بمحافظة ${a.n}` : `ب${a.n}`;
+// where the line is, roughly, from the network: Cloudflare says the city of the address it sees
+let netGuess = null;
+function guessFromNetwork() {
+  if (netGuess) return netGuess;
+  netGuess = fetch(`${CF}/__down?bytes=0`, { cache: 'no-store' }).then(r => {
+    const lat = parseFloat(r.headers.get('cf-meta-latitude')), lon = parseFloat(r.headers.get('cf-meta-longitude'));
+    if (r.headers.get('cf-meta-country') !== 'IQ' || !isFinite(lat) || !isFinite(lon)) return null;
+    return placesReady.then(() => nearest(lon, lat, p => (p.k === 'city' || p.k === 'gov') && stat(p, 'f')));
+  }).catch(() => null);
+  return netGuess;
+}
+function locateMe() {
+  const btn = page.querySelector('[data-act="locate"]');
+  if (!navigator.geolocation) return;
+  if (btn) btn.textContent = 'أحدد موقعك...';
+  navigator.geolocation.getCurrentPosition(pos => placesReady.then(() => {
+    const p = nearest(pos.coords.longitude, pos.coords.latitude, q => q.k !== 'village' && q.k !== 'hamlet' && stat(q, 'f'));
+    if (p) { S.me = { p, src: 'gps' }; redrawMe(); }
+  }), () => { if (btn) btn.textContent = 'ما قدرت أحدد موقعك. اختار منطقتك من البحث'; }, { enableHighAccuracy: false, timeout: 12000, maximumAge: 600000 });
+}
+
+const median = a => { const b = a.slice().sort((x, y) => x - y); return b[Math.floor(b.length / 2)]; };
+async function measure(t, signal) {
+  const tick = () => { if (route === '#/test') drawTest(); };
+  // ping: small requests, minus the time the server says it spent
+  const pings = [];
+  for (let i = 0; i < 9 && !signal.aborted; i++) {
+    const t0 = performance.now();
+    const r = await fetch(`${CF}/__down?bytes=0&n=${Math.random()}`, { cache: 'no-store', signal });
+    await r.arrayBuffer();
+    const srv = /dur=([\d.]+)/.exec(r.headers.get('server-timing') || '');
+    if (i) pings.push(Math.max(1, performance.now() - t0 - (srv ? +srv[1] : 0)));
+  }
+  t.ping = median(pings); t.phase = 'down'; tick();
+  // download: three streams for up to 9 seconds or 60 MB; the first second is left out of the result
+  let got = 0, base = 0, tBase = 0;
+  const start = performance.now(), ctl = new AbortController(), stop = () => ctl.abort();
+  signal.addEventListener('abort', stop);
+  const stream = async () => {
+    while (!ctl.signal.aborted) {
+      const r = await fetch(`${CF}/__down?bytes=25000000&n=${Math.random()}`, { cache: 'no-store', signal: ctl.signal });
+      const rd = r.body.getReader();
+      for (;;) { const { done, value } = await rd.read(); if (done) break; got += value.length; }
+    }
+  };
+  const live = setInterval(() => {
+    const now = performance.now(), el = (now - start) / 1000;
+    if (el > 1 && !tBase) { base = got; tBase = now; }
+    if (tBase && now > tBase + 200) t.live = (got - base) * 8 / ((now - tBase) / 1000) / 1e6;
+    else if (el > 0.2) t.live = got * 8 / el / 1e6;
+    tick();
+    if (el > 9 || got > 60e6) stop();
+  }, 200);
+  await Promise.all([stream(), stream(), stream()].map(p => p.catch(() => {})));
+  clearInterval(live);
+  if (signal.aborted) return;
+  const now = performance.now();
+  t.down = tBase && now - tBase > 500 ? (got - base) * 8 / ((now - tBase) / 1000) / 1e6 : got * 8 / ((now - start) / 1000) / 1e6;
+  t.live = null; t.phase = 'up'; tick();
+  // upload: growing chunks for up to 7 seconds or 25 MB, counted as they leave
+  let sent = 0, size = 250e3;
+  const ustart = performance.now();
+  while (!signal.aborted && performance.now() - ustart < 7000 && sent < 25e6) {
+    const before = sent, c0 = performance.now();
+    await new Promise(res => {
+      const x = new XMLHttpRequest();
+      x.open('POST', `${CF}/__up`);
+      x.upload.onprogress = e => { sent = before + e.loaded; t.live = sent * 8 / ((performance.now() - ustart) / 1000) / 1e6; tick(); };
+      x.onloadend = res; x.timeout = 8000; x.ontimeout = res;
+      signal.addEventListener('abort', () => x.abort());
+      x.send(new Blob([new Uint8Array(size)], { type: 'text/plain' }));
+    });
+    if (performance.now() - c0 < 1000) size = Math.min(size * 2, 8e6);
+  }
+  if (signal.aborted) return;
+  t.up = sent * 8 / ((performance.now() - ustart) / 1000) / 1e6;
+  t.live = null; t.phase = 'done';
+}
+function startTest() {
+  if (testRun) testRun.abort();
+  testRun = new AbortController();
+  const t = S.test = { phase: 'ping', ping: null, down: null, up: null, live: null };
+  drawTest();
+  measure(t, testRun.signal).then(() => { if (S.test === t) drawTest(); }).catch(() => {
+    if (S.test === t && !testRun.signal.aborted) { t.phase = 'failed'; drawTest(); }
+  });
+}
+
+const dec = v => v < 10 ? arDigits(v.toFixed(1)).replace('.', '٫') : ar(v);
+function times(k) {
+  const n = Math.round(k);
+  return n === 2 ? 'بمرتين' : `${ar(n)} ${n <= 10 ? 'مرات' : 'مرة'}`;
+}
+function verdictOf(d, a, aName) {
+  const r = d / a;
+  if (r < 0.6) return { cls: 'slow', head: a / d >= 1.95 ? `خطك أبطأ من منطقتك ${times(a / d)}` : 'خطك أبطأ بوضوح من منطقتك',
+    why: `الناس ${aName} يوصلون لـ ${ar(a)} ميغابت بالمعدل وانت وصلت لـ ${dec(d)}، فالمنطقة مو هي السبب. البطء غالبا من الخط أو الراوتر أو الباقة.`,
+    todo: 'افحص مرة ثانية وانت قريب من الراوتر، أو بكيبل إذا عندك حاسبة. إذا بقت النتيجة نفسها، اتصل بشركتك وكلهم الرقم، أو اسألهم عن باقة أسرع.' };
+  if (r <= 1.4) return a < 25
+    ? { cls: 'slow', head: 'خطك مثل منطقتك، والمنطقة كلها بطيئة', why: `معدل ${aName.replace(/^ب/, '')} ${ar(a)} ميغابت فقط، فتبديل الراوتر ما راح يفرق كثير.`,
+        todo: 'إذا تحتاج سرعة أكثر، اسأل شركتك عن الفايبر بمنطقتك، أو قارن معدل الموبايل بنفس المنطقة.' }
+    : { cls: 'ok', head: 'خطك طبيعي لمنطقتك', why: `الناس ${aName} يوصلون لـ ${ar(a)} ميغابت بالمعدل وانت وصلت لـ ${dec(d)}.`,
+        todo: 'إذا يبطأ عندك بأوقات معينة، افحص مرة ثانية بالليل وقارن النتيجتين.' };
+  return { cls: 'fast', head: 'خطك أسرع من معدل منطقتك', why: `الناس ${aName} يوصلون لـ ${ar(a)} ميغابت بالمعدل وانت وصلت لـ ${dec(d)}.`,
+    todo: 'يعني الخطوط الأسرع ممكنة بمنطقتك. شارك النتيجة حتى يعرف جيرانك.' };
+}
+const pinAt = v => { const i = BANDS.indexOf(bandOf(v)), lo = i ? BANDS[i - 1].max : 0, hi = Number.isFinite(BANDS[i].max) ? BANDS[i].max : 250;
+  return (i + Math.min(1, (v - lo) / (hi - lo))) / BANDS.length * 100; };
+function scaleHTML(d, a, aShort) {
+  const pd = Math.min(92, Math.max(8, pinAt(d))), pa = Math.min(92, Math.max(8, pinAt(a))), close = Math.abs(pd - pa) < 18;
+  return `<div class="scale" aria-hidden="true">
+    <div class="pin${close ? ' up' : ''}" style="right:${pd}%"><b>خطك ${dec(d)}</b><i></i></div>
+    <div class="pin" style="right:${pa}%"><b>${esc(aShort)} ${ar(a)}</b><i></i></div>
+    <div class="strip">${BANDS.map(b => `<i style="background:${b.fill}"></i>`).join('')}</div>
+    <div class="words">${BANDS.map(b => `<span>${b.word}</span>`).join('')}</div></div>`;
+}
+function meBlock() {
+  const a = areaFor(S.me && S.me.p), st = stat(a);
+  const src = !S.me ? '' : S.me.src === 'gps' ? 'من موقعك' : S.me.src === 'net' ? 'تقريبا، من شبكتك' : 'اخترتها';
+  return `<p class="hook">معدل ${KIND[S.mode]} ${bi(a)}</p>
+    <p class="num big-area" style="color:${bandOf(st.d).text}">${ar(st.d)}<small>ميغابت في الثانية</small></p>
+    <p class="ask">وخطك شكد يوصل؟</p>
+    <p class="intro">افحصه بعشرين ثانية. إذا طلع أبطأ من منطقتك فالبطء غالبا من الخط أو الراوتر أو الباقة، وإذا المنطقة كلها بطيئة فتبديل الراوتر ما يفيد.</p>
+    <a class="go" href="#/test" data-go="1"><span>ابدأ الفحص</span><em>٢٠ ثانية</em></a>
+    <div class="me-place"><span>منطقتك${src ? '، ' + src : ''}</span><b>${esc(areaName(a))}</b></div>
+    <p class="small me-change"><button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button> أو ابحث عن منطقتك تحت واضغط افحص خطك هنا.</p>`;
+}
+function redrawMe() { const b = page.querySelector('#me'); if (b) b.innerHTML = meBlock(); if (route === '#/test') drawTest(); }
+
+function testHTML() {
+  const t = S.test, a = areaFor(S.me && S.me.p), st = stat(a), aName = bi(a), aShort = a === S.country ? 'العراق' : a.n;
+  const top = `<p class="small test-area">نقارن خطك بمعدل ${KIND[S.mode]} ${aName}. ${S.me && S.me.src === 'net' ? 'عرفنا منطقتك تقريبا من شبكتك. ' : ''}<button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button></p>`;
+  if (!t) return `<h1 class="h1">افحص سرعة خطك وقارنها بمعدل منطقتك</h1>${top}
+    <a class="go" href="#/test" data-go="1"><span>ابدأ الفحص</span><em>٢٠ ثانية</em></a>${testNote()}`;
+  if (t.phase === 'failed') return `<h1 class="h1">ما كمل الفحص</h1><p class="intro">يمكن انقطع الاتصال أو الشبكة تمنع خادم الفحص. جرب مرة ثانية.</p>
+    <a class="go" href="#/test" data-go="1"><span>افحص مرة ثانية</span></a>${testNote()}`;
+  const cell = (k, label, v, unit) => `<div class="${t.phase === k ? 'now' : v == null ? 'wait' : ''}"><span>${label}</span><b>${v != null ? `${dec(v)} ${unit}` : t.phase === k ? 'يقيس' : 'بعده'}</b></div>`;
+  const cells = `<div class="three">${cell('ping', 'البنك', t.ping, 'ملي ثانية')}${cell('down', 'التنزيل', t.down, 'ميغابت')}${cell('up', 'الرفع', t.up, 'ميغابت')}</div>`;
+  if (t.phase !== 'done') {
+    const v = t.live || 0, max = Math.max(st.d * 1.15, v * 1.1, 10);
+    const goal = t.phase === 'down' ? `<div class="goal" style="right:${st.d / max * 100}%"><span>معدل ${esc(aShort)} ${ar(st.d)}</span></div>` : '';
+    return `<p class="label test-now">${t.phase === 'ping' ? 'نقيس البنك' : t.phase === 'down' ? 'خطك هسه، التنزيل' : 'خطك هسه، الرفع'}</p>
+      <p class="num">${t.live != null ? dec(v) : '٠'}<small>ميغابت في الثانية</small></p>
+      <div class="track"><div class="rail"></div><div class="me" style="width:${Math.min(100, v / max * 100)}%;background:${bandOf(Math.max(v, 0.1)).fill}"></div>${goal}</div>
+      ${cells}<p class="small">خلي الصفحة مفتوحة، ووقف أي تحميل على نفس الشبكة حتى تطلع النتيجة صحيحة.</p>`;
+  }
+  const v = verdictOf(t.down, st.d, aName), b = bandOf(t.down);
+  return `<p class="label test-now">نتيجة خطك، التنزيل</p>
+    <p class="num">${dec(t.down)}<small>ميغابت في الثانية</small></p>
+    <p class="test-verdict ${v.cls}">${v.head}</p>
+    <p class="intro">${v.why}</p>
+    ${scaleHTML(t.down, st.d, aShort)}
+    <p class="enough"><span>${dec(t.down)} ميغابت </span>${S.mode === 'm' ? phoneLine(t.down) : b.home}.</p>
+    <p class="note">الرفع عندك ${dec(t.up)} ميغابت${st.u ? ` ومعدل ${esc(aShort)} ${ar(st.u)}` : ''}، والبنك ${dec(t.ping)} ملي ثانية.</p>
+    <h2 class="todo">شنو تسوي</h2><p class="intro">${v.todo}</p>
+    <div class="two"><button type="button" class="dark" data-act="share">شارك النتيجة</button><a class="light" href="#/test" data-go="1">افحص مرة ثانية</a></div>
+    ${modesHTML()}${top}${testNote()}`;
+}
+const testNote = () => `<p class="note">الفحص يقيس من جهازك إلى أقرب خادم لشركة Cloudflare، وأرقام المناطق من اختبارات Speedtest، فممكن يكون بينهم فرق بسيط. على خط سريع يستهلك الفحص حوالي ١٠٠ ميغابايت.</p>`;
+function drawTest() { const b = page.querySelector('#test'); if (b) b.innerHTML = testHTML(); }
+
+// the result as a picture for a story or a chat, in the colour of its band
+async function shareResult() {
+  const t = S.test; if (!t || t.phase !== 'done') return;
+  const a = areaFor(S.me && S.me.p), st = stat(a), aShort = a === S.country ? 'العراق' : a.n, b = bandOf(t.down);
+  await Promise.all(['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik`, 'خطي ١٢')));
+  const c = document.createElement('canvas'); c.width = 1080; c.height = 1920;
+  const g = c.getContext('2d'), light = b.word === 'متوسط' || b.word === 'مقبول', fg = light ? '#14202b' : '#ffffff';
+  g.fillStyle = b.fill; g.fillRect(0, 0, 1080, 1920);
+  g.direction = 'rtl'; g.textAlign = 'right'; g.fillStyle = fg;
+  const line = (txt, y, size, w = 500, alpha = 1) => { g.globalAlpha = alpha; g.font = `${w} ${size}px Rubik`; g.fillText(txt, 980, y); g.globalAlpha = 1; };
+  line(a === S.country ? 'خطي بالعراق' : `خطي ${bi(a)}`, 470, 56, 500, 0.9);
+  line(dec(t.down), 900, 400, 800);
+  line('ميغابت في الثانية', 1010, 56, 500);
+  g.globalAlpha = 0.55; g.fillRect(100, 1090, 880, 6); g.globalAlpha = 1;
+  const r = t.down / st.d;
+  const them = a === S.country ? 'معدل العراق' : 'جيراني';
+  const say = r < 0.6 ? `ومعدل ${aShort} ${ar(st.d)}. يعني خطي أبطأ من ${them} ${times(st.d / t.down)}.` : r <= 1.4 ? `ومعدل ${aShort} ${ar(st.d)}. خطي مثل ${them}.` : `ومعدل ${aShort} ${ar(st.d)}. خطي أسرع من ${them}.`;
+  g.font = '700 64px Rubik';
+  const words = say.split(' '); let ln = '', y = 1210;
+  for (const w of words) { const tt = ln ? ln + ' ' + w : w; if (g.measureText(tt).width > 880) { g.fillText(ln, 980, y); ln = w; y += 88; } else ln = tt; }
+  if (ln) g.fillText(ln, 980, y);
+  line('سرعة الإنترنت في العراق', 1780, 50, 700);
+  g.textAlign = 'left'; g.font = '500 46px Rubik'; g.fillText('افحص خطك', 100, 1780);
+  const blob = await new Promise(res => c.toBlob(res, 'image/png'));
+  const file = new File([blob], 'internet-speed.png', { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  const u = URL.createObjectURL(blob), el = document.createElement('a'); el.href = u; el.download = 'internet-speed.png'; document.body.appendChild(el); el.click(); el.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 5000);
+}
+
 // ---------- pages ----------
 
 const foot = (about = true) => `<p class="foot">السرعات من Speedtest by Ookla، والشوارع والأحياء من مساهمي OpenStreetMap.${about ? ' <a href="#/about">من أين جاءت الأرقام</a>' : ''}<br>
@@ -542,8 +753,9 @@ function homeHTML() {
   const trend = !hist[0] ? '' : S.mode === 'f' ? `كان المعدل ${ar(hist[0][0])} ميغابت في صيف ٢٠١٩`
     : `كان معدل الموبايل ${ar(hist[0][0])} ميغابت في صيف ٢٠١٩، و${ar(hist[hist.length - 1][0])} في صيف ٢٠٢٦`;
   return `<div class="cols">
-  <h1 class="h1">اعرف سرعة الإنترنت الحقيقية في منطقتك</h1>
-  <p class="intro">من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم في كل محافظات العراق.</p>
+  <section class="me" id="me">${meBlock()}</section>
+  <h2 class="or">أو شوف سرعة أي منطقة</h2>
+  <p class="small">من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم في كل محافظات العراق.</p>
   ${searchHTML('اكتب اسم الحي أو المدينة')}
   <p class="tries">${tryLinks()}</p>
 
@@ -621,6 +833,7 @@ function placeHTML(p, geom) {
       ${verdictHTML(st.d)}
       ${bandsHTML(st.d)}
     </div>
+    <a class="go testlink" href="#/test" data-go="1" data-me="${isGov ? 'g:' : ''}${esc(p.id)}"><span>افحص خطك وقارنه ب${esc(isGov ? 'المحافظة' : p.n)}</span><em>٢٠ ثانية</em></a>
     <section class="compare"><p class="label">مقارنة بالمعدل</p>${barsHTML(rows)}${line ? `<p>${line}</p>` : ''}</section>`;
   } else {
     const ref = gs || cs;
@@ -720,7 +933,14 @@ function navigate(h) {
 }
 document.addEventListener('click', e => {
   const a = e.target.closest && e.target.closest('a[href^="#/"]');
-  if (a && !e.defaultPrevented && !e.metaKey && !e.ctrlKey) { e.preventDefault(); navigate(a.getAttribute('href')); return; }
+  if (a && !e.defaultPrevented && !e.metaKey && !e.ctrlKey) {
+    e.preventDefault();
+    if (a.dataset.me) { const id = a.dataset.me; const p = id.startsWith('g:') ? govById(id.slice(2)) : S.byId.get(id); if (p) S.me = { p, src: 'pick' }; }
+    if (a.dataset.go) { if (route === '#/test') { startTest(); return; } S.goTest = true; }
+    navigate(a.getAttribute('href')); return;
+  }
+  const act = e.target.closest && e.target.closest('[data-act="locate"], [data-act="share"]');
+  if (act) { if (act.dataset.act === 'locate') locateMe(); else shareResult(); return; }
   const m = e.target.closest && e.target.closest('.modes button');
   if (m) { setMode(m.dataset.mode); return; }
   if (e.target.closest && e.target.closest('#fullbtn')) ensureMap().then(openFull);
@@ -735,7 +955,8 @@ addEventListener('hashchange', fromAddress);
 let lastRoute = '';
 async function render(move = true) {
   const h = current();
-  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : 'home';
+  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : 'home';
+  if (view !== 'test' && testRun) { testRun.abort(); testRun = null; if (S.test && S.test.phase !== 'done') S.test = null; }
   const tab = view === 'govs' || h.startsWith('/g/') ? '#/govs' : view === 'about' ? '#/about' : '#/';
   document.querySelectorAll('.tabs a, .topnav a').forEach(a => {
     const on = a.getAttribute('href') === tab;
@@ -756,6 +977,11 @@ async function render(move = true) {
     document.title = `${p.n}، سرعة الإنترنت`;
   } else if (view === 'govs') { page.innerHTML = govsHTML(); document.title = 'المحافظات، سرعة الإنترنت في العراق'; }
   else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن موقع سرعة الإنترنت في العراق'; }
+  else if (view === 'test') {
+    page.innerHTML = `<div class="cols"><section class="test" id="test"></section></div>${foot()}`;
+    document.title = 'افحص خطك، سرعة الإنترنت في العراق';
+    if (S.goTest) { S.goTest = false; startTest(); } else drawTest();
+  }
   else { page.innerHTML = homeHTML(); document.title = 'سرعة الإنترنت في العراق'; wireSearch(); }
   scrollTo(0, keepScroll ? y : 0);
 
@@ -793,6 +1019,7 @@ const placesReady = getJSON('data/places.json').then(pl => {
 Promise.all(['data/govs.json', 'data/country.json', 'data/govmap.json'].map(getJSON)).then(([gv, country, govmap]) => {
   S.govs = gv.govs; S.country = country; S.govmap = govmap;
   const shown = render(true);
+  guessFromNetwork().then(p => { if (p && !S.me) { S.me = { p, src: 'net' }; redrawMe(); } });
   document.body.dataset.text = '1';
   return Promise.all([shown, placesReady]);
 }).then(() => { document.body.dataset.ready = '1'; });
