@@ -42,7 +42,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - Ad reel direction (24 Oct): the user turned down the Brandek-style engine version, a 3D product look and a Blender
   paper-stage test, and asked for the motion of a premium ad he sent (BlueVisa): every scene grows out of the last
   (circle morphs, cards stacking, diagonal panel wipes, a lens, three panels, a dot that becomes the end title), clean
-  big type, no cuts, crossfades, glows or bounces. Built as `marketing/coin-allawi-reel` (60 fps, 3 subframes).
+  big type, no cuts, crossfades, glows or bounces. Built as `marketing/coin-allawi-reel` (60 fps, 3 subframes). He liked its palette and sync, then asked (24 Oct) for no web cards,
+  panels or slider dots: kinetic type with a camera over the page, a stamp that holds before the wipe, and on «شوف أعمالنا»
+  tilted phones playing his real reels (phones are fine there, showing his own work).
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
