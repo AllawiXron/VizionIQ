@@ -342,3 +342,6 @@ button.go { width: 100%; border: 0; font: inherit; font-size: 19px; font-weight:
 .wrow.share i { display: block; height: 10px; border-radius: 2px; background: var(--wash); }
 .wrow.share em { display: block; height: 100%; border-radius: 2px; background: #ea8a2e; }
 .work .go { margin-top: 12px; }
+/* the live number and its unit stacked, so a wide number never runs into the label */
+.test .num, .ptest .num { flex-direction: column; align-items: flex-start; gap: 12px; line-height: 1; min-height: calc(96px + 12px + 20px); }
+.test .num small, .ptest .num small { line-height: 1.2; }

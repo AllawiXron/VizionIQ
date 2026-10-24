@@ -8,10 +8,14 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 PACK = os.path.join(HERE, '..', '..', 'sfx-pack', 'files')
 SR, DUR = 48000, 37.0
+# whooshes, hits and risers are noise underneath: they go through a low-pass at 550 Hz with soft fades, so every
+# move sounds like warm air and never like static
+SOFT_AIR = ('hoosh', 'Riser', 'Swoosh')
 cache = {}
 def load(name):
     if name not in cache:
-        raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', os.path.join(PACK, name), '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'],
+        af = ['-af', 'lowpass=f=550,lowpass=f=550,afade=t=in:d=0.06,areverse,afade=t=in:d=0.3,areverse'] if any(k in name for k in SOFT_AIR) else []
+        raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', os.path.join(PACK, name), *af, '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'],
                              capture_output=True, check=True).stdout
         a = np.frombuffer(raw, np.float32).reshape(-1, 2).copy()
         env = np.sqrt(np.convolve((a ** 2).mean(1), np.ones(480) / 480, 'same'))
@@ -20,6 +24,7 @@ def load(name):
 out = np.zeros((int(SR * DUR), 2), np.float32)
 def place(name, at, db, align='peak'):
     a, pk = load(name)
+    if any(k in name for k in SOFT_AIR): db = min(db, -18)     # about 0.1 of the loudest sound
     start = int(at * SR) - (pk if align == 'peak' else 0)
     a = a * (10 ** (db / 20))
     s0, s1 = max(0, start), min(len(out), start + len(a))
@@ -40,13 +45,14 @@ for t0 in [3.25, 8.0, 11.1, 17.05, 22.05, 26.05, 29.95]:
     place(POP2, t0 + 0.1, -14)                                   # each caption
 place('Ui Sound Effects/Ui Enter.wav', 3.95, -11)               # the tap on ابدأ الفحص
 place('Data Collect/Data Collect.wav', 4.2, -18, 'start')       # the test counting
-place('Whoosh hit.wav', 5.78, -10)                               # the red verdict
-place('Whooshes/Cinematic Fast Normal Whoosh.wav', 8.35, -9)   # the card flies out
+place(POP2, 5.82, -11)                                           # the red verdict
+place('Whooshes/Smooth Like A Butter Whoosh.wav', 8.95, -18)       # the card comes out
 place('Ui Sound Effects/Ui Enter.wav', 11.65, -11)              # the tap on the ping test
 for k in range(6):
     place('Clicks/Click 2.wav', 11.95 + 0.17 * k, -20)          # pings while the line is free
-place('whoosh glitch.wav', 13.0, -13)                            # the jump to 160 while it is busy
+place('Whooshes/Whoosh Deep Light 2.wav', 13.0, -18)              # the jump to 160 while it is busy
 place(POP, 14.72, -12); place(POP, 14.97, -12)                   # the two cards
+place('Whooshes/Whoosh Deep Short.wav', 14.45, -20)               # the phone slides away
 place('Data Collect/Data Collect.wav', 17.25, -18, 'start')     # 824 counts up
 place(POP, 17.62, -13)                                           # الصقلاوية
 place('Whooshes/Simple Whoosh.wav', 18.4, -14)                   # the mobile bar runs
@@ -57,17 +63,18 @@ for i in range(4):
 place('Gear/Soft Gear 1.wav', 26.2, -16, 'start')                # the map is drawn
 place('Data Collect/Data Collect.wav', 26.45, -18, 'start')     # and lights up
 place(POP2, 27.85, -11)                                          # Diyala's card
-place('Risers/Smooth Riser.wav', 29.8, -8)                       # the zoom into the green
-place('Whooshes/Cinematic Fast Whoosh.wav', 29.7, -11)
-place('Whoosh hit.wav', 29.85, -6)
+place('Risers/Smooth Riser.wav', 29.8, -18)                      # the zoom into the green
+place('Whooshes/Slow And Smooth Whoosh .wav', 29.6, -18)
+place(POP2, 29.95, -10)
 for at in [30.35, 30.6, 30.72, 30.84, 30.96, 31.08, 31.2]:
     place(CLICK, at, -16)                                        # the summers
 place('Slice Ring.wav', 31.4, -7)                                # ٦٢
 place('Trail Swoosh.mp3', 31.4, -16, 'start')                    # the path climbs
-place('Whooshes/Cinematic Fast Normal Whoosh.wav', 32.95, -10)   # the field folds into the line
+place('Whooshes/Smooth Like A Butter Whoosh.wav', 32.95, -18)    # the field folds into the line
 place(POP, 33.08, -12); place(POP, 33.16, -14)                   # the name
 place('Whooshes/Whoosh Deep Light 2.wav', 33.75, -16)            # the phone rises
-place('Pop/Sweet UI Open.wav', 34.1, -12)                        # the button comes out of it
+for k in range(3):
+    place(POP, 34.3 + 1.1 * k + 0.2, -17)                        # the start button pulses
 
 fade = int(0.6 * SR)
 out[-fade:] *= np.linspace(1, 0, fade)[:, None] ** 2

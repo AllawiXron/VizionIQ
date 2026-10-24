@@ -100,16 +100,16 @@ const tw = (str, size, weight = 800) => { bgx.font = `${weight} ${size}px Rubik`
 function rrect(g, x, y, w, h, r) { r = Math.max(0, Math.min(r, Math.abs(h) / 2, Math.abs(w) / 2)); g.beginPath(); g.roundRect(x, y, w, h, r); }
 const vel = (f, t) => { const a = f(t), b = f(t - 1 / FPS); return [a[0] - b[0], a[1] - b[1]]; };
 
-function layoutWords(str, size, maxW, x, y, lh, weight = 800) {
+function layoutWords(str, size, maxW, x, y, lh, weight = 800, slot = null) {
   const words = str.split(' '), sp = tw(' ', size, weight), lines = [[]];
   let w = 0;
   for (const wd of words) {
-    const ww = tw(wd, size, weight);
+    const ww = slot && slot(wd) || tw(wd, size, weight);
     if (lines[lines.length - 1].length && w + sp + ww > maxW) { lines.push([]); w = 0; }
     lines[lines.length - 1].push({ wd, ww }); w += (w ? sp : 0) + ww;
   }
   const out = [];
-  lines.forEach((ln, li) => { let xr = x; ln.forEach(o => { out.push({ wd: o.wd, x: xr, y: y + li * lh }); xr -= o.ww + sp; }); });
+  lines.forEach((ln, li) => { let xr = x; ln.forEach(o => { out.push({ wd: o.wd, x: xr, y: y + li * lh, ww: o.ww }); xr -= o.ww + sp; }); });
   return out;
 }
 function sentence(t, laid, t0, step, size, o = {}) {
@@ -205,12 +205,12 @@ const screenPt = (u, v) => toFrame((u - 195) * K1, (422 - v) * K1, 1.2);
 // three shadows: tight at the edge, one cast away from the light (top left), one wide and soft under everything
 const shc = document.createElement('canvas'); shc.width = W / 2; shc.height = H / 2;
 const shx = shc.getContext('2d', { willReadFrequently: true });
-function phoneShadow(m, fade) {
+function phoneShadow(m, fade, alpha = 1) {
   const pts = OUTLINE.map(([x, y]) => toFrame(x, y, -30));
   const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length, cyy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
   shx.setTransform(0.5, 0, 0, 0.5, 0, 0); shx.clearRect(0, 0, W, H);
-  const lay = (dx, dy, blur, alpha, grow) => {
-    shx.save(); shx.filter = `blur(${blur / 2}px)`; shx.globalAlpha = alpha; shx.fillStyle = '#1a2430';
+  const lay = (dx, dy, blur, a2, grow) => {
+    shx.save(); shx.filter = `blur(${blur / 2}px)`; shx.globalAlpha = a2 * alpha; shx.fillStyle = '#1a2430';
     shx.beginPath(); pts.forEach(([x, y], i) => { const X = cx + (x - cx) * grow + dx, Y = cyy + (y - cyy) * grow + dy; i ? shx.lineTo(X, Y) : shx.moveTo(X, Y); });
     shx.closePath(); shx.fill(); shx.restore();
   };
@@ -249,15 +249,28 @@ function drawScreen(st) {
     const r = seg(k2, 0.15, 0.85);
     if (r > 0) { sg.strokeStyle = `rgba(255,255,255,${0.5 * (1 - r)})`; sg.lineWidth = 2.5 * SC; sg.beginPath(); sg.arc(x, y, (24 + 46 * expo(r)) * SC, 0, 7); sg.stroke(); }
   }
+  if (st.pulse && st.pulse !== 1) {
+    const [x, y, w, h] = MARKS.go.map(v => v * SC), cx = x + w / 2, cy = y + h / 2;
+    sg.save(); sg.translate(cx, cy); sg.scale(st.pulse, st.pulse); sg.translate(-cx, -cy);
+    sg.drawImage(im, x, y, w, h, x, y, w, h); sg.restore();
+  }
+  if (st.tapGo != null) {
+    const [x, y, w, h] = MARKS.go.map(v => v * SC), cx = x + w * 0.68, cy = y + h / 2, k2 = st.tapGo;
+    sg.fillStyle = `rgba(255,255,255,${0.42 * (1 - smooth(seg(k2, 0.3, 0.7)))})`;
+    sg.beginPath(); sg.arc(cx, cy, (17 + 4 * spring(k2 * 3)) * SC, 0, 7); sg.fill();
+    const r = seg(k2, 0.12, 0.88);
+    if (r > 0) { sg.strokeStyle = `rgba(255,255,255,${0.5 * (1 - r)})`; sg.lineWidth = 2.5 * SC; sg.beginPath(); sg.arc(cx, cy, (22 + 40 * expo(r)) * SC, 0, 7); sg.stroke(); }
+  }
   if (st.badge) badge(sg, SC);
   scrTex.needsUpdate = true;
 }
 
 let mask = '';
 function setMask(s) { if (s === mask) return; mask = s; glc.style.webkitMaskImage = s; glc.style.maskImage = s; }
-let glShown = null;
+let glShown = null, glAlpha = 1, glA = null;
 function renderPhone(on, fgUsed) {
   if (on !== glShown) { glShown = on; glc.style.display = on ? 'block' : 'none'; }
+  if (glAlpha !== glA) { glA = glAlpha; glc.style.opacity = String(glAlpha); }
   fgc.style.display = fgUsed ? 'block' : 'none';
   if (on) renderer.render(world, cam);
 }
@@ -275,15 +288,17 @@ function captions(t, list, oy, cv, o = {}) {
   list.forEach(([t0, str], i) => {
     const e = spring(seg(t, t0, 0.45)), next = list[i + 1] ? spring(seg(t, list[i + 1][0], 0.45)) : 0;
     if (e <= 0 || next >= 1) return;
-    const lines = layoutWords(str, size, o.maxW || 900, 960, 0, lh, 800);
+    const slotW = o.count ? Math.max(tw(o.count[0], size), 130) + 16 : 0;
+    const lines = layoutWords(str, size, o.maxW || 900, 960, 0, lh, 800, o.count ? wd => wd === o.count[0] ? slotW : 0 : null);
     const off = (1 - e) * 110 - next * 150, al = e * (1 - next);
     const clip = [0, y0 - size * 1.2, W, lh * 3 + size * 0.6];
     const f = tt => [0, (1 - spring(seg(tt, t0, 0.45))) * 110 - (list[i + 1] ? spring(seg(tt, list[i + 1][0], 0.45)) : 0) * 150];
     const v = vel(f, t);
     lines.forEach((w, k) => {
       const ek = spring(seg(t, t0 + k * 0.035, 0.42));
-      const txt = o.count && w.wd === o.count[0] ? AR(o.count[1] * smooth(seg(t, t0 + 0.1, 0.7))) : w.wd;
-      text(txt, w.x, y0 + w.y + off + (1 - ek) * 30, { size, color, alpha: al * ek, blur: (1 - ek) * 12, clip, vy: v[1] + cv[1] });
+      const isCount = o.count && w.wd === o.count[0];
+      const txt = isCount ? AR(o.count[1] * smooth(seg(t, t0 + 0.1, 0.7))) : w.wd;
+      text(txt, isCount ? w.x - w.ww / 2 : w.x, y0 + w.y + off + (1 - ek) * 30, { size, color, alpha: al * ek, blur: (1 - ek) * 12, clip, vy: v[1] + cv[1], align: isCount ? 'center' : 'right' });
     });
   });
 }
@@ -295,13 +310,14 @@ function softCard(g, x, y, w, h, r = 22, al = 1) {
 }
 let phoneOn = false;
 const pageMask = (oy, top) => { const fk = clamp((520 - top) / 60); return [oy + lerp(450, 460, fk), oy + lerp(520, 640, fk)]; };
-function showPhone(K, t, oy, st, maskOn = true) {
+function showPhone(K, t, oy, st, maskOn = true, alpha = 1) {
   const [u, v, m, sx, sy, rx, ry, rz] = keyAt(K, t);
   placePhone(u, v, m, sx, sy + oy, rx, ry, rz);
   drawScreen(st);
   const fade = maskOn ? pageMask(oy, screenPt(195, 0)[1]) : null;
   setMask(fade ? `linear-gradient(to bottom, rgba(0,0,0,0) ${fade[0]}px, #000 ${fade[1]}px)` : 'none');
-  phoneShadow(m, fade);
+  phoneShadow(m, fade, alpha);
+  glAlpha = alpha;
   phoneOn = true;
   return m;
 }
@@ -322,8 +338,9 @@ function scene1(t, cy, cv, rt) {
     ctx.fillStyle = RED; rrect(ctx, X1 - bw, y, bw, 34, 6); ctx.fill();
     const ph = seg(t, 1.9, 0.7);
     if (ph > 0 && ph < 1) { ctx.save(); ctx.strokeStyle = RED; ctx.lineWidth = 4; ctx.globalAlpha = 0.6 * (1 - ph); const r = expo(ph) * 40; rrect(ctx, X1 - bw - 8 - r, y - 8 - r, bw + 16 + 2 * r, 50 + 2 * r, 12 + r); ctx.stroke(); ctx.restore(); }
-    text(AR(v), X1, y + 180, { size: 150, color: '#b3362e', alpha: clamp(run * 4) });
-    text('خطك، ميغابت', X1 - tw(AR(v), 150) - 22, y + 180, { size: 40, weight: 500, color: SOFT, alpha: clamp(run * 4) });
+    const nw = tw('١٢', 140);
+    text(AR(v), X1, y + 170, { size: 140, color: '#b3362e', alpha: clamp(run * 4) });
+    text('ميغابت (سرعة خطك)', X1 - nw - 16, y + 170, { size: 46, weight: 700, color: INK2, alpha: clamp(run * 4) });
   }
 }
 
@@ -354,22 +371,23 @@ const cardCanvas = document.createElement('canvas'); cardCanvas.width = 1080; ca
 const cardTex = new THREE.CanvasTexture(cardCanvas); cardTex.colorSpace = THREE.SRGBColorSpace; cardTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
 const CW = 560, CH = CW * 16 / 9;
 const cardG = new THREE.Group(); world.add(cardG);
-const cardMesh = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(CW, CH, 26), 24), new THREE.MeshBasicMaterial({ map: cardTex, toneMapped: false }));
+const cardMat = new THREE.MeshBasicMaterial({ map: cardTex, toneMapped: false, transparent: true, opacity: 0, depthTest: false });   // always in front of the phone
+const cardMesh = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(CW, CH, 26), 24), cardMat);
 { const g = cardMesh.geometry, u = g.attributes.uv, p = g.attributes.position; for (let i = 0; i < u.count; i++) u.setXY(i, (p.getX(i) + CW / 2) / CW, (p.getY(i) + CH / 2) / CH); }
-cardG.add(cardMesh); cardG.visible = false;
+cardMesh.renderOrder = 10; cardG.add(cardMesh); cardG.visible = false;
 function placeCard(m, sx, sy, rx, ry, rz) {
   cardG.rotation.set(rx * DEG, ry * DEG, rz * DEG);
   const Z = DIST * (1 - 1 / m);
   cardG.position.set((sx - 540) * (DIST - Z) / DIST, (960 - sy) * (DIST - Z) / DIST, Z);
   cardG.scale.setScalar(1); cardG.updateMatrixWorld(true);
 }
-const CARD_END = [[8.85, 1.0, 560, 1150, -4, 16, -3], [10.8, 1.0, 560, 1135, -5, 11, -2]];
-function cardShadow() {
+const CARD_END = [[9.4, 1.0, 560, 1150, -4, 16, -3], [10.8, 1.0, 560, 1135, -5, 11, -2]];
+function cardShadow(alpha) {
   const pts = rrShape(CW, CH, 26).getPoints(10).map(p => { const v = new THREE.Vector3(p.x, p.y, 0).applyMatrix4(cardG.matrixWorld).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; });
   const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length, cyy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
   shx.setTransform(0.5, 0, 0, 0.5, 0, 0); shx.clearRect(0, 0, W, H);
   [[6, 10, 10, 0.30, 0.99], [34, 60, 34, 0.22, 1], [12, 80, 100, 0.14, 1.06]].forEach(([dx, dy, blur, a, grow]) => {
-    shx.save(); shx.filter = `blur(${blur / 2}px)`; shx.globalAlpha = a; shx.fillStyle = '#1a2430'; shx.beginPath();
+    shx.save(); shx.filter = `blur(${blur / 2}px)`; shx.globalAlpha = a * alpha; shx.fillStyle = '#1a2430'; shx.beginPath();
     pts.forEach(([x, y], i) => { const X = cx + (x - cx) * grow + dx, Y = cyy + (y - cyy) * grow + dy; i ? shx.lineTo(X, Y) : shx.moveTo(X, Y); }); shx.closePath(); shx.fill(); shx.restore();
   });
   bgx.save(); bgx.setTransform(1, 0, 0, 1, 0, 0); bgx.drawImage(shc, 0, 0, W, H); bgx.restore();
@@ -379,15 +397,16 @@ function scene2(t, cy, cv, rt) {
   captions(t, [[3.25, 'افحص خطك.. واكشف الفرق بالأرقام'], [8.0, 'وثق فحصك ببطاقة جاهزة للنشر']], oy, cv);
   if (t < 10.85) showPhone(P1(), t, oy, testState(t));
   // the card leaves the screen, turns towards us and floats
-  if (t >= 8.0) {
-    const k = smooth(seg(t, 8.0, 0.85)), fl = Math.sin((rt - 8.9) * 1.6) * 6;
+  if (t >= 8.8 && t < 10.85) {
+    const k = smooth(seg(t, 8.8, 0.6)), fl = Math.sin((rt - 9.4) * 1.6) * 6;
     const scr0 = screenPt(195, 422), [m1, sx1, sy1, rx1, ry1, rz1] = keyAt(CARD_END, t);
     // from the phone's own pose to the card's: position and turn are blended, the size grows from the screen's
     const pr = phoneG.rotation, mp = 1 / (1 - phoneG.position.z / DIST);
-    const m = lerp(mp * SW / CW * 0.93 * 1.02, m1, k);
+    const m = lerp(mp * SW / CW * 0.93 * 1.08, m1, k) * lerp(0.85, 1, k);
     placeCard(m, lerp(scr0[0], sx1, k), lerp(scr0[1], sy1 + oy + fl * k, k), lerp(pr.x / DEG, rx1, k), lerp(pr.y / DEG, ry1, k), lerp(0, rz1, k));
+    cardMat.opacity = clamp(k * 2.2) * (1 - smooth(seg(t, 10.45, 0.35)));   // gone before the camera moves on
     cardG.visible = true;
-    cardShadow();
+    cardShadow(cardMat.opacity);
   }
 }
 
@@ -397,7 +416,7 @@ const P2 = [
   atTop(11.5, 195, 470, 1.05, 585, -7, -14),
   atTop(11.95, 195, 600, 1.5, -280, -4, -8),
   atTop(14.2, 195, 610, 1.5, -295, -4, -6),
-  atTop(14.85, 195, 600, 1.1, 300, -12, -48, 0, -380),
+  atTop(14.8, 195, 610, 1.5, 5, -4, -6),
 ];
 function pingState(t) {
   const st = { badge: true };
@@ -416,7 +435,7 @@ function pingCard(t, t0, y, name, v, label) {
   text(label, x + w - 48, y + 84, { size: 40, weight: 500, color: SOFT, alpha: al });
   text(name, x + w - 48, y + 190, { size: 92, weight: 800, alpha: al });
   text(AR(v), x + 48, y + 230, { size: 210, weight: 800, color: PING_TEXT(v), align: 'left', alpha: al });
-  text('ms', x + 48 + tw(AR(v), 210) + 16, y + 230, { size: 56, weight: 700, color: SOFT, align: 'left', dir: 'ltr', alpha: al });
+  text('ms', x + 48 + tw(AR(v), 210) + 8, y + 230, { size: 56, weight: 700, color: SOFT, align: 'left', dir: 'ltr', alpha: al });
   const bk = smooth(seg(t, t0 + 0.25, 0.6)), bw = (w - 88) * Math.min(1, v / 50) * bk;
   ctx.fillStyle = '#eef0f2'; rrect(ctx, x + 44, y + h - 62, w - 88, 16, 8); ctx.fill();
   ctx.fillStyle = PING_FILL(v); rrect(ctx, x + w - 44 - bw, y + h - 62, Math.max(bw, 1), 16, 8); ctx.fill();
@@ -425,7 +444,7 @@ function pingCard(t, t0, y, name, v, label) {
 function scene3(t, cy, cv, rt) {
   const oy = 3840 - cy; if (oy > H || oy < -H) return;
   captions(t, [[11.1, 'للگيمرية.. اكشف سبب اللاگ وقت اللعب']], oy, cv);
-  if (t >= 10.85 && t < 14.95) showPhone(P2, t, oy, pingState(t));
+  if (t >= 10.85 && t < 14.8) showPhone(P2, t, oy, pingState(t), true, 1 - smooth(seg(t, 14.3, 0.5)));
   const sul = PG.alsulaimaniyah, anb = PG.alanbar;
   pingCard(t, 14.6, oy + 600, 'السليمانية', sul, 'أقل بنك بين المحافظات');
   pingCard(t, 14.85, oy + 1050, 'الأنبار', anb, 'أعلى بنك بين المحافظات');
@@ -434,7 +453,7 @@ function scene3(t, cy, cv, rt) {
 // ---------- 5. home or mobile: Saqlawiya ----------
 function scene4(t, cy, cv, rt) {
   const oy = 5760 - cy; if (oy > H || oy < -H) return;
-  captions(t, [[17.05, 'في ٨٢٤ منطقة بالعراق.. الـ 4G أسرع من الواي فاي!']], oy, cv, { count: ['٨٢٤', 824] });
+  captions(t, [[17.05, 'في ٨٢٤ منطقة بالعراق.. الـ\u00a04G أسرع من الواي فاي!']], oy, cv, { count: ['٨٢٤', 824] });
   const S = SAQ, e = spring(seg(t, 17.55, 0.45)); if (e <= 0) return;
   text('الصقلاوية', 960, oy + 700 + (1 - e) * 40, { size: 104, alpha: e, blur: (1 - e) * 12, vy: cv[1] });
   text('الأنبار', 960, oy + 770, { size: 44, weight: 500, color: SOFT, alpha: e, vy: cv[1] });
@@ -457,7 +476,8 @@ function scene4(t, cy, cv, rt) {
 }
 
 // ---------- 6. before you move or rent: two areas side by side ----------
-const better = (a, b, dir) => { const hi = Math.max(a, b), lo = Math.min(a, b); if (hi - lo <= Math.max(2, hi * 0.15)) return 0; return (a > b) === (dir > 0) ? 1 : 2; };
+const better = (a, b, dir) => a === b ? 0 : (a > b) === (dir > 0) ? 1 : 2;
+const WIN = '#0D8A4E';
 function scene5(t, cy, cv, rt) {
   const oy = 7680 - cy; if (oy > H || oy < -H) return;
   captions(t, [[22.05, 'قبل لا تنتقل أو تأجر.. قارن بين منطقتين']], oy, cv);
@@ -476,10 +496,15 @@ function scene5(t, cy, cv, rt) {
       ctx.fillStyle = '#eceff2'; ctx.fillRect(x + 36, ry - 66, w - 72, 2);
       text(lab, x + w - 36, ry - 22, { size: 30, weight: 500, color: SOFT, alpha: al });
       const v = P[m][k], str = k === 'l' ? AR(v) : AR(v);
-      const col = win && lit > 0 ? mix(INK, '#2f7d45', lit) : INK;
-      text(str, x + w - 36, ry + 56, { size: 76, weight: 800, color: col, alpha: al, s: win ? 1 + 0.06 * Math.sin(Math.PI * lit) : 1 });
-      text(unit, x + w - 46 - tw(str, 76), ry + 56, { size: 28, weight: 500, color: SOFT, alpha: al, dir: unit === 'ms' ? 'ltr' : 'rtl', align: 'right' });
-      if (win && lit > 0) { ctx.save(); ctx.globalAlpha = lit * al; ctx.fillStyle = '#2f7d45'; rrect(ctx, x + 36, ry - 50, 10, 120, 5); ctx.fill(); ctx.restore(); }
+      const col = win && lit > 0 ? mix(INK, WIN, lit) : INK, nw = tw(str, 76);
+      if (win && lit > 0) {
+        const ps = 0.8 + 0.2 * wobble(lit, 6, 10);
+        ctx.save(); ctx.globalAlpha = lit * al; ctx.fillStyle = 'rgba(13,138,78,0.13)';
+        const pw = (nw + 44) * ps, ph = 92 * ps, pcx = x + w - 36 - nw / 2, pcy = ry + 30;
+        rrect(ctx, pcx - pw / 2, pcy - ph / 2, pw, ph, ph / 2); ctx.fill(); ctx.restore();
+      }
+      text(str, x + w - 36, ry + 56, { size: 76, weight: 800, color: col, alpha: al });
+      text(unit, x + w - 58 - nw, ry + 56, { size: 28, weight: 500, color: SOFT, alpha: al, dir: unit === 'ms' ? 'ltr' : 'rtl', align: 'right' });
     });
     ctx.restore();
   });
@@ -494,28 +519,48 @@ function govPath(g, oy) {
   ctx.beginPath();
   for (const p of g.polys) { p.forEach(([x, y], i) => i ? ctx.lineTo(GX + x * GZ, oy + GY + y * GZ) : ctx.moveTo(GX + x * GZ, oy + GY + y * GZ)); ctx.closePath(); }
 }
-const ZOOM_AT = [GX + 268 * GZ, GY + 92 * GZ];
+const ZOOM_AT = [GX + 268 * GZ, GY + 92 * GZ], FIELD = '#0B6E4F';
 const KEYS = [['سريع جدا', GREEN], ['جيد', LEAF], ['متوسط', AMBER], ['مقبول', ORANGE], ['بطيء', RED]];
-function scene6(t, cy, cv, rt) {
-  const oy = 9600 - cy; if (oy > H || oy < -H || t > 30.05) return;
-  const zp = seg(t, 29.35, 0.55), z = Math.pow(60, Math.pow(zp, 2.2)), mv = smooth(clamp(zp * 1.6)), clear = 1 - smooth(seg(zp, 0, 0.22));
-  ctx.save();
-  if (z > 1.0001) { ctx.translate(lerp(ZOOM_AT[0], W / 2, mv), lerp(ZOOM_AT[1] + oy, H / 2, mv)); ctx.scale(z, z); ctx.translate(-ZOOM_AT[0], -(ZOOM_AT[1] + oy)); }
-  if (clear > 0) captions(t, [[26.05, 'بيانات ميدانية جاهزة أمام وزارة الاتصالات: وين الخلل، ويا محافظة تحتاج أولوية؟']], oy, z > 1 ? [0, 0] : cv, { size: 64, y: 286 });
-  const outl = expo(seg(t, 26.2, 0.35)), focus = smooth(seg(t, 27.7, 0.4)) * clear;
+const mlc = document.createElement('canvas'); mlc.width = W; mlc.height = H;
+const ml = mlc.getContext('2d', { willReadFrequently: true });
+function drawGovs(t, oy, z, zp, focus, outl, ga) {
   govs.forEach(g => {
     if (outl <= 0) return;
     const e = seg(t, 26.4 + (g.y / GM.h) * 0.7, 0.45);
     govPath(g, oy);
     if (e > 0) {
-      let c = mix(g.col, '#ffffff', 0.6 * Math.pow(1 - e, 1.4));
-      if (g.id !== 'diyala') c = mix(c, '#e9ecef', 0.55 * focus);
-      if (g.id === 'alsulaimaniyah' && zp > 0) c = mix(g.col, GREEN, smooth(seg(zp, 0.2, 0.6)));
-      ctx.save(); ctx.globalAlpha = clamp(e * 3); ctx.fillStyle = c; ctx.fill(); ctx.restore();
+      let c = mix(g.col, '#ffffff', 0.6 * Math.pow(1 - e, 1.4)), a = clamp(e * 3);
+      const sul = g.id === 'alsulaimaniyah' && zp > 0;
+      if (g.id !== 'diyala') a *= lerp(1, 0.25, sul ? focus * (1 - smooth(seg(zp, 0, 0.35))) : focus);
+      if (sul) c = mix(g.col, FIELD, smooth(seg(zp, 0.15, 0.6)));
+      ctx.save(); ctx.globalAlpha = a * ga; ctx.fillStyle = c; ctx.fill(); ctx.restore();
     }
-    ctx.save(); ctx.globalAlpha = outl; ctx.lineWidth = 2.2 / Math.sqrt(z); ctx.lineJoin = 'round'; ctx.strokeStyle = e > 0.4 ? WHITE : '#b9c0c8'; ctx.stroke(); ctx.restore();
+    ctx.save(); ctx.globalAlpha = outl * ga; ctx.lineWidth = 2.2 / Math.sqrt(z); ctx.lineJoin = 'round'; ctx.strokeStyle = e > 0.4 ? WHITE : '#b9c0c8'; ctx.stroke(); ctx.restore();
   });
-  if (focus > 0) { govPath(byId.diyala, oy); ctx.save(); ctx.globalAlpha = focus; ctx.lineWidth = 5; ctx.lineJoin = 'round'; ctx.strokeStyle = INK; ctx.stroke(); ctx.restore(); }
+}
+function scene6(t, cy, cv, rt) {
+  const oy = 9600 - cy; if (oy > H || oy < -H || t > 30.05) return;
+  const zp = seg(t, 29.2, 0.75), z = Math.pow(18, 1 - Math.pow(1 - zp, 3)), mv = smooth(clamp(zp * 1.4)), clear = 1 - smooth(seg(t, 28.85, 0.33));   // the card, key and border leave before the zoom
+  ctx.save();
+  if (z > 1.0001) { ctx.translate(lerp(ZOOM_AT[0], W / 2, mv), lerp(ZOOM_AT[1] + oy, H / 2, mv)); ctx.scale(z, z); ctx.translate(-ZOOM_AT[0], -(ZOOM_AT[1] + oy)); }
+  if (clear > 0) captions(t, [[26.05, 'بيانات ميدانية جاهزة أمام وزارة الاتصالات: وين الخلل، ويا محافظة تحتاج أولوية؟']], oy, z > 1 ? [0, 0] : cv, { size: 64, y: 286 });
+  const outl = expo(seg(t, 26.2, 0.35)), focus = smooth(seg(t, 27.7, 0.4)) * clear;
+  if (zp > 0 && zp < 1) {
+    // a real blur of the zoom: the map drawn eight times across the moment of the frame and averaged
+    const N = 8, sv = ctx; ml.setTransform(1, 0, 0, 1, 0, 0); ml.clearRect(0, 0, W, H); ml.globalCompositeOperation = 'lighter';
+    ctx = ml;
+    for (let j = 0; j < N; j++) {
+      const tj = t - j / (180 * N), zpj = seg(tj, 29.2, 0.75), zj = Math.pow(18, 1 - Math.pow(1 - zpj, 3)), mj = smooth(clamp(zpj * 1.4));
+      ml.setTransform(1, 0, 0, 1, 0, 0); ml.translate(lerp(ZOOM_AT[0], W / 2, mj), lerp(ZOOM_AT[1] + oy, H / 2, mj)); ml.scale(zj, zj); ml.translate(-ZOOM_AT[0], -(ZOOM_AT[1] + oy));
+      drawGovs(t, oy, zj, zpj, focus, outl, 1 / N);
+    }
+    ml.globalCompositeOperation = 'source-over'; ctx = sv;
+    sv.save(); sv.setTransform(1, 0, 0, 1, 0, 0); sv.drawImage(mlc, 0, 0); sv.restore();
+  } else drawGovs(t, oy, z, zp, focus, outl, 1);
+  if (focus > 0) {
+    const pu = 0.5 + 0.5 * Math.sin(Math.max(0, rt - 28.1) * 6.3);
+    govPath(byId.diyala, oy); ctx.save(); ctx.globalAlpha = focus * lerp(0.6, 1, pu); ctx.lineWidth = lerp(3.5, 6.5, pu) / Math.sqrt(z); ctx.lineJoin = 'round'; ctx.strokeStyle = INK; ctx.stroke(); ctx.restore();
+  }
   const sw = seg(t, 26.35, 0.9);
   if (sw > 0 && sw < 1) {
     ctx.save(); ctx.beginPath(); govs.forEach(g => { for (const p of g.polys) { p.forEach(([x, y], i) => i ? ctx.lineTo(GX + x * GZ, oy + GY + y * GZ) : ctx.moveTo(GX + x * GZ, oy + GY + y * GZ)); ctx.closePath(); } }); ctx.clip();
@@ -547,15 +592,15 @@ function scene6(t, cy, cv, rt) {
     ctx.restore();
   }
   ctx.restore();
-  const cover = smooth(seg(t, 29.75, 0.16));
-  if (cover > 0) { ctx.save(); ctx.globalAlpha = cover; ctx.fillStyle = GREEN; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+  const cover = smooth(seg(t, 29.72, 0.23));
+  if (cover > 0) { ctx.save(); ctx.globalAlpha = cover; ctx.fillStyle = FIELD; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 }
 const LINE_Y = 666;
 function scene7(t, rt) {
   if (t < 29.9 || t > 33.3) return;
   const fold = smooth(seg(t, 32.75, 0.38));
   const x = lerp(0, 120, fold), y = lerp(0, LINE_Y - 4, fold), w = lerp(W, 840, fold), h = lerp(H, 8, fold);
-  ctx.fillStyle = GREEN; rrect(ctx, x, y, w, h, lerp(0, 4, fold)); ctx.fill();
+  ctx.fillStyle = FIELD; rrect(ctx, x, y, w, h, lerp(0, 4, fold)); ctx.fill();
   if (fold > 0.7) return;
   ctx.save(); rrect(ctx, x, y, w, h, 0); ctx.clip();
   captions(t, [[29.95, 'رغم قفزة العراق من ١٧ إلى ٦٢ ميغابت.. العدالة الرقمية بين المناطق هي الخطوة الجاية']], 0, [0, 0], { size: 62, y: 290, color: WHITE });
@@ -575,7 +620,7 @@ function scene7(t, rt) {
     let tot = 0; tops.slice(1).forEach((p, i) => { tot += Math.hypot(p[0] - tops[i][0], p[1] - tops[i][1]); });
     ctx.save(); ctx.strokeStyle = WHITE; ctx.lineWidth = 7; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     ctx.setLineDash([tot * L, tot + 10]); ctx.beginPath(); tops.forEach(([px, py], i) => i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)); ctx.stroke(); ctx.restore();
-    if (L >= 1) { const [px, py] = tops[tops.length - 1]; ctx.fillStyle = WHITE; ctx.beginPath(); ctx.arc(px, py, 14, 0, 7); ctx.fill(); ctx.fillStyle = GREEN; ctx.beginPath(); ctx.arc(px, py, 6, 0, 7); ctx.fill();
+    if (L >= 1) { const [px, py] = tops[tops.length - 1]; ctx.fillStyle = WHITE; ctx.beginPath(); ctx.arc(px, py, 14, 0, 7); ctx.fill(); ctx.fillStyle = FIELD; ctx.beginPath(); ctx.arc(px, py, 6, 0, 7); ctx.fill();
       const f = ((rt - 32.0) / 0.9) % 1; if (rt > 32) { ctx.save(); ctx.strokeStyle = WHITE; ctx.lineWidth = 3; ctx.globalAlpha = 0.7 * (1 - f); ctx.beginPath(); ctx.arc(px, py, 16 + 28 * expo(f), 0, 7); ctx.stroke(); ctx.restore(); } }
   }
   if (step >= 0) {
@@ -588,11 +633,10 @@ function scene7(t, rt) {
 
 // ---------- 8. the end: the platform's name, the phone behind, its search box pulsing ----------
 const END = [
-  atTop(33.3, 195, 422, 0.62, 1700, -14, -26),
-  atTop(34.1, 195, 422, 0.62, 1030, -11, -21),
-  atTop(37.0, 195, 422, 0.62, 1012, -8, -12),
+  atTop(33.3, 195, 422, 0.78, 1750, -14, -24),
+  atTop(34.1, 195, 422, 0.78, 1010, -10, -18),
+  atTop(37.0, 195, 422, 0.78, 996, -7, -11),
 ];
-const BAR = [150, 1236, 780, 112];
 function scene8(t, rt) {
   if (t < 32.9) return;
   const name = ['منصة سرعة الإنترنت', 'في العراق'], size = Math.min(124, 860 / (tw(name[0], 100) / 100));
@@ -612,32 +656,17 @@ function scene8(t, rt) {
   text('@allawi.psd', 960 - tw('تطوير وتصميم ', 40, 500), cy0, { size: 40, weight: 500, color: SOFT, alpha: cr, dir: 'ltr', align: 'right' });
   ctx.fillStyle = INK; ctx.globalAlpha = expo(seg(t, 33.1, 0.3)); rrect(ctx, 120, LINE_Y - 4, 840, 8, 4); ctx.fill(); ctx.globalAlpha = 1;
   if (t < 33.3) return;
-  const m = showPhone(END, t, 0, { img: 'home-full', S: Math.round(70 * smooth(seg(t, 34.4, 2.4)) * 3) / 3 }, false);
-  // the link: the site's start button comes out of the phone and pulses to the last frame
-  const pop = seg(t, 34.0, 0.55); if (pop <= 0) return;
-  const r0 = MARKS.go, a = screenPt(r0[0], r0[1]), b = screenPt(r0[0] + r0[2], r0[1] + r0[3]);
-  const k = wobble(pop, 7, 10), from = [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1])];
-  const ph = Math.max(0, (rt - 34.6) / 1.0), pk = ph % 1, breathe = ph > 0 ? 1 + 0.014 * Math.sin(Math.PI * clamp(pk / 0.5)) : 1;
-  const [bx0, by0, bw0, bh0] = BAR, cxb = bx0 + bw0 / 2, cyb = by0 + bh0 / 2;
-  const bw = lerp(from[2], bw0, k) * breathe, bh = lerp(from[3], bh0, k) * breathe;
-  const bx = lerp(from[0] + from[2] / 2, cxb, k) - bw / 2, by = lerp(from[1] + from[3] / 2, cyb, k) - bh / 2, sc = bh / bh0;
-  const g = fgx; g.save(); g.globalAlpha = clamp(pop * 5);
-  g.shadowColor = 'rgba(20,32,43,0.18)'; g.shadowBlur = 12; g.shadowOffsetY = 5; g.fillStyle = INK; rrect(g, bx, by, bw, bh, 20 * sc); g.fill();
-  g.shadowColor = 'rgba(20,32,43,0.18)'; g.shadowBlur = 54; g.shadowOffsetY = 28; rrect(g, bx, by, bw, bh, 20 * sc); g.fill();
-  g.shadowColor = 'transparent';
-  if (ph > 0) { g.save(); g.globalAlpha = 0.55 * (1 - pk); g.strokeStyle = INK; g.lineWidth = 4; const gr = 6 + 30 * expo(pk); rrect(g, bx - gr, by - gr, bw + 2 * gr, bh + 2 * gr, 20 * sc + gr); g.stroke(); g.restore(); }
-  g.restore();
-  const al = clamp((pop - 0.25) * 4);
-  ctx = fgx;
-  text('ابدأ الفحص', bx + bw - 40 * sc, by + bh / 2 + 16 * sc, { size: 46 * sc, weight: 700, color: WHITE, alpha: al });
-  text('٢٠ ثانية', bx + 40 * sc, by + bh / 2 + 12 * sc, { size: 32 * sc, weight: 500, color: '#aeb6bf', align: 'left', alpha: al });
-  ctx = bgx;
+  // the start button inside the phone grows a little and settles, again and again, with a finger's tap now and then
+  const ph = Math.max(0, (rt - 34.3) / 1.1), pk = ph % 1, n = Math.floor(ph);
+  const pulse = ph > 0 ? Math.round((1 + 0.06 * Math.sin(Math.PI * clamp(pk / 0.55))) * 200) / 200 : 1;
+  const tap = ph > 0 && n % 2 === 0 ? Math.round(clamp(pk / 0.7) * 30) / 30 : null;
+  showPhone(END, t, 0, { img: 'home-full', S: 0, pulse, tapGo: tap }, false);
 }
 
 // ---------- seek ----------
 window.seek = function (rtIn) {
   const rt = clamp(rtIn, 0, DUR - 1e-6), t = rt;
-  ctx = bgx; phoneOn = false; cardG.visible = false;
+  ctx = bgx; phoneOn = false; cardG.visible = false; glAlpha = 1;
   background(camY(t), rt);
   fgx.setTransform(1, 0, 0, 1, 0, 0); fgx.clearRect(0, 0, W, H);
   const cy = camY(t), cv = [0, -(camY(t) - camY(t - 1 / FPS))];

@@ -17,7 +17,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   const p = await ctx.newPage();
   let busy = 0, n = 0;
   await p.route(/speed\.cloudflare\.com\/__down\?bytes=0/, async r => {
-    n++; await wait(busy > 0 ? 146 + (n * 37 % 19) : 6 + (n % 2));
+    n++; await wait(busy > 0 ? 146 + (n * 37 % 19) : 6 + (n % 3 === 0 ? 1 : 0));
     r.fulfill({ status: 200, body: '', headers: { 'access-control-allow-origin': '*', 'access-control-expose-headers': 'server-timing', 'server-timing': 'cfRequestDuration;dur=0.4' } });
   });
   const shot = name => p.screenshot({ path: path.join(OUT, name + '.png') });
