@@ -30,15 +30,13 @@ def place(name, af, at, db):
 whoosh = lambda at, name='Whooshes/Smooth Like A Butter Whoosh.wav': place(name, AIR, at, -16)
 thud = lambda at, db=-6: place('Whoosh hit.wav', THUD, at, db)
 
-for stop in [2.85, 10.85, 16.85, 21.85, 25.85]:
-    whoosh(stop + 0.33)                                          # the camera moves down the page
-whoosh(8.95, 'Whooshes/Slow And Smooth Whoosh .wav')             # the share card comes out
-whoosh(14.45, 'Whooshes/Whoosh Deep Short.wav')                  # the phone slides away
-whoosh(29.55, 'Whooshes/Slow And Smooth Whoosh .wav')            # the zoom into the green
-whoosh(32.95)                                                    # the field folds into the line
-for at, db in [(1.95, -7), (5.8, -6), (9.1, -8), (14.75, -8), (15.0, -9), (19.0, -6), (22.55, -8),
-               (27.85, -7), (29.95, -5), (31.4, -7), (33.1, -6), (34.15, -9)]:
-    thud(at, db)                                                 # the big moments
+F, S, D, L = 'Whooshes/Smooth And Fast Whoosh.wav', 'Whooshes/Smooth Like A Butter Whoosh.wav', 'Whooshes/Whoosh Deep Short.wav', 'Whooshes/Slow And Smooth Whoosh .wav'
+for at, name in [(2.75, F), (3.95, S), (7.72, F), (8.78, S), (10.7, F), (11.9, S), (14.2, D), (15.2, F), (16.65, S),
+                 (18.22, D), (21.65, F), (22.95, S), (25.65, F), (27.12, D), (29.62, L), (31.3, S), (33.2, D)]:
+    whoosh(at, name)                                             # each whip, pull back and zoom of the camera
+for at, db in [(2.2, -7), (6.4, -5), (9.25, -8), (13.17, -3), (15.3, -9), (19.6, -6), (22.85, -9),
+               (28.0, -7), (29.8, -5), (32.3, -7), (33.4, -6), (34.6, -10)]:
+    thud(at, db)                                                 # the hits: the bar, the verdict, the ping jump and the rest
 
 fade = int(0.6 * SR)
 out[-fade:] *= np.linspace(1, 0, fade)[:, None] ** 2

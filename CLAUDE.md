@@ -60,6 +60,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   cubic-bezier(0.85, 0, 0.15, 1), one still per frame, a warm studio backdrop (#F5F4F0, spotlight, floor falloff,
   2.5 % grain), the phone tilted in 3D with a glass sheen, and only soft air whooshes and deep thuds, plus a silent
   copy for his own music (`marketing/iraq-speed-reel/v4`).
+  Staging (24 Oct): no "caption on top, widget below" page layout and no dead still frames. Each line of the script
+  stands alone big in the middle for about a second, then the camera whips or pulls back to the thing; close-ups on
+  the phone like a lens (tight on the button, the number, the verdict), a hard shake and red edges on a shock number,
+  the phone out of focus behind a card in front, and a slow creep (zoom 1 to 1.08 or a pan) through every hold.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
