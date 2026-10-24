@@ -39,10 +39,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it.
 - Websites and tools (23 Oct): the user found the first Iraq internet map "weird" and could not understand it (text
   floating over the map, numbers without labels, no colour key). Say what the page does in one sentence, label every
-  number, give every map a key, keep a plain top-to-bottom order. Before showing a site, run the site-tester agent
-  (`.claude/agents/site-tester.md`, which runs `marketing/iraq-internet-map/build/check.cjs`) and fix what it finds.
-  Then the site-designer agent (`.claude/agents/site-designer.md`, which runs `build/design-audit.cjs` there): a senior
-  designer's review of hierarchy, organisation, spacing, type and the -noAI habits; fix what it finds (23 Oct).
+  number, give every map a key, keep a plain top-to-bottom order. The user asked (24 Oct) not to use the site-tester
+  and site-designer agents (`.claude/agents/`) anymore; check a site yourself (`build/check.cjs` still runs on its own).
   The night-map version of the Iraq internet map was still "confusing and weird" to the user after both reviews (dark
   map, too much on one page, unclear what the site is for and why the minister would care). Next version is "result
   first": a light page in Rubik, search then the area's number with a plain verdict, governorates on their own tab
@@ -51,7 +49,11 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - Reels for the minister and the public (23 Oct): the 15 s, 120 BPM showreel for the Iraq internet map
   (`marketing/iraq-speed-reel`) was "too rushed, not well explained, badly made". Slow down: one idea per scene, every
   sentence on screen long enough to read twice, the real site shown (a screen recording) instead of abstract morphs,
-  and plain words that say what the site is and why it matters.
+  and plain words that say what the site is and why it matters. The slower v2 had the right idea and timing (the user
+  cut music to it) but looked like a flat web page (24 Oct). v3 keeps every cut and asks for motion design: an
+  off-white `#F7F8FA` room with a faint moving data grid and a soft centre light, the phone in 3D with layered shadows
+  and the camera diving into it, number cards with soft shadows, a zoom into a colour instead of a growing box, and
+  an end that keeps moving to the last frame.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
