@@ -732,6 +732,81 @@ function mobileHTML() {
   </section></div>${foot()}`;
 }
 
+
+// ---------- before you rent: two areas side by side ----------
+
+const pid = p => p.k === 'gov' ? 'g:' + p.id : p.id;
+const byPid = id => id && (id.startsWith('g:') ? govById(id.slice(2)) : S.byId.get(id));
+function cmpPair() { const [, , a, b] = current().split('/'); return [byPid(a && decodeURIComponent(a)), byPid(b && decodeURIComponent(b))]; }
+const ROWS = [
+  ['f', 'd', 'إنترنت البيت، التنزيل', 'ميغابت', 1], ['f', 'u', 'إنترنت البيت، الرفع', 'ميغابت', 1], ['f', 'l', 'إنترنت البيت، البنك', 'ملي ثانية', -1],
+  ['m', 'd', 'الموبايل، التنزيل', 'ميغابت', 1], ['m', 'l', 'الموبايل، البنك', 'ملي ثانية', -1],
+];
+const sv = (p, m, k) => { const x = p && p[m]; return x && x.t >= MIN_TESTS ? x[k] : null; };
+// which of the two is better on one number: 0 for close (within 15%), 1 or 2 otherwise
+function better(a, b, dir) {
+  if (a == null || b == null) return 0;
+  const hi = Math.max(a, b), lo = Math.min(a, b);
+  if (hi - lo <= Math.max(2, hi * 0.15)) return 0;
+  return (a > b) === (dir > 0) ? 1 : 2;
+}
+function pickerHTML(i, p) {
+  return `<div class="pick" data-i="${i}"><label class="label" for="cq${i}">${i ? 'المنطقة الثانية' : 'المنطقة الأولى'}</label>
+    <div class="box"><input id="cq${i}" type="search" autocomplete="off" placeholder="اكتب اسم الحي أو المدينة" value="${p ? esc(p.n) : ''}"></div>
+    <div class="hits cmp-hits"></div>${p ? `<p class="small">${esc(kindLine(p))}</p>` : ''}</div>`;
+}
+function compareHTML() {
+  const [A, B] = cmpPair();
+  let body = '';
+  if (A && B) {
+    const n = [A.n, B.n], win = i => `<b class="win">${esc(n[i - 1])}</b>`;
+    const rows = ROWS.map(([m, k, label, unit, dir]) => {
+      const va = sv(A, m, k), vb = sv(B, m, k), w = better(va, vb, dir);
+      const cell = (v, me) => `<span class="${w === me ? 'best' : ''}">${v == null ? '–' : k === 'l' ? ar(v) : dec(v)}</span>`;
+      return `<div class="crow"><span class="clab">${label}<small>${unit}</small></span>${cell(va, 1)}${cell(vb, 2)}</div>`;
+    }).join('');
+    // one sentence on the home line, then a verdict per use
+    const fa = sv(A, 'f', 'd'), fb = sv(B, 'f', 'd');
+    let lead;
+    if (fa != null && fb != null) {
+      const w = better(fa, fb, 1), r = Math.max(fa, fb) / Math.min(fa, fb);
+      lead = w ? `إنترنت البيت ${bi(w === 1 ? A : B)} أسرع من ${n[2 - w]} ${r >= 1.95 ? times(r) : 'بفرق واضح'}.` : `${n[0]} و${n[1]} متقاربين بإنترنت البيت.`;
+    } else lead = 'وحدة من المنطقتين ما بيها اختبارات كافية لإنترنت البيت، فالمقارنة على الموبايل والأرقام اللي موجودة.';
+    const use = (label, w) => `<div><span>${label}</span>${w ? win(w) : '<b>متقاربين</b>'}</div>`;
+    const work = better(sv(A, 'f', 'u'), sv(B, 'f', 'u'), 1) || better(sv(A, 'f', 'l'), sv(B, 'f', 'l'), -1);
+    const rough = [A, B].some(p => (p.f && p.f.t < FEW_TESTS) || !stat(p, 'f')) ? '<p class="note">بعض الأرقام من اختبارات قليلة، فهي تقريبية.</p>' : '';
+    body = `<p class="cmp-lead">${lead}</p>
+      <div class="ctable"><div class="crow head"><span></span><span>${esc(n[0])}</span><span>${esc(n[1])}</span></div>${rows}</div>${rough}
+      <h2>حسب الاستخدام</h2>
+      <div class="uses">${use('للمشاهدة والتحميل', better(fa, fb, 1))}${use('للشغل من البيت والاجتماعات', work)}${use('للعب أونلاين', better(sv(A, 'f', 'l'), sv(B, 'f', 'l'), -1))}${use('إذا تعتمد على الموبايل', better(sv(A, 'm', 'd'), sv(B, 'm', 'd'), 1))}</div>
+      <p class="note">هذا معدل المنطقة كلها، والشارع أو العمارة نفسها ممكن تختلف. قبل لا توقع، افحص الخط بالبيت أو المحل نفسه من <a href="#/test">صفحة الفحص</a>، واسأل الجيران شنو شركتهم.</p>
+      <div class="two"><button type="button" class="dark" data-act="sharecmp">انسخ رابط المقارنة</button><a class="light" href="#/compare">قارن منطقتين ثانيات</a></div>`;
+  } else body = `<p class="note">اختار المنطقتين، وتطلع المقارنة هنا.</p>`;
+  return `<div class="cols"><section class="cmp">
+    <h1 class="h1">قبل لا تأجر بيت أو محل، قارن الإنترنت بين منطقتين</h1>
+    <p class="intro">إنترنت البيت والموبايل والبنك بالمنطقتين جنب بعض، من أكثر من مليون اختبار سرعة.</p>
+    <div class="picks">${pickerHTML(0, A)}${pickerHTML(1, B)}</div>
+    ${body}
+  </section></div>${foot()}`;
+}
+function wireCompare() {
+  page.querySelectorAll('.pick').forEach(el => {
+    const i = +el.dataset.i, input = el.querySelector('input'), list = el.querySelector('.cmp-hits');
+    let res = [];
+    input.addEventListener('input', () => {
+      res = input.value.trim() ? search(input.value).slice(0, 6) : [];
+      list.classList.toggle('open', res.length > 0);
+      list.innerHTML = res.map((p, k) => `<a href="#" data-k="${k}"><b>${esc(p.n)}</b><i>${esc(kindLine(p))}</i></a>`).join('');
+    });
+    list.addEventListener('click', e => {
+      const a = e.target.closest('a[data-k]'); if (!a) return;
+      e.preventDefault(); e.stopPropagation();
+      const pair = cmpPair(); pair[i] = res[+a.dataset.k];
+      navigate('#/compare/' + pair.map(p => p ? encodeURIComponent(pid(p)) : '').join('/'));
+    });
+  });
+}
+
 const dec = v => v < 10 ? arDigits(v.toFixed(1)).replace('.', '٫') : ar(v);
 function times(k) {
   const n = Math.round(k);
@@ -771,7 +846,8 @@ function meBlock() {
     <div class="me-place"><span>منطقتك${src ? '، ' + src : ''}</span><b>${esc(areaName(a))}</b></div>
     <p class="small me-change"><button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button> أو ابحث عن منطقتك تحت واضغط افحص خطك هنا.</p>
     <a class="more gamers" href="#/ping">تلعب أونلاين؟ شوف البنك بمنطقتك ووين أقل بنك بالعراق</a>
-    <a class="more gamers" href="#/mobile">وين الموبايل أسرع من خطوط البيت بالعراق</a>`;
+    <a class="more gamers" href="#/mobile">وين الموبايل أسرع من خطوط البيت بالعراق</a>
+    <a class="more gamers" href="#/compare">راح تأجر بيت أو محل؟ قارن الإنترنت بين منطقتين</a>`;
 }
 function redrawMe() { const b = page.querySelector('#me'); if (b) b.innerHTML = meBlock(); if (route === '#/test') drawTest(); if (route === '#/ping') render(false); }
 
@@ -1000,7 +1076,8 @@ function placeHTML(p, geom) {
     <a class="go testlink" href="#/test" data-go="1" data-me="${isGov ? 'g:' : ''}${esc(p.id)}"><span>افحص خطك وقارنه ب${esc(isGov ? 'المحافظة' : p.n)}</span><em>٢٠ ثانية</em></a>
     <a class="more gamers" href="#/ping" data-me="${isGov ? 'g:' : ''}${esc(p.id)}">البنك للألعاب ${esc(isGov ? 'بالمحافظة' : 'ب' + p.n)} ${ar(st.l)} ملي ثانية، ${pingOf(st.l).word}</a>
     <section class="compare"><p class="label">مقارنة بالمعدل</p>${barsHTML(rows)}${line ? `<p>${line}</p>` : ''}</section>
-    ${hvmHTML(p)}`;
+    ${hvmHTML(p)}
+    <a class="more" href="#/compare/${encodeURIComponent(pid(p))}/">قارن ${esc(isGov ? 'المحافظة' : p.n)} بمنطقة ثانية</a>`;
   } else {
     const ref = gs || cs;
     head = `
@@ -1098,6 +1175,7 @@ function navigate(h) {
   render(true);
 }
 document.addEventListener('click', e => {
+  if (e.target.closest && e.target.closest('.cmp-hits')) return;
   const a = e.target.closest && e.target.closest('a[href^="#/"]');
   if (a && !e.defaultPrevented && !e.metaKey && !e.ctrlKey) {
     e.preventDefault();
@@ -1105,6 +1183,8 @@ document.addEventListener('click', e => {
     if (a.dataset.go) { if (route === '#/test') { startTest(); return; } S.goTest = true; }
     navigate(a.getAttribute('href')); return;
   }
+  const cp = e.target.closest && e.target.closest('[data-act="sharecmp"]');
+  if (cp) { const u = location.href; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { cp.textContent = 'انتسخ الرابط'; }, () => {}); if (navigator.share) navigator.share({ url: u }).catch(() => {}); return; }
   const act = e.target.closest && e.target.closest('[data-act="locate"], [data-act="share"], [data-act="ping"], [data-act="shareping"]');
   if (act) { const k = act.dataset.act; if (k === 'locate') locateMe(); else if (k === 'ping') startPing(); else shareResult(k === 'shareping' ? 'ping' : 'line'); return; }
   const m = e.target.closest && e.target.closest('.modes button');
@@ -1121,7 +1201,7 @@ addEventListener('hashchange', fromAddress);
 let lastRoute = '';
 async function render(move = true) {
   const h = current();
-  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : h === '/ping' ? 'ping' : h === '/mobile' ? 'mobile' : 'home';
+  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : h === '/ping' ? 'ping' : h === '/mobile' ? 'mobile' : h.startsWith('/compare') ? 'compare' : 'home';
   if (view !== 'test' && testRun) { testRun.abort(); testRun = null; if (S.test && S.test.phase !== 'done') S.test = null; }
   if (view !== 'ping' && pingRun) { pingRun.abort(); pingRun = null; if (S.ping && S.ping.phase !== 'done') S.ping = null; }
   const tab = view === 'govs' || h.startsWith('/g/') ? '#/govs' : view === 'about' ? '#/about' : '#/';
@@ -1144,6 +1224,7 @@ async function render(move = true) {
     document.title = `${p.n}، سرعة الإنترنت`;
   } else if (view === 'govs') { page.innerHTML = govsHTML(); document.title = 'المحافظات، سرعة الإنترنت في العراق'; }
   else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن موقع سرعة الإنترنت في العراق'; }
+  else if (view === 'compare') { await placesReady; page.innerHTML = compareHTML(); wireCompare(); document.title = 'قارن منطقتين، سرعة الإنترنت في العراق'; }
   else if (view === 'mobile') { await placesReady; page.innerHTML = mobileHTML(); document.title = 'وين الموبايل أسرع من البيت، سرعة الإنترنت في العراق'; }
   else if (view === 'ping') { await placesReady; page.innerHTML = pingHTML(); document.title = 'البنك للألعاب، سرعة الإنترنت في العراق'; }
   else if (view === 'test') {

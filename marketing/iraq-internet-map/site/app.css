@@ -296,3 +296,30 @@ button.go { width: 100%; border: 0; font: inherit; font-size: 19px; font-weight:
 .pairs a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 17px; font-weight: 500; }
 .pairs a small { margin-inline-start: 8px; font-size: 14px; font-weight: 400; color: var(--soft); }
 .pairs b { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+/* two areas side by side */
+.cmp { margin-top: 4px; }
+.picks { display: grid; gap: 14px; max-width: 520px; margin-top: 18px; }
+.pick { position: relative; }
+.pick .box { display: flex; height: 54px; margin-top: 4px; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; background: #fff; }
+.pick input { flex: 1; min-width: 0; border: 0; padding: 0 14px; font: inherit; font-size: 17px; background: none; outline: none; -webkit-appearance: none; appearance: none; }
+.pick .box:focus-within { box-shadow: 0 0 0 3px rgba(29, 111, 209, .35); }
+.pick .hits { top: 84px; }
+.pick .small { margin-top: 4px; color: var(--soft); }
+.cmp-lead { margin-top: 26px; max-width: 520px; font-size: 22px; line-height: 1.35; font-weight: 800; }
+.ctable { max-width: 520px; margin-top: 14px; }
+.crow { display: grid; grid-template-columns: minmax(0, 1fr) 88px 88px; gap: 10px; align-items: center; min-height: 54px; border-bottom: 1px solid var(--line); }
+.crow.head { min-height: 0; padding-bottom: 6px; font-size: 14px; font-weight: 700; color: var(--ink2); }
+.crow.head span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.crow > span:not(.clab) { text-align: left; font-size: 19px; font-weight: 500; color: var(--ink2); font-variant-numeric: tabular-nums; }
+.crow > span.best { font-weight: 800; color: #2f7d45; }
+.crow.head > span:not(:first-child) { text-align: left; font-size: 14px; }
+.clab { font-size: 16px; }
+.clab small { display: block; font-size: 13px; color: var(--soft); }
+.cmp h2 { margin-top: 28px; }
+.uses { max-width: 520px; margin-top: 8px; }
+.uses div { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 50px; border-bottom: 1px solid var(--line); font-size: 16px; }
+.uses span { color: var(--ink2); }
+.uses b { font-weight: 700; }
+.uses b.win { color: #2f7d45; }
+.pick input::-webkit-search-cancel-button, .pick input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
