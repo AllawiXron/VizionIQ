@@ -376,19 +376,25 @@ function match(key, k, words) {
 }
 function search(q) {
   const k = bare(q).toLowerCase();
-  if (!k) return [];
+  // only the article typed so far (ال): the biggest places whose names start with it, not a no-match message
+  const pre = !k && norm(q).toLowerCase();
+  if (!k && !pre) return [];
   const words = k.split(' ');
   const scored = [];
   for (const p of S.govs.concat(S.places)) {
-    const keys = p._k || (p._k = [p.n, ...(p.a || [])].map(n => bare(n).toLowerCase()));
-    let s = Math.max(...keys.map(key => match(key, k, words)));
+    let s;
+    if (pre) s = norm(p.n).toLowerCase().startsWith(pre) ? 1 : 0;
+    else {
+      const keys = p._k || (p._k = [p.n, ...(p.a || [])].map(n => bare(n).toLowerCase()));
+      s = Math.max(...keys.map(key => match(key, k, words)));
+    }
     if (!s) continue;
     if (p.k === 'gov') s += 30; else if (p.k === 'city') s += 15; else if (p.k === 'town') s += 3;
     s += 2 * Math.log10(1 + ((p.f || {}).t || 0));
     scored.push([s, p]);
   }
   // a name that only contains the letters inside another word (حله inside محله) shows only when nothing better does
-  const good = scored.some(x => x[0] >= 40);
+  const good = !pre && scored.some(x => x[0] >= 40);
   return scored.filter(x => !good || x[0] >= 40).sort((a, b) => b[0] - a[0]).slice(0, 8).map(x => x[1]);
 }
 

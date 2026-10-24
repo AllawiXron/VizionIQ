@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>سرعة الإنترنت في العراق</title>
+<style>
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Latin-400.woff2) format('woff2'); font-weight: 400 500; unicode-range: U+0000-00FF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Latin-700.woff2) format('woff2'); font-weight: 700 800; unicode-range: U+0000-00FF; }
+  html, body { margin: 0; background: #fff; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="../data.js"></script>
+<script>
+// A reel for the site, one idea per stop on one long page the camera scrolls down: the speed differs from place to
+// place, two real places, what I made, the real site on a phone, where the numbers come from, Iraq since 2019, the
+// name. Every style is a function of t inside seek(t). The scenes are timed on a 32 s clock; HOLDS stops that clock
+// where a frame needs longer to be read, which makes the reel itself longer.
+const HOLDS = [[2.5, 0.4], [6.1, 1.2], [9.0, 0.8], [13.4, 0.6], [21.0, 0.6]];
+const W = 1080, H = 1920, FPS = 60, DUR = 32 + HOLDS.reduce((a, h) => a + h[1], 0);
+window.DUR = DUR;
+function sceneT(t) { for (const [at, d] of HOLDS) { if (t <= at) return t; if (t <= at + d) return at; t -= d; } return t; }
+const INK = '#14202b', INK2 = '#46525e', SOFT = '#6c7783', WHITE = '#ffffff';
+const RED = '#d2483f', AMBER = '#e3b021', LEAF = '#5aa85e', GREEN = '#12795a';
+const c = document.getElementById('c'), ctx = c.getContext('2d');
+const D = window.DATA;
+
+// ---------- time ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, t0, d) => clamp((t - t0) / d);
+const expo = x => x <= 0 ? 0 : x >= 1 ? 1 : (1 - Math.pow(2, -10 * x)) / (1 - Math.pow(2, -10));
+const expoIn = x => x <= 0 ? 0 : x >= 1 ? 1 : (Math.pow(2, 10 * x) - 1) / 1023;
+const expoInOut = x => x <= 0 ? 0 : x >= 1 ? 1 : x < 0.5 ? expoIn(2 * x) / 2 : 0.5 + expo(2 * x - 1) / 2;
+const smooth = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * x * (x * (6 * x - 15) + 10);
+const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);     // settles without overshoot
+const lerp = (a, b, k) => a + (b - a) * k;
+const AR = n => String(Math.round(n)).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const bandFill = v => v < 10 ? RED : v < 25 ? '#ea8a2e' : v < 50 ? AMBER : v < 100 ? LEAF : GREEN;
+
+// ---------- the camera: one long page, one stop per idea ----------
+const STOPS = [[0, 0], [2.95, 1920], [6.35, 3840], [9.75, 5760], [17.1, 7680]];
+function camY(t) {
+  let y = 0;
+  for (const [t0, to] of STOPS) if (t >= t0) y = to - (to - y) * (1 - smooth(seg(t, t0, 0.8)));
+  return y;
+}
+
+// ---------- type, with a motion blur that follows the move (copies averaged on their own layer) ----------
+const layer = document.createElement('canvas'); layer.width = W; layer.height = H;
+const lctx = layer.getContext('2d');
+function text(str, x, y, o = {}) {
+  const a = o.alpha == null ? 1 : o.alpha;
+  if (a <= 0.003 || !str) return;
+  const vx = o.vx || 0, vy = o.vy || 0, sm = Math.hypot(vx, vy) * 0.8;
+  const n = Math.max(1, Math.min(32, Math.round(sm / 1.5)));
+  const g = n === 1 && !o.blur ? ctx : lctx;
+  if (g === lctx) { lctx.setTransform(1, 0, 0, 1, 0, 0); lctx.clearRect(0, 0, W, H); lctx.globalCompositeOperation = n > 1 ? 'lighter' : 'source-over'; }
+  g.save();
+  if (o.clip) { g.beginPath(); g.rect(...o.clip); g.clip(); }
+  g.font = `${o.weight || 800} ${o.size}px Rubik`;
+  g.textAlign = o.align || 'right'; g.direction = o.dir || 'rtl'; g.textBaseline = 'alphabetic';
+  g.fillStyle = o.color || INK;
+  g.globalAlpha = n === 1 ? (g === lctx ? 1 : a) : (g === lctx && o.blur ? 1 : a) / n;
+  for (let i = 0; i < n; i++) {
+    const k = n === 1 ? 0 : i / (n - 1) - 0.5;
+    g.save(); g.translate(x - vx * 0.8 * k, y - vy * 0.8 * k);
+    if (o.s != null || o.sy != null) g.scale(o.s == null ? 1 : o.s, (o.s == null ? 1 : o.s) * (o.sy == null ? 1 : o.sy));
+    g.fillText(str, 0, 0); g.restore();
+  }
+  g.restore();
+  if (g === lctx) {
+    lctx.globalCompositeOperation = 'source-over';
+    ctx.save(); ctx.globalAlpha = o.blur ? a : 1; if (o.blur) ctx.filter = `blur(${o.blur}px)`; ctx.drawImage(layer, 0, 0); ctx.restore();
+  }
+}
+const tw = (str, size, weight = 800) => { ctx.font = `${weight} ${size}px Rubik`; ctx.direction = 'rtl'; return ctx.measureText(str).width; };
+function rrect(x, y, w, h, r) { r = Math.max(0, Math.min(r, Math.abs(h) / 2, Math.abs(w) / 2)); ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
+const vel = (f, t) => { const a = f(t), b = f(t - 1 / FPS); return [a[0] - b[0], a[1] - b[1]]; };
+
+// words of a sentence set right to left into lines no wider than maxW, each word coming out of a blur in turn
+function layoutWords(str, size, maxW, x, y, lh, weight = 800) {
+  const words = str.split(' '), sp = tw(' ', size, weight), lines = [[]];
+  let w = 0;
+  for (const wd of words) {
+    const ww = tw(wd, size, weight);
+    if (lines[lines.length - 1].length && w + sp + ww > maxW) { lines.push([]); w = 0; }
+    lines[lines.length - 1].push({ wd, ww }); w += (w ? sp : 0) + ww;
+  }
+  const out = [];
+  lines.forEach((ln, li) => { let xr = x; ln.forEach(o => { out.push({ wd: o.wd, x: xr, y: y + li * lh }); xr -= o.ww + sp; }); });
+  return out;
+}
+function sentence(t, laid, t0, step, size, o = {}) {
+  laid.forEach((w, i) => {
+    const e = spring(seg(t, t0 + i * step, 0.42));
+    if (e <= 0) return;
+    const f = tt => [w.x, w.y + o.dy + (1 - spring(seg(tt, t0 + i * step, 0.42))) * 46];
+    const p = f(t), v = vel(f, t), cv = o.cam || [0, 0];
+    text(w.wd, p[0], p[1], { size, weight: o.weight, color: o.color, alpha: e * (o.alpha == null ? 1 : o.alpha), blur: (1 - e) * 16, vx: v[0] + cv[0], vy: v[1] + cv[1] });
+  });
+}
+
+// ---------- the phone with the real site in it ----------
+const IMG = {};
+const NAMES = ['home-0', 'home-1', 'home-2', 'home-3', 'home-4', 'home-5', 'home-6', 'home-7', 'karrada', 'bar', 'tabs'];
+const MARKS = { compare: 550 };
+const SW = 600, SH = Math.round(600 * 844 / 390), PX = (W - SW) / 2, BEZ = 16;
+const K = SW / 1170;                                     // the captures are 3x a 390 px phone
+function phone(top, draw, z = 1) {
+  ctx.save();
+  ctx.translate(W / 2, top); ctx.scale(z, z); ctx.translate(-W / 2, -top);
+  rrect(PX - BEZ, top - BEZ, SW + 2 * BEZ, SH + 2 * BEZ, 74); ctx.fillStyle = INK; ctx.fill();
+  rrect(PX, top, SW, SH, 58); ctx.clip();
+  ctx.fillStyle = WHITE; ctx.fillRect(PX, top, SW, SH);
+  draw(top);
+  ctx.restore();
+}
+const TYPE_AT = [10.8, 10.95, 11.1, 11.25, 11.4, 11.55, 11.7];
+function phoneScreen(t, top) {
+  // the home page while الكرادة is typed, a tap on the first result, Karrada's page pushed in, then a scroll down to the bars
+  const push = spring(seg(t, 12.35, 0.5));
+  if (push < 1) {
+    let n = 0; TYPE_AT.forEach((tt, i) => { if (t >= tt) n = i + 1; });
+    const img = IMG['home-' + n], dx = SW * 0.3 * push;
+    ctx.drawImage(img, 0, 0, 1170, 2532, PX + dx, top, SW, SH);
+    const tap = spring(seg(t, 12.1, 0.12)) * (1 - expo(seg(t, 12.3, 0.2)));
+    if (tap > 0) { ctx.fillStyle = `rgba(20,32,43,${0.08 * tap})`; ctx.fillRect(PX + dx + 20 * K * 3, top + 292 * 3 * K, SW - 40 * K * 3, 70 * 3 * K); }
+  }
+  if (push > 0) {
+    const x = PX - SW * (1 - push);
+    const s = MARKS.compare - 80, sc = s * expoInOut(seg(t, 14.35, 0.85));
+    ctx.save(); ctx.beginPath(); ctx.rect(x, top, SW, SH); ctx.clip();
+    ctx.fillStyle = WHITE; ctx.fillRect(x, top, SW, SH);
+    ctx.drawImage(IMG.karrada, 0, sc * 3, 1170, 2532, x, top, SW, SH);
+    ctx.drawImage(IMG.bar, 0, 0, 1170, 168, x, top, SW, 168 * K);
+    ctx.drawImage(IMG.tabs, 0, 0, 1170, 192, x, top + SH - 192 * K, SW, 192 * K);
+    ctx.restore();
+  }
+}
+
+// ---------- Iraq's governorates (the site's own shapes) ----------
+const GM = D.govmap, GZ = 2.25, GX = (W - GM.w * GZ) / 2, GY = 600;
+const govs = GM.shapes.map(g => ({ ...g, polys: g.polys.filter(p => p.length > 2) })).sort((a, b) => b.d - a.d);
+govs.forEach((g, i) => { g.rank = i; g.col = bandFill(g.d); });
+function govPath(g, ox, oy) {
+  ctx.beginPath();
+  for (const p of g.polys) { p.forEach(([x, y], i) => i ? ctx.lineTo(ox + GX + x * GZ, oy + GY + y * GZ) : ctx.moveTo(ox + GX + x * GZ, oy + GY + y * GZ)); ctx.closePath(); }
+}
+const sul = govs[0];
+const sulBox = (() => { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; sul.polys.forEach(p => p.forEach(([x, y]) => { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); })); return [GX + x0 * GZ, GY + y0 * GZ, (x1 - x0) * GZ, (y1 - y0) * GZ]; })();
+
+// ---------- scenes (y is on the page; the camera is subtracted) ----------
+function scene1(t, cy, cv) {
+  if (cy > 1920 + 200) return;
+  const laid = layoutWords('سرعة الإنترنت تختلف من منطقة لمنطقة.', 118, 860, 960, 0, 150);
+  sentence(t, laid, 0.2, 0.17, 118, { dy: 840 - cy, cam: cv });
+}
+function scene2(t, cy, cv) {
+  const oy = 1920 - cy; if (oy > H || oy < -H) return;
+  const lab = spring(seg(t, 3.25, 0.4));
+  text('معدل سرعة إنترنت البيت، تموز إلى أيلول ٢٠٢٦', 960, oy + 380, { size: 44, weight: 500, color: SOFT, alpha: lab, vy: cv[1] });
+  const rows = [['الكرادة', 'بغداد', 87, 3.45, LEAF], ['الصقلاوية', 'الأنبار', 3.7, 4.15, RED]];
+  rows.forEach(([n, g, v, t0, col], i) => {
+    const y = oy + 620 + i * 400, e = spring(seg(t, t0, 0.42));
+    if (e <= 0) return;
+    text(n, 960, y + (1 - e) * 40, { size: 100, alpha: e, blur: (1 - e) * 14, vy: cv[1] });
+    text(g, 960, y + 72, { size: 46, weight: 500, color: SOFT, alpha: spring(seg(t, t0 + 0.08, 0.4)), vy: cv[1] });
+    const grow = expo(seg(t, t0 + 0.15, 0.8)), bw = Math.max(6, 600 * Math.min(v, 100) / 100 * grow);
+    ctx.fillStyle = col; rrect(960 - bw, y + 120, bw, 40, 4); ctx.fill();
+    text(AR(v * grow), 120, y + 180, { size: 120, color: col === RED ? '#b3362e' : GREEN, align: 'left', alpha: spring(seg(t, t0 + 0.15, 0.3)), vy: cv[1] });
+    text('ميغابت في الثانية', 120, y + 240, { size: 40, weight: 500, color: SOFT, align: 'left', alpha: spring(seg(t, t0 + 0.25, 0.3)), vy: cv[1] });
+  });
+  const laid = layoutWords('نفس البلد، والفرق أكثر من عشرين مرة.', 68, 860, 960, 0, 90);
+  sentence(t, laid, 4.95, 0.12, 68, { dy: oy + 1460, cam: cv });
+}
+function scene3(t, cy, cv) {
+  const oy = 3840 - cy; if (oy > H || oy < -H) return;
+  const laid = layoutWords('سويت موقع يبين سرعة الإنترنت الحقيقية بكل منطقة بالعراق', 104, 880, 960, 0, 134);
+  sentence(t, laid, 6.7, 0.11, 104, { dy: oy + 640, cam: cv });
+  const last = laid[laid.length - 1].y + 640 + oy;
+  const rule = expo(seg(t, 8.15, 0.6));
+  if (rule > 0) { ctx.fillStyle = INK; rrect(960 - 880 * rule, last + 80, 880 * rule, 8, 4); ctx.fill(); }
+  const nm = spring(seg(t, 8.45, 0.45));
+  text('سرعة الإنترنت في العراق', 960 + (1 - nm) * 60, last + 196, { size: 84, weight: 700, color: GREEN, alpha: nm, blur: (1 - nm) * 10, vy: cv[1] });
+}
+// captions over the phone push each other up and out of a fixed window
+const CAPS = [[9.95, 'تكتب اسم منطقتك', 'من المتصفح، بأي موبايل'], [12.55, 'يطلعلك معدل السرعة', 'وشنو يكفي له بالبيت'], [14.45, 'وتقارنها بمحافظتك', 'وبالعراق كله']];
+function scene4(t, cy, cv) {
+  const oy = 5760 - cy; if (oy > H || oy < -H) return;
+  CAPS.forEach(([t0, a, b], i) => {
+    const e = spring(seg(t, t0, 0.5)), next = CAPS[i + 1] ? spring(seg(t, CAPS[i + 1][0], 0.5)) : 0;
+    if (e <= 0 || next >= 1) return;
+    const off = (1 - e) * 120 - next * 160, al = e * (1 - next);
+    const clip = [0, oy + 200, W, 260];
+    const f = tt => [960, oy + 330 + (1 - spring(seg(tt, t0, 0.5))) * 120 - (CAPS[i + 1] ? spring(seg(tt, CAPS[i + 1][0], 0.5)) : 0) * 160];
+    const v = vel(f, t);
+    text(a, 960, oy + 330 + off, { size: 92, alpha: al, clip, vx: cv[0], vy: v[1] + cv[1] });
+    text(b, 960, oy + 412 + off, { size: 48, weight: 500, color: INK2, alpha: al, clip, vx: cv[0], vy: v[1] + cv[1] });
+  });
+  // the phone comes closer once it is seen whole, so the typing and the numbers on it can be read, and steps back
+  // before the camera moves on; it never leaves its own stop of the page
+  const z = 1 + 0.5 * (smooth(seg(t, 10.2, 0.6)) - smooth(seg(t, 16.4, 0.6)));
+  ctx.save(); ctx.beginPath(); ctx.rect(0, oy, W, H); ctx.clip();
+  phone(oy + 520, top => phoneScreen(t, top), z);
+  ctx.restore();
+}
+const KEY = [['سريع جدا', 'فوق ١٠٠', GREEN], ['جيد', '٥٠ إلى ١٠٠', LEAF], ['متوسط', '٢٥ إلى ٥٠', AMBER], ['مقبول', '١٠ إلى ٢٥', '#ea8a2e'], ['بطيء', 'أقل من ١٠', RED]];
+function scene5(t, cy, cv) {
+  const oy = 7680 - cy; if (oy > H || oy < -H || t > 22.4) return;
+  const laid = layoutWords('الأرقام من أكثر من مليون اختبار سرعة سواها الناس بأنفسهم', 80, 900, 960, 0, 104);
+  sentence(t, laid, 17.4, 0.09, 80, { dy: oy + 316, cam: cv });
+  // each governorate is outlined, then takes the colour of its speed, from the fastest down
+  const field = t >= 21.75;
+  govs.forEach(g => {
+    const draw = expo(seg(t, 18.0 + 0.03 * g.rank, 0.5)), fill = expo(seg(t, 18.5 + 0.035 * g.rank, 0.45));
+    if (draw <= 0) return;
+    govPath(g, 0, oy);
+    if (fill > 0) { ctx.save(); ctx.globalAlpha = fill; ctx.fillStyle = g.col; ctx.fill(); ctx.restore(); }
+    ctx.save(); ctx.globalAlpha = draw; ctx.lineWidth = 2.4; ctx.lineJoin = 'round'; ctx.strokeStyle = fill > 0.5 ? WHITE : INK; ctx.stroke(); ctx.restore();
+  });
+  // the number of every governorate, and the names of the fastest, the slowest, Baghdad and Basra
+  const named = new Set([govs[0].id, 'baghdad', 'albasrah', govs[govs.length - 2].id, govs[govs.length - 1].id]);
+  govs.forEach(g => {
+    const e = spring(seg(t, 19.2 + 0.03 * g.rank, 0.35)); if (e <= 0) return;
+    const nm = named.has(g.id), s = (nm ? g.n + ' ' : '') + AR(g.d), size = nm ? 34 : 30;
+    const x = GX + Math.min(Math.max(g.x, nm ? 50 : 20), GM.w - (nm ? 50 : 20)) * GZ, y = oy + GY + g.y * GZ;
+    const w = tw(s, size, 700) + 16;
+    ctx.save(); ctx.globalAlpha = e * 0.92; ctx.fillStyle = WHITE; rrect(x - w / 2, y - size * 0.75, w, size * 1.25, 6); ctx.fill(); ctx.restore();
+    text(s, x, y + size * 0.3, { size, weight: nm ? 700 : 500, align: 'center', alpha: e, vy: cv[1] });
+  });
+  // the site's key, in the empty corner by the Saudi border, fastest on top
+  KEY.forEach(([w, r, col], i) => {
+    const e = spring(seg(t, 18.9 + 0.07 * i, 0.4)); if (e <= 0) return;
+    const y = oy + 1312 + i * 46, xr = 352;
+    ctx.save(); ctx.globalAlpha = e; ctx.fillStyle = col; rrect(xr - 36 + (1 - e) * 20, y - 20, 36, 14, 2); ctx.fill(); ctx.restore();
+    text(w, xr - 50, y, { size: 30, weight: 700, color: INK2, alpha: e, vy: cv[1] });
+    text(r, xr - 184, y, { size: 26, weight: 500, color: SOFT, alpha: e, vy: cv[1] });
+  });
+  const cap = spring(seg(t, 19.9, 0.4));
+  text('كل محافظة بلون معدل سرعتها', 960, oy + 1546, { size: 48, weight: 500, color: INK2, alpha: cap, vy: cv[1] });
+}
+function scene6(t) {
+  if (t < 21.7 || t > 28.4) return;
+  // the field grows out of Sulaymaniyah, the fastest governorate, and folds into the closing line at the end
+  const grow = expoInOut(seg(t, 21.75, 0.5)), fold = expoInOut(seg(t, 27.75, 0.4));
+  const oy = 7680 - camY(t);
+  let [x, y, w, h] = [sulBox[0], sulBox[1] + oy, sulBox[2], sulBox[3]];
+  x = lerp(x, 0, grow); y = lerp(y, 0, grow); w = lerp(w, W, grow); h = lerp(h, H, grow);
+  x = lerp(x, 120, fold); y = lerp(y, 996, fold); w = lerp(w, 840, fold); h = lerp(h, 8, fold);
+  ctx.fillStyle = GREEN; rrect(x, y, w, h, lerp(lerp(8, 0, grow), 4, fold)); ctx.fill();
+  if (grow < 0.98 || fold > 0.7) return;
+  ctx.save(); rrect(x, y, w, h, 0); ctx.clip();
+  const yrs = D.years, BW = 76, GAP = 30, X0 = 960, BOT = 1470, HMAX = 520;
+  const STEP_AT = [23.0, 24.0, 24.2, 24.4, 24.6, 24.8, 25.0, 25.3];
+  let step = -1; STEP_AT.forEach((s, i) => { if (t >= s) step = i; });
+  text('معدل سرعة الإنترنت بالعراق', 960, 330, { size: 60, weight: 700, color: WHITE, alpha: spring(seg(t, 22.35, 0.4)) });
+  yrs.forEach((v, i) => {
+    const e = spring(seg(t, 22.55 + 0.06 * i, 0.45)); if (e <= 0) return;
+    const bh = HMAX * v / yrs[yrs.length - 1] * e, bx = X0 - (i + 1) * BW - i * GAP;
+    ctx.save(); ctx.globalAlpha = i <= step ? 1 : 0.38; ctx.fillStyle = WHITE; rrect(bx, BOT - bh, BW, bh, 4); ctx.fill(); ctx.restore();
+    text(AR(2019 + i), bx + BW / 2, BOT + 48, { size: 30, weight: 500, color: WHITE, align: 'center', alpha: 0.85 * e });
+  });
+  if (step >= 0) {
+    const v = yrs[step], last = step === yrs.length - 1, pop = last ? 1 + 0.05 * (1 - spring(seg(t, 25.3, 0.35))) : 1;
+    const e = spring(seg(t, 23.0, 0.4));
+    text(AR(v), 960, 680 + (1 - e) * 50, { size: 300, color: WHITE, alpha: e, s: pop, blur: (1 - e) * 12 });
+    text(`ميغابت بصيف ${AR(2019 + step)}`, 960, 780, { size: 60, weight: 700, color: WHITE, alpha: e });
+  }
+  const note = spring(seg(t, 25.85, 0.45));
+  text('من اختبارات الناس، كل صيف من تموز إلى أيلول', 960, 870, { size: 42, weight: 500, color: 'rgba(255,255,255,0.85)', alpha: note });
+  ctx.restore();
+}
+function scene7(t) {
+  if (t < 27.9) return;
+  // the name rises out of the line, the call to action hangs under it
+  const up = [['سرعة الإنترنت', 124, 28.0, 780], ['في العراق', 124, 28.08, 930]];
+  up.forEach(([s, size, t0, yb]) => {
+    const f = tt => [960, yb + (1 - spring(seg(tt, t0, 0.42))) * 160];
+    const p = f(t), v = vel(f, t);
+    text(s, p[0], p[1], { size, vx: v[0], vy: v[1], alpha: spring(seg(t, t0, 0.3)), clip: [0, 0, W, 992] });
+  });
+  const f2 = tt => [960, 1090 - (1 - spring(seg(tt, 28.3, 0.42))) * 80];
+  const p2 = f2(t), v2 = vel(f2, t);
+  text('اعرف سرعة منطقتك، الرابط بالبايو', p2[0], p2[1], { size: 54, weight: 500, color: INK2, vx: v2[0], vy: v2[1], alpha: spring(seg(t, 28.3, 0.3)), clip: [0, 1008, W, H] });
+  const cr = spring(seg(t, 28.7, 0.45));
+  text('فكرة وتصميم', 960, 1250, { size: 40, weight: 500, color: SOFT, alpha: cr });
+  text('@allawi.psd', 960 - tw('فكرة وتصميم ', 40, 500), 1250, { size: 40, weight: 500, color: SOFT, alpha: cr, dir: 'ltr', align: 'right' });
+  ctx.fillStyle = INK; ctx.globalAlpha = expo(seg(t, 28.15, 0.3)); rrect(120, 996, 840, 8, 4); ctx.fill(); ctx.globalAlpha = 1;
+}
+
+// ---------- seek ----------
+window.seek = function (t) {
+  t = sceneT(clamp(t, 0, DUR - 1e-6));
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.filter = 'none'; ctx.globalAlpha = 1;
+  ctx.fillStyle = WHITE; ctx.fillRect(0, 0, W, H);
+  const cy = camY(t), cv = [0, -(camY(t) - camY(t - 1 / FPS))];
+  scene1(t, cy, cv); scene2(t, cy, cv); scene3(t, cy, cv); scene4(t, cy, cv); scene5(t, cy, cv);
+  scene7(t);
+  scene6(t);
+};
+window.ready = Promise.all([
+  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik`, 'العراق ٨٧')),
+  document.fonts.load('500 40px Rubik', '@allawi.psd'),
+  ...NAMES.map(n => new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[n] = im; res(); }; im.onerror = rej; im.src = `site/${n}.png`; })),
+  fetch('site/marks.json').then(r => r.json()).then(m => Object.assign(MARKS, m)),
+]).then(() => { window.seek(0); return true; });
+</script>
+</body>
+</html>
