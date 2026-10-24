@@ -36,3 +36,16 @@ right without reading any code.
 - One follow-up at most, with something new (the trial, a real result). Then stop.
 - Don't invent features, guarantees or results. The course is written lessons, not videos.
 - If the lead's case doesn't fit, say so kindly instead of pushing.
+
+## How to sell it (value first)
+- Sell the outcome, not "a course": fewer wasted ad dinars, more confirmed orders, fewer returned orders (راجع).
+- Diagnose first: what they sell and where it breaks (ads, DMs, pricing, returns). Point to the chapter or tool that
+  fixes that one thing, then send the trial.
+- Proof does the convincing: the trial's one-minute check of their own numbers, 266 members, the $70 → 1,475,000 IQD
+  result.
+- Less wait and effort: lessons in Iraqi dialect to read in minutes, ready messages to copy, 13 calculators in IQD, the
+  7-day plan in the solutions section.
+- Price next to their own numbers: 49,000 IQD is less than one test ad that fails. The 30 October deadline is real;
+  mention it once.
+- Match where they are: someone who doesn't know why they aren't selling needs the problem named first; someone
+  comparing courses needs the difference (written in dialect, the tools, the advisor, the ad review) and the proof.

@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>R6 Unlock All</title>
+<style>
+@font-face { font-family: Shoulders; src: url(fonts/BigShouldersDisplay-VF.ttf); font-weight: 100 900; }
+@font-face { font-family: Jakarta; src: url(fonts/PlusJakartaSans-VF.ttf); font-weight: 200 800; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; }
+.f { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0c1116; }
+.f > * { position: absolute; }
+
+/* 1. background: the House map at dusk under the stadium floodlights from Sledge's key art */
+.map { left: -71px; top: 0; width: 2063px; height: 1080px; filter: brightness(.68) contrast(1.12) saturate(1.25); }
+.night { inset: 0; background: linear-gradient(180deg, #0a141e 0%, rgba(10, 20, 30, .82) 34%, rgba(12, 22, 30, .25) 62%, rgba(40, 18, 6, .1) 100%); mix-blend-mode: multiply; }
+.stadium { left: 80px; top: 141px; width: 1680px; mix-blend-mode: screen; opacity: .6; filter: blur(6px);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, rgba(0, 0, 0, .25) 80%, rgba(0, 0, 0, .1) 100%); }
+.halo { left: 640px; top: -150px; width: 640px; mix-blend-mode: screen; opacity: .55; filter: blur(3px); transform: scaleX(-1); }
+
+/* 2. title, behind Sledge */
+.t { top: 22px; font: 900 288px/1 Shoulders; letter-spacing: -3px; white-space: nowrap; }
+.t span { display: block; }
+.t .back { color: #160a02; -webkit-text-stroke: 16px #120701;
+  text-shadow: 1px 3px 0 #2c1405, 2px 6px 0 #2c1405, 3px 9px 0 #261104, 4px 12px 0 #200e03, 5px 15px 0 #1a0b02,
+    6px 18px 0 #140802, 7px 21px 0 #0e0501, 0 34px 40px rgba(0, 0, 0, .9), 0 60px 90px rgba(0, 0, 0, .55); }
+.t .face { position: absolute; left: 0; top: 0;
+  background: url(img/brass.jpg) center / 100% 100%, linear-gradient(180deg, #fffbd6 0%, #fff04a 18%, #ffd21f 42%, #ffa412 70%, #df6a08 100%);
+  background-blend-mode: soft-light, normal; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.t .shine { position: absolute; left: 0; top: 0; color: transparent;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .85) 0%, rgba(255, 255, 255, 0) 16%);
+  -webkit-background-clip: text; background-clip: text; mix-blend-mode: screen; }
+.t1 { left: 22px; }
+.t2 { left: 1000px; }
+
+/* 3. the menu, rebuilt from the screenshot at its own size, then scaled and turned */
+.menu { left: 44px; top: 548px; width: 1396px; height: 1127px; transform-origin: 0 0;
+  transform: perspective(2400px) scale(.45) rotateY(15deg) rotateZ(-2deg); }
+.panel { position: absolute; inset: 0; background: #0b0b0e; border-radius: 22px; font-family: Jakarta; font-weight: 700; color: #f1eef4;
+  box-shadow: 0 0 0 4px rgba(230, 236, 255, .28), 0 0 90px rgba(170, 196, 255, .35), 0 60px 120px rgba(0, 0, 0, .85); }
+.panel > * { position: absolute; }
+.p-logo { left: 45px; top: 34px; font-size: 41px; }
+.p-tab { top: 20px; height: 75px; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #c9c5d0; }
+.p-tab.on { left: 622px; width: 258px; background: #1d1d23; border-radius: 16px; color: #f6f3f8; }
+.p-tab.on::after { content: ''; position: absolute; left: 34px; right: 34px; bottom: 2px; height: 6px; border-radius: 3px; background: #f7dfee; }
+.rule { left: 30px; right: 30px; height: 2px; background: #26262c; }
+.sec { left: 44px; font-size: 40px; color: #d9d5de; display: flex; align-items: center; gap: 26px; }
+.sec::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: #f4f1f6; }
+.lab { left: 46px; font-size: 38px; }
+.val { right: 48px; font-size: 38px; }
+.box { left: 1295px; top: 240px; width: 51px; height: 51px; border-radius: 9px; background: #f7dcec;
+  box-shadow: 0 0 26px rgba(247, 210, 232, .55); }
+.box::after { content: ''; position: absolute; left: 17px; top: 9px; width: 12px; height: 23px; border: solid #17121a; border-width: 0 5px 5px 0; transform: rotate(42deg); }
+.track { left: 80px; width: 1258px; height: 13px; border-radius: 7px; background: #1e1e24; }
+.track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 7px; background: #f6e0ee; }
+.knob { width: 56px; height: 56px; border-radius: 50%; background: #fbfafc; box-shadow: 0 0 0 5px #3a3940, 0 0 20px rgba(255, 255, 255, .25); }
+.note { left: 46px; top: 548px; font-size: 34px; color: #9a97a2; }
+.key { left: 1085px; width: 266px; height: 83px; border-radius: 13px; background: #1b1c21; border: 2px solid #26272d;
+  display: flex; align-items: center; justify-content: center; font-size: 37px; }
+.foot { top: 1058px; font-size: 33px; color: #8e8b96; }
+
+/* 4. Sledge */
+.sledge { left: 80px; top: 141px; width: 1680px; filter: drop-shadow(0 22px 34px rgba(0, 0, 0, .7)); }
+
+/* finish */
+.warm { left: 0; right: 0; bottom: 0; height: 300px; background: linear-gradient(0deg, rgba(255, 120, 30, .32), rgba(255, 120, 30, 0)); mix-blend-mode: screen; }
+.vig { inset: 0; background:
+  linear-gradient(90deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 84%, rgba(0, 0, 0, .55) 100%),
+  linear-gradient(0deg, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, 0) 22%),
+  radial-gradient(120% 95% at 50% 42%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, .55) 100%); }
+</style>
+</head>
+<body>
+<div class="f" id="thumb">
+  <img class="map" src="img/map.jpg">
+  <div class="night"></div>
+  <img class="stadium" src="img/stadium.jpg">
+
+  <div class="t t1"><span class="back">UNLOCK</span><span class="face">UNLOCK</span><span class="shine">UNLOCK</span></div>
+  <div class="t t2"><span class="back">ALL</span><span class="face">ALL</span><span class="shine">ALL</span></div>
+
+  <div class="menu"><div class="panel">
+    <div class="p-logo">UnlockX</div>
+    <div class="p-tab on">Recoil</div>
+    <div class="p-tab" style="left:930px;width:150px">HUD</div>
+    <div class="p-tab" style="left:1170px;width:180px">Account</div>
+    <div class="rule" style="top:121px"></div>
+    <div class="sec" style="top:160px">General</div>
+    <div class="lab" style="top:245px">Enabled</div>
+    <div class="box"></div>
+    <div class="lab" style="top:322px">Keep</div><div class="val" style="top:322px">0.69</div>
+    <div class="track" style="top:384px"><i style="width:868px"></i></div>
+    <div class="knob" style="left:921px;top:362px"></div>
+    <div class="lab" style="top:435px">Step</div><div class="val" style="top:435px">0.34</div>
+    <div class="track" style="top:499px"><i style="width:858px"></i></div>
+    <div class="knob" style="left:911px;top:477px"></div>
+    <div class="note">0 = full kill, 1 = no effect</div>
+    <div class="sec" style="top:655px">Hotkeys</div>
+    <div class="lab" style="top:740px">Tighten</div><div class="key" style="top:720px">F1</div>
+    <div class="lab" style="top:838px">Weaken</div><div class="key" style="top:818px">F2</div>
+    <div class="lab" style="top:934px">Disable</div><div class="key" style="top:917px">End</div>
+    <div class="rule" style="top:1034px"></div>
+    <div class="foot" style="left:46px">INSERT to hide</div>
+    <div class="foot" style="right:46px;color:#c6c3cc">welcome, <span style="color:#f1eef4">LCKYLucky</span></div>
+  </div></div>
+
+  <img class="sledge" src="img/sledge.png">
+
+
+  <div class="warm"></div>
+  <div class="vig"></div>
+</div>
+<script>
+Promise.all([document.fonts.load('900 300px Shoulders'), document.fonts.load('700 38px Jakarta')])
+  .then(() => Promise.all([...document.images].map((i) => i.decode())))
+  .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

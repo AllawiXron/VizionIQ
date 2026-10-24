@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<title>The Orange Coin</title>
+<style>
+  @font-face { font-family: "DG Sahabah"; src: url("../brand-fonts/DG-Sahabah-Reg.ttf"); font-weight: 400; }
+  html, body { margin: 0; background: #1f1510; }
+  #frame { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #f1e9dd; }
+  #stage, .layer { position: absolute; inset: 0; transform-origin: 540px 960px; }
+  .paper { position: absolute; inset: 0; background: url("../rm-allawi-ad-reel/public/img/paper.jpg") center/cover; mix-blend-mode: multiply; opacity: .32; }
+  .it { position: absolute; left: 0; top: 0; will-change: transform; }
+  .line { position: absolute; left: 70px; right: 70px; white-space: nowrap; direction: rtl; font-family: "DG Sahabah"; font-weight: 400; font-synthesis: none; line-height: 1.22; }
+  .w { display: inline-block; position: relative; }
+  img.png { display: block; width: 100%; }
+</style>
+</head>
+<body>
+<div id="frame"><div id="stage"></div></div>
+<svg width="0" height="0" style="position:absolute"><defs id="filters"></defs></svg>
+<script>
+// The Orange Coin: my ad reel as one take. One orange coin carries the viewer from a weak ad to a sale: it drops into
+// the wallet, flips into the circle that opens the orange world, shrinks into a window and into the icon of a card,
+// comes back as the circle that opens the last scene and ends as the dot of @allawi.psd. The last frame is the first.
+// Every style is a function of t in seek(t): springs and exponential eases written as functions of time, blur that
+// follows each element's own speed and direction. The voice and the cues are the fitted ones.
+const W = 1080, H = 1920, DT = 1 / 60;
+const EL = "../rm-allawi-ad-reel/public/el/";
+const ORANGE = "#e2541b", BROWN = "#1f1510", CREAM = "#f1e9dd", WHITE = "#fffaf3";
+
+// ───── time and easing ─────
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const k = (t, t0, d) => clamp((t - t0) / d);
+const expoOut = (p) => (p >= 1 ? 1 : 1 - Math.pow(2, -10 * p));
+const expoIn = (p) => (p <= 0 ? 0 : Math.pow(2, 10 * (p - 1)));
+const expoInOut = (p) => (p <= 0 ? 0 : p >= 1 ? 1 : p < 0.5 ? Math.pow(2, 20 * p - 10) / 2 : (2 - Math.pow(2, -20 * p + 10)) / 2);
+// a spring in seconds since it started: damped enough to land without bouncing (about 3% past the mark, once)
+const spring = (s, z = 0.78, w = 15) => {
+  if (s <= 0) return 0;
+  const wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * s) * (Math.cos(wd * s) + ((z * w) / wd) * Math.sin(wd * s));
+};
+const mv = (t, t0, d, a, b, ease = expoOut) => lerp(a, b, ease(k(t, t0, d)));
+
+// ───── elements: every one has a life and a pose(t); blur comes from the pose a frame earlier ─────
+const stage = document.getElementById("stage"), defs = document.getElementById("filters");
+const items = [];
+const div = (css, parent = stage, html = "") => {
+  const d = document.createElement("div");
+  d.style.cssText = css;
+  d.innerHTML = html;
+  parent.appendChild(d);
+  return d;
+};
+function layer(clip) {
+  const el = div("", stage);
+  el.className = "layer";
+  const L = { el, clip, life: [0, 99] };
+  items.push({ layer: L });
+  return L;
+}
+let fid = 0;
+function blurOf(el) {
+  if (!el._f) {
+    const f = document.createElementNS("http://www.w3.org/2000/svg", "filter");
+    f.id = "b" + fid++;
+    f.setAttribute("x", "-30%"); f.setAttribute("y", "-30%"); f.setAttribute("width", "160%"); f.setAttribute("height", "160%");
+    f.setAttribute("color-interpolation-filters", "sRGB");
+    el._g = document.createElementNS("http://www.w3.org/2000/svg", "feGaussianBlur");
+    f.appendChild(el._g);
+    defs.appendChild(f);
+    el._f = f.id;
+  }
+  return el._f;
+}
+// an absolute piece: x, y is its centre on the frame
+function piece(parent, html, w, life, pose, css = "") {
+  const el = div(`width:${w}px;${css}`, parent.el || parent, html);
+  el.className = "it";
+  items.push({ el, life, pose, abs: true });
+  return el;
+}
+const png = (parent, name, w, life, pose, css = "") => piece(parent, `<img class="png" src="${EL}${name}.png">`, w, life, pose, css);
+
+// a line of words set right to left; each word comes in on its own time and leaves with the line
+function line(parent, words, { top, size, align = "r", out, exit = "up", gap = 0.24, colour = BROWN }) {
+  const el = div(`top:${top}px;font-size:${size}px;text-align:${align === "r" ? "right" : align === "l" ? "left" : "center"}`, parent.el || parent);
+  el.className = "line";
+  const made = words.map((wd, i) => {
+    const s = document.createElement("span");
+    s.className = "w";
+    s.textContent = wd.w;
+    s.style.color = wd.c || colour;
+    if (i) s.style.marginRight = `${gap}em`;
+    if (wd.box) Object.assign(s.style, wd.box);
+    el.appendChild(s);
+    const end = out !== undefined ? out + 0.45 : wd.until ?? 99;
+    const ent = ENTRY[wd.in || "blur"];
+    items.push({
+      el: s, life: [wd.t, end], pose: (t) => {
+        const p = ent(t - wd.t);
+        if (out !== undefined && t > out) Object.assign(p, merge(p, EXIT[wd.exit || exit](t - out, i)));
+        return wd.fx ? merge(p, wd.fx(t)) : p;
+      },
+    });
+    return s;
+  });
+  return { el, words: made };
+}
+const merge = (a, b) => ({ x: (a.x || 0) + (b.x || 0), y: (a.y || 0) + (b.y || 0), s: (a.s ?? 1) * (b.s ?? 1), r: (a.r || 0) + (b.r || 0), o: (a.o ?? 1) * (b.o ?? 1), b: (a.b || 0) + (b.b || 0), ry: (a.ry || 0) + (b.ry || 0) });
+// how a word arrives: out of a blur, rising on a spring, pushed in from the side, dropped, stamped
+const ENTRY = {
+  blur: (s) => { const p = expoOut(clamp(s / 0.45)); return { y: 26 * (1 - p), s: 1.14 - 0.14 * p, o: clamp(s / 0.12), b: 24 * (1 - p) }; },
+  rise: (s) => { const p = spring(s); return { y: 150 * (1 - p), o: clamp(s / 0.1) }; },
+  side: (s) => { const p = spring(s, 0.82, 13); return { x: -220 * (1 - p), o: clamp(s / 0.1) }; },
+  drop: (s) => { const p = spring(s, 0.8, 14); return { y: -320 * (1 - p), o: clamp(s / 0.08) }; },
+  stamp: (s) => { const p = expoOut(clamp(s / 0.22)); return { s: 2.1 - 1.1 * p, r: -7 * p, o: clamp(s / 0.06) }; },
+};
+const EXIT = {
+  up: (s, i) => { const p = expoIn(clamp((s - i * 0.03) / 0.32)); return { y: -110 * p, o: 1 - p, b: 16 * p }; },
+  left: (s, i) => { const p = expoIn(clamp((s - i * 0.02) / 0.4)); return { x: -1300 * p }; },
+  down: (s, i) => { const p = expoIn(clamp((s - i * 0.03) / 0.3)); return { y: 140 * p, o: 1 - p, b: 14 * p }; },
+};
+
+const VIDEOS = [];
+
+// ───── drawing a frame ─────
+function poseCss(it, p) {
+  const tr = it.abs
+    ? `translate(${(p.x ?? 0).toFixed(2)}px,${(p.y ?? 0).toFixed(2)}px) translate(-50%,-50%)`
+    : `translate(${(p.x ?? 0).toFixed(2)}px,${(p.y ?? 0).toFixed(2)}px)`;
+  const persp = p.rx || p.ry ? ` perspective(1400px) rotateX(${(p.rx || 0).toFixed(2)}deg) rotateY(${(p.ry || 0).toFixed(2)}deg)` : "";
+  return `${tr} rotate(${(p.r || 0).toFixed(3)}deg) scale(${(p.s ?? 1).toFixed(4)})${persp}`;
+}
+// the camera: a small push on every word of the voice, which settles back before the next
+let BEATS = [];
+function camera(t) {
+  let s = 1;
+  for (const b of BEATS) {
+    const d = t - b;
+    if (d < 0 || d > 1.6) continue;
+    s += 0.011 * expoOut(clamp(d / 0.3)) * (1 - expoInOut(clamp((d - 0.35) / 1.2)));
+  }
+  return s;
+}
+function drawFrame(t) {
+  const push = 1 + 0.07 * expoInOut(k(t, 28.5, 4.0)) * (1 - expoOut(k(t, 32.5, 0.35)));
+  const sh = t > 32.62 && t < 33.0 ? (1 - k(t, 32.62, 0.38)) : 0;
+  const jx = sh * 16 * Math.sin(t * 157), jy = sh * 12 * Math.sin(t * 211 + 1);
+  stage.style.transform = `translate(${jx.toFixed(2)}px,${jy.toFixed(2)}px) scale(${(camera(t) * push).toFixed(5)})`;
+  for (const it of items) {
+    if (it.layer) {
+      const L = it.layer, c = L.clip(t);
+      L.el.style.display = c === null ? "none" : "";
+      if (c !== null) L.el.style.clipPath = c || "";
+      continue;
+    }
+    const el = it.el;
+    if (t < it.life[0] || t >= it.life[1]) { el.style.display = "none"; continue; }
+    const p = it.pose(t);
+    if ((p.o ?? 1) <= 0.003) { el.style.display = "none"; continue; }
+    el.style.display = "";
+    const q = it.pose(t - DT);
+    el.style.transform = poseCss(it, p);
+    el.style.opacity = (p.o ?? 1) >= 1 ? "" : (p.o ?? 1).toFixed(3);
+    if (p.clip) el.style.clipPath = p.clip;
+    // blur along the move: how far it went in one frame on each axis, plus any blur it carries on purpose
+    const ds = Math.abs((p.s ?? 1) - (q.s ?? 1)) * (el.offsetWidth || 300) * 0.5;
+    const bx = Math.min(40, Math.abs((p.x ?? 0) - (q.x ?? 0)) * 0.45 + ds * 0.3 + (p.b || 0));
+    const by = Math.min(40, Math.abs((p.y ?? 0) - (q.y ?? 0)) * 0.45 + ds * 0.3 + (p.b || 0));
+    if (bx + by > 0.7) {
+      const f = blurOf(el);
+      el._g.setAttribute("stdDeviation", `${bx.toFixed(2)} ${by.toFixed(2)}`);
+      el.style.filter = `url(#${f})`;
+    } else el.style.filter = "";
+  }
+}
+
+const circle = (r, x, y) => `circle(${Math.max(0, r).toFixed(1)}px at ${x.toFixed(1)}px ${y.toFixed(1)}px)`;
+const at = (x, y) => ({ x, y });
+const shadow = "filter:drop-shadow(0 26px 30px rgba(60,25,5,.28)) drop-shadow(0 4px 5px rgba(60,25,5,.3))";
+const SH = (html) => `<div style="${shadow}">${html}</div>`;
+const pngS = (parent, name, w, life, pose) => piece(parent, SH(`<img class="png" src="${EL}${name}.png">`), w, life, pose);
+
+function build() {
+  const base = { el: stage };
+  div("", stage).className = "paper";
+
+  // ═════ A · مشروعك متعوب عليه، بس أرباحك قليلة ═════
+  line(base, [{ w: "مشروعك", t: 0.0 }], { top: 300, size: 180, out: 2.95 });
+  line(base, [{ w: "متعوب", t: 0.56 }, { w: "عليه،", t: 0.88 }], { top: 510, size: 180, out: 2.95 });
+  line(base, [{ w: "بس", t: 1.38 }, { w: "أرباحك", t: 1.66, c: ORANGE }], { top: 720, size: 180, out: 2.95 });
+  const wallet = (t) => ({ ...at(470, 1420 + 950 * (1 - spring(t - 0.15, 0.85, 11)) - (t > 2.2 ? 26 * Math.sin(Math.PI * k(t, 2.2, 0.3)) : 0)), r: -6 + 2 * (1 - spring(t - 0.15)), o: 1 });
+  // the coin drops in behind the wallet's front
+  pngS(base, "coin", 240, [1.9, 2.25], (t) => { const p = expoIn(k(t, 1.9, 0.3)); return { ...at(470, lerp(120, 1330, p)), r: lerp(-120, 0, p) }; });
+  pngS(base, "wallet", 820, [0, 3.3], wallet);
+  // «قليلة؟» stamped on the wallet, and left there to be read
+  piece(base, `<div style="font:400 150px 'DG Sahabah';font-synthesis:none;color:${ORANGE};border:10px solid ${ORANGE};border-radius:26px;padding:0 34px 10px;white-space:nowrap;direction:rtl">قليلة؟</div>`, 0, [2.1, 3.3], (t) => {
+    const p = expoOut(k(t, 2.1, 0.2));
+    return { ...at(560, 1330), s: 2.2 - 1.2 * p, r: -9 * p, o: clamp((t - 2.1) / 0.05) };
+  }, "width:auto");
+
+  // ═════ B · عدنا نصمملك موشن جرافيك وبوستات إعلانية: the orange opens as an iris out of the stamp ═════
+  const OR = layer((t) => {
+    if (t < 2.8 || t >= 7.86) return null;
+    if (t < 6.35) return circle(lerp(0, 2300, expoInOut(k(t, 2.8, 0.36))), 560, 1330);
+    if (t < 7.55) { const p = expoInOut(k(t, 6.35, 0.45)); return circle(lerp(2300, 330, p), 540, 1150); }
+    return circle(lerp(330, 0, expoIn(k(t, 7.55, 0.3))), 540, 1150);
+  });
+  div(`position:absolute;inset:0;background:${ORANGE}`, OR.el);
+  div("", OR.el).className = "paper";
+  line(OR, [{ w: "عدنا", t: 2.65, c: WHITE }, { w: "نصمملك", t: 2.91, c: BROWN }], { top: 520, size: 170, align: "c", out: 4.08 });
+  // «موشن جرافيك» inside a white block that wipes in from right to left, the words sharp from the first frame
+  const mg = piece(OR, `<div style="position:relative;padding:10px 35px 22px;font:400 150px/1.2 'DG Sahabah';font-synthesis:none;color:${ORANGE};white-space:nowrap;direction:rtl;text-align:center"><div class="it" style="inset:0;background:${WHITE};border-radius:24px"></div><span class="w">موشن جرافيك</span></div>`, 0, [3.45, 4.45], (t) => {
+    const out = expoIn(k(t, 4.08, 0.3));
+    return { ...at(540, 860 - 110 * out), o: 1 - out };
+  }, "width:auto");
+  items.push({ el: mg.querySelector(".it"), life: [3.45, 4.45], pose: (t) => ({ clip: `inset(0 0 0 ${(100 - 100 * expoOut(k(t, 3.45, 0.2))).toFixed(2)}%)` }) });
+  items.push({ el: mg.querySelector(".w"), life: [3.6, 4.45], pose: (t) => ({ s: 1.06 - 0.06 * expoOut(k(t, 3.6, 0.12)), o: clamp((t - 3.6) / 0.05) }) });
+  pngS(OR, "film-camera", 330, [2.85, 4.4], (t) => {
+    const a = -Math.PI * 0.15 + Math.PI * 1.55 * expoOut(k(t, 2.85, 1.3)) + 0.2 * k(t, 4.0, 0.4);
+    const ex = expoIn(k(t, 4.02, 0.32));
+    return { ...at(540 + 470 * Math.cos(a) + 900 * ex, 780 + 330 * Math.sin(a) * Math.cos(0.14) - 60), r: -8 + 10 * Math.sin(a), s: 1 };
+  });
+  line(OR, [{ w: "وبوستات", t: 4.2, c: WHITE }], { top: 470, size: 170, align: "c", out: 5.12 });
+  line(OR, [{ w: "إعلانية", t: 4.73, c: BROWN, in: "drop" }], { top: 680, size: 260, align: "c", out: 5.12 });
+  pngS(OR, "box-hand", 1000, [4.15, 5.5], (t) => ({ ...at(lerp(-560, 380, spring(t - 4.2, 0.82, 12)) - 1100 * expoIn(k(t, 5.1, 0.35)), 1440 - 30 * expoOut(k(t, 4.73, 0.3)) + 30 * expoInOut(k(t, 5.0, 0.3))), r: -4 }));
+
+  // ═════ D1 · تحجي بقوة براندك ═════
+  line(OR, [{ w: "تحجي", t: 5.25, c: WHITE }, { w: "بقوة", t: 5.63, c: BROWN }], { top: 330, size: 180, out: 6.25 });
+  pngS(OR, "megaphone", 760, [5.15, 6.6], (t) => ({ ...at(lerp(-420, 250, spring(t - 5.2, 0.82, 12)) - 60 * Math.sin(Math.PI * k(t, 6.04, 0.3)) - 900 * expoIn(k(t, 6.28, 0.3)), 1130), r: -16, s: 1 + 0.06 * Math.sin(Math.PI * k(t, 6.04, 0.3)) }));
+  // «براندك» blasted out of the megaphone's mouth
+  piece(OR, `<div style="font:400 250px 'DG Sahabah';font-synthesis:none;color:${WHITE};white-space:nowrap;direction:rtl">براندك</div>`, 0, [6.06, 6.62], (t) => {
+    const p = expoOut(k(t, 6.06, 0.42));
+    return { ...at(lerp(560, 600, p), lerp(1050, 720, p)), s: lerp(0.15, 1, p), r: lerp(-30, -6, p), y: lerp(1050, 720, p) - 700 * expoIn(k(t, 6.3, 0.3)) };
+  }, "width:auto");
+
+  // ═════ D2 · وتبيع بمكانك: the orange shrinks to a window with the shop owner in it ═════
+  line(base, [{ w: "وتبيع", t: 6.67 }], { top: 300, size: 170, out: 7.55 });
+  const place = line(base, [{ w: "بمكانك", t: 7.09, c: ORANGE, in: "rise" }], { top: 500, size: 230, out: 7.55 });
+  piece(base, `<svg width="560" height="40" viewBox="0 0 560 40"><path d="M10 26 Q 280 4 550 22" fill="none" stroke="${ORANGE}" stroke-width="12" stroke-linecap="round"/></svg>`, 560, [7.2, 8.0], (t) => ({ ...at(560, 820), clip: `inset(0 0 0 ${(100 - 100 * expoOut(k(t, 7.22, 0.35))).toFixed(1)}%)`, o: 1 - expoIn(k(t, 7.55, 0.3)) }));
+  png(OR, "shop-owner", 760, [6.55, 7.6], (t) => ({ ...at(560, 1300 + 500 * (1 - spring(t - 6.6, 0.85, 11)) + 600 * expoIn(k(t, 7.45, 0.2))) }));
+
+  // ═════ F · حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك: a camera over the page ═════
+  // the outer box tilts the whole page into a floor at the end; the world inside it moves under a camera
+  const F = { el: div("position:absolute;inset:0", stage) };
+  F.el.style.transformOrigin = "540px 1500px";
+  items.push({ el: F.el, life: [7.6, 12.75], pose: (t) => ({ ...at(0, 120 * expoIn(k(t, 12.25, 0.45))), rx: 72 * expoIn(k(t, 12.25, 0.45)), o: 1 - expoIn(k(t, 12.45, 0.25)) }) });
+  const FW = { el: div("position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0", F.el) };
+  const fcam = (t) => {
+    const cy = lerp(960, 1660, expoInOut(k(t, 8.22, 0.45)));
+    const cx = lerp(540, -860, expoInOut(k(t, 9.08, 0.34)));
+    const z = lerp(1, 0.62, expoInOut(k(t, 10.62, 0.5)));
+    return { x: 540 - z * cx, y: 960 - z * cy, s: z };
+  };
+  items.push({ el: FW.el, life: [7.6, 12.75], pose: fcam });
+  const big = (text, x, y, size, colour, t0, life, entry = "blur") => piece(FW, `<div style="font:400 ${size}px/1.2 'DG Sahabah';font-synthesis:none;color:${colour};white-space:nowrap;direction:rtl">${text}</div>`, 0, life, (t) => merge(at(x, y), ENTRY[entry](t - t0)), "width:auto");
+  // حركة: the binoculars look up at it; the camera goes down to «تشد العين»
+  big("حركة", 540, 640, 330, BROWN, 7.79, [7.79, 9.5], "stamp");
+  pngS(FW, "binoculars", 760, [7.75, 9.5], (t) => ({ ...at(540, 1330 + 700 * (1 - spring(t - 7.8, 0.85, 11))), r: -4 }));
+  big("تشد", 790, 2050, 210, BROWN, 8.37, [8.37, 9.5], "rise");
+  big("العين", 300, 2050, 210, ORANGE, 8.61, [8.61, 9.5], "rise");
+  // فكرة: a whip to the left, the bulb lit on the right
+  const P2 = -860;
+  piece(FW, `<div style="width:760px;height:760px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,110,.55),rgba(255,196,110,0))"></div>`, 760, [9.1, 10.9], (t) => ({ ...at(P2 + 230, 1640), s: 0.6 + 0.4 * expoOut(k(t, 9.3, 0.6)), o: 1 - expoIn(k(t, 10.6, 0.3)) }));
+  pngS(FW, "bulb", 380, [9.1, 10.9], (t) => ({ ...at(P2 + 230, 1640 - 900 * (1 - spring(t - 9.2, 0.8, 12)) - 1100 * expoIn(k(t, 10.6, 0.3))), r: 8 - 8 * spring(t - 9.2, 0.8, 12) }));
+  big("فكرة", P2 - 120, 1190, 300, BROWN, 9.19, [9.19, 10.9]);
+  const out2 = (t) => ({ y: -900 * expoIn(k(t, 10.6, 0.3)) });
+  piece(FW, `<div style="font:400 170px/1.2 'DG Sahabah';font-synthesis:none;color:${ORANGE};white-space:nowrap;direction:rtl"><span class="a">تقنع</span> <span class="b">الزبون</span></div>`, 0, [9.63, 10.95], (t) => merge(at(P2, 2120), merge(ENTRY.rise(t - 9.63), out2(t))), "width:auto");
+  // ونتيجة: the camera pulls out to the till and the bag; everything here is laid out for the wider view
+  big("ونتيجة", P2, 1660 - 650, 420, BROWN, 10.77, [10.77, 12.8], "stamp");
+  const sales = piece(FW, `<div style="font:400 260px/1.2 'DG Sahabah';font-synthesis:none;white-space:nowrap;direction:rtl"><span class="w" style="color:${BROWN}">ترفع</span><span class="w" style="color:${ORANGE};margin-right:.24em">مبيعاتك</span></div>`, 0, [11.45, 12.8], () => at(P2, 1660 - 210), "width:auto");
+  const [rise, sell] = sales.querySelectorAll(".w");
+  items.push({ el: rise, life: [11.45, 12.8], pose: (t) => ENTRY.rise(t - 11.45) });
+  items.push({ el: sell, life: [11.83, 12.8], pose: (t) => ENTRY.stamp(t - 11.83) });
+  pngS(FW, "register", 900, [10.7, 12.8], (t) => ({ ...at(P2 - 120, 1660 + 620 + 1400 * (1 - spring(t - 10.8, 0.85, 11))), s: 1 + 0.04 * Math.sin(Math.PI * k(t, 11.83, 0.3)) }));
+  pngS(FW, "bag-orange", 520, [10.7, 12.8], (t) => ({ ...at(P2 + 560, 1660 + 700 + 1400 * (1 - spring(t - 10.9, 0.85, 11))), r: 6 }));
+
+  // ═════ I · من أول 3 ثواني بإعلانك: the cards fall flat into a floor and a giant 3 stands up off it ═════
+  line(base, [{ w: "من", t: 12.67 }, { w: "أول", t: 12.93, c: ORANGE }], { top: 300, size: 190, out: 14.3 });
+  piece(base, `<div style="font:400 820px/1 'DG Sahabah';font-synthesis:none;color:${ORANGE}">3</div>`, 0, [13.1, 14.55], (t) => ({ ...at(420, 1010), rx: -90 + 90 * spring(t - 13.17, 0.8, 13), s: 1 + 3.5 * expoIn(k(t, 14.25, 0.3)), o: 1 - expoIn(k(t, 14.38, 0.15)) }), "width:auto;transform-origin:50% 92%");
+  line(base, [{ w: "ثواني", t: 13.35 }, { w: "بإعلانك", t: 13.73, c: ORANGE, in: "side" }], { top: 1420, size: 150, align: "c", out: 14.3 });
+  pngS(base, "stopwatch-hand", 380, [12.7, 14.5], (t) => ({ ...at(870, 1010 + 1100 * (1 - spring(t - 12.75, 0.84, 11)) + 1000 * expoIn(k(t, 14.2, 0.3))), r: -8 }));
+
+  // ═════ J1 · الزبون راح يلمس الكواليتي العالي: sharp only through the magnifier's glass ═════
+  line(base, [{ w: "الزبون", t: 14.47 }, { w: "راح", t: 14.87 }, { w: "يلمس", t: 15.09 }], { top: 330, size: 150, out: 16.3 });
+  const Q = { el: div("position:absolute;inset:0;filter:blur(8px);opacity:.5", stage) };
+  const QL = { el: div(`position:absolute;inset:0;background:${CREAM};transform-origin:0 0`, stage) };
+  div("", QL.el).className = "paper";
+  for (const P of [Q, QL]) {
+    line(P, [{ w: "الكواليتي", t: 15.37 }], { top: 760, size: 230, align: "c", out: 16.3 });
+    line(P, [{ w: "العالي", t: 15.5, c: ORANGE, in: "rise" }], { top: 1030, size: 230, align: "c", out: 16.3 });
+  }
+  const MAG = 640, GOFF = { x: -0.2 * MAG, y: -0.185 * MAG * (1430 / 1500) }, R0 = 0.247 * MAG, ZOOM = 1.15;
+  // where the centre of the glass is: in from the right, across «الكواليتي», down onto «العالي», away
+  const gPath = (t) => {
+    let x = lerp(1500, 780, spring(t - 14.6, 0.84, 10)), y = 900;
+    x = lerp(x, 330, expoInOut(k(t, 15.4, 0.4)));
+    const d = expoInOut(k(t, 15.8, 0.35));
+    x = lerp(x, 560, d); y = lerp(y, 1170, d);
+    const e = expoIn(k(t, 16.15, 0.3));
+    return { x: x + 700 * e, y: y - 1200 * e };
+  };
+  items.push({ el: QL.el, life: [15.3, 16.6], pose: (t) => {
+    const g = gPath(t);
+    return { x: g.x * (1 - ZOOM), y: g.y * (1 - ZOOM), s: ZOOM, clip: circle(R0 / ZOOM, g.x, g.y) };
+  } });
+  pngS(base, "magnifier", MAG, [14.55, 16.6], (t) => { const g = gPath(t); return { ...at(g.x - GOFF.x, g.y - GOFF.y) }; });
+
+  // ═════ J2 · يثق بمنتجك، ويدخل يطلب منك مباشرة: a diagonal orange panel sweeps in ═════
+  const diag = (p, q) => `polygon(${lerp(1700, -900, p)}px 0, ${lerp(1700, -900, q)}px 0, ${lerp(2400, -200, q)}px 1920px, ${lerp(2400, -200, p)}px 1920px)`;
+  const J2 = layer((t) => {
+    if (t < 16.26 || t >= 19.45) return null;
+    if (t < 19.0) return diag(-0.1, expoInOut(k(t, 16.26, 0.4)));
+    return diag(expoInOut(k(t, 19.0, 0.42)), 1.1);
+  });
+  div(`position:absolute;inset:0;background:${ORANGE}`, J2.el);
+  div("", J2.el).className = "paper";
+  line(J2, [{ w: "يثق", t: 16.41, c: WHITE, in: "stamp", fx: (t) => ({ y: 18 * Math.sin(Math.PI * 4 * k(t, 16.75, 0.45)) * (1 - k(t, 16.75, 0.45)) }) }], { top: 300, size: 330, align: "c", out: 17.45 });
+  line(J2, [{ w: "بمنتجك", t: 16.69, c: BROWN, in: "rise" }], { top: 740, size: 220, align: "c", out: 17.45 });
+  line(J2, [{ w: "ويدخل", t: 17.55, c: WHITE }, { w: "يطلب", t: 17.89, c: WHITE }, { w: "منك", t: 18.23, c: WHITE }], { top: 330, size: 124, out: 18.9 });
+  line(J2, [{ w: "مباشرة", t: 18.55, c: BROWN, in: "drop" }], { top: 560, size: 260, align: "c", out: 18.9 });
+  pngS(J2, "handshake", 1180, [16.35, 19.3], (t) => ({ ...at(540, 1330 + 700 * (1 - spring(t - 16.4, 0.86, 11)) + 22 * Math.sin(Math.PI * 4 * k(t, 16.75, 0.45)) * (1 - k(t, 16.75, 0.45))), s: 1 + 0.05 * Math.sin(Math.PI * k(t, 18.55, 0.3)) }));
+
+  // ═════ L · لأن ويانا راح يطلع إعلانك بمستوى يعزلك تماما عن منافسيك ═════
+  line(base, [{ w: "لأن", t: 19.09 }, { w: "ويانا", t: 19.65 }, { w: "راح", t: 20.21 }, { w: "يطلع", t: 20.43 }], { top: 300, size: 140, out: 21.5 });
+  line(base, [{ w: "إعلانك", t: 20.69, c: ORANGE }, { w: "بمستوى", t: 21.13 }], { top: 490, size: 148, out: 21.5 });
+  line(base, [{ w: "يعزلك", t: 21.75, c: ORANGE, in: "stamp" }], { top: 300, size: 260, align: "c", out: 23.35 });
+  line(base, [{ w: "تماما", t: 22.17, in: "rise" }], { top: 610, size: 200, align: "c", out: 23.35 });
+  line(base, [{ w: "عن", t: 22.69 }, { w: "منافسيك", t: 22.77 }], { top: 860, size: 140, align: "c", out: 23.05, exit: "left" });
+  pngS(base, "chess-king", 260, [19.0, 23.6], (t) => ({ ...at(540, 1330 + 800 * (1 - spring(t - 19.1, 0.85, 11)) + 900 * expoIn(k(t, 23.3, 0.3))), s: 1 + 0.06 * Math.sin(Math.PI * k(t, 21.75, 0.3)) }));
+  [[-1, 300, 0.0], [-1, 170, 0.12], [1, 170, 0.06], [1, 300, 0.18]].forEach(([side, dx, d], i) => pngS(base, "chess-pawn", 150, [19.0, 23.6], (t) => ({
+    ...at(540 + side * dx + side * 470 * expoOut(k(t, 21.75 + d, 0.6)), 1430 + 700 * (1 - spring(t - 19.2 - d, 0.85, 11)) + 900 * expoIn(k(t, 23.3, 0.3))), r: side * 14 * expoOut(k(t, 21.75 + d, 0.6)),
+  })));
+
+  // ═════ M1 · ويخلي الزبون يشتري منك مرة ومرتين وعشرة: a dark stage opens out of the king ═════
+  const M = layer((t) => (t < 23.3 || t >= 26.9 ? null : circle(lerp(0, 2300, expoInOut(k(t, 23.3, 0.42))), 540, 1250)));
+  div(`position:absolute;inset:0;background:${BROWN}`, M.el);
+  line(M, [{ w: "ويخلي", t: 23.57, c: WHITE }, { w: "الزبون", t: 23.93, c: WHITE }], { top: 300, size: 150, align: "c", out: 24.6 });
+  line(M, [{ w: "يشتري", t: 24.27, c: ORANGE, in: "stamp" }, { w: "منك", t: 24.63, c: WHITE }], { top: 500, size: 170, align: "c", out: 24.6 });
+  // the world the camera pulls back from, in three steps
+  const MW = { el: div("position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0", M.el) };
+  items.push({ el: MW.el, life: [23.3, 26.9], pose: (t) => {
+    const z = 1 - 0.2 * expoOut(k(t, 25.35, 0.45)) - 0.22 * expoOut(k(t, 25.97, 0.5));
+    return { x: 540 - z * 540, y: 960 - z * 1180, s: z };
+  } });
+  const BAGS = ["bag-orange", "bag-black", "bag-blue", "bag-black2"];
+  pngS(MW, "bag-orange", 360, [24.95, 26.9], (t) => ({ ...at(540, 1200), s: spring(t - 24.97, 0.7, 14), r: -5 }));
+  [[-1, 25.35], [1, 25.42]].forEach(([side, t0], i) => pngS(MW, BAGS[i + 1], 300, [t0, 26.9], (t) => ({ ...at(540 + side * 400, 1250 + 40 * i), s: spring(t - t0, 0.5, 13), r: side * 9 })));
+  // ten: bags burst out into an arc in depth behind the word; the far ones smaller and softer
+  const ARC = 11;
+  for (let j = 0; j < ARC; j++) {
+    const a = Math.PI * (0.08 + (0.84 * j) / (ARC - 1)), depth = 0.55 + 0.45 * Math.abs(Math.cos(a));
+    const tx = 540 - Math.cos(a) * 820, ty = 1250 - Math.sin(a) * 620, t0 = 25.97 + j * 0.018;
+    const el = pngS(MW, BAGS[j % 4], 300, [t0, 26.9], (t) => {
+      const p = expoOut(k(t, t0, 0.55));
+      return { ...at(lerp(540, tx, p), lerp(1250, ty, p)), s: lerp(0.2, depth, p), r: (j % 2 ? 1 : -1) * 12 * p, b: 6 * (1 - depth) };
+    });
+    el.style.zIndex = Math.round(depth * 10) - 10;
+  }
+  [["مرة", 24.97, WHITE, 200], ["ومرتين", 25.35, WHITE, 220]].forEach(([w, t0, c, size], i) => piece(M, `<div style="font:400 ${size}px/1.2 'DG Sahabah';font-synthesis:none;color:${c};white-space:nowrap;direction:rtl">${w}</div>`, 0, [t0, i ? 25.97 : 25.35], (t) => merge(at(540, 560), ENTRY.stamp(t - t0)), "width:auto"));
+  piece(M, `<div style="font:400 360px/1.2 'DG Sahabah';font-synthesis:none;color:${ORANGE};white-space:nowrap;direction:rtl">وعشرة</div>`, 0, [25.97, 26.9], (t) => merge(at(540, 1010), ENTRY.stamp(t - 25.97)), "width:auto").style.zIndex = 5;
+
+  // ═════ M2 · لأن شاف براند حقيقي قدامه: the page comes back as an iris over the stage ═════
+  const M2 = layer((t) => (t < 26.45 || t >= 28.5 ? null : circle(lerp(0, 2300, expoInOut(k(t, 26.45, 0.4))), 540, 1010)));
+  div(`position:absolute;inset:0;background:${CREAM}`, M2.el);
+  div("", M2.el).className = "paper";
+  line(M2, [{ w: "لأن", t: 26.67 }, { w: "شاف", t: 27.01 }], { top: 430, size: 150, out: 28.3 });
+  line(M2, [{ w: "براند", t: 27.21, c: ORANGE, in: "stamp" }], { top: 620, size: 300, out: 28.3 });
+  line(M2, [{ w: "حقيقي", t: 27.57 }, { w: "قدامه", t: 27.97 }], { top: 1010, size: 140, out: 28.3 });
+  png(M2, "binoculars-man", 470, [26.6, 28.6], (t) => ({ ...at(lerp(-300, 230, spring(t - 26.65, 0.86, 10)) - 800 * expoIn(k(t, 28.2, 0.3)), 1180), r: 2 * expoOut(k(t, 27.21, 0.4)) }));
+
+  // ═════ O1 · كافي تضيع جمهورك بتصاميم عادية، الكل يتخطاها، ابدأ اليوم ═════
+  line(base, [{ w: "كافي", t: 28.55 }, { w: "تضيع", t: 28.93 }], { top: 300, size: 170, out: 29.55 });
+  line(base, [{ w: "جمهورك", t: 29.15, c: ORANGE, in: "rise" }], { top: 520, size: 260, out: 29.55 });
+  line(base, [{ w: "بتصاميم", t: 29.65 }, { w: "عادية", t: 30.15, c: ORANGE }], { top: 800, size: 160, align: "c", out: 30.62, exit: "left" });
+  line(base, [{ w: "الكل", t: 30.85 }, { w: "يتخطاها", t: 30.99 }], { top: 330, size: 150, out: 31.5 });
+  line(base, [{ w: "ابدأ", t: 31.63, c: ORANGE, in: "stamp" }, { w: "اليوم", t: 32.05 }], { top: 500, size: 250, align: "c", out: 32.4 });
+  // the crowd rises in and pans slowly one way, at one pace, until the hand stops it
+  const crowdX = (t) => 420 - 520 * clamp((t - 28.5) / 4.05) - 24 * expoOut(k(t, 32.55, 0.25));
+  const drop = (t) => 800 * (1 - spring(t - 28.45, 0.86, 10)) + 900 * expoIn(k(t, 33.95, 0.4));
+  png(base, "crowd", 1100, [28.45, 34.6], (t) => ({ ...at(crowdX(t), 1530 + drop(t)) })).style.zIndex = 4;
+  png(base, "crowd2", 1080, [28.45, 34.6], (t) => ({ ...at(crowdX(t) + 1140, 1520 + drop(t)) })).style.zIndex = 4;
+
+  // ═════ O2 · بتصاميم توقف الزبون وتقفل وياه البيعة ═════
+  line(base, [{ w: "بتصاميم", t: 32.51 }], { top: 300, size: 160, out: 35.25 });
+  line(base, [{ w: "توقف", t: 33.09, c: ORANGE, in: "stamp" }, { w: "الزبون", t: 33.51 }], { top: 490, size: 172, out: 35.25 });
+  pngS(base, "stop-hand", 640, [32.4, 34.5], (t) => ({ ...at(560, 1500 + 1000 * (1 - spring(t - 32.5, 0.84, 16)) + 1100 * expoIn(k(t, 33.95, 0.4))), r: 4 })).style.zIndex = 5;
+  line(base, [{ w: "وتقفل", t: 34.05 }, { w: "وياه", t: 34.61 }], { top: 790, size: 160, out: 35.25 });
+  line(base, [{ w: "البيعة", t: 34.85, c: ORANGE, in: "stamp" }], { top: 990, size: 230, align: "c", out: 35.25 });
+  pngS(base, "padlock", 280, [34.0, 35.6], (t) => ({ ...at(540, lerp(-500, 1450, expoIn(k(t, 34.05, 0.32))) - 30 * Math.sin(Math.PI * k(t, 34.37, 0.25))), r: 5 * Math.sin(Math.PI * 3 * k(t, 34.85, 0.35)) * (1 - k(t, 34.85, 0.35)) }));
+
+  // ═════ R1 · تواصل ويانا بالخاص: the coin's circle opens again from the padlock ═════
+  const R = layer((t) => {
+    if (t < 35.25) return null;
+    if (t < 39.4) return circle(lerp(0, 2300, expoInOut(k(t, 35.25, 0.5))), 540, 1450);
+    if (t < 40.2) { const p = expoInOut(k(t, 39.4, 0.6)); return circle(lerp(2300, 22, p), lerp(540, 540, p), lerp(1450, 760, p)); }
+    if (t < 40.75) return circle(22, 540, 760);
+    return circle(lerp(22, 0, expoIn(k(t, 40.75, 0.2))), 540, 760);
+  });
+  div(`position:absolute;inset:0;background:${ORANGE}`, R.el);
+  div("", R.el).className = "paper";
+  line(R, [{ w: "تواصل", t: 35.53, c: WHITE }, { w: "ويانا", t: 35.81, c: BROWN }], { top: 340, size: 200, out: 36.6 });
+  line(R, [{ w: "بالخاص", t: 36.09, c: WHITE, in: "stamp" }], { top: 590, size: 250, align: "c", out: 36.6 });
+  pngS(R, "receiver", 600, [35.3, 36.95], (t) => ({ ...at(lerp(1500, 760, spring(t - 35.4, 0.84, 11)) + 900 * expoIn(k(t, 36.55, 0.35)), 1300), r: lerp(40, 0, spring(t - 35.4, 0.84, 11)) + 8 * Math.sin(Math.PI * 6 * k(t, 36.09, 0.45)) * (1 - k(t, 36.09, 0.45)) }));
+
+  // ═════ R2 · شوف أعمالنا، وخلي براندك يبيع صح ═════
+  line(R, [{ w: "شوف", t: 36.79, c: WHITE }, { w: "أعمالنا", t: 36.99, c: BROWN, in: "rise" }], { top: 300, size: 190, align: "c", out: 37.45 });
+  line(R, [{ w: "وخلي", t: 37.53, c: WHITE }, { w: "براندك", t: 38.05, c: WHITE }], { top: 290, size: 160, align: "c", out: 39.3 });
+  line(R, [{ w: "يبيع", t: 38.71, c: BROWN, in: "stamp" }, { w: "صح", t: 39.07, c: WHITE }], { top: 500, size: 230, align: "c", out: 39.3 });
+  // three phones fan up from the bottom, each playing one of my reels
+  [["dollar", 290, -13, 24, 36.82, 0.7], ["vizion", 540, 0, 0, 36.92, 0.3], ["logos-b", 790, 13, -24, 37.02, 0]].forEach(([clip, x, r, ry, t0, at0], i) => {
+    const el = piece(R, `<div style="position:relative;width:340px;height:720px;border-radius:60px;background:#0e0c0b;box-shadow:inset 0 0 0 3px #3b3431,0 40px 70px rgba(40,12,0,.45);padding:14px;box-sizing:border-box">
+      <video muted playsinline preload="auto" src="../ae-core-reel/media/clips/${clip}.webm" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:47px;background:#000"></video>
+      <div style="position:absolute;left:50%;top:30px;width:96px;height:28px;margin-left:-48px;border-radius:14px;background:#0e0c0b"></div></div>`, 340, [t0, 39.65], (t) => ({
+      ...at(x, 1390 + (i === 1 ? -40 : 30) + 1100 * (1 - spring(t - t0, 0.84, 11)) + 1200 * expoIn(k(t, 39.2, 0.4))), r, ry, rx: 6,
+    }));
+    el.style.zIndex = i === 1 ? 3 : 2;
+    VIDEOS.push({ v: el.querySelector("video"), t0, at: at0, life: [t0, 39.65] });
+  });
+
+  // ═════ end title: the dot is the coin; the frame folds back to the first one ═════
+  const gone = (t) => 1 - expoIn(k(t, 40.62, 0.3));
+  piece(base, `<div style="font:400 140px/1.2 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:ltr">@allawi.psd</div>`, 0, [39.75, 41.3], (t) => ({ ...merge(at(540, 930), ENTRY.blur(t - 39.8)), o: clamp((t - 39.8) / 0.15) * gone(t), b: 24 * (1 - expoOut(k(t, 39.8, 0.45))) + 20 * (1 - gone(t)) }), "width:auto");
+  piece(base, `<div style="font:400 92px/1.25 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:rtl">وخلي براندك <span style="color:${ORANGE}">يبيع صح</span></div>`, 0, [39.95, 41.3], (t) => ({ ...merge(at(540, 1095), ENTRY.rise(t - 40.0)), o: clamp((t - 40.0) / 0.1) * gone(t) }), "width:auto");
+  piece(base, `<div style="font:400 50px/1.3 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:rtl;opacity:.8">موشن جرافيك <span style="color:${ORANGE}">&nbsp;&#9679;&nbsp;</span> بوستات <span style="color:${ORANGE}">&nbsp;&#9679;&nbsp;</span> إعلانات</div>`, 0, [40.15, 41.3], (t) => ({ ...merge(at(540, 1215), ENTRY.blur(t - 40.2)), o: clamp((t - 40.2) / 0.12) * gone(t) }), "width:auto");
+
+  BEATS = (window.SOUND ? window.SOUND.WORDS.map((w) => w[0]) : []);
+}
+
+// a frame is ready when every phone screen shows its moment of the reel
+window.seek = (t) => {
+  drawFrame(t);
+  const waits = [];
+  for (const V of VIDEOS) {
+    if (t < V.life[0] || t >= V.life[1]) continue;
+    const want = Math.max(0, V.at + (t - V.t0));
+    if (Math.abs(V.v.currentTime - want) > 0.004) waits.push(new Promise((ok) => { V.v.addEventListener("seeked", ok, { once: true }); V.v.currentTime = want; setTimeout(ok, 2000); }));
+  }
+  return Promise.all(waits);
+};
+
+window.ready = (async () => {
+  await document.fonts.load("400 100px 'DG Sahabah'");
+  for (const src of ["../ae-core-reel/reel/sound.js", "sfx.js"]) await new Promise((r) => { const s = document.createElement("script"); s.src = src; s.onload = r; s.onerror = r; document.head.appendChild(s); });
+  build();
+  await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
+  await Promise.all(VIDEOS.map((V) => (V.v.readyState >= 2 ? 0 : new Promise((r) => { V.v.addEventListener("loadeddata", r, { once: true }); setTimeout(r, 5000); }))));
+  const q = new URLSearchParams(location.search);
+  await window.seek(q.has("t") ? +q.get("t") : 0);
+  return true;
+})();
+
+// preview with sound (from a local server): click to play from ?t=, click again to stop. The voice and the baked
+// sound design start on the same audio clock, and every frame is drawn from that clock, so picture and sound can't drift.
+let playing = null;
+async function play() {
+  if (playing) { playing.stop(); return; }
+  const ctx = new AudioContext({ sampleRate: 48000 }), D = 41.2, from = +(new URLSearchParams(location.search).get("t") || 0);
+  const voice = await ctx.decodeAudioData(await (await fetch("../ae-core-reel/media/audio/voice.wav")).arrayBuffer());
+  const bus = StudioSoundEngine.mix(await StudioSoundEngine.bake(SFX.CUES), D);
+  const sfx = ctx.createBuffer(2, bus.l.length, bus.sr);
+  sfx.copyToChannel(bus.l, 0); sfx.copyToChannel(bus.r, 1);
+  const at = ctx.currentTime + 0.1, srcs = [voice, sfx].map((b) => { const s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(at, from); return s; });
+  let raf = 0;
+  playing = { stop: () => { cancelAnimationFrame(raf); srcs.forEach((s) => s.stop()); ctx.close(); playing = null; } };
+  const tick = () => {
+    const t = from + ctx.currentTime - at;
+    if (t >= D) return playing && playing.stop();
+    window.seek(Math.max(from, t));
+    raf = requestAnimationFrame(tick);
+  };
+  tick();
+}
+document.addEventListener("click", play);
+</script>
+</body>
+</html>

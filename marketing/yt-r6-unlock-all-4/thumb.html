@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>R6 Unlock All 4</title>
+<style>
+@font-face { font-family: Shoulders; src: url(fonts/BigShouldersDisplay-VF.ttf); font-weight: 100 900; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; }
+.f { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0d1a33; }
+.f > * { position: absolute; }
+
+/* 1. the wall: the operators screen locked, smashed open where the hammer lands (wall.py) */
+.wall { inset: 0; }
+
+/* 2. Sledge, his hammer face in the hole; 3. the pieces of the locked screen flying out (wall.py) */
+.sledge { left: 420px; top: 68px; width: 1800px; filter: drop-shadow(-10px 24px 30px rgba(0, 0, 0, .6)); }
+.shards { inset: 0; }
+
+/* 4. title */
+.t { left: 34px; top: 14px; font: 900 250px/1 Shoulders; letter-spacing: -3px; white-space: nowrap; }
+.t span { display: block; }
+.t .back { color: #160a02; -webkit-text-stroke: 16px #120701;
+  text-shadow: 1px 3px 0 #2c1405, 2px 6px 0 #2c1405, 3px 9px 0 #261104, 4px 12px 0 #200e03, 5px 15px 0 #1a0b02,
+    6px 18px 0 #140802, 7px 21px 0 #0e0501, 0 34px 40px rgba(0, 0, 0, .9), 0 60px 90px rgba(0, 0, 0, .55); }
+.t .face { position: absolute; left: 0; top: 0;
+  background: url(img/brass.jpg) center / 100% 100%, linear-gradient(180deg, #fffbd6 0%, #fff04a 18%, #ffd21f 42%, #ffa412 70%, #df6a08 100%);
+  background-blend-mode: soft-light, normal; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.t .shine { position: absolute; left: 0; top: 0; color: transparent;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .85) 0%, rgba(255, 255, 255, 0) 16%);
+  -webkit-background-clip: text; background-clip: text; mix-blend-mode: screen; }
+
+/* finish */
+.vig { inset: 0; background:
+  linear-gradient(180deg, rgba(4, 8, 18, .55) 0%, rgba(4, 8, 18, 0) 26%),
+  linear-gradient(0deg, rgba(4, 8, 18, .45) 0%, rgba(4, 8, 18, 0) 18%),
+  linear-gradient(90deg, rgba(4, 8, 18, .4) 0%, rgba(4, 8, 18, 0) 12%, rgba(4, 8, 18, 0) 88%, rgba(4, 8, 18, .4) 100%); }
+</style>
+</head>
+<body>
+<div class="f" id="thumb">
+  <img class="wall" src="img/wall.jpg">
+  <img class="sledge" src="img/sledge.png">
+  <img class="shards" src="img/shards.png">
+  <div class="vig"></div>
+  <div class="t"><span class="back">UNLOCK ALL</span><span class="face">UNLOCK ALL</span><span class="shine">UNLOCK ALL</span></div>
+</div>
+<script>
+document.fonts.load('900 250px Shoulders')
+  .then(() => Promise.all([...document.images].map((i) => i.decode())))
+  .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

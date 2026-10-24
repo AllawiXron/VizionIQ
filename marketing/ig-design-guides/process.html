@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>allawi.psd · design process</title>
+<link rel="stylesheet" href="../ig-highlights/assets/fonts/fonts.css" />
+<link rel="stylesheet" href="guides.css" />
+<style>
+/* the six-station tracker */
+.trk { position:absolute; left:64px; right:64px; top:150px; display:flex; justify-content:space-between; align-items:center; font-size:22px; font-weight:600 }
+.trk .bar { display:flex; align-items:center; direction:rtl }
+.trk .bar i { display:block; width:22px; height:22px; border:3px solid var(--ink) }
+.trk .bar i.done { background:var(--ink) }
+.trk .bar i.now { background:var(--or); border-color:var(--or) }
+.trk .bar b { display:block; width:30px; height:3px; background:var(--ink) }
+
+/* the post being built, at 540x675 */
+.art { position:relative; width:540px; height:675px; overflow:hidden; background:#fff; direction:rtl }
+.art .k { position:absolute; top:40px; right:32px; font:600 22px 'IBM Plex Sans Arabic' }
+.art .h { position:absolute; top:70px; right:32px; font-family:'DG Sahabah'; font-weight:400; font-size:66px; line-height:1.12 }
+.art .b { position:absolute; top:238px; right:32px; width:300px; font:400 18px/1.55 'IBM Plex Sans Arabic' }
+.art .ph { position:absolute; left:32px; right:32px; top:310px; bottom:96px; overflow:hidden }
+.art .lg { position:absolute; bottom:34px; right:32px; font-family:'DG Sahabah'; font-weight:400; font-size:34px; line-height:1 }
+.art .cta { position:absolute; bottom:34px; left:32px; font:600 17px 'IBM Plex Sans Arabic'; padding:6px 16px 9px; border:2px solid currentColor }
+.art .bar { position:absolute; background:#d8d2c8 }
+.art .tag { position:absolute; width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:var(--or); color:var(--cream); font:800 18px 'Alexandria'; z-index:3 }
+.art .col { position:absolute; top:0; bottom:0; background:rgba(226,84,27,.12) }
+.art .mg { position:absolute; border:1.5px dashed var(--or) }
+.frame { position:absolute; padding:12px; background:#fff; box-shadow:0 18px 36px rgba(31,21,16,.18), 0 2px 4px rgba(31,21,16,.12) }
+
+.side { position:absolute; right:64px; width:330px }
+.side b { display:block; font-size:30px; font-weight:700; line-height:1.3 }
+.side p { font-size:23px; line-height:1.6; color:var(--ink2); margin-top:8px }
+.side .rw { border-top:2px solid var(--ink); padding-top:16px; margin-bottom:34px }
+.flow { position:absolute; left:64px; right:64px; display:grid; grid-template-columns:repeat(3, 1fr); gap:56px 40px }
+.flow > div { position:relative; border:2.5px solid var(--ink); padding:20px 22px 22px; background:rgba(251,243,230,.6) }
+.flow .n { position:absolute; top:-18px; right:18px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; background:var(--or); color:var(--cream); font:800 18px 'Alexandria' }
+.flow b { display:block; font-size:34px; font-weight:700 }
+.flow small { display:block; font-family:'Alexandria'; font-weight:800; font-size:13px; letter-spacing:.24em; color:var(--orInk); direction:ltr; text-align:right; margin-top:4px }
+.flow p { font-size:22px; line-height:1.5; color:var(--ink2); margin-top:8px }
+.note { position:absolute; background:var(--cream); border:2.5px solid var(--ink); padding:30px 36px; box-shadow:10px 10px 0 var(--ink) }
+.note .ln { font-size:30px; line-height:1.4; padding:10px 0; position:relative; width:fit-content }
+.note .ln.x { color:var(--mute) }
+.note .ln.x::after { content:''; position:absolute; right:-6px; left:-6px; top:52%; height:3px; background:var(--or); transform:rotate(-1.2deg) }
+.note .ln.keep { font-weight:700; border-bottom:none }
+.swatch { position:absolute; left:64px; right:64px; height:86px; display:flex; border:2.5px solid var(--ink) }
+.swatch div { display:flex; align-items:flex-end; padding:10px 14px; font:800 20px 'Alexandria'; direction:ltr }
+.thumbs { position:absolute; left:64px; right:64px; display:flex; justify-content:space-between; align-items:flex-end }
+.thumbs .t { display:flex; flex-direction:column; align-items:center; gap:14px; font-size:26px; font-weight:700 }
+.thumbs .t span { font-size:21px; font-weight:400; color:var(--ink2) }
+</style>
+</head>
+<body>
+
+<!-- 1 cover -->
+<section class="f" id="process-1">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:180px; font-size:150px; line-height:1.1">طريقتي<br>بتصميم<br><mark>أي بوست</mark></div>
+  <div class="lat" style="position:absolute; right:68px; top:720px; font-size:20px; color:var(--mute)">DESIGN PROCESS · 6 STEPS</div>
+  <div class="thumbs" id="coverThumbs" style="top:820px"></div>
+  <div class="grain"></div>
+</section>
+
+<!-- 2 the six stations -->
+<section class="f" id="process-2">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:200px; font-size:76px">أغلب الناس يبدون باللون..<br><mark>وهنا الغلط.</mark></div>
+  <div class="sub" style="top:420px">التصميم يبدي قبل ما تفتح فوتوشوب. هاي المحطات اللي أمشي بيها بكل بوست، بالترتيب، وكل محطة تبني على اللي قبلها.</div>
+  <div class="flow" style="top:640px">
+    <div><span class="n">1</span><b>الرسالة</b><small>MESSAGE</small><p>جملة وحدة لازم توصل</p></div>
+    <div><span class="n">2</span><b>الترتيب</b><small>HIERARCHY</small><p>شنو ينقرى أول</p></div>
+    <div><span class="n">3</span><b>الشبكة</b><small>GRID</small><p>هوامش وأعمدة ثابتة</p></div>
+    <div><span class="n">4</span><b>الخط</b><small>TYPE</small><p>خطين بالكثير</p></div>
+    <div><span class="n">5</span><b>اللون</b><small>COLOUR</small><p>لون واحد يقود</p></div>
+    <div><span class="n">6</span><b>الفحص</b><small>CHECK</small><p>قبل ما يوصل للزبون</p></div>
+  </div>
+  <div class="grain"></div>
+</section>
+
+<!-- 3 message -->
+<section class="f" id="process-3" data-step="1" data-name="الرسالة">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:220px; font-size:76px">الزبون يشوف البوست ثانية..<br><mark>شنو لازم يفهم؟</mark></div>
+  <div class="sub" style="top:470px">صاحب المشروع يريد يحجي عن كلشي. شغلي أختار جملة وحدة، والباقي يروح للكابشن.</div>
+  <div class="note" style="left:150px; right:150px; top:660px; transform:rotate(-1deg)">
+    <div class="ln x">عدنا قهوة مختصة</div>
+    <div class="ln x">ثلاث فروع ببغداد</div>
+    <div class="ln x">توصيل لكل المناطق</div>
+    <div class="ln x">حلويات طازجة كل يوم</div>
+    <div class="ln keep"><mark>الجمعة.. الكوب الثاني علينا</mark></div>
+  </div>
+  <div class="lat" style="position:absolute; left:64px; top:1190px; font-size:15px; color:var(--mute)">EXAMPLE · SAMRA COFFEE</div>
+  <div class="grain"></div>
+</section>
+
+<!-- 4 hierarchy -->
+<section class="f" id="process-4" data-step="2" data-name="الترتيب">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:220px">العين ما تقرى كلشي..<br><mark>تقرى بالترتيب اللي تحطه.</mark></div>
+  <div class="frame" style="left:64px; top:470px"><div class="art" data-stage="wire" data-zoom="0.92"></div></div>
+  <div class="side" style="top:480px">
+    <div class="rw"><b>١ العرض</b><p>أكبر شي وأول شي. هو سبب البوست.</p></div>
+    <div class="rw"><b>٢ الصورة</b><p>تثبت العرض وتفتح الشهية.</p></div>
+    <div class="rw"><b>٣ الاسم والخطوة</b><p>من نحن وشنو يسوي الزبون هسه.</p></div>
+  </div>
+  <div class="grain"></div>
+</section>
+
+<!-- 5 grid -->
+<section class="f" id="process-5" data-step="3" data-name="الشبكة">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:220px">قبل أي خط أو لون..<br><mark>أرسم الشبكة.</mark></div>
+  <div class="frame" style="left:64px; top:470px"><div class="art" data-stage="grid" data-zoom="0.92"></div></div>
+  <div class="side" style="top:480px">
+    <div class="rw"><b>هامش <span class="num">64</span> بكسل</b><p>من كل جهة، بكل بوستات البراند. هذا اللي يخلي الصفحة تبين مرتبة.</p></div>
+    <div class="rw"><b><span class="num">4</span> أعمدة</b><p>كل عنصر يبدي وينتهي على عمود. ماكو شي يطفي بالهوا.</p></div>
+  </div>
+  <div class="grain"></div>
+</section>
+
+<!-- 6 type -->
+<section class="f" id="process-6" data-step="4" data-name="الخط">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:220px">خطين بالكثير..<br><mark>والفرق بالحجم واضح.</mark></div>
+  <div class="frame" style="left:64px; top:470px"><div class="art" data-stage="type" data-zoom="0.92"></div></div>
+  <div class="side" style="top:480px">
+    <div class="rw"><b>خط للعنوان</b><p class="ds" style="font-size:44px; color:var(--ink); line-height:1.3">الكوب الثاني</p></div>
+    <div class="rw"><b>خط للنص</b><p>كل جمعة من الصبح لحد الظهر.</p></div>
+    <div class="rw"><b>العنوان <span class="num">3.5×</span> النص</b><p>لو الفرق صغير، يبين غلطة مو قرار.</p></div>
+  </div>
+  <div class="grain"></div>
+</section>
+
+<!-- 7 colour -->
+<section class="f" id="process-7" data-step="5" data-name="اللون">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:220px">لون واحد يقود..<br><mark>والباقي يسانده.</mark></div>
+  <div class="frame" style="left:64px; top:470px"><div class="art" data-stage="color" data-zoom="0.92"></div></div>
+  <div class="side" style="top:480px">
+    <div class="rw"><b>الخلفية تاخذ المساحة</b><p>لون هادي يرتاح عليه كلشي.</p></div>
+    <div class="rw"><b>الغامق للقراءة</b><p>العنوان والنص بلون واحد غامق، مو أسود صافي.</p></div>
+    <div class="rw"><b>البرتقالي للكلمة المهمة بس</b><p>إذا صار بكل مكان، ما يبقى مهم.</p></div>
+  </div>
+  <div class="swatch" style="top:1140px"><div style="flex:60; background:#f4ead9">60%</div><div style="flex:30; background:var(--ink); color:var(--cream)">30%</div><div style="flex:10; background:var(--or); color:var(--cream)">10%</div></div>
+  <div class="grain"></div>
+</section>
+
+<!-- 8 check -->
+<section class="f" id="process-8" data-step="6" data-name="الفحص">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:220px; font-size:76px">قبل ما أسلم..<br><mark>أشوفه مثل ما يشوفه الزبون.</mark></div>
+  <div class="thumbs" style="top:500px">
+    <div class="t"><div class="frame" style="position:relative; padding:8px"><div class="art" data-stage="color" data-zoom="0.5" data-fx="blur"></div></div>غبشه<span>العرض يبين أول؟</span></div>
+    <div class="t"><div class="frame" style="position:relative; padding:8px"><div class="art" data-stage="color" data-zoom="0.5" data-fx="gray"></div></div>حوله رمادي<span>العنوان بعده يبين؟</span></div>
+    <div class="t"><div class="frame" style="position:relative; padding:8px"><div class="art" data-stage="color" data-zoom="0.22"></div></div>صغره<span>ينقرى بالفيد؟</span></div>
+  </div>
+  <div class="grain"></div>
+</section>
+
+<!-- 9 result -->
+<section class="f ink" id="process-9">
+  <div class="tx"></div>
+  <div class="t1 ds" style="top:170px">من جملة وحدة..<br><mark>لبوست يبيع.</mark></div>
+  <div class="frame" style="left:50%; top:430px; transform:translateX(-50%) rotate(-1.5deg); background:#fbf3e6"><div class="art" data-stage="color" data-zoom="1.05"></div></div>
+  <div class="lat" style="position:absolute; left:0; right:0; text-align:center; top:1180px; font-size:16px; color:rgba(251,243,230,.5)">SAMRA COFFEE · EXAMPLE BRAND</div>
+  <div class="grain"></div>
+</section>
+
+<!-- 10 call to action -->
+<section class="f orange" id="process-10">
+  <div class="tx"></div>
+  <div class="hd"><span class="ds">allawi.psd</span><span class="lat" style="color:var(--ink)">DESIGN PROCESS</span></div>
+  <div style="position:absolute; top:112px; left:64px; right:64px; height:2px; background:var(--ink)"></div>
+  <div class="t1 ds" style="top:300px; font-size:112px; line-height:1.15">تريدني أمشي<br><span style="color:var(--cream)">بهالطريقة</span><br>على بوستاتك؟</div>
+  <div class="sub" style="top:780px; font-size:38px">احفظ البوست، وراسلني على الخاص.</div>
+  <div style="position:absolute; right:64px; left:64px; top:960px; border-top:2px solid var(--ink); padding-top:26px; display:flex; justify-content:space-between; align-items:center">
+    <div style="font-size:34px; font-weight:600; line-height:1.45">رسالة، ترتيب، شبكة<br>خط، لون، وفحص</div>
+    <div class="ds" style="font-size:54px; direction:ltr">@allawi.psd</div>
+  </div>
+  <div class="grain"></div>
+</section>
+
+<script>
+  // the example post at each stage of the process
+  const POST = {
+    k: 'عرض الجمعة', h: 'الكوب الثاني<br>علينا.', b: 'كل جمعة من الصبح لحد الظهر، بكل فروع سمرة.', lg: 'سمرة', cta: 'اطلب من الفرع',
+  };
+  function art(stage) {
+    if (stage === 'wire' || stage === 'grid') {
+      let h = `<div class="bar" style="top:42px; right:32px; width:120px; height:18px"></div>
+        <div class="bar" style="top:78px; right:32px; width:330px; height:56px; background:#b9b0a4"></div>
+        <div class="bar" style="top:146px; right:32px; width:200px; height:56px; background:#b9b0a4"></div>
+        <div class="bar" style="top:240px; right:32px; width:300px; height:12px"></div><div class="bar" style="top:262px; right:32px; width:220px; height:12px"></div>
+        <div class="bar" style="left:32px; right:32px; top:310px; bottom:96px; background:#cfc8bc"><svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%; height:100%"><path d="M0 0 L100 100 M100 0 L0 100" stroke="#b9b0a4" stroke-width=".6" vector-effect="non-scaling-stroke"/></svg></div>
+        <div class="bar" style="bottom:36px; right:32px; width:90px; height:30px; background:#b9b0a4"></div><div class="bar" style="bottom:36px; left:32px; width:130px; height:30px"></div>`;
+      if (stage === 'wire') h += `<span class="tag" style="top:84px; left:120px">1</span><span class="tag" style="top:440px; left:240px">2</span><span class="tag" style="bottom:34px; right:136px">3</span>`;
+      if (stage === 'grid') {
+        const cw = (540 - 64 - 3 * 16) / 4;
+        for (let i = 0; i < 4; i++) h += `<div class="col" style="right:${32 + i * (cw + 16)}px; width:${cw}px"></div>`;
+        h += `<div class="mg" style="inset:32px"></div>`;
+      }
+      return h;
+    }
+    const col = stage === 'color';
+    const bg = col ? '#f4ead9' : '#fff', ink = col ? '#1f1510' : '#1f1510', acc = col ? '#c2441a' : '#1f1510';
+    return `<div style="position:absolute; inset:0; background:${bg}"></div>
+      <div class="k" style="color:${acc}">${POST.k}</div>
+      <div class="h" style="color:${ink}">الكوب الثاني<br><span style="color:${acc}">علينا.</span></div>
+      <div class="b" style="color:${col ? '#3a2a20' : ink}">${POST.b}</div>
+      <div class="ph" style="${col ? '' : 'filter:grayscale(1) contrast(.85) brightness(1.08)'}; background:url(../ig-design-tips/renders/scene.jpg) 50% 66%/auto 150%"></div>
+      <div class="lg" style="color:${ink}">${POST.lg}</div>
+      <div class="cta" style="color:${col ? '#c2441a' : ink}">${POST.cta}</div>`;
+  }
+  document.querySelectorAll('.art').forEach((a) => {
+    const z = parseFloat(a.dataset.zoom || 1);
+    a.innerHTML = art(a.dataset.stage);
+    a.style.zoom = z;
+    if (a.dataset.fx === 'blur') a.style.filter = 'blur(7px)';
+    if (a.dataset.fx === 'gray') a.style.filter = 'grayscale(1)';
+  });
+  // cover: the same post at four of the stations, small, left to right in the order made
+  document.getElementById('coverThumbs').innerHTML = [['wire', 'ترتيب'], ['grid', 'شبكة'], ['type', 'خط'], ['color', 'لون']].map(([s, n], i) =>
+    `<div class="t"><div class="frame" style="position:relative; padding:6px"><div class="art" style="zoom:.39">${art(s)}</div></div><span class="num" style="color:var(--orInk); font-size:18px">0${i + 2}</span>${n}</div>`).join('');
+
+  // header, tracker, footer
+  const all = [...document.querySelectorAll('.f')];
+  all.forEach((f, i) => {
+    if (f.classList.contains('orange')) return;
+    f.insertAdjacentHTML('afterbegin', `<div class="hd"><span class="ds">allawi.psd</span><span class="lat">DESIGN PROCESS</span></div>`);
+    const st = parseInt(f.dataset.step || 0);
+    if (st) {
+      const bar = [1, 2, 3, 4, 5, 6].map((n) => `<i class="${n < st ? 'done' : n === st ? 'now' : ''}"></i>`).join('<b></b>');
+      f.insertAdjacentHTML('afterbegin', `<div class="trk"><span>المحطة <span class="num">${st}</span> من <span class="num">6</span>: ${f.dataset.name}</span><span class="bar">${bar}</span></div>`);
+    }
+    f.insertAdjacentHTML('beforeend', `<div class="ft"><span class="no">${i + 1}</span><span class="sw">SWIPE ‹‹‹</span></div>`);
+  });
+  document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
