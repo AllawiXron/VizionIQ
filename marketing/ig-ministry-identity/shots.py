@@ -24,8 +24,8 @@ def res(s, preview, samples=128):
     s.cycles.samples = 24 if preview else samples
 
 
-def cam(loc, target, lens, fstop=None):
-    """a portrait camera at loc (cm) looking at target (cm); fstop sets a shallow focus on the target"""
+def cam(loc, target, lens, fstop=None, focus=None):
+    """a portrait camera at loc (cm) looking at target (cm); fstop sets a shallow focus on focus (cm), the target by default"""
     s = bpy.context.scene
     if s.camera:
         bpy.data.objects.remove(s.camera)
@@ -40,7 +40,7 @@ def cam(loc, target, lens, fstop=None):
     ob.rotation_euler = d.to_track_quat("-Z", "Y").to_euler()
     if fstop:
         c.dof.use_dof = True
-        c.dof.focus_distance = d.length
+        c.dof.focus_distance = (Vector(focus) * CM - ob.location).length if focus else d.length
         c.dof.aperture_fstop = fstop
     s.camera = ob
 
@@ -116,10 +116,9 @@ def foil(preview):
 def grid(preview):
     s = scene(preview)
     st.surface(STONE)
-    st.sheet("letterhead", 21.0, 29.7, 6.0, 4.0, 9)
-    st.sheet("grid-sheet", 21.0, 29.7, -1.0, -1.0, -4, z=0.012)
+    st.sheet("grid-sheet", 21.0, 29.7, -1.0, -1.0, -4)
     st.lights(elev=30, azim=150, soft=2.5, power=4.4)
-    cam((-2, -30, 44), (-1, 0, 0), 50, 5.6)
+    cam((-2, -26, 46), (-1, 4.0, 0), 50, 5.6)            # the sheet low in the frame, stone above it for the words
     return s
 
 
@@ -151,7 +150,7 @@ def letterhead(preview):
 def stationery(preview):
     s = st.stationery(preview)
     res(s, preview, 128)
-    cam((-1.5, -9.0, 50), (-1.5, -6.0, 0), 50)          # framed low, so stone shows under the envelope
+    cam((-1.5, -12.0, 50), (-1.5, -9.0, 0), 50)         # framed low, so stone shows under the envelope
     return s
 
 
@@ -170,7 +169,7 @@ def phone(preview):
     badge_set(-11.0, 7.0, 14)
     st.phone(1.0, -0.5, -7)
     st.lights(elev=26, azim=140, soft=2.0, power=4.4)
-    cam((3, -17, 31), (1.0, 2.0, 0.8), 70, 2.8)          # the phone high in the frame, stone below it
+    cam((3, -23, 29), (1.0, -5.0, 0.8), 70, 2.8, focus=(1.0, -0.5, 0.8))   # the phone high in the frame, stone below it
     return s
 
 
