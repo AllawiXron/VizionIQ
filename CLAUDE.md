@@ -47,6 +47,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   tilted phones playing his real reels (phones are fine there, showing his own work). He edits in EffectCraft
   (open-source After Effects clone, `.ecproj` JSON, runs AE-style scripts): the reel ships as an editable project from
   `marketing/coin-allawi-reel/effectcraft/pack.sh` (24 Oct).
+- Meta ads (24 Oct): the user runs the Orange Coin reel as a Messages ad himself ($10/day, all Iraq, online sellers) and
+  sends the Ads Manager report instead of connecting a connector. Read it, judge cost per conversation, the 3-second
+  hook rate and how many DMs were real sellers, and suggest changes only after the first 4–5 days of learning.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
