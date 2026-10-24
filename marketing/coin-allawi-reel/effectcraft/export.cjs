@@ -45,6 +45,53 @@ const BROWSER = fs.readdirSync("/opt/pw-browsers").filter((d) => d.startsWith("c
     if (l.src) { l.file = local(l.src); delete l.src; }
     if (l.raster !== undefined) { l.file = drawings[l.raster]; l.name = ["underline", "bulb glow"][l.raster] || l.name; delete l.raster; }
   }
+  // layer bars only where something shows, on whole frames
+  const frame = (t) => Math.round(t * reel.fps) / reel.fps;
+  for (const c of reel.comps) for (const l of c.layers) {
+    if (l.seen) { l.in = Math.max(l.in, l.seen[0]); l.out = Math.min(l.out, l.seen[1]); }
+    delete l.seen;
+    l.in = frame(l.in);
+    l.out = frame(l.out);
+  }
+  // the voice, line by line, as markers on the main comp: words that follow each other within 0.45 s are one line
+  const { SOUND } = require("../../ae-core-reel/reel/sound.js");
+  const words = [];
+  for (const c of reel.comps) for (const l of c.layers) if (l.type === "text") words.push(l);
+  const lines = [];
+  for (const [t] of SOUND.WORDS) {
+    const w = words.filter((l) => Math.abs(l.in - t) < 0.06).sort((a, b) => a.in - b.in)[0];
+    if (!w) continue;
+    const last = lines[lines.length - 1];
+    if (last && t - last.end < 0.45) { last.text += " " + w.text; last.end = t; } else lines.push({ t, end: t, text: w.text });
+  }
+  reel.markers = lines.map((l) => ({ t: frame(l.t), text: l.text }));
+  // where each scene of reel.html begins: the wallet, the orange, the page, the 3, the lens, the panel, the chess, the dark
+  // stage, the page again, the crowd, the last orange
+  reel.scenes = [0, 2.8, 7.6, 12.6, 14.4, 16.26, 19.0, 23.3, 26.45, 28.3, 35.25];
+  // and every word as a marker on the voice layer, which the camera's push reads
+  reel.words = SOUND.WORDS.map(([t]) => {
+    const w = words.find((l) => Math.abs(l.in - t) < 0.06);
+    return { t, text: w ? w.text : "" };
+  });
+  // each scene comp starts at its own zero and lasts as long as it is on screen, the way scenes are cut by hand
+  const shift = (track, d) => track && track.t && (track.t = track.t.map((t) => frame(t - d)));
+  function retime(c, d) {
+    for (const l of c.layers) {
+      l.in = frame(l.in - d);
+      l.out = frame(l.out - d);
+      if (l.start !== undefined) l.start = frame(l.start - d);
+      for (const p of ["px", "py", "scale", "rot", "opacity", "rx", "ry", "blur", "mask"]) shift(l[p], d);
+      if (l.type === "comp") {
+        const sub = reel.comps[l.comp];
+        sub.duration = frame(l.out - l.in);
+        l.start = l.in;
+        // its layers are still on the reel's own clock: shift them by where this comp starts on that clock
+        retime(sub, d + l.in);
+      }
+    }
+  }
+  reel.comps[reel.main].duration = reel.duration;
+  retime(reel.comps[reel.main], 0);
   // sound: the voice and the cues as After Effects gets them
   const AE = path.join(ROOT, "out", "ae");
   fs.copyFileSync(path.join(AE, "voice.wav"), path.join(FOOT, "voice.wav"));

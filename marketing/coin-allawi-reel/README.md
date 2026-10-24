@@ -84,9 +84,15 @@ can't be written outside After Effects:
   - the page camera and the camera worlds over the page and the stage become nulls;
   - the phones are 3D comps playing my reels behind a 1400 px camera.
 
-  Every pose is sampled at 60 fps and keyed only where a straight line between keys would miss it (about 10,000
-  linear keys, position split into X and Y). A comp made for one piece gets room around it, so the dots under a
-  final ya and the phones' shadows aren't cut at its edge.
+  Keys are set the way I set them by hand: one where a move starts, lands or turns back, with a Bezier ease between
+  (speed and influence, rounded to whole percents, Easy Ease where it fits), and one more only where the ease can't
+  follow the move within 2% of it. About 2,200 keys in all, a dozen on a typical word; position is split into X and
+  Y. Each layer's bar covers only the frames it shows. Each scene comp starts at its own zero and lasts as long as
+  the scene, placed on the main timeline where it plays. A comp made for one piece gets room around it, so the dots
+  under a final ya and the phones' shadows aren't cut at its edge.
+- The main comp has the voice lines as comp markers and every word as a marker on VOICE. The camera null's slow push
+  is keyed; the small push on every word is an expression reading those markers, and the shake when the stop hand
+  lands is an expression too. Main-comp layers carry one label colour per scene.
 - `export.cjs` writes `out/ec/reel.json` and `out/ec/footage` (cut-outs, paper, the phone reels without tags, the
   two drawings as PNGs, the voice and the 47 sound cues).
 - `build_reel.jsx` builds the project through EffectCraft's scripting (its After Effects object model). The voice

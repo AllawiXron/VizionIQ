@@ -32,12 +32,23 @@
   }
   var tr = function (L, m) { return L.property("ADBE Transform Group").property(m); };
 
-  // a track from reel.json: one value, or keys at times
-  function put(prop, track, map) {
+  // a track from reel.json: one value, or keys at times with their Bezier eases [in speed, in influence, out speed,
+  // out influence], one per dimension
+  function put(prop, track, map, dims) {
     if (!track) return;
     map = map || function (v) { return v; };
     if (track.t.length === 1) { prop.setValue(map(track.v[0])); return; }
     for (var i = 0; i < track.t.length; i++) prop.setValueAtTime(track.t[i], map(track.v[i]));
+    if (!track.e) return;
+    for (i = 0; i < track.t.length; i++) {
+      var e = track.e[i], ins = [], outs = [];
+      for (var d = 0; d < (dims || 1); d++) {
+        ins.push(new KeyframeEase(e[0], e[1]));
+        outs.push(new KeyframeEase(e[2], e[3]));
+      }
+      prop.setInterpolationTypeAtKey(i + 1, KeyframeInterpolationType.BEZIER);
+      prop.setTemporalEaseAtKey(i + 1, ins, outs);
+    }
   }
   function shape(p) {
     var s = new Shape();
@@ -76,9 +87,10 @@
   function make(C, l) {
     var L;
     if (l.type === "solid") {
-      L = C.layers.addSolid([l.color[0], l.color[1], l.color[2]], l.name, l.w, l.h, 1, D);
+      L = C.layers.addSolid([l.color[0], l.color[1], l.color[2]], l.name, l.w, l.h, 1, C.duration);
+      try { L.source.parentFolder = bin("solids"); } catch (err) {}
     } else if (l.type === "null") {
-      L = C.layers.addNull(D);
+      L = C.layers.addNull(C.duration);
     } else if (l.type === "comp") {
       L = C.layers.add(comps[l.comp]);
     } else if (l.type === "footage") {
@@ -103,9 +115,9 @@
       if (l.stroke) rect(contents, "edge", l.w - l.strokeW, l.h - l.strokeW, Math.max(0, l.radius - l.strokeW / 2), null, [l.stroke[0], l.stroke[1], l.stroke[2]], l.strokeW);
     }
     L.name = l.name;
-    if (l.type === "footage" && l.start !== undefined) L.startTime = l.start;
+    if (l.start !== undefined) L.startTime = l.start;
     L.inPoint = Math.max(0, l["in"] || 0);
-    L.outPoint = Math.min(D, l.out === undefined ? D : l.out);
+    L.outPoint = Math.min(C.duration, l.out === undefined ? C.duration : l.out);
     if (l.threeD) L.threeDLayer = true;
     if (l.audio === false) L.audioEnabled = false;
     if (l.blend === "multiply") L.blendingMode = BlendingMode.MULTIPLY;
@@ -126,7 +138,7 @@
       tr(L, "ADBE Scale").setValue([k, k]);
     } else if (l.scale !== undefined) {
       if (typeof l.scale === "number") tr(L, "ADBE Scale").setValue(l.threeD ? [l.scale, l.scale, l.scale] : [l.scale, l.scale]);
-      else put(tr(L, "ADBE Scale"), l.scale, function (v) { return l.threeD ? [v, v, v] : [v, v]; });
+      else put(tr(L, "ADBE Scale"), l.scale, function (v) { return l.threeD ? [v, v, v] : [v, v]; }, l.threeD ? 3 : 2);
     }
     if (l.rot) put(tr(L, "ADBE Rotate Z"), l.rot);
     if (l.rx) put(tr(L, "ADBE Rotate X"), l.rx);
@@ -139,6 +151,8 @@
       m.name = "clip";
       put(m.property("ADBE Mask Shape"), l.mask, shape);
     }
+    if (l.scaleExpr) tr(L, "ADBE Scale").expression = l.scaleExpr;
+    if (l.posExpr) tr(L, "ADBE Position").expression = l.posExpr;
     if (l.blur && !(l.blur.t.length === 1 && !l.blur.v[0])) {
       var b = L.property("ADBE Effect Parade").addProperty("ADBE Gaussian Blur 2");
       put(b.property("ADBE Gaussian Blur 2-0001"), l.blur, function (v) { return 2 * v; });
@@ -152,7 +166,7 @@
   // every comp first, empty, so that comps can hold each other; then their layers from the bottom up
   for (var c = 0; c < R.comps.length; c++) {
     var spec = R.comps[c];
-    comps[c] = app.project.items.addComp(spec.name, spec.w, spec.h, 1, D, FPS);
+    comps[c] = app.project.items.addComp(spec.name, spec.w, spec.h, 1, spec.duration || D, FPS);
     comps[c].bgColor = [0, 0, 0];
     if (c !== R.main) comps[c].parentFolder = bin("scenes");
   }
@@ -178,6 +192,17 @@
   voice.name = "VOICE";
   voice.label = YELLOW;
   voice.moveToEnd();
+  for (var w = 0; w < R.words.length; w++) voice.property("ADBE Marker").setValueAtTime(R.words[w].t, new MarkerValue(R.words[w].text));
+  // the voice-over, line by line, on the comp's own markers
+  for (w = 0; w < R.markers.length; w++) main.markerProperty.setValueAtTime(R.markers[w].t, new MarkerValue(R.markers[w].text));
+  // a colour per scene on the main timeline
+  var SCENE = [11, 8, 5, 14, 13, 3, 6, 15, 10, 4, 12];
+  for (var n = 1; n <= main.numLayers; n++) {
+    var lay = main.layer(n), sc = 0;
+    if (lay.name === "VOICE" || lay.name === "camera" || lay.name === "background" || lay.name === "paper") continue;
+    for (w = 0; w < R.scenes.length; w++) if (R.scenes[w] <= lay.inPoint + 0.02) sc = w;
+    lay.label = SCENE[sc % SCENE.length];
+  }
   for (var q = 0; q < R.audio.cues.length; q++) {
     var cue = R.audio.cues[q], A = main.layers.add(file("sfx/" + cue.file));
     A.name = cue.name;
