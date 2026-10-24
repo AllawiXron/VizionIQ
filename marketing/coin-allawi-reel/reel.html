@@ -212,10 +212,12 @@ function build() {
   div("", OR.el).className = "paper";
   line(OR, [{ w: "عدنا", t: 2.65, c: WHITE }, { w: "نصمملك", t: 2.91, c: BROWN }], { top: 520, size: 170, align: "c", out: 4.08 });
   // «موشن جرافيك» inside a white block that wipes in from right to left, the words sharp from the first frame
-  piece(OR, `<div style="background:${WHITE};border-radius:24px;padding:4px 44px 20px;font:400 150px/1.2 'DG Sahabah';font-synthesis:none;color:${ORANGE};white-space:nowrap;direction:rtl">موشن جرافيك</div>`, 0, [3.45, 4.45], (t) => {
-    const p = expoOut(k(t, 3.45, 0.3)), out = expoIn(k(t, 4.08, 0.3));
-    return { ...at(540, 860 - 110 * out), clip: `inset(0 0 0 ${(100 - 100 * p).toFixed(2)}%)`, o: 1 - out };
+  const mg = piece(OR, `<div style="position:relative;padding:10px 35px 22px;font:400 150px/1.2 'DG Sahabah';font-synthesis:none;color:${ORANGE};white-space:nowrap;direction:rtl;text-align:center"><div class="it" style="inset:0;background:${WHITE};border-radius:24px"></div><span class="w">موشن جرافيك</span></div>`, 0, [3.45, 4.45], (t) => {
+    const out = expoIn(k(t, 4.08, 0.3));
+    return { ...at(540, 860 - 110 * out), o: 1 - out };
   }, "width:auto");
+  items.push({ el: mg.querySelector(".it"), life: [3.45, 4.45], pose: (t) => ({ clip: `inset(0 0 0 ${(100 - 100 * expoOut(k(t, 3.45, 0.2))).toFixed(2)}%)` }) });
+  items.push({ el: mg.querySelector(".w"), life: [3.6, 4.45], pose: (t) => ({ s: 1.06 - 0.06 * expoOut(k(t, 3.6, 0.12)), o: clamp((t - 3.6) / 0.05) }) });
   pngS(OR, "film-camera", 330, [2.85, 4.4], (t) => {
     const a = -Math.PI * 0.15 + Math.PI * 1.55 * expoOut(k(t, 2.85, 1.3)) + 0.2 * k(t, 4.0, 0.4);
     const ex = expoIn(k(t, 4.02, 0.32));
@@ -268,8 +270,10 @@ function build() {
   piece(FW, `<div style="font:400 170px/1.2 'DG Sahabah';font-synthesis:none;color:${ORANGE};white-space:nowrap;direction:rtl"><span class="a">تقنع</span> <span class="b">الزبون</span></div>`, 0, [9.63, 10.95], (t) => merge(at(P2, 2120), merge(ENTRY.rise(t - 9.63), out2(t))), "width:auto");
   // ونتيجة: the camera pulls out to the till and the bag; everything here is laid out for the wider view
   big("ونتيجة", P2, 1660 - 650, 420, BROWN, 10.77, [10.77, 12.8], "stamp");
-  big("ترفع", P2 + 230, 1660 - 230, 280, BROWN, 11.45, [11.45, 12.8], "rise");
-  big("مبيعاتك", P2 - 260, 1660 - 230, 280, ORANGE, 11.83, [11.83, 12.8], "stamp");
+  const sales = piece(FW, `<div style="font:400 260px/1.2 'DG Sahabah';font-synthesis:none;white-space:nowrap;direction:rtl"><span class="w" style="color:${BROWN}">ترفع</span><span class="w" style="color:${ORANGE};margin-right:.24em">مبيعاتك</span></div>`, 0, [11.45, 12.8], () => at(P2, 1660 - 210), "width:auto");
+  const [rise, sell] = sales.querySelectorAll(".w");
+  items.push({ el: rise, life: [11.45, 12.8], pose: (t) => ENTRY.rise(t - 11.45) });
+  items.push({ el: sell, life: [11.83, 12.8], pose: (t) => ENTRY.stamp(t - 11.83) });
   pngS(FW, "register", 900, [10.7, 12.8], (t) => ({ ...at(P2 - 120, 1660 + 620 + 1400 * (1 - spring(t - 10.8, 0.85, 11))), s: 1 + 0.04 * Math.sin(Math.PI * k(t, 11.83, 0.3)) }));
   pngS(FW, "bag-orange", 520, [10.7, 12.8], (t) => ({ ...at(P2 + 560, 1660 + 700 + 1400 * (1 - spring(t - 10.9, 0.85, 11))), r: 6 }));
 
@@ -281,12 +285,12 @@ function build() {
 
   // ═════ J1 · الزبون راح يلمس الكواليتي العالي: sharp only through the magnifier's glass ═════
   line(base, [{ w: "الزبون", t: 14.47 }, { w: "راح", t: 14.87 }, { w: "يلمس", t: 15.09 }], { top: 330, size: 150, out: 16.3 });
-  const Q = { el: div("position:absolute;inset:0;filter:blur(7px)", stage) };
+  const Q = { el: div("position:absolute;inset:0;filter:blur(8px);opacity:.5", stage) };
   const QL = { el: div(`position:absolute;inset:0;background:${CREAM};transform-origin:0 0`, stage) };
   div("", QL.el).className = "paper";
   for (const P of [Q, QL]) {
     line(P, [{ w: "الكواليتي", t: 15.37 }], { top: 760, size: 230, align: "c", out: 16.3 });
-    line(P, [{ w: "العالي", t: 15.79, c: ORANGE, in: "rise" }], { top: 1030, size: 230, align: "c", out: 16.3 });
+    line(P, [{ w: "العالي", t: 15.5, c: ORANGE, in: "rise" }], { top: 1030, size: 230, align: "c", out: 16.3 });
   }
   const MAG = 640, GOFF = { x: -0.2 * MAG, y: -0.185 * MAG * (1430 / 1500) }, R0 = 0.247 * MAG, ZOOM = 1.15;
   // where the centre of the glass is: in from the right, across «الكواليتي», down onto «العالي», away
@@ -373,15 +377,11 @@ function build() {
   line(base, [{ w: "بتصاميم", t: 29.65 }, { w: "عادية", t: 30.15, c: ORANGE }], { top: 800, size: 160, align: "c", out: 30.62, exit: "left" });
   line(base, [{ w: "الكل", t: 30.85 }, { w: "يتخطاها", t: 30.99 }], { top: 330, size: 150, out: 31.5 });
   line(base, [{ w: "ابدأ", t: 31.63, c: ORANGE, in: "stamp" }, { w: "اليوم", t: 32.05 }], { top: 500, size: 250, align: "c", out: 32.4 });
-  // the crowd walks one way only, at one pace, until the hand stops it
-  const crowdX = (t) => {
-    const v = 520, stop = 32.55;
-    if (t < stop) return 1630 - v * (t - 28.3);
-    return 1630 - v * (stop - 28.3) - (v * 0.25) * expoOut(k(t, stop, 0.25));
-  };
-  const drop = (t) => 900 * expoIn(k(t, 33.95, 0.4));
-  png(base, "crowd", 1100, [28.3, 34.6], (t) => ({ ...at(crowdX(t), 1530 + drop(t)) })).style.zIndex = 4;
-  png(base, "crowd2", 1080, [28.3, 34.6], (t) => ({ ...at(crowdX(t) + 1140, 1520 + drop(t)) })).style.zIndex = 4;
+  // the crowd rises in and pans slowly one way, at one pace, until the hand stops it
+  const crowdX = (t) => 420 - 520 * clamp((t - 28.5) / 4.05) - 24 * expoOut(k(t, 32.55, 0.25));
+  const drop = (t) => 800 * (1 - spring(t - 28.45, 0.86, 10)) + 900 * expoIn(k(t, 33.95, 0.4));
+  png(base, "crowd", 1100, [28.45, 34.6], (t) => ({ ...at(crowdX(t), 1530 + drop(t)) })).style.zIndex = 4;
+  png(base, "crowd2", 1080, [28.45, 34.6], (t) => ({ ...at(crowdX(t) + 1140, 1520 + drop(t)) })).style.zIndex = 4;
 
   // ═════ O2 · بتصاميم توقف الزبون وتقفل وياه البيعة ═════
   line(base, [{ w: "بتصاميم", t: 32.51 }], { top: 300, size: 160, out: 35.25 });

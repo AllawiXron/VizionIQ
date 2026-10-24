@@ -13,16 +13,16 @@ my paper texture.
 | Time | Line | Technique | On screen |
 |---|---|---|---|
 | 0–2.8 | مشروعك متعوب عليه، بس أرباحك قليلة | kinetic type | words out of a blur on cream; the coin drops into the wallet; «قليلة؟» stamped on it and held before anything moves |
-| 2.8–5.2 | عدنا نصمملك موشن جرافيك وبوستات إعلانية | iris | at 2.8 the orange opens from the wallet and fills the frame; a white block wipes in from right to left with «موشن جرافيك» sharp inside it; the film camera; a hand brings the box |
+| 2.8–5.2 | عدنا نصمملك موشن جرافيك وبوستات إعلانية | iris | at 2.8 the orange opens from the wallet and fills the frame; a white block wipes in from right to left and «موشن جرافيك» lands whole inside it once the block is open; the film camera; a hand brings the box |
 | 5.2–7.7 | تحجي بقوة براندك، وتبيع بمكانك | shape morph | the megaphone blasts «براندك» out; the orange shrinks to a window with the shop owner in it and closes |
-| 7.7–12.6 | حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك | camera over the page | giant «حركة» with the binoculars, the camera drops to «تشد العين», whips left to the bulb and «فكرة تقنع الزبون», then pulls back to the register, the bag and «ونتيجة ترفع مبيعاتك» |
+| 7.7–12.6 | حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك | camera over the page | giant «حركة» with the binoculars, the camera drops to «تشد العين», whips left to the bulb and «فكرة تقنع الزبون», then pulls back to «ونتيجة» and «ترفع مبيعاتك» on one line over the register and the bag |
 | 12.6–14.4 | من أول 3 ثواني بإعلانك | 2D to 3D | the page tilts flat into a floor and a giant 3 stands up off it |
-| 14.4–16.3 | الزبون راح يلمس الكواليتي العالي | lens | «الكواليتي العالي» sits soft on the page; inside the glass ring it is sharp and 1.15 times larger (two copies, the sharp one clipped to the glass) |
+| 14.4–16.3 | الزبون راح يلمس الكواليتي العالي | lens | the whole phrase «الكواليتي العالي» sits soft and half-faded on the page; inside the glass ring it is sharp and 1.15 times larger (two copies, the sharp one clipped to the glass) |
 | 16.3–19 | يثق بمنتجك، ويدخل يطلب منك مباشرة | diagonal wipe | a diagonal orange panel sweeps in; the handshake |
 | 19–23.5 | لأن ويانا راح يطلع إعلانك بمستوى يعزلك تماما عن منافسيك | wipe back | the king stays and the pawns slide to the edges |
 | 23.5–26.5 | ويخلي الزبون يشتري منك مرة ومرتين وعشرة | dark stage | the brown opens from the bag; one bag on «مرة», the camera pulls back and two more spring in on «ومرتين», then pulls back again as the bags spread in a deep arc behind a huge «وعشرة» |
 | 26.5–28.5 | لأن شاف براند حقيقي قدامه | iris | the cream opens over the dark stage: the man with binoculars |
-| 28.5–35.5 | كافي تضيع جمهورك… توقف الزبون وتقفل وياه البيعة | kinetic type | the crowd walks one way, right to left, while the camera pushes in on the words; at 32.5 the stop hand slams up from the bottom and the frame shakes; the padlock |
+| 28.5–35.5 | كافي تضيع جمهورك… توقف الزبون وتقفل وياه البيعة | kinetic type | the crowd rises in and pans slowly one way, right to left, at one pace, while the camera pushes in on the words; at 32.5 the stop hand slams up from the bottom and the frame shakes; the padlock |
 | 35.5–41.2 | تواصل ويانا بالخاص، شوف أعمالنا، وخلي براندك يبيع صح | end title | the circle opens from the padlock; on «شوف أعمالنا» three tilted phones fan up from the bottom playing my own reels; «وخلي براندك يبيع صح» above them; then the circle shrinks to the dot of @allawi.psd and back to the first frame |
 
 ## How it is built
