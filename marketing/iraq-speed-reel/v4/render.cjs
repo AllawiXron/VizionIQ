@@ -1,11 +1,11 @@
-// Renders reel.html (WebGL through SwiftShader for the phone) at 60 fps with 3 subframes per frame (180 stills a second), three pages at a time, then blends each
-// frame's subframes with ffmpeg tmix for motion blur and muxes the sound.
+// Renders reel.html (WebGL through SwiftShader for the phone) at 60 fps, one sharp still per frame, four pages at a
+// time, and muxes the sound.
 // NODE_PATH=/opt/node-tools/node_modules node render.cjs <frames dir> <out.mp4>   (python3 mix.py first)
 const { chromium } = require('playwright');
 const { spawn, execFileSync } = require('child_process');
 const fs = require('fs'), path = require('path'), net = require('net');
 const freePort = () => new Promise(r => { const s = net.createServer(); s.listen(0, () => { const p = s.address().port; s.close(() => r(p)); }); });
-const SUB = 180, WORKERS = 4;
+const SUB = 60, WORKERS = 4;
 
 (async () => {
   const dir = path.resolve(process.argv[2]), out = path.resolve(process.argv[3]);
@@ -31,9 +31,9 @@ const SUB = 180, WORKERS = 4;
     }
   }));
   await browser.close(); server.kill();
-  // each output frame is the mean of its three subframes
+  // one still per frame, straight into the video
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', String(SUB), '-i', path.join(dir, 'f%05d.png'), '-i', path.join(__dirname, 'sound.wav'),
-    '-filter_complex', `[0:v]tmix=frames=3:weights=1 1 1,select='eq(mod(n\\,3)\\,2)',setpts=N/60/TB,format=yuv420p[v]`,
+    '-filter_complex', `[0:v]format=yuv420p[v]`,
     '-map', '[v]', '-map', '1:a', '-r', '60', '-c:v', 'libx264', '-preset', 'slow', '-b:v', '10M', '-maxrate', '12M', '-bufsize', '20M',
     '-profile:v', 'high', '-c:a', 'aac', '-b:a', '192k', '-t', String(DUR), '-movflags', '+faststart', '-map_metadata', '-1', '-fflags', '+bitexact',
     '-metadata', 'title=', out], { stdio: 'inherit' });

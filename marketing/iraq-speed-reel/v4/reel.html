@@ -9,9 +9,10 @@
   @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
   @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Latin-400.woff2) format('woff2'); font-weight: 400 500; unicode-range: U+0000-00FF; }
   @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Latin-700.woff2) format('woff2'); font-weight: 700 800; unicode-range: U+0000-00FF; }
-  html, body { margin: 0; background: #f7f8fa; }
+  html, body { margin: 0; background: #f5f4f0; }
   #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; direction: ltr; }
   #stage canvas { position: absolute; left: 0; top: 0; display: block; }
+  #fg { mix-blend-mode: overlay; }
 </style>
 <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
 </head>
@@ -49,6 +50,12 @@ const smooth = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * x * (x * (6 * x - 15) + 10
 const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);      // settles without overshoot
 const wobble = (x, k = 7, w = 11) => x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.exp(-k * x) * Math.cos(w * x);   // overshoots once, then settles
 const lerp = (a, b, k) => a + (b - a) * k;
+// cubic-bezier(0.85, 0, 0.15, 1): a slow start, a very fast middle, a long soft landing
+const bez = (() => { const x1 = 0.85, y1 = 0, x2 = 0.15, y2 = 1;
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = u => ((ax * u + bx) * u + cx) * u, Y = u => ((ay * u + by) * u + cy) * u, dX = u => (3 * ax * u + 2 * bx) * u + cx;
+  return x => { if (x <= 0) return 0; if (x >= 1) return 1; let u = x; for (let i = 0; i < 8; i++) { const d = dX(u); if (Math.abs(d) < 1e-6) break; u -= (X(u) - x) / d; u = Math.min(1, Math.max(0, u)); } return Y(u); };
+})();
 const AR = n => String(Math.round(n)).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
 const bandFill = v => v < 10 ? RED : v < 25 ? ORANGE : v < 50 ? AMBER : v < 100 ? LEAF : GREEN;
 const bandText = v => v < 10 ? '#b3362e' : v < 25 ? '#a8561a' : v < 50 ? '#866608' : v < 100 ? '#2f7d45' : '#10664c';
@@ -60,7 +67,7 @@ const rand = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s
 const STOPS = [[0, 0], [2.85, 1920], [10.85, 3840], [16.85, 5760], [21.85, 7680], [25.85, 9600]];
 function camY(t) {
   let y = 0;
-  for (const [t0, to] of STOPS) if (t >= t0) y = to - (to - y) * (1 - smooth(seg(t, t0, 0.65)));
+  for (const [t0, to] of STOPS) if (t >= t0) y = to - (to - y) * (1 - bez(seg(t, t0, 0.65)));
   return y;
 }
 
@@ -70,13 +77,13 @@ const lctx = layer.getContext('2d', { willReadFrequently: true });
 function text(str, x, y, o = {}) {
   const a = o.alpha == null ? 1 : o.alpha;
   if (a <= 0.003 || !str) return;
-  const vx = o.vx || 0, vy = o.vy || 0, sm = Math.hypot(vx, vy) * 0.5;
-  const n = Math.max(1, Math.min(24, Math.round(sm / 1.5)));
+  const vx = 0, vy = 0, n = 1;
+  o.blur = 0;
   const g = n === 1 && !o.blur ? ctx : lctx;
   if (g === lctx) { lctx.setTransform(1, 0, 0, 1, 0, 0); lctx.clearRect(0, 0, W, H); lctx.globalCompositeOperation = n > 1 ? 'lighter' : 'source-over'; }
   g.save();
   if (o.clip) { g.beginPath(); g.rect(...o.clip); g.clip(); }
-  g.font = `${o.weight || 800} ${o.size}px Rubik`;
+  g.font = `${o.weight || 800} ${o.size}px Rubik, RubikL`;
   g.textAlign = o.align || 'right'; g.direction = o.dir || 'rtl'; g.textBaseline = 'alphabetic';
   g.fillStyle = o.color || INK;
   g.globalAlpha = n === 1 ? (g === lctx ? 1 : a) : (g === lctx && o.blur ? 1 : a) / n;
@@ -96,7 +103,7 @@ function text(str, x, y, o = {}) {
     if (r[2] > 0 && r[3] > 0) { ctx.save(); ctx.globalAlpha = o.blur ? a : 1; if (o.blur) ctx.filter = `blur(${o.blur}px)`; ctx.drawImage(layer, r[0], r[1], r[2], r[3], r[0], r[1], r[2], r[3]); ctx.restore(); }
   }
 }
-const tw = (str, size, weight = 800) => { bgx.font = `${weight} ${size}px Rubik`; bgx.direction = 'rtl'; return bgx.measureText(str).width; };
+const tw = (str, size, weight = 800) => { bgx.font = `${weight} ${size}px Rubik, RubikL`; bgx.direction = 'rtl'; return bgx.measureText(str).width; };
 function rrect(g, x, y, w, h, r) { r = Math.max(0, Math.min(r, Math.abs(h) / 2, Math.abs(w) / 2)); g.beginPath(); g.roundRect(x, y, w, h, r); }
 const vel = (f, t) => { const a = f(t), b = f(t - 1 / FPS); return [a[0] - b[0], a[1] - b[1]]; };
 
@@ -112,34 +119,47 @@ function layoutWords(str, size, maxW, x, y, lh, weight = 800, slot = null) {
   lines.forEach((ln, li) => { let xr = x; ln.forEach(o => { out.push({ wd: o.wd, x: xr, y: y + li * lh, ww: o.ww }); xr -= o.ww + sp; }); });
   return out;
 }
+// lines of type rise through a mask of their own, one after another, sharp all the way
+const groupLines = laid => { const m = new Map(); laid.forEach(w => { if (!m.has(w.y)) m.set(w.y, []); m.get(w.y).push(w); }); return [...m.values()]; };
+function maskLine(words, y, size, k, draw) {
+  const box = size * 1.5, off = (1 - k) * box * 1.15;
+  if (k <= 0) return;
+  ctx.save(); ctx.beginPath(); ctx.rect(0, y - size * 1.08, W, box); ctx.clip();
+  words.forEach(w => draw(w, off)); ctx.restore();
+}
 function sentence(t, laid, t0, step, size, o = {}) {
-  laid.forEach((w, i) => {
-    const e = spring(seg(t, t0 + i * step, 0.42));
-    if (e <= 0) return;
-    const f = tt => [w.x, w.y + o.dy + (1 - spring(seg(tt, t0 + i * step, 0.42))) * 46];
-    const p = f(t), v = vel(f, t), cv = o.cam || [0, 0];
-    text(w.wd, p[0], p[1], { size, weight: o.weight, color: o.color, alpha: e * (o.alpha == null ? 1 : o.alpha), blur: (1 - e) * 16, vx: v[0] + cv[0], vy: v[1] + cv[1] });
+  groupLines(laid).forEach((ws, li) => {
+    const k = bez(seg(t, t0 + li * 0.06, 0.55)), y = ws[0].y + o.dy;
+    maskLine(ws, y, size, k, (w, off) => text(w.wd, w.x, y + off, { size, weight: o.weight, color: o.color, alpha: o.alpha == null ? 1 : o.alpha }));
   });
 }
 
-// ---------- the room: off-white, a light from the middle, and the data grid moving at a third of the camera ----------
+// ---------- the studio: a warm backdrop, a spotlight a little above the middle, the floor falling off, two soft
+// shadows drifting at the sides as if from things just out of shot, and a vignette; the grain sits over everything
 function background(cy, rt) {
   bgx.setTransform(1, 0, 0, 1, 0, 0); bgx.globalAlpha = 1; bgx.filter = 'none';
-  bgx.fillStyle = BG; bgx.fillRect(0, 0, W, H);
-  const g = bgx.createRadialGradient(560, 880, 30, 540, 960, 1180);
-  g.addColorStop(0, 'rgba(255,255,255,0.96)'); g.addColorStop(0.5, 'rgba(255,255,255,0.42)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+  bgx.fillStyle = '#f5f4f0'; bgx.fillRect(0, 0, W, H);
+  let g = bgx.createRadialGradient(480, 700, 40, 540, 820, 1250);
+  g.addColorStop(0, 'rgba(255,254,250,0.95)'); g.addColorStop(0.45, 'rgba(255,253,248,0.45)'); g.addColorStop(1, 'rgba(255,253,248,0)');
   bgx.fillStyle = g; bgx.fillRect(0, 0, W, H);
-  const C = 72, oy = -((cy / 3 + rt * 5) % C), ox = 36 - ((rt * 2) % C);
-  bgx.fillStyle = 'rgba(20,32,43,0.04)';
-  for (let x = ox; x < W; x += C) bgx.fillRect(Math.round(x), 0, 1, H);
-  for (let y = oy; y < H; y += C) bgx.fillRect(0, Math.round(y), W, 1);
-  // a small mark on every fourth crossing, like the corners of the tiles the speeds are measured on
-  bgx.fillStyle = 'rgba(20,32,43,0.05)';
-  const i0 = Math.round((cy / 3 + rt * 5 + oy) / C);
-  for (let y = oy, j = 0; y < H; y += C, j++) for (let x = ox, i = 0; x < W; x += C, i++) {
-    if ((i + j + i0) % 4) continue;
-    bgx.fillRect(Math.round(x) - 5, Math.round(y), 11, 1); bgx.fillRect(Math.round(x), Math.round(y) - 5, 1, 11);
-  }
+  g = bgx.createLinearGradient(0, 1150, 0, H); g.addColorStop(0, 'rgba(72,60,46,0)'); g.addColorStop(1, 'rgba(72,60,46,0.075)');
+  bgx.fillStyle = g; bgx.fillRect(0, 1150, W, H - 1150);
+  const blob = (x, y, rx, ry, a) => { bgx.save(); bgx.translate(x, y); bgx.scale(1, ry / rx); const r = bgx.createRadialGradient(0, 0, 0, 0, 0, rx);
+    r.addColorStop(0, `rgba(58,46,34,${a})`); r.addColorStop(1, 'rgba(58,46,34,0)'); bgx.fillStyle = r; bgx.fillRect(-rx, -rx, 2 * rx, 2 * rx); bgx.restore(); };
+  blob(-60 + 26 * Math.sin(rt * 0.23), 1380 + 40 * Math.sin(rt * 0.17), 520, 300, 0.06);
+  blob(1150 + 22 * Math.sin(rt * 0.19 + 1), 420 + 36 * Math.sin(rt * 0.13 + 2), 460, 260, 0.045);
+  g = bgx.createRadialGradient(540, 900, 620, 540, 960, 1300); g.addColorStop(0, 'rgba(40,32,24,0)'); g.addColorStop(1, 'rgba(40,32,24,0.11)');
+  bgx.fillStyle = g; bgx.fillRect(0, 0, W, H);
+}
+// film grain, 2.5 %: four fixed tiles of noise, changed twelve times a second, laid over the whole frame
+const GRAIN = Array.from({ length: 4 }, (_, k) => {
+  const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'), im = g.createImageData(256, 256);
+  for (let i = 0; i < 256 * 256; i++) { const v = 128 + (rand(i * 7.31 + k * 1013) - 0.5) * 2 * 40; im.data[i * 4] = im.data[i * 4 + 1] = im.data[i * 4 + 2] = v; im.data[i * 4 + 3] = 255; }
+  g.putImageData(im, 0, 0); return c;
+});
+function grain(rt) {
+  const tile = GRAIN[Math.floor(rt * 12) % 4];
+  fgx.save(); fgx.globalAlpha = 0.16; fgx.fillStyle = fgx.createPattern(tile, 'repeat'); fgx.fillRect(0, 0, W, H); fgx.restore();
 }
 
 // ---------- the phone, in 3D, with the real site on its screen ----------
@@ -188,11 +208,21 @@ const scrTex = new THREE.CanvasTexture(scr);
 scrTex.colorSpace = THREE.SRGBColorSpace; scrTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
 const screenMesh = new THREE.Mesh(scrGeo, new THREE.MeshBasicMaterial({ map: scrTex, toneMapped: false }));
 screenMesh.position.z = 1.2; phoneG.add(screenMesh);
+// a soft diagonal sheen on the glass that slides a little as the phone turns
+const sheenC = document.createElement('canvas'); sheenC.width = 256; sheenC.height = 512;
+{ const g = sheenC.getContext('2d'), lg = g.createLinearGradient(0, 0, 256, 512);
+  lg.addColorStop(0, 'rgba(255,255,255,0)'); lg.addColorStop(0.34, 'rgba(255,255,255,0)'); lg.addColorStop(0.42, 'rgba(255,255,255,0.11)');
+  lg.addColorStop(0.47, 'rgba(255,255,255,0.03)'); lg.addColorStop(0.53, 'rgba(255,255,255,0.07)'); lg.addColorStop(0.6, 'rgba(255,255,255,0)'); lg.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = lg; g.fillRect(0, 0, 256, 512); }
+const sheenTex = new THREE.CanvasTexture(sheenC); sheenTex.wrapS = THREE.RepeatWrapping;
+const sheen = new THREE.Mesh(scrGeo, new THREE.MeshBasicMaterial({ map: sheenTex, transparent: true, depthWrite: false, toneMapped: false }));
+sheen.position.z = 1.8; phoneG.add(sheen);
 
 // place the phone so the screen point (u, v) in CSS px lands on the frame at (sx, sy), magnified m times
 const DEG = Math.PI / 180;
 function placePhone(u, v, m, sx, sy, rx, ry, rz) {
   phoneG.rotation.set(rx * DEG, ry * DEG, rz * DEG);
+  sheenTex.offset.x = -ry * 0.014;
   const p = new THREE.Vector3((u - 195) * K1, (422 - v) * K1, 1.2).applyEuler(phoneG.rotation);
   const Z = DIST * (1 - 1 / m);
   phoneG.position.set((sx - 540) * (DIST - Z) / DIST - p.x, (960 - sy) * (DIST - Z) / DIST - p.y, Z - p.z);
@@ -229,7 +259,7 @@ function phoneShadow(m, fade, alpha = 1) {
 // the screen: a capture (a tall one scrolls under the fixed header and tabs), a finger's touch, and the badge that
 // says the result is a sample test
 function badge(g, s) {
-  const txt = 'نموذج فحص'; g.save(); g.font = `700 ${13 * s}px Rubik`; g.direction = 'rtl';
+  const txt = 'نموذج فحص'; g.save(); g.font = `700 ${13 * s}px Rubik, RubikL`; g.direction = 'rtl';
   const w = g.measureText(txt).width + 20 * s, x = 14 * s, y = 64 * s, h = 26 * s;
   g.fillStyle = 'rgba(20,32,43,0.86)'; g.beginPath(); g.roundRect(x, y, w, h, 7 * s); g.fill();
   g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, x + w / 2, y + h / 2 + 1 * s); g.restore();
@@ -262,6 +292,10 @@ function drawScreen(st) {
     if (r > 0) { sg.strokeStyle = `rgba(255,255,255,${0.5 * (1 - r)})`; sg.lineWidth = 2.5 * SC; sg.beginPath(); sg.arc(cx, cy, (22 + 40 * expo(r)) * SC, 0, 7); sg.stroke(); }
   }
   if (st.badge) badge(sg, SC);
+  if (st.cardSh) {
+    sg.save(); sg.filter = `blur(${26 * SC}px)`; sg.globalAlpha = 0.32 * st.cardSh; sg.fillStyle = '#1a2430';
+    sg.beginPath(); sg.roundRect(150 * SC, 230 * SC, 300 * SC, 560 * SC, 30 * SC); sg.fill(); sg.restore();
+  }
   scrTex.needsUpdate = true;
 }
 
@@ -277,7 +311,7 @@ function renderPhone(on, fgUsed) {
 // ---------- shared parts ----------
 function keyAt(K, t) {
   if (t <= K[0][0]) return K[0].slice(1);
-  for (let i = 0; i < K.length - 1; i++) if (t < K[i + 1][0]) { const k = smooth(seg(t, K[i][0], K[i + 1][0] - K[i][0])); return K[i].slice(1).map((a, j) => lerp(a, K[i + 1][j + 1], k)); }
+  for (let i = 0; i < K.length - 1; i++) if (t < K[i + 1][0]) { const k = bez(seg(t, K[i][0], K[i + 1][0] - K[i][0])); return K[i].slice(1).map((a, j) => lerp(a, K[i + 1][j + 1], k)); }
   return K[K.length - 1].slice(1);
 }
 // keyframes given by the top edge of the screen: the frame y of point v follows from the top and the magnification
@@ -286,19 +320,23 @@ const atTop = (t, u, v, m, top, rx, ry, rz = 0, sx = 540) => [t, u, v, m, sx, to
 function captions(t, list, oy, cv, o = {}) {
   const size = o.size || 76, lh = size * 1.26, y0 = oy + (o.y || 312), color = o.color || INK;
   list.forEach(([t0, str], i) => {
-    const e = spring(seg(t, t0, 0.45)), next = list[i + 1] ? spring(seg(t, list[i + 1][0], 0.45)) : 0;
-    if (e <= 0 || next >= 1) return;
+    const t1 = list[i + 1] ? list[i + 1][0] : Infinity;
+    if (t < t0 || t > t1 + 0.6) return;
     const slotW = o.count ? Math.max(tw(o.count[0], size), 130) + 16 : 0;
-    const lines = layoutWords(str, size, o.maxW || 900, 960, 0, lh, 800, o.count ? wd => wd === o.count[0] ? slotW : 0 : null);
-    const off = (1 - e) * 110 - next * 150, al = e * (1 - next);
-    const clip = [0, y0 - size * 1.2, W, lh * 3 + size * 0.6];
-    const f = tt => [0, (1 - spring(seg(tt, t0, 0.45))) * 110 - (list[i + 1] ? spring(seg(tt, list[i + 1][0], 0.45)) : 0) * 150];
-    const v = vel(f, t);
-    lines.forEach((w, k) => {
-      const ek = spring(seg(t, t0 + k * 0.035, 0.42));
-      const isCount = o.count && w.wd === o.count[0];
-      const txt = isCount ? AR(o.count[1] * smooth(seg(t, t0 + 0.1, 0.7))) : w.wd;
-      text(txt, isCount ? w.x - w.ww / 2 : w.x, y0 + w.y + off + (1 - ek) * 30, { size, color, alpha: al * ek, blur: (1 - ek) * 12, clip, vy: v[1] + cv[1], align: isCount ? 'center' : 'right' });
+    const laid = layoutWords(str, size, o.maxW || 900, 960, 0, lh, 800, o.count ? wd => wd === o.count[0] ? slotW : 0 : null);
+    groupLines(laid).forEach((ws, li) => {
+      // in from below its mask, and out through the top when the next caption comes
+      const kin = bez(seg(t, t0 + li * 0.06, 0.55)), kout = bez(seg(t, t1 + li * 0.05, 0.45));
+      const y = y0 + ws[0].y, box = size * 1.5;
+      if (kin <= 0 || kout >= 1) return;
+      ctx.save(); ctx.beginPath(); ctx.rect(0, y - size * 1.08, W, box); ctx.clip();
+      const off = (1 - kin) * box * 1.15 - kout * box * 1.15;
+      ws.forEach(w => {
+        const isCount = o.count && w.wd === o.count[0];
+        const txt = isCount ? AR(o.count[1] * smooth(seg(t, t0 + 0.1, 0.7))) : w.wd;
+        text(txt, isCount ? w.x - w.ww / 2 : w.x, y + off, { size, color, align: isCount ? 'center' : 'right' });
+      });
+      ctx.restore();
     });
   });
 }
@@ -347,16 +385,16 @@ function scene1(t, cy, cv, rt) {
 // ---------- 2 and 3. the line test on the phone, then the share card out of it ----------
 const TAP = (r) => [r[0] + r[2] / 2, r[1] + r[3] / 2];
 const P1 = () => [
-  atTop(2.85, 195, 422, 1.0, 560, -8, -17),
-  atTop(3.5, 195, 397, 1.12, 545, -6, -12),
-  atTop(4.0, 195, 397, 1.18, 540, -5, -10),
-  atTop(4.25, 195, 190, 1.45, 520, -4, -8),
-  atTop(5.6, 195, 190, 1.45, 520, -4, -7),
-  atTop(5.95, 195, MARKS.verdict[1] + MARKS.verdict[3] / 2, 1.75, 360, -3, -5),
-  atTop(7.9, 195, MARKS.verdict[1] + MARKS.verdict[3] / 2 + 20, 1.75, 345, -3, -3.5),
-  atTop(8.7, 195, 422, 0.92, 640, -10, -26, 0, 470),
-  atTop(10.2, 195, 422, 0.9, 650, -11, -30, 0, 455),
-  atTop(10.85, 195, 422, 0.35, 80, -20, -40, 0, 300),
+  atTop(2.85, 195, 422, 1.0, 560, -7, -14, 1.5),
+  atTop(3.5, 195, 397, 1.12, 545, -6, -10, 1.5),
+  atTop(4.0, 195, 397, 1.18, 540, -6, -9, 1.5),
+  atTop(4.25, 195, 190, 1.45, 520, -6, -8, 1.5),
+  atTop(5.6, 195, 190, 1.45, 520, -6, -8, 1.5),
+  atTop(5.95, 195, MARKS.verdict[1] + MARKS.verdict[3] / 2, 1.75, 360, -6, -8, 1.5),
+  atTop(7.9, 195, MARKS.verdict[1] + MARKS.verdict[3] / 2 + 20, 1.75, 345, -6, -7, 1.5),
+  atTop(8.7, 195, 422, 0.92, 640, -6, 6, 1, 470),
+  atTop(10.2, 195, 422, 0.9, 650, -7, 8, 1, 455),
+  atTop(10.85, 195, 422, 0.35, 80, -14, 20, 0, 300),
 ];
 const TESTS = 14;
 function testState(t) {
@@ -364,6 +402,8 @@ function testState(t) {
   if (t < 4.15) { st.img = 'home'; if (t >= 3.95) { const g = TAP(MARKS.go); st.tap = [g[0], g[1], Math.round(seg(t, 3.95, 0.3) * 40) / 40]; } }
   else if (t < 5.75) st.img = 'test-' + String(Math.min(TESTS - 1, Math.floor((t - 4.15) / 1.6 * TESTS))).padStart(2, '0');
   else st.img = 'result';
+  const sh = smooth(seg(t, 8.8, 0.6)) * (1 - smooth(seg(t, 10.45, 0.35)));
+  if (sh > 0) st.cardSh = Math.round(sh * 20) / 20;
   return st;
 }
 // the share picture as a card in the same 3D room
@@ -412,11 +452,10 @@ function scene2(t, cy, cv, rt) {
 
 // ---------- 4. for gamers: the ping test, then the lowest and the highest ----------
 const P2 = [
-  atTop(10.85, 195, 470, 1.0, 600, -8, -16),
-  atTop(11.5, 195, 470, 1.05, 585, -7, -14),
-  atTop(11.95, 195, 600, 1.5, -280, -4, -8),
-  atTop(14.2, 195, 610, 1.5, -295, -4, -6),
-  atTop(14.8, 195, 610, 1.5, 5, -4, -6),
+  atTop(10.85, 195, 600, 1.5, -270, -6, -9, 1.5),
+  atTop(11.95, 195, 600, 1.5, -280, -6, -8, 1.5),
+  atTop(14.2, 195, 610, 1.5, -295, -6, -8, 1.5),
+  atTop(14.8, 195, 610, 1.5, 5, -6, -8, 1.5),
 ];
 function pingState(t) {
   const st = { badge: true };
@@ -435,10 +474,10 @@ function pingCard(t, t0, y, name, v, label) {
   text(label, x + w - 48, y + 84, { size: 40, weight: 500, color: SOFT, alpha: al });
   text(name, x + w - 48, y + 190, { size: 92, weight: 800, alpha: al });
   // ms sits 6 px after the ink of the number, the same for every number
-  ctx.font = '800 210px Rubik'; ctx.direction = 'ltr'; ctx.textAlign = 'left';
+  ctx.font = '800 210px Rubik, RubikL'; ctx.direction = 'ltr'; ctx.textAlign = 'left';
   const ink = ctx.measureText(AR(v)).actualBoundingBoxRight;
   text(AR(v), x + 48, y + 230, { size: 210, weight: 800, color: PING_TEXT(v), align: 'left', dir: 'ltr', alpha: al });
-  text('ms', x + 48 + ink + 6, y + 230, { size: 56, weight: 700, color: SOFT, align: 'left', dir: 'ltr', alpha: al });
+  text('ms', x + 48 + ink + 6, y + 230, { size: 64, weight: 700, color: SOFT, align: 'left', dir: 'ltr', alpha: al });
   const bk = smooth(seg(t, t0 + 0.25, 0.6)), bw = (w - 88) * Math.min(1, v / 50) * bk;
   ctx.fillStyle = '#eef0f2'; rrect(ctx, x + 44, y + h - 62, w - 88, 16, 8); ctx.fill();
   ctx.fillStyle = PING_FILL(v); rrect(ctx, x + w - 44 - bw, y + h - 62, Math.max(bw, 1), 16, 8); ctx.fill();
@@ -544,23 +583,12 @@ function drawGovs(t, oy, z, zp, focus, outl, ga) {
 }
 function scene6(t, cy, cv, rt) {
   const oy = 9600 - cy; if (oy > H || oy < -H || t > 30.05) return;
-  const zp = seg(t, 29.2, 0.75), z = Math.pow(25, 1 - Math.pow(1 - zp, 3)), mv = smooth(clamp(zp * 1.4)), clear = 1 - smooth(seg(t, 28.85, 0.33));   // the card, key and border leave before the zoom
+  const zp = seg(t, 29.2, 0.75), z = Math.pow(25, bez(zp)), mv = bez(clamp(zp * 1.25)), clear = 1 - smooth(seg(t, 28.85, 0.33));   // the card, key and border leave before the zoom
   ctx.save();
   if (z > 1.0001) { ctx.translate(lerp(ZOOM_AT[0], W / 2, mv), lerp(ZOOM_AT[1] + oy, H / 2, mv)); ctx.scale(z, z); ctx.translate(-ZOOM_AT[0], -(ZOOM_AT[1] + oy)); }
   if (clear > 0) captions(t, [[26.05, 'بيانات ميدانية جاهزة أمام وزارة الاتصالات: وين الخلل، ويا محافظة تحتاج أولوية؟']], oy, z > 1 ? [0, 0] : cv, { size: 64, y: 286 });
   const outl = expo(seg(t, 26.2, 0.35)), focus = smooth(seg(t, 27.7, 0.4)) * clear;
-  if (zp > 0 && zp < 1) {
-    // a real blur of the zoom: the map drawn eight times across the moment of the frame and averaged
-    const N = 8, sv = ctx; ml.setTransform(1, 0, 0, 1, 0, 0); ml.clearRect(0, 0, W, H); ml.globalCompositeOperation = 'lighter';
-    ctx = ml;
-    for (let j = 0; j < N; j++) {
-      const tj = t - j / (180 * N), zpj = seg(tj, 29.2, 0.75), zj = Math.pow(25, 1 - Math.pow(1 - zpj, 3)), mj = smooth(clamp(zpj * 1.4));
-      ml.setTransform(1, 0, 0, 1, 0, 0); ml.translate(lerp(ZOOM_AT[0], W / 2, mj), lerp(ZOOM_AT[1] + oy, H / 2, mj)); ml.scale(zj, zj); ml.translate(-ZOOM_AT[0], -(ZOOM_AT[1] + oy));
-      drawGovs(t, oy, zj, zpj, focus, outl, 1 / N);
-    }
-    ml.globalCompositeOperation = 'source-over'; ctx = sv;
-    sv.save(); sv.setTransform(1, 0, 0, 1, 0, 0); sv.drawImage(mlc, 0, 0); sv.restore();
-  } else drawGovs(t, oy, z, zp, focus, outl, 1);
+  drawGovs(t, oy, z, zp, focus, outl, 1);
   if (focus > 0) {
     const pu = 0.5 + 0.5 * Math.sin(Math.max(0, rt - 28.1) * 6.3);
     govPath(byId.diyala, oy); ctx.save(); ctx.globalAlpha = focus * lerp(0.6, 1, pu); ctx.lineWidth = lerp(3.5, 6.5, pu) / Math.sqrt(z); ctx.lineJoin = 'round'; ctx.strokeStyle = INK; ctx.stroke(); ctx.restore();
@@ -637,25 +665,23 @@ function scene7(t, rt) {
 
 // ---------- 8. the end: the platform's name, the phone behind, its search box pulsing ----------
 const END = [
-  atTop(33.3, 195, 422, 0.78, 1750, -14, -24),
-  atTop(34.1, 195, 422, 0.78, 1010, -10, -18),
-  atTop(37.0, 195, 422, 0.78, 996, -7, -11),
+  atTop(33.3, 195, 422, 0.78, 1750, -8, -14, 1.5),
+  atTop(34.1, 195, 422, 0.78, 1010, -6, -10, 1.5),
+  atTop(37.0, 195, 422, 0.78, 996, -6, -6, 1.5),
 ];
 function scene8(t, rt) {
   if (t < 32.9) return;
   const name = ['منصة سرعة الإنترنت', 'في العراق'], size = Math.min(124, 860 / (tw(name[0], 100) / 100));
   [[name[0], 33.0, 470], [name[1], 33.08, 470 + size * 1.2]].forEach(([s, t0, yb]) => {
-    const f = tt => [960, yb + (1 - spring(seg(tt, t0, 0.42))) * 170];
-    const p = f(t), v = vel(f, t);
-    text(s, p[0], p[1], { size, vx: v[0], vy: v[1], alpha: spring(seg(t, t0, 0.3)), clip: [0, 0, W, LINE_Y - 4] });
+    const k = bez(seg(t, t0, 0.55));
+    if (k > 0) text(s, 960, yb + (1 - k) * size * 1.5, { size, clip: [0, yb - size * 1.1, W, Math.min(size * 1.5, LINE_Y - 4 - (yb - size * 1.1))] });
   });
   const lines = layoutWords('افحص خطك وقارن منطقتك مجانا الآن — الرابط بالبايو', 48, 860, 960, 0, 62, 500);
-  lines.forEach((l, i) => {
-    const t0 = 33.3 + i * 0.06, f2 = tt => [l.x, 760 + l.y - (1 - spring(seg(tt, t0, 0.42))) * 80];
-    const p2 = f2(t), v2 = vel(f2, t);
-    text(l.wd, p2[0], p2[1], { size: 48, weight: 500, color: INK2, vx: v2[0], vy: v2[1], alpha: spring(seg(t, t0, 0.3)), clip: [0, LINE_Y + 12, W, H] });
+  groupLines(lines).forEach((ws, li) => {
+    const k = bez(seg(t, 33.3 + li * 0.06, 0.55)), y = 760 + ws[0].y;
+    maskLine(ws, y, 48, k, (w, off) => text(w.wd, w.x, y + off, { size: 48, weight: 500, color: INK2 }));
   });
-  const cr = spring(seg(t, 33.7, 0.45)), cy0 = 760 + Math.max(...lines.map(l => l.y)) + 84;
+  const cr = bez(seg(t, 33.7, 0.5)), cy0 = 760 + Math.max(...lines.map(l => l.y)) + 84;
   text('تطوير وتصميم', 960, cy0, { size: 40, weight: 500, color: SOFT, alpha: cr });
   text('@allawi.psd', 960 - tw('تطوير وتصميم ', 40, 500), cy0, { size: 40, weight: 500, color: SOFT, alpha: cr, dir: 'ltr', align: 'right' });
   ctx.fillStyle = INK; ctx.globalAlpha = expo(seg(t, 33.1, 0.3)); rrect(ctx, 120, LINE_Y - 4, 840, 8, 4); ctx.fill(); ctx.globalAlpha = 1;
@@ -672,7 +698,7 @@ window.seek = function (rtIn) {
   const rt = clamp(rtIn, 0, DUR - 1e-6), t = rt;
   ctx = bgx; phoneOn = false; cardG.visible = false; glAlpha = 1;
   background(camY(t), rt);
-  fgx.setTransform(1, 0, 0, 1, 0, 0); fgx.clearRect(0, 0, W, H);
+  fgx.setTransform(1, 0, 0, 1, 0, 0); fgx.clearRect(0, 0, W, H); grain(rt);
   const cy = camY(t), cv = [0, -(camY(t) - camY(t - 1 / FPS))];
   scene1(t, cy, cv, rt); scene2(t, cy, cv, rt); scene3(t, cy, cv, rt); scene4(t, cy, cv, rt); scene5(t, cy, cv, rt); scene6(t, cy, cv, rt);
   scene7(t, rt);
@@ -682,8 +708,9 @@ window.seek = function (rtIn) {
 const SITE = '../../iraq-internet-map/site/data/';
 let SAQ, KAR, MAN, PG = {}, DIY;
 window.ready = Promise.all([
-  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik`, 'العراق ٨٧ گ')),
-  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 56px Rubik`, '@allawi.psd ms 4G')),
+  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik, RubikL`, 'العراق ٨٧ گ')),
+  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 56px Rubik, RubikL`, '@allawi.psd ms 4G')),
+  ...[['400 500', 'Rubik-Latin-400'], ['700 800', 'Rubik-Latin-700']].map(([w, f]) => new FontFace('RubikL', `url(../../iraq-internet-map/site/fonts/${f}.woff2)`, { weight: w }).load().then(ff => document.fonts.add(ff))),
   ...NAMES.map(n => new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[n] = im; res(); }; im.onerror = rej; im.src = `site/${n}.png`; })),
   fetch('site/marks.json').then(r => r.json()).then(m => Object.assign(MARKS, m)),
   fetch(SITE + 'places.json').then(r => r.json()).then(d => {

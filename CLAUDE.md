@@ -54,6 +54,12 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   off-white `#F7F8FA` room with a faint moving data grid and a soft centre light, the phone in 3D with layered shadows
   and the camera diving into it, number cards with soft shadows, a zoom into a colour instead of a growing box, and
   an end that keeps moving to the last frame.
+- Motion that reads as code, not After Effects (24 Oct): the user wants no word-by-word blur reveals, no motion
+  blur faked with offset copies or frame blending, no graph-paper grids with crosshairs, and no beeps, clicks or tonal
+  "data" sounds. Instead: each line of type slides up through its own mask (0.06 s apart, no blur), sharp moves on
+  cubic-bezier(0.85, 0, 0.15, 1), one still per frame, a warm studio backdrop (#F5F4F0, spotlight, floor falloff,
+  2.5 % grain), the phone tilted in 3D with a glass sheen, and only soft air whooshes and deep thuds, plus a silent
+  copy for his own music (`marketing/iraq-speed-reel/v4`).
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat

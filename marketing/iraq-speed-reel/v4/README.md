@@ -21,7 +21,15 @@ The phone screens are the real site (`capture.cjs`, at 3x). The line test result
 the badge «نموذج فحص» on those screens says: the capture holds the line at about 12 Mbps down and 4 up, and answers
 the ping requests in 12 ms, or about 160 ms while the line is busy. Every other number is the site's own data.
 
-Sound: only Ali's pack (`marketing/sfx-pack`), quiet enough to sit under his music. No music in the file.
+Motion: every line of type slides up through its own mask, 0.06 s apart, with no blur; everything that moves runs
+on cubic-bezier(0.85, 0, 0.15, 1); each frame is one sharp still at 60 fps, with no blended frames or offset copies.
+The set is a warm studio backdrop (#F5F4F0) with a spotlight, a falling-off floor, two soft drifting shadows, a
+vignette and 2.5 % film grain. The phone is tilted in every scene, with a sheen on its glass and the share card's
+shadow falling on it.
+
+Sound: only Ali's pack (`marketing/sfx-pack`), and only two kinds of sound so it sits under his music: soft air
+whooshes on the moves (low-passed at 550 Hz) and deep thuds on the big moments (a hit low-passed at 140 Hz).
+`out/iraq-internet-speed-reel-v4-silent.mp4` is the same video with no sound at all, for his own pack and music.
 
 Build, from this folder, with `NODE_PATH=/opt/node-tools/node_modules`: `node capture.cjs`, `python3 mix.py`,
 `node beats.cjs <dir> "t1,t2,..."` for single frames, `node render.cjs <frames dir> ../out/iraq-internet-speed-reel-v4.mp4`.
