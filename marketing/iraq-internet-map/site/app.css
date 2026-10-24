@@ -323,3 +323,22 @@ button.go { width: 100%; border: 0; font: inherit; font-size: 19px; font-weight:
 .uses b { font-weight: 700; }
 .uses b.win { color: #2f7d45; }
 .pick input::-webkit-search-cancel-button, .pick input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
+
+/* where the home lines need work */
+.work section h2 { margin-top: 32px; }
+.facts { display: grid; gap: 0; max-width: 560px; margin-top: 22px; border-top: 1px solid var(--line); }
+.facts div { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.facts b { display: block; font-size: 34px; line-height: 1.1; font-weight: 800; }
+.facts span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--ink2); }
+.wtable { max-width: 560px; margin-top: 10px; }
+.wrow { display: grid; grid-template-columns: minmax(0, 1fr) 72px 84px; gap: 10px; align-items: center; min-height: 52px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.wrow.head { min-height: 0; padding-bottom: 6px; font-size: 13px; color: var(--soft); }
+.wrow.head span:not(:first-child), .wrow b { text-align: left; }
+.wrow > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 17px; font-weight: 500; }
+.wrow small { margin-inline-start: 8px; font-size: 14px; font-weight: 400; color: var(--soft); }
+.wrow b { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.wrow.share { grid-template-columns: minmax(0, 1fr) 120px 52px; }
+.wrow.share small { display: block; margin: 0; }
+.wrow.share i { display: block; height: 10px; border-radius: 2px; background: var(--wash); }
+.wrow.share em { display: block; height: 100%; border-radius: 2px; background: #ea8a2e; }
+.work .go { margin-top: 12px; }

@@ -807,6 +807,63 @@ function wireCompare() {
   });
 }
 
+
+// ---------- where the home lines need work first: for the ministry, in plain numbers and with the table to download ----------
+
+const SLOW = 25;
+function workRows(list, cols) {
+  return `<div class="wtable"><div class="wrow head"><span>المنطقة</span>${cols.map(c => `<span>${c[0]}</span>`).join('')}</div>${list.map(p =>
+    `<a class="wrow" href="${href(p)}"><span>${esc(p.n)}<small>${esc(p.k === 'gov' ? 'محافظة' : (govById(p.g) || {}).n || '')}</small></span>${cols.map(c => `<b${c[2] ? ` style="color:${c[2](p)}"` : ''}>${c[1](p)}</b>`).join('')}</a>`).join('')}</div>`;
+}
+function workHTML() {
+  const ok = p => p.f && p.f.t >= FEW_TESTS && knownName(p) && p.k !== 'hamlet';
+  const all = S.places.filter(p => p.f && p.f.t >= FEW_TESTS), slow = all.filter(p => p.f.d < SLOW);
+  const tests = slow.reduce((a, p) => a + p.f.t, 0);
+  const first = S.places.filter(p => ok(p) && p.f.d < SLOW).sort((a, b) => b.f.t - a.f.t).slice(0, 20);
+  const carried = S.places.filter(p => ok(p) && p.f.d < 15 && p.m && p.m.t >= FEW_TESTS && p.m.d >= 2 * p.f.d).sort((a, b) => b.f.t - a.f.t).slice(0, 10);
+  const govShare = S.govs.map(g => { const a = all.filter(p => p.g === g.id), sl = a.filter(p => p.f.d < SLOW); return { g, n: a.length, sl: sl.length, share: a.length ? sl.length / a.length : 0 }; })
+    .filter(x => x.n >= 5).sort((a, b) => b.share - a.share);
+  const c = S.country, h = c.h || [];
+  const pct = v => `${ar(Math.round(v * 100))}٪`;
+  const sp = p => `color:${bandOf(p.f.d).text}`;
+  return `<div class="cols"><section class="work">
+    <h1 class="h1">أين يحتاج إنترنت البيت إلى عمل أولا</h1>
+    <p class="intro">تجمع هذه الصفحة المناطق التي يحتاج فيها إنترنت البيت إلى تحسين أكثر من غيرها، من اختبارات أجراها الناس بأنفسهم بين تموز وأيلول ٢٠٢٦. الغاية أن تساعد على ترتيب الأولويات، لا أن تقيم أحدا.</p>
+    <div class="facts">
+      <div><b>${ar(slow.length)}</b><span>منطقة معدل إنترنت البيت فيها أقل من ${ar(SLOW)} ميغابت، من ${ar(all.length)} منطقة فيها ${ar(FEW_TESTS)} اختبارا أو أكثر</span></div>
+      <div><b>${ar(tests)}</b><span>اختبار أجري في هذه المناطق، أي أن عدد الناس المتأثرين فيها كبير</span></div>
+      <div><b>${ar(h[0] ? h[0][0] : 0)} إلى ${ar(c.f.d)}</b><span>ميغابت، معدل العراق في صيف ٢٠١٩ ثم في صيف ٢٠٢٦</span></div>
+    </div>
+    <section><h2>المناطق البطيئة التي فيها أكثر اختبارات</h2>
+      <p class="small">أقل من ${ar(SLOW)} ميغابت، مرتبة بعدد الاختبارات، لأن كثرة الاختبارات تعني ناسا أكثر. اضغط على أي منطقة لترى شوارعها على الخريطة.</p>
+      ${workRows(first, [['البيت', p => dec(p.f.d), p => bandOf(p.f.d).text], ['الاختبارات', p => ar(p.f.t)]])}</section>
+    <section><h2>حيث يحمل الموبايل الحمل</h2>
+      <p class="small">مناطق خطوط البيت فيها أقل من ١٥ ميغابت والموبايل فيها أسرع بمرتين أو أكثر. قد يدل هذا على ضعف الشبكة الثابتة هناك أو غيابها. <a href="#/mobile">كل المناطق التي يسبق فيها الموبايل</a></p>
+      ${workRows(carried, [['البيت', p => dec(p.f.d), p => bandOf(p.f.d).text], ['الموبايل', p => dec(p.m.d), p => bandOf(p.m.d).text]])}</section>
+    <section><h2>نسبة المناطق البطيئة في كل محافظة</h2>
+      <p class="small">من المناطق التي فيها ${ar(FEW_TESTS)} اختبارا أو أكثر في كل محافظة.</p>
+      <div class="wtable">${govShare.map(x => `<a class="wrow share" href="${href(x.g)}"><span>${esc(x.g.n)}<small>${ar(x.sl)} من ${ar(x.n)} منطقة</small></span><i><em style="width:${Math.max(2, x.share * 100)}%"></em></i><b>${pct(x.share)}</b></a>`).join('')}</div></section>
+    <section><h2>إنترنت البيت في العراق منذ ٢٠١٩</h2>
+      <p class="small">معدل سرعة التنزيل في صيف كل سنة، بالميغابت. التحسن واضح، والمناطق أعلاه هي التي لم يصلها بعد.</p>${yearsHTML(h)}</section>
+    <section><h2>الجدول كاملا</h2>
+      <p class="small">كل المناطق التي فيها اختبارات لإنترنت البيت أو الموبايل، مع المحافظة والسرعات والبنك وعدد الاختبارات، في ملف يفتح في Excel.</p>
+      <button type="button" class="go" data-act="csv"><span>نزل الجدول</span><em>CSV</em></button></section>
+    <p class="note">الأرقام من بيانات Ookla المفتوحة، معدل مربعات كل منطقة موزونا بعدد الاختبارات. الاختبارات أجراها أشخاص اختاروا أن يقيسوا سرعتهم، فهي لا تغطي كل بيت، ولا تقول أي المناطق وصلها الفايبر. <a href="#/about">الطريقة كاملة</a></p>
+  </section></div>${foot()}`;
+}
+function downloadCSV() {
+  const q = v => /[",\n]/.test(v) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+  const num = (x, k) => x && x.t >= MIN_TESTS ? x[k] : '';
+  const rows = [['المنطقة', 'النوع', 'المحافظة', 'البيت تنزيل', 'البيت رفع', 'البيت بنك', 'البيت اختبارات', 'الموبايل تنزيل', 'الموبايل رفع', 'الموبايل بنك', 'الموبايل اختبارات']];
+  for (const p of S.places) {
+    if (!stat(p, 'f') && !stat(p, 'm')) continue;
+    rows.push([p.n, kindShort(p) || p.k, (govById(p.g) || {}).n || '', num(p.f, 'd'), num(p.f, 'u'), num(p.f, 'l'), num(p.f, 't'), num(p.m, 'd'), num(p.m, 'u'), num(p.m, 'l'), num(p.m, 't')]);
+  }
+  const blob = new Blob(['﻿' + rows.map(r => r.map(q).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const u = URL.createObjectURL(blob), a = document.createElement('a'); a.href = u; a.download = 'iraq-internet-areas.csv'; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 5000);
+}
+
 const dec = v => v < 10 ? arDigits(v.toFixed(1)).replace('.', '٫') : ar(v);
 function times(k) {
   const n = Math.round(k);
@@ -847,7 +904,8 @@ function meBlock() {
     <p class="small me-change"><button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button> أو ابحث عن منطقتك تحت واضغط افحص خطك هنا.</p>
     <a class="more gamers" href="#/ping">تلعب أونلاين؟ شوف البنك بمنطقتك ووين أقل بنك بالعراق</a>
     <a class="more gamers" href="#/mobile">وين الموبايل أسرع من خطوط البيت بالعراق</a>
-    <a class="more gamers" href="#/compare">راح تأجر بيت أو محل؟ قارن الإنترنت بين منطقتين</a>`;
+    <a class="more gamers" href="#/compare">راح تأجر بيت أو محل؟ قارن الإنترنت بين منطقتين</a>
+    <a class="more gamers" href="#/work">أين يحتاج إنترنت البيت إلى عمل أولا</a>`;
 }
 function redrawMe() { const b = page.querySelector('#me'); if (b) b.innerHTML = meBlock(); if (route === '#/test') drawTest(); if (route === '#/ping') render(false); }
 
@@ -1033,6 +1091,7 @@ function govsHTML() {
   ${modesHTML()}
   ${rankRows(govs, { head: 'المحافظة' })}
   <a class="more" href="#/mobile">وين الموبايل أسرع من خطوط البيت</a>
+  <a class="more" href="#/work">أين يحتاج إنترنت البيت إلى عمل أولا</a>
   <p class="note">حدود المحافظات من مكتب الأمم المتحدة لتنسيق الشؤون الإنسانية، وفيها حلبجة ما تزال ضمن السليمانية.</p>
   <section class="side">
     <div class="govmap">${govMapHTML()}</div>
@@ -1183,6 +1242,7 @@ document.addEventListener('click', e => {
     if (a.dataset.go) { if (route === '#/test') { startTest(); return; } S.goTest = true; }
     navigate(a.getAttribute('href')); return;
   }
+  if (e.target.closest && e.target.closest('[data-act="csv"]')) { downloadCSV(); return; }
   const cp = e.target.closest && e.target.closest('[data-act="sharecmp"]');
   if (cp) { const u = location.href; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { cp.textContent = 'انتسخ الرابط'; }, () => {}); if (navigator.share) navigator.share({ url: u }).catch(() => {}); return; }
   const act = e.target.closest && e.target.closest('[data-act="locate"], [data-act="share"], [data-act="ping"], [data-act="shareping"]');
@@ -1201,10 +1261,10 @@ addEventListener('hashchange', fromAddress);
 let lastRoute = '';
 async function render(move = true) {
   const h = current();
-  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : h === '/ping' ? 'ping' : h === '/mobile' ? 'mobile' : h.startsWith('/compare') ? 'compare' : 'home';
+  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : h === '/ping' ? 'ping' : h === '/mobile' ? 'mobile' : h.startsWith('/compare') ? 'compare' : h === '/work' ? 'work' : 'home';
   if (view !== 'test' && testRun) { testRun.abort(); testRun = null; if (S.test && S.test.phase !== 'done') S.test = null; }
   if (view !== 'ping' && pingRun) { pingRun.abort(); pingRun = null; if (S.ping && S.ping.phase !== 'done') S.ping = null; }
-  const tab = view === 'govs' || h.startsWith('/g/') ? '#/govs' : view === 'about' ? '#/about' : '#/';
+  const tab = view === 'govs' || view === 'work' || h.startsWith('/g/') ? '#/govs' : view === 'about' ? '#/about' : '#/';
   document.querySelectorAll('.tabs a, .topnav a').forEach(a => {
     const on = a.getAttribute('href') === tab;
     a.classList.toggle('on', on);
@@ -1224,6 +1284,7 @@ async function render(move = true) {
     document.title = `${p.n}، سرعة الإنترنت`;
   } else if (view === 'govs') { page.innerHTML = govsHTML(); document.title = 'المحافظات، سرعة الإنترنت في العراق'; }
   else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن موقع سرعة الإنترنت في العراق'; }
+  else if (view === 'work') { await placesReady; page.innerHTML = workHTML(); document.title = 'أين يحتاج إنترنت البيت إلى عمل، سرعة الإنترنت في العراق'; }
   else if (view === 'compare') { await placesReady; page.innerHTML = compareHTML(); wireCompare(); document.title = 'قارن منطقتين، سرعة الإنترنت في العراق'; }
   else if (view === 'mobile') { await placesReady; page.innerHTML = mobileHTML(); document.title = 'وين الموبايل أسرع من البيت، سرعة الإنترنت في العراق'; }
   else if (view === 'ping') { await placesReady; page.innerHTML = pingHTML(); document.title = 'البنك للألعاب، سرعة الإنترنت في العراق'; }
