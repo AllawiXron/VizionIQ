@@ -282,3 +282,17 @@ button.go { width: 100%; border: 0; font: inherit; font-size: 19px; font-weight:
 .plist a small { margin-inline-start: 8px; font-size: 14px; font-weight: 400; color: var(--soft); }
 .plist b { text-align: left; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .more.gamers { display: block; max-width: 460px; }
+
+/* home line or mobile */
+.hvm { margin-top: 30px; max-width: 520px; }
+.hvm-head { margin-top: 6px; font-size: 20px; line-height: 1.35; font-weight: 700; }
+.hvm > p:not(.note):not(.hvm-head) { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--ink2); }
+.mob section h2 { margin-top: 30px; }
+.pairs { max-width: 520px; margin-top: 10px; }
+.pairs-hd, .pairs a { display: grid; grid-template-columns: minmax(0, 1fr) 64px 64px; gap: 10px; align-items: center; }
+.pairs-hd { padding-bottom: 6px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--soft); }
+.pairs-hd span, .pairs b { text-align: left; }
+.pairs a { min-height: 52px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.pairs a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 17px; font-weight: 500; }
+.pairs a small { margin-inline-start: 8px; font-size: 14px; font-weight: 400; color: var(--soft); }
+.pairs b { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }

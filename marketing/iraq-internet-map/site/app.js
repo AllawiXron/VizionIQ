@@ -692,6 +692,46 @@ function pingHTML() {
 }
 function drawPing() { if (route !== '#/ping') return; const y = scrollY, b = page.querySelector('.ptest'); if (!b) return; const tmp = document.createElement('div'); tmp.innerHTML = pingHTML(); const nb = tmp.querySelector('.ptest'); b.replaceWith(nb); scrollTo(0, y); }
 
+
+// ---------- home line or mobile: both averages of an area side by side, and where mobile is the faster one ----------
+
+const both = p => p && p.f && p.m && p.f.t >= MIN_TESTS && p.m.t >= MIN_TESTS;
+const knownName = p => !/[0-9٠-٩&ەێۆڕڵ]/.test(p.n);
+function hvmHTML(p) {
+  if (!both(p)) return '';
+  const f = p.f, m = p.m, r = m.d / f.d, name = bi(p);
+  let head, why;
+  if (r >= 1.2) { head = `${name} الموبايل أسرع من إنترنت البيت${r >= 1.95 ? ` ${times(r)}` : ''}`; why = 'إذا تستخدم النت لوحدك، باقة موبايل ممكن تكفيك. إذا البيت كله يستخدمه، قارن سعر الباقتين قبل لا تقرر.'; }
+  else if (r > 0.8) { head = `${name} البيت والموبايل متقاربين`; why = 'اختار الأرخص لك.'; }
+  else { head = `${name} إنترنت البيت أسرع من الموبايل${1 / r >= 1.95 ? ` ${times(1 / r)}` : ''}`; why = 'إذا معتمد على باقة موبايل بالبيت، خط بيت راح يفرق وياك.'; }
+  if (f.l < m.l - 5) why += ` والبنك بخط البيت أقل، ${ar(f.l)} مقابل ${ar(m.l)} ملي ثانية، فإذا تلعب أونلاين البيت أحسن.`;
+  else if (m.l < f.l - 5) why += ` والبنك بالموبايل أقل، ${ar(m.l)} مقابل ${ar(f.l)} ملي ثانية.`;
+  const rough = f.t < FEW_TESTS || m.t < FEW_TESTS ? ' الأرقام تقريبية لأن الاختبارات قليلة.' : '';
+  return `<section class="hvm"><h2>البيت لو الموبايل</h2><p class="hvm-head">${head}</p>
+    ${barsHTML([{ n: 'إنترنت البيت', v: f.d, me: S.mode === 'f' }, { n: 'إنترنت الموبايل', v: m.d, me: S.mode === 'm' }])}
+    <p>${why}${rough}</p>
+    <p class="note">معدل التنزيل بالميغابت. البيت من ${PERIOD.f} والموبايل من ${PERIOD.m}، لكل الشركات سوا.</p></section>`;
+}
+function pairRows(list) {
+  return `<div class="pairs"><div class="pairs-hd"><span></span><span>البيت</span><span>الموبايل</span></div>${list.map(p =>
+    `<a href="${href(p)}"><span>${esc(p.n)}${p.k !== 'gov' ? `<small>${esc((govById(p.g) || {}).n || '')}</small>` : ''}</span><b style="color:${bandOf(p.f.d).text}">${dec(p.f.d)}</b><b style="color:${bandOf(p.m.d).text}">${dec(p.m.d)}</b></a>`).join('')}</div>`;
+}
+function mobileHTML() {
+  const ok = p => both(p) && p.f.t >= FEW_TESTS && p.m.t >= FEW_TESTS;
+  const all = S.places.filter(ok), faster = all.filter(p => p.m.d / p.f.d >= 1.2);
+  const ratio = (a, b) => b.m.d / b.f.d - a.m.d / a.f.d;
+  const govs = S.govs.filter(both).sort(ratio);
+  const top = faster.filter(p => knownName(p) && p.k !== 'hamlet').sort(ratio).slice(0, 15);
+  return `<div class="cols"><section class="mob">
+    <h1 class="h1">وين الموبايل أسرع من خطوط البيت</h1>
+    <p class="intro">في ${ar(faster.length)} منطقة من ${ar(all.length)} فيها اختبارات كافية، معدل الموبايل أسرع من معدل إنترنت البيت بأكثر من ٢٠٪. بهالمناطق، اللي يستخدم النت لوحده ممكن باقة موبايل تكفيه.</p>
+    <section><h2>المحافظات، من اللي الموبايل بيها أسرع</h2>${pairRows(govs)}</section>
+    <section><h2>مناطق الموبايل بيها أسرع بكثير</h2><p class="small">مناطق بيها ${ar(FEW_TESTS)} اختبار أو أكثر للبيت وللموبايل، ومعدل التنزيل بالميغابت.</p>${pairRows(top)}</section>
+    <a class="more" href="#/">ابحث عن منطقتك وشوف البيت لو الموبايل</a>
+    <p class="note">البيت من ${PERIOD.f} والموبايل من ${PERIOD.m}، ومعدل الموبايل لكل الشركات سوا، فشركتك ممكن تكون أسرع أو أبطأ منه.</p>
+  </section></div>${foot()}`;
+}
+
 const dec = v => v < 10 ? arDigits(v.toFixed(1)).replace('.', '٫') : ar(v);
 function times(k) {
   const n = Math.round(k);
@@ -730,7 +770,8 @@ function meBlock() {
     <a class="go" href="#/test" data-go="1"><span>ابدأ الفحص</span><em>٢٠ ثانية</em></a>
     <div class="me-place"><span>منطقتك${src ? '، ' + src : ''}</span><b>${esc(areaName(a))}</b></div>
     <p class="small me-change"><button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button> أو ابحث عن منطقتك تحت واضغط افحص خطك هنا.</p>
-    <a class="more gamers" href="#/ping">تلعب أونلاين؟ شوف البنك بمنطقتك ووين أقل بنك بالعراق</a>`;
+    <a class="more gamers" href="#/ping">تلعب أونلاين؟ شوف البنك بمنطقتك ووين أقل بنك بالعراق</a>
+    <a class="more gamers" href="#/mobile">وين الموبايل أسرع من خطوط البيت بالعراق</a>`;
 }
 function redrawMe() { const b = page.querySelector('#me'); if (b) b.innerHTML = meBlock(); if (route === '#/test') drawTest(); if (route === '#/ping') render(false); }
 
@@ -759,6 +800,7 @@ function testHTML() {
     ${scaleHTML(t.down, st.d, aShort)}
     <p class="enough"><span>${dec(t.down)} ميغابت </span>${S.mode === 'm' ? phoneLine(t.down) : b.home}.</p>
     <p class="note">الرفع عندك ${dec(t.up)} ميغابت${st.u ? ` ومعدل ${esc(aShort)} ${ar(st.u)}` : ''}، والبنك ${dec(t.ping)} ملي ثانية.</p>
+    ${S.mode === 'f' && both(a) && a.m.d / a.f.d >= 1.2 ? `<p class="note">ومعدل الموبايل ${aName} ${ar(a.m.d)}، أسرع من خطوط البيت هناك. <a href="${a === S.country ? '#/mobile' : href(a)}">البيت لو الموبايل</a></p>` : ''}
     <h2 class="todo">شنو تسوي</h2><p class="intro">${v.todo}</p>
     <div class="two"><button type="button" class="dark" data-act="share">شارك النتيجة</button><a class="light" href="#/test" data-go="1">افحص مرة ثانية</a></div>
     <a class="more gamers" href="#/ping">تلعب أونلاين؟ افحص البنك وقت التحميل</a>
@@ -914,6 +956,7 @@ function govsHTML() {
   <p class="intro">معدل سرعة تنزيل ${KIND[S.mode]} في كل محافظة، ${PERIOD[S.mode]}، وتحت كل اسم عدد الاختبارات. اضغط على محافظة لترى مدنها وأحياءها.</p>
   ${modesHTML()}
   ${rankRows(govs, { head: 'المحافظة' })}
+  <a class="more" href="#/mobile">وين الموبايل أسرع من خطوط البيت</a>
   <p class="note">حدود المحافظات من مكتب الأمم المتحدة لتنسيق الشؤون الإنسانية، وفيها حلبجة ما تزال ضمن السليمانية.</p>
   <section class="side">
     <div class="govmap">${govMapHTML()}</div>
@@ -956,7 +999,8 @@ function placeHTML(p, geom) {
     </div>
     <a class="go testlink" href="#/test" data-go="1" data-me="${isGov ? 'g:' : ''}${esc(p.id)}"><span>افحص خطك وقارنه ب${esc(isGov ? 'المحافظة' : p.n)}</span><em>٢٠ ثانية</em></a>
     <a class="more gamers" href="#/ping" data-me="${isGov ? 'g:' : ''}${esc(p.id)}">البنك للألعاب ${esc(isGov ? 'بالمحافظة' : 'ب' + p.n)} ${ar(st.l)} ملي ثانية، ${pingOf(st.l).word}</a>
-    <section class="compare"><p class="label">مقارنة بالمعدل</p>${barsHTML(rows)}${line ? `<p>${line}</p>` : ''}</section>`;
+    <section class="compare"><p class="label">مقارنة بالمعدل</p>${barsHTML(rows)}${line ? `<p>${line}</p>` : ''}</section>
+    ${hvmHTML(p)}`;
   } else {
     const ref = gs || cs;
     head = `
@@ -1077,7 +1121,7 @@ addEventListener('hashchange', fromAddress);
 let lastRoute = '';
 async function render(move = true) {
   const h = current();
-  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : h === '/ping' ? 'ping' : 'home';
+  const view = h.startsWith('/p/') || h.startsWith('/g/') ? 'place' : h === '/govs' ? 'govs' : h === '/about' ? 'about' : h === '/test' ? 'test' : h === '/ping' ? 'ping' : h === '/mobile' ? 'mobile' : 'home';
   if (view !== 'test' && testRun) { testRun.abort(); testRun = null; if (S.test && S.test.phase !== 'done') S.test = null; }
   if (view !== 'ping' && pingRun) { pingRun.abort(); pingRun = null; if (S.ping && S.ping.phase !== 'done') S.ping = null; }
   const tab = view === 'govs' || h.startsWith('/g/') ? '#/govs' : view === 'about' ? '#/about' : '#/';
@@ -1100,6 +1144,7 @@ async function render(move = true) {
     document.title = `${p.n}، سرعة الإنترنت`;
   } else if (view === 'govs') { page.innerHTML = govsHTML(); document.title = 'المحافظات، سرعة الإنترنت في العراق'; }
   else if (view === 'about') { page.innerHTML = aboutHTML(); document.title = 'عن موقع سرعة الإنترنت في العراق'; }
+  else if (view === 'mobile') { await placesReady; page.innerHTML = mobileHTML(); document.title = 'وين الموبايل أسرع من البيت، سرعة الإنترنت في العراق'; }
   else if (view === 'ping') { await placesReady; page.innerHTML = pingHTML(); document.title = 'البنك للألعاب، سرعة الإنترنت في العراق'; }
   else if (view === 'test') {
     page.innerHTML = `<div class="cols"><section class="test" id="test"></section></div>${foot()}`;
