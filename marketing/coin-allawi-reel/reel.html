@@ -288,8 +288,8 @@ function build() {
   // ═════ I · من أول 3 ثواني بإعلانك: the cards fall flat into a floor and a giant 3 stands up off it ═════
   line(base, [{ w: "من", t: 12.67 }, { w: "أول", t: 12.93, c: ORANGE }], { top: 300, size: 190, out: 14.3 });
   piece(base, `<div style="font:400 820px/1 'DG Sahabah';font-synthesis:none;color:${ORANGE}">3</div>`, 0, [13.1, 14.55], (t) => ({ ...at(420, 1010), rx: -90 + 90 * spring(t - 13.17, 0.8, 13), s: 1 + 3.5 * expoIn(k(t, 14.25, 0.3)), o: 1 - expoIn(k(t, 14.38, 0.15)) }), "width:auto;transform-origin:50% 92%");
-  line(base, [{ w: "ثواني", t: 13.35 }, { w: "بإعلانك", t: 13.73, c: ORANGE, in: "side" }], { top: 1360, size: 150, out: 14.3 });
-  pngS(base, "stopwatch-hand", 470, [12.7, 14.5], (t) => ({ ...at(820, 1280 + 900 * (1 - spring(t - 12.75, 0.84, 11)) + 1000 * expoIn(k(t, 14.2, 0.3))), r: -8 }));
+  line(base, [{ w: "ثواني", t: 13.35 }, { w: "بإعلانك", t: 13.73, c: ORANGE, in: "side" }], { top: 1420, size: 150, align: "c", out: 14.3 });
+  pngS(base, "stopwatch-hand", 380, [12.7, 14.5], (t) => ({ ...at(870, 1010 + 1100 * (1 - spring(t - 12.75, 0.84, 11)) + 1000 * expoIn(k(t, 14.2, 0.3))), r: -8 }));
 
   // ═════ J1 · الزبون راح يلمس الكواليتي العالي: the magnifier's glass grows the word under it ═════
   line(base, [{ w: "الزبون", t: 14.47 }, { w: "راح", t: 14.87 }, { w: "يلمس", t: 15.09 }], { top: 330, size: 150, out: 16.05 });
@@ -397,8 +397,8 @@ function build() {
     if (t < 35.25) return null;
     if (t < 39.4) return circle(lerp(0, 2300, expoInOut(k(t, 35.25, 0.5))), 540, 1450);
     if (t < 40.2) { const p = expoInOut(k(t, 39.4, 0.6)); return circle(lerp(2300, 22, p), lerp(540, 540, p), lerp(1450, 760, p)); }
-    if (t < 40.95) return circle(22, 540, 760);
-    return circle(lerp(22, 0, expoIn(k(t, 40.95, 0.2))), 540, 760);
+    if (t < 40.75) return circle(22, 540, 760);
+    return circle(lerp(22, 0, expoIn(k(t, 40.75, 0.2))), 540, 760);
   });
   div(`position:absolute;inset:0;background:${ORANGE}`, R.el);
   div("", R.el).className = "paper";
@@ -410,10 +410,10 @@ function build() {
   line(R, [{ w: "شوف", t: 36.79, c: WHITE }, { w: "أعمالنا", t: 36.99, c: BROWN, in: "rise" }], { top: 560, size: 180, align: "c", out: 37.45 });
   line(R, [{ w: "وخلي", t: 37.53, c: WHITE }, { w: "براندك", t: 38.05, c: WHITE }], { top: 520, size: 160, align: "c", out: 39.3 });
   line(R, [{ w: "يبيع", t: 38.71, c: BROWN, in: "stamp" }, { w: "صح", t: 39.07, c: WHITE }], { top: 760, size: 250, align: "c", out: 39.3 });
-  pngS(R, "cash-fan", 620, [36.95, 39.6], (t) => ({ ...at(540, 1380 + 900 * (1 - spring(t - 37.0, 0.84, 12)) + 1100 * expoIn(k(t, 39.2, 0.35))), r: -10 + 8 * Math.sin(Math.PI * k(t, 38.71, 0.3)) }));
+  pngS(R, "cash-fan", 540, [36.95, 39.6], (t) => ({ ...at(540, 1470 + 900 * (1 - spring(t - 37.0, 0.84, 12)) + 1100 * expoIn(k(t, 39.2, 0.35))), r: -10 + 8 * Math.sin(Math.PI * k(t, 38.71, 0.3)) }));
 
   // ═════ end title: the dot is the coin; the frame folds back to the first one ═════
-  const gone = (t) => 1 - expoIn(k(t, 40.85, 0.3));
+  const gone = (t) => 1 - expoIn(k(t, 40.62, 0.3));
   piece(base, `<div style="font:400 140px/1.2 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:ltr">@allawi.psd</div>`, 0, [39.75, 41.3], (t) => ({ ...merge(at(540, 930), ENTRY.blur(t - 39.8)), o: clamp((t - 39.8) / 0.15) * gone(t), b: 24 * (1 - expoOut(k(t, 39.8, 0.45))) + 20 * (1 - gone(t)) }), "width:auto");
   piece(base, `<div style="font:400 92px/1.25 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:rtl">وخلي براندك <span style="color:${ORANGE}">يبيع صح</span></div>`, 0, [39.95, 41.3], (t) => ({ ...merge(at(540, 1095), ENTRY.rise(t - 40.0)), o: clamp((t - 40.0) / 0.1) * gone(t) }), "width:auto");
   piece(base, `<div style="font:400 50px/1.3 'DG Sahabah';font-synthesis:none;color:${BROWN};white-space:nowrap;direction:rtl;opacity:.8">موشن جرافيك <span style="color:${ORANGE}">&nbsp;&#9679;&nbsp;</span> بوستات <span style="color:${ORANGE}">&nbsp;&#9679;&nbsp;</span> إعلانات</div>`, 0, [40.15, 41.3], (t) => ({ ...merge(at(540, 1215), ENTRY.blur(t - 40.2)), o: clamp((t - 40.2) / 0.12) * gone(t) }), "width:auto");
