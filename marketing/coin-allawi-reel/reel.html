@@ -330,7 +330,7 @@ function build() {
   line(base, [{ w: "تماما", t: 22.17, in: "rise" }], { top: 610, size: 200, align: "c", out: 23.35 });
   line(base, [{ w: "عن", t: 22.69 }, { w: "منافسيك", t: 22.77 }], { top: 860, size: 140, align: "c", out: 23.05, exit: "left" });
   pngS(base, "chess-king", 260, [19.0, 23.6], (t) => ({ ...at(540, 1330 + 800 * (1 - spring(t - 19.1, 0.85, 11)) + 900 * expoIn(k(t, 23.3, 0.3))), s: 1 + 0.06 * Math.sin(Math.PI * k(t, 21.75, 0.3)) }));
-  [[-1, 300, 0.0], [-1, 170, 0.06], [1, 170, 0.03], [1, 300, 0.09]].forEach(([side, dx, d], i) => pngS(base, "chess-pawn", 150, [19.0, 23.6], (t) => ({
+  [[-1, 300, 0.0], [-1, 170, 0.12], [1, 170, 0.06], [1, 300, 0.18]].forEach(([side, dx, d], i) => pngS(base, "chess-pawn", 150, [19.0, 23.6], (t) => ({
     ...at(540 + side * dx + side * 470 * expoOut(k(t, 21.75 + d, 0.6)), 1430 + 700 * (1 - spring(t - 19.2 - d, 0.85, 11)) + 900 * expoIn(k(t, 23.3, 0.3))), r: side * 14 * expoOut(k(t, 21.75 + d, 0.6)),
   })));
 
@@ -443,7 +443,7 @@ window.seek = (t) => {
 
 window.ready = (async () => {
   await document.fonts.load("400 100px 'DG Sahabah'");
-  await new Promise((r) => { const s = document.createElement("script"); s.src = "../ae-core-reel/reel/sound.js"; s.onload = r; s.onerror = r; document.head.appendChild(s); });
+  for (const src of ["../ae-core-reel/reel/sound.js", "sfx.js"]) await new Promise((r) => { const s = document.createElement("script"); s.src = src; s.onload = r; s.onerror = r; document.head.appendChild(s); });
   build();
   await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
   await Promise.all(VIDEOS.map((V) => (V.v.readyState >= 2 ? 0 : new Promise((r) => { V.v.addEventListener("loadeddata", r, { once: true }); setTimeout(r, 5000); }))));
@@ -451,6 +451,29 @@ window.ready = (async () => {
   await window.seek(q.has("t") ? +q.get("t") : 0);
   return true;
 })();
+
+// preview with sound (from a local server): click to play from ?t=, click again to stop. The voice and the baked
+// sound design start on the same audio clock, and every frame is drawn from that clock, so picture and sound can't drift.
+let playing = null;
+async function play() {
+  if (playing) { playing.stop(); return; }
+  const ctx = new AudioContext({ sampleRate: 48000 }), D = 41.2, from = +(new URLSearchParams(location.search).get("t") || 0);
+  const voice = await ctx.decodeAudioData(await (await fetch("../ae-core-reel/media/audio/voice.wav")).arrayBuffer());
+  const bus = StudioSoundEngine.mix(await StudioSoundEngine.bake(SFX.CUES), D);
+  const sfx = ctx.createBuffer(2, bus.l.length, bus.sr);
+  sfx.copyToChannel(bus.l, 0); sfx.copyToChannel(bus.r, 1);
+  const at = ctx.currentTime + 0.1, srcs = [voice, sfx].map((b) => { const s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(at, from); return s; });
+  let raf = 0;
+  playing = { stop: () => { cancelAnimationFrame(raf); srcs.forEach((s) => s.stop()); ctx.close(); playing = null; } };
+  const tick = () => {
+    const t = from + ctx.currentTime - at;
+    if (t >= D) return playing && playing.stop();
+    window.seek(Math.max(from, t));
+    raf = requestAnimationFrame(tick);
+  };
+  tick();
+}
+document.addEventListener("click", play);
 </script>
 </body>
 </html>

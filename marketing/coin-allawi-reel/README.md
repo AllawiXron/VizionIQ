@@ -6,7 +6,7 @@ drops into the wallet, flips into the circle that opens the orange world, shrink
 a card, opens the last scene again from the padlock and ends as the dot of @allawi.psd. The last frame is the first,
 so the reel loops.
 
-Same script, fitted voice and sound cues as `../ae-core-reel` (`reel/sound.js`), same cut-outs (from
+Same script and fitted voice as `../ae-core-reel` (`reel/sound.js`), same cut-outs (from
 `../rm-allawi-ad-reel/public/el`). The phone screens play my reels from `../ae-core-reel/media/clips` (VP9 webm). Type: DG Sahabah only. Colours: cream paper, my orange, my brown and white, under
 my paper texture.
 
@@ -40,7 +40,37 @@ my paper texture.
   Run it with `NODE_PATH` pointing at a folder that has playwright-core. The sounds come from `../ae-core-reel/media/audio`
   (its `tools/assets.sh`).
 
+## Sound design
+
+`sfx.js` holds the cue list and `StudioSoundEngine`, which makes every sound with Web Audio on six tracks:
+
+| Track | What it is | Where |
+|---|---|---|
+| Whoosh 1 | pink and brown noise through a band-pass sweeping 180 to 950 Hz and back, played at 82.76%, with a low body | the wallet, the megaphone, the camera moves over the page, the pawns leaving, the crowd (a slow pan from right to left) |
+| Whoosh 3 | pink noise through a band-pass sweeping 830 to 3900 Hz, at 118.92% | the box, the binoculars, the magnifier, the man with binoculars, the way to the end card; a short bright swipe on the white block |
+| FireWhoosh | pink and brown noise under a low-pass that opens to 2.6 kHz and closes, with a light crackle and a low body | every full-screen colour change: the orange, the diagonal panel, the dark stage, the page coming back, the last orange |
+| Counting 8 | eight soft ticks, tick and tock a little apart in pitch and a little off the grid | the first words, «موشن جرافيك», the register; at stopwatch pace next to the 3 |
+| Deep | a sine dropping from 120 to 50 Hz, a triangle an octave up so phone speakers carry it, a soft knock | the stamp, the shop owner, the bulb, the handshake, the ten bags, the stop hand |
+| UI Pop | marimba plucks (a sine that drops onto its note and a fast bright partial), cascades 60 ms apart rising 0, 2, 4, 5 semitones, and the tactile sounds: cursor click, slap, lens detents, glass chime, till latch and bell, padlock, handset | the pawns, the bags, the three phones, @allawi.psd, and each click named in the cue list |
+
+Each cue is rendered on its own in an OfflineAudioContext, its peak set 12 to 16 dB under the voice's peak (−1.5 dBFS),
+and trimmed where it goes silent. The cues are summed to one bus. Where they stack on one hit, a look-ahead limiter
+keeps the bus 12 dB under the voice. The voice is never touched. The noise is seeded, so every render gives the same
+sound. `engine.load({ "Deep": "<file>.wav" })` puts a recorded sound on a track (or on one kind, like `padlock`) in place of
+the synthesis.
+
+Preview: serve `marketing/` (`python3 -m http.server`), open `coin-allawi-reel/reel.html` and click. The voice and
+the sound bus start on one audio clock and every frame is drawn from that clock, so the picture follows the sound.
+`?t=25` starts from 25 s.
+
+`node render.cjs sound` rebuilds only the sound, puts it on the rendered video and writes the After Effects track:
+`out/ae/` has `sfx_timeline.jsx`, `sfx/` (one file per cue, named by number, track and kind) and `voice.wav`, and
+`out/allawi_sfx_AE.zip` packs them. In AE, open the comp (or none, and it makes `allawi_orange_coin`), then File >
+Scripts > Run Script File… and pick the script. Every cue lands as a green audio layer named after its track, at its
+time, with the time and kind in the layer comment. Above them, the null `SFX_TIMELINE` has a green marker per cue,
+as long as the sound. With `allawi-orange-coin.mp4` beside the script, a new comp also gets the reel as a picture layer.
+
 ## Credits
 
 - The empty wallet: rawpixel, CC0. The other cut-outs are ones I picked and cut out myself.
-- Sounds: only my own sound pack. No music.
+- Sounds: made in `sfx.js`. No music.

@@ -230,6 +230,9 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 Use only the user's own sound packs in `marketing/sfx-pack/` (two Drive packs, 127 sounds; run `./fetch.sh` there
 first; `README.md` lists every sound and its length). Don't synthesize sound effects, don't use HyperFrames-kit or other stock sounds, and don't add
 generated or stock music. If a piece needs music, ask the user for a track.
+Exception (24 Oct): for the Orange Coin reel the user asked for a sound design synthesized in Web Audio on six
+tracks (Whoosh 1, Whoosh 3, FireWhoosh, Counting 8, Deep, UI Pop), 12–16 dB under the voice, with an AE SFX_TIMELINE
+script: `marketing/coin-allawi-reel/sfx.js`.
 
 A pop on every word as it appears (softer on the orange key words), a whoosh on each camera move or transition, a
 stamp or impact on big moments.
