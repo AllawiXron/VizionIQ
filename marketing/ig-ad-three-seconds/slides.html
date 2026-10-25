@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>allawi.psd · ٣ ثواني</title>
+<link rel="stylesheet" href="assets/fonts/fonts.css" />
+<style>
+:root { --paper:#efe9df; --ink:#1f1510; --soft:rgba(31,21,16,.58); --line:rgba(31,21,16,.2); --orange:#e2541b; --hl:rgba(226,84,27,.28) }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#000; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:1160px }
+.art { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; flex:none; color:var(--ink); font-family:'IBM Plex Sans Arabic';
+  background:linear-gradient(rgba(31,21,16,.045) 1px, transparent 1px) 0 0/54px 54px, linear-gradient(90deg, rgba(31,21,16,.045) 1px, transparent 1px) 0 0/54px 54px, var(--paper) }
+.art::before { content:''; position:absolute; inset:0; background:url(assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.2; pointer-events:none }
+.art > * { position:absolute }
+.lat { direction:ltr; unicode-bidi:isolate }
+.top { top:48px; right:64px; left:64px; display:flex; justify-content:space-between; align-items:flex-start }
+.top .tg { display:flex; align-items:center; gap:12px; font:600 24px 'IBM Plex Sans Arabic' }
+.top .tg i { width:16px; height:16px; background:var(--orange); display:block }
+.top .me { direction:ltr; text-align:left; font:700 24px/1.1 'IBM Plex Sans Arabic' }
+.top .me small { display:block; font:600 13px 'IBM Plex Sans Arabic'; letter-spacing:.42em; color:var(--soft); margin-top:6px }
+.bot { bottom:48px; right:64px; left:64px; display:flex; justify-content:space-between; align-items:center }
+.bot .no { width:46px; height:46px; background:var(--orange); color:#fff; display:flex; align-items:center; justify-content:center; font:700 24px 'IBM Plex Sans Arabic' }
+.bot .sw { display:flex; align-items:center; gap:10px; font:700 22px 'IBM Plex Sans Arabic' }
+.h { right:64px; left:64px; top:150px; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:70px; line-height:1.3 }
+.sub { right:64px; left:64px; top:262px; text-wrap:balance; font:600 33px/1.6 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.85) }
+mark { background:linear-gradient(transparent 52%, var(--hl) 52%, var(--hl) 92%, transparent 92%); color:inherit; padding:0 4px }
+.or { color:#c2441a }
+/* ad wireframe parts */
+.box { position:absolute; border:2.5px solid var(--ink); background:rgba(255,255,255,.35) }
+.blk { position:absolute; background:var(--ink) }
+.num { position:absolute; width:56px; height:56px; border-radius:50%; background:var(--orange); color:#fff; display:flex; align-items:center; justify-content:center; font:700 28px 'IBM Plex Sans Arabic'; z-index:3 }
+.leg { font:500 27px/1.5 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.8) }
+.leg b { display:block; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:38px; line-height:1.25; color:var(--ink) }
+.ex { position:absolute; right:64px; left:64px; height:256px; border:2.5px solid var(--ink); background:rgba(255,255,255,.35) }
+.ex .q { position:absolute; right:40px; top:24px; font:800 30px 'Alexandria'; color:rgba(31,21,16,.8) }
+.ex .a { position:absolute; right:36px; top:70px; font:900 104px/1.3 'Alexandria' }
+.ex .tag { position:absolute; left:28px; top:20px; font:600 20px 'IBM Plex Sans Arabic'; color:var(--soft) }
+
+.flow { right:190px; left:150px; display:flex; flex-direction:column; gap:64px }
+.st { position:relative }
+.st .sec { position:absolute; right:-118px; top:50%; transform:translateY(-50%); font:700 30px 'IBM Plex Sans Arabic'; color:#c2441a }
+.st:not(:last-child)::after { content:''; position:absolute; left:50%; bottom:-60px; width:2.5px; height:56px; background:var(--ink) }
+.bx { border:2.5px solid var(--ink); background:rgba(255,255,255,.4); padding:22px 26px 26px; font:500 28px/1.5 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.8); text-align:center }
+.bx b { display:block; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:46px; line-height:1.3; color:var(--ink) }
+.bx.hot { background:var(--orange); border-color:var(--orange); color:rgba(255,255,255,.92) }
+.bx.hot b { color:#fff }
+.cap { display:flex; gap:16px; align-items:flex-start; font:500 24px/1.5 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.8) }
+.cap b { display:block; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:36px; line-height:1.25; color:var(--ink) }
+.mk { width:40px; height:40px; flex:none; display:block }
+.box .blk { position:absolute }
+.mo { right:64px; left:64px; height:236px; display:flex; align-items:center; gap:22px }
+.mo .pr { width:330px; height:100%; border:2.5px dashed rgba(31,21,16,.45); display:flex; gap:14px; align-items:center; padding:0 22px; font:500 22px/1.5 'IBM Plex Sans Arabic'; color:var(--soft) }
+.mo .pr b { display:block; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:34px; color:rgba(31,21,16,.6) }
+.mo .ar { font:700 40px 'IBM Plex Sans Arabic'; color:#c2441a }
+.mo .mm { flex:1; height:100%; border:2.5px solid var(--orange); background:rgba(255,255,255,.4); display:flex; align-items:center; justify-content:space-between; padding:0 24px 0 18px; font:500 20px/1.5 'IBM Plex Sans Arabic'; color:var(--soft) }
+.mo .mm b { display:block; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:34px; line-height:1.3; color:var(--ink); margin-bottom:4px }
+.mo .mm img { width:160px; height:200px; object-fit:cover; display:block; box-shadow:0 8px 18px rgba(31,21,16,.25) }
+.lvl { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px }
+.lvl .bar { height:96px; background:var(--ink); display:flex; align-items:center; padding:0 26px; color:#fff; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:38px; white-space:nowrap }
+.lvl .px { font:700 24px 'IBM Plex Sans Arabic'; color:#c2441a; white-space:nowrap }
+.cta5 div { height:72px; border:2.5px solid rgba(31,21,16,.5); display:flex; align-items:center; justify-content:center; font:600 28px 'IBM Plex Sans Arabic'; color:var(--soft) }
+.one { height:150px; background:var(--orange); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:64px }
+.chk { right:64px; left:64px; border-top:2.5px solid var(--ink) }
+.chk div { display:flex; align-items:center; gap:24px; height:96px; border-bottom:1px solid var(--line); font:600 34px 'IBM Plex Sans Arabic' }
+.chk i { width:40px; height:40px; border:3px solid var(--orange); flex:none; display:block }
+.tip { right:64px; left:64px; background:var(--ink); color:rgba(239,233,223,.85); padding:26px 32px 30px; font:500 26px/1.6 'IBM Plex Sans Arabic' }
+.tip b { display:block; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; font-size:38px; color:#fff; margin-bottom:4px }
+.rule { height:2.5px; background:var(--ink) }
+.mini { position:relative; width:280px; height:200px; border:2.5px solid var(--ink); background:rgba(255,255,255,.4) }
+.mini i { position:absolute; display:block }
+.av { left:50%; top:240px; width:320px; height:320px; margin-left:-160px; border-radius:50%; object-fit:cover; border:10px solid var(--orange) }
+</style>
+</head>
+<body>
+
+<!-- 1. cover -->
+<section class="art" id="s1">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h" style="top:190px; font-size:118px; line-height:1.28">زبونك يقرا<br>إعلانك بـ<span class="or">٣ ثواني</span></div>
+  <div class="sub" style="top:520px; font-size:34px">إذا ما فهم بيهن، يعبر. هذا شلون أبني الإعلان<br>حتى <mark>يوصل قبل ما يكمل السكرول.</mark></div>
+  <svg style="left:0; top:0; width:1080px; height:1350px" viewBox="0 0 1080 1350" id="coverArt"></svg>
+  <div class="bot" style="left:auto"><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 2. the thumb decides -->
+<section class="art" id="s2">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">الإبهام يقرر بلحظة</div>
+  <div class="sub">بالسكرول، الإعلان عنده <mark>لحظة وحدة</mark> حتى يوقف الإبهام، وثانيتين حتى يفهم. فكل ثانية إلها شغلة.</div>
+  <div class="flow" style="top:440px">
+    <div class="st"><span class="sec">٠ ث</span><div class="bx"><b>يشوف</b>اللون والكلمة الكبيرة، قبل ما يقرا شي.</div></div>
+    <div class="st"><span class="sec">١ ث</span><div class="bx hot"><b>يوقف لو يعبر</b>إذا الكلمة حجت عليه، يوقف.</div></div>
+    <div class="st"><span class="sec">٢ ث</span><div class="bx"><b>يفهم</b>السطر الصغير والصورة يكملون الفكرة.</div></div>
+    <div class="st"><span class="sec">٣ ث</span><div class="bx"><b>يقرر</b>يضغط، يحفظ، لو يكمل السكرول.</div></div>
+  </div>
+  <div class="bot"><span class="no">٢</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 3. reading order -->
+<section class="art" id="s3">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">العين ما تقرا من فوق لجوه</div>
+  <div class="sub">تبدي <mark>بالأكبر</mark> وتنزل حسب الحجم، فرتب الأحجام بالترتيب اللي تريده.</div>
+
+  <div class="box" style="left:64px; top:440px; width:470px; height:588px"></div>
+  <div class="blk" style="left:250px; top:478px; width:244px; height:16px; opacity:.55"></div>
+  <div class="blk" style="left:184px; top:512px; width:310px; height:86px"></div>
+  <div class="box" style="left:104px; top:630px; width:390px; height:250px; border-style:dashed; background:none"></div>
+  <svg style="left:104px; top:630px; width:390px; height:250px" viewBox="0 0 390 250"><path d="M0 250 L130 120 L210 190 L280 110 L390 250 Z" fill="rgba(31,21,16,.14)"/><circle cx="300" cy="62" r="24" fill="rgba(31,21,16,.14)"/></svg>
+  <div class="blk" style="left:104px; top:916px; width:150px; height:46px; background:var(--orange)"></div>
+  <div class="blk" style="left:430px; top:922px; width:64px; height:34px; opacity:.4"></div>
+  <div class="num" style="left:150px; top:526px">١</div>
+  <div class="num" style="left:196px; top:458px">٢</div>
+  <div class="num" style="left:270px; top:726px">٣</div>
+  <div class="num" style="left:226px; top:912px">٤</div>
+  <svg style="left:0; top:0; width:1080px; height:1350px" viewBox="0 0 1080 1350"><path d="M178 554 C120 500 170 470 224 486 M224 486 C420 520 380 650 298 754 M298 754 C240 840 250 880 254 940" fill="none" stroke="#e2541b" stroke-width="3" stroke-dasharray="7 7"/></svg>
+
+  <div style="right:64px; top:440px; width:420px; display:flex; flex-direction:column; gap:26px">
+    <div class="leg"><b>١ الكلمة الكبيرة</b>توقف الإبهام. كلمة وحدة أو اثنين.</div>
+    <div class="leg"><b>٢ السطر الصغير</b>يعطي الكلمة معناها. يقرا بعدها مو قبلها.</div>
+    <div class="leg"><b>٣ الصورة</b>تثبت الكلام بدون ما تعيده.</div>
+    <div class="leg"><b>٤ الزر</b>شنو يسوي هسه. خطوة وحدة.</div>
+  </div>
+  <div style="left:64px; top:1050px; font:500 22px 'IBM Plex Sans Arabic'; color:var(--soft)">الشعار آخر شي، صغير بالزاوية. يكفيه يتذكر.</div>
+  <div class="bot"><span class="no">٣</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 4. one message -->
+<section class="art" id="s4">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">رسالة وحدة بكل إعلان</div>
+  <div class="sub">كل معلومة تضيفها <mark>تاخذ من اللي قبلها</mark>. الباقي مكانه الكابشن والستوري.</div>
+  <div class="box" style="right:64px; top:430px; width:450px; height:562px">
+    <div class="blk" style="right:30px; top:28px; width:250px; height:40px"></div>
+    <div class="blk" style="left:30px; top:28px; width:110px; height:40px; background:var(--orange)"></div>
+    <div class="blk" style="right:30px; top:88px; width:390px; height:14px; opacity:.5"></div>
+    <div class="blk" style="right:30px; top:112px; width:330px; height:14px; opacity:.5"></div>
+    <div class="blk" style="right:30px; top:146px; width:180px; height:150px; opacity:.18"></div>
+    <div class="blk" style="left:30px; top:146px; width:180px; height:70px; background:var(--orange); opacity:.8"></div>
+    <div class="blk" style="left:30px; top:226px; width:180px; height:70px; opacity:.75"></div>
+    <div class="blk" style="right:30px; top:320px; width:390px; height:12px; opacity:.45"></div>
+    <div class="blk" style="right:30px; top:342px; width:260px; height:12px; opacity:.45"></div>
+    <div class="blk" style="right:30px; top:364px; width:330px; height:12px; opacity:.45"></div>
+    <div class="blk" style="right:30px; top:400px; width:120px; height:40px; background:var(--orange)"></div>
+    <div class="blk" style="right:160px; top:400px; width:120px; height:40px"></div>
+    <div class="blk" style="left:30px; top:400px; width:110px; height:40px; opacity:.6"></div>
+    <div class="blk" style="right:30px; top:470px; width:70px; height:62px; border-radius:50%; background:var(--orange)"></div>
+    <div class="blk" style="right:116px; top:470px; width:70px; height:62px; border-radius:50%"></div>
+    <div class="blk" style="left:30px; top:486px; width:200px; height:12px; opacity:.45"></div>
+    <div class="blk" style="left:30px; top:508px; width:150px; height:12px; opacity:.45"></div>
+  </div>
+  <div class="box" style="left:64px; top:430px; width:450px; height:562px">
+    <div class="blk" style="right:40px; top:44px; width:200px; height:14px; opacity:.55"></div>
+    <div class="blk" style="right:40px; top:74px; width:300px; height:96px"></div>
+    <div class="blk" style="right:40px; left:40px; top:206px; height:230px; opacity:.16"></div>
+    <div class="blk" style="left:40px; top:470px; width:150px; height:46px; background:var(--orange)"></div>
+  </div>
+  <div class="cap" style="right:64px; top:1012px; width:450px"><svg class="mk" viewBox="0 0 40 40"><rect width="40" height="40" fill="#1f1510"/><path d="M12 12 L28 28 M28 12 L12 28" stroke="#efe9df" stroke-width="4" stroke-linecap="round"/></svg><div><b>سبع رسائل</b>عرض، سعر، رقم، عنوان، ساعات دوام.. ولا وحدة توصل.</div></div>
+  <div class="cap" style="left:64px; top:1012px; width:450px"><svg class="mk" viewBox="0 0 40 40"><rect width="40" height="40" fill="#e2541b"/><path d="M11 21 L18 28 L30 13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>رسالة وحدة</b>فكرة وحدة، صورة، وخطوة. توصل بثانية.</div></div>
+  <div class="bot"><span class="no">٤</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 5. the small line asks, the big word answers -->
+<section class="art" id="s5">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">سطر يسأل.. وكلمة تجاوب</div>
+  <div class="sub">مو جملة طويلة. <mark>سؤال صغير وجواب كبير</mark>، والجواب أكبر بـ٣ مرات على الأقل.</div>
+
+  <div class="ex" style="top:380px"><div class="q">تكسي بنص الليل؟</div><div class="a">بلي.</div><div class="tag">بلي · إعلان غير رسمي</div></div>
+  <div class="ex" style="top:658px"><div class="q">لحم لو دجاج؟</div><div class="a">ثنينهم.</div><div class="tag">صاج الريف</div></div>
+  <div class="ex" style="top:936px"><div class="q">الوطنية طفت..</div><div class="a">النت ما طفى.</div><div class="tag">آسياسيل · إعلان غير رسمي</div></div>
+  <svg style="left:0; top:0; width:1080px; height:1350px" viewBox="0 0 1080 1350" id="scale"></svg>
+  <div class="bot"><span class="no">٥</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+
+<!-- 6. the moment, not the product -->
+<section class="art" id="s6">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">صور اللحظة، مو المنتج</div>
+  <div class="sub">المنتج كل الشركات تصوره. <mark>اللحظة اللي يحتاجه بيها</mark> هي اللي يتذكرها الزبون.</div>
+  <div class="mo" style="top:420px"><div class="pr"><svg class="mk" viewBox="0 0 40 40"><rect width="40" height="40" fill="#1f1510"/><path d="M12 12 L28 28 M28 12 L12 28" stroke="#efe9df" stroke-width="4" stroke-linecap="round"/></svg><div><b>شريحة إنترنت</b>منتج، مثل غيره</div></div><span class="ar">←</span><div class="mm"><div><b>الكهرباء طفت والنت شغال</b>آسياسيل · إعلان غير رسمي</div><img src="work/asiacell.jpg"></div></div>
+  <div class="mo" style="top:680px"><div class="pr"><svg class="mk" viewBox="0 0 40 40"><rect width="40" height="40" fill="#1f1510"/><path d="M12 12 L28 28 M28 12 L12 28" stroke="#efe9df" stroke-width="4" stroke-linecap="round"/></svg><div><b>طيارة بالسما</b>كل شركات الطيران</div></div><span class="ar">←</span><div class="mm"><div><b>بغداد من الشباك</b>الخطوط العراقية · إعلان غير رسمي</div><img src="work/iqa.jpg"></div></div>
+  <div class="mo" style="top:940px"><div class="pr"><svg class="mk" viewBox="0 0 40 40"><rect width="40" height="40" fill="#1f1510"/><path d="M12 12 L28 28 M28 12 L12 28" stroke="#efe9df" stroke-width="4" stroke-linecap="round"/></svg><div><b>أنبوب تحليل</b>كل المختبرات</div></div><span class="ar">←</span><div class="mm"><div><b>الحيرة شتفحص</b>مختبر الشفاء · فكرة إعلان</div><img src="work/shifa.jpg"></div></div>
+  <div class="bot"><span class="no">٦</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 7. size is importance -->
+<section class="art" id="s7">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">الحجم يعني الأهمية</div>
+  <div class="sub">قبل ما تفتح البرنامج، رتب الكلام حسب أهميته. <mark>الأهم ياخذ أكبر حجم</mark>، والباقي ينزل درجة درجة.</div>
+  <div style="right:64px; left:64px; top:440px" id="pyr"></div>
+  <div style="right:64px; top:1190px; font:500 22px 'IBM Plex Sans Arabic'; color:var(--soft)">الأرقام: حجم الخط بالبكسل اللي أشتغل بيه على بوست عرضه ١٠٨٠.</div>
+  <div class="bot"><span class="no">٧</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 8. one action -->
+<section class="art" id="s8">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">خطوة وحدة بالآخر</div>
+  <div class="sub">إذا طلبت منه خمس أشياء، <mark>ما راح يسوي ولا وحدة</mark>. قله شنو يسوي هسه، بكلمة وحدة.</div>
+  <div style="right:64px; top:450px; width:440px; display:flex; flex-direction:column; gap:16px" class="cta5">
+    <div>تابعونا</div><div>اتصلوا بينا</div><div>زورونا</div><div>شاركوا البوست</div><div>راسلونا واتساب</div>
+  </div>
+  <svg style="right:64px; top:440px; width:440px; height:440px; position:absolute" viewBox="0 0 440 440"><path d="M10 20 L430 420 M430 20 L10 420" stroke="#1f1510" stroke-width="5" stroke-linecap="round" opacity=".75"/></svg>
+  <div style="left:64px; top:450px; width:440px">
+    <div class="one">اطلب هسه</div>
+    <div class="leg" style="margin-top:30px"><b>وخلي مكانه ثابت</b>نفس الزاوية ونفس اللون بكل إعلاناتك. بعد كم بوست، العين تروحله لحالها.</div>
+  </div>
+  <div class="rule" style="right:64px; left:64px; top:960px"></div>
+  <div style="right:64px; left:64px; top:996px; display:flex; justify-content:space-between" id="same"></div>
+  <div class="bot"><span class="no">٨</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 9. checklist -->
+<section class="art" id="s9">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <div class="h">قبل ما تنشر، اسأل نفسك</div>
+  <div class="sub">إذا جواب وحدة منها <mark>لا</mark>، ارجع للتصميم.</div>
+  <div class="chk" style="top:420px">
+    <div><i></i>أفهم الإعلان كله بـ٣ ثواني؟</div>
+    <div><i></i>بيه رسالة وحدة بس؟</div>
+    <div><i></i>الأكبر بالتصميم هو الأهم بالكلام؟</div>
+    <div><i></i>العنوان سؤال صغير وجواب كبير؟</div>
+    <div><i></i>الصورة تبين لحظة، مو بس منتج؟</div>
+    <div><i></i>بالآخر خطوة وحدة، بمكانها الثابت؟</div>
+  </div>
+  <div class="tip" style="top:1040px"><b>اختبار الإبهام</b>صغر الإعلان لحجم ظفرك، أو ابعد التلفون لآخر إيدك. إذا الكلمة الكبيرة ما تنقرا، الإعلان ما راح يوقف أحد.</div>
+  <div class="bot"><span class="no">٩</span><span class="sw">اسحب <svg width="40" height="18" viewBox="0 0 40 18"><path d="M38 9 H4 M12 2 L4 9 L12 16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+</section>
+
+<!-- 10. call to action -->
+<section class="art" id="s10">
+  <div class="top"><span class="tg"><i></i>تصميم إعلانات</span><span class="me">@allawi.psd<small>AD DESIGN</small></span></div>
+  <img class="av" src="img/avatar.jpg">
+  <div class="h" style="top:640px; text-align:center; font-size:78px">تريد إعلان ينقرا بـ<span class="or">٣ ثواني</span>؟</div>
+  <div class="sub" style="top:760px; text-align:center; font-size:36px">راسلني على الخاص <mark class="lat">@allawi.psd</mark></div>
+  <div style="right:64px; left:64px; top:880px; text-align:center; font:500 28px/1.6 'IBM Plex Sans Arabic'; color:rgba(31,21,16,.8)">احفظ البوست وارجعله قبل إعلانك الجاي.<br>وإذا تعرف واحد يصمم إعلاناته بنفسه، دزه إله.</div>
+  <div style="right:64px; left:64px; top:1150px; text-align:center; font:500 20px 'IBM Plex Sans Arabic'; color:var(--soft)">الأمثلة من إعلاناتي. إعلانات البراندات الكبيرة أفكار غير رسمية، ومحد طلبها مني.</div>
+  <div class="bot"><span class="no">١٠</span><span></span></div>
+</section>
+
+<script>
+const INK = '#1f1510', OR = '#e2541b';
+// cover: a phone in the feed, one ad in it, and a 3-second ring
+(() => {
+  let s = '';
+  const px = 330, py = 760, pw = 420, ph = 760;
+  s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="56" fill="rgba(255,255,255,.4)" stroke="${INK}" stroke-width="3"/>`;
+  s += `<rect x="${px + 150}" y="${py + 22}" width="120" height="22" rx="11" fill="${INK}"/>`;
+  const cx = px + 30, cw = pw - 60;
+  s += `<rect x="${cx}" y="${py + 70}" width="${cw}" height="70" fill="rgba(31,21,16,.12)"/>`;
+  s += `<rect x="${cx}" y="${py + 160}" width="${cw}" height="${cw * 1.25}" fill="${OR}"/>`;
+  s += `<rect x="${cx + 34}" y="${py + 200}" width="150" height="10" fill="#fff" opacity=".8"/><rect x="${cx + 34}" y="${py + 222}" width="240" height="56" fill="#fff"/>`;
+  s += `<rect x="${cx + 34}" y="${py + 160 + cw * 1.25 - 66}" width="110" height="34" fill="${INK}"/>`;
+  // the timer: three segments, one per second
+  const tx = 200, ty = 960, r = 92;
+  for (let i = 0; i < 3; i++) {
+    const a0 = (i / 3) * 2 * Math.PI + 0.05, a1 = ((i + 1) / 3) * 2 * Math.PI - 0.05;
+    const p = (a) => [tx + r * Math.sin(a), ty - r * Math.cos(a)];
+    const [x0, y0] = p(a0), [x1, y1] = p(a1);
+    s += `<path d="M${x0} ${y0} A${r} ${r} 0 0 1 ${x1} ${y1}" fill="none" stroke="${i < 2 ? OR : 'rgba(31,21,16,.2)'}" stroke-width="16"/>`;
+  }
+  s += `<text x="${tx}" y="${ty + 24}" text-anchor="middle" font-family="Alexandria" font-weight="900" font-size="64" fill="${INK}">٣</text>`;
+  s += `<path d="M300 960 C330 960 340 990 352 1010" fill="none" stroke="${INK}" stroke-width="2.5" stroke-dasharray="6 6"/>`;
+  document.getElementById('coverArt').innerHTML = s;
+})();
+
+// slide 5: a bracket by each example showing the size jump
+document.getElementById('scale').innerHTML = [380, 658, 936].map((y) =>
+  `<path d="M108 ${y + 80} H96 V${y + 210} H108" fill="none" stroke="${OR}" stroke-width="3"/><text x="124" y="${y + 156}" text-anchor="start" font-family="IBM Plex Sans Arabic" font-weight="700" font-size="26" fill="${OR}">×٣</text>`).join('');
+
+// slide 7: the order of importance, widest first, with the sizes I use
+document.getElementById('pyr').innerHTML = [
+  ['الكلمة الكبيرة', '١٠٠ إلى ١٤٠', 100], ['الصورة', 'نص المساحة', 90], ['العرض أو السعر', '٤٠ إلى ٥٦', 80],
+  ['السطر الصغير', '٣٠ إلى ٤٠', 70], ['الزر', '٢٦ إلى ٣٢', 60], ['الشعار والتفاصيل', '١٨ إلى ٢٢', 52],
+].map(([n, px, w], i) => `<div class="lvl"><div class="bar" style="width:${w * 7.4}px; ${i === 0 ? 'background:#e2541b' : ''}${i > 2 ? '; opacity:' + (1 - (i - 2) * 0.12) : ''}">${n}</div><span class="px">${px}</span></div>`).join('');
+
+// slide 8: three different ads, the button in the same corner every time
+document.getElementById('same').innerHTML = [[120, 200, 0.18], [210, 150, 0.5], [160, 240, 0.3]].map(([w, w2, o]) =>
+  `<div class="mini"><i style="right:20px; top:20px; width:${w}px; height:12px; background:#1f1510; opacity:.5"></i><i style="right:20px; top:40px; width:${w2}px; height:40px; background:#1f1510"></i><i style="right:20px; left:20px; top:92px; height:50px; background:#1f1510; opacity:${o}"></i><i style="left:20px; bottom:16px; width:90px; height:26px; background:#e2541b"></i></div>`).join('');
+
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

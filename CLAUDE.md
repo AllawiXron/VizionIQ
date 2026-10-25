@@ -281,6 +281,10 @@ These are the defaults Claude reaches for when it designs with code. Each one al
   with sound, highlighter pen, real voice-over fitted to captions). Its README explains every part.
 - Collage reel: `marketing/hf-dollar-reel`. Photo post: `marketing/ig-diy-haircut`. Collage post and story:
   `marketing/ig-voice-casting`. Highlights: `marketing/ig-highlights`.
+- Tips carousel: `marketing/ig-ad-three-seconds`. For design tips the user wants one argued idea over ~10 slides
+  (headline, one line with a highlighted phrase, a clean diagram per slide, checklist, DM), like the references in its
+  README; on 22 Oct he rejected basic listicle tips, a printer's-proof look full of props (crop marks, marker circles,
+  tags) and a photo-composite tutorial as "AI made" or not what he wanted.
 - Full style description (for another AI too): `marketing/gemini-style-prompt.md`.
 - Render setup: HyperFrames is pinned at `hyperframes@0.8.162`; set `HYPERFRAMES_BROWSER_PATH` to
   `/opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell`. Static posts render with
