@@ -78,6 +78,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   3-up and the ping jump; no big coloured button blocks.
   The user then found v6 too fast to follow (25 Oct): v7 (`marketing/iraq-speed-reel/v7`) is 55 s, each scene held 6 to
   9 s, told as a story (the everyday problem, the platform, gamers, 4G, renting, the ministry, the call to action).
+  Sound for this style (25 Oct): Apple-like UI sound from his two Drive packs, not the low air whooshes and thuds: the
+  Apple keyboard click on presses, soft pops on cards, an airy swish on whips, faint ticks on counters, a clean riser,
+  one chime for a win (`marketing/iraq-speed-reel/v7/mix.py`). This replaces the 24 Oct "no clicks" rule for such reels.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat

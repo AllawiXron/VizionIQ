@@ -22,8 +22,10 @@ The phone screens are the real site from `../v4/capture.cjs`, copied into `publi
 test are a sample, as the tag «نموذج فحص» on the screens and cards says. The two side share cards are drawn by
 `cards.cjs` with the site's own share picture code, for the same sample ping test and for a line at Karrada's average.
 
-Sound: only Ali's pack. `python3 mix.py` writes `sound.wav` (a whoosh on each whip, deep thuds on the hits) and
-`silence.wav`.
+Sound: only Ali's two packs (`marketing/sfx-pack`), set like a phone launch film (`mix.py`): the Apple keyboard click
+on each press with a soft tap as the button turns blue, small soft pops as cards arrive and as the better numbers turn
+green, an airy wind swish on each whip pan, faint ticks while the test and the ٨٢٤ count run, a soft riser and a
+thump into ١٦٢ ms, a short chime when the mobile line wins, a clean riser into the green. `silence.wav` is the silent copy.
 
 Build, from this folder: `npm install`, `python3 mix.py`, `node stills.mjs <dir> "t1,t2"` for single frames,
 `npx remotion render src/index.ts Reel out/video.mp4 --codec=h264 --crf=15 --muted`, then the sound under it:
