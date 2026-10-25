@@ -908,9 +908,9 @@ function meBlock() {
     <a class="go" href="#/test" data-go="1"><span>ابدأ الفحص</span><em>٢٠ ثانية</em></a>
     <div class="me-place"><span>منطقتك${src ? '، ' + src : ''}</span><b>${esc(areaName(a))}</b></div>
     <p class="small me-change"><button type="button" class="linkish" data-act="locate">حدد منطقتي من موقعي</button> أو ابحث عن منطقتك تحت واضغط افحص خطك هنا.</p>
-    <a class="more gamers" href="#/ping">تلعب أونلاين؟ شوف البنك بمنطقتك ووين أقل بنك بالعراق</a>
+    <a class="more gamers" href="#/ping">البنك بمنطقتك وأقل بنك بالعراق، للي يلعب أونلاين</a>
     <a class="more gamers" href="#/mobile">وين الموبايل أسرع من خطوط البيت بالعراق</a>
-    <a class="more gamers" href="#/compare">راح تأجر بيت أو محل؟ قارن الإنترنت بين منطقتين</a>
+    <a class="more gamers" href="#/compare">قارن الإنترنت بين منطقتين قبل لا تأجر بيت أو محل</a>
     <a class="more gamers" href="#/work">أين يحتاج إنترنت البيت إلى عمل أولا</a>`;
 }
 function redrawMe() { const b = page.querySelector('#me'); if (b) b.innerHTML = meBlock(); if (route === '#/test') drawTest(); if (route === '#/ping') render(false); }
@@ -943,7 +943,7 @@ function testHTML() {
     ${S.mode === 'f' && both(a) && a.m.d / a.f.d >= 1.2 ? `<p class="note">ومعدل الموبايل ${aName} ${ar(a.m.d)}، أسرع من خطوط البيت هناك. <a href="${a === S.country ? '#/mobile' : href(a)}">البيت لو الموبايل</a></p>` : ''}
     <h2 class="todo">شنو تسوي</h2><p class="intro">${v.todo}</p>
     <div class="two"><button type="button" class="dark" data-act="share">شارك النتيجة</button><a class="light" href="#/test" data-go="1">افحص مرة ثانية</a></div>
-    <a class="more gamers" href="#/ping">تلعب أونلاين؟ افحص البنك وقت التحميل</a>
+    <a class="more gamers" href="#/ping">افحص البنك وقت التحميل إذا تلعب أونلاين</a>
     ${modesHTML()}${top}${testNote()}`;
 }
 const testNote = () => `<p class="note">الفحص يقيس من جهازك إلى أقرب خادم لشركة Cloudflare، وأرقام المناطق من اختبارات Speedtest، فممكن يكون بينهم فرق بسيط. على خط سريع يستهلك الفحص حوالي ١٠٠ ميغابايت.</p>`;
