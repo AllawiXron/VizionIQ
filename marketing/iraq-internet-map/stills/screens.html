@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>خريطة الإنترنت في العراق</title>
+<style>
+  @font-face { font-family: 'Reem Kufi'; src: url(../fonts/ReemKufi-700.ttf); font-weight: 700; }
+  @font-face { font-family: 'Reem Kufi'; src: url(../fonts/ReemKufi-500.ttf); font-weight: 500; }
+  @font-face { font-family: 'Markazi Text'; src: url(../fonts/MarkaziText-400.ttf); font-weight: 400; }
+  @font-face { font-family: 'Markazi Text'; src: url(../fonts/MarkaziText-600.ttf); font-weight: 600; }
+
+  :root {
+    --night: #07090d;
+    --paper: #efe6d6;
+    --muted: #a39a8b;
+    --faint: #6f685e;
+    --amber62: #ffc169;
+    --amber70: #ffc776;
+    --amber87: #ffcf8b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1b1b1b; display: flex; gap: 40px; padding: 40px; font-family: 'Markazi Text', serif; }
+  .screen { width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--night); color: var(--paper); flex: none; }
+  .plate { position: absolute; inset: 0; width: 390px; height: 844px; }
+  .grain { position: absolute; inset: 0; width: 390px; height: 844px; mix-blend-mode: overlay; opacity: .09; pointer-events: none; }
+
+  .site { position: absolute; top: 20px; right: 22px; font: 600 15px/1.2 'Markazi Text'; color: var(--muted); }
+  .modes { position: absolute; top: 20px; left: 22px; display: flex; gap: 16px; font: 400 15px/1.2 'Markazi Text'; color: var(--faint); }
+  .modes .on { color: var(--paper); border-bottom: 1px solid var(--amber62); padding-bottom: 3px; }
+
+  .k { font-family: 'Reem Kufi'; font-weight: 700; }
+  .t { font-family: 'Markazi Text'; font-weight: 400; }
+  .label { position: absolute; font: 400 12.5px/1 'Markazi Text'; color: rgba(239, 230, 214, .62); white-space: nowrap;
+           text-shadow: 0 0 6px rgba(0, 0, 0, .9), 0 0 2px rgba(0, 0, 0, .9); transform: translate(50%, -50%); }
+
+  /* 1: the country */
+  #hero h1 { position: absolute; top: 64px; right: 22px; width: 300px; font: 700 47px/1.22 'Reem Kufi'; text-align: right; }
+  #hero .body { position: absolute; top: 198px; right: 22px; width: 236px; font: 400 16.5px/1.45 'Markazi Text'; color: var(--muted); }
+  #hero .search { position: absolute; top: 306px; right: 22px; width: 236px; padding-bottom: 6px; border-bottom: 1px solid rgba(239, 230, 214, .38);
+                  font: 400 19px/1.2 'Markazi Text'; color: var(--paper); opacity: .78; }
+  #hero .credit { position: absolute; top: 344px; right: 22px; width: 236px; font: 400 11.5px/1.35 'Markazi Text'; color: var(--faint); }
+  #hero .natl { position: absolute; left: 22px; top: 704px; width: 200px; text-align: right; }
+  #hero .big { font: 700 92px/1 'Reem Kufi'; color: var(--amber62); }
+  #hero .big-note { margin-top: 4px; font: 400 14.5px/1.35 'Markazi Text'; color: var(--muted); }
+
+  /* 2: Baghdad */
+  #bgd h1 { position: absolute; top: 58px; right: 22px; font: 700 60px/1.15 'Reem Kufi'; }
+  #bgd .sub { position: absolute; top: 134px; right: 24px; font: 400 15.5px/1.3 'Markazi Text'; color: var(--muted); }
+  #bgd .big { position: absolute; left: 18px; top: 150px; font: 700 150px/1 'Reem Kufi'; color: var(--amber87); }
+  #bgd .unit { position: absolute; left: 24px; top: 306px; font: 400 15px/1 'Markazi Text'; color: var(--muted); }
+  #bgd .note { position: absolute; top: 190px; right: 24px; width: 172px; font: 400 16px/1.42 'Markazi Text'; color: var(--paper); opacity: .86; }
+  #bgd .note + .note { top: 262px; color: var(--muted); opacity: 1; }
+  #bgd .here { color: var(--paper); font-size: 14px; font-weight: 600; }
+  #bgd .compare { position: absolute; left: 22px; bottom: 34px; display: flex; gap: 26px; align-items: baseline; }
+  #bgd .compare div { display: flex; flex-direction: column; gap: 4px; }
+  #bgd .compare b { font: 700 30px/1 'Reem Kufi'; color: var(--amber70); }
+  #bgd .compare b.iq { color: var(--amber62); }
+  #bgd .compare span { font: 400 13.5px/1 'Markazi Text'; color: var(--muted); }
+  #bgd .credit { position: absolute; right: 22px; bottom: 36px; width: 150px; font: 400 11.5px/1.35 'Markazi Text'; color: var(--faint); }
+
+  /* 3: exam mornings */
+  #exam h1 { position: absolute; top: 62px; right: 22px; font: 700 40px/1.2 'Reem Kufi'; }
+  #exam .intro { position: absolute; top: 120px; right: 22px; width: 300px; font: 400 16.5px/1.45 'Markazi Text'; color: var(--muted); }
+  #exam .year { position: absolute; right: 22px; font: 600 30px/1 'Markazi Text'; color: var(--paper); }
+  #exam .rows { position: absolute; left: 0; width: 390px; mix-blend-mode: screen; }
+  #exam .tick { position: absolute; font: 400 12px/1 'Markazi Text'; color: var(--muted); transform: translateX(-50%); white-space: nowrap; z-index: 2; }
+  #exam .date { position: absolute; left: 16px; font: 400 11.5px/1 'Markazi Text'; color: var(--faint); z-index: 2; }
+  #exam .cap { position: absolute; right: 22px; width: 330px; font: 400 16px/1.4 'Markazi Text'; color: var(--paper); opacity: .88; }
+  #exam .src { position: absolute; right: 22px; bottom: 22px; width: 340px; font: 400 11.5px/1.4 'Markazi Text'; color: var(--faint); }
+</style>
+</head>
+<body>
+
+<section class="screen" id="hero">
+  <img class="plate" src="plates/hero.png" alt="">
+  <div class="site">خريطة الإنترنت في العراق</div>
+  <div class="modes"><span class="on">البيوت</span><span>الموبايل</span></div>
+  <h1>كل ضوء هنا سرعة إنترنت</h1>
+  <p class="body">أكثر من مليون اختبار سرعة على الإنترنت الثابت، بين تموز وأيلول ٢٠٢٦. كل نقطة مربع عرضه نصف كيلومتر، والأسرع أقوى ضوءا.</p>
+  <div class="search">اكتب اسم منطقتك</div>
+  <p class="credit">السرعات من Ookla، والطرق من OpenStreetMap</p>
+  <div class="natl">
+    <div class="big">٦٢</div>
+    <p class="big-note">ميغابت في الثانية، معدل العراق<br>كان ١٧ في صيف ٢٠١٩</p>
+  </div>
+</section>
+
+<section class="screen" id="bgd">
+  <img class="plate" src="plates/baghdad.png" alt="">
+  <div class="site">بغداد</div>
+  <div class="modes"><span class="on">البيوت</span><span>الموبايل</span></div>
+  <h1>الكرادة</h1>
+  <p class="sub">تموز إلى أيلول ٢٠٢٦</p>
+  <div class="big">٨٧</div>
+  <div class="unit">ميغابت في الثانية</div>
+  <p class="note">معدل التنزيل في الحي، من ٤٦٧٨ اختبار سرعة</p>
+  <p class="note">في صيف ٢٠١٩ كان ١٦</p>
+  <div class="compare">
+    <div><b>٧٠</b><span>بغداد كلها</span></div>
+    <div><b class="iq">٦٢</b><span>العراق</span></div>
+  </div>
+  <p class="credit">السرعات من Ookla، والشوارع والنهر من OpenStreetMap</p>
+</section>
+
+<section class="screen" id="exam">
+  <img class="plate" src="plates/exam_bg.png" alt="">
+  <div class="site">خريطة الإنترنت في العراق</div>
+  <h1>صباحات الامتحانات</h1>
+  <p class="intro">كل خط صباح امتحان من الرابعة فجرا إلى العاشرة، ويخفت حين تختفي شبكات العراق من الإنترنت.</p>
+
+  <div class="year" style="top: 206px">٢٠٢٥</div>
+  <div class="tick" style="top: 234px; left: 260px">٦ صباحا</div>
+  <div class="tick" style="top: 234px; left: 130px">٨</div>
+  <img class="rows" src="plates/mornings_2025.png" style="top: 248px; height: 212px" alt="">
+  <div class="date" style="top: 234px">٢٠ أيار</div>
+  <div class="date" style="top: 466px">١١ أيلول</div>
+  <p class="cap" style="top: 462px">٣٢ صباحا، من السادسة إلى الثامنة كل مرة</p>
+
+  <div class="year" style="top: 514px">٢٠٢٦</div>
+  <img class="rows" src="plates/mornings_2026.png" style="top: 536px; height: 224px" alt="">
+  <div class="date" style="top: 522px">٢٠ أيار</div>
+  <div class="date" style="top: 768px">١٢ تشرين الأول</div>
+  <p class="cap" style="top: 764px">٣٤ صباحا، ساعة ونصف حتى تموز<br>ثم أربعون دقيقة من ٢٦ آب</p>
+  <p class="src" style="bottom: 18px; width: 120px; right: auto; left: 22px; text-align: left">المصدر IODA</p>
+</section>
+
+<script src="plates/places.js"></script>
+<script>
+  const show = { hero: ['الموصل', 'أربيل', 'السليمانية', 'كركوك', 'بغداد', 'النجف', 'البصرة', 'الرمادي', 'العمارة'],
+                 bgd: ['المنصور', 'مدينة الصدر', 'الكاظمية', 'زيونة', 'الجادرية', 'الأعظمية', 'اليرموك', 'السيدية', 'الدورة', 'بغداد الجديدة'] };
+  // nudge a label off its light so it never sits on the brightest point
+  const nudge = { 'بغداد': [30, 16], 'البصرة': [-30, -6], 'الموصل': [6, -16], 'أربيل': [24, 10], 'السليمانية': [42, 12],
+                  'كركوك': [-26, 4], 'النجف': [-28, 8], 'الرمادي': [0, 14], 'العمارة': [26, -4], 'بغداد الجديدة': [-30, 0] };
+  function label(root, name, x, y, cls) {
+    const el = document.createElement('div');
+    el.className = 'label' + (cls ? ' ' + cls : ''); el.textContent = name;
+    el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.transform = 'translate(-50%, -50%)';
+    root.insertBefore(el, root.querySelector('.site'));
+  }
+  for (const id of ['hero', 'bgd']) {
+    const root = document.getElementById(id), pts = PLACES[id];
+    for (const name of show[id]) {
+      const p = pts[name]; if (!p) continue;
+      const [dx, dy] = nudge[name] || [0, 0];
+      label(root, name, p[0] + dx, p[1] + dy);
+    }
+  }
+  label(document.getElementById('bgd'), 'الكرادة', PLACES.focus.karrada[0] + 6, PLACES.focus.karrada[1] + 30, 'here');
+  for (const s of document.querySelectorAll('.screen')) {
+    const g = document.createElement('img'); g.className = 'grain'; g.src = 'plates/grain.png'; s.appendChild(g);
+  }
+  document.fonts.ready.then(() => setTimeout(() => document.body.dataset.ready = '1', 400));
+</script>
+</body>
+</html>

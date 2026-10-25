@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>سرعة الإنترنت في العراق</title>
+<style>
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Latin-400.woff2) format('woff2'); font-weight: 400 500; unicode-range: U+0000-00FF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Latin-700.woff2) format('woff2'); font-weight: 700 800; unicode-range: U+0000-00FF; }
+  html, body { margin: 0; background: #f5f4f0; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; direction: ltr; }
+  #stage canvas { position: absolute; left: 0; top: 0; display: block; }
+  #fg { mix-blend-mode: overlay; }
+</style>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="bg" width="1080" height="1920"></canvas>
+  <canvas id="gl" width="1080" height="1920"></canvas>
+  <canvas id="top" width="1080" height="1920"></canvas>
+  <canvas id="fg" width="1080" height="1920"></canvas>
+</div>
+<script src="../data.js"></script>
+<script type="module">
+// The 37 s reel for everything the site does now, shot by one camera over a big world: each line of the script stands
+// alone in the middle of its own frame, then the camera whips or pulls back to what it is about (the shock, the line
+// test on the phone, the share card, ping for gamers, home or mobile, two areas before renting, the ministry's view
+// with the zoom into the green, the name). The camera never stops: every hold creeps in. Every style is a function of time.
+import * as THREE from 'three';
+import { RoomEnvironment } from './vendor/RoomEnvironment.js';
+
+const W = 1080, H = 1920, FPS = 60, DUR = 37;
+window.DUR = DUR;
+
+const BG = '#f7f8fa', INK = '#14202b', INK2 = '#46525e', SOFT = '#6c7783', WHITE = '#ffffff';
+const RED = '#d2483f', ORANGE = '#ea8a2e', AMBER = '#e3b021', LEAF = '#5aa85e', GREEN = '#12795a';
+const bgc = document.getElementById('bg'), bgx = bgc.getContext('2d', { willReadFrequently: true });
+const fgc = document.getElementById('fg'), fgx = fgc.getContext('2d', { willReadFrequently: true });
+const glc = document.getElementById('gl');
+const tpc = document.getElementById('top'), tpx = tpc.getContext('2d');
+let ctx = bgx;
+const D = window.DATA;
+
+// ---------- time ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, t0, d) => clamp((t - t0) / d);
+const expo = x => x <= 0 ? 0 : x >= 1 ? 1 : (1 - Math.pow(2, -10 * x)) / (1 - Math.pow(2, -10));
+const expoIn = x => x <= 0 ? 0 : x >= 1 ? 1 : (Math.pow(2, 10 * x) - 1) / 1023;
+const smooth = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * x * (x * (6 * x - 15) + 10);
+const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);      // settles without overshoot
+const wobble = (x, k = 7, w = 11) => x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.exp(-k * x) * Math.cos(w * x);   // overshoots once, then settles
+const lerp = (a, b, k) => a + (b - a) * k;
+// cubic-bezier(0.85, 0, 0.15, 1): a slow start, a very fast middle, a long soft landing
+const bez = (() => { const x1 = 0.85, y1 = 0, x2 = 0.15, y2 = 1;
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = u => ((ax * u + bx) * u + cx) * u, Y = u => ((ay * u + by) * u + cy) * u, dX = u => (3 * ax * u + 2 * bx) * u + cx;
+  return x => { if (x <= 0) return 0; if (x >= 1) return 1; let u = x; for (let i = 0; i < 8; i++) { const d = dX(u); if (Math.abs(d) < 1e-6) break; u -= (X(u) - x) / d; u = Math.min(1, Math.max(0, u)); } return Y(u); };
+})();
+const AR = n => String(Math.round(n)).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const bandFill = v => v < 10 ? RED : v < 25 ? ORANGE : v < 50 ? AMBER : v < 100 ? LEAF : GREEN;
+const bandText = v => v < 10 ? '#b3362e' : v < 25 ? '#a8561a' : v < 50 ? '#866608' : v < 100 ? '#2f7d45' : '#10664c';
+const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+const mix = (a, b, k) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * k)).join(',')})`; };
+const rand = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+
+// ---------- the camera: a 2D rig over one big world; the 3D phone and card are put under it in 3D ----------
+// keys: [time, focus x, focus y, zoom, roll in degrees, how it goes to the next key]: 'B' a move on the bezier,
+// 'L' a slow creep (a hold is never a still frame), 'Z' a zoom into a point (expo in) that grows from where it sits on
+// screen into the middle. Two keys at the same time are a cut.
+let CAMK = [];
+const cam2 = { fx: 540, fy: 960, s: 1, r: 0 };
+function camAt(t) {
+  const K = CAMK; let i = 0;
+  while (i < K.length - 1 && t >= K[i + 1][0]) i++;
+  const A = K[i], B = K[i + 1];
+  if (!B || t <= A[0]) return { fx: A[1], fy: A[2], s: A[3], r: A[4] };
+  const x = (t - A[0]) / (B[0] - A[0]), e = A[5];
+  if (e === 'Z') {
+    const s = A[3] + (B[3] - A[3]) * expoIn(x), r = A[4] * Math.PI / 180, c = Math.cos(r), n = Math.sin(r), dx = B[1] - A[1], dy = B[2] - A[2];
+    const q = 1 - smooth(x), qx = A[3] * (c * dx - n * dy) * q, qy = A[3] * (n * dx + c * dy) * q;
+    return { fx: B[1] - (c * qx + n * qy) / s, fy: B[2] - (-n * qx + c * qy) / s, s, r: A[4] };
+  }
+  const k = e === 'B' ? bez(x) : x;
+  return { fx: lerp(A[1], B[1], k), fy: lerp(A[2], B[2], k), s: lerp(A[3], B[3], k), r: lerp(A[4], B[4], k) };
+}
+// hits: the frame shakes and dies down; a punch is a sudden small push in that settles
+const SHAKES = [[2.2, 6, 0.25, 0.3], [6.4, 11, 0.5, 0.35], [13.17, 30, 1.4, 0.75], [19.6, 7, 0.3, 0.3]];
+const PUNCH = [[6.4, 0.04], [13.17, 0.07]];
+function shake(t) {
+  let dx = 0, dy = 0, dr = 0, p = 1;
+  for (const [t0, a, ra, d] of SHAKES) {
+    const x = (t - t0) / d; if (x < 0 || x > 1) continue;
+    const k = (1 - x) * (1 - x), u = t - t0;
+    dx += a * k * Math.sin(u * 71 + t0); dy += a * k * Math.sin(u * 89 + 2 * t0 + 1); dr += ra * k * Math.sin(u * 61 + 3);
+  }
+  // while the ping stays high the frame keeps a small tremor
+  const tr = clamp((t - 13.17) / 0.2) * (1 - smooth(seg(t, 14.6, 0.4)));
+  if (tr > 0) { dx += 2.5 * tr * Math.sin(t * 97); dy += 2.5 * tr * Math.sin(t * 113 + 1); }
+  for (const [t0, a] of PUNCH) if (t >= t0) p *= 1 + a * Math.exp(-(t - t0) * 10);
+  return { dx, dy, dr, p };
+}
+let VM = [1, 0, 0, 1, 0, 0], VS = 1, VR = 0;
+function setView(v) {
+  const r = v.r * Math.PI / 180, a = v.s * Math.cos(r), b = v.s * Math.sin(r);
+  VS = v.s; VR = v.r; VM = [a, b, -b, a, 540 + v.dx - (a * v.fx - b * v.fy), 960 + v.dy - (b * v.fx + a * v.fy)];
+}
+const vpt = (x, y) => [VM[0] * x + VM[2] * y + VM[4], VM[1] * x + VM[3] * y + VM[5]];
+
+// ---------- type, with a light motion blur that follows the move (copies averaged on their own layer) ----------
+const layer = document.createElement('canvas'); layer.width = W; layer.height = H;
+const lctx = layer.getContext('2d', { willReadFrequently: true });
+function text(str, x, y, o = {}) {
+  const a = o.alpha == null ? 1 : o.alpha;
+  if (a <= 0.003 || !str) return;
+  const vx = 0, vy = 0, n = 1;
+  o.blur = 0;
+  const g = n === 1 && !o.blur ? ctx : lctx;
+  if (g === lctx) { lctx.setTransform(1, 0, 0, 1, 0, 0); lctx.clearRect(0, 0, W, H); lctx.globalCompositeOperation = n > 1 ? 'lighter' : 'source-over'; }
+  g.save();
+  if (o.clip) { g.beginPath(); g.rect(...o.clip); g.clip(); }
+  g.font = `${o.weight || 800} ${o.size}px Rubik, RubikL`;
+  g.textAlign = o.align || 'right'; g.direction = o.dir || 'rtl'; g.textBaseline = 'alphabetic';
+  g.fillStyle = o.color || INK;
+  g.globalAlpha = n === 1 ? (g === lctx ? 1 : a) : (g === lctx && o.blur ? 1 : a) / n;
+  for (let i = 0; i < n; i++) {
+    const k = n === 1 ? 0 : i / (n - 1) - 0.5;
+    g.save(); g.translate(x - vx * 0.5 * k, y - vy * 0.5 * k);
+    if (o.s != null) g.scale(o.s, o.s);
+    g.fillText(str, 0, 0); g.restore();
+  }
+  g.restore();
+  if (g === lctx) {
+    lctx.globalCompositeOperation = 'source-over';
+    const w = tw(str, o.size, o.weight || 800) * (o.s || 1), al = o.align || 'right';
+    const x0 = al === 'right' ? x - w : al === 'center' ? x - w / 2 : x, pad = (o.blur || 0) * 3 + Math.abs(vx) + Math.abs(vy) + o.size * 0.3;
+    const r = [Math.floor(x0 - pad), Math.floor(y - o.size * 1.1 * (o.s || 1) - pad), Math.ceil(w + 2 * pad), Math.ceil(o.size * 1.5 * (o.s || 1) + 2 * pad)];
+    r[2] = Math.min(r[2], W - Math.max(0, r[0])); r[3] = Math.min(r[3], H - Math.max(0, r[1])); r[0] = Math.max(0, r[0]); r[1] = Math.max(0, r[1]);
+    if (r[2] > 0 && r[3] > 0) { ctx.save(); ctx.globalAlpha = o.blur ? a : 1; if (o.blur) ctx.filter = `blur(${o.blur}px)`; ctx.drawImage(layer, r[0], r[1], r[2], r[3], r[0], r[1], r[2], r[3]); ctx.restore(); }
+  }
+}
+const tw = (str, size, weight = 800) => { bgx.font = `${weight} ${size}px Rubik, RubikL`; bgx.direction = 'rtl'; return bgx.measureText(str).width; };
+function rrect(g, x, y, w, h, r) { r = Math.max(0, Math.min(r, Math.abs(h) / 2, Math.abs(w) / 2)); g.beginPath(); g.roundRect(x, y, w, h, r); }
+const vel = (f, t) => { const a = f(t), b = f(t - 1 / FPS); return [a[0] - b[0], a[1] - b[1]]; };
+
+function layoutWords(str, size, maxW, x, y, lh, weight = 800, slot = null) {
+  const words = str.split(' '), sp = tw(' ', size, weight), lines = [[]];
+  let w = 0;
+  for (const wd of words) {
+    const ww = slot && slot(wd) || tw(wd, size, weight);
+    if (lines[lines.length - 1].length && w + sp + ww > maxW) { lines.push([]); w = 0; }
+    lines[lines.length - 1].push({ wd, ww }); w += (w ? sp : 0) + ww;
+  }
+  const out = [];
+  lines.forEach((ln, li) => { let xr = x; ln.forEach(o => { out.push({ wd: o.wd, x: xr, y: y + li * lh, ww: o.ww }); xr -= o.ww + sp; }); });
+  return out;
+}
+// lines of type rise through a mask of their own, one after another, sharp all the way
+const groupLines = laid => { const m = new Map(); laid.forEach(w => { if (!m.has(w.y)) m.set(w.y, []); m.get(w.y).push(w); }); return [...m.values()]; };
+function maskLine(words, y, size, k, draw) {
+  const box = size * 1.5, off = (1 - k) * box * 1.15;
+  if (k <= 0) return;
+  ctx.save(); ctx.beginPath(); ctx.rect(0, y - size * 1.08, W, box); ctx.clip();
+  words.forEach(w => draw(w, off)); ctx.restore();
+}
+function sentence(t, laid, t0, step, size, o = {}) {
+  groupLines(laid).forEach((ws, li) => {
+    const k = bez(seg(t, t0 + li * 0.06, 0.55)), y = ws[0].y + o.dy;
+    maskLine(ws, y, size, k, (w, off) => text(w.wd, w.x, y + off, { size, weight: o.weight, color: o.color, alpha: o.alpha == null ? 1 : o.alpha }));
+  });
+}
+
+// ---------- the studio: a warm backdrop, a spotlight a little above the middle, the floor falling off, two soft
+// shadows drifting at the sides as if from things just out of shot, and a vignette; the grain sits over everything
+function background(cy, rt) {
+  bgx.setTransform(1, 0, 0, 1, 0, 0); bgx.globalAlpha = 1; bgx.filter = 'none';
+  bgx.fillStyle = '#f5f4f0'; bgx.fillRect(0, 0, W, H);
+  let g = bgx.createRadialGradient(480, 700, 40, 540, 820, 1250);
+  g.addColorStop(0, 'rgba(255,254,250,0.95)'); g.addColorStop(0.45, 'rgba(255,253,248,0.45)'); g.addColorStop(1, 'rgba(255,253,248,0)');
+  bgx.fillStyle = g; bgx.fillRect(0, 0, W, H);
+  g = bgx.createLinearGradient(0, 1150, 0, H); g.addColorStop(0, 'rgba(72,60,46,0)'); g.addColorStop(1, 'rgba(72,60,46,0.075)');
+  bgx.fillStyle = g; bgx.fillRect(0, 1150, W, H - 1150);
+  const blob = (x, y, rx, ry, a) => { bgx.save(); bgx.translate(x, y); bgx.scale(1, ry / rx); const r = bgx.createRadialGradient(0, 0, 0, 0, 0, rx);
+    r.addColorStop(0, `rgba(58,46,34,${a})`); r.addColorStop(1, 'rgba(58,46,34,0)'); bgx.fillStyle = r; bgx.fillRect(-rx, -rx, 2 * rx, 2 * rx); bgx.restore(); };
+  blob(-60 + 26 * Math.sin(rt * 0.23), 1380 + 40 * Math.sin(rt * 0.17), 520, 300, 0.06);
+  blob(1150 + 22 * Math.sin(rt * 0.19 + 1), 420 + 36 * Math.sin(rt * 0.13 + 2), 460, 260, 0.045);
+  g = bgx.createRadialGradient(540, 900, 620, 540, 960, 1300); g.addColorStop(0, 'rgba(40,32,24,0)'); g.addColorStop(1, 'rgba(40,32,24,0.11)');
+  bgx.fillStyle = g; bgx.fillRect(0, 0, W, H);
+}
+// film grain, 2.5 %: four fixed tiles of noise, changed twelve times a second, laid over the whole frame
+const GRAIN = Array.from({ length: 4 }, (_, k) => {
+  const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'), im = g.createImageData(256, 256);
+  for (let i = 0; i < 256 * 256; i++) { const v = 128 + (rand(i * 7.31 + k * 1013) - 0.5) * 2 * 40; im.data[i * 4] = im.data[i * 4 + 1] = im.data[i * 4 + 2] = v; im.data[i * 4 + 3] = 255; }
+  g.putImageData(im, 0, 0); return c;
+});
+function grain(rt) {
+  const tile = GRAIN[Math.floor(rt * 12) % 4];
+  fgx.save(); fgx.globalAlpha = 0.16; fgx.fillStyle = fgx.createPattern(tile, 'repeat'); fgx.fillRect(0, 0, W, H); fgx.restore();
+}
+
+// ---------- the phone, in 3D, with the real site on its screen ----------
+const IMG = {};
+const NAMES = ['home', 'result', 'share', 'home-full', 'bar', 'tabs', 'ping-0', 'ping-done', ...Array.from({ length: 14 }, (_, i) => 'test-' + String(i).padStart(2, '0')), ...Array.from({ length: 10 }, (_, i) => 'ping-' + String(i + 1).padStart(2, '0'))];
+const MARKS = {};
+const SW = 600, SH = Math.round(600 * 844 / 390), K1 = SW / 390, SC = 3;   // the captures are 3x a 390 px phone
+const scr = document.createElement('canvas'); scr.width = 390 * SC; scr.height = 844 * SC;
+const sg = scr.getContext('2d', { willReadFrequently: true });
+const renderer = new THREE.WebGLRenderer({ canvas: glc, alpha: true, antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.setClearColor(0x000000, 0);
+const world = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+world.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(-900, 1400, 1600); world.add(key);
+const FOV = 30, DIST = (H / 2) / Math.tan(FOV / 2 * Math.PI / 180);
+const cam = new THREE.PerspectiveCamera(FOV, W / H, 50, 30000); cam.position.set(0, 0, DIST); cam.lookAt(0, 0, 0);
+
+function rrShape(w, h, r) {
+  const s = new THREE.Shape(), x0 = -w / 2, y0 = -h / 2, x1 = w / 2, y1 = h / 2;
+  s.moveTo(x0 + r, y0); s.lineTo(x1 - r, y0); s.absarc(x1 - r, y0 + r, r, -Math.PI / 2, 0, false);
+  s.lineTo(x1, y1 - r); s.absarc(x1 - r, y1 - r, r, 0, Math.PI / 2, false);
+  s.lineTo(x0 + r, y1); s.absarc(x0 + r, y1 - r, r, Math.PI / 2, Math.PI, false);
+  s.lineTo(x0, y0 + r); s.absarc(x0 + r, y0 + r, r, Math.PI, Math.PI * 1.5, false);
+  return s;
+}
+const BEZ = 14, BV = 9, OW = SW + 2 * (BEZ + BV), OH = SH + 2 * (BEZ + BV), OR = 80;
+const phoneG = new THREE.Group(); world.add(phoneG);
+const metal = new THREE.MeshPhysicalMaterial({ color: 0x3b414a, metalness: 0.92, roughness: 0.3 });
+const bodyGeo = new THREE.ExtrudeGeometry(rrShape(OW - 2 * BV, OH - 2 * BV, OR - BV), { depth: 34, bevelEnabled: true, bevelThickness: BV, bevelSize: BV, bevelSegments: 6, curveSegments: 40 });
+bodyGeo.computeBoundingBox(); bodyGeo.translate(0, 0, -bodyGeo.boundingBox.max.z);
+phoneG.add(new THREE.Mesh(bodyGeo, metal));
+const glass = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(OW - 2 * BV, OH - 2 * BV, OR - BV), 40),
+  new THREE.MeshPhysicalMaterial({ color: 0x050608, metalness: 0, roughness: 0.1, clearcoat: 1, clearcoatRoughness: 0.06 }));
+glass.position.z = 0.6; phoneG.add(glass);
+[[OW / 2 + 1.5, 300, 150], [-OW / 2 - 1.5, 330, 90], [-OW / 2 - 1.5, 200, 90]].forEach(([x, y, h]) => {
+  const b = new THREE.Mesh(new THREE.BoxGeometry(5, h, 14), metal); b.position.set(x, y, -26); phoneG.add(b);
+});
+const scrGeo = new THREE.ShapeGeometry(rrShape(SW, SH, 58), 40);
+const uv = scrGeo.attributes.uv, pos = scrGeo.attributes.position;
+for (let i = 0; i < uv.count; i++) uv.setXY(i, (pos.getX(i) + SW / 2) / SW, (pos.getY(i) + SH / 2) / SH);
+const scrTex = new THREE.CanvasTexture(scr);
+scrTex.colorSpace = THREE.SRGBColorSpace; scrTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+const screenMesh = new THREE.Mesh(scrGeo, new THREE.MeshBasicMaterial({ map: scrTex, toneMapped: false }));
+screenMesh.position.z = 1.2; phoneG.add(screenMesh);
+// a soft diagonal sheen on the glass that slides a little as the phone turns
+const sheenC = document.createElement('canvas'); sheenC.width = 256; sheenC.height = 512;
+{ const g = sheenC.getContext('2d'), lg = g.createLinearGradient(0, 0, 256, 512);
+  lg.addColorStop(0, 'rgba(255,255,255,0)'); lg.addColorStop(0.34, 'rgba(255,255,255,0)'); lg.addColorStop(0.42, 'rgba(255,255,255,0.11)');
+  lg.addColorStop(0.47, 'rgba(255,255,255,0.03)'); lg.addColorStop(0.53, 'rgba(255,255,255,0.07)'); lg.addColorStop(0.6, 'rgba(255,255,255,0)'); lg.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = lg; g.fillRect(0, 0, 256, 512); }
+const sheenTex = new THREE.CanvasTexture(sheenC); sheenTex.wrapS = THREE.RepeatWrapping;
+const sheen = new THREE.Mesh(scrGeo, new THREE.MeshBasicMaterial({ map: sheenTex, transparent: true, depthWrite: false, toneMapped: false }));
+sheen.position.z = 1.8; phoneG.add(sheen);
+
+// place the phone so the screen point (u, v) in CSS px lands on the frame at (sx, sy), magnified m times; the roll is
+// the camera's, turned about the view after the phone's own turn
+const DEG = Math.PI / 180, QZ = new THREE.Quaternion(), ZAX = new THREE.Vector3(0, 0, 1);
+function placePhone(u, v, m, sx, sy, rx, ry, rz, roll = 0) {
+  phoneG.rotation.set(rx * DEG, ry * DEG, rz * DEG);
+  if (roll) phoneG.quaternion.premultiply(QZ.setFromAxisAngle(ZAX, -roll * DEG));
+  sheenTex.offset.x = -ry * 0.014;
+  const p = new THREE.Vector3((u - 195) * K1, (422 - v) * K1, 1.2).applyQuaternion(phoneG.quaternion);
+  const Z = DIST * (1 - 1 / m);
+  phoneG.position.set((sx - 540) * (DIST - Z) / DIST - p.x, (960 - sy) * (DIST - Z) / DIST - p.y, Z - p.z);
+  phoneG.updateMatrixWorld(true);
+}
+const toFrame = (x, y, z) => { const v = new THREE.Vector3(x, y, z).applyMatrix4(phoneG.matrixWorld).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+const OUTLINE = (() => { const pts = rrShape(OW, OH, OR).getPoints(24); return pts.map(p => [p.x, p.y]); })();
+const screenPt = (u, v) => toFrame((u - 195) * K1, (422 - v) * K1, 1.2);
+// the phone stands in the world, its screen's middle at (wx, wy), its own size at zoom 1. Under the camera it is put
+// in 3D anchored at the screen point under the middle of the frame, so the close-ups land where they are aimed
+function worldPt(P, u, v) { placePhone(195, 422, P[2], P[0], P[1], P[3], P[4], P[5]); return screenPt(u, v); }
+function phoneAt(P) {
+  const [wx, wy, m, rx, ry, rz] = P;
+  placePhone(195, 422, m, wx, wy, rx, ry, rz);
+  const o = screenPt(0, 0), a = screenPt(390, 0), b = screenPt(0, 844);
+  const ux = a[0] - o[0], uy = a[1] - o[1], vx = b[0] - o[0], vy = b[1] - o[1], det = ux * vy - uy * vx;
+  const fx = cam2.fx - o[0], fy = cam2.fy - o[1];
+  const u = clamp((fx * vy - fy * vx) / det) * 390, v = clamp((ux * fy - uy * fx) / det) * 844;
+  const wa = screenPt(u, v), [X, Y] = vpt(wa[0], wa[1]);
+  placePhone(u, v, m * VS, X, Y, rx, ry, rz, VR);
+}
+
+// three shadows: tight at the edge, one cast away from the light (top left), one wide and soft under everything
+const shc = document.createElement('canvas'); shc.width = W / 2; shc.height = H / 2;
+const shx = shc.getContext('2d', { willReadFrequently: true });
+function phoneShadow(m, fade, alpha = 1) {
+  const pts = OUTLINE.map(([x, y]) => toFrame(x, y, -30));
+  const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length, cyy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+  shx.setTransform(0.5, 0, 0, 0.5, 0, 0); shx.clearRect(0, 0, W, H);
+  const lay = (dx, dy, blur, a2, grow) => {
+    shx.save(); shx.filter = `blur(${blur / 2}px)`; shx.globalAlpha = a2 * alpha; shx.fillStyle = '#1a2430';
+    shx.beginPath(); pts.forEach(([x, y], i) => { const X = cx + (x - cx) * grow + dx, Y = cyy + (y - cyy) * grow + dy; i ? shx.lineTo(X, Y) : shx.moveTo(X, Y); });
+    shx.closePath(); shx.fill(); shx.restore();
+  };
+  const s = Math.max(0.6, m);
+  lay(5 * s, 9 * s, 8 * s, 0.34, 0.995);
+  lay(38 * s, 66 * s, 34 * s, 0.22, 1.0);
+  lay(12 * s, 90 * s, 110 * s, 0.15, 1.07);
+  if (fade) {
+    shx.save(); shx.setTransform(0.5, 0, 0, 0.5, 0, 0); shx.globalCompositeOperation = 'destination-in';
+    const g = shx.createLinearGradient(0, fade[0], 0, fade[1]); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, '#000');
+    shx.fillStyle = g; shx.fillRect(0, 0, W, H); shx.restore();
+  }
+  bgx.save(); bgx.setTransform(1, 0, 0, 1, 0, 0); bgx.drawImage(shc, 0, 0, W, H); bgx.restore();
+}
+
+// the screen: a capture (a tall one scrolls under the fixed header and tabs), a finger's touch, and the badge that
+// says the result is a sample test
+function badge(g, s) {
+  const txt = 'نموذج فحص'; g.save(); g.font = `700 ${13 * s}px Rubik, RubikL`; g.direction = 'rtl';
+  const w = g.measureText(txt).width + 20 * s, x = 14 * s, y = 64 * s, h = 26 * s;
+  g.fillStyle = 'rgba(20,32,43,0.86)'; g.beginPath(); g.roundRect(x, y, w, h, 7 * s); g.fill();
+  g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, x + w / 2, y + h / 2 + 1 * s); g.restore();
+}
+let scrKey = '';
+function drawScreen(st) {
+  const k = JSON.stringify(st); if (k === scrKey) return; scrKey = k;
+  sg.setTransform(1, 0, 0, 1, 0, 0); sg.globalAlpha = 1;
+  sg.fillStyle = WHITE; sg.fillRect(0, 0, scr.width, scr.height);
+  const im = IMG[st.img];
+  if (st.S != null) { sg.drawImage(im, 0, st.S * SC, scr.width, scr.height, 0, 0, scr.width, scr.height); sg.drawImage(IMG.bar, 0, 0); sg.drawImage(IMG.tabs, 0, scr.height - IMG.tabs.height); }
+  else sg.drawImage(im, 0, 0, scr.width, scr.height);
+  if (st.tap) {
+    const [cx, cy, k2] = st.tap, x = cx * SC, y = cy * SC;
+    sg.fillStyle = `rgba(255,255,255,${0.45 * (1 - smooth(seg(k2, 0.35, 0.65)))})`;
+    sg.beginPath(); sg.arc(x, y, (19 + 5 * spring(k2 * 3)) * SC, 0, 7); sg.fill();
+    const r = seg(k2, 0.15, 0.85);
+    if (r > 0) { sg.strokeStyle = `rgba(255,255,255,${0.5 * (1 - r)})`; sg.lineWidth = 2.5 * SC; sg.beginPath(); sg.arc(x, y, (24 + 46 * expo(r)) * SC, 0, 7); sg.stroke(); }
+  }
+  if (st.pulse && st.pulse !== 1) {
+    const [x, y, w, h] = MARKS.go.map(v => v * SC), cx = x + w / 2, cy = y + h / 2;
+    sg.save(); sg.translate(cx, cy); sg.scale(st.pulse, st.pulse); sg.translate(-cx, -cy);
+    sg.drawImage(im, x, y, w, h, x, y, w, h); sg.restore();
+  }
+  if (st.tapGo != null) {
+    const [x, y, w, h] = MARKS.go.map(v => v * SC), cx = x + w * 0.68, cy = y + h / 2, k2 = st.tapGo;
+    sg.fillStyle = `rgba(255,255,255,${0.42 * (1 - smooth(seg(k2, 0.3, 0.7)))})`;
+    sg.beginPath(); sg.arc(cx, cy, (17 + 4 * spring(k2 * 3)) * SC, 0, 7); sg.fill();
+    const r = seg(k2, 0.12, 0.88);
+    if (r > 0) { sg.strokeStyle = `rgba(255,255,255,${0.5 * (1 - r)})`; sg.lineWidth = 2.5 * SC; sg.beginPath(); sg.arc(cx, cy, (22 + 40 * expo(r)) * SC, 0, 7); sg.stroke(); }
+  }
+  if (st.badge) badge(sg, SC);
+  if (st.cardSh) {
+    sg.save(); sg.filter = `blur(${26 * SC}px)`; sg.globalAlpha = 0.32 * st.cardSh; sg.fillStyle = '#1a2430';
+    sg.beginPath(); sg.roundRect(150 * SC, 230 * SC, 300 * SC, 560 * SC, 30 * SC); sg.fill(); sg.restore();
+  }
+  scrTex.needsUpdate = true;
+}
+
+let mask = '';
+function setMask(s) { if (s === mask) return; mask = s; glc.style.webkitMaskImage = s; glc.style.maskImage = s; }
+let glShown = null, glAlpha = 1, glA = null, DOF = 0;
+// with the card up in front, the phone behind it goes out of focus: it is rendered on its own, blurred onto the
+// backdrop, and the card alone is rendered sharp on top
+const dofc = document.createElement('canvas'); dofc.width = W; dofc.height = H;
+const dofx = dofc.getContext('2d', { willReadFrequently: true });
+function renderPhone(on) {
+  if (on !== glShown) { glShown = on; glc.style.display = on ? 'block' : 'none'; }
+  const ga = DOF > 0 ? 1 : glAlpha;
+  if (ga !== glA) { glA = ga; glc.style.opacity = String(ga); }
+  if (!on) return;
+  if (DOF > 0 && cardG.visible && phoneOn) {
+    cardG.visible = false; renderer.render(world, cam);
+    dofx.clearRect(0, 0, W, H); dofx.filter = `blur(${DOF}px)`; dofx.drawImage(glc, 0, 0); dofx.filter = 'none';
+    bgx.save(); bgx.setTransform(1, 0, 0, 1, 0, 0); bgx.globalAlpha = glAlpha; bgx.drawImage(dofc, 0, 0); bgx.restore();
+    phoneG.visible = false; cardG.visible = true; renderer.render(world, cam); phoneG.visible = true;
+  } else { phoneG.visible = phoneOn; renderer.render(world, cam); phoneG.visible = true; }
+}
+// the red edge while the ping is high
+function redEdge(t, rt) {
+  const v = expo(seg(t, 13.17, 0.12)) * (1 - smooth(seg(t, 14.95, 0.3)));
+  tpc.style.display = v > 0 ? 'block' : 'none'; if (v <= 0) return;
+  const pu = 0.8 + 0.2 * Math.sin((rt - 13.17) * 7);
+  tpx.setTransform(1, 0, 0, 1, 0, 0); tpx.clearRect(0, 0, W, H); tpx.setTransform(1, 0, 0, H / W, 0, 0);
+  const g = tpx.createRadialGradient(540, 540, 300, 540, 540, 680);
+  g.addColorStop(0, 'rgba(196,34,30,0)'); g.addColorStop(0.62, `rgba(196,34,30,${0.07 * v * pu})`); g.addColorStop(1, `rgba(176,24,22,${0.62 * v * pu})`);
+  tpx.fillStyle = g; tpx.fillRect(0, 0, W, W);
+}
+// ---------- shared parts ----------
+function keyAt(K, t) {
+  if (t <= K[0][0]) return K[0].slice(1);
+  for (let i = 0; i < K.length - 1; i++) if (t < K[i + 1][0]) { const k = bez(seg(t, K[i][0], K[i + 1][0] - K[i][0])); return K[i].slice(1).map((a, j) => lerp(a, K[i + 1][j + 1], k)); }
+  return K[K.length - 1].slice(1);
+}
+// keyframes given by the top edge of the screen: the frame y of point v follows from the top and the magnification
+const atTop = (t, u, v, m, top, rx, ry, rz = 0, sx = 540) => [t, u, v, m, sx, top + v * K1 * m, rx, ry, rz];
+// a line of the script, big in the middle of its own frame: each line rises through its own mask, 0.06 s apart, and
+// leaves through the top when something pushes it out
+function hook(t, str, cx, cy, t0, t1 = Infinity, o = {}) {
+  if (t < t0) return;
+  const size = o.size || 112, lh = size * 1.22, color = o.color || INK;
+  const slotW = o.count ? Math.max(tw(o.count[0], size), 200) + 16 : 0;
+  const laid = layoutWords(str, size, o.maxW || 920, 0, 0, lh, 800, o.count ? wd => wd === o.count[0] ? slotW : 0 : null);
+  const lines = groupLines(laid), sp = tw(' ', size), n = lines.length;
+  lines.forEach((ws, li) => {
+    const kin = bez(seg(t, t0 + li * 0.06, 0.5)), kout = bez(seg(t, t1 + li * 0.05, 0.4));
+    if (kin <= 0 || kout >= 1) return;
+    const lw = ws.reduce((a, w) => a + w.ww, 0) + sp * (ws.length - 1), dx = cx + lw / 2;
+    const y = cy - (n - 1) * lh / 2 + li * lh + size * 0.36, box = size * 1.5;
+    ctx.save(); ctx.beginPath(); ctx.rect(cx - 1000, y - size * 1.08, 2000, box); ctx.clip();
+    const off = (1 - kin) * box * 1.15 - kout * box * 1.15;
+    ws.forEach(w => {
+      const isCount = o.count && w.wd === o.count[0];
+      const txt = isCount ? AR(o.count[1] * smooth(seg(t, t0 + 0.1, 0.7))) : w.wd;
+      text(txt, isCount ? dx + w.x - w.ww / 2 : dx + w.x, y + off, { size, color, align: isCount ? 'center' : 'right' });
+    });
+    ctx.restore();
+  });
+}
+function softCard(g, x, y, w, h, r = 22, al = 1) {
+  g.save(); g.globalAlpha = al; g.fillStyle = WHITE;
+  g.shadowColor = 'rgba(20,32,43,0.10)'; g.shadowBlur = 8; g.shadowOffsetY = 3; rrect(g, x, y, w, h, r); g.fill();
+  g.shadowColor = 'rgba(20,32,43,0.12)'; g.shadowBlur = 44; g.shadowOffsetY = 22; rrect(g, x, y, w, h, r); g.fill();
+  g.restore();
+}
+let phoneOn = false;
+// K: [time, world x, world y, size, turn x, y, z]; the phone breathes a little on top of its keys
+function showPhone(K, t, rt, st, alpha = 1) {
+  const P = keyAt(K, t); P[4] += 1.2 * Math.sin(rt * 0.9); P[3] += 0.6 * Math.sin(rt * 0.7 + 1);
+  phoneAt(P);
+  drawScreen(st);
+  phoneShadow(P[2] * VS, null, alpha);
+  glAlpha = alpha; phoneOn = true;
+}
+
+// ---------- where things stand in the world ----------
+const Y2H = 3960, Y3H = 6960, OY3C = 7285, Y4H = 10960, OY4 = 12200, Y5H = 14960, OY5 = 13970;
+const Y6H = 17960, OY6 = 19500, Y7H = 23960, OY7 = 25500, OY8 = 30000;
+const PH2 = [-1060, 3960], PH3 = [2140, 6960];
+const K2 = [[2.9, ...PH2, 1, -6, -10, 1.5], [8.6, ...PH2, 1, -6, -7, 1.5], [9.2, ...PH2, 1, -5, 6, 1], [10.95, ...PH2, 1, -5, 8, 1]];
+const K3 = [[10.95, ...PH3, 1, -6, 9, -1.5], [15.0, ...PH3, 1, -6, 6, -1.5]];
+
+// ---------- 1. the shock: the line alone, then the camera pulls back to a red bar far short of the area's line ----------
+function scene1(t) {
+  if (t > 3.1) return;
+  hook(t, 'النت يمك ضعيف؟ المشكلة من صاحب البرج.. لو من منطقتك؟', 540, 760, 0.08, Infinity, { size: 100, maxW: 860 });
+  const X1 = 970, X0 = 110, MAX = 95, y = 1230, e = spring(seg(t, 1.0, 0.4));
+  if (e <= 0) return;
+  ctx.save(); ctx.globalAlpha = e; ctx.fillStyle = '#e7eaee'; rrect(ctx, X0, y, X1 - X0, 34, 6); ctx.fill(); ctx.restore();
+  const gx = X1 - (X1 - X0) * 87 / MAX, ge = expo(seg(t, 1.15, 0.4));
+  ctx.save(); ctx.globalAlpha = ge; ctx.fillStyle = INK; ctx.fillRect(gx - 2, y - 46 + (1 - ge) * 30, 5, 126); ctx.restore();
+  text('معدل منطقتك: ٨٧ ميغابت', gx + 16, y - 62, { size: 40, weight: 700, align: 'left', alpha: ge });
+  const run = seg(t, 1.3, 0.9), v = 12 * (1 - Math.pow(1 - run, 2.4)), bw = (X1 - X0) * v / MAX;
+  if (run > 0) {
+    ctx.fillStyle = RED; rrect(ctx, X1 - bw, y, bw, 34, 6); ctx.fill();
+    const ph = seg(t, 2.2, 0.7);
+    if (ph > 0 && ph < 1) { ctx.save(); ctx.strokeStyle = RED; ctx.lineWidth = 4; ctx.globalAlpha = 0.6 * (1 - ph); const r = expo(ph) * 40; rrect(ctx, X1 - bw - 8 - r, y - 8 - r, bw + 16 + 2 * r, 50 + 2 * r, 12 + r); ctx.stroke(); ctx.restore(); }
+    const nw = tw('١٢', 140);
+    text(AR(v), X1, y + 170, { size: 140, color: '#b3362e', alpha: clamp(run * 4) });
+    text('ميغابت (سرعة خطك)', X1 - nw - 16, y + 170, { size: 46, weight: 700, color: INK2, alpha: clamp(run * 4) });
+  }
+}
+
+// ---------- 2 and 3. the line test on the phone, close up, then the share card out of it ----------
+const TAP = (r) => [r[0] + r[2] / 2, r[1] + r[3] / 2];
+const TESTS = 14;
+function testState(t) {
+  const st = { badge: true };
+  if (t < 4.5) { st.img = 'home'; if (t >= 4.22) { const g = TAP(MARKS.go); st.tap = [g[0], g[1], Math.round(seg(t, 4.22, 0.3) * 40) / 40]; } }
+  else if (t < 6.1) st.img = 'test-' + String(Math.min(TESTS - 1, Math.floor((t - 4.5) / 1.6 * TESTS))).padStart(2, '0');
+  else st.img = 'result';
+  const sh = smooth(seg(t, 8.8, 0.6));
+  if (sh > 0) st.cardSh = Math.round(sh * 20) / 20;
+  return st;
+}
+// the share picture as a card in the same 3D room
+const cardCanvas = document.createElement('canvas'); cardCanvas.width = 1080; cardCanvas.height = 1920;
+const cardTex = new THREE.CanvasTexture(cardCanvas); cardTex.colorSpace = THREE.SRGBColorSpace; cardTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+const CW = 560, CH = CW * 16 / 9;
+const cardG = new THREE.Group(); world.add(cardG);
+const cardMat = new THREE.MeshBasicMaterial({ map: cardTex, toneMapped: false, transparent: true, opacity: 0, depthTest: false });   // always in front of the phone
+const cardMesh = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(CW, CH, 26), 24), cardMat);
+{ const g = cardMesh.geometry, u = g.attributes.uv, p = g.attributes.position; for (let i = 0; i < u.count; i++) u.setXY(i, (p.getX(i) + CW / 2) / CW, (p.getY(i) + CH / 2) / CH); }
+cardMesh.renderOrder = 10; cardG.add(cardMesh); cardG.visible = false;
+function placeCard(m, sx, sy, rx, ry, rz, roll = 0) {
+  cardG.rotation.set(rx * DEG, ry * DEG, rz * DEG);
+  if (roll) cardG.quaternion.premultiply(QZ.setFromAxisAngle(ZAX, -roll * DEG));
+  const Z = DIST * (1 - 1 / m);
+  cardG.position.set((sx - 540) * (DIST - Z) / DIST, (960 - sy) * (DIST - Z) / DIST, Z);
+  cardG.scale.setScalar(1); cardG.updateMatrixWorld(true);
+}
+const CARD_END = [[9.3, 1.12, PH2[0] + 30, PH2[1] + 40, -4, 16, -3], [10.95, 1.12, PH2[0] + 30, PH2[1] + 25, -5, 11, -2]];
+function cardShadow(alpha) {
+  const pts = rrShape(CW, CH, 26).getPoints(10).map(p => { const v = new THREE.Vector3(p.x, p.y, 0).applyMatrix4(cardG.matrixWorld).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; });
+  const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length, cyy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+  shx.setTransform(0.5, 0, 0, 0.5, 0, 0); shx.clearRect(0, 0, W, H);
+  [[6, 10, 10, 0.30, 0.99], [34, 60, 34, 0.22, 1], [12, 80, 100, 0.14, 1.06]].forEach(([dx, dy, blur, a, grow]) => {
+    shx.save(); shx.filter = `blur(${blur / 2}px)`; shx.globalAlpha = a * alpha; shx.fillStyle = '#1a2430'; shx.beginPath();
+    pts.forEach(([x, y], i) => { const X = cx + (x - cx) * grow + dx, Y = cyy + (y - cyy) * grow + dy; i ? shx.lineTo(X, Y) : shx.moveTo(X, Y); }); shx.closePath(); shx.fill(); shx.restore();
+  });
+  bgx.save(); bgx.setTransform(1, 0, 0, 1, 0, 0); bgx.drawImage(shc, 0, 0, W, H); bgx.restore();
+}
+function scene2(t, rt) {
+  if (t < 2.5 || t > 11.2) return;
+  hook(t, 'افحص خطك.. واكشف الفرق بالأرقام', 540, Y2H, 2.78, 7.3);
+  hook(t, 'وثق فحصك ببطاقة جاهزة للنشر', 540, Y2H, 7.72);
+  if (t < 3.3 || t >= 10.95) return;
+  showPhone(K2, t, rt, testState(t));
+  // the card leaves the screen, turns towards us and floats in front; the phone behind it goes soft
+  if (t >= 8.8) {
+    const k = smooth(seg(t, 8.8, 0.5)), fl = Math.sin((rt - 9.3) * 1.6) * 6, P = keyAt(K2, t);
+    const [m1, x1, y1, rx1, ry1, rz1] = keyAt(CARD_END, t);
+    const m = lerp(SW / CW * 0.93 * 1.08, m1, k) * lerp(0.85, 1, k), [X, Y] = vpt(lerp(P[0], x1, k), lerp(P[1], y1 + fl * k, k));
+    placeCard(m * VS, X, Y, lerp(P[3], rx1, k), lerp(P[4], ry1, k), lerp(P[5], rz1, k), VR);
+    cardMat.opacity = 1; cardG.visible = true;   // solid from its first frame: a sheet lifting off the screen, never see-through
+    cardShadow(clamp(k * 3));
+    DOF = 7 * smooth(seg(t, 9.0, 0.35));
+  }
+}
+
+// ---------- 4. for gamers: the ping test close up, the jump while the line is busy, then the lowest and the highest ----------
+function pingState(t) {
+  const st = { badge: true };
+  if (t < 12.45) { st.img = 'ping-0'; if (t >= 12.2) { const g = TAP(MARKS.pingGo); st.tap = [g[0], g[1], Math.round(seg(t, 12.2, 0.3) * 40) / 40]; } }
+  else if (t < 14.25) st.img = 'ping-' + String(1 + Math.min(9, Math.floor((t - 12.45) / 0.18))).padStart(2, '0');
+  else st.img = 'ping-done';
+  return st;
+}
+const PING_FILL = v => v < 15 ? GREEN : v < 30 ? LEAF : v < 50 ? AMBER : v < 80 ? ORANGE : RED;
+const PING_TEXT = v => v < 15 ? '#10664c' : v < 30 ? '#2f7d45' : v < 50 ? '#866608' : v < 80 ? '#a8561a' : '#b3362e';
+// where the ink of a string really starts and ends (drawn left aligned at 0), found from its pixels
+const INKS = {};
+function inkX(str, font) {
+  const key = font + str; if (INKS[key]) return INKS[key];
+  const c = document.createElement('canvas'); c.width = 900; c.height = 300; const g = c.getContext('2d', { willReadFrequently: true });
+  g.font = font; g.direction = 'ltr'; g.textAlign = 'left'; g.fillStyle = '#000'; g.fillText(str, 100, 240);
+  const d = g.getImageData(0, 0, 900, 300).data; let a = 900, b = 0;
+  for (let y = 0; y < 300; y++) for (let x = 0; x < 900; x++) if (d[(y * 900 + x) * 4 + 3] > 40) { if (x < a) a = x; if (x > b) b = x; }
+  return (INKS[key] = [a - 100, b + 1 - 100]);
+}
+function pingCard(t, t0, y, name, v, label) {
+  const e = seg(t, t0, 0.8); if (e <= 0) return;
+  const s = 0.7 + 0.3 * wobble(e, 7, 12), al = clamp(e * 4), w = 880, h = 380, x = 100;
+  ctx.save(); ctx.translate(540, y + h / 2); ctx.scale(s, s); ctx.translate(-540, -(y + h / 2));
+  softCard(ctx, x, y, w, h, 26, al);
+  text(label, x + w - 48, y + 84, { size: 40, weight: 500, color: SOFT, alpha: al });
+  text(name, x + w - 48, y + 190, { size: 92, weight: 800, alpha: al });
+  // the unit on the left of the number and glued to it, as the site sets «٤٣<small>ms</small>»: 0.45 of its size, 6 px apart
+  const ms = Math.round(210 * 0.45), mi = inkX('ms', `700 ${ms}px Rubik, RubikL`), ni = inkX(AR(v), '800 210px Rubik, RubikL');
+  text('ms', x + 48 - mi[0], y + 230, { size: ms, weight: 700, color: SOFT, align: 'left', dir: 'ltr', alpha: al });
+  text(AR(v), x + 48 + (mi[1] - mi[0]) + 6 - ni[0], y + 230, { size: 210, weight: 800, color: PING_TEXT(v), align: 'left', dir: 'ltr', alpha: al });
+  const bk = smooth(seg(t, t0 + 0.25, 0.6)), bw = (w - 88) * Math.min(1, v / 50) * bk;
+  ctx.fillStyle = '#eef0f2'; rrect(ctx, x + 44, y + h - 62, w - 88, 16, 8); ctx.fill();
+  ctx.fillStyle = PING_FILL(v); rrect(ctx, x + w - 44 - bw, y + h - 62, Math.max(bw, 1), 16, 8); ctx.fill();
+  ctx.restore();
+}
+function scene3(t, rt) {
+  if (t < 10.4 || t > 17.2) return;
+  hook(t, 'للگيمرية.. اكشف سبب اللاگ وقت اللعب', 540, Y3H, 10.78);
+  if (t >= 10.95 && t < 15.5) showPhone(K3, t, rt, pingState(t));
+  pingCard(t, 15.25, OY3C + 600, 'السليمانية', PG.alsulaimaniyah, 'أقل بنك بين المحافظات');
+  pingCard(t, 15.45, OY3C + 1050, 'الأنبار', PG.alanbar, 'أعلى بنك بين المحافظات');
+}
+
+// ---------- 5. home or mobile: Saqlawiya ----------
+function scene4(t, rt) {
+  if (t < 16.3 || t > 22.1) return;
+  hook(t, 'في ٨٢٤ منطقة بالعراق.. الـ 4G أسرع من الواي فاي!', 540, Y4H, 16.78, Infinity, { count: ['٨٢٤', 824], size: 104 });
+  const oy = OY4, S = SAQ, e = spring(seg(t, 18.3, 0.45)); if (e <= 0) return;
+  text('الصقلاوية', 960, oy + 700 + (1 - e) * 40, { size: 104, alpha: e });
+  text('الأنبار', 960, oy + 770, { size: 44, weight: 500, color: SOFT, alpha: e });
+  const rows = [['إنترنت البيت', S.f.d, 18.6, 1.2, RED, '#b3362e'], ['إنترنت الموبايل', S.m.d, 18.9, 0.55, LEAF, GREEN]];
+  rows.forEach(([lab, v, t0, d, fill, tc], i) => {
+    const y = oy + 900 + i * 230, k = seg(t, t0, d), ek = spring(seg(t, t0, 0.35)); if (ek <= 0) return;
+    const val = v * (1 - Math.pow(1 - k, 2.2)), bw = Math.max(8, 760 * val / 55);
+    text(lab, 960, y, { size: 44, weight: 700, color: INK2, alpha: ek });
+    ctx.fillStyle = fill; rrect(ctx, 960 - bw, y + 30, bw, 44, 6); ctx.fill();
+    text(v < 10 ? AR(Math.floor(val)) + (k >= 1 ? '٫' + AR(Math.round(v * 10) % 10) : '') : AR(val), 120, y + 76, { size: 96, color: tc, align: 'left', alpha: ek });
+    text('ميغابت', 120, y + 122, { size: 32, weight: 500, color: SOFT, align: 'left', alpha: ek });
+  });
+  const lb = seg(t, 19.6, 0.7);
+  if (lb > 0) {
+    const s = 0.7 + 0.3 * wobble(lb, 7, 12), pulse = 1 + 0.03 * Math.sin(Math.max(0, rt - 20.35) * 5);
+    ctx.save(); ctx.translate(540, oy + 1440); ctx.scale(s * pulse, s * pulse); ctx.translate(-540, -(oy + 1440));
+    text('أسرع بـ ١٤ مرة', 540, oy + 1470, { size: 104, color: GREEN, align: 'center', alpha: clamp(lb * 4) });
+    ctx.restore();
+  }
+}
+
+// ---------- 6. before you move or rent: two areas slide in over the line and push it out ----------
+const better = (a, b, dir) => a === b ? 0 : (a > b) === (dir > 0) ? 1 : 2;
+const WIN = '#0D8A4E';
+function scene5(t, rt) {
+  if (t < 21.3 || t > 26.1) return;
+  hook(t, 'قبل لا تنتقل أو تأجر.. قارن بين منطقتين', 540, Y5H, 21.78, 22.62);
+  const A = KAR, B = MAN, oy = OY5;
+  const rows = [['البيت، التنزيل', 'f', 'd', 1, 'ميغابت'], ['البيت، الرفع', 'f', 'u', 1, 'ميغابت'], ['البيت، البنك', 'f', 'l', -1, 'ms'], ['الموبايل، التنزيل', 'm', 'd', 1, 'ميغابت']];
+  [[A, 562, 22.75, 1], [B, 92, 22.9, 2]].forEach(([P, x, t0, me]) => {
+    const e = seg(t, t0, 0.75); if (e <= 0) return;
+    const s = wobble(e, 7, 11), dx = (1 - s) * (me === 1 ? 620 : -620), y = oy + 560, w = 426, h = 860, al = clamp(e * 12);
+    ctx.save(); ctx.translate(dx, 0);
+    softCard(ctx, x, y, w, h, 26, al);
+    text(P.n, x + w - 36, y + 96, { size: 62, weight: 800, alpha: al });
+    text('بغداد', x + w - 36, y + 146, { size: 32, weight: 500, color: SOFT, alpha: al });
+    rows.forEach(([lab, m, k, dir, unit], i) => {
+      const ry = y + 250 + i * 150, lit = smooth(seg(t, 23.45 + i * 0.32, 0.3));
+      const w2 = better(A[m][k], B[m][k], dir), win = w2 === me;
+      ctx.fillStyle = '#eceff2'; ctx.fillRect(x + 36, ry - 66, w - 72, 2);
+      text(lab, x + w - 36, ry - 22, { size: 30, weight: 500, color: SOFT, alpha: al });
+      const v = P[m][k], str = AR(v);
+      const col = win && lit > 0 ? mix(INK, WIN, lit) : INK, nw = tw(str, 76);
+      if (win && lit > 0) {
+        const ps = 0.8 + 0.2 * wobble(lit, 6, 10);
+        ctx.save(); ctx.globalAlpha = lit * al; ctx.fillStyle = 'rgba(13,138,78,0.13)';
+        const pw = (nw + 44) * ps, ph = 92 * ps, pcx = x + w - 36 - nw / 2, pcy = ry + 30;
+        rrect(ctx, pcx - pw / 2, pcy - ph / 2, pw, ph, ph / 2); ctx.fill(); ctx.restore();
+      }
+      text(str, x + w - 36, ry + 56, { size: 76, weight: 800, color: col, alpha: al });
+      text(unit, x + w - 58 - nw, ry + 56, { size: 28, weight: 500, color: SOFT, alpha: al, dir: unit === 'ms' ? 'ltr' : 'rtl', align: 'right' });
+    });
+    ctx.restore();
+  });
+}
+
+// ---------- 7. for the ministry: where the work is, then the zoom into the green and Iraq since 2019 ----------
+const GM = D.govmap, GZ = 2.0, GX = 140, GY = 650;
+const govs = GM.shapes.map(g => ({ ...g, polys: g.polys.filter(p => p.length > 2) }));
+govs.forEach(g => { g.col = bandFill(g.d); });
+const byId = Object.fromEntries(govs.map(g => [g.id, g]));
+function govPath(g, oy) {
+  ctx.beginPath();
+  for (const p of g.polys) { p.forEach(([x, y], i) => i ? ctx.lineTo(GX + x * GZ, oy + GY + y * GZ) : ctx.moveTo(GX + x * GZ, oy + GY + y * GZ)); ctx.closePath(); }
+}
+// the zoom grows out of the middle of Sulaymaniyah: the point inside it farthest from its border
+const SUL = [GX + 267.5 * GZ, OY6 + GY + 93.5 * GZ], FIELD = '#0B6E4F';
+const KEYS = [['سريع جدا', GREEN], ['جيد', LEAF], ['متوسط', AMBER], ['مقبول', ORANGE], ['بطيء', RED]];
+function drawGovs(t, oy, z, zp, focus, outl) {
+  govs.forEach(g => {
+    if (outl <= 0) return;
+    const e = seg(t, 27.05 + (g.y / GM.h) * 0.7, 0.45);
+    govPath(g, oy);
+    if (e > 0) {
+      let c = mix(g.col, '#ffffff', 0.6 * Math.pow(1 - e, 1.4)), a = clamp(e * 3);
+      const sul = g.id === 'alsulaimaniyah' && zp > 0;
+      if (g.id !== 'diyala') a *= lerp(1, 0.25, sul ? focus * (1 - smooth(seg(zp, 0, 0.35))) : focus);
+      if (sul) c = mix(g.col, FIELD, smooth(seg(zp, 0.15, 0.6)));
+      ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = c; ctx.fill(); ctx.restore();
+    }
+    if (zp > 0) return;   // no outlines while the camera dives
+    ctx.save(); ctx.globalAlpha = outl; ctx.lineWidth = 2.2 / Math.sqrt(z); ctx.lineJoin = 'round'; ctx.strokeStyle = e > 0.4 ? WHITE : '#b9c0c8'; ctx.stroke(); ctx.restore();
+  });
+}
+function scene6(t, rt) {
+  if (t < 25.3 || t >= 29.8) return;
+  hook(t, 'بيانات ميدانية جاهزة أمام وزارة الاتصالات: وين الخلل، ويا محافظة تحتاج أولوية؟', 540, Y6H, 25.78, Infinity, { size: 88 });
+  const oy = OY6, zp = seg(t, 29.35, 0.45), clear = 1 - smooth(seg(t, 29.05, 0.28));   // the card, key and border leave before the zoom
+  const outl = expo(seg(t, 27.0, 0.35)), focus = smooth(seg(t, 27.85, 0.4)) * clear;
+  if (outl <= 0) return;
+  drawGovs(t, oy, VS, zp, focus, outl);
+  if (focus > 0) {
+    const pu = 0.5 + 0.5 * Math.sin(Math.max(0, rt - 28.25) * 6.3);
+    govPath(byId.diyala, oy); ctx.save(); ctx.globalAlpha = focus * lerp(0.6, 1, pu); ctx.lineWidth = lerp(3.5, 6.5, pu) / Math.sqrt(VS); ctx.lineJoin = 'round'; ctx.strokeStyle = INK; ctx.stroke(); ctx.restore();
+  }
+  const sw = seg(t, 27.1, 0.9);
+  if (sw > 0 && sw < 1) {
+    ctx.save(); ctx.beginPath(); govs.forEach(g => { for (const p of g.polys) { p.forEach(([x, y], i) => i ? ctx.lineTo(GX + x * GZ, oy + GY + y * GZ) : ctx.moveTo(GX + x * GZ, oy + GY + y * GZ)); ctx.closePath(); } }); ctx.clip();
+    const by = oy + GY - 120 + (GM.h * GZ + 240) * sw, gr = ctx.createLinearGradient(0, by - 100, 0, by + 100);
+    gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(0.5, 'rgba(255,255,255,0.45)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gr; ctx.fillRect(-400, by - 100, W + 800, 200); ctx.restore();
+  }
+  // the key, in the empty corner by the Saudi border
+  KEYS.forEach(([w, col], i) => {
+    const e = spring(seg(t, 27.5 + 0.05 * i, 0.35)) * clear; if (e <= 0) return;
+    const y = oy + GY + 320 * GZ + i * 40, xr = GX + 120;
+    ctx.save(); ctx.globalAlpha = e; ctx.fillStyle = col; rrect(ctx, xr - 32, y - 18, 32, 12, 2); ctx.fill(); ctx.restore();
+    text(w, xr - 44, y, { size: 28, weight: 700, color: INK2, alpha: e });
+  });
+  // Diyala's card over Anbar, with its leader
+  const ce = seg(t, 27.9, 0.75);
+  if (ce > 0 && clear > 0) {
+    const s = 0.7 + 0.3 * wobble(ce, 7, 12), al = clamp(ce * 4) * clear, x = 120, y = oy + 830, w = 430, h = 300;
+    const ax = GX + byId.diyala.x * GZ, ay = oy + GY + byId.diyala.y * GZ, lk = smooth(seg(t, 28.05, 0.35));
+    ctx.save(); ctx.globalAlpha = al; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x + w, y + 150); ctx.lineTo(lerp(x + w, ax, lk), lerp(y + 150, ay, lk)); ctx.stroke();
+    ctx.fillStyle = WHITE; ctx.beginPath(); ctx.arc(ax, ay, 9 * lk, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore();
+    ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.scale(s, s); ctx.translate(-(x + w / 2), -(y + h / 2));
+    softCard(ctx, x, y, w, h, 24, al);
+    text('ديالى', x + w - 34, y + 74, { size: 50, weight: 800, alpha: al });
+    text(AR(DIY) + '٪', x + w - 34, y + 192, { size: 120, weight: 800, color: '#a8561a', alpha: al });
+    const lines = layoutWords('من مناطقها تعاني من بطء الإنترنت', 30, w - 68, x + w - 34, 0, 38, 500);
+    lines.forEach(l => text(l.wd, l.x, y + 238 + l.y, { size: 30, weight: 500, color: INK2, alpha: al }));
+    ctx.restore();
+  }
+}
+const LINE_Y = 666;
+function scene7(t, rt) {
+  if (t < 29.8 || t > 33.6) return;
+  // the green field is the frame itself; at the end it folds into the line the name stands on
+  const fold = smooth(seg(t, 33.05, 0.38));
+  const x = lerp(0, 120, fold), y = lerp(0, LINE_Y - 4, fold), w = lerp(W, 840, fold), h = lerp(H, 8, fold);
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = FIELD; rrect(ctx, x, y, w, h, lerp(0, 4, fold)); ctx.fill();
+  if (fold > 0.7) { ctx.restore(); return; }
+  rrect(ctx, x, y, w, h, 0); ctx.clip(); ctx.setTransform(...VM);
+  hook(t, 'رغم قفزة العراق من ١٧ إلى ٦٢ ميغابت.. العدالة الرقمية بين المناطق هي الخطوة الجاية', 540, Y7H, 29.85, Infinity, { size: 84, color: WHITE });
+  const oy = OY7, yrs = D.years, BW = 76, GAP = 30, X0 = 960, BOT = oy + 1500, HMAX = 470;
+  const STEP_AT = [31.45, 31.65, 31.75, 31.85, 31.95, 32.05, 32.15, 32.3];
+  let step = -1; STEP_AT.forEach((s, i) => { if (t >= s) step = i; });
+  const tops = [];
+  yrs.forEach((v, i) => {
+    const e = wobble(seg(t, 31.4 + 0.05 * i, 0.9), 6, 11); if (e <= 0) return;
+    const bh = HMAX * v / yrs[yrs.length - 1] * e, bx = X0 - (i + 1) * BW - i * GAP;
+    tops.push([bx + BW / 2, BOT - HMAX * v / yrs[yrs.length - 1] - 36]);
+    ctx.save(); ctx.globalAlpha = i <= step ? 1 : 0.38; ctx.fillStyle = WHITE; rrect(ctx, bx, BOT - bh, BW, bh, 4); ctx.fill(); ctx.restore();
+    text(AR(2019 + i), bx + BW / 2, BOT + 48, { size: 30, weight: 500, color: WHITE, align: 'center', alpha: 0.85 * clamp(e) });
+  });
+  const L = smooth(seg(t, 32.3, 0.5));
+  if (L > 0 && tops.length === yrs.length) {
+    let tot = 0; tops.slice(1).forEach((p, i) => { tot += Math.hypot(p[0] - tops[i][0], p[1] - tops[i][1]); });
+    ctx.save(); ctx.strokeStyle = WHITE; ctx.lineWidth = 7; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.setLineDash([tot * L, tot + 10]); ctx.beginPath(); tops.forEach(([px, py], i) => i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)); ctx.stroke(); ctx.restore();
+    if (L >= 1) { const [px, py] = tops[tops.length - 1]; ctx.fillStyle = WHITE; ctx.beginPath(); ctx.arc(px, py, 14, 0, 7); ctx.fill(); ctx.fillStyle = FIELD; ctx.beginPath(); ctx.arc(px, py, 6, 0, 7); ctx.fill();
+      const f = ((rt - 32.8) / 0.9) % 1; if (rt > 32.8) { ctx.save(); ctx.strokeStyle = WHITE; ctx.lineWidth = 3; ctx.globalAlpha = 0.7 * (1 - f); ctx.beginPath(); ctx.arc(px, py, 16 + 28 * expo(f), 0, 7); ctx.stroke(); ctx.restore(); } }
+  }
+  if (step >= 0) {
+    const v = yrs[step], e = spring(seg(t, 31.45, 0.35)), pop = step === yrs.length - 1 ? 1 + 0.05 * (1 - spring(seg(t, 32.3, 0.35))) : 1;
+    text(AR(v), 960, oy + 790 + (1 - e) * 40, { size: 230, color: WHITE, alpha: e, s: pop });
+    text(`ميغابت بصيف ${AR(2019 + step)}`, 960, oy + 880, { size: 52, weight: 700, color: WHITE, alpha: e });
+  }
+  ctx.restore();
+}
+
+// ---------- 8. the end: the platform's name, the phone rising behind, its start button pulsing ----------
+const END = [
+  [33.6, 540, OY8 + 2256, 0.78, -8, -14, 1.5],
+  [34.4, 540, OY8 + 1516, 0.78, -6, -10, 1.5],
+  [37.0, 540, OY8 + 1502, 0.78, -6, -6, 1.5],
+];
+function scene8(t, rt) {
+  if (t < 33.3) return;
+  const oy = OY8, name = ['منصة سرعة الإنترنت', 'في العراق'], size = Math.min(124, 860 / (tw(name[0], 100) / 100));
+  [[name[0], 33.3, 470], [name[1], 33.38, 470 + size * 1.2]].forEach(([s, t0, yb]) => {
+    const k = bez(seg(t, t0, 0.55));
+    if (k > 0) text(s, 960, oy + yb + (1 - k) * size * 1.5, { size, clip: [0, oy + yb - size * 1.1, W, Math.min(size * 1.5, LINE_Y - 4 - (yb - size * 1.1))] });
+  });
+  const lines = layoutWords('افحص خطك وقارن منطقتك مجانا الآن — الرابط بالبايو', 48, 860, 960, 0, 62, 500);
+  groupLines(lines).forEach((ws, li) => {
+    const k = bez(seg(t, 33.6 + li * 0.06, 0.55)), y = oy + 760 + ws[0].y;
+    maskLine(ws, y, 48, k, (w, off) => text(w.wd, w.x, y + off, { size: 48, weight: 500, color: INK2 }));
+  });
+  const cr = bez(seg(t, 34.0, 0.5)), cy0 = oy + 760 + Math.max(...lines.map(l => l.y)) + 84;
+  text('تطوير وتصميم', 960, cy0, { size: 40, weight: 500, color: SOFT, alpha: cr });
+  text('@allawi.psd', 960 - tw('تطوير وتصميم ', 40, 500), cy0, { size: 40, weight: 500, color: SOFT, alpha: cr, dir: 'ltr', align: 'right' });
+  ctx.fillStyle = INK; ctx.globalAlpha = expo(seg(t, 33.4, 0.3)); rrect(ctx, 120, oy + LINE_Y - 4, 840, 8, 4); ctx.fill(); ctx.globalAlpha = 1;
+  if (t < 33.6) return;
+  // the start button inside the phone grows a little and settles, again and again, with a finger's tap now and then
+  const ph = Math.max(0, (rt - 34.6) / 1.1), pk = ph % 1, n = Math.floor(ph);
+  const pulse = ph > 0 ? Math.round((1 + 0.06 * Math.sin(Math.PI * clamp(pk / 0.55))) * 200) / 200 : 1;
+  const tap = ph > 0 && n % 2 === 0 ? Math.round(clamp(pk / 0.7) * 30) / 30 : null;
+  showPhone(END, t, rt, { img: 'home-full', S: 0, pulse, tapGo: tap });
+}
+
+// ---------- the camera's path ----------
+function buildCam() {
+  const at = (K, t, u, v) => worldPt(keyAt(K, t), u, v);
+  const GO = at(K2, 4.2, ...TAP(MARKS.go)), NUM = at(K2, 5.2, 300, 240), VER = at(K2, 6.8, 195, 330);
+  const PGO = at(K3, 12.2, ...TAP(MARKS.pingGo)), PNUM = at(K3, 13.2, 290, 490), PWARN = at(K3, 14.6, 195, 590);
+  const CARD = [PH2[0] + 40, PH2[1] + 20], MAP = OY6 + 1075;
+  CAMK = [
+    [0, 540, 760, 1.10, -1.6, 'L'], [0.95, 540, 770, 1.14, -1.0, 'B'],                 // the line alone, then pull back
+    [1.45, 540, 1010, 0.94, 1.0, 'L'], [2.55, 540, 1030, 0.99, 0.4, 'B'],               // the bar
+    [2.95, 540, Y2H, 1.12, -1.0, 'L'], [3.75, 540, Y2H + 5, 1.16, -0.6, 'B'],             // افحص خطك
+    [4.15, ...GO, 1.65, -4, 'L'], [4.55, GO[0], GO[1] + 4, 1.70, -3.7, 'B'],              // tight on ابدأ الفحص
+    [4.95, ...NUM, 2.1, -2.5, 'L'], [5.95, NUM[0], NUM[1] + 10, 2.2, -2.1, 'B'],          // the count and the bar
+    [6.4, ...VER, 1.25, 2.0, 'L'], [7.55, VER[0], VER[1] + 12, 1.33, 1.4, 'B'],           // the verdict
+    [7.9, 540, Y2H, 1.12, -1.4, 'L'], [8.6, 540, Y2H + 2, 1.16, -1.0, 'B'],               // وثق فحصك
+    [8.95, ...CARD, 1.15, -3, 'L'], [10.5, CARD[0], CARD[1] - 20, 1.22, -2.4, 'B'],       // the card
+    [10.9, 540, Y3H, 1.12, 1.0, 'L'], [11.7, 540, Y3H + 2, 1.16, 0.6, 'B'],               // للگيمرية
+    [12.1, ...PGO, 1.7, 3, 'L'], [12.45, PGO[0], PGO[1] + 3, 1.74, 2.8, 'B'],             // افحص البنك مالتك
+    [12.8, ...PNUM, 2.3, 1.0, 'L'], [14.0, PNUM[0], PNUM[1] + 8, 2.42, 0.6, 'B'],         // ١٢ then ١٦٢
+    [14.4, ...PWARN, 1.45, -1.5, 'L'], [15.0, PWARN[0], PWARN[1] + 6, 1.5, -1.2, 'B'],    // the jump, in words
+    [15.4, 540, OY3C + 1015, 1.1, -1.0, 'L'], [16.45, 540, OY3C + 1025, 1.15, -0.4, 'B'], // lowest and highest
+    [16.85, 540, Y4H, 1.1, 0.8, 'L'], [18.0, 540, Y4H + 4, 1.16, 0.4, 'B'],               // ٨٢٤ منطقة
+    [18.45, 540, OY4 + 1060, 1.12, 1.5, 'L'], [21.45, 540, OY4 + 1110, 1.19, 0.4, 'B'],   // Saqlawiya
+    [21.85, 540, Y5H, 1.12, -0.8, 'L'], [22.75, 540, Y5H + 2, 1.16, -0.5, 'B'],           // قبل لا تنتقل
+    [23.2, 540, Y5H, 1.11, -1.5, 'L'], [25.45, 540, Y5H + 15, 1.17, -0.8, 'B'],            // the two areas
+    [25.85, 540, Y6H, 1.08, 1.0, 'L'], [26.9, 540, Y6H + 2, 1.13, 0.6, 'B'],              // the ministry
+    [27.35, 540, MAP, 1.12, -1.0, 'L'], [29.35, 540, MAP - 15, 1.17, -0.4, 'Z'],         // the map, then into the green
+    [29.8, ...SUL, 35, -0.4, 'L'],
+    [29.8, 540, Y7H, 1.08, 0.6, 'L'], [31.1, 540, Y7H + 3, 1.13, 0.2, 'B'],               // Iraq since 2019
+    [31.5, 540, OY7 + 1060, 1.0, -1.0, 'L'], [33.3, 540, OY7 + 1050, 1.05, -0.5, 'L'],
+    [33.3, 540, OY8 + 960, 1.0, 0, 'L'], [37.0, 546, OY8 + 990, 1.07, -1.2, 'L'],         // the name
+  ];
+}
+
+// ---------- seek ----------
+window.seek = function (rtIn) {
+  const rt = clamp(rtIn, 0, DUR - 1e-6), t = rt;
+  ctx = bgx; phoneOn = false; cardG.visible = false; glAlpha = 1; DOF = 0;
+  background(0, rt);
+  fgx.setTransform(1, 0, 0, 1, 0, 0); fgx.clearRect(0, 0, W, H); grain(rt);
+  const c = camAt(t), k = shake(t);
+  Object.assign(cam2, c);
+  setView({ fx: c.fx, fy: c.fy, s: c.s * k.p, r: c.r + k.dr, dx: k.dx, dy: k.dy });
+  bgx.setTransform(...VM);
+  scene1(t); scene2(t, rt); scene3(t, rt); scene4(t, rt); scene5(t, rt); scene6(t, rt); scene7(t, rt); scene8(t, rt);
+  bgx.setTransform(1, 0, 0, 1, 0, 0);
+  redEdge(t, rt);
+  renderPhone(phoneOn || cardG.visible);
+};
+const SITE = '../../iraq-internet-map/site/data/';
+let SAQ, KAR, MAN, PG = {}, DIY;
+window.ready = Promise.all([
+  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik, RubikL`, 'العراق ٨٧ گ')),
+  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 56px Rubik, RubikL`, '@allawi.psd ms 4G')),
+  ...[['400 500', 'Rubik-Latin-400'], ['700 800', 'Rubik-Latin-700']].map(([w, f]) => new FontFace('RubikL', `url(../../iraq-internet-map/site/fonts/${f}.woff2)`, { weight: w }).load().then(ff => document.fonts.add(ff))),
+  ...NAMES.map(n => new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[n] = im; res(); }; im.onerror = rej; im.src = `site/${n}.png`; })),
+  fetch('site/marks.json').then(r => r.json()).then(m => Object.assign(MARKS, m)),
+  fetch(SITE + 'places.json').then(r => r.json()).then(d => {
+    const by = id => d.places.find(p => p.id === id);
+    KAR = by('r2964648'); MAN = by('n12044401997'); SAQ = by('pnode/2486318357');
+    const ok = d.places.filter(p => p.g === 'diyala' && p.f && p.f.t >= 30);
+    DIY = Math.round(ok.filter(p => p.f.d < 25).length / ok.length * 100);
+  }),
+  fetch(SITE + 'govs.json').then(r => r.json()).then(d => { d.govs.forEach(g => { PG[g.id] = g.f.l; }); }),
+]).then(() => {
+  // the share picture, with the same small badge as the test screens
+  const g = cardCanvas.getContext('2d'); g.drawImage(IMG.share, 0, 0, 1080, 1920); badge(g, 3.0 * 0.92);
+  cardTex.needsUpdate = true;
+  buildCam(); setMask('none');
+  window.seek(0); return true;
+});
+</script>
+</body>
+</html>

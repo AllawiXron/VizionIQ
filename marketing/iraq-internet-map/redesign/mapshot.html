@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>map plate</title>
+<link rel="stylesheet" href="../site/vendor/maplibre-gl.css">
+<style>
+  html, body { margin: 0; background: #fff; }
+  #map { width: 358px; height: 230px; }
+  .maplibregl-ctrl-attrib, .maplibregl-ctrl-logo { display: none !important; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../site/vendor/maplibre-gl.js"></script>
+<script src="../site/vendor/pmtiles.js"></script>
+<script>
+// a light street map for the redesign stills: every street takes the colour of its square's speed,
+// the area itself in full colour and the rest washed out
+const q = new URLSearchParams(location.search);
+const gov = q.get('gov'), id = q.get('id');
+const files = [[4, 11, 'iraq-a'], [12, 12, 'iraq-b'], [13, 13, 'iraq-c']]
+  .map(([a, b, n]) => ({ a, b, pm: new pmtiles.PMTiles(`../site/tiles/${n}.pmtiles`) }));
+maplibregl.addProtocol('iq', async (params, abort) => {
+  const [z, x, y] = params.url.split('/').slice(-3).map(Number);
+  const f = files.find(f => z >= f.a && z <= f.b);
+  const t = f && await f.pm.getZxy(z, x, y, abort && abort.signal);
+  return { data: t ? new Uint8Array(t.data) : new Uint8Array(0) };
+});
+const L = v => Math.log(v);
+const speed = ['interpolate', ['linear'], ['ln', ['max', ['get', 'f'], 1]],
+  L(5), '#d2483f', L(15), '#ea8a2e', L(35), '#e3b021', L(70), '#5aa85e', L(150), '#12795a'];
+const rank = (a, b, c, d, e) => ['match', ['get', 'r'], 1, a, 2, b, 3, c, 4, d, e];
+const width = k => ['interpolate', ['exponential', 1.6], ['zoom'], 10, rank(2 * k, 1.6 * k, 1.2 * k, 0.9 * k, 0.6 * k),
+  13, rank(4 * k, 3.4 * k, 2.6 * k, 2 * k, 1.4 * k), 16, rank(9 * k, 7 * k, 5.5 * k, 4.4 * k, 3.2 * k)];
+
+fetch(`../site/data/areas/${gov}.json`).then(r => r.json()).then(areas => {
+  const geom = areas[id];
+  let x0 = 180, y0 = 90, x1 = -180, y1 = -90;
+  const walk = c => { if (typeof c[0] === 'number') { x0 = Math.min(x0, c[0]); x1 = Math.max(x1, c[0]); y0 = Math.min(y0, c[1]); y1 = Math.max(y1, c[1]); } else c.forEach(walk); };
+  walk(geom.coordinates);
+  const rings = geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates;
+  const world = [[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]];
+  const map = new maplibregl.Map({
+    container: 'map', interactive: false, attributionControl: false, fadeDuration: 0, preserveDrawingBuffer: true,
+    bounds: [[x0, y0], [x1, y1]], fitBoundsOptions: { padding: 14 },
+    style: {
+      version: 8,
+      sources: {
+        iq: { type: 'vector', tiles: ['iq://t/{z}/{x}/{y}'], minzoom: 4, maxzoom: 13 },
+        mask: { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [world, ...rings.map(r => r[0])] } } },
+        edge: { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: geom } },
+      },
+      layers: [
+        { id: 'bg', type: 'background', paint: { 'background-color': '#f1f3f4' } },
+        { id: 'water', type: 'fill', source: 'iq', 'source-layer': 'wt', paint: { 'fill-color': '#cddfe9' } },
+        { id: 'rivers', type: 'line', source: 'iq', 'source-layer': 'rv', paint: { 'line-color': '#cddfe9', 'line-width': 3 } },
+        { id: 'roads', type: 'line', source: 'iq', 'source-layer': 'rd', layout: { 'line-cap': 'round', 'line-join': 'round' },
+          paint: { 'line-color': '#d6dadf', 'line-width': width(1) } },
+        { id: 'speed', type: 'line', source: 'iq', 'source-layer': 'rd', filter: ['>=', ['get', 'f'], 0], layout: { 'line-cap': 'round', 'line-join': 'round' },
+          paint: { 'line-color': speed, 'line-width': width(1) } },
+        { id: 'mask', type: 'fill', source: 'mask', paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.62 } },
+        { id: 'edge', type: 'line', source: 'edge', paint: { 'line-color': '#14202b', 'line-width': 2 } },
+      ],
+    },
+  });
+  map.on('idle', () => { document.body.dataset.ready = '1'; });
+});
+</script>
+</body>
+</html>

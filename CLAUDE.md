@@ -57,6 +57,51 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - Meta ads (24 Oct): the user runs the Orange Coin reel as a Messages ad himself ($10/day, all Iraq, online sellers) and
   sends the Ads Manager report instead of connecting a connector. Read it, judge cost per conversation, the 3-second
   hook rate and how many DMs were real sellers, and suggest changes only after the first 4–5 days of learning.
+  Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it.
+- Websites and tools (23 Oct): the user found the first Iraq internet map "weird" and could not understand it (text
+  floating over the map, numbers without labels, no colour key). Say what the page does in one sentence, label every
+  number, give every map a key, keep a plain top-to-bottom order. The user asked (24 Oct) not to use the site-tester
+  and site-designer agents (`.claude/agents/`) anymore; check a site yourself (`build/check.cjs` still runs on its own).
+  The night-map version of the Iraq internet map was still "confusing and weird" to the user after both reviews (dark
+  map, too much on one page, unclear what the site is for and why the minister would care). Next version is "result
+  first": a light page in Rubik, search then the area's number with a plain verdict, governorates on their own tab
+  (stills in `marketing/iraq-internet-map/redesign/`). The user approved the stills and asked to leave the exam-day
+  internet cuts out of the site, since the ministry orders them (23 Oct).
+- Reels for the minister and the public (23 Oct): the 15 s, 120 BPM showreel for the Iraq internet map
+  (`marketing/iraq-speed-reel`) was "too rushed, not well explained, badly made". Slow down: one idea per scene, every
+  sentence on screen long enough to read twice, the real site shown (a screen recording) instead of abstract morphs,
+  and plain words that say what the site is and why it matters. The slower v2 had the right idea and timing (the user
+  cut music to it) but looked like a flat web page (24 Oct). v3 keeps every cut and asks for motion design: an
+  off-white `#F7F8FA` room with a faint moving data grid and a soft centre light, the phone in 3D with layered shadows
+  and the camera diving into it, number cards with soft shadows, a zoom into a colour instead of a growing box, and
+  an end that keeps moving to the last frame.
+- Motion that reads as code, not After Effects (24 Oct): the user wants no word-by-word blur reveals, no motion
+  blur faked with offset copies or frame blending, no graph-paper grids with crosshairs, and no beeps, clicks or tonal
+  "data" sounds. Instead: each line of type slides up through its own mask (0.06 s apart, no blur), sharp moves on
+  cubic-bezier(0.85, 0, 0.15, 1), one still per frame, a warm studio backdrop (#F5F4F0, spotlight, floor falloff,
+  2.5 % grain), the phone tilted in 3D with a glass sheen, and only soft air whooshes and deep thuds, plus a silent
+  copy for his own music (`marketing/iraq-speed-reel/v4`).
+  Staging (24 Oct): no "caption on top, widget below" page layout and no dead still frames. Each line of the script
+  stands alone big in the middle for about a second, then the camera whips or pulls back to the thing; close-ups on
+  the phone like a lens (tight on the button, the number, the verdict), a hard shake and red edges on a shock number,
+  the phone out of focus behind a card in front, and a slow creep (zoom 1 to 1.08 or a pan) through every hold.
+  The user then found that v4's tilts, the hard shake, the white tap circle and the 0.7 s flashed titles "awful and
+  synthetic" (25 Oct) and asked for a phone launch film look instead (`marketing/iraq-speed-reel/v5`): all straight
+  (0°), one spring cubic-bezier(0.22, 1, 0.36, 1), each title read in the middle 0.65 s then gliding to the top
+  (−620 px, 0.78) and staying all scene, 80 px clear above the phone or cards, a real arrow pointer that presses the
+  button (1, 0.94, 1.02, 1, colour change), key results lifting off the phone as white cards (0 25px 60px 12 %) over a
+  dimmed phone, the room #F2F2F7 turning dark #141417 for a shock and green for a chart, and nothing ever covering text.
+  v5 still read as "a 3-line paragraph on top and a white card below" (25 Oct). v6 (`marketing/iraq-speed-reel/v6`, in
+  Remotion) follows his iPhone launch reference: one short line per scene (about 48 px, lots of air), never a header
+  over a full phone; the phone off to one side with soft matte pills beside it (#EFEFF4, light top hairline, 0 8px 20px
+  8 %, filling with colour when pressed); horizontal whip pans with a real shutter blur (enough samples that no stepped
+  copies show); the camera punching in on the pressed button and the numbers; a solid dark room for the share card
+  3-up and the ping jump; no big coloured button blocks.
+  The user then found v6 too fast to follow (25 Oct): v7 (`marketing/iraq-speed-reel/v7`) is 55 s, each scene held 6 to
+  9 s, told as a story (the everyday problem, the platform, gamers, 4G, renting, the ministry, the call to action).
+  Sound for this style (25 Oct): Apple-like UI sound from his two Drive packs, not the low air whooshes and thuds: the
+  Apple keyboard click on presses, soft pops on cards, an airy swish on whips, faint ticks on counters, a clean riser,
+  one chime for a win (`marketing/iraq-speed-reel/v7/mix.py`). This replaces the 24 Oct "no clicks" rule for such reels.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat

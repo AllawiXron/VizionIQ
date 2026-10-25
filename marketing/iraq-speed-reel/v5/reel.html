@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>سرعة الإنترنت في العراق</title>
+<style>
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  @font-face { font-family: Rubik; src: url(../../iraq-internet-map/site/fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; unicode-range: U+0600-06FF, U+200C-200F, U+FE70-FEFF; }
+  html, body { margin: 0; background: #f2f2f7; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; direction: ltr; }
+  #stage canvas { position: absolute; left: 0; top: 0; display: block; }
+  #fg { mix-blend-mode: overlay; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="bg" width="1080" height="1920"></canvas>
+  <canvas id="fg" width="1080" height="1920"></canvas>
+</div>
+<script src="../data.js"></script>
+<script>
+// The 37 s reel for the site, in the manner of a phone launch film: everything straight and still in its place,
+// moving on one soft spring. Each scene's line is read in the middle, then glides up to the top and stays there
+// while the phone or the result cards rise into the space under it. A pointer presses the real buttons; the key
+// numbers lift off the phone as cards while the phone behind them dims. The room turns dark for the ping jump and
+// green for Iraq since 2019. Every frame is a function of time.
+const W = 1080, H = 1920, FPS = 60, DUR = 37;
+window.DUR = DUR;
+
+const INK = '#1d1d1f', INK2 = '#3a3a3c', SOFT = '#6e6e73', WHITE = '#ffffff';
+const RED = '#d2483f', RED_T = '#c0352c', ORANGE = '#ea8a2e', AMBER = '#e3b021', LEAF = '#5aa85e', GREEN = '#12795a';
+const WIN = '#0D8A4E', BLUE = '#0A84FF', FIELD = '#0B6E4F', LIGHT = '#F2F2F7', DARK = '#141417';
+const bgc = document.getElementById('bg'), ctx = bgc.getContext('2d', { willReadFrequently: true });
+const fgc = document.getElementById('fg'), fgx = fgc.getContext('2d', { willReadFrequently: true });
+const D = window.DATA;
+
+// ---------- time ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, t0, d) => clamp((t - t0) / d);
+const lerp = (a, b, k) => a + (b - a) * k;
+const smooth = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * x * (x * (6 * x - 15) + 10);
+const expoIn = x => x <= 0 ? 0 : x >= 1 ? 1 : (Math.pow(2, 10 * x) - 1) / 1023;
+function bezier(x1, y1, x2, y2) {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx, cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = u => ((ax * u + bx) * u + cx) * u, Y = u => ((ay * u + by) * u + cy) * u, dX = u => (3 * ax * u + 2 * bx) * u + cx;
+  return x => {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    let u = x; for (let i = 0; i < 10; i++) { const d = dX(u); if (Math.abs(d) < 1e-6) break; u = clamp(u - (X(u) - x) / d); }
+    return Y(u);
+  };
+}
+const ease = bezier(0.22, 1, 0.36, 1);   // the one spring everything moves on
+const AR = n => String(Math.round(n)).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+const mix = (a, b, k) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * k)).join(',')})`; };
+const rand = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+const bandFill = v => v < 10 ? RED : v < 25 ? ORANGE : v < 50 ? AMBER : v < 100 ? LEAF : GREEN;
+
+// ---------- type ----------
+function text(str, x, y, o = {}) {
+  const a = o.alpha == null ? 1 : o.alpha;
+  if (a <= 0.003 || !str) return;
+  ctx.save();
+  ctx.font = `${o.weight || 800} ${o.size}px Rubik, RubikL`;
+  ctx.textAlign = o.align || 'right'; ctx.direction = o.dir || 'rtl'; ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = o.color || INK; ctx.globalAlpha *= a;
+  ctx.fillText(str, x, y);
+  ctx.restore();
+}
+const tw = (str, size, weight = 800) => { ctx.save(); ctx.font = `${weight} ${size}px Rubik, RubikL`; ctx.direction = 'rtl'; const w = ctx.measureText(str).width; ctx.restore(); return w; };
+function rrect(g, x, y, w, h, r) { r = Math.max(0, Math.min(r, Math.abs(h) / 2, Math.abs(w) / 2)); g.beginPath(); g.roundRect(x, y, w, h, r); }
+function layoutWords(str, size, maxW, x, y, lh, weight = 800, slot = null) {
+  const words = str.split(' '), sp = tw(' ', size, weight), lines = [[]];
+  let w = 0;
+  for (const wd of words) {
+    const ww = slot && slot(wd) || tw(wd, size, weight);
+    if (lines[lines.length - 1].length && w + sp + ww > maxW) { lines.push([]); w = 0; }
+    lines[lines.length - 1].push({ wd, ww }); w += (w ? sp : 0) + ww;
+  }
+  const out = [];
+  lines.forEach((ln, li) => { let xr = x; ln.forEach(o => { out.push({ wd: o.wd, x: xr, y: y + li * lh, ww: o.ww }); xr -= o.ww + sp; }); });
+  return out;
+}
+const groupLines = laid => { const m = new Map(); laid.forEach(w => { if (!m.has(w.y)) m.set(w.y, []); m.get(w.y).push(w); }); return [...m.values()]; };
+// where the ink of a string really starts and ends (drawn left aligned at 0), found from its pixels
+const INKS = {};
+function inkX(str, font) {
+  const key = font + str; if (INKS[key]) return INKS[key];
+  const c = document.createElement('canvas'); c.width = 900; c.height = 300; const g = c.getContext('2d', { willReadFrequently: true });
+  g.font = font; g.direction = 'ltr'; g.textAlign = 'left'; g.fillStyle = '#000'; g.fillText(str, 100, 240);
+  const d = g.getImageData(0, 0, 900, 300).data; let a = 900, b = 0;
+  for (let y = 0; y < 300; y++) for (let x = 0; x < 900; x++) if (d[(y * 900 + x) * 4 + 3] > 40) { if (x < a) a = x; if (x > b) b = x; }
+  return (INKS[key] = [a - 100, b + 1 - 100]);
+}
+// a number with ms glued on its left at 0.45 of its size, 6 px apart, as the site sets «٤٣<small>ms</small>»;
+// x is the left edge of the ink
+function msNumber(v, x, y, size, color, alpha = 1, unitColor = SOFT) {
+  const us = Math.round(size * 0.45), mi = inkX('ms', `700 ${us}px Rubik, RubikL`), ni = inkX(AR(v), `800 ${size}px Rubik, RubikL`);
+  text('ms', x - mi[0], y, { size: us, weight: 700, color: unitColor, align: 'left', dir: 'ltr', alpha });
+  text(AR(v), x + (mi[1] - mi[0]) + 6 - ni[0], y, { size, weight: 800, color, align: 'left', dir: 'ltr', alpha });
+  return (mi[1] - mi[0]) + 6 + (ni[1] - ni[0]);
+}
+
+// ---------- the scene titles: read in the middle, then up to the top, where they stay ----------
+const TL = 1.25, HS = 0.78;
+const TITLES = {};
+function titleBox(str, size, count) {
+  const key = str + size; if (TITLES[key]) return TITLES[key];
+  const lh = size * TL, slotW = count ? Math.max(tw(count[0], size), 200) + 16 : 0;
+  const lines = groupLines(layoutWords(str, size, 880, 0, 0, lh, 800, count ? wd => wd === count[0] ? slotW : 0 : null));
+  const n = lines.length, half = (n - 1) * lh / 2;
+  // the top of the ink stays below 230 px (clear of the app's top bar); the block centres 620 px above the middle
+  const cy = Math.max(960 - 620, 230 + (half + 0.6 * size) * HS);
+  const bottom = cy + (half + 0.36 * size + 0.34 * size) * HS;
+  return (TITLES[key] = { lines, n, lh, half, cy, bottom, stage: bottom + 80 });
+}
+function title(t, str, t0, t1, o = {}) {
+  if (t < t0) return;
+  const size = o.size || 92, B = titleBox(str, size, o.count), out = ease(seg(t, t1, 0.4));
+  if (out >= 1) return;
+  const g = ease(seg(t, t0 + 0.65, 0.75)), cy = lerp(960, B.cy, g) - 70 * out, sc = lerp(1, HS, g);
+  const color = typeof o.color === 'function' ? o.color(t) : o.color || INK, sp = tw(' ', size);
+  ctx.save(); ctx.globalAlpha = 1 - out; ctx.translate(540, cy); ctx.scale(sc, sc);
+  B.lines.forEach((ws, li) => {
+    const k = ease(seg(t, t0 + li * 0.06, 0.6)); if (k <= 0) return;
+    const lw = ws.reduce((a, w) => a + w.ww, 0) + sp * (ws.length - 1), dx = lw / 2;
+    const y = -B.half + li * B.lh + size * 0.36, box = size * 1.5;
+    ctx.save(); ctx.beginPath(); ctx.rect(-700, y - size * 1.08, 1400, box); ctx.clip();
+    const off = (1 - k) * box;
+    ws.forEach(w => {
+      const isCount = o.count && w.wd === o.count[0];
+      const txt = isCount ? AR(o.count[1] * smooth(seg(t, t0 + 0.1, 0.9))) : w.wd;
+      text(txt, isCount ? dx + w.x - w.ww / 2 : dx + w.x, y + off, { size, color, align: isCount ? 'center' : 'right' });
+    });
+    ctx.restore();
+  });
+  ctx.restore();
+}
+
+// ---------- the room: a clean colour that turns dark for the ping jump and green for the chart ----------
+function roomColor(t) {
+  if (t >= 29.75 && t < 33.0) return [FIELD, 0];
+  if (t >= 33.0) return [mix(FIELD, LIGHT, ease(seg(t, 33.0, 0.4))), 0];
+  const d = smooth(seg(t, 13.5, 0.4)) * (1 - smooth(seg(t, 14.85, 0.4)));
+  return [mix(LIGHT, DARK, d), d];
+}
+const darkness = t => roomColor(t)[1];
+const titleInk = t => mix(INK, '#f5f5f7', darkness(t));
+function background(t) {
+  const [col] = roomColor(t);
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
+  ctx.fillStyle = col; ctx.fillRect(0, 0, W, H);
+  // a soft light from above and a little falloff at the edges, like a lit studio wall
+  let g = ctx.createRadialGradient(540, 380, 60, 540, 520, 1500);
+  g.addColorStop(0, 'rgba(255,255,255,0.42)'); g.addColorStop(0.5, 'rgba(255,255,255,0.12)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.save(); ctx.globalAlpha = col === FIELD ? 0.25 : lerp(1, 0.18, darkness(t)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+  g = ctx.createRadialGradient(540, 960, 760, 540, 960, 1350); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.06)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+const GRAIN = Array.from({ length: 4 }, (_, k) => {
+  const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'), im = g.createImageData(256, 256);
+  for (let i = 0; i < 256 * 256; i++) { const v = 128 + (rand(i * 7.31 + k * 1013) - 0.5) * 2 * 40; im.data[i * 4] = im.data[i * 4 + 1] = im.data[i * 4 + 2] = v; im.data[i * 4 + 3] = 255; }
+  g.putImageData(im, 0, 0); return c;
+});
+function grain(rt) {
+  fgx.setTransform(1, 0, 0, 1, 0, 0); fgx.clearRect(0, 0, W, H);
+  fgx.save(); fgx.globalAlpha = 0.1; fgx.fillStyle = fgx.createPattern(GRAIN[Math.floor(rt * 12) % 4], 'repeat'); fgx.fillRect(0, 0, W, H); fgx.restore();
+}
+
+// ---------- cards: white, rounded, a soft studio shadow (0 25px 60px at 12 %) ----------
+function card(x, y, w, h, o = {}) {
+  ctx.save(); ctx.globalAlpha *= o.alpha == null ? 1 : o.alpha;
+  if (o.glow) { ctx.shadowColor = `rgba(255,59,48,${0.6 * o.glow})`; ctx.shadowBlur = 110; ctx.fillStyle = o.fill || WHITE; rrect(ctx, x, y, w, h, o.r || 34); ctx.fill(); }
+  ctx.shadowColor = 'rgba(0,0,0,0.12)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 25;
+  ctx.fillStyle = o.fill || WHITE; rrect(ctx, x, y, w, h, o.r || 34); ctx.fill();
+  ctx.shadowColor = 'rgba(0,0,0,0.05)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2; ctx.fill();
+  ctx.restore();
+}
+// a card lifts into place: up from a little below, from 96 % of its size, solid almost at once
+function lift(t, t0, t1 = Infinity) {
+  const k = ease(seg(t, t0, 0.7)), out = ease(seg(t, t1, 0.35));
+  return { on: k > 0 && out < 1, dy: (1 - k) * 70 + out * 90, s: 0.96 + 0.04 * k, a: clamp(k * 6) * (1 - out) };
+}
+function withLift(L, cx, cy, draw) {
+  if (!L.on) return;
+  // once up, a card floats a few pixels, slowly, so a held frame is never dead
+  const fl = 5 * Math.sin(nowT * 1.9 + cx * 0.011 + cy * 0.004);
+  ctx.save(); ctx.globalAlpha = L.a; ctx.translate(cx, cy + L.dy + fl); ctx.scale(L.s, L.s); ctx.translate(-cx, -cy); draw(); ctx.restore();
+}
+function sampleTag(x, y) {
+  const txt = 'نموذج فحص', s = 26, w = tw(txt, s, 700) + 30;
+  ctx.save(); ctx.fillStyle = 'rgba(29,29,31,0.88)'; rrect(ctx, x, y, w, 44, 12); ctx.fill(); ctx.restore();
+  text(txt, x + w / 2, y + 31, { size: s, weight: 700, color: WHITE, align: 'center' });
+}
+function bar(x, y, w, h, k, col, track = '#e8e8ed') {
+  ctx.fillStyle = track; rrect(ctx, x, y, w, h, h / 2); ctx.fill();
+  if (k > 0) { ctx.fillStyle = col; rrect(ctx, x + w - Math.max(h, w * k), y, Math.max(h, w * k), h, h / 2); ctx.fill(); }
+}
+
+// ---------- the phone: straight, flat on to us, the real site on its screen ----------
+const IMG = {}, MARKS = {};
+const NAMES = ['home', 'result', 'share', 'ping-0', 'ping-done', ...Array.from({ length: 14 }, (_, i) => 'test-' + String(i).padStart(2, '0')), ...Array.from({ length: 10 }, (_, i) => 'ping-' + String(i + 1).padStart(2, '0'))];
+const SW = 600, SH = Math.round(600 * 844 / 390), BZ = 22, OR = 86, SC = 3;
+const scr = document.createElement('canvas'); scr.width = 390 * SC; scr.height = 844 * SC;
+const sg = scr.getContext('2d', { willReadFrequently: true });
+function badge(g, s) {
+  const txt = 'نموذج فحص'; g.save(); g.font = `700 ${13 * s}px Rubik, RubikL`; g.direction = 'rtl';
+  const w = g.measureText(txt).width + 20 * s, x = 14 * s, y = 64 * s, h = 26 * s;
+  g.fillStyle = 'rgba(29,29,31,0.86)'; g.beginPath(); g.roundRect(x, y, w, h, 7 * s); g.fill();
+  g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, x + w / 2, y + h / 2 + 1 * s); g.restore();
+}
+let scrKey = '';
+function drawScreen(st) {
+  const k = JSON.stringify(st); if (k === scrKey) return; scrKey = k;
+  sg.setTransform(1, 0, 0, 1, 0, 0); sg.globalAlpha = 1; sg.globalCompositeOperation = 'source-over';
+  sg.fillStyle = WHITE; sg.fillRect(0, 0, scr.width, scr.height);
+  const im = IMG[st.img];
+  sg.drawImage(im, 0, 0, scr.width, scr.height);
+  if (st.btn) {
+    // the pressed button: drawn again from the page, scaled about its middle, and blue once it has been pressed
+    const [x, y, w, h] = MARKS[st.btn.id].map(v => v * SC), cx = x + w / 2, cy = y + h / 2;
+    sg.fillStyle = WHITE; sg.fillRect(x - 3 * SC, y - 3 * SC, w + 6 * SC, h + 6 * SC);
+    sg.save(); sg.translate(cx, cy); sg.scale(st.btn.s, st.btn.s); sg.translate(-cx, -cy);
+    if (st.btn.blue > 0) {
+      sg.drawImage(im, x, y, w, h, x, y, w, h);
+      sg.globalAlpha = st.btn.blue; sg.fillStyle = BLUE; sg.beginPath(); sg.roundRect(x, y, w, h, 10 * SC); sg.fill();
+      sg.globalCompositeOperation = 'lighten'; sg.drawImage(im, x, y, w, h, x, y, w, h);
+    } else sg.drawImage(im, x, y, w, h, x, y, w, h);
+    sg.restore();
+  }
+  if (st.badge) badge(sg, SC);
+}
+// m is the phone's size (1 = 600 px wide screen); top is the frame y of its top edge
+function phoneRect(top, m) {
+  const w = (SW + 2 * BZ) * m, h = (SH + 2 * BZ) * m;
+  return { x: 540 - w / 2, y: top, w, h, sx: 540 - SW * m / 2, sy: top + BZ * m, m, k: SW * m / 390 };
+}
+const screenXY = (R, u, v) => [R.sx + u * R.k, R.sy + v * R.k];
+const pl = document.createElement('canvas'); pl.width = W; pl.height = H;
+const plx = pl.getContext('2d', { willReadFrequently: true });
+function drawPhone(R, o = {}) {
+  const g = plx, m = R.m;
+  g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, W, H);
+  g.save();
+  g.shadowColor = 'rgba(0,0,0,0.12)'; g.shadowBlur = 60; g.shadowOffsetY = 25; g.fillStyle = '#2c2c2e';
+  rrect(g, R.x, R.y, R.w, R.h, OR * m); g.fill();
+  g.shadowColor = 'rgba(0,0,0,0.10)'; g.shadowBlur = 8; g.shadowOffsetY = 3; g.fill();
+  g.restore();
+  // the frame: a brushed edge lit from the left, then the black glass border
+  const lg = g.createLinearGradient(R.x, 0, R.x + R.w, 0);
+  lg.addColorStop(0, '#8e8e93'); lg.addColorStop(0.08, '#48484a'); lg.addColorStop(0.92, '#48484a'); lg.addColorStop(1, '#7c7c80');
+  g.fillStyle = lg; rrect(g, R.x, R.y, R.w, R.h, OR * m); g.fill();
+  g.fillStyle = '#050505'; rrect(g, R.x + 6 * m, R.y + 6 * m, R.w - 12 * m, R.h - 12 * m, (OR - 6) * m); g.fill();
+  g.save(); rrect(g, R.sx, R.sy, SW * m, SH * m, 62 * m); g.clip();
+  g.imageSmoothingQuality = 'high'; g.drawImage(scr, R.sx, R.sy, SW * m, SH * m); g.restore();
+  // behind a card the phone goes soft and dim
+  const b = o.blur || 0, dim = o.dim || 0;
+  ctx.save(); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
+  if (b > 0 || dim > 0) ctx.filter = `blur(${b}px) brightness(${1 - 0.1 * dim}) saturate(${1 - 0.3 * dim})`;
+  ctx.drawImage(pl, 0, 0); ctx.restore();
+  if (dim > 0) { ctx.save(); ctx.globalAlpha = (0.28 + 0.45 * darkness(nowT)) * dim * (o.alpha == null ? 1 : o.alpha); ctx.fillStyle = roomNow; rrect(ctx, R.x - 4, R.y - 4, R.w + 8, R.h + 8, OR * m); ctx.fill(); ctx.restore(); }
+}
+let roomNow = LIGHT, nowT = 0;
+
+// ---------- the pointer: a black arrow with a white edge that glides in on a curve, presses, and glides away ----------
+const ARROW = new Path2D('M0 0 L0 23.2 L5.5 17.9 L9.2 26.6 L13.1 25 L9.5 16.5 L16.9 16.5 Z');
+function pointer(x, y, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(2.5 * s, 2.5 * s); ctx.lineJoin = 'round';
+  ctx.shadowColor = 'rgba(0,0,0,0.28)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+  ctx.strokeStyle = WHITE; ctx.lineWidth = 2.6; ctx.stroke(ARROW);
+  ctx.shadowColor = 'transparent'; ctx.fillStyle = '#000'; ctx.fill(ARROW); ctx.stroke(ARROW); ctx.fillStyle = '#000'; ctx.fill(ARROW);
+  ctx.restore();
+}
+const cubic = (p0, p1, p2, p3, k) => { const u = 1 - k; return [0, 1].map(i => u * u * u * p0[i] + 3 * u * u * k * p1[i] + 3 * u * k * k * p2[i] + k * k * k * p3[i]); };
+// a click: in from `from` to the target on a curve, the press at tp, then away to `to`
+function click(t, target, tin, tp, from, to) {
+  const tl = tp + 0.32;
+  if (t < tin || t > tl + 0.75) return;
+  let p;
+  if (t < tp) { const k = ease(seg(t, tin, tp - 0.12 - tin)); p = cubic(from, [from[0] - 40, target[1] + 260], [target[0] + 160, target[1] + 70], target, k); }
+  else if (t < tl) p = target;
+  else { const k = ease(seg(t, tl, 0.7)); p = cubic(target, [target[0] + 90, target[1] + 40], [to[0] - 60, to[1] - 140], to, k); }
+  const press = t >= tp && t < tp + 0.3 ? 1 - 0.12 * Math.sin(Math.PI * seg(t, tp, 0.3)) : 1;
+  pointer(p[0], p[1], press);
+}
+// the button under the press: 1 -> 0.94 -> 1.02 -> 1, and blue from the moment it is pressed
+function pressed(t, tp) {
+  if (t < tp) return { s: 1, blue: 0 };
+  const x = t - tp;
+  const s = x < 0.08 ? lerp(1, 0.94, ease(x / 0.08)) : x < 0.2 ? lerp(0.94, 1.02, ease((x - 0.08) / 0.12)) : lerp(1.02, 1, ease(clamp((x - 0.2) / 0.16)));
+  return { s: Math.round(s * 400) / 400, blue: Math.round(smooth(seg(t, tp + 0.02, 0.12)) * 20) / 20 };
+}
+const mid = r => [r[0] + r[2] / 2, r[1] + r[3] / 2];
+
+// a phone that rises in from below, sits at top, and drops away at t1
+function phoneTop(t, top, t0, t1) {
+  const k = ease(seg(t, t0, 0.7)), out = ease(seg(t, t1, 0.4));
+  return top + (1 - k) * 1300 + out * 1300 + 4 * Math.sin(t * 1.6);
+}
+
+// ---------- 1. the shock ----------
+const T1 = 'النت يمك ضعيف؟ المشكلة من صاحب البرج.. لو من منطقتك؟';
+function scene1(t) {
+  if (t > 3.0) return;
+  title(t, T1, 0.08, 2.6, { color: INK });
+  const st = titleBox(T1, 92).stage, L = lift(t, 1.3, 2.6), x = 90, w = 900, y = st + 30, h = 500;
+  withLift(L, 540, y + h / 2, () => {
+    card(x, y, w, h);
+    const k1 = ease(seg(t, 1.55, 0.9)), k2 = ease(seg(t, 1.5, 0.7)), mx = 95;
+    text('خطك', x + w - 56, y + 104, { size: 44, weight: 700, color: INK2 });
+    bar(x + 56, y + 134, w - 112, 30, k1 * 12 / mx, RED);
+    text(AR(12 * k1), x + w - 56, y + 250, { size: 92, weight: 800, color: RED_T });
+    text('ميغابت', x + w - 76 - tw('١٢', 92), y + 250, { size: 38, weight: 500, color: SOFT });
+    text('معدل منطقتك', x + w - 56, y + 336, { size: 44, weight: 700, color: INK2 });
+    bar(x + 56, y + 366, w - 112, 30, k2 * 87 / mx, LEAF);
+    text('٨٧ ميغابت', x + 56, y + 336, { size: 44, weight: 800, color: GREEN, align: 'left' });
+  });
+}
+
+// ---------- 2. the line test: the phone, the pointer on ابدأ الفحص, the result lifting off as cards ----------
+const T2 = 'افحص خطك.. واكشف الفرق بالأرقام', T2B = 'وثق فحصك ببطاقة جاهزة للنشر';
+const TESTS = 14, P2_AT = 4.65;
+function scene2(t) {
+  if (t < 2.8 || t > 11.1) return;
+  title(t, T2, 2.85, 7.85);
+  title(t, T2B, 8.0, 10.6);
+  const st = titleBox(T2, 92).stage, m = Math.min(0.8, (1840 - st) / (SH + 2 * BZ));
+  // the test, then back for the share card
+  const first = t < 8.4, top = first ? phoneTop(t, st, 3.4, 7.85) : phoneTop(t, st, 8.75, 10.6);
+  if (top > H) return;
+  const R = phoneRect(top, m), s = { badge: true };
+  if (first && t < 4.9) { s.img = 'home'; const b = pressed(t, P2_AT); if (t >= P2_AT) s.btn = { id: 'go', ...b }; }
+  else if (first && t < 6.3) s.img = 'test-' + String(Math.min(TESTS - 1, Math.floor((t - 4.9) / 1.4 * TESTS))).padStart(2, '0');
+  else s.img = 'result';
+  drawScreen(s);
+  const dim = first ? ease(seg(t, 6.35, 0.4)) : ease(seg(t, 9.35, 0.4));
+  drawPhone(R, { blur: 9 * dim, dim });
+  if (first) click(t, screenXY(R, ...mid(MARKS.go)).map((v, i) => v + [24, 10][i]), 3.95, P2_AT, [1160, 1500], [1180, 1250]);
+  if (first) {
+    // the number and the verdict lift off the screen
+    const y1 = st + 60, A = lift(t, 6.45, 7.85), B = lift(t, 6.6, 7.85);
+    withLift(A, 540, y1 + 240, () => {
+      card(90, y1, 900, 480);
+      sampleTag(130, y1 + 40);
+      text('نتيجة خطك، التنزيل', 934, y1 + 76, { size: 36, weight: 500, color: SOFT });
+      text('١٢', 934, y1 + 214, { size: 150, weight: 800, color: RED_T });
+      text('ميغابت', 934 - tw('١٢', 150) - 18, y1 + 214, { size: 40, weight: 500, color: SOFT });
+      const kb = ease(seg(t, 6.75, 0.8));
+      text('خطك', 934, y1 + 300, { size: 34, weight: 700, color: INK2 });
+      bar(146, y1 + 318, 788, 22, kb * 12 / 95, RED);
+      text('معدل الكرادة', 934, y1 + 396, { size: 34, weight: 700, color: INK2 });
+      bar(146, y1 + 414, 788, 22, kb * 87 / 95, LEAF);
+      text('٨٧', 146, y1 + 396, { size: 40, weight: 800, color: GREEN, align: 'left' });
+    });
+    const y2 = y1 + 530;
+    withLift(B, 540, y2 + 140, () => {
+      card(90, y2, 900, 280);
+      text('خطك أبطأ من معدل منطقتك', 934, y2 + 112, { size: 62, weight: 800, color: RED_T });
+      text('بـ ٧ أضعاف!', 934, y2 + 196, { size: 62, weight: 800, color: RED_T });
+    });
+  } else if (t >= 9.35) {
+    // the share picture comes up off the screen, straight, and grows into the middle of the space
+    const k = ease(seg(t, 9.35, 0.75)), out = ease(seg(t, 10.6, 0.35));
+    const ch = lerp(SH * m, Math.min(1840 - st - 40, 1060), k), cw = ch * 9 / 16, cx = 540, cy = lerp(R.sy + SH * m / 2, st + 20 + ch / 2, k) + out * 1300;
+    ctx.save();
+    ctx.shadowColor = `rgba(0,0,0,${0.12 + 0.06 * k})`; ctx.shadowBlur = 30 + 40 * k; ctx.shadowOffsetY = 10 + 18 * k;
+    ctx.beginPath(); ctx.roundRect(cx - cw / 2, cy - ch / 2, cw, ch, 30 * ch / 1000); ctx.fillStyle = WHITE; ctx.fill();
+    ctx.shadowColor = 'transparent'; ctx.clip(); ctx.drawImage(SHARE, cx - cw / 2, cy - ch / 2, cw, ch);
+    ctx.restore();
+  }
+}
+
+// ---------- 3. for gamers: the pointer on افحص البنك مالتك, the ping lifting off, the jump in the dark ----------
+const T3 = 'للگيمرية.. اكشف سبب اللاگ وقت اللعب', P3_AT = 12.6, SPIKE = 13.5;
+function scene3(t) {
+  if (t < 10.8 || t > 17.1) return;
+  title(t, T3, 10.85, 16.55, { color: titleInk });
+  const st = titleBox(T3, 92).stage, m = Math.min(0.8, (1840 - st) / (SH + 2 * BZ)), top = phoneTop(t, st, 11.45, 14.85);
+  if (top < H) {
+    const R = phoneRect(top, m), s = { badge: true };
+    if (t < 12.85) { s.img = 'ping-0'; const b = pressed(t, P3_AT); if (t >= P3_AT) s.btn = { id: 'pingGo', ...b }; }
+    else if (t < 14.45) s.img = 'ping-' + String(1 + Math.min(9, Math.floor((t - 12.85) / 0.16))).padStart(2, '0');
+    else s.img = 'ping-done';
+    drawScreen(s);
+    const dim = ease(seg(t, 12.95, 0.4));
+    drawPhone(R, { blur: 10 * dim, dim });
+    click(t, screenXY(R, ...mid(MARKS.pingGo)).map((v, i) => v + [24, 10][i]), 11.95, P3_AT, [1160, 1520], [1180, 1260]);
+  }
+  // the ping card: ١٢ with the line empty, then ١٦٢ the moment the line is busy
+  const L = lift(t, 13.0, 14.85), y = st + 150, hc = 470;
+  const jump = ease(seg(t, SPIKE, 0.35)), v = Math.round(lerp(12, 162, jump)), glow = smooth(seg(t, SPIKE, 0.4)) * (1 - smooth(seg(t, 14.85, 0.3)));
+  withLift(L, 540, y + hc / 2, () => {
+    card(90, y, 900, hc, { glow });
+    sampleTag(130, y + 40);
+    text(t < SPIKE ? 'البنك مالتك والخط فارغ' : 'البنك مالتك وقت التحميل', 934, y + 76, { size: 38, weight: 500, color: SOFT });
+    msNumber(v, 146, y + 330, 220, t < SPIKE ? GREEN : RED_T);
+  });
+  const wk = ease(seg(t, 13.95, 0.6)) * (1 - ease(seg(t, 14.85, 0.35)));
+  if (wk > 0) {
+    const col = mix(INK, '#f5f5f7', darkness(t));
+    text('البنك يقفز من ١٢ إلى ١٦٢ لما الخط مشغول', 540, y + hc + 130 + (1 - wk) * 30, { size: 50, weight: 800, color: col, align: 'center', alpha: wk });
+    text('وهذا سبب اللاگ', 540, y + hc + 218 + (1 - wk) * 30, { size: 50, weight: 800, color: '#ff453a', align: 'center', alpha: wk });
+  }
+  // the lowest and the highest governorate
+  [[15.2, 'السليمانية', PG.alsulaimaniyah, 'أقل بنك بين المحافظات', GREEN], [15.35, 'الأنبار', PG.alanbar, 'أعلى بنك بين المحافظات', '#866608']].forEach(([t0, name, val, label, col], i) => {
+    const y2 = st + 60 + i * 450, G = lift(t, t0, 16.55);
+    withLift(G, 540, y2 + 190, () => {
+      card(90, y2, 900, 380);
+      text(label, 934, y2 + 82, { size: 36, weight: 500, color: SOFT });
+      text(name, 934, y2 + 190, { size: 84, weight: 800 });
+      msNumber(val, 146, y2 + 250, 190, col);
+      const kb = ease(seg(t, t0 + 0.25, 0.7));
+      bar(146, y2 + 310, 788, 16, kb * Math.min(1, val / 50), col === GREEN ? GREEN : AMBER);
+    });
+  });
+}
+
+// ---------- 4. home or mobile: Saqlawiya ----------
+const T4 = 'في ٨٢٤ منطقة بالعراق.. الـ 4G أسرع من الواي فاي!';
+function scene4(t) {
+  if (t < 16.8 || t > 22.1) return;
+  title(t, T4, 16.85, 21.55, { count: ['٨٢٤', 824] });
+  const st = titleBox(T4, 92, ['٨٢٤', 824]).stage, S = SAQ, y = st + 40, A = lift(t, 18.1, 21.55), B = lift(t, 19.5, 21.55);
+  withLift(A, 540, y + 330, () => {
+    card(90, y, 900, 660);
+    text('الصقلاوية', 934, y + 120, { size: 96, weight: 800 });
+    text('الأنبار', 934, y + 182, { size: 40, weight: 500, color: SOFT });
+    [['إنترنت البيت', S.f.d, 18.45, 1.3, RED, RED_T], ['إنترنت الموبايل', S.m.d, 18.75, 0.7, LEAF, GREEN]].forEach(([lab, v, t0, d, fill, tc], i) => {
+      const ry = y + 290 + i * 190, k = ease(seg(t, t0, d)), val = v * k;
+      text(lab, 934, ry, { size: 40, weight: 700, color: INK2 });
+      bar(146, ry + 28, 788, 30, Math.min(1, val / 55), fill);
+      text(v < 10 ? AR(Math.floor(val)) + (k >= 1 ? '٫' + AR(Math.round(v * 10) % 10) : '') : AR(val), 146, ry, { size: 60, weight: 800, color: tc, align: 'left' });
+    });
+  });
+  const y2 = y + 710;
+  withLift(B, 540, y2 + 110, () => {
+    card(90, y2, 900, 220, { fill: WIN });
+    text('أسرع بـ ١٤ مرة', 540, y2 + 146, { size: 104, weight: 800, color: WHITE, align: 'center' });
+  });
+}
+
+// ---------- 5. before you move or rent: two areas side by side ----------
+const T5 = 'قبل لا تنتقل أو تأجر.. قارن بين منطقتين';
+const better = (a, b, dir) => a === b ? 0 : (a > b) === (dir > 0) ? 1 : 2;
+function scene5(t) {
+  if (t < 21.8 || t > 26.1) return;
+  title(t, T5, 21.85, 25.55);
+  const st = titleBox(T5, 92).stage, A = KAR, B = MAN;
+  const rows = [['البيت، التنزيل', 'f', 'd', 1, 'ميغابت'], ['البيت، الرفع', 'f', 'u', 1, 'ميغابت'], ['البيت، البنك', 'f', 'l', -1, 'ms'], ['الموبايل، التنزيل', 'm', 'd', 1, 'ميغابت']];
+  [[A, 558, 22.95, 1], [B, 90, 23.08, 2]].forEach(([P, x, t0, me]) => {
+    const y = st + 40, w = 432, h = 900, L = lift(t, t0, 25.55);
+    withLift(L, x + w / 2, y + h / 2, () => {
+      card(x, y, w, h);
+      text(P.n, x + w - 40, y + 100, { size: 64, weight: 800 });
+      text('بغداد', x + w - 40, y + 152, { size: 32, weight: 500, color: SOFT });
+      rows.forEach(([lab, mm, k, dir, unit], i) => {
+        const ry = y + 262 + i * 158, lit = smooth(seg(t, 23.7 + i * 0.3, 0.3)), win = better(A[mm][k], B[mm][k], dir) === me;
+        ctx.fillStyle = '#ececf0'; ctx.fillRect(x + 40, ry - 70, w - 80, 2);
+        text(lab, x + w - 40, ry - 24, { size: 30, weight: 500, color: SOFT });
+        const str = AR(P[mm][k]), nw = tw(str, 76);
+        if (win && lit > 0) {
+          const ps = 0.9 + 0.1 * ease(lit);
+          ctx.save(); ctx.globalAlpha *= lit; ctx.fillStyle = 'rgba(13,138,78,0.13)';
+          const pw = (nw + 44) * ps, ph = 92 * ps, pcx = x + w - 40 - nw / 2, pcy = ry + 30;
+          rrect(ctx, pcx - pw / 2, pcy - ph / 2, pw, ph, ph / 2); ctx.fill(); ctx.restore();
+        }
+        text(str, x + w - 40, ry + 56, { size: 76, weight: 800, color: win && lit > 0 ? mix(INK, WIN, lit) : INK });
+        text(unit, x + w - 62 - nw, ry + 56, { size: 28, weight: 500, color: SOFT, dir: unit === 'ms' ? 'ltr' : 'rtl', align: 'right' });
+      });
+    });
+  });
+}
+
+// ---------- 6. the ministry: the map, Diyala, then the zoom into Sulaymaniyah's green ----------
+const T6 = 'بيانات ميدانية جاهزة أمام وزارة الاتصالات: وين الخلل، ويا محافظة تحتاج أولوية؟';
+const GM = D.govmap, GZ = 2.0, GX = 140;
+const govs = GM.shapes.map(g => ({ ...g, polys: g.polys.filter(p => p.length > 2), col: bandFill(g.d) }));
+const byId = Object.fromEntries(govs.map(g => [g.id, g]));
+const KEYS = [['سريع جدا', GREEN], ['جيد', LEAF], ['متوسط', AMBER], ['مقبول', ORANGE], ['بطيء', RED]];
+function govPath(g, GY) { ctx.beginPath(); for (const p of g.polys) { p.forEach(([x, y], i) => i ? ctx.lineTo(GX + x * GZ, GY + y * GZ) : ctx.moveTo(GX + x * GZ, GY + y * GZ)); ctx.closePath(); } }
+function scene6(t) {
+  if (t < 25.8 || t >= 29.75) return;
+  title(t, T6, 25.85, 29.0, { size: 84 });
+  const GY = titleBox(T6, 84).stage + 40, zp = seg(t, 29.3, 0.45), clear = 1 - ease(seg(t, 29.0, 0.3));
+  const reveal = seg(t, 26.95, 0.1); if (reveal <= 0) return;
+  ctx.save();
+  if (zp > 0) {
+    // the zoom grows out of the point inside Sulaymaniyah farthest from its border, which drifts to the middle
+    const p = [GX + 267.5 * GZ, GY + 93.5 * GZ], z = 1 + 34 * expoIn(zp), q = [lerp(p[0], 540, smooth(zp)), lerp(p[1], 960, smooth(zp))];
+    ctx.translate(q[0], q[1]); ctx.scale(z, z); ctx.translate(-p[0], -p[1]);
+  }
+  const focus = ease(seg(t, 27.7, 0.45)) * clear;
+  govs.forEach(g => {
+    const e = ease(seg(t, 26.95 + (g.y / GM.h) * 0.6, 0.55)); if (e <= 0) return;
+    govPath(g, GY);
+    let a = e, c = g.col;
+    const sul = g.id === 'alsulaimaniyah' && zp > 0;
+    if (g.id !== 'diyala') a *= lerp(1, 0.3, sul ? focus * (1 - smooth(seg(zp, 0, 0.35))) : focus);
+    if (sul) c = mix(g.col, FIELD, smooth(seg(zp, 0.15, 0.6)));
+    ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = c; ctx.fill(); ctx.restore();
+    if (zp <= 0) { ctx.save(); ctx.globalAlpha = e; ctx.lineWidth = 2.2; ctx.lineJoin = 'round'; ctx.strokeStyle = LIGHT; ctx.stroke(); ctx.restore(); }
+  });
+  if (focus > 0) { govPath(byId.diyala, GY); ctx.save(); ctx.globalAlpha = focus; ctx.lineWidth = 5; ctx.lineJoin = 'round'; ctx.strokeStyle = INK; ctx.stroke(); ctx.restore(); }
+  ctx.restore();
+  KEYS.forEach(([w, col], i) => {
+    const e = ease(seg(t, 27.4 + 0.05 * i, 0.5)) * clear; if (e <= 0) return;
+    const y = GY + 640 + i * 42, xr = GX + 130;
+    ctx.save(); ctx.globalAlpha = e; ctx.fillStyle = col; rrect(ctx, xr - 34, y - 19, 34, 13, 4); ctx.fill(); ctx.restore();
+    text(w, xr - 48, y, { size: 29, weight: 700, color: INK2, alpha: e });
+  });
+  const L = lift(t, 27.8, 29.0), x = 90, y = GY + 170, w = 420, h = 300;
+  const ax = GX + byId.diyala.x * GZ, ay = GY + byId.diyala.y * GZ, lk = ease(seg(t, 28.0, 0.45)) * clear;
+  if (lk > 0) { ctx.save(); ctx.globalAlpha = lk; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x + w, y + 150); ctx.lineTo(lerp(x + w, ax, lk), lerp(y + 150, ay, lk)); ctx.stroke();
+    ctx.fillStyle = WHITE; ctx.beginPath(); ctx.arc(ax, ay, 9, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+  withLift(L, x + w / 2, y + h / 2, () => {
+    card(x, y, w, h);
+    text('ديالى', x + w - 36, y + 76, { size: 50, weight: 800 });
+    text(AR(DIY) + '٪', x + w - 36, y + 196, { size: 116, weight: 800, color: '#a8561a' });
+    layoutWords('من مناطقها تعاني من بطء الإنترنت', 30, w - 72, x + w - 36, 0, 38, 500).forEach(l => text(l.wd, l.x, y + 242 + l.y, { size: 30, weight: 500, color: INK2 }));
+  });
+}
+
+// ---------- 7. Iraq since 2019, on the green ----------
+const T7 = 'رغم قفزة العراق من ١٧ إلى ٦٢ ميغابت.. العدالة الرقمية بين المناطق هي الخطوة الجاية';
+function scene7(t) {
+  if (t < 29.75 || t > 33.4) return;
+  title(t, T7, 29.85, 32.95, { size: 84, color: WHITE });
+  const st = titleBox(T7, 84).stage, out = ease(seg(t, 32.95, 0.4));
+  ctx.save(); ctx.globalAlpha = 1 - out; ctx.translate(0, out * 90);
+  const yrs = D.years, BW = 78, GAP = 28, X0 = 958, BOT = 1660, HMAX = Math.min(520, BOT - st - 330);
+  const STEP_AT = [31.05, 31.25, 31.37, 31.49, 31.61, 31.73, 31.85, 32.0];
+  let step = -1; STEP_AT.forEach((s, i) => { if (t >= s) step = i; });
+  const tops = [];
+  yrs.forEach((v, i) => {
+    const e = ease(seg(t, 31.0 + 0.06 * i, 0.8)); if (e <= 0) return;
+    const full = HMAX * v / yrs[yrs.length - 1], bh = full * e, bx = X0 - (i + 1) * BW - i * GAP;
+    tops.push([bx + BW / 2, BOT - full - 34]);
+    ctx.save(); ctx.globalAlpha *= i <= step ? 1 : 0.4; ctx.fillStyle = WHITE; rrect(ctx, bx, BOT - bh, BW, bh, 10); ctx.fill(); ctx.restore();
+    text(AR(2019 + i), bx + BW / 2, BOT + 50, { size: 30, weight: 500, color: WHITE, align: 'center', alpha: 0.85 * e });
+  });
+  const Lk = ease(seg(t, 32.0, 0.6));
+  if (Lk > 0 && tops.length === yrs.length) {
+    let tot = 0; tops.slice(1).forEach((p, i) => { tot += Math.hypot(p[0] - tops[i][0], p[1] - tops[i][1]); });
+    ctx.save(); ctx.strokeStyle = WHITE; ctx.lineWidth = 6; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.setLineDash([tot * Lk, tot + 10]); ctx.beginPath(); tops.forEach(([px, py], i) => i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)); ctx.stroke(); ctx.restore();
+    if (Lk >= 1) { const [px, py] = tops[tops.length - 1]; ctx.fillStyle = WHITE; ctx.beginPath(); ctx.arc(px, py, 13, 0, 7); ctx.fill(); ctx.fillStyle = FIELD; ctx.beginPath(); ctx.arc(px, py, 5, 0, 7); ctx.fill(); }
+  }
+  if (step >= 0) {
+    const e = ease(seg(t, 31.05, 0.5));
+    text(AR(yrs[step]), 958, st + 190 + (1 - e) * 40, { size: 200, weight: 800, color: WHITE, alpha: e });
+    text(`ميغابت بصيف ${AR(2019 + step)}`, 958, st + 270, { size: 48, weight: 700, color: WHITE, alpha: e * 0.92 });
+  }
+  ctx.restore();
+}
+
+// ---------- 8. the end: the name and the credit in the upper part, the phone under them, the pointer on ابدأ الفحص ----------
+const P8_AT = 35.35;
+function scene8(t) {
+  if (t < 33.3) return;
+  const rise = (t0, d = 0.6) => ease(seg(t, t0, d));
+  [['منصة سرعة الإنترنت', 33.35, 250], ['في العراق', 33.41, 376]].forEach(([s, t0, yb]) => {
+    const k = rise(t0); if (k <= 0) return;
+    ctx.save(); ctx.beginPath(); ctx.rect(0, yb - 120, W, 160); ctx.clip();
+    text(s, 540, yb + (1 - k) * 150, { size: 104, weight: 800, align: 'center' }); ctx.restore();
+  });
+  const k2 = rise(33.65);
+  text('افحص خطك وقارن منطقتك مجانا الآن', 540, 470 + (1 - k2) * 30, { size: 44, weight: 500, color: INK2, align: 'center', alpha: k2 });
+  text('الرابط بالبايو', 540, 528 + (1 - k2) * 30, { size: 44, weight: 700, color: INK, align: 'center', alpha: k2 });
+  const k3 = rise(33.9), cw = tw('تطوير وتصميم ', 36, 500) + tw('@allawi.psd', 36, 500), cx0 = 540 + cw / 2;
+  text('تطوير وتصميم', cx0, 584 + (1 - k3) * 20, { size: 36, weight: 500, color: SOFT, alpha: k3 });
+  text('@allawi.psd', cx0 - tw('تطوير وتصميم ', 36, 500), 584 + (1 - k3) * 20, { size: 36, weight: 500, color: SOFT, alpha: k3, dir: 'ltr', align: 'right' });
+  const m = (1920 - 720 - 60) / (SH + 2 * BZ), top = phoneTop(t, 720, 33.7, 99), R = phoneRect(top, m), s = { badge: true };
+  if (t < 35.6) { s.img = 'home'; const b = pressed(t, P8_AT); if (t >= P8_AT) s.btn = { id: 'go', ...b }; }
+  else s.img = 'test-' + String(Math.min(TESTS - 1, Math.floor((t - 35.6) / 1.4 * TESTS))).padStart(2, '0');
+  drawScreen(s);
+  drawPhone(R);
+  click(t, screenXY(R, ...mid(MARKS.go)).map((v, i) => v + [24, 10][i]), 34.7, P8_AT, [1160, 1880], [1200, 1500]);
+}
+
+// ---------- seek ----------
+window.seek = function (rtIn) {
+  const t = clamp(rtIn, 0, DUR - 1e-6);
+  roomNow = roomColor(t)[0]; nowT = t;
+  background(t); grain(t);
+  scene1(t); scene2(t); scene3(t); scene4(t); scene5(t); scene6(t); scene7(t); scene8(t);
+};
+const SITE = '../../iraq-internet-map/site/data/', CAP = '../v4/site/';
+let SAQ, KAR, MAN, PG = {}, DIY, SHARE;
+window.ready = Promise.all([
+  ...['500', '700', '800'].map(w => document.fonts.load(`${w} 80px Rubik, RubikL`, 'العراق ٨٧ گ')),
+  ...[['400 500', 'Rubik-Latin-400'], ['700 800', 'Rubik-Latin-700']].map(([w, f]) => new FontFace('RubikL', `url(../../iraq-internet-map/site/fonts/${f}.woff2)`, { weight: w }).load().then(ff => document.fonts.add(ff))),
+  ...NAMES.map(n => new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[n] = im; res(); }; im.onerror = rej; im.src = `${CAP}${n}.png`; })),
+  fetch(CAP + 'marks.json').then(r => r.json()).then(m => Object.assign(MARKS, m)),
+  fetch(SITE + 'places.json').then(r => r.json()).then(d => {
+    const by = id => d.places.find(p => p.id === id);
+    KAR = by('r2964648'); MAN = by('n12044401997'); SAQ = by('pnode/2486318357');
+    const ok = d.places.filter(p => p.g === 'diyala' && p.f && p.f.t >= 30);
+    DIY = Math.round(ok.filter(p => p.f.d < 25).length / ok.length * 100);
+  }),
+  fetch(SITE + 'govs.json').then(r => r.json()).then(d => { d.govs.forEach(g => { PG[g.id] = g.f.l; }); }),
+]).then(() => {
+  // the share picture, with the same small badge as the test screens
+  SHARE = document.createElement('canvas'); SHARE.width = 1080; SHARE.height = 1920;
+  const g = SHARE.getContext('2d'); g.drawImage(IMG.share, 0, 0, 1080, 1920); badge(g, 3.0 * 0.92);
+  window.seek(0); return true;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>فحص الخط، ثلاث شاشات</title>
+<style>
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-400.woff2) format('woff2'); font-weight: 400; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Latin-400.woff2) format('woff2'); font-weight: 400 500; unicode-range: U+0000-00FF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Latin-700.woff2) format('woff2'); font-weight: 700 800; unicode-range: U+0000-00FF; }
+:root { --ink: #14202b; --ink2: #46525e; --soft: #6c7783; --line: #e3e6e9; --wash: #f3f5f6;
+        --slow: #d2483f; --slow-text: #b3362e; --good: #5aa85e; --good-text: #2f7d45; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #b9bfc4; font-family: Rubik, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.row { display: flex; gap: 40px; align-items: flex-start; padding: 40px; }
+.screen { position: relative; width: 390px; height: 844px; background: #fff; overflow: hidden; }
+p, h1, h2 { margin: 0; }
+.top { display: flex; justify-content: space-between; align-items: center; height: 54px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+.top b { font-size: 17px; font-weight: 700; }
+.pad { padding: 0 18px; }
+h1 { margin-top: 22px; font-size: 30px; line-height: 1.25; font-weight: 800; }
+.intro { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--ink2); }
+.go { display: flex; align-items: center; justify-content: center; height: 60px; margin-top: 20px; border-radius: 10px; background: var(--ink); color: #fff; font-size: 19px; font-weight: 700; }
+.small { margin-top: 10px; font-size: 14px; line-height: 1.5; color: var(--soft); }
+.place { display: flex; justify-content: space-between; align-items: baseline; margin-top: 16px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 16px; }
+.place span { color: var(--soft); }
+.place a { color: var(--ink); text-underline-offset: 4px; text-decoration-color: #b5bcc3; }
+.or { margin-top: 26px; font-size: 15px; color: var(--soft); }
+.search { display: flex; margin-top: 8px; height: 52px; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
+.search span { flex: 1; display: flex; align-items: center; padding: 0 14px; font-size: 16px; color: var(--soft); }
+.search b { display: flex; align-items: center; padding: 0 18px; background: var(--ink); color: #fff; font-size: 16px; font-weight: 700; }
+.label { font-size: 15px; color: var(--soft); }
+.big { display: flex; align-items: baseline; gap: 10px; margin-top: 4px; font-size: 96px; line-height: 1; font-weight: 800; letter-spacing: -1px; }
+.big small { font-size: 18px; font-weight: 500; color: var(--ink2); letter-spacing: 0; }
+.bar { height: 6px; margin-top: 22px; border-radius: 3px; background: var(--wash); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 58%; background: var(--ink); }
+.steps { margin-top: 22px; }
+.steps div { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
+.steps span { color: var(--soft); }
+.steps .now { font-weight: 700; }
+.steps .wait { color: #a7afb7; }
+.verdict { margin-top: 18px; font-size: 26px; line-height: 1.3; font-weight: 800; color: var(--slow-text); }
+.why { margin-top: 8px; font-size: 16px; line-height: 1.55; color: var(--ink2); }
+.cmp { display: grid; grid-template-columns: 118px 1fr 44px; gap: 10px 12px; align-items: center; margin-top: 20px; font-size: 17px; }
+.cmp i { display: block; height: 14px; border-radius: 2px; }
+.cmp b { text-align: left; font-weight: 800; }
+.cmp .me { font-weight: 700; }
+.minor { margin-top: 10px; font-size: 15px; color: var(--soft); }
+h2 { margin-top: 24px; font-size: 19px; font-weight: 700; }
+.do { margin-top: 6px; font-size: 16px; line-height: 1.6; color: var(--ink2); }
+.two { display: flex; gap: 10px; margin-top: 18px; }
+.two span { flex: 1; display: flex; align-items: center; justify-content: center; height: 52px; border-radius: 10px; font-size: 17px; font-weight: 700; }
+.two .dark { background: var(--ink); color: #fff; }
+.two .light { border: 2px solid var(--ink); }
+.tabs { position: absolute; left: 0; right: 0; bottom: 0; display: flex; height: 64px; background: #fff; border-top: 1px solid var(--line); }
+.tabs span { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--soft); }
+.tabs span.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 3px 0 var(--ink); }
+
+.screen.story { height: 693px; }
+h1.hook { margin-top: 26px; font-size: 22px; line-height: 1.35; font-weight: 500; color: var(--ink2); }
+.area-num { display: flex; align-items: baseline; gap: 10px; margin-top: 2px; font-size: 112px; line-height: 1; font-weight: 800; letter-spacing: -2px; color: var(--good-text); }
+.area-num small { font-size: 18px; font-weight: 500; color: var(--ink2); letter-spacing: 0; }
+.ask { margin-top: 18px; font-size: 30px; line-height: 1.25; font-weight: 800; }
+.go2 { display: flex; align-items: center; justify-content: space-between; height: 64px; margin-top: 18px; padding: 0 22px; border-radius: 10px; background: var(--ink); color: #fff; font-size: 20px; font-weight: 700; }
+.go2 em { font-style: normal; font-size: 14px; font-weight: 500; color: #aeb6bf; }
+.track { position: relative; height: 92px; margin-top: 30px; }
+.track .rail { position: absolute; top: 46px; right: 0; left: 0; height: 18px; border-radius: 3px; background: var(--wash); }
+.track .me { position: absolute; top: 46px; right: 0; height: 18px; border-radius: 3px; background: var(--slow); }
+.track .goal { position: absolute; top: 30px; width: 3px; height: 50px; background: var(--ink); }
+.track .goal span { position: absolute; top: -4px; left: 10px; white-space: nowrap; font-size: 14px; font-weight: 700; }
+.track .tick { position: absolute; top: 72px; font-size: 13px; color: var(--soft); transform: translateX(50%); }
+.three { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 22px; border-top: 1px solid var(--line); }
+.three div { padding-top: 12px; }
+.three span { display: block; font-size: 14px; color: var(--soft); }
+.three b { display: block; margin-top: 2px; font-size: 19px; font-weight: 800; white-space: nowrap; }
+.three .wait b { color: #b3bac1; font-weight: 500; font-size: 18px; }
+.scale { position: relative; margin-top: 54px; }
+.scale .strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+.scale .strip i { height: 10px; }
+.scale .words { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-top: 6px; font-size: 13px; color: var(--soft); }
+.scale .pin { position: absolute; top: -40px; transform: translateX(50%); text-align: center; white-space: nowrap; }
+.scale .pin b { display: block; font-size: 14px; font-weight: 700; }
+.scale .pin i { display: block; width: 3px; height: 26px; margin: 2px auto 0; background: var(--ink); }
+.enough { margin-top: 22px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 17px; line-height: 1.5; }
+.enough span { color: var(--soft); }
+.story .field { position: absolute; inset: 0; background: var(--slow); color: #fff; padding: 40px 28px; }
+.story .mine { margin-top: 70px; font-size: 20px; font-weight: 500; opacity: .9; }
+.story .n { font-size: 150px; line-height: .95; font-weight: 800; letter-spacing: -3px; }
+.story .vs { margin-top: 22px; font-size: 24px; line-height: 1.35; font-weight: 700; }
+.story .line { height: 3px; margin-top: 30px; background: rgba(255,255,255,.55); }
+.story .site { position: absolute; bottom: 40px; right: 28px; left: 28px; display: flex; justify-content: space-between; align-items: baseline; font-size: 17px; }
+.story .site b { font-size: 19px; }
+</style>
+</head>
+<body>
+<div class="row">
+
+<section class="screen" id="t1">
+  <div class="top"><b>سرعة الإنترنت في العراق</b></div>
+  <div class="pad">
+    <h1 class="hook">معدل إنترنت البيت بالكرادة</h1>
+    <p class="area-num">٨٧ <small>ميغابت في الثانية</small></p>
+    <p class="ask">وخطك شكد يوصل؟</p>
+    <p class="intro">افحصه بعشرين ثانية. إذا طلع أبطأ من منطقتك فالمشكلة بالخط أو الراوتر أو الباقة، وإذا المنطقة كلها بطيئة فتبديل الراوتر ما يفيد.</p>
+    <div class="go2"><span>ابدأ الفحص</span><em>٢٠ ثانية</em></div>
+    <div class="place"><span>منطقتك، من موقعك</span><a href="#">الكرادة، تغيير</a></div>
+    <p class="or">أو شوف سرعة أي منطقة</p>
+    <div class="search"><span>اكتب اسم الحي أو المدينة</span><b>ابحث</b></div>
+  </div>
+  <div class="tabs"><span class="on">منطقتي</span><span>المحافظات</span><span>عن الموقع</span></div>
+</section>
+
+<section class="screen" id="t2">
+  <div class="top"><b>سرعة الإنترنت في العراق</b></div>
+  <div class="pad">
+    <p class="label" style="margin-top:26px">خطك هسه، التنزيل</p>
+    <p class="big">١١٫٨ <small>ميغابت في الثانية</small></p>
+    <div class="track">
+      <div class="rail"></div>
+      <div class="me" style="width:12.5%"></div>
+      <div class="goal" style="right:91%"><span>معدل الكرادة ٨٧</span></div>
+    </div>
+    <div class="three">
+      <div><span>البنك</span><b>٣٨ ملي ثانية</b></div>
+      <div><span>التنزيل</span><b>يقيس</b></div>
+      <div class="wait"><span>الرفع</span><b>بعده</b></div>
+    </div>
+    <p class="small" style="margin-top:26px">خلي الصفحة مفتوحة، ووقف أي تحميل على نفس الشبكة حتى تطلع النتيجة صحيحة.</p>
+  </div>
+  <div class="tabs"><span class="on">منطقتي</span><span>المحافظات</span><span>عن الموقع</span></div>
+</section>
+
+<section class="screen" id="t3">
+  <div class="top"><b>سرعة الإنترنت في العراق</b></div>
+  <div class="pad">
+    <p class="verdict" style="margin-top:24px;font-size:30px">خطك أبطأ بسبع مرات من منطقتك</p>
+    <p class="why">الناس بالكرادة يوصلون لـ ٨٧ بالمعدل وانت وصلت لـ ١٢، فالمنطقة مو هي السبب.</p>
+    <div class="scale">
+      <div class="pin" style="right:28%"><b>خطك ١٢</b><i></i></div>
+      <div class="pin" style="right:72%"><b>الكرادة ٨٧</b><i></i></div>
+      <div class="strip"><i style="background:#d2483f;border-radius:0 3px 3px 0"></i><i style="background:#ea8a2e"></i><i style="background:#e3b021"></i><i style="background:#5aa85e"></i><i style="background:#12795a;border-radius:3px 0 0 3px"></i></div>
+      <div class="words"><span>بطيء</span><span>مقبول</span><span>متوسط</span><span>جيد</span><span>سريع جدا</span></div>
+    </div>
+    <p class="enough"><span>١٢ ميغابت يكفي </span>لفيديو HD على جهاز أو جهازين، مو لبيت كامل يشاهد سوا.</p>
+    <p class="minor">الرفع عندك ٤ ميغابت ومعدل المنطقة ٦٦، والبنك ٣٨ ملي ثانية.</p>
+    <h2>شنو تسوي</h2>
+    <p class="do">افحص مرة ثانية قريب من الراوتر، أو بكيبل إذا عندك حاسبة. إذا بقت نفسها، اتصل بشركتك وكلهم الرقم.</p>
+    <div class="two"><span class="dark">شارك النتيجة</span><span class="light">افحص مرة ثانية</span></div>
+  </div>
+  <div class="tabs"><span class="on">منطقتي</span><span>المحافظات</span><span>عن الموقع</span></div>
+</section>
+
+<section class="screen story" id="t4">
+  <div class="field">
+    <p class="mine">خطي بالكرادة</p>
+    <p class="n">١٢</p>
+    <p style="font-size:20px;font-weight:500">ميغابت في الثانية</p>
+    <div class="line"></div>
+    <p class="vs">ومعدل المنطقة ٨٧. يعني خطي أبطأ بسبع مرات من جيراني.</p>
+    <div class="site"><b>سرعة الإنترنت في العراق</b><span>افحص خطك</span></div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

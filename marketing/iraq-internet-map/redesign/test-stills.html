@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>فحص الخط، ثلاث شاشات</title>
+<style>
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-400.woff2) format('woff2'); font-weight: 400; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Latin-400.woff2) format('woff2'); font-weight: 400 500; unicode-range: U+0000-00FF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Latin-700.woff2) format('woff2'); font-weight: 700 800; unicode-range: U+0000-00FF; }
+:root { --ink: #14202b; --ink2: #46525e; --soft: #6c7783; --line: #e3e6e9; --wash: #f3f5f6;
+        --slow: #d2483f; --slow-text: #b3362e; --good: #5aa85e; --good-text: #2f7d45; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #b9bfc4; font-family: Rubik, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.row { display: flex; gap: 40px; align-items: flex-start; padding: 40px; }
+.screen { position: relative; width: 390px; height: 844px; background: #fff; overflow: hidden; }
+p, h1, h2 { margin: 0; }
+.top { display: flex; justify-content: space-between; align-items: center; height: 54px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+.top b { font-size: 17px; font-weight: 700; }
+.pad { padding: 0 18px; }
+h1 { margin-top: 22px; font-size: 30px; line-height: 1.25; font-weight: 800; }
+.intro { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--ink2); }
+.go { display: flex; align-items: center; justify-content: center; height: 60px; margin-top: 20px; border-radius: 10px; background: var(--ink); color: #fff; font-size: 19px; font-weight: 700; }
+.small { margin-top: 10px; font-size: 14px; line-height: 1.5; color: var(--soft); }
+.place { display: flex; justify-content: space-between; align-items: baseline; margin-top: 16px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 16px; }
+.place span { color: var(--soft); }
+.place a { color: var(--ink); text-underline-offset: 4px; text-decoration-color: #b5bcc3; }
+.or { margin-top: 26px; font-size: 15px; color: var(--soft); }
+.search { display: flex; margin-top: 8px; height: 52px; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
+.search span { flex: 1; display: flex; align-items: center; padding: 0 14px; font-size: 16px; color: var(--soft); }
+.search b { display: flex; align-items: center; padding: 0 18px; background: var(--ink); color: #fff; font-size: 16px; font-weight: 700; }
+.label { font-size: 15px; color: var(--soft); }
+.big { display: flex; align-items: baseline; gap: 10px; margin-top: 4px; font-size: 96px; line-height: 1; font-weight: 800; letter-spacing: -1px; }
+.big small { font-size: 18px; font-weight: 500; color: var(--ink2); letter-spacing: 0; }
+.bar { height: 6px; margin-top: 22px; border-radius: 3px; background: var(--wash); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 58%; background: var(--ink); }
+.steps { margin-top: 22px; }
+.steps div { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
+.steps span { color: var(--soft); }
+.steps .now { font-weight: 700; }
+.steps .wait { color: #a7afb7; }
+.verdict { margin-top: 18px; font-size: 26px; line-height: 1.3; font-weight: 800; color: var(--slow-text); }
+.why { margin-top: 8px; font-size: 16px; line-height: 1.55; color: var(--ink2); }
+.cmp { display: grid; grid-template-columns: 118px 1fr 44px; gap: 10px 12px; align-items: center; margin-top: 20px; font-size: 17px; }
+.cmp i { display: block; height: 14px; border-radius: 2px; }
+.cmp b { text-align: left; font-weight: 800; }
+.cmp .me { font-weight: 700; }
+.minor { margin-top: 10px; font-size: 15px; color: var(--soft); }
+h2 { margin-top: 24px; font-size: 19px; font-weight: 700; }
+.do { margin-top: 6px; font-size: 16px; line-height: 1.6; color: var(--ink2); }
+.two { display: flex; gap: 10px; margin-top: 18px; }
+.two span { flex: 1; display: flex; align-items: center; justify-content: center; height: 52px; border-radius: 10px; font-size: 17px; font-weight: 700; }
+.two .dark { background: var(--ink); color: #fff; }
+.two .light { border: 2px solid var(--ink); }
+.tabs { position: absolute; left: 0; right: 0; bottom: 0; display: flex; height: 64px; background: #fff; border-top: 1px solid var(--line); }
+.tabs span { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--soft); }
+.tabs span.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 3px 0 var(--ink); }
+</style>
+</head>
+<body>
+<div class="row">
+
+<section class="screen" id="t1">
+  <div class="top"><b>سرعة الإنترنت في العراق</b></div>
+  <div class="pad">
+    <h1>افحص سرعة خطك وقارنها بمعدل منطقتك</h1>
+    <p class="intro">إذا خطك أبطأ من منطقتك فالبطء غالبا من الخط أو الراوتر أو الباقة. وإذا المنطقة كلها بطيئة، تبديل الراوتر ما راح يحلها.</p>
+    <div class="go">ابدأ الفحص</div>
+    <p class="small">الفحص ياخذ حوالي ٢٠ ثانية، ويقيس من موبايلك أو حاسبتك إلى أقرب خادم لشركة Cloudflare.</p>
+    <div class="place"><span>منطقتك</span><a href="#">الكرادة، بغداد</a></div>
+    <p class="small">عرفناها من موقعك بعد ما سمحت بيه. تكدر تغيرها من البحث.</p>
+    <p class="or">أو شوف سرعة أي منطقة</p>
+    <div class="search"><span>اكتب اسم الحي أو المدينة</span><b>ابحث</b></div>
+  </div>
+  <div class="tabs"><span class="on">منطقتي</span><span>المحافظات</span><span>عن الموقع</span></div>
+</section>
+
+<section class="screen" id="t2">
+  <div class="top"><b>سرعة الإنترنت في العراق</b></div>
+  <div class="pad">
+    <h1>جاري فحص خطك</h1>
+    <p class="intro">خلي الصفحة مفتوحة، وإذا تكدر وقف أي تحميل على نفس الشبكة.</p>
+    <p class="label" style="margin-top:34px">سرعة التنزيل هسه</p>
+    <p class="big">١١٫٨ <small>ميغابت في الثانية</small></p>
+    <div class="bar"><i></i></div>
+    <div class="steps">
+      <div><span>البنك</span><b>٣٨ ملي ثانية</b></div>
+      <div class="now"><span>التنزيل</span><b>يقيس...</b></div>
+      <div class="wait"><span>الرفع</span><b>بعده</b></div>
+    </div>
+  </div>
+  <div class="tabs"><span class="on">منطقتي</span><span>المحافظات</span><span>عن الموقع</span></div>
+</section>
+
+<section class="screen" id="t3">
+  <div class="top"><b>سرعة الإنترنت في العراق</b></div>
+  <div class="pad">
+    <p class="label" style="margin-top:20px">نتيجة خطك، التنزيل</p>
+    <p class="big" style="font-size:84px">١٢ <small>ميغابت في الثانية</small></p>
+    <p class="verdict">خطك أبطأ بسبع مرات من معدل الكرادة</p>
+    <p class="why">الناس بالكرادة يوصلون لـ ٨٧ ميغابت بالمعدل، فالمنطقة مو هي السبب. البطء غالبا من خطك أو الراوتر أو الباقة.</p>
+    <div class="cmp">
+      <span class="me">خطك</span><i style="background:var(--slow);width:14%"></i><b>١٢</b>
+      <span>معدل الكرادة</span><i style="background:var(--good);width:100%"></i><b>٨٧</b>
+    </div>
+    <p class="minor">الرفع عندك ٤ ميغابت، ومعدل المنطقة ٦٦.</p>
+    <h2>شنو تسوي</h2>
+    <p class="do">افحص مرة ثانية وانت قريب من الراوتر، أو بكيبل إذا عندك حاسبة. إذا بقت النتيجة نفسها، اتصل بشركة الإنترنت وكلهم هذا الرقم.</p>
+    <div class="two"><span class="dark">شارك النتيجة</span><span class="light">افحص مرة ثانية</span></div>
+  </div>
+  <div class="tabs"><span class="on">منطقتي</span><span>المحافظات</span><span>عن الموقع</span></div>
+</section>
+
+</div>
+</body>
+</html>

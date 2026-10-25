@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>سرعة الإنترنت في العراق، شاشتان</title>
+<style>
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-400.woff2) format('woff2'); font-weight: 400; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-500.woff2) format('woff2'); font-weight: 500; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-700.woff2) format('woff2'); font-weight: 700; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Arabic-800.woff2) format('woff2'); font-weight: 800; unicode-range: U+0600-06FF, U+200C-200E, U+FE70-FEFF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Latin-400.woff2) format('woff2'); font-weight: 400 500; unicode-range: U+0000-00FF; }
+@font-face { font-family: Rubik; src: url(fonts/Rubik-Latin-700.woff2) format('woff2'); font-weight: 700 800; unicode-range: U+0000-00FF; }
+:root { --ink: #14202b; --ink2: #46525e; --soft: #6c7783; --line: #e3e6e9; --wash: #f3f5f6;
+        --slow: #d2483f; --fair: #ea8a2e; --mid: #e3b021; --good: #5aa85e; --fast: #12795a; --good-text: #2f7d45; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #b9bfc4; font-family: Rubik, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.row { display: flex; gap: 40px; align-items: flex-start; padding: 40px; }
+.screen { position: relative; width: 390px; background: #fff; overflow: hidden; }
+.screen.first { height: 844px; }
+p, h1, h2 { margin: 0; }
+a { color: inherit; }
+
+.top { display: flex; justify-content: space-between; align-items: center; height: 54px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+.top b { font-size: 17px; font-weight: 700; }
+.top span { font-size: 15px; color: var(--ink2); }
+.pad { padding: 0 18px; }
+
+h1 { margin-top: 22px; font-size: 30px; line-height: 1.25; font-weight: 800; letter-spacing: -.2px; }
+.intro { margin-top: 10px; font-size: 16px; line-height: 1.55; color: var(--ink2); max-width: 22em; }
+.search { display: flex; margin-top: 18px; height: 56px; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
+.search span { flex: 1; display: flex; align-items: center; padding: 0 14px; font-size: 17px; color: var(--soft); }
+.search b { display: flex; align-items: center; padding: 0 20px; background: var(--ink); color: #fff; font-size: 17px; font-weight: 700; }
+.tries { margin-top: 10px; font-size: 15px; color: var(--soft); }
+.tries a { margin-inline-start: 10px; color: var(--ink); text-underline-offset: 4px; text-decoration-color: #b5bcc3; }
+
+.label { font-size: 15px; color: var(--soft); }
+.num { display: flex; align-items: baseline; gap: 10px; font-weight: 800; letter-spacing: -1px; }
+.num small { font-size: 17px; font-weight: 500; color: var(--ink2); letter-spacing: 0; }
+.verdict { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 16px; line-height: 1.45; color: var(--ink2); }
+.verdict i { flex: none; width: 10px; height: 10px; border-radius: 50%; }
+.verdict strong { color: var(--good-text); font-weight: 700; }
+.iraq { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
+.iraq .num { font-size: 72px; line-height: 1; margin-top: 4px; }
+.trend { margin-top: 8px; font-size: 15px; color: var(--soft); }
+
+.govmap { position: relative; margin-top: 18px; display: flex; justify-content: center; }
+.govmap .tag { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-size: 13px; font-weight: 700; color: var(--ink); background: rgba(255,255,255,.88); padding: 1px 4px; border-radius: 3px; }
+.key { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--soft); }
+.key i { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(to left, var(--slow), var(--fair) 25%, var(--mid) 50%, var(--good) 75%, var(--fast)); }
+
+.tabs { position: absolute; left: 0; right: 0; bottom: 0; display: flex; height: 64px; background: #fff; border-top: 1px solid var(--line); }
+.tabs span { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--soft); }
+.tabs span.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 3px 0 var(--ink); }
+
+/* the area page */
+.crumb { margin-top: 14px; font-size: 15px; color: var(--soft); }
+.crumb a { color: var(--ink2); }
+.area h1 { margin-top: 6px; font-size: 38px; }
+.kind { margin-top: 2px; font-size: 16px; color: var(--soft); }
+.switch { display: flex; gap: 22px; margin-top: 18px; border-bottom: 1px solid var(--line); }
+.switch span { padding: 10px 0 9px; font-size: 16px; color: var(--soft); }
+.switch span.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 -3px 0 var(--ink); }
+.area .num { margin-top: 14px; font-size: 96px; line-height: .95; }
+.compare { margin-top: 24px; }
+.bars { margin-top: 10px; display: grid; grid-template-columns: 64px 1fr 34px; gap: 10px 10px; align-items: center; font-size: 16px; }
+.bars .bar { height: 12px; border-radius: 6px; }
+.bars b { font-weight: 700; text-align: left; }
+.bars .me { font-weight: 700; }
+.compare p { margin-top: 12px; font-size: 15px; color: var(--ink2); }
+h2 { font-size: 20px; font-weight: 700; }
+.sec { margin-top: 30px; }
+.plate { margin-top: 12px; border-radius: 10px; overflow: hidden; display: block; width: 354px; height: 227px; object-fit: cover; }
+.cap { margin-top: 8px; font-size: 14px; line-height: 1.5; color: var(--soft); }
+table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 16px; }
+th { padding: 8px 0; font-size: 14px; font-weight: 400; color: var(--soft); text-align: left; }
+th:first-child, td:first-child { text-align: right; }
+td { padding: 11px 0; border-top: 1px solid var(--line); }
+td:not(:first-child) { text-align: left; font-weight: 700; font-size: 18px; }
+td small { display: block; font-size: 13px; color: var(--soft); font-weight: 400; }
+.years { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; align-items: end; height: 130px; margin-top: 14px; }
+.years div { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; }
+.years b { font-size: 13px; font-weight: 700; }
+.years i { width: 100%; border-radius: 3px 3px 0 0; }
+.years span { font-size: 12px; color: var(--soft); }
+.src { margin: 30px 0 0; padding: 14px 0 30px; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.6; color: var(--soft); }
+</style>
+</head>
+<body>
+<div class="row">
+
+  <!-- 1: home, first screen -->
+  <div class="screen first" id="s1">
+    <div class="top"><b>سرعة الإنترنت في العراق</b><span>عن الموقع</span></div>
+    <div class="pad">
+      <h1>اعرف سرعة الإنترنت الحقيقية في منطقتك</h1>
+      <p class="intro">من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم في كل محافظات العراق، بين تموز وأيلول ٢٠٢٦.</p>
+      <div class="search"><span>اكتب اسم الحي أو المدينة</span><b>ابحث</b></div>
+      <p class="tries">جرب<a href="#">الكرادة</a><a href="#">المنصور</a><a href="#">البصرة</a><a href="#">أربيل</a></p>
+
+      <div class="iraq">
+        <p class="label">معدل إنترنت البيت في العراق</p>
+        <p class="num">٦٢<small>ميغابت في الثانية</small></p>
+        <p class="verdict"><i style="background:var(--good)"></i><span><strong>جيد</strong>، يكفي لفيديو 4K على أكثر من جهاز</span></p>
+        <p class="trend">كان المعدل ١٧ ميغابت في صيف ٢٠١٩</p>
+      </div>
+
+      <div class="govmap" id="govmap"></div>
+    </div>
+    <div class="tabs"><span class="on">منطقتي</span><span>المحافظات</span><span>عن الموقع</span></div>
+  </div>
+
+  <!-- 2: an area, the whole page -->
+  <div class="screen area" id="s2">
+    <div class="top"><b>سرعة الإنترنت في العراق</b><span>عن الموقع</span></div>
+    <div class="pad">
+      <p class="crumb"><a href="#">العراق</a> ‹ <a href="#">بغداد</a></p>
+      <h1>الكرادة</h1>
+      <p class="kind">حي في بغداد</p>
+      <div class="switch"><span class="on">إنترنت البيت</span><span>إنترنت الموبايل</span></div>
+      <p class="num">٨٧<small>ميغابت في الثانية</small></p>
+      <p class="verdict"><i style="background:var(--good)"></i><span><strong>جيد</strong>، يكفي لفيديو 4K على أكثر من جهاز</span></p>
+
+      <div class="compare">
+        <p class="label" style="margin-top:0">مقارنة بالمعدل</p>
+        <div class="bars">
+          <span class="me">الكرادة</span><i class="bar" style="width:100%;background:#5aa85e"></i><b>٨٧</b>
+          <span>بغداد</span><i class="bar" style="width:77%;background:#8fae4a"></i><b>٦٧</b>
+          <span>العراق</span><i class="bar" style="width:71%;background:#9daf45"></i><b>٦٢</b>
+        </div>
+        <p>أسرع من ٩١٪ من مناطق العراق المقاسة.</p>
+      </div>
+
+      <div class="sec">
+        <h2>الكرادة على الخريطة</h2>
+        <img class="plate" src="karrada-map.png" alt="">
+        <p class="cap">كل شارع بلون سرعة الإنترنت فيه، والكرادة داخل الخط الأسود.</p>
+        <p class="key"><span>بطيء</span><i></i><span>سريع</span></p>
+      </div>
+
+      <div class="sec">
+        <h2>البيت والموبايل</h2>
+        <table>
+          <tr><th></th><th>البيت</th><th>الموبايل</th></tr>
+          <tr><td>سرعة التنزيل<small>ميغابت في الثانية</small></td><td>٨٧</td><td>٦٦</td></tr>
+          <tr><td>سرعة الرفع<small>ميغابت في الثانية</small></td><td>٦٦</td><td>٢٧</td></tr>
+          <tr><td>البنغ<small>ملي ثانية، الأقل أفضل</small></td><td>٥</td><td>٣٣</td></tr>
+          <tr><td>عدد الاختبارات</td><td>٤٬٦٧٨</td><td>٧١٦</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <h2>إنترنت البيت منذ ٢٠١٩</h2>
+        <div class="years" id="years"></div>
+      </div>
+
+      <p class="src">السرعات من Speedtest by Ookla، اختبارات تموز إلى أيلول ٢٠٢٦. الشوارع من OpenStreetMap. فكرة وتصميم @allawi.psd</p>
+    </div>
+  </div>
+</div>
+<script>
+const ar = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+fetch('iraq-govs.svg').then(r => r.text()).then(svg => {
+  const box = document.getElementById('govmap');
+  box.innerHTML = svg;
+  // the fastest and the slowest, named on the map
+  const tag = (t, x, y) => { const e = document.createElement('span'); e.className = 'tag'; e.textContent = t; e.style.left = x + 'px'; e.style.top = y + 'px'; box.appendChild(e); };
+  tag('السليمانية ٨٩', 262, 74); tag('ديالى ٣٠', 262, 134); tag('بغداد ٦٧', 196, 172); tag('الأنبار ٣٢', 98, 176); tag('البصرة ٧٢', 304, 292);
+});
+const hist = [15.7, 16.1, 19.5, 22.4, 48.0, 106.1, 69.9, 87.0];
+const col = v => v < 15 ? '#ea8a2e' : v < 35 ? '#e3b021' : v < 70 ? '#8fae4a' : '#5aa85e';
+document.getElementById('years').innerHTML = hist.map((v, i) =>
+  `<div><b>${ar(Math.round(v))}</b><i style="height:${Math.round(v / 106.1 * 96)}px;background:${col(v)}"></i><span>${ar(2019 + i)}</span></div>`).join('');
+</script>
+</body>
+</html>
