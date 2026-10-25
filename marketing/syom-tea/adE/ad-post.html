@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Syom ad E post</title>
+<style>
+  @font-face { font-family: Lama; font-weight: 900; src: url('../files/brand/3- Fonts/LamaSans-Black.ttf'); }
+  @font-face { font-family: Lama; font-weight: 700; src: url('../files/brand/3- Fonts/LamaSans-Bold.ttf'); }
+  @font-face { font-family: Lama; font-weight: 500; src: url('../files/brand/3- Fonts/LamaSans-Medium.ttf'); }
+  :root { --lily: #ffebea; --gold: #e8b06f; }
+  body { margin: 0; background: #222; }
+  .f { position: relative; overflow: hidden; font-family: Lama; font-synthesis: none; color: var(--lily); }
+  .f > * { position: absolute; margin: 0; }
+  /* the same scene as the Story, rendered wider (plate-228.png, 1536x1920) and framed on the pouch:
+     the 1344x1680 crop at (120, 240) set at 1080x1350 */
+  #syom-adE-post { width: 1080px; height: 1350px; }
+  .plate { left: -96.4px; top: -192.9px; width: 1234.3px; height: 1542.9px; }
+
+  .logo { left: 46px; top: 54px; width: 176px; }
+  .head { right: 44px; top: 40px; font-weight: 900; font-size: 92px; line-height: 1.14; letter-spacing: -1px; text-align: right; }
+  .head span { display: block; white-space: nowrap; }
+
+  /* the answer sits right under the question, in the column beside the pouch */
+  .ans { right: 44px; top: 516px; font-weight: 900; font-size: 62px; line-height: 1.14; color: var(--gold); text-align: right; white-space: nowrap; }
+  .sub { right: 44px; top: 682px; font-weight: 700; font-size: 32px; line-height: 1.3; text-align: right; white-space: nowrap; }
+
+  .cta { right: 44px; top: 790px; text-align: right; }
+  .cta::before { content: ''; display: block; width: 60px; height: 3px; margin: 0 0 14px auto; background: var(--gold); }
+  .cta p { margin: 0; white-space: nowrap; }
+  .c1 { font-weight: 500; font-size: 30px; line-height: 1.3; }
+  .c2 { margin-top: 8px !important; font-weight: 900; font-size: 38px; line-height: 1.22; }
+</style>
+</head>
+<body>
+<div class="f" id="syom-adE-post">
+  <img class="plate" src="plate-228.png" alt="">
+  <img class="logo" src="logo.svg" alt="">
+  <p class="head"><span>وزنج زايد</span><span>والدايت مايفيد</span><span>وتخافين من</span><span>المنحفات؟</span></p>
+  <p class="ans">وصلتي<br>للحل الطبيعي</p>
+  <p class="sub">سيوم الكوري<br>يحقق هدفج</p>
+  <div class="cta">
+    <p class="c1">ابدي اليوم وعيشي التجربة</p>
+    <p class="c2">راسلينا وخلي<br>الباقي على سيوم</p>
+  </div>
+</div>
+<script>document.fonts.ready.then(() => setTimeout(() => (document.body.dataset.ready = '1'), 300));</script>
+</body>
+</html>

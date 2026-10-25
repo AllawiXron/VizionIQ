@@ -172,8 +172,7 @@ sprigs = [o for o in import_gltf('nettle_plant') if o.type == 'MESH']
 by = {o.name.split('_LOD')[0].replace('nettle_plant_', ''): o for o in sprigs}
 LAY = [  # (part, pixel u, v on the Story frame, turn about the vertical, scale)
     ('tall_a', 700, 1690, 200, 1.15),
-    ('medium_b', 560, 1640, 140, 1.0),
-    ('tall_b', 40, 1700, 330, 1.0),
+    ('medium_b', 600, 1730, 150, 1.0),
 ]
 for part, u, v, turn, s in LAY:
     o = by[part]

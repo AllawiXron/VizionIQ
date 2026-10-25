@@ -115,6 +115,10 @@ def herbs(width, x, y, flip=False, keep=1.0, seed=0):
     en = cv2.GaussianBlur(r_.normal(0, 1, (1, al.shape[1])).astype(np.float32), (0, 0), 9)[0]
     en /= np.abs(en).max() + 1e-6
     al *= np.clip(np.linspace(0, 1, al.shape[0])[:, None] * 3.2 - 0.6 + 0.55 * en[None, :], 0, 1) ** 1.3
+    # and an uneven bottom edge, so the spill thins out on the stone instead of stopping on a line
+    eb = cv2.GaussianBlur(r_.normal(0, 1, (1, al.shape[1])).astype(np.float32), (0, 0), 7)[0]
+    eb /= np.abs(eb).max() + 1e-6
+    al *= np.clip((1 - np.linspace(0, 1, al.shape[0])[:, None]) * 4.0 - 0.3 + 0.6 * eb[None, :], 0, 1)
     s3 = np.zeros((H, W, 3), np.float32)
     over(s3, np.ones(al.shape + (3,), np.float32), al, x + OFF - 5, y + 5)     # the sun is on the right
     darken(img, cv2.GaussianBlur(s3[..., 0], (0, 0), 3) * 0.6)
