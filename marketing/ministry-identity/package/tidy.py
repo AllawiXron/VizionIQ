@@ -1,5 +1,5 @@
 """python3 package/tidy.py <package dir> <who.json>: the designer as author in the PDFs' and the PowerPoint's document
-properties (title, author), the PowerPoint's page format named as it is (A4, not 16:9) and its company field left
+properties (title, author), PNGs without text metadata, the PowerPoint's page format named as it is (A4, not 16:9) and its company field left
 empty (the library put its own name there)."""
 import json
 import re
@@ -9,6 +9,7 @@ import zipfile
 from pathlib import Path
 
 from pypdf import PdfReader, PdfWriter
+from PIL import Image
 
 pkg, who = Path(sys.argv[1]), json.load(open(sys.argv[2]))
 TITLE = 'مقترح الهوية البصرية لوزارة الاقتصاد الرقمي والحوكمة'
@@ -20,6 +21,12 @@ for pdf in pkg.rglob('*.pdf'):
                     '/Author': who['name'], '/Subject': 'بوابة عشتار.. بوابة العراق الرقمية'})
     with open(pdf, 'wb') as f:
         w.write(f)
+
+for png in pkg.rglob('*.png'):                    # no text chunks (a renderer's notes, render times and the like)
+    im = Image.open(png)
+    if any(isinstance(v, str) for v in im.info.values()):
+        im.load()
+        im.save(png, optimize=False)
 
 for pptx in pkg.rglob('*.pptx'):
     tmp = pptx.with_suffix('.tmp')

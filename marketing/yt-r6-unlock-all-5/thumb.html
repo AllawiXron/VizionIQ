@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>R6 Unlock All 5</title>
+<style>
+@font-face { font-family: Shoulders; src: url(fonts/BigShouldersDisplay-VF.ttf); font-weight: 100 900; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; }
+.f { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0c1630; }
+.f > * { position: absolute; }
+
+/* 1. his art as it is: the operator on the navy wall of Siege icons */
+.art { inset: 0; }
+
+/* 2. the fan of operator cards in his raised hand, his fingers back over them (fan.py) */
+.fan { inset: 0; }
+
+/* 3. title behind him: UNLOCK over a bigger ALL, his helmet and elbow in front of the ends */
+.t { font: 900 250px/1 Shoulders; letter-spacing: -3px; white-space: nowrap; }
+.t span { display: block; }
+.t1 { left: 40px; top: 34px; }
+.t2 { left: 36px; top: 262px; font-size: 430px; letter-spacing: -6px; }
+.t .back { color: #160a02; -webkit-text-stroke: 16px #120701;
+  text-shadow: 1px 3px 0 #2c1405, 2px 6px 0 #2c1405, 3px 9px 0 #261104, 4px 12px 0 #200e03, 5px 15px 0 #1a0b02,
+    6px 18px 0 #140802, 7px 21px 0 #0e0501, 0 34px 40px rgba(0, 0, 0, .9), 0 60px 90px rgba(0, 0, 0, .55); }
+.t .face { position: absolute; left: 0; top: 0;
+  background: url(img/brass.jpg) center / 100% 100%, linear-gradient(180deg, #fffbd6 0%, #fff04a 18%, #ffd21f 42%, #ffa412 70%, #df6a08 100%);
+  background-blend-mode: soft-light, normal; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.t .shine { position: absolute; left: 0; top: 0; color: transparent;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .85) 0%, rgba(255, 255, 255, 0) 16%);
+  -webkit-background-clip: text; background-clip: text; mix-blend-mode: screen; }
+
+/* finish */
+.vig { inset: 0; background:
+  linear-gradient(90deg, rgba(3, 7, 18, .45) 0%, rgba(3, 7, 18, 0) 30%),
+  linear-gradient(0deg, rgba(3, 7, 18, .4) 0%, rgba(3, 7, 18, 0) 18%),
+  linear-gradient(270deg, rgba(3, 7, 18, .3) 0%, rgba(3, 7, 18, 0) 10%); }
+</style>
+</head>
+<body>
+<div class="f" id="thumb">
+  <img class="art" src="img/operator.jpg">
+  <div class="vig"></div>
+  <div class="t t1"><span class="back">UNLOCK</span><span class="face">UNLOCK</span><span class="shine">UNLOCK</span></div>
+  <div class="t t2"><span class="back">ALL</span><span class="face">ALL</span><span class="shine">ALL</span></div>
+
+  <!-- 4. him again, cut out, in front of the title; then the fan in his hand -->
+  <img class="art" src="img/operator-cut.png">
+  <img class="fan" src="img/fan.png">
+
+</div>
+<script>
+Promise.all([document.fonts.load('900 250px Shoulders')])
+  .then(() => Promise.all([...document.images].map((i) => i.decode())))
+  .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
