@@ -507,8 +507,8 @@ function scene2(t, rt) {
     const [m1, x1, y1, rx1, ry1, rz1] = keyAt(CARD_END, t);
     const m = lerp(SW / CW * 0.93 * 1.08, m1, k) * lerp(0.85, 1, k), [X, Y] = vpt(lerp(P[0], x1, k), lerp(P[1], y1 + fl * k, k));
     placeCard(m * VS, X, Y, lerp(P[3], rx1, k), lerp(P[4], ry1, k), lerp(P[5], rz1, k), VR);
-    cardMat.opacity = clamp(k * 60); cardG.visible = true;   // solid almost at once: a sheet lifting off the screen, never see-through
-    cardShadow(cardMat.opacity);
+    cardMat.opacity = 1; cardG.visible = true;   // solid from its first frame: a sheet lifting off the screen, never see-through
+    cardShadow(clamp(k * 3));
     DOF = 7 * smooth(seg(t, 9.0, 0.35));
   }
 }
