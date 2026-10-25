@@ -64,6 +64,12 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   stands alone big in the middle for about a second, then the camera whips or pulls back to the thing; close-ups on
   the phone like a lens (tight on the button, the number, the verdict), a hard shake and red edges on a shock number,
   the phone out of focus behind a card in front, and a slow creep (zoom 1 to 1.08 or a pan) through every hold.
+  The user then found that v4's tilts, the hard shake, the white tap circle and the 0.7 s flashed titles "awful and
+  synthetic" (25 Oct) and asked for a phone launch film look instead (`marketing/iraq-speed-reel/v5`): all straight
+  (0°), one spring cubic-bezier(0.22, 1, 0.36, 1), each title read in the middle 0.65 s then gliding to the top
+  (−620 px, 0.78) and staying all scene, 80 px clear above the phone or cards, a real arrow pointer that presses the
+  button (1, 0.94, 1.02, 1, colour change), key results lifting off the phone as white cards (0 25px 60px 12 %) over a
+  dimmed phone, the room #F2F2F7 turning dark #141417 for a shock and green for a chart, and nothing ever covering text.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
