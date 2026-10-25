@@ -57,7 +57,6 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - Meta ads (24 Oct): the user runs the Orange Coin reel as a Messages ad himself ($10/day, all Iraq, online sellers) and
   sends the Ads Manager report instead of connecting a connector. Read it, judge cost per conversation, the 3-second
   hook rate and how many DMs were real sellers, and suggest changes only after the first 4–5 days of learning.
-  Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it.
 - Websites and tools (23 Oct): the user found the first Iraq internet map "weird" and could not understand it (text
   floating over the map, numbers without labels, no colour key). Say what the page does in one sentence, label every
   number, give every map a key, keep a plain top-to-bottom order. The user asked (24 Oct) not to use the site-tester
@@ -103,6 +102,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   Apple keyboard click on presses, soft pops on cards, an airy swish on whips, faint ticks on counters, a clean riser,
   one chime for a win (`marketing/iraq-speed-reel/v7/mix.py`). This replaces the 24 Oct "no clicks" rule for such reels.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
+- Before making props or images, ask whether to use AI image elements (the user generates them) or 3D (Blender);
+  3D renders cost a lot of usage (20 Oct).
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
   phone numbers.
@@ -339,6 +340,13 @@ note the source). For a custom element nothing real covers, write the user a Gem
 the user allows these Gemini images in -noAI work.
 
 No prices in reels unless the user asks for them (15 Oct).
+
+viZion reels and posts use the viZion page look, not the allawi.psd paper look (19 Oct): navy-to-blue fields with
+pinstripes, the VZ mark, Readex Pro, cyan gradient words, glass cards and cyan pills, the selection box and pixel cursor
+(`marketing/vizion-results-carousel`, reel: `marketing/hf-vizion-trial-reel`). The paper/DG Sahabah look is for @allawi.psd.
+The user called glass cards, gradient words and UI pills "ai slop" (19 Oct) and loves the look of a reference reel: motion
+"on twos" (15 fps held frames) with heavy real motion blur, real 3D objects on a studio wall, a few words per shot in
+heavy type mixed with a script. See `marketing/hf-vizion-trial-reel` (240 fps render blended down by `post.sh`).
 
 Don't use flat cream + orange + near-black fields with clean UI pills: the user said that reads as "Claude motion" (15 Oct).
 The user also rejected a reel as "AI-looking and boring" (9 Oct): keep it handmade (paper, tape, real props) and keep it moving.

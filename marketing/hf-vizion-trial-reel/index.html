@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>viZion — علّق كورس (reel)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/fff9a1708a.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/572fd22475.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/59d4899e3e.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/b1201f9513.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/8e4fb82e4a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/9c25f00a45.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/bc8db8085c.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/26db9be264.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/708433a0c9.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/93f076364c.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: url(assets/fonts/8b20261dbd.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: url(assets/fonts/83ac98a295.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: url(assets/fonts/ac0ac16934.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: url(assets/fonts/0d3c0ac20a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/8b20261dbd.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/83ac98a295.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/ac0ac16934.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(assets/fonts/0d3c0ac20a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/8b20261dbd.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/83ac98a295.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/ac0ac16934.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(assets/fonts/0d3c0ac20a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(assets/fonts/8b20261dbd.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(assets/fonts/83ac98a295.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(assets/fonts/ac0ac16934.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(assets/fonts/0d3c0ac20a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* arabic */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(assets/fonts/8b20261dbd.woff2) format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(assets/fonts/83ac98a295.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(assets/fonts/ac0ac16934.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Readex Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(assets/fonts/0d3c0ac20a.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face { font-family:'Aref Ruqaa'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/0dd1a6b4b1.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Aref Ruqaa'; font-style:normal; font-weight:700; font-display:block; src:url(assets/fonts/4d199ea9c3.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Lalezar'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/34b60235da.woff2) format('woff2'); unicode-range:U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC }
+@font-face { font-family:'Lalezar'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/a7ab3bd3a9.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+@font-face { font-family:'Anton'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/anton-latin.woff2) format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD }
+/* v2, after the user's reference reel: a soft grey studio wall (and a navy floor in some shots), real objects that
+   fly in and land with a shadow on the wall, a few words per shot in heavy display type mixed with a script, fast
+   whips. The page is rendered at 240 fps and build.py's post step blends it down to 15 fps held frames, so every
+   move gets real motion blur and the choppy "on twos" feel. viZion colours: navy, blue, the logo's yellow. */
+:root { --navy:#0b2a6e; --blue:#1769f5; --yellow:#f2b51d; --ink:#141a2a }
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#cfd4dc }
+#root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'Readex Pro'; color:var(--navy) }
+#stage { position:absolute; left:-40px; top:-40px; width:1160px; height:2000px; transform-origin:50% 50% }
+#wall { position:absolute; inset:0; background:radial-gradient(70% 55% at 50% 42%, #f7f8fa 0%, #e6e9ee 45%, #b9c0cb 100%) }
+#floor { position:absolute; left:0; right:0; top:1320px; bottom:0; background:linear-gradient(180deg, #123a8f 0%, #0b2a6e 40%, #071c4c 100%); transform-origin:50% 100%;
+  box-shadow:inset 0 30px 60px rgba(0,0,0,.25) }
+#dark { position:absolute; inset:0; opacity:0; background:radial-gradient(75% 55% at 50% 40%, #16449e 0%, #0b2a6e 45%, #040f2e 100%) }
+.sc { position:absolute; left:40px; top:40px; width:1080px; height:1920px }
+#fx { position:absolute; inset:0; pointer-events:none; z-index:30 }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.08 }
+#vig { position:absolute; inset:0; background:radial-gradient(90% 70% at 50% 45%, rgba(0,0,0,0) 55%, rgba(10,16,35,.32) 100%) }
+.trx { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; mix-blend-mode:screen; pointer-events:none; z-index:25 }
+
+/* type: heavy display (Lalezar), a script for the turn of each line (Aref Ruqaa), a plain sans for the small words */
+.tx { position:absolute; left:40px; right:40px; text-align:center; white-space:nowrap }
+.w { display:inline-block; position:relative; opacity:0 }
+.hv { font-family:'Lalezar'; font-weight:400; line-height:1.05 }
+.sc1 { font-family:'Aref Ruqaa'; font-weight:700; line-height:1.1 }
+.sm { font-family:'Readex Pro'; font-weight:600; line-height:1.25 }
+.blue { color:var(--blue) } .white { color:#fff } .ylw { color:var(--yellow) }
+.lat { direction:ltr; unicode-bidi:isolate }
+.glow { text-shadow:0 0 18px rgba(242,181,29,.75), 0 0 46px rgba(242,181,29,.45) }
+.tsh { text-shadow:0 14px 22px rgba(20,30,60,.22) }
+/* the objects, with their shadow thrown on the wall, down and to the left of the key light */
+.pr { position:absolute; display:block; opacity:0; filter:drop-shadow(-26px 38px 26px rgba(15,25,55,.36)) }
+.pr.flat { filter:drop-shadow(-18px 26px 18px rgba(15,25,55,.3)) }
+.bub { position:absolute; opacity:0 }
+.bub img { display:block; width:100%; filter:drop-shadow(-22px 30px 22px rgba(15,25,55,.3)) }
+.bub span { position:absolute; left:0; right:0; top:0; height:74%; display:flex; align-items:center; justify-content:center;
+  font:600 46px/1.2 'Readex Pro'; color:#1b2233; white-space:nowrap }
+.strike { position:absolute; left:0; top:0; overflow:visible; pointer-events:none }
+.strike path { fill:none; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1 }
+.bar { position:absolute; background:var(--yellow); transform-origin:100% 50%; transform:scaleX(0) }
+.refl { transform:scaleY(-1); opacity:.22; -webkit-mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 60%); mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 60%) }
+.num { position:absolute; left:0; right:0; top:285px; text-align:center; font:400 64px/1 'Anton'; color:var(--blue); letter-spacing:.04em; direction:ltr; opacity:0 }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="26.4" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="26.4" data-track-index="0">
+        <div id="wall"></div>
+        <div id="floor"></div>
+        <div id="dark"></div>
+
+        <!-- A · the hook: «تجيك رسائل هواي..», three DMs fly up -->
+        <div class="sc" id="A">
+          <div class="tx hv tsh" style="top:290px; font-size:150px"><span class="w">تجيك</span> <span class="w">رسائل</span></div>
+          <div class="tx sc1 blue" style="top:440px; font-size:190px; transform:rotate(-4deg)"><span class="w">هواي..</span></div>
+          <div class="bub" id="b1" style="right:50px; top:760px; width:520px"><img src="assets/props/bubble-s.png" alt="" /><span>شكد السعر؟</span></div>
+          <div class="bub" id="b2" style="left:30px; top:980px; width:840px"><img src="assets/props/bubble-l.png" alt="" /><span>عاشت إيدك، من أقرر أراسلك</span></div>
+          <div class="bub" id="b3" style="right:40px; top:1210px; width:660px"><img src="assets/props/bubble-m.png" alt="" /><span>شدعوة هلگد غالي؟</span></div>
+        </div>
+
+        <!-- B · «ومحد يشتري؟», with its reflection -->
+        <div class="sc" id="B">
+          <div class="tx sm" style="top:560px; font-size:96px"><span class="w">ومحد</span></div>
+          <div class="tx hv blue" style="top:680px; font-size:330px"><span class="w" id="buy">يشتري؟</span></div>
+          <div class="tx hv blue refl" style="top:1010px; font-size:330px"><span class="w" id="buyr">يشتري؟</span></div>
+        </div>
+
+        <!-- C · the price tag swings in: «الخلل مو بسعرك..», the price struck through -->
+        <div class="sc" id="C">
+          <img class="pr flat" id="tag" src="assets/props/tag.png" alt="" style="left:400px; top:-20px; width:300px; transform-origin:50% 0" />
+          <div class="tx sm" style="top:930px; font-size:90px"><span class="w">الخلل</span> <span class="w">مو</span></div>
+          <div class="tx hv tsh" style="top:1040px; font-size:240px"><span class="w" id="price">بسعرك..</span></div>
+          <svg class="strike" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="strk" pathLength="1" d="M250 1205 C 420 1185, 640 1175, 840 1150" style="stroke:var(--blue); stroke-width:22" /></svg>
+        </div>
+
+        <!-- D · the megaphone: «الخلل بطريقة ردك وإعلانك!» (the floor comes up under it) -->
+        <div class="sc" id="D">
+          <img class="pr" id="mega" src="assets/props/megaphone.png" alt="" style="left:-10px; top:300px; width:700px" />
+          <div class="tx sm" style="top:860px; font-size:90px"><span class="w">الخلل</span></div>
+          <div class="tx sc1 blue" style="top:960px; font-size:170px"><span class="w">بطريقة</span> <span class="w">ردك</span></div>
+          <div class="bar" id="barD" style="left:250px; top:1400px; width:580px; height:34px"></div>
+          <div class="tx hv white" style="top:1290px; font-size:200px"><span class="w">وإعلانك!</span></div>
+        </div>
+
+        <!-- E · dark: the viZion mark, «كورس viZion يحول الرسائل إلى طلبات حقيقية.» -->
+        <div class="sc" id="E" style="perspective:1400px">
+          <img class="pr" id="logo" src="assets/props/logo.png" alt="" style="left:330px; top:300px; width:420px; filter:drop-shadow(0 30px 40px rgba(0,0,10,.5)) drop-shadow(0 0 60px rgba(23,105,245,.45))" />
+          <div class="tx sm white" style="top:800px; font-size:84px"><span class="w">كورس</span></div>
+          <div class="tx white lat" style="top:880px; font:700 190px/1.1 'Readex Pro'"><span class="w">viZion</span></div>
+          <div class="tx sm white" style="top:1140px; font-size:70px"><span class="w">يحول</span> <span class="w">الرسائل</span></div>
+          <div class="tx sc1 ylw glow" style="top:1225px; font-size:124px"><span class="w">إلى</span> <span class="w">طلبات</span> <span class="w">حقيقية.</span></div>
+          <img class="pr" id="parcel" src="assets/props/parcel.png" alt="" style="left:30px; top:1430px; width:210px" />
+        </div>
+
+        <!-- F · the four, one object each, on the floor -->
+        <div class="sc" id="F">
+          <div class="num" id="n1">01</div><div class="num" id="n2">02</div><div class="num" id="n3">03</div><div class="num" id="n4">04</div>
+          <div class="tx hv tsh" id="f1" style="top:360px; font-size:150px"><span class="w">أسرار الاستهداف</span></div>
+          <div class="tx hv tsh" id="f2" style="top:360px; font-size:150px"><span class="w">صناعة العروض</span></div>
+          <div class="tx hv tsh" id="f3" style="top:360px; font-size:150px"><span class="w">فن الإقناع</span></div>
+          <div class="tx hv tsh" id="f4" style="top:360px; font-size:150px"><span class="w">مضاعفة الأرباح</span></div>
+          <img class="pr" id="o1" src="assets/props/target.png" alt="" style="left:250px; top:640px; width:580px" />
+          <img class="pr" id="o2" src="assets/props/gift.png" alt="" style="left:260px; top:640px; width:560px" />
+          <img class="pr" id="o3" src="assets/props/magnet.png" alt="" style="left:290px; top:620px; width:500px" />
+          <img class="pr" id="o4" src="assets/props/coins.png" alt="" style="left:170px; top:760px; width:740px" />
+        </div>
+
+        <!-- G · «يوقف خسارتك ويضاعف مبيعاتك», the coins grow -->
+        <div class="sc" id="G">
+          <div class="tx hv tsh" style="top:290px; font-size:150px"><span class="w">يوقف</span> <span class="w">خسارتك</span></div>
+          <div class="tx sm" style="top:470px; font-size:90px"><span class="w">ويضاعف</span></div>
+          <div class="tx hv blue tsh" style="top:560px; font-size:250px"><span class="w" id="sales">مبيعاتك</span></div>
+          <img class="pr" id="coins2" src="assets/props/coins-2.png" alt="" style="left:200px; top:880px; width:680px; transform-origin:50% 100%" />
+        </div>
+
+        <!-- H · the ask: «تريد تجربة مجانية للكورس؟ علّق بـ «كورس»» -->
+        <div class="sc" id="H">
+          <div class="tx hv tsh" style="top:280px; font-size:124px"><span class="w">تريد</span> <span class="w">تجربة</span> <span class="w">مجانية</span></div>
+          <div class="tx sc1 blue" style="top:420px; font-size:150px; transform:rotate(-3deg)"><span class="w">للكورس؟</span></div>
+          <div class="tx hv tsh" style="top:640px; font-size:270px"><span class="w" id="ask">علّق بـــ</span></div>
+          <div class="bub" id="cb" style="left:220px; top:950px; width:640px"><img src="assets/props/bubble-blue.png" alt="" /><span style="font:400 130px/1 'Lalezar'; color:#fff; padding-top:14px"><b id="typed" style="font-weight:400"></b><i id="caret" style="display:inline-block; width:7px; height:100px; margin-right:10px; background:#fff"></i></span></div>
+          <div class="tx sm" style="top:1290px; font-size:54px"><span class="w">ونرسلك</span> <span class="w">التجربة</span> <span class="w blue">المجانية</span> <span class="w">بالخاص.</span></div>
+          <img class="pr" id="logo2" src="assets/props/logo.png" alt="" style="left:465px; top:1400px; width:150px; filter:drop-shadow(-10px 16px 12px rgba(15,25,55,.3))" />
+        </div>
+      </div>
+      <video class="trx" id="tr1" src="assets/tr/flash19.mp4" muted playsinline data-start="6.76" data-duration="0.76" data-track-index="2"></video>
+      <video class="trx" id="tr2" src="assets/tr/flash6.mp4" muted playsinline data-start="18.82" data-duration="0.8" data-track-index="3"></video>
+      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+
+      <audio id="voice" src="assets/voice.wav" data-start="0" data-duration="25.469" data-track-index="9" data-volume="1"></audio>
+      <audio id="a0-simple" src="assets/sfx/simple.wav" data-start="0.000" data-duration="1.531" data-track-index="10" data-volume="0.112"></audio>
+      <audio id="a1-simple" src="assets/sfx/simple.wav" data-start="0.000" data-duration="1.531" data-track-index="11" data-volume="0.112"></audio>
+      <audio id="a2-simple" src="assets/sfx/simple.wav" data-start="0.250" data-duration="1.531" data-track-index="12" data-volume="0.112"></audio>
+      <audio id="a3-ding" src="assets/sfx/ding.wav" data-start="0.400" data-duration="0.704" data-track-index="13" data-volume="0.14"></audio>
+      <audio id="a4-ding" src="assets/sfx/ding.wav" data-start="0.650" data-duration="0.704" data-track-index="14" data-volume="0.14"></audio>
+      <audio id="a5-ppop1" src="assets/sfx/ppop1.wav" data-start="0.820" data-duration="0.3" data-track-index="15" data-volume="0.154"></audio>
+      <audio id="a6-ding" src="assets/sfx/ding.wav" data-start="0.900" data-duration="0.704" data-track-index="16" data-volume="0.14"></audio>
+      <audio id="a7-cinfast" src="assets/sfx/cinfast.wav" data-start="1.320" data-duration="0.856" data-track-index="17" data-volume="0.21"></audio>
+      <audio id="a8-smooth" src="assets/sfx/smooth.wav" data-start="1.550" data-duration="1.75" data-track-index="18" data-volume="0.14"></audio>
+      <audio id="a9-npop1" src="assets/sfx/npop1.wav" data-start="1.640" data-duration="0.16" data-track-index="19" data-volume="0.21"></audio>
+      <audio id="a10-flick" src="assets/sfx/flick.wav" data-start="1.850" data-duration="0.552" data-track-index="20" data-volume="0.238"></audio>
+      <audio id="a11-mpop" src="assets/sfx/mpop.wav" data-start="2.020" data-duration="1.25" data-track-index="21" data-volume="0.294"></audio>
+      <audio id="a12-smooth" src="assets/sfx/smooth.wav" data-start="2.270" data-duration="1.75" data-track-index="22" data-volume="0.154"></audio>
+      <audio id="a13-cinfast" src="assets/sfx/cinfast.wav" data-start="2.420" data-duration="0.856" data-track-index="23" data-volume="0.21"></audio>
+      <audio id="a14-npop2" src="assets/sfx/npop2.wav" data-start="2.870" data-duration="0.18" data-track-index="24" data-volume="0.14"></audio>
+      <audio id="a15-npop3" src="assets/sfx/npop3.wav" data-start="3.320" data-duration="0.17" data-track-index="25" data-volume="0.168"></audio>
+      <audio id="a16-flick" src="assets/sfx/flick.wav" data-start="3.370" data-duration="0.552" data-track-index="26" data-volume="0.238"></audio>
+      <audio id="a17-mpop" src="assets/sfx/mpop.wav" data-start="3.540" data-duration="1.25" data-track-index="27" data-volume="0.294"></audio>
+      <audio id="a18-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="3.660" data-duration="2.616" data-track-index="28" data-volume="0.182"></audio>
+      <audio id="a19-select" src="assets/sfx/select.wav" data-start="3.950" data-duration="0.167" data-track-index="29" data-volume="0.224"></audio>
+      <audio id="a20-cinfast" src="assets/sfx/cinfast.wav" data-start="3.960" data-duration="0.856" data-track-index="30" data-volume="0.21"></audio>
+      <audio id="a21-npop4" src="assets/sfx/npop4.wav" data-start="4.380" data-duration="0.16" data-track-index="31" data-volume="0.154"></audio>
+      <audio id="a22-ppop2" src="assets/sfx/ppop2.wav" data-start="5.100" data-duration="0.4" data-track-index="32" data-volume="0.105"></audio>
+      <audio id="a23-ppop3" src="assets/sfx/ppop3.wav" data-start="5.680" data-duration="0.38" data-track-index="33" data-volume="0.14"></audio>
+      <audio id="a24-flick" src="assets/sfx/flick.wav" data-start="6.030" data-duration="0.552" data-track-index="34" data-volume="0.238"></audio>
+      <audio id="a25-mpop" src="assets/sfx/mpop.wav" data-start="6.200" data-duration="1.25" data-track-index="35" data-volume="0.294"></audio>
+      <audio id="a26-mainwhoosh" src="assets/sfx/mainwhoosh.wav" data-start="6.300" data-duration="1.717" data-track-index="36" data-volume="0.252"></audio>
+      <audio id="a27-select" src="assets/sfx/select.wav" data-start="6.400" data-duration="0.167" data-track-index="37" data-volume="0.175"></audio>
+      <audio id="a28-sweet" src="assets/sfx/sweet.wav" data-start="7.120" data-duration="1.076" data-track-index="38" data-volume="0.224"></audio>
+      <audio id="a29-npop5" src="assets/sfx/npop5.wav" data-start="7.260" data-duration="0.15" data-track-index="39" data-volume="0.21"></audio>
+      <audio id="a30-ppop4" src="assets/sfx/ppop4.wav" data-start="7.620" data-duration="0.4" data-track-index="40" data-volume="0.105"></audio>
+      <audio id="a31-npop1" src="assets/sfx/npop1.wav" data-start="8.320" data-duration="0.16" data-track-index="41" data-volume="0.21"></audio>
+      <audio id="a32-npop2" src="assets/sfx/npop2.wav" data-start="8.780" data-duration="0.18" data-track-index="42" data-volume="0.14"></audio>
+      <audio id="a33-ppop1" src="assets/sfx/ppop1.wav" data-start="9.540" data-duration="0.3" data-track-index="43" data-volume="0.154"></audio>
+      <audio id="a34-ppop2" src="assets/sfx/ppop2.wav" data-start="9.760" data-duration="0.4" data-track-index="44" data-volume="0.105"></audio>
+      <audio id="a35-ppop3" src="assets/sfx/ppop3.wav" data-start="10.240" data-duration="0.38" data-track-index="45" data-volume="0.14"></audio>
+      <audio id="a36-mpop" src="assets/sfx/mpop.wav" data-start="10.500" data-duration="1.25" data-track-index="46" data-volume="0.224"></audio>
+      <audio id="a37-cinfast" src="assets/sfx/cinfast.wav" data-start="10.740" data-duration="0.856" data-track-index="47" data-volume="0.21"></audio>
+      <audio id="a38-simple" src="assets/sfx/simple.wav" data-start="10.750" data-duration="1.531" data-track-index="48" data-volume="0.168"></audio>
+      <audio id="a39-ppop4" src="assets/sfx/ppop4.wav" data-start="11.220" data-duration="0.4" data-track-index="49" data-volume="0.105"></audio>
+      <audio id="a40-mpop" src="assets/sfx/mpop.wav" data-start="11.530" data-duration="1.25" data-track-index="50" data-volume="0.182"></audio>
+      <audio id="a41-simple" src="assets/sfx/simple.wav" data-start="12.130" data-duration="1.531" data-track-index="51" data-volume="0.168"></audio>
+      <audio id="a42-ppop1" src="assets/sfx/ppop1.wav" data-start="12.600" data-duration="0.3" data-track-index="52" data-volume="0.154"></audio>
+      <audio id="a43-mpop" src="assets/sfx/mpop.wav" data-start="12.910" data-duration="1.25" data-track-index="53" data-volume="0.182"></audio>
+      <audio id="a44-simple" src="assets/sfx/simple.wav" data-start="13.340" data-duration="1.531" data-track-index="54" data-volume="0.168"></audio>
+      <audio id="a45-ppop2" src="assets/sfx/ppop2.wav" data-start="13.810" data-duration="0.4" data-track-index="55" data-volume="0.105"></audio>
+      <audio id="a46-mpop" src="assets/sfx/mpop.wav" data-start="14.120" data-duration="1.25" data-track-index="56" data-volume="0.182"></audio>
+      <audio id="a47-simple" src="assets/sfx/simple.wav" data-start="14.430" data-duration="1.531" data-track-index="57" data-volume="0.168"></audio>
+      <audio id="a48-ppop3" src="assets/sfx/ppop3.wav" data-start="14.900" data-duration="0.38" data-track-index="58" data-volume="0.14"></audio>
+      <audio id="a49-mpop" src="assets/sfx/mpop.wav" data-start="15.210" data-duration="1.25" data-track-index="59" data-volume="0.182"></audio>
+      <audio id="a50-cinfast" src="assets/sfx/cinfast.wav" data-start="15.870" data-duration="0.856" data-track-index="60" data-volume="0.182"></audio>
+      <audio id="a51-npop3" src="assets/sfx/npop3.wav" data-start="16.420" data-duration="0.17" data-track-index="61" data-volume="0.168"></audio>
+      <audio id="a52-npop4" src="assets/sfx/npop4.wav" data-start="16.880" data-duration="0.16" data-track-index="62" data-volume="0.154"></audio>
+      <audio id="a53-npop5" src="assets/sfx/npop5.wav" data-start="17.720" data-duration="0.15" data-track-index="63" data-volume="0.21"></audio>
+      <audio id="a54-flick" src="assets/sfx/flick.wav" data-start="18.150" data-duration="0.552" data-track-index="64" data-volume="0.238"></audio>
+      <audio id="a55-mpop" src="assets/sfx/mpop.wav" data-start="18.320" data-duration="1.25" data-track-index="65" data-volume="0.294"></audio>
+      <audio id="a56-fastwhoosh" src="assets/sfx/fastwhoosh.wav" data-start="18.500" data-duration="2.616" data-track-index="66" data-volume="0.224"></audio>
+      <audio id="a57-sweet" src="assets/sfx/sweet.wav" data-start="18.600" data-duration="1.076" data-track-index="67" data-volume="0.196"></audio>
+      <audio id="a58-npop1" src="assets/sfx/npop1.wav" data-start="19.390" data-duration="0.16" data-track-index="68" data-volume="0.21"></audio>
+      <audio id="a59-npop2" src="assets/sfx/npop2.wav" data-start="19.640" data-duration="0.18" data-track-index="69" data-volume="0.14"></audio>
+      <audio id="a60-npop3" src="assets/sfx/npop3.wav" data-start="20.060" data-duration="0.17" data-track-index="70" data-volume="0.168"></audio>
+      <audio id="a61-ppop4" src="assets/sfx/ppop4.wav" data-start="20.580" data-duration="0.4" data-track-index="71" data-volume="0.105"></audio>
+      <audio id="a62-flick" src="assets/sfx/flick.wav" data-start="21.390" data-duration="0.552" data-track-index="72" data-volume="0.238"></audio>
+      <audio id="a63-simple" src="assets/sfx/simple.wav" data-start="21.550" data-duration="1.531" data-track-index="73" data-volume="0.14"></audio>
+      <audio id="a64-mpop" src="assets/sfx/mpop.wav" data-start="21.560" data-duration="1.25" data-track-index="74" data-volume="0.294"></audio>
+      <audio id="a65-softpop" src="assets/sfx/softpop.wav" data-start="22.300" data-duration="0.72" data-track-index="75" data-volume="0.245"></audio>
+      <audio id="a66-key" src="assets/sfx/key.wav" data-start="22.420" data-duration="0.624" data-track-index="76" data-volume="0.315"></audio>
+      <audio id="a67-key" src="assets/sfx/key.wav" data-start="22.520" data-duration="0.624" data-track-index="77" data-volume="0.315"></audio>
+      <audio id="a68-key" src="assets/sfx/key.wav" data-start="22.620" data-duration="0.624" data-track-index="78" data-volume="0.315"></audio>
+      <audio id="a69-key" src="assets/sfx/key.wav" data-start="22.720" data-duration="0.624" data-track-index="79" data-volume="0.315"></audio>
+      <audio id="a70-npop4" src="assets/sfx/npop4.wav" data-start="23.070" data-duration="0.16" data-track-index="80" data-volume="0.154"></audio>
+      <audio id="a71-npop5" src="assets/sfx/npop5.wav" data-start="23.660" data-duration="0.15" data-track-index="81" data-volume="0.21"></audio>
+      <audio id="a72-ppop1" src="assets/sfx/ppop1.wav" data-start="24.100" data-duration="0.3" data-track-index="82" data-volume="0.154"></audio>
+      <audio id="a73-npop1" src="assets/sfx/npop1.wav" data-start="24.740" data-duration="0.16" data-track-index="83" data-volume="0.21"></audio>
+      <audio id="a74-airy" src="assets/sfx/airy.wav" data-start="25.100" data-duration="1.3" data-track-index="84" data-volume="0.154"></audio>
+      <audio id="a75-softpop" src="assets/sfx/softpop.wav" data-start="25.500" data-duration="0.72" data-track-index="85" data-volume="0.266"></audio>
+    </div>
+    <script>
+// «علّق كورس» v2: shots on a studio wall, after the user's reference. Objects and words fly in fast and land with a
+// little overshoot; shots leave with a whip. The stage drifts like a handheld camera and kicks on every slam. Motion
+// blur and the 15 fps "on twos" look come from build.py's post step (120 fps render, blended down), not from here.
+// One paused timeline, built after the fonts load, registered on window.__timelines.main. build.py reads T.
+(function () {
+  const D = 26.4;
+  // every cue is on the voice (ElevenLabs take, 19 Oct): word starts from faster-whisper medium, snapped to the end of
+  // the pause before them; each shot changes inside the pause between two lines
+  const T = {
+    hook: [0, 0, 0.8], bubs: [0.2, 0.45, 0.7], outA: 1.42, drop: 1.95,
+    mahad: 1.62, buy: 2.0, outB: 2.52,
+    tag: 2.72, cw: [2.85, 3.3], price: 3.52, strike: 3.95, outC: 4.06,
+    floorD: 4.12, mega: 4.16, dw: [4.36, 5.08, 5.66], ads: 6.18, bar: 6.4, kick: 6.2,
+    tr: [6.76, 18.82], cut1: 7.1, cut2: 19.2,
+    logo: 7.12, ew: [7.24, 7.6, 8.3, 8.76, 9.52, 9.74, 10.22], parcel: 10.3, outE: 10.84,
+    beats: [11.15, 12.53, 13.74, 14.83], outF: 16.0,
+    gw: [16.4, 16.86, 17.7], sales: 18.3, coins: 18.4,
+    hw: [19.37, 19.62, 20.04], forc: 20.56, ask: 21.54, cb: 21.9, keys: [22.42, 22.52, 22.62, 22.72], hb: [23.05, 23.64, 24.08, 24.72], logo2: 25.2,
+  };
+  const WORD = 'كورس';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
+  const stage = $('#stage'), typed = $('#typed'), caret = $('#caret');
+  // a kick on each slam: a short, decaying shake of the whole stage
+  const KICKS = [T.buy, T.price, T.ads, T.cut1, T.sales, T.ask];
+
+  function render(t) {
+    let x = 4 * Math.sin(t * 1.3) + 2.5 * Math.sin(t * 2.9 + 1), y = 4 * Math.sin(t * 1.1 + 2) + 2 * Math.sin(t * 3.3), r = 0.25 * Math.sin(t * 0.9), s = 1;
+    for (const k of KICKS) {
+      const d = t - k;
+      if (d >= 0 && d < 0.4) {
+        const e = Math.exp(-d * 11);
+        x += 16 * e * Math.sin(d * 70); y += 22 * e * Math.sin(d * 55 + 1); r += 0.6 * e * Math.sin(d * 48); s += 0.03 * e;
+      }
+    }
+    stage.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(4)})`;
+    typed.textContent = WORD.slice(0, T.keys.filter((k) => t >= k).length);
+    caret.style.opacity = t < T.cb || (t > T.keys[0] - 0.05 && t < T.keys[3] + 0.1) || Math.floor(t * 2.6) % 2 === 0 ? 1 : 0;
+  }
+
+  function build() {
+    const tl = gsap.timeline({ paused: true });
+    // a word drops in big and settles, out of a blur (a pop from his pack on each: build.py)
+    const pop = (w, t, big = false) => {
+      tl.fromTo(w, { opacity: 0, scale: big ? 1.7 : 1.35, y: big ? -30 : -14, filter: `blur(${big ? 18 : 10}px)` },
+        { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)', duration: big ? 0.32 : 0.28, ease: 'back.out(2.2)' }, t);
+    };
+    const words = (sel, times) => $$(sel).forEach((w, i) => pop(w, times[i]));
+    // an object flies in from a side, spinning a little, and lands
+    // (plus a blur while it travels fast, on top of the post step's blend, so the smear has no steps in it)
+    const fly = (el, t, from = {}, d = 0.45) => {
+      el = typeof el === 'string' ? $(el) : el;
+      tl.fromTo(el, { x: from.x || 0, y: from.y || 0, rotation: from.r || 0, scale: from.s || 1 },
+        { x: 0, y: 0, rotation: 0, scale: 1, duration: d, ease: 'back.out(1.5)' }, t);
+      tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.06 }, t);
+      const base = getComputedStyle(el).filter.replace('none', '');
+      tl.fromTo(el, { filter: `blur(18px) ${base}`.trim() }, { filter: `blur(0px) ${base}`.trim(), duration: d * 0.55, ease: 'power2.in' }, t);
+    };
+    // a shot leaves with a whip
+    const whip = (el, t, to) => {
+      tl.to(el, { ...to, duration: 0.28, ease: 'power3.in' }, t);
+      tl.fromTo(el, { filter: 'blur(0px)' }, { filter: 'blur(26px)', duration: 0.28, ease: 'power3.in' }, t);
+    };
+    const hide = (el, t) => tl.set(el, { visibility: 'hidden' }, t);
+    const floor = $('#floor');
+    tl.set(floor, { scaleY: 0 }, 0);
+
+    // ── A · the hook: the title is there from frame one; three DMs fly up and stack
+    const aw = $$('#A .w');
+    tl.fromTo(aw.slice(0, 2), { opacity: 0.6, scale: 1.08, filter: 'blur(4px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'power2.out' }, 0);
+    pop(aw[2], T.hook[2], true);
+    ['#b1', '#b2', '#b3'].forEach((b, i) => {
+      fly(b, T.bubs[i], { y: 900, r: i === 1 ? -14 : 12, s: 0.8 }, 0.5);
+      tl.to(b, { y: -8, rotation: i === 1 ? 1.2 : -1.2, duration: 0.5, ease: 'sine.out' }, T.bubs[i] + 0.5);
+    });
+    // the title whips away; the DMs hang on until «يشتري؟» lands, then drop out of frame, unanswered
+    whip('#A .tx', T.outA, { y: -1700 });
+    tl.to(['#b1', '#b2', '#b3'], { y: 1500, rotation: (i) => [18, -24, 30][i], duration: 0.42, ease: 'power2.in', stagger: 0.05 }, T.drop);
+    hide('#A', T.drop + 0.6);
+
+    // ── B · «ومحد يشتري؟»
+    pop('#B .sm .w', T.mahad);
+    [['#buy', 1.9], ['#buyr', 1.9]].forEach(([w, s]) => tl.fromTo(w, { opacity: 0, scale: s, filter: 'blur(26px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.buy));
+    tl.to('#buy', { scale: 1.04, duration: 1.0, ease: 'sine.inOut' }, T.buy + 0.3);
+    whip('#B', T.outB, { x: 1500, rotation: 6 });
+    hide('#B', T.outB + 0.3);
+
+    // ── C · the tag swings down on its string; «الخلل مو بسعرك..», struck through
+    tl.fromTo('#tag', { y: -1000 }, { y: 0, duration: 0.42, ease: 'power3.out' }, T.tag);
+    tl.fromTo('#tag', { rotation: 24 }, { rotation: 0, duration: 1.5, ease: 'elastic.out(1.2, 0.3)' }, T.tag);
+    tl.fromTo('#tag', { opacity: 0 }, { opacity: 1, duration: 0.06 }, T.tag);
+    words('#C .sm .w', T.cw);
+    tl.fromTo('#price', { opacity: 0, scale: 1.6, filter: 'blur(20px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.price);
+    tl.fromTo('#strk', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.22, ease: 'power2.out' }, T.strike);
+    tl.to('#price', { opacity: 0.55, duration: 0.2 }, T.strike + 0.1);
+    whip('#C', T.outC, { y: 1700 });
+    hide('#C', T.outC + 0.3);
+
+    // ── D · the floor comes up; the megaphone flies in and kicks on «وإعلانك!»
+    tl.to(floor, { scaleY: 1, duration: 0.35, ease: 'power3.out' }, T.floorD);
+    fly('#mega', T.mega, { x: -1000, r: -30, s: 0.8 }, 0.5);
+    tl.to('#mega', { x: 24, rotation: -4, duration: 0.07, yoyo: true, repeat: 3, ease: 'power1.inOut' }, T.kick);
+    words('#D .sm .w, #D .sc1 .w', T.dw);
+    tl.fromTo('#D .hv .w', { opacity: 0, scale: 1.8, filter: 'blur(22px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.ads);
+    tl.to('#barD', { scaleX: 1, duration: 0.25, ease: 'power2.out' }, T.bar);
+    hide('#D', T.cut1);
+
+    // ── E · dark, on the flash: the mark turns in; «كورس viZion يحول الرسائل إلى طلبات حقيقية.»
+    tl.set('#dark', { opacity: 1 }, T.cut1);
+    tl.set(floor, { scaleY: 0 }, T.cut1);
+    tl.fromTo('#logo', { rotationY: 110, scale: 0.6, y: 120 }, { rotationY: 0, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)' }, T.logo);
+    tl.fromTo('#logo', { opacity: 0 }, { opacity: 1, duration: 0.1 }, T.logo);
+    tl.to('#logo', { rotationY: -14, y: -10, duration: 1.4, ease: 'sine.inOut', yoyo: true, repeat: 1 }, T.logo + 0.7);
+    words('#E .w', T.ew);
+    fly('#parcel', T.parcel, { y: 700, r: -40, s: 0.7 }, 0.45);
+    whip('#E', T.outE, { y: -1700 });
+    tl.to('#dark', { opacity: 0, duration: 0.2 }, T.outE + 0.1);
+    hide('#E', T.outE + 0.3);
+
+    // ── F · the four: the number, the name, the object from the left; each leaves to the right for the next
+    tl.to(floor, { scaleY: 1, duration: 0.3, ease: 'power3.out' }, T.outE + 0.1);
+    T.beats.forEach((t, i) => {
+      const k = i + 1;
+      tl.fromTo(`#n${k}`, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, t);
+      tl.fromTo(`#f${k} .w`, { opacity: 0, scale: 1.5, filter: 'blur(16px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.28, ease: 'expo.out' }, t + 0.05);
+      fly(`#o${k}`, t, { x: -1200, r: -35, s: 0.85 }, 0.42);
+      tl.to(`#o${k}`, { rotation: i % 2 ? 3 : -3, y: -10, duration: 0.6, ease: 'sine.inOut' }, t + 0.42);
+      const out = i < 3 ? T.beats[i + 1] - 0.12 : T.outF;
+      tl.to([`#o${k}`, `#f${k}`, `#n${k}`], { x: 1300, rotation: 20, filter: 'blur(24px)', duration: 0.24, ease: 'power3.in' }, out);
+      tl.set([`#o${k}`, `#f${k}`, `#n${k}`], { visibility: 'hidden' }, out + 0.25);
+    });
+
+    // ── G · «يوقف خسارتك ويضاعف مبيعاتك», the coins grow out of the floor
+    words('#G .w:not(#sales)', T.gw);
+    tl.fromTo('#sales', { opacity: 0, scale: 1.8, filter: 'blur(24px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.3, ease: 'expo.out' }, T.sales);
+    tl.fromTo('#coins2', { scaleY: 0.1, scaleX: 0.7, y: 60 }, { scaleY: 1, scaleX: 1, y: 0, duration: 0.5, ease: 'back.out(2)' }, T.coins);
+    tl.fromTo('#coins2', { opacity: 0 }, { opacity: 1, duration: 0.06 }, T.coins);
+    hide('#G', T.cut2);
+    tl.set(floor, { scaleY: 0 }, T.cut2);
+
+    // ── H · the ask, on the second flash
+    words('#H > .tx:nth-child(1) .w', T.hw);
+    pop('#H .sc1 .w', T.forc, true);
+    tl.fromTo('#ask', { opacity: 0, x: -900, scale: 1.1, filter: 'blur(30px)' }, { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)', duration: 0.34, ease: 'power4.out' }, T.ask);
+    fly('#cb', T.cb, { y: 900, r: 10, s: 0.8 }, 0.5);
+    T.keys.forEach((k) => tl.fromTo('#cb', { scale: 1 }, { scale: 1.035, duration: 0.05, yoyo: true, repeat: 1 }, k));
+    words('#H > .sm .w', T.hb);
+    fly('#logo2', T.logo2, { y: 400, r: -60, s: 0.5 }, 0.5);
+    tl.to('#H', { scale: 1.04, duration: D - T.logo2, ease: 'none' }, T.logo2);
+
+    // ── the stage and the typing, driven by one clock so any frame can be rendered on its own
+    const clock = { t: 0 };
+    render(0);
+    tl.to(clock, { t: D, duration: D, ease: 'none', onUpdate: () => render(clock.t) }, 0);
+    window.__timelines = window.__timelines || {};
+    window.__timelines['main'] = tl;
+    document.body.dataset.ready = '1';
+  }
+  document.fonts.ready.then(build);
+})();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>viZion — علّق كورس (reel)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+/*FONTFACES*/
+/* v2, after the user's reference reel: a soft grey studio wall (and a navy floor in some shots), real objects that
+   fly in and land with a shadow on the wall, a few words per shot in heavy display type mixed with a script, fast
+   whips. The page is rendered at 240 fps and build.py's post step blends it down to 15 fps held frames, so every
+   move gets real motion blur and the choppy "on twos" feel. viZion colours: navy, blue, the logo's yellow. */
+:root { --navy:#0b2a6e; --blue:#1769f5; --yellow:#f2b51d; --ink:#141a2a }
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#cfd4dc }
+#root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'Readex Pro'; color:var(--navy) }
+#stage { position:absolute; left:-40px; top:-40px; width:1160px; height:2000px; transform-origin:50% 50% }
+#wall { position:absolute; inset:0; background:radial-gradient(70% 55% at 50% 42%, #f7f8fa 0%, #e6e9ee 45%, #b9c0cb 100%) }
+#floor { position:absolute; left:0; right:0; top:1320px; bottom:0; background:linear-gradient(180deg, #123a8f 0%, #0b2a6e 40%, #071c4c 100%); transform-origin:50% 100%;
+  box-shadow:inset 0 30px 60px rgba(0,0,0,.25) }
+#dark { position:absolute; inset:0; opacity:0; background:radial-gradient(75% 55% at 50% 40%, #16449e 0%, #0b2a6e 45%, #040f2e 100%) }
+.sc { position:absolute; left:40px; top:40px; width:1080px; height:1920px }
+#fx { position:absolute; inset:0; pointer-events:none; z-index:30 }
+#grain { position:absolute; inset:0; background:url(assets/img/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.08 }
+#vig { position:absolute; inset:0; background:radial-gradient(90% 70% at 50% 45%, rgba(0,0,0,0) 55%, rgba(10,16,35,.32) 100%) }
+.trx { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; mix-blend-mode:screen; pointer-events:none; z-index:25 }
+
+/* type: heavy display (Lalezar), a script for the turn of each line (Aref Ruqaa), a plain sans for the small words */
+.tx { position:absolute; left:40px; right:40px; text-align:center; white-space:nowrap }
+.w { display:inline-block; position:relative; opacity:0 }
+.hv { font-family:'Lalezar'; font-weight:400; line-height:1.05 }
+.sc1 { font-family:'Aref Ruqaa'; font-weight:700; line-height:1.1 }
+.sm { font-family:'Readex Pro'; font-weight:600; line-height:1.25 }
+.blue { color:var(--blue) } .white { color:#fff } .ylw { color:var(--yellow) }
+.lat { direction:ltr; unicode-bidi:isolate }
+.glow { text-shadow:0 0 18px rgba(242,181,29,.75), 0 0 46px rgba(242,181,29,.45) }
+.tsh { text-shadow:0 14px 22px rgba(20,30,60,.22) }
+/* the objects, with their shadow thrown on the wall, down and to the left of the key light */
+.pr { position:absolute; display:block; opacity:0; filter:drop-shadow(-26px 38px 26px rgba(15,25,55,.36)) }
+.pr.flat { filter:drop-shadow(-18px 26px 18px rgba(15,25,55,.3)) }
+.bub { position:absolute; opacity:0 }
+.bub img { display:block; width:100%; filter:drop-shadow(-22px 30px 22px rgba(15,25,55,.3)) }
+.bub span { position:absolute; left:0; right:0; top:0; height:74%; display:flex; align-items:center; justify-content:center;
+  font:600 46px/1.2 'Readex Pro'; color:#1b2233; white-space:nowrap }
+.strike { position:absolute; left:0; top:0; overflow:visible; pointer-events:none }
+.strike path { fill:none; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1 }
+.bar { position:absolute; background:var(--yellow); transform-origin:100% 50%; transform:scaleX(0) }
+.refl { transform:scaleY(-1); opacity:.22; -webkit-mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 60%); mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 60%) }
+.num { position:absolute; left:0; right:0; top:285px; text-align:center; font:400 64px/1 'Anton'; color:var(--blue); letter-spacing:.04em; direction:ltr; opacity:0 }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="DUR" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="DUR" data-track-index="0">
+        <div id="wall"></div>
+        <div id="floor"></div>
+        <div id="dark"></div>
+
+        <!-- A · the hook: «تجيك رسائل هواي..», three DMs fly up -->
+        <div class="sc" id="A">
+          <div class="tx hv tsh" style="top:290px; font-size:150px"><span class="w">تجيك</span> <span class="w">رسائل</span></div>
+          <div class="tx sc1 blue" style="top:440px; font-size:190px; transform:rotate(-4deg)"><span class="w">هواي..</span></div>
+          <div class="bub" id="b1" style="right:50px; top:760px; width:520px"><img src="assets/props/bubble-s.png" alt="" /><span>شكد السعر؟</span></div>
+          <div class="bub" id="b2" style="left:30px; top:980px; width:840px"><img src="assets/props/bubble-l.png" alt="" /><span>عاشت إيدك، من أقرر أراسلك</span></div>
+          <div class="bub" id="b3" style="right:40px; top:1210px; width:660px"><img src="assets/props/bubble-m.png" alt="" /><span>شدعوة هلگد غالي؟</span></div>
+        </div>
+
+        <!-- B · «ومحد يشتري؟», with its reflection -->
+        <div class="sc" id="B">
+          <div class="tx sm" style="top:560px; font-size:96px"><span class="w">ومحد</span></div>
+          <div class="tx hv blue" style="top:680px; font-size:330px"><span class="w" id="buy">يشتري؟</span></div>
+          <div class="tx hv blue refl" style="top:1010px; font-size:330px"><span class="w" id="buyr">يشتري؟</span></div>
+        </div>
+
+        <!-- C · the price tag swings in: «الخلل مو بسعرك..», the price struck through -->
+        <div class="sc" id="C">
+          <img class="pr flat" id="tag" src="assets/props/tag.png" alt="" style="left:400px; top:-20px; width:300px; transform-origin:50% 0" />
+          <div class="tx sm" style="top:930px; font-size:90px"><span class="w">الخلل</span> <span class="w">مو</span></div>
+          <div class="tx hv tsh" style="top:1040px; font-size:240px"><span class="w" id="price">بسعرك..</span></div>
+          <svg class="strike" width="1080" height="1920" viewBox="0 0 1080 1920"><path id="strk" pathLength="1" d="M250 1205 C 420 1185, 640 1175, 840 1150" style="stroke:var(--blue); stroke-width:22" /></svg>
+        </div>
+
+        <!-- D · the megaphone: «الخلل بطريقة ردك وإعلانك!» (the floor comes up under it) -->
+        <div class="sc" id="D">
+          <img class="pr" id="mega" src="assets/props/megaphone.png" alt="" style="left:-10px; top:300px; width:700px" />
+          <div class="tx sm" style="top:860px; font-size:90px"><span class="w">الخلل</span></div>
+          <div class="tx sc1 blue" style="top:960px; font-size:170px"><span class="w">بطريقة</span> <span class="w">ردك</span></div>
+          <div class="bar" id="barD" style="left:250px; top:1400px; width:580px; height:34px"></div>
+          <div class="tx hv white" style="top:1290px; font-size:200px"><span class="w">وإعلانك!</span></div>
+        </div>
+
+        <!-- E · dark: the viZion mark, «كورس viZion يحول الرسائل إلى طلبات حقيقية.» -->
+        <div class="sc" id="E" style="perspective:1400px">
+          <img class="pr" id="logo" src="assets/props/logo.png" alt="" style="left:330px; top:300px; width:420px; filter:drop-shadow(0 30px 40px rgba(0,0,10,.5)) drop-shadow(0 0 60px rgba(23,105,245,.45))" />
+          <div class="tx sm white" style="top:800px; font-size:84px"><span class="w">كورس</span></div>
+          <div class="tx white lat" style="top:880px; font:700 190px/1.1 'Readex Pro'"><span class="w">viZion</span></div>
+          <div class="tx sm white" style="top:1140px; font-size:70px"><span class="w">يحول</span> <span class="w">الرسائل</span></div>
+          <div class="tx sc1 ylw glow" style="top:1225px; font-size:124px"><span class="w">إلى</span> <span class="w">طلبات</span> <span class="w">حقيقية.</span></div>
+          <img class="pr" id="parcel" src="assets/props/parcel.png" alt="" style="left:30px; top:1430px; width:210px" />
+        </div>
+
+        <!-- F · the four, one object each, on the floor -->
+        <div class="sc" id="F">
+          <div class="num" id="n1">01</div><div class="num" id="n2">02</div><div class="num" id="n3">03</div><div class="num" id="n4">04</div>
+          <div class="tx hv tsh" id="f1" style="top:360px; font-size:150px"><span class="w">أسرار الاستهداف</span></div>
+          <div class="tx hv tsh" id="f2" style="top:360px; font-size:150px"><span class="w">صناعة العروض</span></div>
+          <div class="tx hv tsh" id="f3" style="top:360px; font-size:150px"><span class="w">فن الإقناع</span></div>
+          <div class="tx hv tsh" id="f4" style="top:360px; font-size:150px"><span class="w">مضاعفة الأرباح</span></div>
+          <img class="pr" id="o1" src="assets/props/target.png" alt="" style="left:250px; top:640px; width:580px" />
+          <img class="pr" id="o2" src="assets/props/gift.png" alt="" style="left:260px; top:640px; width:560px" />
+          <img class="pr" id="o3" src="assets/props/magnet.png" alt="" style="left:290px; top:620px; width:500px" />
+          <img class="pr" id="o4" src="assets/props/coins.png" alt="" style="left:170px; top:760px; width:740px" />
+        </div>
+
+        <!-- G · «يوقف خسارتك ويضاعف مبيعاتك», the coins grow -->
+        <div class="sc" id="G">
+          <div class="tx hv tsh" style="top:290px; font-size:150px"><span class="w">يوقف</span> <span class="w">خسارتك</span></div>
+          <div class="tx sm" style="top:470px; font-size:90px"><span class="w">ويضاعف</span></div>
+          <div class="tx hv blue tsh" style="top:560px; font-size:250px"><span class="w" id="sales">مبيعاتك</span></div>
+          <img class="pr" id="coins2" src="assets/props/coins-2.png" alt="" style="left:200px; top:880px; width:680px; transform-origin:50% 100%" />
+        </div>
+
+        <!-- H · the ask: «تريد تجربة مجانية للكورس؟ علّق بـ «كورس»» -->
+        <div class="sc" id="H">
+          <div class="tx hv tsh" style="top:280px; font-size:124px"><span class="w">تريد</span> <span class="w">تجربة</span> <span class="w">مجانية</span></div>
+          <div class="tx sc1 blue" style="top:420px; font-size:150px; transform:rotate(-3deg)"><span class="w">للكورس؟</span></div>
+          <div class="tx hv tsh" style="top:640px; font-size:270px"><span class="w" id="ask">علّق بـــ</span></div>
+          <div class="bub" id="cb" style="left:220px; top:950px; width:640px"><img src="assets/props/bubble-blue.png" alt="" /><span style="font:400 130px/1 'Lalezar'; color:#fff; padding-top:14px"><b id="typed" style="font-weight:400"></b><i id="caret" style="display:inline-block; width:7px; height:100px; margin-right:10px; background:#fff"></i></span></div>
+          <div class="tx sm" style="top:1290px; font-size:54px"><span class="w">ونرسلك</span> <span class="w">التجربة</span> <span class="w blue">المجانية</span> <span class="w">بالخاص.</span></div>
+          <img class="pr" id="logo2" src="assets/props/logo.png" alt="" style="left:465px; top:1400px; width:150px; filter:drop-shadow(-10px 16px 12px rgba(15,25,55,.3))" />
+        </div>
+      </div>
+      <video class="trx" id="tr1" src="assets/tr/flash19.mp4" muted playsinline data-start="TR1" data-duration="0.76" data-track-index="2"></video>
+      <video class="trx" id="tr2" src="assets/tr/flash6.mp4" muted playsinline data-start="TR2" data-duration="0.8" data-track-index="3"></video>
+      <div id="fx"><div id="grain"></div><div id="vig"></div></div>
+
+<!--AUDIO-->
+    </div>
+    <script>
+/*TIMELINE*/
+    </script>
+  </body>
+</html>

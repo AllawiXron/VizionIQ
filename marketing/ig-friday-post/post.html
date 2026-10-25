@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<title>allawi.psd — جمعة مباركة</title>
+<style>
+@font-face { font-family:'DG Sahabah'; font-weight:400; font-display:block; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
+/* the @allawi.psd look (his highlights): the brown desk under the paper texture, a torn cream strip, light grain */
+:root { --ink:#1f1510; --cream:#fbf3e6; --oink:#c2441a; --orange:#e2541b }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#111; font-synthesis:none }
+/* the desk as the sun finds it: warm brown under the paper texture; the render on top darkens it where the window
+   frame and the objects throw their shadows */
+#post { position:relative; width:1080px; height:1350px; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400;
+  background:radial-gradient(120% 90% at 40% 70%, #57392a, #4a3122 50%, #3a261b) }
+#post::before { content:''; position:absolute; inset:0; background:url(assets/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.22 }
+#still { position:absolute; inset:0; width:1080px; height:1350px; z-index:5 }
+.hand { position:absolute; left:0; right:0; text-align:center; color:var(--cream); white-space:nowrap; z-index:8; text-shadow:0 4px 14px rgba(0,0,0,.5) }
+#grain { position:absolute; inset:0; background:url(assets/grain.png) repeat; background-size:420px; mix-blend-mode:overlay; opacity:.07; z-index:20 }
+#vig { position:absolute; inset:0; background:radial-gradient(100% 75% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.35) 100%); z-index:19 }
+.strip { position:absolute; left:0; right:0; display:flex; justify-content:center; z-index:8 }
+.strip > span { position:relative; display:inline-block; color:var(--ink); white-space:nowrap; background:var(--cream) 0 0 / 100% 100% no-repeat;
+  filter:drop-shadow(0 14px 16px rgba(0,0,0,.45)) }
+.strip .k { color:var(--oink) }
+.strip img { position:absolute; pointer-events:none }
+#steam { position:absolute; left:0; top:0; z-index:6; overflow:visible }
+#steam path { fill:none; stroke:#fff3e2; stroke-linecap:round; stroke-width:22 }
+.ktag { position:absolute; width:370px; height:150px; z-index:7; filter:drop-shadow(0 12px 14px rgba(0,0,0,.45)) }
+.ktag .tg { position:absolute; inset:0; background:var(--cream); clip-path:polygon(0 50%, 17% 0, 100% 0, 100% 100%, 17% 100%) }
+.ktag .hole { position:absolute; left:10%; top:50%; width:24px; height:24px; margin:-12px 0 0 -12px; border-radius:50%; background:var(--orange) }
+.ktag div { position:absolute; left:70px; right:14px; top:0; bottom:0; display:flex; align-items:center; justify-content:center;
+  font:400 46px/1 'DG Sahabah'; color:var(--ink); direction:ltr }
+</style>
+</head>
+<body>
+<div id="post">
+  <div class="strip" style="top:120px; transform:rotate(-2deg)"><span style="padding:30px 70px 44px; font-size:150px; line-height:1.2">جمعة <span class="k">مباركة</span><img src="assets/pin-orange.png" alt="" style="right:10px; top:-14px; width:90px" /></span></div>
+  <div class="hand" style="top:375px; font-size:66px; line-height:1.3; transform:rotate(-1.5deg)">استريحوا اليوم.. والأفكار علينا</div>
+  <img id="still" src="assets/still.png" alt="" />
+  <svg id="steam" width="1080" height="1350" viewBox="0 0 1080 1350">
+    <defs><filter id="smoke" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="fractalNoise" baseFrequency="0.011 0.028" numOctaves="3" seed="7" /><feDisplacementMap in="SourceGraphic" scale="70" /><feGaussianBlur stdDeviation="7" /></filter></defs>
+    <g filter="url(#smoke)" transform="translate(462 742)">
+      <path d="M0 0 C -25 -40, 30 -70, 5 -120 S 20 -190, -5 -240" style="opacity:.28" />
+      <path d="M30 4 C 55 -35, 10 -75, 40 -115 S 25 -175, 50 -215" style="opacity:.2" />
+      <path d="M14 8 C 0 -20, 30 -45, 12 -80" style="opacity:.3" />
+    </g>
+  </svg>
+  <div class="ktag" style="right:34px; bottom:36px; transform:rotate(5deg) scale(.9); transform-origin:100% 100%"><i class="tg"></i><i class="hole"></i><div>@allawi.psd</div></div>
+  <div id="vig"></div><div id="grain"></div>
+</div>
+<script src="tear.js"></script>
+<script>
+document.fonts.ready.then(() => {
+  document.querySelectorAll('.strip > span').forEach((el, i) => window.tear(el, 211 + i * 37));
+  Promise.all([...document.images].map((im) => im.decode().catch(() => {}))).then(() => { document.body.dataset.ready = '1'; });
+});
+</script>
+</body>
+</html>

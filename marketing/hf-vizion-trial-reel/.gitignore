@@ -1,0 +1,12 @@
+renders/*
+!renders/vizion-trial-reel.mp4
+!renders/vizion-trial-reel-cover.jpg
+assets/sfx/
+assets/tr/
+snapshots/
+node_modules/
+.hyperframes/
+.media/
+assets/voice.wav
+stills/still-*.png
+props/hdri/
