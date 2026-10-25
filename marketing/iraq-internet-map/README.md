@@ -64,6 +64,12 @@ To publish: any static host that serves range requests (Vercel, Netlify, GitHub 
 make a new project from this repo with the root directory `marketing/iraq-internet-map/site` and no build command;
 it stays separate from the viZion site.
 
+The live counts on the home page (visitors and finished tests) come from `site/api/stats.mjs`, a Vercel function. It
+needs a store: in the Vercel project, Storage, Create, Upstash for Redis (the free plan is enough), and connect it to
+the project; that adds `KV_REST_API_URL` and `KV_REST_API_TOKEN`, then redeploy. It keeps only the two numbers. A
+browser counts as a visitor once; a line or ping test counts when it finishes; the same address counts once per kind
+every 10 seconds. Where there is no store (another host, the preview), the counts stay hidden.
+
 ## The three night stills (`out/`, 1170 x 2532, phone at 3x; the first direction, kept for the record)
 
 1. **The country** (`still-1-country.png`): every 500 m square measured by Ookla between Jul and Sep 2026 as a point

@@ -572,12 +572,33 @@ async function measure(t, signal) {
   t.up = sent * 8 / ((performance.now() - ustart) / 1000) / 1e6;
   t.live = null; t.phase = 'done';
 }
+// ---------- live counts: browsers that opened the site and tests that finished, where the host keeps a count ----------
+
+S.stats = null;
+const liveHTML = () => !S.stats ? '' : `<div><b>${ar(S.stats.visits)}</b><span>زوار المنصة لحد الآن</span></div>
+  <div><b>${ar(S.stats.tests)}</b><span>فحوصات كملت بالمنصة</span></div>
+  <p class="small">الأرقام تتحدث كل نصف دقيقة.</p>`;
+function setStats(v) {
+  if (!v || typeof v.visits !== 'number' || typeof v.tests !== 'number') return;
+  S.stats = v;
+  for (const el of page.querySelectorAll('.live')) { el.innerHTML = liveHTML(); el.hidden = false; }
+}
+// a host without the counter answers with an error or a page, and the counts simply stay hidden
+const stats = (kind) => fetch('api/stats', kind ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind }) } : { cache: 'no-store' })
+  .then(r => r.ok && /json/.test(r.headers.get('content-type') || '') ? r.json() : null).then(setStats).catch(() => {});
+function countVisit() {
+  let seen = false;
+  try { seen = localStorage.getItem('iqspeed-seen') === '1'; localStorage.setItem('iqspeed-seen', '1'); } catch (e) { /* private windows */ }
+  stats(seen ? null : 'visit');
+  setInterval(() => { if (!document.hidden && page.querySelector('.live')) stats(); }, 30000);
+}
+
 function startTest() {
   if (testRun) testRun.abort();
   testRun = new AbortController();
   const t = S.test = { phase: 'ping', ping: null, down: null, up: null, live: null };
   drawTest();
-  measure(t, testRun.signal).then(() => { if (S.test === t) drawTest(); }).catch(() => {
+  measure(t, testRun.signal).then(() => { if (t.phase === 'done') stats('test'); if (S.test === t) drawTest(); }).catch(() => {
     if (S.test === t && !testRun.signal.aborted) { t.phase = 'failed'; drawTest(); }
   });
 }
@@ -636,7 +657,7 @@ function startPing() {
   pingRun = new AbortController();
   const t = S.ping = { phase: 'idle', idle: null, jitter: null, busy: null, live: null };
   drawPing();
-  measurePing(t, pingRun.signal).then(() => { if (S.ping === t) drawPing(); }).catch(() => {
+  measurePing(t, pingRun.signal).then(() => { if (t.phase === 'done') stats('test'); if (S.ping === t) drawPing(); }).catch(() => {
     if (S.ping === t && !pingRun.signal.aborted) { t.phase = 'failed'; drawPing(); }
   });
 }
@@ -1057,6 +1078,7 @@ function homeHTML() {
     : `كان معدل الموبايل ${ar(hist[0][0])} ميغابت في صيف ٢٠١٩، و${ar(hist[hist.length - 1][0])} في صيف ٢٠٢٦`;
   return `<div class="cols">
   <section class="me" id="me">${meBlock()}</section>
+  <div class="live"${S.stats ? '' : ' hidden'}>${liveHTML()}</div>
   <h2 class="or">أو شوف سرعة أي منطقة</h2>
   <p class="small">من أكثر من مليون اختبار سرعة أجراها الناس بأنفسهم في كل محافظات العراق.</p>
   ${searchHTML('اكتب اسم الحي أو المدينة')}
@@ -1220,6 +1242,8 @@ function aboutHTML() {
     <p>لا أقارن بين شركات الإنترنت. البيانات المفتوحة لا تذكر الشركة، والمصدر الآخر الذي يذكرها (M-Lab) يقيس العراق إلى خوادم خارج العراق يتأخر الرد منها ١١٠ إلى ١٦٠ ملي ثانية، فتخرج أرقامه أقل بكثير من الواقع.</p>
     <h2>الخرائط</h2>
     <p>الشوارع والأنهار والأحياء من OpenStreetMap، وحدود المحافظات من مكتب الأمم المتحدة لتنسيق الشؤون الإنسانية (OCHA)، وفيها حلبجة ما تزال ضمن محافظة السليمانية.</p>
+    <h2>عداد الزوار والفحوصات</h2>
+    <p>الرقمان في الصفحة الأولى يعدان كل متصفح يفتح الموقع مرة واحدة، وكل فحص خط أو بنك يكتمل فيه. لا أحفظ معهما اسما ولا عنوانا ولا نتيجة فحص.</p>
     <h2>من صنعه</h2>
     <p>الفكرة والتصميم لعلي، إنستغرام <bdi dir="ltr">@allawi.psd</bdi></p>
     <h2>المصادر والرخص</h2>
@@ -1338,6 +1362,7 @@ Promise.all(['data/govs.json', 'data/country.json', 'data/govmap.json'].map(getJ
   const shown = render(true);
   guessFromNetwork().then(p => { if (p && !S.me) { S.me = { p, src: 'net' }; redrawMe(); } });
   document.body.dataset.text = '1';
+  countVisit();
   return Promise.all([shown, placesReady]);
 }).then(() => { document.body.dataset.ready = '1'; });
 })();
