@@ -345,7 +345,7 @@ function End({ t }: { t: number }) {
       <Title i={10} y={370} st={show(t, 47.5, Infinity, 0.9)} color="#f5f5f7" text="منصة سرعة الإنترنت في العراق" />
       <div style={{ ...at(10, 540, 465) }}><div style={show(t, 47.75, Infinity, 0.8)}><T size={fit('افحص خطك وقارن منطقتك مجانا الآن — الرابط بالبايو', 36, 500, 940)} color="#c7c7cc">افحص خطك وقارن منطقتك مجانا الآن — الرابط بالبايو</T></div></div>
       <div style={{ ...at(10, 540, 535) }}><div style={show(t, 48.0, Infinity, 0.8)}><T size={30} color="rgba(255,255,255,0.8)">تطوير وتصميم <bdi dir="ltr" style={{ color: '#ff9f0a' }}>@allawi.psd</bdi></T></div></div>
-      <div style={{ position: 'absolute', left: SX(10), top: 0 }}><Phone cx={P.cx} cy={P.cy} w={P.w} img={img} dark btn={b} /></div>
+      <div style={{ position: 'absolute', left: SX(10), top: 0 }}><Phone cx={P.cx} cy={P.cy} w={P.w} img={img} dark btn={img === 'home' ? b : undefined} /></div>
       <Pointer t={t} target={[SX(10) + go[0] + 60, go[1] + 14]} tin={49.2} tp={50.0} from={[SX(10) + 1150, 2000]} to={[SX(10) + 1200, 1500]} />
     </>
   );
