@@ -58,7 +58,7 @@ def px(v):
     return Vector((540 + c.x / -c.z * f - cam.data.shift_x * 1920, 960 - c.y / -c.z * f + cam.data.shift_y * 1920))
 
 
-BX, BY, PH = 330, 1625, 770
+BX, BY, PH = 305, 1625, 750
 bpy.context.view_layer.update()
 base_w = box.matrix_world @ Vector((0, 0, -0.5))
 top_w = box.matrix_world @ Vector((0, 0, 0.5))
@@ -120,8 +120,9 @@ slab.data.materials.append(m)
 WALL_Y = 1.15
 bpy.ops.mesh.primitive_plane_add(size=1, location=(0.3, WALL_Y, 0.6), rotation=(math.radians(90), 0, 0))
 wall = bpy.context.object; wall.name = 'Wall'; wall.scale = (4, 3, 1)
+bpy.ops.object.transform_apply(scale=True)
 m, n, l, p = mat('GreenPlaster')
-tc = n.new('ShaderNodeTexCoord'); mp = n.new('ShaderNodeMapping'); mp.inputs['Scale'].default_value = (0.9, 0.9, 0.9)
+tc = n.new('ShaderNodeTexCoord'); mp = n.new('ShaderNodeMapping'); mp.inputs['Scale'].default_value = (0.45, 0.45, 0.45)
 l.new(tc.outputs['Object'], mp.inputs['Vector'])
 dif = img(n, os.path.join(WALLTEX, 'plastered_wall_02_diff.jpg')); nor = img(n, os.path.join(WALLTEX, 'plastered_wall_02_nor_gl.jpg'), True)
 for t in (dif, nor):
@@ -132,7 +133,7 @@ ramp.color_ramp.elements[0].position = 0.25; ramp.color_ramp.elements[0].color =
 ramp.color_ramp.elements[1].position = 0.85; ramp.color_ramp.elements[1].color = (0.001, 0.055, 0.040, 1)
 l.new(bw.outputs['Val'], ramp.inputs['Fac']); l.new(ramp.outputs['Color'], p.inputs['Base Color'])
 p.inputs['Roughness'].default_value = 0.92
-nm = n.new('ShaderNodeNormalMap'); nm.inputs['Strength'].default_value = 1.0
+nm = n.new('ShaderNodeNormalMap'); nm.inputs['Strength'].default_value = 0.35
 l.new(nor.outputs['Color'], nm.inputs['Color']); l.new(nm.outputs['Normal'], p.inputs['Normal'])
 wall.data.materials.append(m)
 
@@ -157,6 +158,11 @@ gobo.scale = (7, 7, 7)
 gobo.rotation_mode = 'QUATERNION'; gobo.rotation_quaternion = SUN_DIR.to_track_quat('Y', 'Z')
 gobo.location = Vector((0.3, WALL_Y, 0.7)) - SUN_DIR * 1.2
 gobo.visible_camera = False
+# a second branch nearer the slab dapples the stone in front of the pouch and the pouch itself
+gobo2 = gobo.copy(); gobo2.data = gobo.data; sc.collection.objects.link(gobo2); gobo2.name = 'LeafShadowNear'
+gobo2.scale = (4, 4, 4)
+gobo2.rotation_quaternion = SUN_DIR.to_track_quat('Y', 'Z') @ Vector((0, 1, 0)).to_track_quat('Y', 'X')
+gobo2.location = Vector((0.32, -0.12, 0.0)) - SUN_DIR * 0.75
 for o in shrubs:
     if o is not gobo and o.type != 'MESH':
         o.hide_render = True
@@ -167,7 +173,7 @@ by = {o.name.split('_LOD')[0].replace('nettle_plant_', ''): o for o in sprigs}
 LAY = [  # (part, pixel u, v on the Story frame, turn about the vertical, scale)
     ('tall_a', 700, 1690, 200, 1.15),
     ('medium_b', 560, 1640, 140, 1.0),
-    ('tall_b', 980, 1880, 245, 1.8),     # close to the lens, bottom right
+    ('tall_b', 40, 1700, 330, 1.0),
 ]
 for part, u, v, turn, s in LAY:
     o = by[part]
@@ -186,16 +192,16 @@ for o in sprigs:
 bpy.ops.object.light_add(type='SUN', location=(0, 0, 3))
 sun = bpy.context.object; sun.name = 'MorningSun'
 sun.rotation_euler = SUN_DIR.to_track_quat('-Z', 'Y').to_euler()
-sun.data.energy = 6.5; sun.data.angle = math.radians(3.0); sun.data.color = (1.0, 0.88, 0.70)
+sun.data.energy = 9.0; sun.data.angle = math.radians(2.0); sun.data.color = (1.0, 0.88, 0.70)
 # the warm patch of light on the wall behind the pouch, off to its right
 bpy.ops.object.light_add(type='SPOT', location=(0.55, -0.6, 1.2))
 spot = bpy.context.object; spot.name = 'WallGlow'
 spot.rotation_euler = (Vector((0.22, WALL_Y, 0.55)) - spot.location).to_track_quat('-Z', 'Y').to_euler()
-spot.data.energy = 650; spot.data.spot_size = math.radians(30); spot.data.spot_blend = 1.0
+spot.data.energy = 450; spot.data.spot_size = math.radians(30); spot.data.spot_blend = 1.0
 spot.data.shadow_soft_size = 0.4; spot.data.color = (1.0, 0.80, 0.55)
 world = bpy.data.worlds.new('Room'); sc.world = world; world.use_nodes = True
 world.node_tree.nodes['Background'].inputs['Color'].default_value = (0.07, 0.10, 0.085, 1)
-world.node_tree.nodes['Background'].inputs['Strength'].default_value = 0.55
+world.node_tree.nodes['Background'].inputs['Strength'].default_value = 0.8
 
 # ---------- passes ----------
 if MODE == 'beauty':
