@@ -184,7 +184,9 @@ function lift(t, t0, t1 = Infinity) {
 }
 function withLift(L, cx, cy, draw) {
   if (!L.on) return;
-  ctx.save(); ctx.globalAlpha = L.a; ctx.translate(cx, cy + L.dy); ctx.scale(L.s, L.s); ctx.translate(-cx, -cy); draw(); ctx.restore();
+  // once up, a card floats a few pixels, slowly, so a held frame is never dead
+  const fl = 5 * Math.sin(nowT * 1.9 + cx * 0.011 + cy * 0.004);
+  ctx.save(); ctx.globalAlpha = L.a; ctx.translate(cx, cy + L.dy + fl); ctx.scale(L.s, L.s); ctx.translate(-cx, -cy); draw(); ctx.restore();
 }
 function sampleTag(x, y) {
   const txt = 'نموذج فحص', s = 26, w = tw(txt, s, 700) + 30;
@@ -294,7 +296,7 @@ const mid = r => [r[0] + r[2] / 2, r[1] + r[3] / 2];
 // a phone that rises in from below, sits at top, and drops away at t1
 function phoneTop(t, top, t0, t1) {
   const k = ease(seg(t, t0, 0.7)), out = ease(seg(t, t1, 0.4));
-  return top + (1 - k) * 1300 + out * 1300;
+  return top + (1 - k) * 1300 + out * 1300 + 4 * Math.sin(t * 1.6);
 }
 
 // ---------- 1. the shock ----------
