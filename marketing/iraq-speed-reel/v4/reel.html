@@ -507,7 +507,7 @@ function scene2(t, rt) {
     const [m1, x1, y1, rx1, ry1, rz1] = keyAt(CARD_END, t);
     const m = lerp(SW / CW * 0.93 * 1.08, m1, k) * lerp(0.85, 1, k), [X, Y] = vpt(lerp(P[0], x1, k), lerp(P[1], y1 + fl * k, k));
     placeCard(m * VS, X, Y, lerp(P[3], rx1, k), lerp(P[4], ry1, k), lerp(P[5], rz1, k), VR);
-    cardMat.opacity = clamp(k * 2.2); cardG.visible = true;
+    cardMat.opacity = clamp(k * 60); cardG.visible = true;   // solid almost at once: a sheet lifting off the screen, never see-through
     cardShadow(cardMat.opacity);
     DOF = 7 * smooth(seg(t, 9.0, 0.35));
   }
@@ -587,12 +587,12 @@ const better = (a, b, dir) => a === b ? 0 : (a > b) === (dir > 0) ? 1 : 2;
 const WIN = '#0D8A4E';
 function scene5(t, rt) {
   if (t < 21.3 || t > 26.1) return;
-  hook(t, 'قبل لا تنتقل أو تأجر.. قارن بين منطقتين', 540, Y5H, 21.78, 22.75);
+  hook(t, 'قبل لا تنتقل أو تأجر.. قارن بين منطقتين', 540, Y5H, 21.78, 22.62);
   const A = KAR, B = MAN, oy = OY5;
   const rows = [['البيت، التنزيل', 'f', 'd', 1, 'ميغابت'], ['البيت، الرفع', 'f', 'u', 1, 'ميغابت'], ['البيت، البنك', 'f', 'l', -1, 'ms'], ['الموبايل، التنزيل', 'm', 'd', 1, 'ميغابت']];
   [[A, 562, 22.75, 1], [B, 92, 22.9, 2]].forEach(([P, x, t0, me]) => {
     const e = seg(t, t0, 0.75); if (e <= 0) return;
-    const s = wobble(e, 7, 11), dx = (1 - s) * (me === 1 ? 620 : -620), y = oy + 560, w = 426, h = 860, al = clamp(e * 4);
+    const s = wobble(e, 7, 11), dx = (1 - s) * (me === 1 ? 620 : -620), y = oy + 560, w = 426, h = 860, al = clamp(e * 12);
     ctx.save(); ctx.translate(dx, 0);
     softCard(ctx, x, y, w, h, 26, al);
     text(P.n, x + w - 36, y + 96, { size: 62, weight: 800, alpha: al });
@@ -773,11 +773,11 @@ function buildCam() {
     [12.1, ...PGO, 1.7, 3, 'L'], [12.45, PGO[0], PGO[1] + 3, 1.74, 2.8, 'B'],             // افحص البنك مالتك
     [12.8, ...PNUM, 2.3, 1.0, 'L'], [14.0, PNUM[0], PNUM[1] + 8, 2.42, 0.6, 'B'],         // ١٢ then ١٦٢
     [14.4, ...PWARN, 1.45, -1.5, 'L'], [15.0, PWARN[0], PWARN[1] + 6, 1.5, -1.2, 'B'],    // the jump, in words
-    [15.4, 540, OY3C + 1015, 1.0, -1.0, 'L'], [16.45, 540, OY3C + 1025, 1.05, -0.4, 'B'], // lowest and highest
+    [15.4, 540, OY3C + 1015, 1.1, -1.0, 'L'], [16.45, 540, OY3C + 1025, 1.15, -0.4, 'B'], // lowest and highest
     [16.85, 540, Y4H, 1.1, 0.8, 'L'], [18.0, 540, Y4H + 4, 1.16, 0.4, 'B'],               // ٨٢٤ منطقة
-    [18.45, 540, OY4 + 1000, 0.98, 1.5, 'L'], [21.45, 540, OY4 + 1100, 1.06, 0.4, 'B'],   // Saqlawiya
+    [18.45, 540, OY4 + 1060, 1.12, 1.5, 'L'], [21.45, 540, OY4 + 1110, 1.19, 0.4, 'B'],   // Saqlawiya
     [21.85, 540, Y5H, 1.12, -0.8, 'L'], [22.75, 540, Y5H + 2, 1.16, -0.5, 'B'],           // قبل لا تنتقل
-    [23.2, 540, Y5H, 1.0, -1.5, 'L'], [25.45, 540, Y5H + 15, 1.06, -0.8, 'B'],            // the two areas
+    [23.2, 540, Y5H, 1.11, -1.5, 'L'], [25.45, 540, Y5H + 15, 1.17, -0.8, 'B'],            // the two areas
     [25.85, 540, Y6H, 1.08, 1.0, 'L'], [26.9, 540, Y6H + 2, 1.13, 0.6, 'B'],              // the ministry
     [27.35, 540, MAP, 1.12, -1.0, 'L'], [29.35, 540, MAP - 15, 1.17, -0.4, 'Z'],         // the map, then into the green
     [29.8, ...SUL, 35, -0.4, 'L'],
