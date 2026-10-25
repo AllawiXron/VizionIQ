@@ -70,6 +70,12 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   (−620 px, 0.78) and staying all scene, 80 px clear above the phone or cards, a real arrow pointer that presses the
   button (1, 0.94, 1.02, 1, colour change), key results lifting off the phone as white cards (0 25px 60px 12 %) over a
   dimmed phone, the room #F2F2F7 turning dark #141417 for a shock and green for a chart, and nothing ever covering text.
+  v5 still read as "a 3-line paragraph on top and a white card below" (25 Oct). v6 (`marketing/iraq-speed-reel/v6`, in
+  Remotion) follows his iPhone launch reference: one short line per scene (about 48 px, lots of air), never a header
+  over a full phone; the phone off to one side with soft matte pills beside it (#EFEFF4, light top hairline, 0 8px 20px
+  8 %, filling with colour when pressed); horizontal whip pans with a real shutter blur (enough samples that no stepped
+  copies show); the camera punching in on the pressed button and the numbers; a solid dark room for the share card
+  3-up and the ping jump; no big coloured button blocks.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
