@@ -1,0 +1,47 @@
+{
+ "apple": {
+  "title": "File:Red Delicious Apple Mexico.jpg",
+  "w": 2905,
+  "h": 2264,
+  "lic": "Public domain",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Red_Delicious_Apple_Mexico.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Red_Delicious_Apple_Mexico.jpg/500px-Red_Delicious_Apple_Mexico.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Doggo19292\" class=\"mw-redirect\" title=\"User:Doggo19292\">Doggo19292</a>"
+ },
+ "croc": {
+  "title": "File:Salzwasserkrokodil Crocodylus porosus.jpg",
+  "w": 3000,
+  "h": 1913,
+  "lic": "CC BY 3.0",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Salzwasserkrokodil_Crocodylus_porosus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Salzwasserkrokodil_Crocodylus_porosus.jpg/500px-Salzwasserkrokodil_Crocodylus_porosus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Holleday\" title=\"User:Holleday\">Holger Krisp</a>"
+ },
+ "bull": {
+  "title": "File:Votive bull, inscribed 'Aleatis dedicated me', Sanctuary of Zeus, Nemea, Greece, 400-350 BC, bronze - Spurlock Museum, UIUC - DSC05747.jpg",
+  "w": 3792,
+  "h": 2745,
+  "lic": "CC0",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Votive_bull%2C_inscribed_%27Aleatis_dedicated_me%27%2C_Sanctuary_of_Zeus%2C_Nemea%2C_Greece%2C_400-350_BC%2C_bronze_-_Spurlock_Museum%2C_UIUC_-_DSC05747.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Votive_bull%2C_inscribed_%27Aleatis_dedicated_me%27%2C_Sanctuary_of_Zeus%2C_Nemea%2C_Greece%2C_400-350_BC%2C_bronze_-_Spurlock_Museum%2C_UIUC_-_DSC05747.jpg/500px-Votive_bull%2C_inscribed_%27Aleatis_dedicated_me%27%2C_Sanctuary_of_Zeus%2C_Nemea%2C_Greece%2C_400-350_BC%2C_bronze_-_Spurlock_Museum%2C_UIUC_-_DSC05747.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Daderot\" title=\"User:Daderot\">Daderot</a>"
+ },
+ "cactus": {
+  "title": "File:Saguaro Cactus (Carnegiea gigantea) - Flickr - gailhampshire.jpg",
+  "w": 3012,
+  "h": 2802,
+  "lic": "CC BY 2.0",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Saguaro_Cactus_%28Carnegiea_gigantea%29_-_Flickr_-_gailhampshire.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Saguaro_Cactus_%28Carnegiea_gigantea%29_-_Flickr_-_gailhampshire.jpg/500px-Saguaro_Cactus_%28Carnegiea_gigantea%29_-_Flickr_-_gailhampshire.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/43272765@N04\">gailhampshire</a> from Cradley, Malvern, U.K"
+ },
+ "compass": {
+  "title": "File:Beam Compass Clamps (30792300911).jpg",
+  "w": 5184,
+  "h": 3456,
+  "lic": "Public domain",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Beam_Compass_Clamps_%2830792300911%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Beam_Compass_Clamps_%2830792300911%29.jpg/500px-Beam_Compass_Clamps_%2830792300911%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/59094030@N08\">Central Intelligence Agency</a> from Washington, D.C."
+ }
+}

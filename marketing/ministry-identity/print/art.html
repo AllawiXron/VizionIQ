@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Print artwork</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<script src="../marks.js"></script>
+<style>
+  /* Flat print artwork at real sizes (mm), for the 3D renders: node print/art.cjs -> print/tex/*.png.
+     The names, numbers and addresses are samples; the QR-like squares are decoration. */
+  :root { --blue: #17357d; --night: #0c1b40; --gold: #c99a2e; --clay: #ece2d0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #888; font-family: "IBM Plex Sans Arabic", sans-serif; color: var(--night); padding: 10mm; display: flex; flex-wrap: wrap; gap: 10mm; align-items: flex-start; }
+  .art { position: relative; overflow: hidden; background: #fff; }
+  .lock { display: inline-flex; align-items: center; gap: .9em; white-space: nowrap; }
+  .lock .bar { width: .25mm; align-self: stretch; background: currentColor; opacity: .3; }
+  .lock .t1 { font: 400 .34em var(--t, "IBM Plex Sans Arabic"); opacity: .8; }
+  .lock .t2 { font: 700 .62em/1.2 "Markazi Text"; margin: .02em 0 .1em; }
+  .lock .t3 { font: 500 .19em "IBM Plex Sans"; direction: ltr; text-align: right; letter-spacing: .08em; opacity: .75; }
+  .lat { font-family: "IBM Plex Sans"; direction: ltr; unicode-bidi: isolate; }
+</style>
+<script>
+const lock = (ink, tc, h) => `<div class="lock" style="font-size:${h}mm;color:${tc}">${markSVG('gate', ink, h * 3.7795)}<div class="bar"></div>
+  <div><div class="t1">جمهورية العراق</div><div class="t2">وزارة الاقتصاد الرقمي والحوكمة</div><div class="t3">MINISTRY OF DIGITAL ECONOMY AND GOVERNANCE</div></div></div>`;
+const svg = (wmm, hmm, inner) => `<svg width="${wmm}mm" height="${hmm}mm" viewBox="0 0 ${wmm} ${hmm}" style="position:absolute;left:0;top:0">${inner}</svg>`;
+const ON_WHITE = { ink: '#17357d', accent: '#c99a2e' }, ON_DARK = { ink: '#ece2d0', accent: '#c99a2e' };
+// a QR-like block of pixels (decorative, not a working code), size in px
+function pixels(n, size, fill, seed = 7) {
+  let s = '', r = seed; const u = size / n;
+  const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    const corner = (x < 3 && y < 3) || (x >= n - 3 && y < 3) || (x < 3 && y >= n - 3);
+    const ring = corner && !((x === 1 || x === n - 2) && (y === 1 || y === n - 2));
+    if (corner ? ring : rnd() > .52) s += `<rect x="${x * u}" y="${y * u}" width="${u + .3}" height="${u + .3}" fill="${fill}"/>`;
+  }
+  return `<svg width="${size}" height="${size}">${s}</svg>`;
+}
+</script>
+</head>
+<body>
+
+<!-- letterhead, A4 -->
+<div class="art" id="letterhead" style="width:210mm;height:297mm">
+  <script>document.write(svg(210, 297, crenRow(210, '#17357d', 4.6, 3.9) + `<rect y="3.7" width="210" height="2.6" fill="#17357d"/>`))</script>
+  <div style="position:absolute;top:19mm;right:18mm"><script>document.write(lock(ON_WHITE, '#0c1b40', 15))</script></div>
+  <div style="position:absolute;top:22mm;left:18mm;font-size:8.5pt;line-height:2;color:#3c4660">العدد: ٤١٢ / ٢٠٢٦<br>التاريخ: ٢٠ / ١٠ / ٢٠٢٦</div>
+  <div style="position:absolute;top:58mm;right:22mm;left:22mm;font-size:10.5pt;line-height:2.05;text-align:justify">
+    <div style="font:700 13pt 'Markazi Text';margin-bottom:5mm">م/ تنسيق الكتب الرسمية</div>
+    <p style="margin-bottom:4mm">تحية طيبة،</p>
+    <p style="margin-bottom:4mm">يوضح هذا النموذج تنسيق الكتب الرسمية الصادرة عن الوزارة. يأتي الشعار بصيغته الأفقية في أعلى الصفحة، ويقابله رقم الكتاب وتاريخه، ثم الموضوع بخط مركزي، ويليه نص الكتاب بخط IBM Plex Sans Arabic بحجم أحد عشر.</p>
+    <p style="margin-bottom:4mm">وتترك هوامش متساوية على جانبي الصفحة، ويختم الكتاب بالتوقيع والختم الرسمي في أسفله، فوق الخط الذهبي الذي يفصل التذييل عن المتن.</p>
+    <p>مع التقدير.</p>
+    <div style="margin-top:16mm;margin-right:auto;width:62mm;text-align:center;line-height:1.7"><b style="font:700 12pt 'Markazi Text'">المدير العام</b><br><span style="font-size:9pt;color:#3c4660">دائرة الخدمات الرقمية</span></div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:22mm">
+    <div style="margin:0 18mm;height:.5mm;background:var(--gold)"></div>
+    <div style="display:flex;justify-content:space-between;padding:4mm 18mm 0;font-size:7.5pt;color:#3c4660"><span>بغداد، جمهورية العراق</span><span class="lat">www.example.gov.iq</span></div>
+  </div>
+</div>
+
+<!-- envelope, DL -->
+<div class="art" id="envelope" style="width:220mm;height:110mm">
+  <div style="position:absolute;top:10mm;right:12mm"><script>document.write(lock(ON_WHITE, '#0c1b40', 11))</script></div>
+  <div style="position:absolute;top:52mm;left:22mm;font-size:9.5pt;line-height:1.9">
+    <div style="font:700 11pt 'Markazi Text'">إلى/ دائرة التخطيط والمتابعة</div>
+    <div style="color:#3c4660">بغداد، جمهورية العراق</div>
+  </div>
+  <script>document.write(svg(220, 110, `<rect y="105.8" width="220" height="4.2" fill="#17357d"/>` + crenRow(220, '#17357d', 4.6, 105.9)))</script>
+</div>
+
+<!-- business card, front -->
+<div class="art" id="card-front" style="width:85mm;height:55mm;background:var(--night)">
+  <script>document.write(svg(85, 55, archField(85, 55, '#ece2d0', .09, 16)))</script>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><script>document.write(markSVG('gate', ON_DARK, 22 * 3.7795))</script></div>
+</div>
+
+<!-- business card, back -->
+<div class="art" id="card-back" style="width:85mm;height:55mm">
+  <div style="position:absolute;top:0;bottom:0;left:0;width:24mm;background:var(--blue)"></div>
+  <div style="position:absolute;top:7mm;right:6mm"><script>document.write(lock(ON_WHITE, '#0c1b40', 4.6))</script></div>
+  <div style="position:absolute;top:24mm;right:6mm">
+    <div style="font:700 11.5pt 'Markazi Text'">سارة عبد الله</div>
+    <div style="font-size:6.5pt;color:#3c4660;margin-top:.5mm">مديرة قسم الخدمات الرقمية</div>
+  </div>
+  <div style="position:absolute;bottom:6mm;right:6mm;font-size:6.2pt;line-height:1.75;color:#3c4660"><span class="lat">+964 770 000 0000</span><br><span class="lat">s.abdullah@example.gov.iq</span></div>
+  <div style="position:absolute;top:50%;left:12mm;transform:translate(-50%,-50%)"><script>document.write(markSVG('gate', ON_DARK, 9 * 3.7795))</script></div>
+</div>
+
+<!-- employee ID, 54 x 86 mm -->
+<div class="art" id="badge" style="width:54mm;height:86mm">
+  <div style="position:absolute;top:0;left:0;right:0;height:32mm;background:var(--blue);overflow:hidden">
+    <script>document.write(svg(54, 32, archField(54, 32, '#ece2d0', .08, 12)))</script>
+    <div style="position:absolute;top:4mm;left:50%;transform:translateX(-50%);width:11mm;height:2.4mm;border-radius:1.2mm;background:#dfe3ea"></div>
+    <div style="position:absolute;top:8.5mm;left:0;right:0;text-align:center"><script>document.write(markSVG('gate', ON_DARK, 10 * 3.7795))</script></div>
+  </div>
+  <div style="position:absolute;top:25mm;left:50%;transform:translateX(-50%);width:20mm;height:20mm;border-radius:50%;background:#e2e5ec;border:1mm solid #fff;overflow:hidden">
+    <svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="40" r="19" fill="#b9c1ce"/><path d="M14 100 C 16 70, 84 70, 86 100 Z" fill="#b9c1ce"/></svg></div>
+  <div style="position:absolute;top:47mm;left:0;right:0;text-align:center">
+    <div style="font:700 12pt 'Markazi Text'">سارة عبد الله</div>
+    <div style="font-size:6.3pt;color:#3c4660">مديرة قسم الخدمات الرقمية</div>
+  </div>
+  <div style="position:absolute;bottom:5mm;right:5mm;font-size:5.6pt;line-height:1.7;color:#3c4660">وزارة الاقتصاد الرقمي والحوكمة<br><span class="lat">ID 104 2231</span></div>
+  <div style="position:absolute;bottom:5mm;left:5mm"><script>document.write(pixels(15, 13 * 3.7795, '#0c1b40'))</script></div>
+</div>
+
+<!-- lanyard, 20 x 300 mm -->
+<div class="art" id="lanyard" style="width:20mm;height:300mm;background:var(--blue)">
+  <script>document.write(svg(20, 300, Array.from({ length: 60 }, (_, i) => merlon(10, 5 + i * 5, 3.2, '#ece2d0')).join('').replace(/fill="#ece2d0"/g, 'fill="#ece2d0" fill-opacity=".55"')))</script>
+</div>
+
+<!-- phone screen (the app's start screen), 68 x 147 mm, transparent outside the rounded glass -->
+<div class="art" id="screen" style="width:68mm;height:147mm;background:none">
+  <div style="position:absolute;inset:0;border-radius:9mm;background:var(--night);overflow:hidden;color:var(--clay)">
+    <script>document.write(svg(68, 147, archField(68, 147, '#ece2d0', .05, 17)))</script>
+    <div style="position:absolute;top:3mm;left:50%;transform:translateX(-50%);width:20mm;height:5.5mm;border-radius:3mm;background:#000"></div>
+    <div style="position:absolute;top:44mm;left:0;right:0;text-align:center">
+      <script>document.write(markSVG('gate', ON_DARK, 24 * 3.7795))</script>
+      <div style="font-size:6pt;opacity:.8;margin-top:6mm">جمهورية العراق</div>
+      <div style="font:700 11pt/1.35 'Markazi Text';margin-top:1mm">وزارة الاقتصاد الرقمي<br>والحوكمة</div>
+    </div>
+    <div style="position:absolute;bottom:14mm;left:0;right:0;text-align:center;font-size:5.6pt;opacity:.75">بوابتك إلى الخدمات الحكومية</div>
+    <script>document.write(svg(68, 147, crenRow(68, '#17357d', 4, 143.6) + '<rect y="143.4" width="68" height="3.6" fill="#17357d"/>'))</script>
+  </div>
+</div>
+
+<!-- building sign, 240 x 60 cm, drawn at 1/10 -->
+<div class="art" id="sign" style="width:240mm;height:60mm;background:var(--blue)">
+  <div style="position:absolute;inset:0 0 2.4mm;display:flex;align-items:center;justify-content:center"><script>document.write(lock(ON_DARK, '#ece2d0', 21))</script></div>
+  <script>document.write(svg(240, 60, '<rect y="57.6" width="240" height="2.4" fill="#c99a2e"/>'))</script>
+</div>
+
+</body>
+</html>

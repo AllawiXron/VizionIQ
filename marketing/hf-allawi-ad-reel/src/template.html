@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>allawi.psd · ad reel</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+@font-face { font-family:'DG Sahabah'; font-style:normal; font-weight:400; font-display:block; src:url(assets/fonts/DG-Sahabah-Reg.ttf) format('truetype') }
+/* one field in my brand orange for the whole reel; the content is laid on a long strip the camera pushes through, so every
+   idea pushes the last one out of the frame. The elements are black-and-white cut-outs anchored to the frame edges, the
+   type is big and white with the key words in my brown; only my reels on the phones and the coin keep their colour. */
+* { margin:0; padding:0; box-sizing:border-box }
+html, body { width:1080px; height:1920px; overflow:hidden; background:#e2541b }
+#root { position:relative; width:100%; height:100%; overflow:hidden; direction:rtl; font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; color:#fff;
+  background:radial-gradient(110% 65% at 20% 6%, #f58a45 0%, rgba(245,138,69,0) 62%), linear-gradient(170deg, #f07a2e 0%, #e9631f 46%, #e2541b 100%) }
+#stage { filter:url(#mb) }
+#strip { position:absolute; left:100px; top:100px; width:14580px; height:1920px; transform-origin:0 0 }
+.rg { position:absolute; top:0; width:1080px; height:1920px }
+.cap { position:absolute; left:60px; right:60px; text-align:center; white-space:nowrap; z-index:20; line-height:1.15; text-shadow:0 4px 16px rgba(80,25,0,.22) }
+.cap.r { text-align:right; right:70px; left:40px } .cap.l { text-align:left; left:70px; right:40px }
+.w { display:inline-block; opacity:0 }
+.k { color:#1f1510; text-shadow:none }
+.dim { color:rgba(255,255,255,.62) }
+.obj { position:absolute; z-index:10 }
+.obj img { display:block; width:100% }
+.bw img { filter:grayscale(1) contrast(1.18) brightness(1.04) drop-shadow(0 18px 22px rgba(80,25,0,.38)) }
+.ph img { position:relative; z-index:2; filter:drop-shadow(0 26px 30px rgba(80,25,0,.42)) }
+.tk { position:absolute; left:0; right:0; text-align:center; white-space:nowrap; color:#fff; line-height:1.15 }
+.ph .scr { position:absolute; overflow:hidden; z-index:1; left:9.03%; top:1.84%; width:88.04%; height:96.21%; object-fit:cover; -webkit-mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat; mask:url(assets/el/phone-screen.png) 0 0/100% 100% no-repeat }
+.pat { position:absolute; inset:-200px; z-index:1; transform:rotate(-11deg); color:rgba(255,255,255,.08); font-size:96px; line-height:1.45; white-space:nowrap; overflow:hidden; opacity:0 }
+#n3 { position:absolute; z-index:9; left:50px; top:560px; font-size:860px; line-height:1; color:#1f1510; opacity:0; text-shadow:0 30px 40px rgba(80,25,0,.28) }
+#mark { position:absolute; z-index:60; top:190px; right:56px; font-size:34px; direction:ltr; color:rgba(255,255,255,.9); letter-spacing:.5px }
+#grain { position:absolute; inset:0; z-index:50; pointer-events:none; background:url(assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.05 }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="__D__" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="__D__" data-track-index="0" style="position:absolute; inset:-100px">
+        <div id="strip">
+
+          <!-- A · مشروعك متعوب عليه، بس أرباحك قليلة: the open, empty wallet; one coin drops in, bounces off and flies on -->
+          <div class="rg" id="sA" style="left:13500px">
+            <div class="obj bw" id="wallet" style="left:170px; top:960px; width:740px; transform:rotate(-6deg)"><img src="assets/obj/wallet.png" /></div>
+            <div class="obj" id="coin" style="left:455px; top:1060px; width:170px"><img src="assets/el/coin.png" style="filter:drop-shadow(0 14px 16px rgba(80,25,0,.38))" /></div>
+          </div>
+
+          <!-- B · عدنا نصمملك موشن جرافيك وبوستات إعلانية: three phones playing my reels, standing on the bottom of the frame -->
+          <div class="rg" id="sB" style="left:12000px">
+            <div class="obj ph" id="phL" style="left:20px; top:980px; width:370px; transform:rotate(-9deg)"><video id="v1" class="scr" src="assets/clips/dollar-reel.mp4" data-start="2.3" data-duration="3.4" data-media-start="1.3" data-track-index="2" muted playsinline></video><img src="assets/el/phone.png" /></div>
+            <div class="obj ph" id="phR" style="left:690px; top:980px; width:370px; transform:rotate(8deg)"><video id="v2" class="scr" src="assets/clips/logos-reel.mp4" data-start="2.3" data-duration="3.4" data-media-start="16.3" data-track-index="3" muted playsinline></video><img src="assets/el/phone.png" /></div>
+            <div class="obj ph" id="phC" style="left:300px; top:880px; width:480px; transform:rotate(-2deg)"><video id="v3" class="scr" src="assets/clips/vizion-reel.mp4" data-start="2.3" data-duration="3.4" data-media-start="7.1" data-track-index="4" muted playsinline></video><img src="assets/el/phone.png" /></div>
+          </div>
+
+          <!-- D · تحجي بقوة براندك وتبيع بمكانك: the megaphone from the left edge blasts the word; then the shop owner -->
+          <div class="rg" id="sD" style="left:10500px">
+            <div class="obj bw" id="mega" style="left:-170px; top:880px; width:780px; transform:rotate(-12deg)"><img src="assets/el/megaphone.png" /></div>
+            <div class="obj bw" id="owner" style="left:110px; top:1000px; width:860px"><img src="assets/el/shop-owner.png" /></div>
+          </div>
+
+          <!-- F · حركة / فكرة / نتيجة: one big phone; the three words play on its screen, what each does is written above it -->
+          <div class="rg" id="sF" style="left:9000px">
+            <div class="obj ph" id="phF" style="left:250px; top:760px; width:580px; transform:rotate(-3deg)"><div class="scr" id="tick" style="background:#1f1510"></div><img src="assets/el/phone.png" /></div>
+          </div>
+
+          <!-- I · من أول 3 ثواني بإعلانك: the giant 3 on the left, the stopwatch held up from the bottom right -->
+          <div class="rg" id="sI" style="left:7500px">
+            <div id="n3">3</div>
+            <div class="obj bw" id="hand" style="left:600px; top:1010px; width:520px; transform:rotate(-6deg)"><img src="assets/obj/stopwatch-hand.png" /></div>
+          </div>
+
+          <!-- J · الكواليتي، يثق، مباشرة: the magnifier settles on the word; then the handshake comes up and holds -->
+          <div class="rg" id="sJ" style="left:6000px">
+            <div class="obj bw" id="lens" style="left:610px; top:540px; width:520px; transform:rotate(-8deg)"><img src="assets/el/magnifier.png" /></div>
+            <div class="obj bw" id="shake" style="left:-120px; top:930px; width:1320px"><img src="assets/el/handshake.png" /></div>
+          </div>
+
+          <!-- L · يعزلك تماما عن منافسيك: the king stands, the pawns are knocked away, منافسيك fills the background -->
+          <div class="rg" id="sL" style="left:4500px">
+            <div class="pat" id="patL"></div>
+            <div class="obj bw pawn" style="left:40px; top:1330px; width:190px"><img src="assets/el/chess-pawn.png" /></div>
+            <div class="obj bw pawn" style="left:230px; top:1400px; width:170px"><img src="assets/el/chess-pawn.png" /></div>
+            <div class="obj bw pawn" style="left:680px; top:1400px; width:170px"><img src="assets/el/chess-pawn.png" /></div>
+            <div class="obj bw pawn" style="left:850px; top:1330px; width:190px"><img src="assets/el/chess-pawn.png" /></div>
+            <div class="obj bw" id="king" style="left:395px; top:880px; width:290px"><img src="assets/el/chess-king.png" /></div>
+          </div>
+
+          <!-- M · مرة ومرتين وعشرة: the bags pile up; then the man with the binoculars looks at «براند» -->
+          <div class="rg" id="sM" style="left:3000px">
+            <div id="bags"></div>
+            <div class="obj bw" id="watcher" style="left:10px; top:460px; width:520px"><img src="assets/el/binoculars-man.png" /></div>
+          </div>
+
+          <!-- O · the crowd walks past; «توقف»: the stop hand comes up and the crowd stops; «وتقفل»: the padlock locks -->
+          <div class="rg" id="sO" style="left:1500px">
+            <div class="obj bw" id="crowd1" style="left:0; top:1190px; width:1000px"><img src="assets/el/crowd.png" /></div>
+            <div class="obj bw" id="crowd2" style="left:0; top:1150px; width:960px"><img src="assets/el/crowd2.png" /></div>
+            <div class="obj bw" id="stop" style="left:190px; top:900px; width:700px"><img src="assets/el/stop-hand.png" /></div>
+            <div class="obj bw" id="lock" style="left:390px; top:880px; width:300px"><img src="assets/el/padlock.png" /></div>
+          </div>
+
+          <!-- R · تواصل ويانا بالخاص، شوف أعمالنا، وخلي براندك يبيع صح: the receiver, then my reels on the phones, the handle -->
+          <div class="rg" id="sR" style="left:0px">
+            <div class="obj bw" id="recv" style="left:560px; top:820px; width:700px"><img src="assets/el/receiver.png" /></div>
+            <div class="obj ph rph" style="left:20px; top:980px; width:370px; transform:rotate(-9deg)"><video id="v4" class="scr" src="assets/clips/logos-reel.mp4" data-start="36.5" data-duration="4.7" data-media-start="46.0" data-track-index="5" muted playsinline></video><img src="assets/el/phone.png" /></div>
+            <div class="obj ph rph" style="left:690px; top:980px; width:370px; transform:rotate(8deg)"><video id="v5" class="scr" src="assets/clips/dollar-reel.mp4" data-start="36.5" data-duration="4.7" data-media-start="2.0" data-track-index="6" muted playsinline></video><img src="assets/el/phone.png" /></div>
+            <div class="obj ph rph" style="left:300px; top:880px; width:480px; transform:rotate(-2deg)"><video id="v6" class="scr" src="assets/clips/vizion-reel.mp4" data-start="36.5" data-duration="4.7" data-media-start="7.4" data-track-index="7" muted playsinline></video><img src="assets/el/phone.png" /></div>
+            <div class="cap" id="handle" style="top:610px; font-size:90px; direction:ltr; opacity:0"><span class="w" style="opacity:1">@allawi.psd</span></div>
+          </div>
+
+        </div>
+      </div>
+      <div id="mark">@allawi.psd</div>
+      <div id="grain"></div>
+      <svg width="0" height="0" style="position:absolute"><filter id="mb" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feGaussianBlur id="mbB" stdDeviation="0 0" edgeMode="duplicate" /></filter></svg>
+<!--AUDIO-->
+    </div>
+    <script>
+window.REEL = /*REEL*/;
+/*TIMELINE*/
+    </script>
+  </body>
+</html>

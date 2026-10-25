@@ -2,7 +2,7 @@
 // it lands on is already composed (text starts as it arrives); moves are long, soft and lightly blurred. One paused
 // timeline, built after the fonts load, registered on window.__timelines.main. build.py's sound cues follow T and MOVES.
 (function () {
-  const D = 38;
+  const D = 41;
   // camera poses: the desk point at the centre of the frame, the scale, the roll (deg)
   const POSE = {
     S1t: [5600, 930, 1.07, 0], S1: [5600, 1250, 1, 0], S2: [5600, 3700, 1, 0], S2z: [5600, 3800, 1.08, 0], S3: [5600, 6100, 1, 0],
@@ -11,8 +11,8 @@
   };
   // [start, end, pose, roll at mid-move]
   const MOVES = [
-    [0.5, 4.5, 'S1', 0], [4.7, 5.9, 'S2', 1.5], [10.0, 10.8, 'S2z', 0], [11.3, 12.3, 'S3', -1.5], [14.75, 15.85, 'A', 1],
-    [18.3, 19.4, 'B', 0], [21.8, 22.9, 'C', 0], [25.0, 26.5, 'G', 0], [29.0, 30.1, 'H', 1.5], [32.6, 33.6, 'I', -1.5],
+    [0.5, 4.5, 'S1', 0], [4.7, 5.9, 'S2', 1.5], [10, 10.8, 'S2z', 0], [11.3, 12.3, 'S3', -1.5], [14.32, 14.97, 'A', 1],
+    [17.23, 18.24, 'B', 0], [19.98, 20.8, 'C', 0], [22.93, 24.43, 'G', 0], [26.78, 27.85, 'H', 1.5], [33.25, 34.15, 'I', -1.5],
   ];
   // the sheets on the desk: centre x, centre y, width, height, field, rotation
   const SHEETS = [
@@ -44,10 +44,10 @@
     scroll: 4.9, slow: 9.25, stop: 10.1,
     t3a: 5.55, t3aw: [5.6, 5.88, 6.35], t3aOut: 7.82, t3b: 7.95, t3bw: [7.95, 8.25, 8.55, 8.85, 9.3], t4: 10.15, t4w: [10.2, 10.5, 10.75], heart: 10.45,
     ico: 11.95, why: 12.1, bih: 13.45, three: 13.7,
-    tags: [15.6, 19.1, 22.6], ticks: [15.75, 19.2, 22.7], l: [[15.9, 16.18, 16.46, 16.74], [19.35, 19.65, 19.95], [22.85, 23.13, 23.41, 23.69]], hls: [17.15, 20.35, 23.85],
-    t7: 26.1, t7w: [26.15, 26.43, 26.71, 26.99, 27.45, 27.85],
-    sv: [29.6, 30.05, 30.5, 30.95], slam8: 31.45,
-    t9: 33.2, t9w: [33.2, 33.5], slam9: 33.95, s9b: 34.6, plane: 34.85, s9c: [35.1, 35.38], btn: 35.8, cur: 36.0, click: 36.6, open: 36.7,
+    tags: [14.7, 17.95, 20.5], ticks: [14.85, 18.05, 20.6], l: [[15, 15.28, 15.56, 15.84], [18.2, 18.5, 18.8], [20.75, 21.03, 21.31, 21.59]], hls: [16.25, 19.2, 21.75],
+    t7: 24.05, t7w: [24.1, 24.38, 24.66, 24.94, 25.4, 25.8],
+    sv: [27.35, 28.52, 29.73, 30.74], slam8: 31.89,
+    t9: 34.1, t9w: [34.1, 34.72], slam9: 35.6, s9b: 36.06, plane: 36.35, s9c: [37.3, 37.72], btn: 38.95, cur: 39.15, click: 39.75, open: 39.85,
   };
   const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
   const $ = (s) => document.querySelector(s);

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<script src="../marks.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #555; }
+  .f { width: 1920px; height: 1080px; background: #0c1b40; position: relative; overflow: hidden; margin-bottom: 20px; color: #ece2d0; }
+  .f svg.g { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .lock { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 56px; white-space: nowrap; }
+  .lock .bar { width: 2px; align-self: stretch; background: #ece2d0; opacity: .3; }
+  .t1 { font: 400 30px "IBM Plex Sans Arabic"; opacity: .8; }
+  .t2 { font: 700 62px/1.2 "Markazi Text"; margin: 4px 0 8px; }
+  .t3 { font: 500 17px "IBM Plex Sans"; direction: ltr; text-align: right; letter-spacing: 2px; opacity: .75; }
+</style>
+</head>
+<body>
+<script>
+const g = GATE, C = { ink: '#ece2d0', accent: '#c99a2e' };
+const [ink, gold] = gate(C).match(/<path[^>]*\/>/g);
+const grid = (op) => { let s = ''; for (let x = 0; x <= 300; x += g.U) s += `<line x1="${x}" y1="0" x2="${x}" y2="300" stroke="#ece2d0" stroke-opacity="${op}" stroke-width=".25"/>`;
+  for (let y = 0; y <= 300; y += g.U) s += `<line x1="0" y1="${y}" x2="300" y2="${y}" stroke="#ece2d0" stroke-opacity="${op}" stroke-width=".25"/>`; return s; };
+const frame = (inner) => document.write(`<div class="f"><svg class="g" viewBox="0 0 300 300" width="760" height="760">${inner}</svg></div>`);
+// A: the grid is in, the gate is rising (cut at 55% of its height, merlons not yet)
+frame(grid(.14) + `<line x1="0" y1="${g.G}" x2="300" y2="${g.G}" stroke="#c99a2e" stroke-width=".6"/>
+  <clipPath id="ca"><rect x="0" y="${g.G - (g.G - g.tTop) * .55}" width="300" height="300"/></clipPath><g clip-path="url(#ca)">${ink}</g>`);
+// B: the gate is built, the gold arches are spreading from the doorway (the outer one half drawn)
+frame(grid(.08) + ink + `<mask id="mb"><rect width="300" height="300" fill="#000"/>
+  <path d="M${g.cx} ${g.oy} L${g.cx - 120} ${g.G + 40} L${g.cx - 120} ${g.oy - 40} L${g.cx - 30} ${g.oy - 130} L${g.cx} ${g.oy - 140} Z M${g.cx} ${g.oy} L${g.cx + 120} ${g.G + 40} L${g.cx + 120} ${g.oy - 40} L${g.cx + 30} ${g.oy - 130} L${g.cx} ${g.oy - 140} Z" fill="#fff"/></mask>
+  <g mask="url(#mb)">${gold}</g>`);
+</script>
+<!-- C: the lockup -->
+<div class="f"><div class="lock"><script>document.write(markSVG('gate', C, 300))</script><div class="bar"></div>
+  <div><div class="t1">جمهورية العراق</div><div class="t2">وزارة الاقتصاد الرقمي والحوكمة</div><div class="t3">MINISTRY OF DIGITAL ECONOMY AND GOVERNANCE</div></div></div></div>
+</body>
+</html>

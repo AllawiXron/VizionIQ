@@ -1,0 +1,67 @@
+// node package/package.cjs -> out/final/Ministry-Identity-Proposal-Ali-Ahmed-Shihab.zip, the competition submission.
+// Run node doc.cjs --final and deck.cjs --final first (the presentation with the designer's contact), and
+// anim/render.cjs for the animation. BLENDER_PY is a python with bpy 4.2 (for the .blend files).
+// Everything lands in out/final/ (git-ignored).
+const { chromium } = require('playwright'); const path = require('path'); const fs = require('fs'); const { execFileSync } = require('child_process');
+const ROOT = path.join(__dirname, '..');
+const OUT = path.join(ROOT, 'out', 'final');
+const NAME = 'Ministry-Identity-Proposal-Ali-Ahmed-Shihab';
+const PKG = path.join(OUT, NAME);
+const cp = (from, to) => { fs.mkdirSync(path.dirname(path.join(PKG, to)), { recursive: true }); fs.copyFileSync(path.join(ROOT, from), path.join(PKG, to)); };
+
+(async () => {
+  fs.rmSync(PKG, { recursive: true, force: true });
+  // 1 the presentation, 2 the concept
+  cp('out/final/ministry-identity-proposal.pdf', '01-Presentation/Ministry-Identity-Proposal.pdf');
+  cp('out/final/ministry-identity-proposal.pptx', '01-Presentation/Ministry-Identity-Proposal.pptx');
+  cp('out/concept-ar.pdf', '02-Concept/Concept.pdf');
+  cp('concept-ar.txt', '02-Concept/Concept.txt');
+  // 3 the logo: SVG from export-svg.cjs, and every version as vector PDF and transparent PNG
+  execFileSync('node', [path.join(ROOT, 'export-svg.cjs')]);
+  cp('out/svg/gate-blue.svg', '03-Logo/SVG/mark-color.svg');
+  cp('out/svg/gate-clay-on-night.svg', '03-Logo/SVG/mark-color-on-dark.svg');
+  cp('out/svg/gate-black.svg', '03-Logo/SVG/mark-black.svg');
+  const b = await chromium.launch();
+  const p = await b.newPage({ viewport: { width: 2400, height: 1600 }, deviceScaleFactor: 4 });
+  const names = await (async () => { await p.goto('file://' + path.join(__dirname, 'logos.html')); return p.evaluate(() => Object.keys(window.VARIANTS)); })();
+  for (const v of names) {
+    await p.goto('file://' + path.join(__dirname, 'logos.html') + '?v=' + v); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(150);
+    const el = await p.$('#art'); const r = await el.boundingBox();
+    fs.mkdirSync(path.join(PKG, '03-Logo/PNG'), { recursive: true }); fs.mkdirSync(path.join(PKG, '03-Logo/PDF'), { recursive: true });
+    await el.screenshot({ path: path.join(PKG, '03-Logo/PNG', v + '.png'), omitBackground: true });
+    await p.pdf({ path: path.join(PKG, '03-Logo/PDF', v + '.pdf'), width: Math.ceil(r.width) + 'px', height: Math.ceil(r.height) + 'px', printBackground: false, pageRanges: '1' });
+  }
+  await b.close();
+  // 4 the animation, 5 the mockups
+  cp('anim/out/logo-animation.mp4', '04-Animation/Logo-Animation.mp4');
+  for (const m of ['stationery', 'devices', 'sign']) cp(`print/renders/${m}.png`, `05-Mockups/${m}.png`);
+  // 6 the source files: the three Blender scenes, textures packed in
+  fs.mkdirSync(path.join(PKG, '06-Source-Files/Blender'), { recursive: true });
+  for (const m of ['stationery', 'devices', 'sign'])
+    execFileSync(process.env.BLENDER_PY, [path.join(ROOT, 'print/studio.py'), m, '--save', path.join(PKG, `06-Source-Files/Blender/${m}.blend`)], { stdio: 'ignore' });
+  // 7 the designer: a short bio (to paste into the form too), the portfolio, and the user's motion reel
+  const who = JSON.parse(fs.readFileSync(path.join(ROOT, 'who.json'), 'utf8'));
+  fs.mkdirSync(path.join(PKG, '07-Designer'), { recursive: true });
+  fs.writeFileSync(path.join(PKG, '07-Designer/Bio.txt'), fs.readFileSync(path.join(__dirname, 'bio.txt'), 'utf8')
+    .replace('{phone}', who.phone).replace('{email}', who.email));
+  const b2 = await chromium.launch(); const p2 = await b2.newPage();
+  await p2.addInitScript(`window.WHO = ${JSON.stringify(who)};`);
+  await p2.goto('file://' + path.join(__dirname, 'portfolio.html')); await p2.evaluate(() => document.fonts.ready); await p2.waitForTimeout(300);
+  await p2.pdf({ path: path.join(PKG, '07-Designer/Portfolio.pdf'), width: '297mm', height: '210mm', printBackground: true, preferCSSPageSize: true });
+  await b2.close();
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', path.join(__dirname, 'reel.mp4'),
+    '-map_metadata', '-1', '-c', 'copy', path.join(PKG, '07-Designer/Motion-Reel.mp4')]);   // the user's reel, tags stripped
+  // 8 the development stages, from the project's own history (package/dev/stages.html)
+  fs.mkdirSync(path.join(PKG, '08-Development'), { recursive: true });
+  const b3 = await chromium.launch(); const p3 = await b3.newPage();
+  await p3.addInitScript(`window.WHO = ${JSON.stringify(who)};`);
+  await p3.goto('file://' + path.join(__dirname, 'dev/stages.html')); await p3.evaluate(() => document.fonts.ready); await p3.waitForTimeout(400);
+  await p3.pdf({ path: path.join(PKG, '08-Development/Development-Stages.pdf'), width: '297mm', height: '210mm', printBackground: true, preferCSSPageSize: true });
+  await b3.close();
+  // the guide to the files; the designer as author in the documents' properties
+  cp('package/README.txt', 'README.txt');
+  execFileSync('python3', [path.join(__dirname, 'tidy.py'), PKG, path.join(ROOT, 'who.json')], { stdio: 'inherit' });
+  fs.rmSync(path.join(OUT, NAME + '.zip'), { force: true });
+  execFileSync('zip', ['-r', '-q', '-X', NAME + '.zip', NAME], { cwd: OUT });
+  console.log(path.join(OUT, NAME + '.zip'));
+})();

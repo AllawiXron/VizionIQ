@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Syom ad C</title>
+<style>
+  @font-face { font-family: Lama; font-weight: 900; src: url('../files/brand/3- Fonts/LamaSans-Black.ttf'); }
+  @font-face { font-family: Lama; font-weight: 700; src: url('../files/brand/3- Fonts/LamaSans-Bold.ttf'); }
+  @font-face { font-family: Lama; font-weight: 500; src: url('../files/brand/3- Fonts/LamaSans-Medium.ttf'); }
+  @font-face { font-family: LamaC; font-weight: 700; src: url('../files/brand/3- Fonts/LamaSans-BoldCondensed.ttf'); }
+  :root { --green: #014d40; --lily: #ffebea; --gold: #e8b06f; }
+  body { margin: 0; background: #222; }
+  .f { position: relative; overflow: hidden; background: var(--green); font-family: Lama; font-synthesis: none; color: var(--lily); }
+  .f > * { position: absolute; margin: 0; }
+  #syom-adC-story { width: 1080px; height: 1920px; }
+
+  /* the window and palm light from the shoot, laid over the brand green */
+  .light { inset: 0; width: 100%; height: 100%; mix-blend-mode: soft-light; opacity: .24; }
+
+  .h1 { right: 52px; top: 236px; font-weight: 900; font-size: 236px; line-height: 1; letter-spacing: -3px; }
+  .h2 { right: 46px; top: 502px; font-weight: 900; font-size: 236px; line-height: 1; letter-spacing: -3px; white-space: nowrap; }
+
+  .col { right: 640px; top: 820px; width: 390px; }
+  .col > * { margin: 0; }
+  .q { font-weight: 700; font-size: 46px; line-height: 1.22; }
+  .b { margin-top: 20px !important; font-weight: 500; font-size: 35px; line-height: 1.4; opacity: .92; }
+  .herb { margin-top: 34px !important; font-weight: 700; font-size: 33px; line-height: 1.25; }
+  .herb b { display: block; font-weight: 900; font-size: 84px; line-height: 1; color: var(--gold); }
+  .cta { margin-top: 40px !important; font-weight: 900; font-size: 40px; line-height: 1.25; }
+  .cta::before { content: ''; display: block; width: 76px; height: 3px; margin: 0 0 18px auto; background: var(--gold); }
+
+  svg { left: 0; top: 0; }
+  .num { font-family: LamaC; font-weight: 700; font-size: 17px; fill: #1f1a12; direction: ltr; }
+</style>
+</head>
+<body>
+<div class="f" id="syom-adC-story">
+  <img class="light" src="img/light.jpg" alt="">
+
+  <p class="h1">وزنج</p>
+  <p class="h2">مضايقج؟</p>
+
+  <div class="col">
+    <p class="q">وتخافين من المنتجات الكيميائية؟</p>
+    <p class="b">اشربي سيوم وادخلي عالم الرشاقة من اليوم</p>
+    <p class="herb"><b>100%</b>أعشاب كورية طبيعية</p>
+    <p class="cta">راسلينا وخلي<br>الباقي على سيوم</p>
+  </div>
+
+  <!-- the tape: one path from the end off the bottom edge, round the front of the pouch, behind it -->
+  <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <defs>
+      <path id="tape" d="M -40 1890 C 190 1790 420 1632 756 1632 C 905 1632 1026 1598 1026 1560
+                         C 1026 1522 905 1490 756 1490 C 607 1490 486 1522 486 1560
+                         C 486 1592 516 1612 560 1622"/>
+      <filter id="soft" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+      <filter id="tight" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="4"/></filter>
+      <clipPath id="front"><path d="M 0 1920 L 0 1566 L 1080 1566 L 1080 1920 Z"/></clipPath>
+      <g id="ribbon">
+        <use href="#tape" fill="none" stroke="var(--gold)" stroke-width="50"/>
+        <use href="#tape" fill="none" stroke="#1f1a12" stroke-width="50" stroke-dasharray="1.6 10.4"/>
+        <use href="#tape" fill="none" stroke="var(--gold)" stroke-width="38"/>
+        <use href="#tape" fill="none" stroke="#1f1a12" stroke-width="50" stroke-dasharray="2.2 21.8"/>
+        <use href="#tape" fill="none" stroke="var(--gold)" stroke-width="28"/>
+        <g class="nums"></g>
+      </g>
+    </defs>
+    <!-- behind the pouch: the whole tape -->
+    <use href="#ribbon"/>
+    <ellipse cx="756" cy="1580" rx="262" ry="22" fill="#00140f" opacity=".8" filter="url(#soft)"/>
+    <ellipse cx="756" cy="1580" rx="236" ry="7" fill="#000c09" opacity=".7" filter="url(#tight)"/>
+    <image href="img/pouch.png" x="498" y="786" width="512" height="795" transform="rotate(-2.5 754 1180)"/>
+    <!-- in front of the pouch: the part of the loop that passes before it, and the end -->
+    <g clip-path="url(#front)"><use href="#ribbon"/></g>
+    <!-- the brass cap on the end of the tape -->
+    <g transform="translate(558 1622) rotate(103)">
+      <rect x="-26" y="-4" width="52" height="15" rx="2" fill="#a77b3c"/>
+      <rect x="-26" y="-4" width="52" height="5" rx="1.5" fill="#d9b06a"/>
+    </g>
+  </svg>
+</div>
+<script>
+  // a number every centimetre (24 px) along the tape, counting up from the end off the bottom edge
+  const path = document.getElementById('tape');
+  const g = document.querySelector('#ribbon .nums');
+  const NS = 'http://www.w3.org/2000/svg';
+  const len = path.getTotalLength();
+  for (let s = 24, n = 1; s < len - 6; s += 24, n++) {
+    const t = document.createElementNS(NS, 'text');
+    t.setAttribute('class', 'num');
+    t.setAttribute('dy', '6');
+    const tp = document.createElementNS(NS, 'textPath');
+    tp.setAttribute('href', '#tape');
+    tp.setAttribute('startOffset', s);
+    tp.setAttribute('text-anchor', 'middle');
+    tp.textContent = n;
+    if (n % 10 === 0) t.style.fill = '#a3271f';
+    t.appendChild(tp);
+    g.appendChild(t);
+  }
+  document.fonts.ready.then(() => setTimeout(() => (document.body.dataset.ready = '1'), 300));
+</script>
+</body>
+</html>

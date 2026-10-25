@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>أعمال مختارة</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+  /* The designer's portfolio for the submission: A4 landscape, printed by package.cjs (the name and contact come from
+     who.json at print time). The ads are unofficial concepts: none of these brands commissioned them. */
+  :root { --ink: #1c1a17; --mute: #5e5a53; --rule: #d9d3c7; --paper: #f7f4ee; --accent: #b0542a; }
+  @page { size: 297mm 210mm; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #888; font: 400 10pt/1.8 "IBM Plex Sans Arabic", sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { body { background: none; } .page { margin: 0 !important; } }
+  .page { width: 297mm; height: 210mm; position: relative; overflow: hidden; background: var(--paper); margin: 0 auto 8mm; break-after: page; }
+  h1 { font: 700 40pt/1.15 "Markazi Text", serif; }
+  h2 { font: 700 24pt/1.25 "Markazi Text", serif; margin: 1mm 0 4mm; }
+  .k { font: 500 8pt "IBM Plex Sans Arabic"; color: var(--accent); letter-spacing: .3pt; }
+  .mute { color: var(--mute); }
+  .lat { font-family: "IBM Plex Sans"; direction: ltr; unicode-bidi: isolate; }
+  .foot { position: absolute; bottom: 10mm; right: 18mm; left: 18mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: var(--mute); }
+  /* cover */
+  .cover { background: var(--ink); color: var(--paper); }
+  .cover .in { position: absolute; top: 50%; right: 22mm; transform: translateY(-50%); }
+  .cover .in p { margin-top: 5mm; font-size: 12pt; opacity: .8; }
+  .cover .line { width: 26mm; height: .6mm; background: var(--accent); margin: 8mm 0; }
+  .cover .contact { font-size: 10pt; line-height: 2; opacity: .85; }
+  .cover .foot { color: rgba(247,244,238,.55); }
+  /* about */
+  .about .txt { position: absolute; top: 26mm; right: 18mm; width: 150mm; }
+  .about .txt p { font-size: 11pt; line-height: 1.95; margin-bottom: 4mm; text-align: justify; }
+  .about .facts { position: absolute; top: 26mm; left: 18mm; width: 80mm; border-top: .4mm solid var(--ink); }
+  .about .facts div { display: grid; grid-template-columns: 26mm 1fr; padding: 2.4mm 0; border-bottom: .3mm solid var(--rule); font-size: 9.5pt; }
+  .about .facts span { color: var(--mute); font-size: 8pt; }
+  /* a work */
+  .work .img { position: absolute; top: 0; bottom: 0; left: 0; width: 168mm; background: #e9e4da center / contain no-repeat; }
+  .work .txt { position: absolute; top: 26mm; right: 18mm; width: 92mm; }
+  .work .txt .quote { font: 500 15pt/1.6 "IBM Plex Sans Arabic"; margin-bottom: 5mm; }
+  .work .txt p { margin-bottom: 3mm; text-align: justify; }
+  .work .meta { position: absolute; bottom: 22mm; right: 18mm; width: 92mm; font-size: 8pt; color: var(--mute); border-top: .3mm solid var(--rule); padding-top: 3mm; line-height: 1.9; }
+  .work .foot { left: 186mm; }
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="in">
+    <div class="k" style="color:#e08a5c">أعمال مختارة · ٢٠٢٦</div>
+    <h1 id="name" style="margin-top:4mm">علي احمد شهاب</h1>
+    <p>مصمم جرافيك وموشن ديزاين مستقل</p>
+    <div class="line"></div>
+    <div class="contact" id="contact"></div>
+  </div>
+  <div class="foot"><span>ديالى، العراق</span><span class="lat">@allawi.psd</span></div>
+</section>
+
+<section class="page about">
+  <div class="txt">
+    <div class="k">نبذة عني</div>
+    <h2>علي احمد شهاب</h2>
+    <p>مصمم جرافيك وموشن ديزاين مستقل من محافظة ديالى، أعمل في التصميم منذ سنتين ونصف. أصمم الإعلانات والمنشورات والهويات البصرية، وأحول الفكرة الواحدة إلى صورة ثابتة أو فيديو قصير.</p>
+    <p>أبدأ كل عمل من فكرة يعرفها الناس في العراق: كلمة نقولها كل يوم، أو مكان نعرفه، أو موقف مر به الجميع. ثم أبني عليها التصميم بعناية في التفاصيل، من اختيار الصورة والخط إلى آخر حركة في الفيديو.</p>
+    <p>الأعمال في هذا الملف إعلانات غير رسمية صممتها لعلامات عراقية معروفة، لأبين كيف يمكن أن تتكلم كل علامة بلغة جمهورها. ولم تطلبها هذه العلامات، وأنشرها على حسابي في إنستغرام بصفتها أفكارا مقترحة. ومعها في المجلد نفسه فيديو قصير من أعمالي في الموشن ديزاين.</p>
+  </div>
+  <div class="facts" id="facts"></div>
+  <div class="foot"><span>علي احمد شهاب · أعمال مختارة</span><span class="lat">02</span></div>
+</section>
+
+<script>
+const WORKS = [
+  { img: '../../brand-ads-2026/out/qi.png', brand: 'كي كارد', type: 'منشور إعلاني', quote: 'أحلى إشعار بالشهر.',
+    text: 'المنشور شاشة قفل هاتف يوم الأول من الشهر، وفي أعلاها إشعار الراتب. وتحته إشعاران يعرفهما كل بيت عراقي: صاحب المولدة يذكر بالاشتراك، والأم تطلب الخبز في طريق العودة.',
+    credit: '' },
+  { img: '../../brand-ads-2026/out/asiacell.png', brand: 'آسياسيل', type: 'منشور إعلاني', quote: 'الوطنية طفت.. النت ما طفى.',
+    text: 'غرفة مظلمة فيها مصباحان معلقان: مصباح الكهرباء الوطنية منطفئ، وإشارة النت بالنيون الأحمر ما زالت مضيئة. ',
+    credit: '' },
+  { img: '../../brand-ads-2026/out/iraqiairways.png', brand: 'الخطوط الجوية العراقية', type: 'منشور إعلاني', quote: 'مهما طالت الغربة.. بغداد قريبة',
+    text: 'نافذة طائرة تطل على بغداد ودجلة وبساتين النخيل، وعلى حافتها بطاقة صعود من إسطنبول إلى بغداد، مقعد بجانب الشباك، والوجهة: راجع للأهل.',
+    credit: 'صورة بغداد الجوية: <span class="lat">U.S. DoD / CJCS, CC BY 2.0</span>، معدلة.' },
+  { img: '../../brand-ads-2026/out/pepsi.png', brand: 'ببسي', type: 'منشور إعلاني', quote: 'بالعراق ما نگول كولا.. نگول ببسي.',
+    text: 'علبة ببسي بتصميم التسعينات، مصورة كمنتج في ستوديو على أرضية لامعة تحت ضوء ناعم، وتحتها: من أيام التسعينات.. لهسه.',
+    credit: 'صورة العلبة: <span class="lat">Ominae, CC BY-SA 3.0</span>، معدلة، والإعلان منشور بالترخيص نفسه.' },
+  { img: '../../brand-ads-2026/out/talabat.png', brand: 'طلبات', type: 'منشور إعلاني', quote: 'عيون المها بين الرصافة والجسر.. وطلبك هم.',
+    text: 'بيت علي بن الجهم عن بغداد هو المدخل، والطلب هو المفاجأة: سائق طلبات على الجسر بين الكرخ والرصافة، وبطاقة تتبع تقول: طلبك يعبر الجسر هسه. بأسلوب خريطة مسطحة بلون طلبات البرتقالي.',
+    credit: '' },
+  { img: '../../miswag-white-friday/out/miswag-white-friday-1.png', brand: 'مسواگ', type: 'فكرة حملة الجمعة البيضاء', quote: 'بالجمعة البيضاء.. الأسعار انگصت',
+    text: 'فكرة لحملة الجمعة البيضاء قدمتها لفريق مسواگ، تلعب على كلمة انگصت العراقية: بطاقة سعر بيضاء مقصوصة بالمقص على خلفية حمراء، بصور حقيقية فقط.',
+    credit: '' },
+  { img: '../../alfaqma-ad/out/alfaqma-ad.png', brand: 'الفقمة', type: 'منشور إعلاني', quote: 'المبردة ما تكفي.. تعال للفقمة',
+    text: 'تموز في بغداد والمبردة ما تكفي. بابها مفتوح مثل الثلاجة، وبدل القش والمروحة طبقات من الآيس كريم، والبرودة تخرج منها. المشهد كله مجسم ثلاثي الأبعاد.',
+    credit: '' },
+  { img: '../../alwaseet-ad/out/alwaseet-ad.png', brand: 'شركة الوسيط', type: 'منشور إعلاني', quote: 'أجدادنا شالوا الأمانة.. وإحنا كملنا الطريق',
+    text: 'الكائنات المجنحة في نقوش قصر نمرود، من القرن التاسع قبل الميلاد، تحمل حقيبة صغيرة بيدها. هنا صارت الحقيبة طردا من الوسيط، يحمله الكائن بشريط أزرق على جدار متحف أزرق.',
+    credit: 'صورة النقش: متحف المتروبوليتان للفنون، <span class="lat">CC0</span>.' },
+  { img: '../../sajalreef-ad/out/sajalreef-ad.png', brand: 'صاج الريف', type: 'منشور إعلاني', quote: 'غدا الجمعة: لحم لو دجاج؟ ثنينهم.',
+    text: 'غداء الجمعة والعائلة مختلفة: لحم لو دجاج؟ والجواب كلمة واحدة، مع بطاقة لعرض قوزي مكس من صاج الريف، بألوان العلامة الأسود والذهبي.',
+    credit: 'صورة الطبق: صاج الريف.' },
+  { img: '../../sala-ad/out/sala-ad.png', brand: 'سلة', type: 'منشور إعلاني', quote: 'بيبيتك تگول: لا تخلي البيض كله بسلة وحدة.. إلا هاي.',
+    text: 'مثل كبرنا عليه، مع لمسة: سلة بيض حقيقية وسط رسومات البقالة المرسومة باليد من هوية سلة، وبطاقة من تطبيقها: طبقة بيض، ٣٠ حبة، توصيل للرمادي والفلوجة.',
+    credit: '' },
+  { img: '../../miswag-ad/out/miswag-ad.png', brand: 'مسواگ', type: 'منشور إعلاني', quote: 'مسواگ جدك بالشورجة.. ومسواگك بكبسة.',
+    text: 'صورة حقيقية لسوق الشورجة المسقوف في بغداد سنة ١٩٣٢ تمثل التسوق في الماضي، وفوقها بطاقة طلب من مسواگ تمثل التسوق اليوم.',
+    credit: 'صورة الشورجة: مكتبة الكونغرس، ١٩٣٢، ملكية عامة.' },
+  { img: '../../baly-ad/out/baly-ad.png', brand: 'بلي', type: 'منشور إعلاني', quote: 'تكسي بنص الليل؟ بلي.',
+    text: 'اسم العلامة هو الجواب. شارع حقيقي في بغداد ليلا، بلون بلي الأزرق، وأضواء المصابيح والسيارات بأصفر العلامة.',
+    credit: 'الصورة: <span class="lat">ainudil, CC BY-SA 2.0</span>، معدلة.' },
+];
+WORKS.forEach((w, i) => document.write(`<section class="page work">
+  <div class="img" style="background-image:url(${w.img})"></div>
+  <div class="txt"><div class="k">${String(i + 1).padStart(2, '0').replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[d])} · ${w.type}</div><h2>${w.brand}</h2>
+    <div class="quote">${w.quote}</div><p>${w.text}</p></div>
+  <div class="meta">إعلان غير رسمي، فكرة وتصميم <span class="lat">allawi.psd</span>. لم تطلبه العلامة.${w.credit ? '<br>' + w.credit : ''}</div>
+  <div class="foot"><span>علي احمد شهاب · أعمال مختارة</span><span class="lat">${String(i + 3).padStart(2, '0')}</span></div>
+</section>`));
+
+const who = window.WHO || {};
+const rows = [['المدينة', 'ديالى، العراق'], ['الخبرة', 'سنتان ونصف'], ['العمل', 'تصميم جرافيك وموشن ديزاين، مستقل'],
+  ['إنستغرام', '<span class="lat">@allawi.psd</span>'], ['الهاتف', who.phone ? `<span class="lat">${who.phone}</span>` : '...'],
+  ['البريد', who.email ? `<span class="lat">${who.email}</span>` : '...']];
+document.getElementById('facts').innerHTML = rows.map(([a, b]) => `<div><span>${a}</span>${b}</div>`).join('');
+document.getElementById('contact').innerHTML = [who.phone, who.email, '@allawi.psd'].filter(Boolean).map((x) => `<span class="lat">${x}</span>`).join('<br>');
+if (who.name) document.getElementById('name').textContent = who.name;
+</script>
+</body>
+</html>

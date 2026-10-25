@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<title>allawi.psd · instagram sizes</title>
+<!-- built from my own phone screenshots; marks in Photoshop's own language (guides, transform box, quick mask) -->
+<style>
+@font-face { font-family:'DG Sahabah'; src:url(../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight:400; font-display:block }
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:3480px }
+.f { position:relative; width:1080px; height:1350px; overflow:hidden; flex:none; direction:rtl; color:#1f1510;
+  font-family:'DG Sahabah'; font-weight:400; font-synthesis:none; background:#e9dfcf }
+.paper::before { content:''; position:absolute; inset:0; background:url(../ig-highlights/assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.55 }
+.dark { background:#241913; color:#f6ecdc }
+.dark::before { content:''; position:absolute; inset:0; background:url(../ig-highlights/assets/img/paper.jpg) center/cover; mix-blend-mode:soft-light; opacity:.35 }
+.orange { background:#df5a20 }
+.orange::before { content:''; position:absolute; inset:0; background:url(../ig-highlights/assets/img/paper.jpg) center/cover; mix-blend-mode:multiply; opacity:.6 }
+.grain { position:absolute; inset:0; background:url(../hf-dollar-reel/assets/img/grain.png) 0 0/420px; mix-blend-mode:overlay; opacity:.07; pointer-events:none; z-index:40 }
+.ab { position:absolute; z-index:2 }
+.shot { position:absolute; z-index:2; background-repeat:no-repeat }
+.h { position:absolute; z-index:3; line-height:1.12 }
+.p { position:absolute; z-index:3; font-size:38px; line-height:1.55 }
+.p.sm { font-size:32px }
+
+/* photoshop marks */
+.tbox { position:absolute; z-index:5; border:2px solid rgba(20,14,10,.9) }
+.tbox i { position:absolute; width:16px; height:16px; background:#fff; border:2px solid rgba(20,14,10,.9) }
+.guide { position:absolute; z-index:5; width:2px; background:#3df2ff }
+.guide.hz { width:auto; height:2px }
+.tip { position:absolute; z-index:6; background:#2d2d2d; color:#e9e9e9; font-size:26px; padding:6px 14px 10px; border-radius:5px; white-space:nowrap; direction:ltr;
+  box-shadow:0 3px 8px rgba(0,0,0,.35) }
+.qm { position:absolute; z-index:4; background:rgba(255,0,0,.42) }
+.cursor { position:absolute; z-index:7; width:34px; height:46px }
+.ftag { position:absolute; z-index:6; background:#e2541b; color:#fff; font-size:24px; padding:4px 14px 8px; border-radius:4px; direction:ltr }
+
+.num { direction:ltr; unicode-bidi:isolate }
+.row span { white-space:nowrap }
+.row { position:absolute; right:70px; left:70px; z-index:3; display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid rgba(31,21,16,.55); padding-bottom:10px }
+</style>
+</head>
+<body>
+
+<!-- 1 my own profile grid, the one post that got cut lit up -->
+<section class="f" id="ig-1">
+  <div class="shot" data-src="shots/grid.jpg" data-crop="0,610,900,1125" style="left:0; top:0; width:1080px"></div>
+  <div class="ab" style="left:360px; top:872px; width:358px; height:478px; box-shadow:0 0 0 2400px rgba(24,16,11,.74)"></div>
+  <div class="tbox" style="left:358px; top:870px; width:362px; height:482px" data-handles></div>
+  <svg class="cursor" style="left:706px; top:1290px" viewBox="0 0 34 46"><path d="M3 2 L3 38 L12 30 L18 44 L24 41 L18 28 L30 28 Z" fill="#fff" stroke="#111" stroke-width="2.4" stroke-linejoin="round"/></svg>
+  <div class="h" style="right:70px; top:110px; font-size:128px; color:#f6ecdc">إنستغرام<br>يقص من تصميمك</div>
+  <div class="p" style="right:74px; top:430px; font-size:42px; color:rgba(246,236,220,.88)">حتى بوستاتي انقصت. اسحب وأوريك وين.</div>
+  <div class="p sm" style="left:70px; top:120px; direction:ltr; color:rgba(246,236,220,.6)">allawi.psd</div>
+  <div class="grain"></div>
+</section>
+
+<!-- 2 the same post, full and in the grid -->
+<section class="f paper" id="ig-2">
+  <div class="h" style="right:70px; top:96px; font-size:96px">نفس البوست، بمكانين</div>
+  <div class="shot" data-src="shots/post.jpg" data-crop="0,359,900,1125" style="right:56px; top:290px; width:480px"></div>
+  <div class="shot" data-src="shots/grid.jpg" data-crop="300,1337,298,398" style="left:56px; top:290px; width:450px"></div>
+  <div class="guide" style="right:${0}px" data-g="r"></div>
+  <div class="p sm" style="right:60px; top:908px">بالبوست: <span class="num">1080×1350</span></div>
+  <div class="p sm" style="left:60px; top:908px">بالشبكة: <span class="num">3:4</span></div>
+  <div class="p" style="right:70px; left:70px; top:1010px">الشبكة صارت تعرض كل بوست بنسبة <span class="num">3:4</span>. بوست <span class="num">4:5</span> يخسر <span class="num">34</span> بكسل من اليمين ومثلها من اليسار، وفوقها إنستغرام يحط أيقوناته على الزوايا.</div>
+  <div class="grain"></div>
+</section>
+
+<!-- 3 the original file with two guides -->
+<section class="f dark" id="ig-3">
+  <div class="h" style="right:70px; top:96px; font-size:96px">خلي كلامك بين الخطين</div>
+  <div class="p" style="right:70px; left:70px; top:232px; color:rgba(246,236,220,.82)">بملف <span class="num">1080×1350</span> أحط دليلين على <span class="num">34</span> و<span class="num">1046</span> بكسل، وكل شي مهم يقعد بينهم.</div>
+  <div class="ab" style="left:196px; top:420px; width:688px; height:860px; background:url(../ig-brand-posts/works/qi.jpg) center/cover; box-shadow:0 20px 40px rgba(0,0,0,.45)"></div>
+  <div class="guide" style="left:218px; top:384px; height:930px"></div>
+  <div class="guide" style="left:862px; top:384px; height:930px"></div>
+  <div class="ftag" style="left:196px; top:372px">qicard_ad.psd</div>
+  <div class="tip" style="left:410px; top:1300px">W: 1012 px</div>
+  <div class="p sm" style="right:70px; top:340px; color:rgba(246,236,220,.6); direction:ltr; font-size:26px">View › Guides › New Guide</div>
+  <div class="grain"></div>
+</section>
+
+<!-- 4 my mistake on a reel -->
+<section class="f paper" id="ig-4">
+  <div class="h" style="right:70px; top:110px; font-size:120px">هنا غلطت أنا</div>
+  <div class="p" style="right:74px; left:120px; top:280px">بريل من ريلزاتي، آخر الجملة قعد تحت زر اللايك. على شاشتي بفوتوشوب كان مرتب، بس الأزرار ما تبين إلا بالتطبيق.</div>
+  <div class="shot" data-src="shots/reel-1.jpg" data-crop="0,640,900,470" style="left:0; top:786px; width:1080px; box-shadow:0 -10px 24px rgba(31,21,16,.22)"></div>
+  <div class="tbox" style="left:812px; top:996px; width:236px; height:186px" data-handles></div>
+  <div class="grain"></div>
+</section>
+
+<!-- 5 how much the reel screen covers, measured on my phone -->
+<section class="f paper" id="ig-5">
+  <div class="shot" data-src="shots/reel-1.jpg" data-crop="0,89,900,1721" style="left:70px; top:236px; width:560px" id="reel2"></div>
+  <div class="h" style="right:70px; top:96px; font-size:88px">شكد يتغطى الريل؟</div>
+  <div class="p sm" style="right:70px; width:340px; top:250px">قست على موبايلي، بملف <span class="num">1080×1920</span>:</div>
+  <div class="ab" style="right:70px; width:340px; top:400px">
+    <div style="font-size:96px; line-height:1"><span class="num">130</span></div><div style="font-size:32px; margin-bottom:34px">فوق، اسم الصفحة</div>
+    <div style="font-size:96px; line-height:1"><span class="num">140</span></div><div style="font-size:32px; margin-bottom:34px">يمين، الأزرار</div>
+    <div style="font-size:96px; line-height:1"><span class="num">280</span></div><div style="font-size:32px">جوه، الاسم والكابشن</div>
+  </div>
+  <div class="p sm" style="right:70px; width:340px; top:1030px; color:#a3401a">قاعدتي: <span class="num">250</span> فوق، <span class="num">350</span> جوه، <span class="num">150</span> يمين. الكابشن الطويل يصعد لفوق.</div>
+  <div class="grain"></div>
+</section>
+
+<!-- 6 the sizes I work on -->
+<section class="f orange" id="ig-6">
+  <div class="h" style="right:70px; top:96px; font-size:58px; color:#fbf1e2">المقاسات اللي أشتغل عليها</div>
+  <div class="row" style="top:220px"><span style="font-size:44px">بوست وكاروسيل</span><span class="num" style="font-size:128px; line-height:1">1080×1350</span></div>
+  <div class="row" style="top:470px"><span style="font-size:44px">ريل وستوري</span><span class="num" style="font-size:132px; line-height:1">1080×1920</span></div>
+  <div class="row" style="top:680px"><span style="font-size:40px"><span class="num">3:4</span>، كامل بالشبكة</span><span class="num" style="font-size:104px; line-height:1">1080×1440</span></div>
+  <div class="row" style="top:860px"><span style="font-size:40px">مربع، يبين أصغر بالفيد</span><span class="num" style="font-size:84px; line-height:1">1080×1080</span></div>
+  <div class="p" style="right:70px; left:70px; top:1070px; color:#fbf1e2">وأصدر دايما بعرض <span class="num">1080</span> وبألوان <span class="num">sRGB</span>. أعرض من هيج إنستغرام يصغره، وغير <span class="num">sRGB</span> الألوان تبهت بالموبايل.</div>
+  <div class="grain"></div>
+</section>
+
+<!-- 7 call to action with my real profile -->
+<section class="f paper" id="ig-7">
+  <div class="h" style="right:70px; top:150px; font-size:104px">تريد تصاميم<br>ما تنقص ولا تنغطى؟</div>
+  <div class="p" style="right:74px; top:450px; font-size:46px; color:#a3401a">راسلني على الخاص.</div>
+  <div class="shot" data-src="shots/profile.jpg" data-crop="20,500,860,260" style="left:64px; top:620px; width:952px; border-radius:6px"></div>
+  <div class="shot" data-src="shots/profile.jpg" data-crop="598,1018,274,84" style="left:540px; top:960px; width:440px; border-radius:6px"></div>
+  <svg class="cursor" style="left:900px; top:1040px; width:46px; height:62px" viewBox="0 0 34 46"><path d="M3 2 L3 38 L12 30 L18 44 L24 41 L18 28 L30 28 Z" fill="#fff" stroke="#111" stroke-width="2.4" stroke-linejoin="round"/></svg>
+  <div class="p sm" style="right:74px; top:1200px; color:#6b5646">احفظ البوست وارجعله قبل ما تصمم.</div>
+  <div class="grain"></div>
+</section>
+
+<script>
+  // a screenshot crop: data-crop = x,y,w,h in the 900x2000 phone screenshot; the box keeps its width and scales
+  document.querySelectorAll('.shot').forEach((el) => {
+    const [x, y, w, h] = el.dataset.crop.split(',').map(Number);
+    const W = parseFloat(el.style.width), s = W / w;
+    el.style.height = h * s + 'px';
+    el.style.backgroundImage = `url(${el.dataset.src})`;
+    el.style.backgroundSize = `${900 * s}px ${2000 * s}px`;
+    el.style.backgroundPosition = `${-x * s}px ${-y * s}px`;
+  });
+  // transform handles at the corners and mid-points, as Photoshop draws them
+  document.querySelectorAll('[data-handles]').forEach((b) => {
+    ['0,0', '50,0', '100,0', '0,50', '100,50', '0,100', '50,100', '100,100'].forEach((p) => {
+      const [x, y] = p.split(',');
+      b.insertAdjacentHTML('beforeend', `<i style="left:calc(${x}% - 9px); top:calc(${y}% - 9px)"></i>`);
+    });
+  });
+  // slide 2: guides on the full post where the grid cuts it (34 px of 1080 each side)
+  (() => {
+    const s = document.querySelector('#ig-2 .shot'), g = document.querySelector('#ig-2 [data-g]');
+    g.remove();
+    const right = 56, w = 480, top = 290, h = parseFloat(s.style.height), cut = w * 34 / 1080;
+    const f = document.getElementById('ig-2');
+    [right + cut, right + w - cut].forEach((r) => f.insertAdjacentHTML('beforeend', `<div class="guide" style="right:${r - 1}px; top:${top - 24}px; height:${h + 48}px"></div>`));
+    f.insertAdjacentHTML('beforeend', `<div class="tip" style="right:${right + w / 2 - 70}px; top:${top + h + 30 - 64}px">−34 px  |  −34 px</div>`);
+  })();
+  // slide 5: quick mask over what the app covers on my phone (screenshot px: top to 200, right from 785, bottom from 1580)
+  (() => {
+    const r = document.getElementById('reel2'), s = 560 / 900, L = 70, T = 236, y0 = 89;
+    const f = document.getElementById('ig-5');
+    const qm = (x, y, w, h) => f.insertAdjacentHTML('beforeend', `<div class="qm" style="left:${L + x * s}px; top:${T + (y - y0) * s}px; width:${w * s}px; height:${h * s}px"></div>`);
+    qm(0, 89, 900, 111); qm(785, 880, 115, 700); qm(0, 1580, 900, 230);
+  })();
+  document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
