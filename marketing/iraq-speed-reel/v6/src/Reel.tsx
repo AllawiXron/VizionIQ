@@ -83,6 +83,25 @@ const at = (i: number, x: number, y: number): React.CSSProperties => ({ position
 const T: React.FC<{ size: number; weight?: number; color?: string; style?: React.CSSProperties; children: React.ReactNode }> = ({ size, weight = 500, color = INK, style, children }) => (
   <div style={{ fontFamily: FONT, fontSize: size, fontWeight: weight, color, direction: 'rtl', lineHeight: 1.25, whiteSpace: 'nowrap', ...style }}>{children}</div>
 );
+// a scene's line, set to fit inside 960 px, and under it a quieter line that may wrap
+let MEASURE: CanvasRenderingContext2D | null = null;
+function fit(str: string, size: number, weight: number, maxW: number) {
+  if (typeof document === 'undefined') return size;
+  if (!MEASURE) MEASURE = document.createElement('canvas').getContext('2d');
+  MEASURE!.font = `${weight} ${size}px ${FONT}`;
+  const w = MEASURE!.measureText(str).width;
+  return w > maxW ? Math.floor(size * maxW / w) : size;
+}
+const Title: React.FC<{ i: number; x?: number; y: number; st: React.CSSProperties; text: string; shown?: React.ReactNode; size?: number; color?: string; sub?: string; subSize?: number; subColor?: string; maxW?: number }> =
+  ({ i, x = 540, y, st, text, shown, size = 62, color = INK, sub, subSize = 34, subColor, maxW = 900 }) => {
+  const fs = fit(text, size, 700, maxW);
+  return (
+    <div style={{ ...at(i, x, y) }}><div style={{ ...st, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: Math.round(fs * 0.32) }}>
+      <T size={fs} weight={700} color={color} style={{ letterSpacing: 0 }}>{shown || text}</T>
+      {sub ? <T size={subSize} weight={500} color={subColor || color} style={{ opacity: subColor ? 1 : 0.65, whiteSpace: 'normal', maxWidth: maxW - 60, textAlign: 'center', lineHeight: 1.35, textWrap: 'balance' } as React.CSSProperties}>{sub}</T> : null}
+    </div></div>
+  );
+};
 // in: up from a little below, solid almost at once; out: away and gone
 function show(t: number, t0: number, t1 = Infinity, d = 0.6) {
   const k = soft(seg(t, t0, d)), o = soft(seg(t, t1, 0.35));
@@ -158,7 +177,7 @@ const D: any = data;
 let MARKS: any = { go: [18, 366, 354, 62] };
 
 function Hook({ t }: { t: number }) {
-  return <div style={{ ...at(0, 540, 960) }}><div style={show(t, 0.12)}><T size={52} weight={500}>الخلل من خطك.. لو من منطقتك؟</T></div></div>;
+  return <Title i={0} y={960} st={show(t, 0.12)} text="الخلل من برجك.. لو من منطقتك؟" sub="تحليل أكثر من مليون فحص سرعة حقيقي بالعراق" />;
 }
 function Bars({ t }: { t: number }) {
   const k1 = soft(seg(t, 2.2, 0.8)), k2 = soft(seg(t, 2.15, 0.6));
@@ -177,7 +196,7 @@ function LineTest({ t }: { t: number }) {
   return (
     <>
       <div style={{ position: 'absolute', left: X, top: 0 }}><div style={show(t, 3.25, Infinity, 0.7)}><Phone cx={PH2.cx} cy={PH2.cy} w={PH2.w} img={img} /></div></div>
-      <div style={{ ...at(2, PILL2.cx, PILL2.cy - 120) }}><div style={show(t, 3.45)}><T size={46} color={SOFT}>افحص خطك</T></div></div>
+      <div style={{ ...at(2, PILL2.cx, PILL2.cy - 170) }}><div style={show(t, 3.45)}><T size={50} weight={700} style={{ whiteSpace: 'normal', width: 420, textAlign: 'center' }}>اكشف سرعة خطك الحقيقية</T></div></div>
       <div style={{ ...at(2, PILL2.cx, PILL2.cy) }}><div style={show(t, 3.5)}>
         <Pill w={PILL2.w} h={PILL2.h} on={b.on} s={b.s}><T size={46} weight={700} color={b.on > 0.5 ? WHITE : INK}>ابدأ الفحص</T></Pill>
       </div></div>
@@ -195,7 +214,7 @@ function Share({ t }: { t: number }) {
   );
   return (
     <>
-      <div style={{ ...at(3, 540, 300) }}><div style={show(t, 8.1)}><T size={46} color="#f5f5f7">بطاقة جاهزة للنشر</T></div></div>
+      <Title i={3} y={320} st={show(t, 8.1)} text="وثق فحصك.. وشاركه بضغطة" size={60} color="#f5f5f7" sub="دليل بالأرقام گدام مجهز الخدمة" subColor="#a1a1a6" />
       {card('share-ping', 885, 290, { opacity: 0.55 * side, filter: 'brightness(0.62)', transform: `translateY(${80 + (1 - side) * 60}px)` })}
       {card('share-fast', 195, 290, { opacity: 0.55 * side, filter: 'brightness(0.62)', transform: `translateY(${80 + (1 - side) * 60}px)` })}
       {card('share', 540, 360, { opacity: clamp(k * 3), transform: `translateY(${(1 - k) * 90 - 40 * k}px) scale(${0.94 + 0.06 * k})`, boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 ${140 * k}px rgba(234,138,46,${0.38 * k})` })}
@@ -208,7 +227,7 @@ function Ping({ t }: { t: number }) {
   const k = soft(seg(t, 12.0, 0.7));
   return (
     <>
-      <div style={{ ...at(4, 540, 960) }}><div style={show(t, 11.05, 11.95)}><T size={52} color="#f5f5f7">فحص اللاگ للگيمرية</T></div></div>
+      <Title i={4} y={960} st={show(t, 11.05, 11.95)} text="تلعب أونلاين؟ اكشف سبب اللاگ" color="#f5f5f7" />
       <div style={{ ...at(4, 540, 1000) }}>
         <div style={{ opacity: clamp(k * 3), transform: `translateY(${(1 - k) * 50}px)`, width: 620, height: 380, borderRadius: 44, background: PILL_DARK, position: 'relative',
           boxShadow: `inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.5), 0 0 ${120 * hot}px rgba(255,69,58,${0.35 * hot})` }}>
@@ -217,7 +236,10 @@ function Ping({ t }: { t: number }) {
           <T size={190} weight={700} color={mix('#f5f5f7', HOT, hot)} style={{ position: 'absolute', left: 40, bottom: 26, direction: 'rtl', textShadow: `0 0 ${36 * hot}px rgba(255,69,58,${0.7 * hot})` }}><Ms v={v} /></T>
         </div>
       </div>
-      <div style={{ ...at(4, 540, 1270) }}><div style={show(t, 13.6)}><T size={38} color="#a1a1a6">البنك يقفز لما الخط مشغول</T></div></div>
+      <div style={{ ...at(4, 540, 1300) }}><div style={{ ...show(t, 13.6), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+        <T size={36} weight={500} color="#d1d1d6">البنگ يقفز وقت التحميل بالبيت</T>
+        <T size={36} weight={700} color={HOT}>وهذا سبب اللاگ!</T>
+      </div></div>
     </>
   );
 }
@@ -231,7 +253,7 @@ function Govs({ t }: { t: number }) {
       </Pill>
     </div></div>
   );
-  return <>{g(820, 'أقل بنك بين المحافظات', 'السليمانية', D.ping.alsulaimaniyah, GREEN, 15.35, smoothStep(seg(t, 15.9, 0.25)))}{g(1120, 'أعلى بنك بين المحافظات', 'الأنبار', D.ping.alanbar, '#9a7408', 15.5, 0)}</>;
+  return <><Title i={5} y={560} st={show(t, 15.3)} text="أسرع وأبطأ بنگ بالمحافظات" size={52} />{g(820, 'أقل بنك بين المحافظات', 'السليمانية', D.ping.alsulaimaniyah, GREEN, 15.35, smoothStep(seg(t, 15.9, 0.25)))}{g(1120, 'أعلى بنك بين المحافظات', 'الأنبار', D.ping.alanbar, '#9a7408', 15.5, 0)}</>;
 }
 function FourG({ t }: { t: number }) {
   const S = D.saq, k1 = soft(seg(t, 18.6, 1.2)), k2 = soft(seg(t, 18.8, 0.8));
@@ -245,11 +267,12 @@ function FourG({ t }: { t: number }) {
   );
   return (
     <>
-      <div style={{ ...at(6, 540, 960 - 300 * up) }}><div style={show(t, 17.35)}><T size={48} weight={500}>{AR(n)} منطقة: الـ&nbsp;4G أسرع من الواي فاي</T></div></div>
-      <div style={{ ...at(6, 540, 830) }}><div style={show(t, 18.4)}><T size={36} color={SOFT}>الصقلاوية، الأنبار</T></div></div>
+      <Title i={6} y={960 - 300 * up} st={show(t, 17.35)} size={58} text="بـ ٨٢٤ منطقة.. الـ 4G يتفوق عالواي فاي!"
+        shown={<>بـ {AR(n)} منطقة.. الـ&nbsp;<bdi dir="ltr">4G</bdi> يتفوق عالواي فاي!</>} />
+      <div style={{ ...at(6, 540, 830) }}><div style={show(t, 18.4)}><T size={34} color={INK} style={{ opacity: 0.65 }}>الصقلاوية، الأنبار</T></div></div>
       {row(960, 'إنترنت البيت', S.f.d, k1, RED, RED_T, 18.5)}
       {row(1150, 'إنترنت الموبايل', S.m.d, k2, LEAF, GREEN, 18.65)}
-      <div style={{ ...at(6, 540, 1350) }}><div style={show(t, 19.7)}><Pill w={420} h={96} on={smoothStep(seg(t, 20.0, 0.25))} onColor={WIN}><T size={42} weight={700} color={t > 20.1 ? WHITE : INK}>أسرع بـ ١٤ مرة</T></Pill></div></div>
+      <div style={{ ...at(6, 540, 1350) }}><div style={show(t, 19.7)}><Pill w={680} h={96} on={smoothStep(seg(t, 20.0, 0.25))} onColor={WIN}><T size={40} weight={700} color={t > 20.1 ? WHITE : INK}>إنترنت الموبايل أسرع بـ ١٤ ضعف</T></Pill></div></div>
     </>
   );
 }
@@ -281,7 +304,7 @@ function Compare({ t }: { t: number }) {
   };
   return (
     <>
-      <div style={{ ...at(7, 540, 440) }}><div style={show(t, 22.05)}><T size={48}>قارن بين منطقتين</T></div></div>
+      <Title i={7} y={440} st={show(t, 22.05)} size={58} text="قبل لا تسكن أو تأجر.. قارن منطقتين" />
       {card(A, 570, 1, 22.1, 700)}
       {card(B, 70, 2, 22.22, -700)}
     </>
@@ -297,11 +320,11 @@ function MapStation({ t }: { t: number }) {
   const ax = GX + diy.x * GZ, ay = GY + diy.y * GZ;
   return (
     <>
-      <div style={{ ...at(8, 540, 960) }}><div style={show(t, 26.05, 26.9)}><T size={52}>أولويات وزارة الاتصالات</T></div></div>
+      <Title i={8} y={960} st={show(t, 26.05, 27.0)} size={60} text="خارطة بيانات أمام وزارة الاتصالات" sub="وين الخلل، ويا محافظة تحتاج أولوية بالخدمة؟" subSize={36} />
       <div style={{ position: 'absolute', left: SX(8), top: 0, width: 1080, height: 1920, transformOrigin: '0 0', transform: `translate(${q[0]}px, ${q[1]}px) scale(${z}) translate(${-POLE[0]}px, ${-POLE[1]}px)` }}>
         <svg width={1080} height={1920} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
           {M.shapes.map((g: any) => {
-            const e = soft(seg(t, 26.95 + (g.y / M.h) * 0.5, 0.5)), sul = g.id === 'alsulaimaniyah' && zp > 0;
+            const e = soft(seg(t, 27.1 + (g.y / M.h) * 0.5, 0.5)), sul = g.id === 'alsulaimaniyah' && zp > 0;
             let a = e * (g.id === 'diyala' ? 1 : lerp(1, 0.3, sul ? focus * (1 - smoothStep(seg(zp, 0, 0.35))) : focus));
             const c = sul ? mix(bandFill(g.d), FIELD, smoothStep(seg(zp, 0.15, 0.6))) : bandFill(g.d);
             return <path key={g.id} d={d(g)} fill={c} fillOpacity={a} stroke={zp > 0 ? 'none' : LIGHT} strokeWidth={2.2} strokeOpacity={e} strokeLinejoin="round" />;
@@ -329,8 +352,7 @@ function Chart({ t }: { t: number }) {
   let tot = 0; tops.slice(1).forEach((p, i) => { tot += Math.hypot(p[0] - tops[i][0], p[1] - tops[i][1]); });
   return (
     <>
-      <div style={{ ...at(9, 540, 560) }}><div style={show(t, 29.9)}><T size={52} color={WHITE}>من ١٧ إلى ٦٢ ميغابت</T></div></div>
-      <div style={{ ...at(9, 540, 640) }}><div style={show(t, 30.1)}><T size={34} color="rgba(255,255,255,0.75)">سرعة إنترنت البيت بالعراق، صيف ٢٠١٩ إلى ٢٠٢٦</T></div></div>
+      <Title i={9} y={560} st={show(t, 29.9)} size={60} color={WHITE} text="قفزة العراق: من ١٧ إلى ٦٢ ميغابت" sub="تطور واضح من ٢٠١٩ إلى ٢٠٢٦.. والخطوة الجاية عدالة الخدمة بكل حي" subColor="rgba(255,255,255,0.8)" />
       {yrs.map((v, i) => {
         const e = soft(seg(t, 30.3 + 0.07 * i, 0.8)), h = HMAX * v / yrs[yrs.length - 1] * e, x = X0 - (i + 1) * BW - i * GAPB;
         return (
@@ -353,9 +375,9 @@ function End({ t }: { t: number }) {
   const P = { cx: 540, cy, w: 760 }, go = onScreen(P, ...[MARKS.go[0] + MARKS.go[2] / 2, MARKS.go[1] + MARKS.go[3] / 2] as [number, number]);
   return (
     <>
-      <div style={{ ...at(10, 540, 380) }}><div style={show(t, 33.4)}><T size={56} weight={700} color="#f5f5f7">منصة سرعة الإنترنت في العراق</T></div></div>
-      <div style={{ ...at(10, 540, 470) }}><div style={show(t, 33.6)}><T size={40} color="#a1a1a6">افحص خطك وقارن منطقتك مجانا، الرابط بالبايو</T></div></div>
-      <div style={{ ...at(10, 540, 540) }}><div style={show(t, 33.8)}><T size={34} color="#8e8e93">تطوير وتصميم <bdi dir="ltr">@allawi.psd</bdi></T></div></div>
+      <Title i={10} y={370} st={show(t, 33.4)} color="#f5f5f7" text="منصة سرعة الإنترنت في العراق" />
+      <div style={{ ...at(10, 540, 465) }}><div style={show(t, 33.6)}><T size={fit('افحص خطك وقارن منطقتك مجانا الآن — الرابط بالبايو', 36, 500, 940)} color="#c7c7cc">افحص خطك وقارن منطقتك مجانا الآن — الرابط بالبايو</T></div></div>
+      <div style={{ ...at(10, 540, 535) }}><div style={show(t, 33.8)}><T size={30} color="rgba(255,255,255,0.8)">تطوير وتصميم <bdi dir="ltr" style={{ color: '#ff9f0a' }}>@allawi.psd</bdi></T></div></div>
       <div style={{ position: 'absolute', left: SX(10), top: 0 }}><Phone cx={P.cx} cy={P.cy} w={P.w} img={img} dark btn={b} /></div>
       <Pointer t={t} target={[SX(10) + go[0] + 60, go[1] + 14]} tin={34.8} tp={35.6} from={[SX(10) + 1150, 2000]} to={[SX(10) + 1200, 1500]} />
     </>
@@ -382,6 +404,7 @@ const Scene: React.FC = () => {
         {t >= 29.75 && t < 33.4 && <Chart t={t} />}
         {t >= 32.7 && <End t={t} />}
       </div>
+      {t >= 29.4 && t < 29.75 ? <AbsoluteFill style={{ background: FIELD, opacity: smoothStep(seg(t, 29.5, 0.25)) }} /> : null}
     </AbsoluteFill>
   );
 };

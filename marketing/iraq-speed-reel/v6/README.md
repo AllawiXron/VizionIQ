@@ -8,7 +8,7 @@ punching in on the button being pressed and on the numbers.
 
 | Time | Station |
 |---|---|
-| 0 | الخلل من خطك.. لو من منطقتك؟ alone, then a whip left to the two bars: your line ١٢, your area ٨٧ |
+| 0 | الخلل من برجك.. لو من منطقتك؟ with تحليل أكثر من مليون فحص سرعة حقيقي بالعراق under it, then a whip left to the two bars: your line ١٢, your area ٨٧ |
 | 3 | The phone on the right, the button ابدأ الفحص on the left; the pointer presses it and the camera punches in to 2.2 times, then onto the screen while the test runs, and close on the result: ١٢ and خطك أبطأ من معدل منطقتك بـ ٧ أضعاف |
 | 8 | The dark room (#121215): the share picture rises in the middle with a soft glow, the ping card and a card at Karrada's average dimmed on either side |
 | 11 | فحص اللاگ للگيمرية, then the ping card, closer and closer: ١٢ ms with the line empty, ١٦٢ ms in red the moment it is busy |
@@ -19,7 +19,8 @@ punching in on the button being pressed and on the numbers.
 | 29.75 | On the green: من ١٧ إلى ٦٢ ميغابت, home internet in Iraq, summers 2019 to 2026 |
 | 33 | The dark room: the name, the link in the bio and @allawi.psd at the top, the top half of the phone rising from the bottom edge, the pointer pressing ابدأ الفحص |
 
-The buttons and badges are soft matte pills (#EFEFF4, a hairline of light along the top, a 0 8px 20px shadow at 8 %)
+Each scene's line is 58 to 62 px bold (made smaller only if it would not fit in 900 px), with a 34 to 36 px line under
+the key ones at 65 %. The map's last moment fades into the green over 0.25 s. The buttons and badges are soft matte pills (#EFEFF4, a hairline of light along the top, a 0 8px 20px shadow at 8 %)
 that fill with colour when pressed or picked. Everything stays straight; nothing covers text.
 
 The phone screens are the real site from `../v4/capture.cjs`, copied into `public/site`. The line test and the ping
