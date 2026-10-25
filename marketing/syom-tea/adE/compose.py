@@ -84,7 +84,8 @@ prgb = np.clip(prgb, 0, 1)
 base_rows = (gy > 0.95).astype(np.float32) * np.ones_like(pa)
 c3 = np.zeros((H, W, 3), np.float32)
 over(c3, np.ones((ph, pw, 3), np.float32), pa * base_rows, px, py + 3)
-darken(img, cv2.GaussianBlur(c3[..., 0], (0, 0), 3) * 0.8)
+darken(img, cv2.GaussianBlur(c3[..., 0], (0, 0), 2.5) * 0.9)
+darken(img, cv2.GaussianBlur(c3[..., 0], (0, 0), 14) * 0.45)
 # ambient occlusion under the whole group
 _bx, _by = OFF + CAM['base'][0], CAM['base'][1]
 ao = np.exp(-(((xx + OFF - _bx - 60) / 330) ** 2 + ((yy - _by - 10) / 70) ** 2))
@@ -115,6 +116,8 @@ def herbs(width, x, y, flip=False, keep=1.0, seed=0):
     en = cv2.GaussianBlur(r_.normal(0, 1, (1, al.shape[1])).astype(np.float32), (0, 0), 9)[0]
     en /= np.abs(en).max() + 1e-6
     al *= np.clip(np.linspace(0, 1, al.shape[0])[:, None] * 3.2 - 0.6 + 0.55 * en[None, :], 0, 1) ** 1.3
+    xs_ = np.linspace(0, 1, al.shape[1])[None, :]
+    al *= np.clip(np.minimum(xs_, 1 - xs_) / 0.12 + 0.3 * en[None, :], 0, 1)   # no straight cut at the sides
     # and an uneven bottom edge, so the spill thins out on the stone instead of stopping on a line
     eb = cv2.GaussianBlur(r_.normal(0, 1, (1, al.shape[1])).astype(np.float32), (0, 0), 7)[0]
     eb /= np.abs(eb).max() + 1e-6
@@ -126,8 +129,8 @@ def herbs(width, x, y, flip=False, keep=1.0, seed=0):
 
 
 fx, fy = CAM['front_left']; rx = CAM['front_right'][0]
-herbs(400 * K, round((fx + rx) / 2 - 170 * K), round(fy - 40 * K), seed=1)
-herbs(420 * K, round(rx - 40 * K), round(fy + 20 * K), flip=True, keep=0.55, seed=2)
+herbs(430 * K, round((fx + rx) / 2 - 190 * K), round(fy - 95 * K), seed=1)
+herbs(420 * K, round(rx - 60 * K), round(fy - 30 * K), flip=True, keep=0.55, seed=2)
 
 # ---------- subtle vignette ----------
 r = np.sqrt(((xx - 560) / 820) ** 2 + ((yy - 1050) / 1250) ** 2)

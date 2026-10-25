@@ -114,3 +114,18 @@ Call to action options sent to him (all soft, since the ad has its own Send Mess
   the camera (-6 degrees) and the loop starts in front so the tape crosses itself on the open table.
 - Ad 1 approved by the client (23 Oct): out/syom-adD-story.png and out/syom-adD-post.png, no more changes. The other
   four ads follow the same scene and look, built from his copywriter's text when it comes.
+- Ad 2 (`adE/`, 25 Oct): the copywriter's text, used word for word as the client asked (the user will check the
+  banned word and the Meta wording with him): وزنج زايد والدايت مايفيد وتخافين من المنحفات؟ / وصلتي للحل الطبيعي /
+  سيوم الكوري يحقق هدفج / ابدي اليوم وعيشي التجربة, and the usual call to action. The client said this one needn't
+  follow ad 1's style; only the identity is fixed. Concept picked: the natural answer. A full Blender scene: the pouch
+  stand-in on a slab of rough rock (Poly Haven rock_surface, toned grey-green), the green plaster wall well behind it
+  and out of focus, a morning sun from the front right shining through a scanned shrub hung out of frame (two copies:
+  one throws the leaves on the wall, one on the stone and the pouch), scanned nettle sprigs laid at the pouch's foot.
+  Passes: beauty (stand-in unseen but throwing its shadow), front (the sprigs alone, laid over the pouch photo), light
+  (the stand-in in white, its sun and leaf shadow put onto the pouch photo). compose.py adds the straightened mockup
+  from ad D, contact and ambient shadows, the shoot's loose tea over the base and a vignette.
+  Build: `adE/fetch.sh`, `adB/fetch-textures.sh`, then in adE `blender -b -P scene.py -- render/<pass>.png 96 <pass>`
+  for beauty, front and light, `python3 compose.py`, and from this folder
+  `node render.cjs adE/ad.html && python3 adD/grade.py out/syom-adE-story.png out/syom-adE-story.png`.
+  Feed post: the passes with `... <pass> 228` (render/<pass>-228.png), `python3 compose.py 228`, then
+  `node render.cjs adE/ad-post.html` and grade.py on out/syom-adE-post.png.
