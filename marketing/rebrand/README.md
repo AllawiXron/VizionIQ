@@ -20,7 +20,7 @@ that is an orange world: each hero image graded into burnt orange, deep brown an
 around the subject, the wordmark small in the top corner.
 
 - The rebrand carousel, one chameleon through it: slide 1 half turned orange, «غيرت لوني»; slide 2 fully orange and
-  looking into the lens, «شنو اسوي هنا» with the services; slide 3 (to come) its tongue catching a paper plane, the
-  DM icon, for how to order. The chameleons are Gemini images the user made from my prompts, saved as pixels only
-  (`img/chameleon-<n>-src.jpg`). `python3 prep.py chameleon-1 420 2340` (and `chameleon-2 560 2360`) builds each
+  looking into the lens, «شنو اسوي هنا» with the services; slide 3 its tongue catching an orange paper plane
+  (Instagram's DM icon), «دزلي بالخاص». The chameleons are Gemini images the user made from my prompts, saved as pixels only
+  (`img/chameleon-<n>-src.jpg`). `python3 prep.py chameleon-1 420 2340` (`chameleon-2 560 2360`, `chameleon-3 200 2400`) builds each
   graded plate in `img/`; `node render.cjs post-<n>.html` renders the slide to `out/`.
