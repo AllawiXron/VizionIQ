@@ -19,6 +19,8 @@ from them: one colour world over every post and one hero image per post that act
 that is an orange world: each hero image graded into burnt orange, deep brown and cream, the headline in DG Sahabah
 around the subject, the wordmark small in the top corner.
 
-- Post 1 (the rebrand): a chameleon half turned orange, «غيرت لوني». The chameleon is a Gemini image the user made
-  from my prompt (`img/chameleon-src.jpg`). `python3 prep.py` builds the graded plate (`img/plate-chameleon.png`),
-  `node render.cjs post-1.html` the slide (`out/post-1-slide1.jpg`).
+- The rebrand carousel, one chameleon through it: slide 1 half turned orange, «غيرت لوني»; slide 2 fully orange and
+  looking into the lens, «شنو اسوي هنا» with the services; slide 3 (to come) its tongue catching a paper plane, the
+  DM icon, for how to order. The chameleons are Gemini images the user made from my prompts, saved as pixels only
+  (`img/chameleon-<n>-src.jpg`). `python3 prep.py chameleon-1 420 2340` (and `chameleon-2 560 2360`) builds each
+  graded plate in `img/`; `node render.cjs post-<n>.html` renders the slide to `out/`.

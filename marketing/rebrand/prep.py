@@ -1,11 +1,13 @@
-"""python3 prep.py: the chameleon photo as a 1080x1350 plate graded into the orange world (img/plate-chameleon.png),
-plus the animal alone (img/fg-chameleon.png) so the headline can sit behind its crest."""
+"""python3 prep.py <name> <x0> <x1>: img/<name>-src.jpg cropped to x0..x1, scaled to 1080 wide and set at the bottom of a
+1080x1350 plate graded into the orange world (img/plate-<name>.png); the backdrop is carried on above the photo."""
+import sys
+
 import numpy as np
 from PIL import Image, ImageFilter
 
 W, H = 1080, 1350
-src = Image.open('img/chameleon-src.jpg').convert('RGB')
-x0, x1 = 420, 2340                                   # the branch, the head and the curled tail
+name, x0, x1 = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
+src = Image.open(f'img/{name}-src.jpg').convert('RGB')
 k = W / (x1 - x0)
 ph = round(src.height * k)
 photo = src.crop((x0, 0, x1, src.height)).resize((W, ph), Image.LANCZOS)
@@ -35,12 +37,6 @@ n = np.clip(n, 0, 1)
 n = 0.5 + (n - 0.5) * 1.06
 n = np.clip(n * np.array([1.04, 0.99, 0.94]), 0, 1)
 plate = (n * 255).astype(np.uint8)
-Image.fromarray(plate).save('img/plate-chameleon.png')
+Image.fromarray(plate).save(f'img/plate-{name}.png')
 
-# the animal (and branch) against the dark backdrop: bright or saturated pixels, softened by a pixel
-mx = n.max(2); sat = mx - n.min(2)
-m = np.clip((mx - 0.2) / 0.08, 0, 1) * np.clip((sat - 0.12) / 0.08 + (mx - 0.32) / 0.1, 0, 1)
-mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.MedianFilter(5)).filter(ImageFilter.GaussianBlur(0.8))
-fg = Image.fromarray(plate).convert('RGBA'); fg.putalpha(mask)
-fg.save('img/fg-chameleon.png')
 print('photo top at', top)
