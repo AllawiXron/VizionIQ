@@ -11,3 +11,14 @@ per post (orange stays; deep green, cream, pink and ink around it).
 - Old posts get archived in the app, not deleted.
 
 Stills for the user's approval; the full announcement carousel, caption, story, bio and the first posts come after.
+
+## After the references (27 Oct)
+
+The user hated the flat type posts above ("basic") and sent two pages he likes (ra.graphicc, space agency). The rule
+from them: one colour world over every post and one hero image per post that acts out the headline. For this page
+that is an orange world: each hero image graded into burnt orange, deep brown and cream, the headline in DG Sahabah
+around the subject, the wordmark small in the top corner.
+
+- Post 1 (the rebrand): a chameleon half turned orange, «غيرت لوني». The chameleon is a Gemini image the user made
+  from my prompt (`img/chameleon-src.jpg`). `python3 prep.py` builds the graded plate (`img/plate-chameleon.png`),
+  `node render.cjs post-1.html` the slide (`out/post-1-slide1.jpg`).
