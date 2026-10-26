@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Sahabah; src: url(../brand-fonts/DG-Sahabah-Reg.ttf); font-weight: 400; }
+  :root { --orange:#e2541b; --green:#0f3b2d; --cream:#f1e6d2; --pink:#f2b6c3; --ink:#141210 }
+  * { margin:0; padding:0; box-sizing:border-box }
+  body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:4200px;
+    font-family:Sahabah, sans-serif; font-weight:400; font-synthesis:none }
+  .art { position:relative; overflow:hidden }
+  /* printed poster stock: the sheet's fibres and a light grain over every artwork */
+  .art::after { content:''; position:absolute; inset:0; pointer-events:none;
+    background:url(../ig-highlights/assets/img/newsprint.jpg) 0 0/900px, url(../ig-highlights/assets/img/grain.png) 0 0/512px;
+    background-blend-mode:normal; mix-blend-mode:multiply; opacity:.16 }
+
+  /* the wordmark: علاوي pulled out along its kashida, with the free-transform handle that pulled it */
+  .wm { position:relative; display:inline-block; direction:rtl; white-space:nowrap; line-height:1 }
+  .wm .h { position:absolute; width:.19em; height:.19em; border:.032em solid currentColor; background:var(--bg) }
+  .wm .lat { position:absolute; left:0; direction:ltr; font-size:.2em; letter-spacing:.02em }
+
+  /* logo sheet */
+  #logo { width:2000px; height:1250px; background:#e9dfcc; display:grid; grid-template-columns:1.25fr 1fr; grid-template-rows:1fr 1fr }
+  #logo > div { position:relative; display:flex; align-items:center; justify-content:center }
+  .av { width:var(--s); height:var(--s); border-radius:50%; overflow:hidden; position:relative; background:var(--orange); color:var(--cream); --bg:var(--orange);
+    box-shadow:0 0 0 calc(var(--s) * .02) #a83a10 }
+  .av .wm { position:absolute; font-size:calc(var(--s) * .78); right:calc(var(--s) * .17); top:calc(var(--s) * .12) }
+
+  /* post 1: the rebrand */
+  .post { width:1080px; height:1350px }
+  #p1 { background:var(--orange); color:var(--green); --bg:var(--orange) }
+  #p1 .small { position:absolute; right:70px; top:130px; font-size:120px; line-height:1; direction:rtl }
+  #p1 .min { position:absolute; right:40px; top:230px; font-size:480px; line-height:1; direction:rtl }
+  #p1 .jadid { position:absolute; right:-20px; bottom:70px; font-size:480px; line-height:1; direction:rtl; white-space:nowrap }
+  #p1 .note { position:absolute; left:74px; top:470px; width:380px; font-size:44px; line-height:1.35; direction:rtl; text-align:right }
+  #p1 .sig { position:absolute; left:70px; top:120px; font-size:84px }
+
+  /* post 2: how a work post sits in the new grid */
+  #p2 { background:var(--green); color:var(--pink); --bg:var(--green) }
+  #p2 img { position:absolute; left:-60px; top:170px; width:700px; height:875px; object-fit:cover }
+  #p2 .big { position:absolute; right:56px; top:96px; font-size:210px; line-height:1.02; direction:rtl; text-align:right }
+  #p2 .note { position:absolute; right:60px; bottom:120px; width:330px; font-size:40px; line-height:1.35; direction:rtl; text-align:right; color:var(--cream) }
+  #p2 .sig { position:absolute; right:60px; bottom:52px; font-size:44px }
+</style>
+</head>
+<body>
+
+<div class="art" id="logo">
+  <div style="background:var(--cream); color:var(--green); --bg:var(--cream)"><span class="wm" style="font-size:250px" data-wm></span></div>
+  <div style="background:var(--green); gap:60px; align-items:center">
+    <div class="av" style="--s:300px"><span class="wm" data-wm="av"></span></div>
+    <div class="av" style="--s:150px"><span class="wm" data-wm="av"></span></div>
+    <div class="av" style="--s:76px"><span class="wm" data-wm="av"></span></div>
+  </div>
+  <div style="background:var(--green); color:var(--orange); --bg:var(--green)"><span class="wm" style="font-size:250px" data-wm></span></div>
+  <div style="background:var(--ink); color:var(--cream); --bg:var(--ink)"><span class="wm" style="font-size:150px" data-wm></span></div>
+</div>
+
+<div class="art post" id="p1">
+  <div class="small">الصفحة</div>
+  <div class="min">من</div>
+  <div class="jadid">جديد</div>
+  <div class="note">غيرت شكل الصفحة كله، وهذا اول بوست بالشكل الجديد</div>
+  <span class="wm sig" data-wm></span>
+</div>
+
+<div class="art post" id="p2">
+  <img src="../ig-highlights/assets/work/saj.jpg" alt="">
+  <div class="big">صاج<br>الريف</div>
+  <div class="note">فكرة إعلان من تصميمي لمطعم صاج الريف</div>
+  <span class="wm sig" data-wm></span>
+</div>
+
+<script>
+// where the kashida's stroke sits against the baseline, found by drawing it on a canvas
+let KASHIDA = 0;
+const measure = () => {
+  const c = document.createElement('canvas'); c.width = 400; c.height = 400;
+  const x = c.getContext('2d'); x.font = "200px Sahabah"; x.fillText('ـــــ', 20, 250);
+  const d = x.getImageData(150, 0, 1, 400).data; let lo = -1, hi = -1;
+  for (let y = 0; y < 400; y++) if (d[y * 4 + 3] > 128) { if (lo < 0) lo = y; hi = y; }
+  KASHIDA = ((lo + hi) / 2 - 250) / 200;
+};
+// the baseline of a wordmark: a zero-size inline box sits on it
+const base = (el) => {
+  const m = document.createElement('span'); m.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+  el.querySelector('.t').appendChild(m); const y = m.getBoundingClientRect().top - el.getBoundingClientRect().top; m.remove(); return y;
+};
+// build every wordmark, then put the handle in the middle of the stretched kashida
+document.querySelectorAll('[data-wm]').forEach((el) => {
+  el.innerHTML = el.dataset.wm === 'av' ? `<span class="t">عـــــــ</span><span class="h"></span>` : `<span class="t">عـــــــلاوي</span><span class="h"></span>`;
+});
+const place = () => document.querySelectorAll('.wm').forEach((el) => {
+  const t = el.querySelector('.t'), h = el.querySelector('.h');
+  if (!t || !h) return;
+  const r = document.createRange(), node = t.firstChild;
+  r.setStart(node, 1); r.setEnd(node, Math.min(9, node.length));  // the tatweels after ع                     // the kashida run
+  const k = r.getBoundingClientRect(), box = el.getBoundingClientRect(), fs = parseFloat(getComputedStyle(el).fontSize);
+  const lineY = base(el) + fs * KASHIDA;                     // the kashida's centre line in this font
+  h.style.left = (k.left - box.left + k.width * (el.dataset.wm === 'av' ? 0.42 : 0.5) - fs * 0.095) + 'px';
+  h.style.top = (lineY - fs * 0.095) + 'px';
+});
+document.fonts.load('200px Sahabah', 'علاوي').then(() => document.fonts.ready).then(() => { measure(); place(); setTimeout(() => { document.body.dataset.ready = '1'; }, 300); });
+</script>
+</body>
+</html>
