@@ -55,3 +55,11 @@ can't double-post, and the user posts the stories and the reel from the phone (o
 re-scheduled).
 
 All designs shown are the user's concept work; the brand ads are unofficial and labelled so on every story.
+
+## «موشن» highlight (26 Oct)
+
+Each motion video goes up as one story: the video at half size in a cream outline on a dark textured field, a bar
+visualizer under it driven by the video's own sound, then a line about the work and «تريد فيديو مثله لمشروعك؟ دزلي
+من هنا» with an arrow to the reply bar. `motion/frame.html` is the still layer (`node motion/render-frame.cjs` →
+`frame.png`; change the two text lines per video), then `cd motion && python3 compose.py <video> <out.mp4>` puts the
+video and the visualizer on it (1080×1920, 30 fps, no metadata). First one: `motion/iraq-speed-motion-story.mp4`.
