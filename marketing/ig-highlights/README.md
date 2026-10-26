@@ -24,10 +24,15 @@ Key content sits between y 250 and 1680, clear of the story header and the reply
 
 ## Covers
 
-`c-prices` (a price tag), `c-work` (two prints), `c-brands` (a rubber stamp), `c-identity` (a pen nib, for the existing
-«هويات» highlight so the whole row matches), `c-motion` (a tilted reel frame with a play mark, for the «موشن» highlight
-of motion videos, added 26 Oct): an ink icon on a torn cream disc on brand orange. Instagram crops
-the centre circle. `preview` shows the row as it looks on the profile.
+Redone on 26 Oct to the -noAI rules: the first set drew its icons from basic shapes on a flat cream disc with the same
+tape on every cover. Now each icon is one the user picked from Streamline's free sets (`assets/icons/`, traced from his
+exports; the video icon is his SVG as exported), printed in brown ink on its own sheet of orange card: a slightly
+different orange, a different part of the paper texture, and its own size and angle. `node render.cjs covers.html`
+(run twice; the preview reads the first pass) writes `out/covers-c-prices.jpg`, `-c-work`, `-c-brands`, `-c-identity`,
+`-c-motion` and `out/covers-preview.jpg`, the row as it looks on the profile. Instagram crops the centre circle.
+
+Credit (Streamline's free licence asks for it): put «Icons: Streamline, streamlinehq.com» in the bio or on the
+first story of a highlight.
 
 ## Putting them up
 
