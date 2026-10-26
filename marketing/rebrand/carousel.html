@@ -14,11 +14,17 @@
   .lamp { inset:0; background:radial-gradient(ellipse 85% 45% at var(--lx) var(--ly), rgba(255,118,40,.3), rgba(255,118,40,0) 75%);
     mix-blend-mode:screen; -webkit-mask:url(../ig-highlights/assets/img/newsprint.jpg) var(--mx) var(--my)/1800px; mask:url(../ig-highlights/assets/img/newsprint.jpg) var(--mx) var(--my)/1800px }
 
-  /* one headline in two lines and one quiet line under it; the orange comes from the photo */
-  .head { right:70px; direction:rtl; text-align:right; white-space:nowrap; font-size:220px; line-height:1.05; color:#f4e5cc }
-  .head span { display:inline }
-  .line { right:76px; direction:rtl; text-align:right; font-size:56px; line-height:1.35; color:#e8d3b4 }
-  .wm { left:70px; top:62px; font-size:60px; line-height:1; color:#f3e3c8; direction:rtl; white-space:nowrap; z-index:5 }
+  /* the headline in the middle of the picture, two lines at two sizes, the second stretched along its kashida like
+     the logo; two short notes under it, one each side; all in a light tint of the orange */
+  .head { left:0; right:0; direction:rtl; text-align:center; white-space:nowrap; color:#ffc79a; line-height:.98;
+    text-shadow:0 4px 24px rgba(30,8,0,.55), 0 1px 2px rgba(30,8,0,.5); z-index:4 }
+  .head .a { display:block; font-size:120px; color:#f6e4c8 }
+  .head .b { display:block; font-size:210px }
+  .note { direction:rtl; font-size:34px; line-height:1.3; color:#efd9bb; text-align:center; z-index:4;
+    text-shadow:0 2px 10px rgba(30,8,0,.6) }
+  .lock { left:70px; top:58px; z-index:5; display:flex; align-items:center; gap:18px; direction:rtl }
+  .lock .who { font-size:26px; line-height:1.25; color:#efd9bb; text-align:right; padding-right:16px; border-right:2px solid rgba(239,217,187,.45) }
+  .wm { position:relative; font-size:56px; line-height:1; color:#f3e3c8; direction:rtl; white-space:nowrap; z-index:5 }
   .wm .h { position:absolute; width:.19em; height:.19em; border:.032em solid currentColor; background:#2a1007 }
   .handle { font-size:32px; color:#e3cba8; direction:ltr; opacity:.85 }
 
@@ -26,12 +32,11 @@
   .vig { inset:0; background:radial-gradient(ellipse 80% 75% at 55% 55%, rgba(0,0,0,0) 55%, rgba(12,4,0,.55) 100%); z-index:8 }
   .grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.12; z-index:9 }
 
-  #s1 { --lx:40%; --ly:66%; --mx:-300px; --my:-200px }
-  #s1 .head { top:200px } #s1 .line { top:455px }
+  #s1 { --lx:45%; --ly:62%; --mx:-300px; --my:-200px }
+  #s1 .head { top:400px }
+  #s1 .note.r { right:110px; top:450px } #s1 .note.l { left:110px; top:450px }
   #s2 { --lx:30%; --ly:62%; --mx:-900px; --my:-500px }
-  #s2 .head { top:180px } #s2 .line { top:420px }
   #s3 { --lx:40%; --ly:74%; --mx:-600px; --my:-1000px }
-  #s3 .head { top:260px } #s3 .line { top:505px }
   .handle { left:74px; bottom:56px }
 </style>
 </head>
@@ -40,10 +45,10 @@
 <div class="art" id="s1">
   <img class="plate" src="img/plate-chameleon-1.png" alt="">
   <div class="lamp"></div>
-  <div class="head">غيرت <span>لوني</span></div>
-  <div class="line">الصفحة بشكلها الجديد</div>
-  <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
-  <div class="handle">allawi.psd</div>
+  <div class="head"><span class="a">غيرت</span><span class="b">لونـــــي</span></div>
+  <div class="note r">الصفحة<br>بشكلها الجديد</div>
+  <div class="note l">وهذا اول<br>بوست بيه</div>
+  <div class="lock"><span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span><span class="who">مصمم<br>جرافيك</span></div>
   <div class="vig"></div><div class="grain"></div>
 </div>
 
@@ -84,10 +89,6 @@ Promise.all([document.fonts.load("200px Sahabah", 'علاوي'), ...imgs]).then(
     const base = m.getBoundingClientRect().top - box.top; m.remove();
     h.style.left = (k.left - box.left + k.width / 2 - fs * .095) + 'px';
     h.style.top = (base + fs * K - fs * .095) + 'px';
-  });
-  document.querySelectorAll('.head').forEach((h) => {
-    let fs = 220; h.style.fontSize = fs + 'px';
-    while (h.getBoundingClientRect().width > 940 && fs > 100) { fs -= 2; h.style.fontSize = fs + 'px'; }
   });
   setTimeout(() => { document.body.dataset.ready = '1'; }, 300);
 });
