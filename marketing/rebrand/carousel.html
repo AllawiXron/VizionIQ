@@ -8,22 +8,16 @@
   body { background:#111; display:flex; gap:40px; padding:40px; width:3500px; font-family:Sahabah, sans-serif; font-weight:400; font-synthesis:none }
   .art { position:relative; width:1080px; height:1350px; overflow:hidden; color:#f1dfc2 }
   .art > * { position:absolute }
-  .plate, .cut { inset:0; width:1080px; height:1350px }
+  .plate { inset:0; width:1080px; height:1350px }
 
   /* a warm light thrown on the backdrop behind the subject, broken up by the paper so it is not an even disc */
   .lamp { inset:0; background:radial-gradient(ellipse 46% 38% at var(--lx) var(--ly), rgba(255,118,40,.55), rgba(255,118,40,0) 70%);
     mix-blend-mode:screen; -webkit-mask:url(../ig-highlights/assets/img/newsprint.jpg) var(--mx) var(--my)/1800px; mask:url(../ig-highlights/assets/img/newsprint.jpg) var(--mx) var(--my)/1800px }
 
-  /* the big word, lit from above, behind the animal */
-  /* padded so the fill reaches the dots and tails that hang outside the line box */
-  .big { line-height:1; padding:.25em .05em .4em; margin-top:-.25em; direction:rtl; white-space:nowrap;
-    background:linear-gradient(180deg, #fbeedb 0%, #f3dcbb 45%, #d9a777 80%);
-    -webkit-background-clip:text; background-clip:text; color:transparent }
-  .cut { filter:drop-shadow(16px 22px 20px rgba(10,3,0,.62)) drop-shadow(3px 4px 3px rgba(10,3,0,.5)) }
-
-  .mid { line-height:1.05; direction:rtl; white-space:nowrap; color:#f3e3c8 }
-  .small { direction:rtl; text-align:right; font-size:42px; line-height:1.38; color:#e3cba8 }
-  .small b { font-weight:400; color:#f28a4c }
+  /* one headline in two lines and one quiet line under it; the orange comes from the photo */
+  .head { right:76px; direction:rtl; text-align:right; white-space:nowrap; font-size:132px; line-height:1.12; color:#f4e5cc }
+  .head span { display:block }
+  .line { right:80px; direction:rtl; text-align:right; font-size:42px; line-height:1.4; color:#e3cba8 }
   .wm { left:70px; top:62px; font-size:60px; line-height:1; color:#f3e3c8; direction:rtl; white-space:nowrap; z-index:5 }
   .wm .h { position:absolute; width:.19em; height:.19em; border:.032em solid currentColor; background:#2a1007 }
   .handle { font-size:32px; color:#e3cba8; direction:ltr; opacity:.85 }
@@ -32,27 +26,13 @@
   .vig { inset:0; background:radial-gradient(ellipse 80% 75% at 55% 55%, rgba(0,0,0,0) 55%, rgba(12,4,0,.55) 100%); z-index:8 }
   .grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.12; z-index:9 }
 
-  /* slide 1: «لوني» in the animal's own skin, half old green and half new orange, the chameleon walking in front of it */
-  #s1 { --lx:42%; --ly:58%; --mx:-300px; --my:-200px }
-  #s1 .mid { right:72px; top:150px; font-size:150px }
-  #s1 .big { left:50%; transform:translateX(-50%); top:395px; font-size:430px; background:url(img/skin.png) center/1100px 520px;
-    -webkit-background-clip:text; background-clip:text; color:transparent; filter:brightness(1.08) }
-  #s1 .small { left:72px; top:178px; width:400px; text-align:left }
-  #s1 .handle { right:74px; bottom:58px }
-
-  /* slide 2: the head pushes in front of «هنا»; the services stacked beside the word */
-  #s2 { --lx:62%; --ly:50%; --mx:-900px; --my:-500px }
-  #s2 .mid { right:72px; top:150px; font-size:120px }
-  #s2 .big { right:36px; top:270px; font-size:500px }
-  #s2 .small { left:72px; top:330px; width:280px; text-align:left; font-size:40px; line-height:1.5 }
-  #s2 .handle { right:74px; bottom:58px }
-
-  /* slide 3: the paper plane and the tongue cross in front of «دزلي» */
-  #s3 { --lx:45%; --ly:68%; --mx:-600px; --my:-1000px }
-  #s3 .big { right:60px; top:330px; font-size:460px }
-  #s3 .mid { left:72px; top:1075px; font-size:112px; z-index:6 }
-  #s3 .small { right:74px; top:190px; width:620px; font-size:44px }
-  #s3 .handle { left:78px; bottom:52px; z-index:6 }
+  #s1 { --lx:40%; --ly:66%; --mx:-300px; --my:-200px }
+  #s1 .head { top:190px } #s1 .line { top:505px }
+  #s2 { --lx:30%; --ly:62%; --mx:-900px; --my:-500px }
+  #s2 .head { top:150px } #s2 .line { top:465px }
+  #s3 { --lx:40%; --ly:74%; --mx:-600px; --my:-1000px }
+  #s3 .head { top:220px } #s3 .line { top:535px }
+  .handle { left:74px; bottom:56px }
 </style>
 </head>
 <body>
@@ -60,10 +40,8 @@
 <div class="art" id="s1">
   <img class="plate" src="img/plate-chameleon-1.png" alt="">
   <div class="lamp"></div>
-  <div class="big">لوني</div>
-  <img class="cut" src="img/cut-chameleon-1.png" alt="">
-  <div class="mid">غيرت</div>
-  <div class="small">الصفحة <b>بشكلها الجديد</b><br>وهذا اول بوست بيه</div>
+  <div class="head">غيرت<span>لوني</span></div>
+  <div class="line">الصفحة بشكلها الجديد</div>
   <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
   <div class="handle">allawi.psd</div>
   <div class="vig"></div><div class="grain"></div>
@@ -72,10 +50,8 @@
 <div class="art" id="s2">
   <img class="plate" src="img/plate-chameleon-2.png" alt="">
   <div class="lamp"></div>
-  <div class="big">هنا</div>
-  <img class="cut" src="img/cut-chameleon-2.png" alt="">
-  <div class="mid">شنو اسوي</div>
-  <div class="small">بوستات واعلانات<br>ريلز موشن<br>هويات<br>صور منتجات <b>كأنها من ستوديو</b></div>
+  <div class="head">شنو اسوي<span>هنا</span></div>
+  <div class="line">بوستات، اعلانات، ريلز موشن وهويات</div>
   <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
   <div class="handle">allawi.psd</div>
   <div class="vig"></div><div class="grain"></div>
@@ -84,10 +60,8 @@
 <div class="art" id="s3">
   <img class="plate" src="img/plate-chameleon-3.png" alt="">
   <div class="lamp"></div>
-  <div class="big">دزلي</div>
-  <img class="cut" src="img/cut-chameleon-3.png" alt="">
-  <div class="mid">بالخاص</div>
-  <div class="small">كلي شنو تبيع ووين تنشر،<br>وارجعلك بأول شي <b>راح اغيره</b></div>
+  <div class="head">دزلي<span>بالخاص</span></div>
+  <div class="line">كلي شنو تبيع، وارجعلك بفكرة</div>
   <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
   <div class="handle">allawi.psd</div>
   <div class="vig"></div><div class="grain"></div>
