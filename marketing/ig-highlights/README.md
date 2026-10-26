@@ -27,10 +27,11 @@ Key content sits between y 250 and 1680, clear of the story header and the reply
 Redone on 26 Oct to the -noAI rules: the first set drew its icons from basic shapes on a flat cream disc with the same
 tape on every cover. The icons are now the ones the user picked from Streamline's free Guidance set, rebuilt as clean
 vectors on its 24-unit grid (`assets/icons/`; the video icon is his SVG as exported) with one heavier stroke so they read
-in a small circle, printed straight and centred on card. Each cover is its own sheet: a slightly different card colour
-and a different part of the paper texture. Two options: `a` cream ink on orange, `b` orange ink on dark brown.
-`node render.cjs covers.html` (run twice; the rows read the first pass) writes `out/covers-c-<name>-<a|b>.jpg` and
-`out/covers-preview-a.jpg` / `-b.jpg`, the row as it looks on the profile. Instagram crops the centre circle.
+in a small circle, pressed straight and centred into orange card in cream ink (the user picked this over orange on dark brown): a dark lip
+on the upper edge of each line and light on the lower one, daylight across the sheet from the upper left, the ink
+taking the paper's fibres. Each cover is its own sheet, with a slightly different orange and a different part of the
+paper. `node render.cjs covers.html` (run twice; the row reads the first pass) writes `out/covers-c-<name>.jpg` and
+`out/covers-preview.jpg`, the row as it looks on the profile. Instagram crops the centre circle.
 
 Credit (Streamline's free licence asks for it): put «Icons: Streamline, streamlinehq.com» in the bio or on the
 first story of a highlight.
