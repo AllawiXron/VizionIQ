@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 26 26">
+  <title>Price tag, cut</title>
+  <g id="price-tag" fill="none" stroke="#000" stroke-width="2.3" stroke-linejoin="miter" stroke-linecap="butt">
+    <path d="M2 2h9l11.5 11.5-9 9L2 11z"/>
+    <g transform="rotate(-45 11 11)">
+      <path d="M13.2 7.6H9v3.4h4v3.4H8.8"/>
+      <path d="M11 5.9v1.7M11 14.4v1.7"/>
+    </g>
+  </g>
+</svg>

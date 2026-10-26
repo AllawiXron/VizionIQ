@@ -5,21 +5,26 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box }
   body { background:#000; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:6000px }
-  .art { position:relative; width:1080px; height:1920px; overflow:hidden }
-  .art { background:var(--card); --inkc:#f6e9d3 }
-  /* card stock: the fibres of a real sheet, then slow tone changes from the same sheet blown up and blurred */
-  .fibre { position:absolute; inset:0; background:url(assets/img/newsprint.jpg) var(--fx) var(--fy)/var(--fs); mix-blend-mode:multiply; opacity:.46 }
+  .art { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--card) }
+  .art > svg { position:absolute; inset:0 }
+
+  /* the icon, cut from thick cream card and lifted off the sheet; light from the upper left */
+  .cut { position:absolute; left:50%; top:50%; width:var(--w); height:var(--w); margin:calc(var(--w) / -2) 0 0 calc(var(--w) / -2);
+    transform:translate(var(--dx), var(--dy)) }
+  .cut div { position:absolute; inset:0; -webkit-mask:var(--icon) center/contain no-repeat; mask:var(--icon) center/contain no-repeat }
+  .cut .far  { background:rgba(70,22,4,.42); transform:translate(30px, 40px); filter:blur(22px) }   /* soft shadow it casts */
+  .cut .near { background:rgba(60,16,2,.55); transform:translate(7px, 9px); filter:blur(4px) }      /* tight shadow where it is closest */
+  .cut .edge { background:#b9a385 }                                                                    /* the card's cut edge */
+  .cut .face { background:#f5e8d2 }
+  .cut .face::after { content:''; position:absolute; inset:0; background:linear-gradient(150deg, rgba(255,255,255,.22), rgba(255,255,255,0) 45%, rgba(120,80,40,.12)) }
+  .lift { position:absolute; inset:0; filter:drop-shadow(-1.5px -1.5px 0 rgba(255,250,240,.55)) }   /* light catching the upper cut */
+
+  /* paper over everything: one sheet's fibres, slow tone changes, daylight across the desk, grain */
+  .fibre { position:absolute; inset:0; background:url(assets/img/newsprint.jpg) var(--fx) var(--fy)/var(--fs); mix-blend-mode:multiply; opacity:.42 }
   .tone { position:absolute; inset:-120px; background:url(assets/img/newsprint.jpg) var(--tx) var(--ty)/2600px; filter:blur(36px) contrast(1.6);
-    mix-blend-mode:soft-light; opacity:.55 }
-  /* daylight falling across the sheet from the upper left, the far corner a little in shade */
-  .light { position:absolute; inset:0; background:linear-gradient(158deg, rgba(255,236,214,.16) 0%, rgba(255,236,214,0) 38%, rgba(60,18,0,0) 62%, rgba(60,18,0,.2) 100%);
+    mix-blend-mode:soft-light; opacity:.5 }
+  .light { position:absolute; inset:0; background:linear-gradient(158deg, rgba(255,236,214,.18) 0%, rgba(255,236,214,0) 38%, rgba(60,18,0,0) 60%, rgba(60,18,0,.24) 100%);
     mix-blend-mode:soft-light }
-  /* the icon pressed into the card: a dark lip on the upper edge of the groove, light catching the lower one */
-  .press { position:absolute; inset:0; filter:drop-shadow(0 -2px 0 rgba(70,22,0,.32)) drop-shadow(0 2.5px 1px rgba(255,214,180,.38)) }
-  /* the icon printed in ink that takes the paper's texture */
-  .ink { position:absolute; left:50%; top:50%; width:var(--w); height:var(--w); margin:calc(var(--w) / -2) 0 0 calc(var(--w) / -2);
-    background:var(--inkc); -webkit-mask:var(--icon) center/contain no-repeat; mask:var(--icon) center/contain no-repeat }
-  .ink::after { content:''; position:absolute; inset:0; background:url(assets/img/newsprint.jpg) var(--fx) var(--fy)/600px; mix-blend-mode:multiply; opacity:.42 }
   .grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
 
   .row { width:1960px; height:440px; background:#000 }
@@ -32,23 +37,56 @@
 <body>
 <div id="arts"></div>
 <script>
-// every cover is its own sheet: a slightly different card colour and a different part of the paper
+// Each cover: the base sheet, a torn sheet of darker orange laid over part of it (its own side, angle and tear), and
+// the icon cut from cream card on top. The tear is the straight top edge of the torn sheet, roughened by noise.
 const C = [
-  { id:'c-prices',   icon:'price-tag', label:'الأسعار', card:'#e2511a', dark:'#1f1510', w:'520px', fs:'900px',  fx:'-120px', fy:'40px',   tx:'-300px',  ty:'-900px' },
-  { id:'c-work',     icon:'images',    label:'أعمالي',  card:'#e85c1f', dark:'#221712', w:'520px', fs:'1100px', fx:'60px',   fy:'-200px', tx:'-1200px', ty:'-400px' },
-  { id:'c-brands',   icon:'stamp',     label:'براندات', card:'#db4c17', dark:'#1d140f', w:'520px', fs:'1000px', fx:'-400px', fy:'300px',  tx:'-700px',  ty:'-1400px' },
-  { id:'c-identity', icon:'pen-tool',  label:'هويات',   card:'#e4571d', dark:'#201611', w:'520px', fs:'1200px', fx:'200px',  fy:'100px',  tx:'-1600px', ty:'-200px' },
-  { id:'c-motion',   icon:'video',     label:'موشن',    card:'#ea6122', dark:'#231813', w:'540px', fs:'950px',  fx:'-250px', fy:'-500px', tx:'-500px',  ty:'-1100px' },
+  { id:'c-prices',   icon:'price-tag', label:'الأسعار', card:'#e4551b', sheet:'#b9400e', tear:{ x:540, y:1180, r:-11, seed:3 },  w:'540px', dx:'0px',   dy:'-30px', fs:'900px',  fx:'-120px', fy:'40px',   tx:'-300px',  ty:'-900px' },
+  { id:'c-work',     icon:'images',    label:'أعمالي',  card:'#e85d1f', sheet:'#bf4612', tear:{ x:400, y:960,  r:84,  seed:11 }, w:'520px', dx:'20px',  dy:'0px',   fs:'1100px', fx:'60px',   fy:'-200px', tx:'-1200px', ty:'-400px' },
+  { id:'c-brands',   icon:'stamp',     label:'براندات', card:'#dd4e18', sheet:'#b13c0c', tear:{ x:700, y:640,  r:-148, seed:7 }, w:'520px', dx:'-10px', dy:'20px',  fs:'1000px', fx:'-400px', fy:'300px',  tx:'-700px',  ty:'-1400px' },
+  { id:'c-identity', icon:'pen-tool',  label:'هويات',   card:'#e5581d', sheet:'#ba420f', tear:{ x:620, y:1240, r:18,  seed:19 }, w:'500px', dx:'-14px', dy:'-24px', fs:'1200px', fx:'200px',  fy:'100px',  tx:'-1600px', ty:'-200px' },
+  { id:'c-motion',   icon:'video',     label:'موشن',    card:'#ea6122', sheet:'#c14812', tear:{ x:540, y:700,  r:174, seed:5 },  w:'540px', dx:'0px',   dy:'34px',  fs:'950px',  fx:'-250px', fy:'-500px', tx:'-500px',  ty:'-1100px' },
 ];
-const vars = (c) => Object.entries(c).filter(([k]) => !['id', 'icon', 'label'].includes(k)).map(([k, v]) => `--${k}:${v}`).join(';');
-const sheet = (c) => `<div class="art" id="${c.id}" style="${vars(c)};--icon:url(assets/icons/${c.icon}.svg)">
-  <div class="fibre"></div><div class="tone"></div><div class="light"></div><div class="press"><div class="ink"></div></div><div class="grain"></div></div>`;
+
+// the torn sheet in its own frame: torn edge along y=0, paper below it; the white core of the card shows a few px past
+// the coloured face, and the sheet throws a short shadow onto the base
+const torn = (c, k) => {
+  const t = c.tear, id = 'f' + k;
+  return `<svg viewBox="0 0 1080 1920" width="1080" height="1920">
+    <defs>
+      <filter id="${id}a" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="${t.seed}" result="big"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="3" seed="${t.seed + 1}" result="small"/>
+        <feDisplacementMap in="SourceGraphic" in2="big" scale="46" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+        <feDisplacementMap in="d1" in2="small" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="${id}b" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="${t.seed}" result="big"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.22" numOctaves="2" seed="${t.seed + 2}" result="fib"/>
+        <feDisplacementMap in="SourceGraphic" in2="big" scale="46" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+        <feDisplacementMap in="d1" in2="fib" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="${id}s"><feGaussianBlur stdDeviation="9"/></filter>
+    </defs>
+    <g transform="translate(${t.x} ${t.y}) rotate(${t.r})">
+      <rect x="-1600" y="-2" width="3200" height="2600" fill="rgba(60,16,2,.4)" filter="url(#${id}s)" transform="translate(8 14)"/>
+      <rect x="-1600" y="-7" width="3200" height="2600" fill="#f3e6cf" filter="url(#${id}b)"/>
+      <rect x="-1600" y="0" width="3200" height="2600" fill="${c.sheet}" filter="url(#${id}a)"/>
+    </g>
+  </svg>`;
+};
+const vars = (c) => Object.entries(c).filter(([k]) => !['id', 'icon', 'label', 'tear', 'sheet'].includes(k)).map(([k, v]) => `--${k}:${v}`).join(';');
+const cover = (c, k) => `<div class="art" id="${c.id}" style="${vars(c)};--icon:url(assets/icons/cut/${c.icon}.svg)">
+  ${torn(c, k)}
+  <div class="cut"><div class="far"></div><div class="near"></div>
+    ${[5, 4, 3, 2, 1].map((d) => `<div class="edge" style="transform:translate(${d}px, ${d * 1.3}px)"></div>`).join('')}
+    <div class="lift"><div class="face"></div></div></div>
+  <div class="fibre"></div><div class="tone"></div><div class="light"></div><div class="grain"></div></div>`;
 // the profile row, from the rendered covers (render twice: this reads out/)
-const row = () => `<div class="art row" id="preview">${C.map((c, k) =>
+const row = `<div class="art row" id="preview">${C.map((c, k) =>
   `<div class="hl" style="right:${80 + k * 370}px"><div class="c"><div style="background-image:url(out/covers-${c.id}.jpg)"></div></div><span>${c.label}</span></div>`).join('')}</div>`;
-document.getElementById('arts').outerHTML = C.map(sheet).join('') + row();
+document.getElementById('arts').outerHTML = C.map(cover).join('') + row;
 const imgs = [...document.images].map((i) => i.complete ? null : new Promise((r) => { i.onload = i.onerror = r; }));
-Promise.all([document.fonts.ready, ...imgs]).then(() => setTimeout(() => { document.body.dataset.ready = '1'; }, 400));
+Promise.all([document.fonts.ready, ...imgs]).then(() => setTimeout(() => { document.body.dataset.ready = '1'; }, 600));
 </script>
 </body>
 </html>

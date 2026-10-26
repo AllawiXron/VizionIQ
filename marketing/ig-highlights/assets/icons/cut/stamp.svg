@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 26 26">
+  <title>Stamp, cut</title>
+  <g id="stamp" fill="none" stroke="#000" stroke-width="2.3" stroke-linejoin="miter" stroke-linecap="butt">
+    <path d="M8 10.5V5.2a4 4 0 0 1 8 0v5.3l6 1.6V17H2v-4.9z"/>
+    <path d="M4.5 17v5h15v-5"/>
+  </g>
+</svg>
