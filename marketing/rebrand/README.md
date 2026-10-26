@@ -24,9 +24,10 @@ around the subject, the wordmark small in the top corner.
   user made from my prompts, saved as pixels only (`img/chameleon-<n>-src.jpg`).
 - The user found the first build (a photo with a text block above it) low effort, then found a busier version (huge
   words behind the cut-out animal, «لوني» filled with its skin, text blocks around it) worse: "too much at once". The
-  version that stands (the user found two-line small headlines "too small and weird"): one big one-line headline
-  sized to the width and one line under it per slide, all clear of the animal, on a warm
-  light thrown on the backdrop and broken by paper texture, with a vignette and grain over everything. The headlines
-  stay one colour (no orange last word); the orange comes from the photos.
+  version that stands came from three plain layouts (`options.html`, `out/options.jpg`); the user picked B and asked
+  for more effort, and found light-orange type on the orange-brown backdrop hard on the eyes. So: the headline stacked
+  on the right in near-white, lit like the photo (white at the top, warm at the foot) with a soft shadow behind it,
+  one line under it, the logo lockup («علاوي» and «مصمم جرافيك») top left, the handle bottom left, a warm light on the
+  backdrop behind the words, a vignette and grain. No orange words; the orange comes from the photos.
 - Build: `python3 prep.py chameleon-1 420 2340` (`chameleon-2 560 2360`, `chameleon-3 200 2400`) grades each plate;
   `node render.cjs carousel.html` writes `out/carousel-s1..3.jpg`.
