@@ -43,7 +43,7 @@ Graphic Design, Motion Graphics, Advertising, Social Media Marketing. Location: 
 
 ## Featured (only after the user confirms)
 
-- Syom Tea ad: `marketing/syom-tea/adD/out/syom-adD-post.png` (the user asks Syom first)
+- Syom Tea ad: `marketing/syom-tea/out/syom-adD-post.png` (the user asks Syom first)
 - Orange Coin reel and the simple-logos reel: the user's posted versions
 
 ## Banner (1584x396)
