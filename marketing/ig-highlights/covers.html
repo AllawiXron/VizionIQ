@@ -5,42 +5,46 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box }
   body { background:#000; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:6000px }
-  .art { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--card) }
+  .art { position:relative; width:1080px; height:1920px; overflow:hidden }
+  /* a: cream ink on orange card; b: orange ink on dark brown card */
+  .art.a { background:var(--card); --inkc:#f7ecda }
+  .art.b { background:var(--dark); --inkc:#ec6a2b }
   /* card stock: the fibres of a real sheet, then slow tone changes from the same sheet blown up and blurred */
-  .art .fibre { position:absolute; inset:0; background:url(assets/img/newsprint.jpg) var(--fx) var(--fy)/var(--fs); mix-blend-mode:multiply; opacity:.28 }
-  .art .tone { position:absolute; inset:-120px; background:url(assets/img/newsprint.jpg) var(--tx) var(--ty)/2600px; filter:blur(36px) contrast(1.6);
+  .fibre { position:absolute; inset:0; background:url(assets/img/newsprint.jpg) var(--fx) var(--fy)/var(--fs); mix-blend-mode:multiply; opacity:.38 }
+  .b .fibre { mix-blend-mode:overlay; opacity:.3 }
+  .tone { position:absolute; inset:-120px; background:url(assets/img/newsprint.jpg) var(--tx) var(--ty)/2600px; filter:blur(36px) contrast(1.6);
     mix-blend-mode:soft-light; opacity:.55 }
-  /* the icon printed in brown ink that takes the paper's texture */
-  .art .ink { position:absolute; left:50%; top:50%; width:var(--w); height:var(--w); margin:calc(var(--w) / -2) 0 0 calc(var(--w) / -2);
-    transform:translate(var(--dx), var(--dy)) rotate(var(--r)); background:#1f1510;
-    -webkit-mask:var(--icon) center/contain no-repeat; mask:var(--icon) center/contain no-repeat }
-  .art .ink::after { content:''; position:absolute; inset:0; background:url(assets/img/newsprint.jpg) 0 0/700px; mix-blend-mode:screen; opacity:.1 }
-  .art .grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
+  /* the icon printed in ink that takes the paper's texture */
+  .ink { position:absolute; left:50%; top:50%; width:var(--w); height:var(--w); margin:calc(var(--w) / -2) 0 0 calc(var(--w) / -2);
+    background:var(--inkc); -webkit-mask:var(--icon) center/contain no-repeat; mask:var(--icon) center/contain no-repeat }
+  .ink::after { content:''; position:absolute; inset:0; background:url(assets/img/newsprint.jpg) 0 0/700px; mix-blend-mode:multiply; opacity:.35 }
+  .grain { position:absolute; inset:0; background:url(assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
 
-  #preview { width:1960px; height:520px; background:#000; position:relative }
-  #preview .hl { position:absolute; top:70px; width:300px; text-align:center }
-  #preview .hl .c { width:250px; height:250px; margin:0 auto; border-radius:50%; border:6px solid #3a3a3a; padding:8px; background:#000 }
-  #preview .hl .c div { width:100%; height:100%; border-radius:50%; background-size:100%; background-position:center }
-  #preview .hl span { display:block; margin-top:26px; font:500 40px sans-serif; color:#f2f2f2 }
+  .row { width:1960px; height:440px; background:#000 }
+  .hl { position:absolute; top:70px; width:300px; text-align:center }
+  .hl .c { width:250px; height:250px; margin:0 auto; border-radius:50%; border:6px solid #3a3a3a; padding:8px; background:#000 }
+  .hl .c div { width:100%; height:100%; border-radius:50%; background-size:100% auto; background-position:center }
+  .hl span { display:block; margin-top:26px; font:500 40px sans-serif; color:#f2f2f2 }
 </style>
 </head>
 <body>
 <div id="arts"></div>
 <script>
-// each cover is its own sheet: a slightly different orange, a different part of the paper, the icon at its own size and angle
+// every cover is its own sheet: a slightly different card colour and a different part of the paper
 const C = [
-  { id:'c-prices',   icon:'price-tag', label:'الأسعار', card:'#df5320', w:'470px', r:'-7deg', dx:'10px',  dy:'-6px', fs:'900px',  fx:'-120px', fy:'40px',  tx:'-300px', ty:'-900px' },
-  { id:'c-work',     icon:'images',    label:'أعمالي',  card:'#e65d24', w:'440px', r:'3deg',  dx:'-8px',  dy:'8px',  fs:'1100px', fx:'60px',   fy:'-200px', tx:'-1200px', ty:'-400px' },
-  { id:'c-brands',   icon:'stamp',     label:'براندات', card:'#dc4f1c', w:'450px', r:'-3deg', dx:'4px',   dy:'-10px', fs:'1000px', fx:'-400px', fy:'300px', tx:'-700px', ty:'-1400px' },
-  { id:'c-identity', icon:'pen-tool',  label:'هويات',   card:'#e45a22', w:'430px', r:'6deg',  dx:'-12px', dy:'4px',  fs:'1200px', fx:'200px',  fy:'100px', tx:'-1600px', ty:'-200px' },
-  { id:'c-motion',   icon:'video',     label:'موشن',    card:'#e8622a', w:'420px', r:'-2deg', dx:'0px',   dy:'12px', fs:'950px',  fx:'-250px', fy:'-500px', tx:'-500px', ty:'-1100px' },
+  { id:'c-prices',   icon:'price-tag', label:'الأسعار', card:'#e0531d', dark:'#1f1510', w:'520px', fs:'900px',  fx:'-120px', fy:'40px',   tx:'-300px',  ty:'-900px' },
+  { id:'c-work',     icon:'images',    label:'أعمالي',  card:'#e45a20', dark:'#221712', w:'520px', fs:'1100px', fx:'60px',   fy:'-200px', tx:'-1200px', ty:'-400px' },
+  { id:'c-brands',   icon:'stamp',     label:'براندات', card:'#dd501c', dark:'#1d140f', w:'520px', fs:'1000px', fx:'-400px', fy:'300px',  tx:'-700px',  ty:'-1400px' },
+  { id:'c-identity', icon:'pen-tool',  label:'هويات',   card:'#e25820', dark:'#201611', w:'520px', fs:'1200px', fx:'200px',  fy:'100px',  tx:'-1600px', ty:'-200px' },
+  { id:'c-motion',   icon:'video',     label:'موشن',    card:'#e65e24', dark:'#231813', w:'540px', fs:'950px',  fx:'-250px', fy:'-500px', tx:'-500px',  ty:'-1100px' },
 ];
-const css = (o) => Object.entries(o).filter(([k]) => !['id','icon','label'].includes(k)).map(([k, v]) => `--${k}:${v}`).join(';');
-document.getElementById('arts').outerHTML = C.map((c) =>
-  `<div class="art" id="${c.id}" style="${css(c)};--icon:url(assets/icons/${c.icon}.svg)">
-     <div class="fibre"></div><div class="tone"></div><div class="ink"></div><div class="grain"></div></div>`).join('\n') +
-  `<div class="art" id="preview">${C.map((c, k) =>
-     `<div class="hl" style="right:${80 + k * 370}px"><div class="c"><div style="background-image:url(out/covers-${c.id}.jpg);background-size:100% auto"></div></div><span>${c.label}</span></div>`).join('')}</div>`;
+const vars = (c) => Object.entries(c).filter(([k]) => !['id', 'icon', 'label'].includes(k)).map(([k, v]) => `--${k}:${v}`).join(';');
+const sheet = (c, v) => `<div class="art ${v}" id="${c.id}-${v}" style="${vars(c)};--icon:url(assets/icons/${c.icon}.svg)">
+  <div class="fibre"></div><div class="tone"></div><div class="ink"></div><div class="grain"></div></div>`;
+// the profile row, from the rendered covers (render twice: this reads out/)
+const row = (v) => `<div class="art row" id="preview-${v}">${C.map((c, k) =>
+  `<div class="hl" style="right:${80 + k * 370}px"><div class="c"><div style="background-image:url(out/covers-${c.id}-${v}.jpg)"></div></div><span>${c.label}</span></div>`).join('')}</div>`;
+document.getElementById('arts').outerHTML = ['a', 'b'].map((v) => C.map((c) => sheet(c, v)).join('') + row(v)).join('');
 const imgs = [...document.images].map((i) => i.complete ? null : new Promise((r) => { i.onload = i.onerror = r; }));
 Promise.all([document.fonts.ready, ...imgs]).then(() => setTimeout(() => { document.body.dataset.ready = '1'; }, 400));
 </script>
