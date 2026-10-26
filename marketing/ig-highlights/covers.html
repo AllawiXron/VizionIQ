@@ -6,7 +6,6 @@
   * { margin:0; padding:0; box-sizing:border-box }
   body { background:#000; display:flex; flex-wrap:wrap; gap:40px; padding:40px; width:6000px }
   .art { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--card) }
-  .art > svg { position:absolute; inset:0 }
 
   /* the icon, cut from thick cream card and lifted off the sheet; light from the upper left */
   .cut { position:absolute; left:50%; top:50%; width:var(--w); height:var(--w); margin:calc(var(--w) / -2) 0 0 calc(var(--w) / -2);
@@ -37,46 +36,17 @@
 <body>
 <div id="arts"></div>
 <script>
-// Each cover: the base sheet, a torn sheet of darker orange laid over part of it (its own side, angle and tear), and
-// the icon cut from cream card on top. The tear is the straight top edge of the torn sheet, roughened by noise.
+// Each cover: the orange sheet with the icon cut from cream card lifted off it.
 const C = [
-  { id:'c-prices',   icon:'price-tag', label:'الأسعار', card:'#e4551b', sheet:'#b9400e', tear:{ x:540, y:1180, r:-11, seed:3 },  w:'540px', dx:'0px',   dy:'-30px', fs:'900px',  fx:'-120px', fy:'40px',   tx:'-300px',  ty:'-900px' },
-  { id:'c-work',     icon:'images',    label:'أعمالي',  card:'#e85d1f', sheet:'#bf4612', tear:{ x:400, y:960,  r:84,  seed:11 }, w:'520px', dx:'20px',  dy:'0px',   fs:'1100px', fx:'60px',   fy:'-200px', tx:'-1200px', ty:'-400px' },
-  { id:'c-brands',   icon:'stamp',     label:'براندات', card:'#dd4e18', sheet:'#b13c0c', tear:{ x:700, y:640,  r:-148, seed:7 }, w:'520px', dx:'-10px', dy:'20px',  fs:'1000px', fx:'-400px', fy:'300px',  tx:'-700px',  ty:'-1400px' },
-  { id:'c-identity', icon:'pen-tool',  label:'هويات',   card:'#e5581d', sheet:'#ba420f', tear:{ x:620, y:1240, r:18,  seed:19 }, w:'500px', dx:'-14px', dy:'-24px', fs:'1200px', fx:'200px',  fy:'100px',  tx:'-1600px', ty:'-200px' },
-  { id:'c-motion',   icon:'video',     label:'موشن',    card:'#ea6122', sheet:'#c14812', tear:{ x:540, y:700,  r:174, seed:5 },  w:'540px', dx:'0px',   dy:'34px',  fs:'950px',  fx:'-250px', fy:'-500px', tx:'-500px',  ty:'-1100px' },
+  { id:'c-prices',   icon:'price-tag', label:'الأسعار', card:'#e4551b',  w:'540px', dx:'0px', dy:'0px', fs:'900px',  fx:'-120px', fy:'40px',   tx:'-300px',  ty:'-900px' },
+  { id:'c-work',     icon:'images',    label:'أعمالي',  card:'#e85d1f', w:'520px', dx:'0px', dy:'0px',   fs:'1100px', fx:'60px',   fy:'-200px', tx:'-1200px', ty:'-400px' },
+  { id:'c-brands',   icon:'stamp',     label:'براندات', card:'#dd4e18', w:'520px', dx:'0px', dy:'0px',  fs:'1000px', fx:'-400px', fy:'300px',  tx:'-700px',  ty:'-1400px' },
+  { id:'c-identity', icon:'pen-tool',  label:'هويات',   card:'#e5581d', w:'500px', dx:'0px', dy:'0px', fs:'1200px', fx:'200px',  fy:'100px',  tx:'-1600px', ty:'-200px' },
+  { id:'c-motion',   icon:'video',     label:'موشن',    card:'#ea6122',  w:'540px', dx:'0px', dy:'0px',  fs:'950px',  fx:'-250px', fy:'-500px', tx:'-500px',  ty:'-1100px' },
 ];
 
-// the torn sheet in its own frame: torn edge along y=0, paper below it; the white core of the card shows a few px past
-// the coloured face, and the sheet throws a short shadow onto the base
-const torn = (c, k) => {
-  const t = c.tear, id = 'f' + k;
-  return `<svg viewBox="0 0 1080 1920" width="1080" height="1920">
-    <defs>
-      <filter id="${id}a" x="-10%" y="-10%" width="120%" height="120%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="${t.seed}" result="big"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="3" seed="${t.seed + 1}" result="small"/>
-        <feDisplacementMap in="SourceGraphic" in2="big" scale="46" xChannelSelector="R" yChannelSelector="G" result="d1"/>
-        <feDisplacementMap in="d1" in2="small" scale="9" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <filter id="${id}b" x="-10%" y="-10%" width="120%" height="120%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="${t.seed}" result="big"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.22" numOctaves="2" seed="${t.seed + 2}" result="fib"/>
-        <feDisplacementMap in="SourceGraphic" in2="big" scale="46" xChannelSelector="R" yChannelSelector="G" result="d1"/>
-        <feDisplacementMap in="d1" in2="fib" scale="14" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <filter id="${id}s"><feGaussianBlur stdDeviation="9"/></filter>
-    </defs>
-    <g transform="translate(${t.x} ${t.y}) rotate(${t.r})">
-      <rect x="-1600" y="-2" width="3200" height="2600" fill="rgba(60,16,2,.4)" filter="url(#${id}s)" transform="translate(8 14)"/>
-      <rect x="-1600" y="-7" width="3200" height="2600" fill="#f3e6cf" filter="url(#${id}b)"/>
-      <rect x="-1600" y="0" width="3200" height="2600" fill="${c.sheet}" filter="url(#${id}a)"/>
-    </g>
-  </svg>`;
-};
-const vars = (c) => Object.entries(c).filter(([k]) => !['id', 'icon', 'label', 'tear', 'sheet'].includes(k)).map(([k, v]) => `--${k}:${v}`).join(';');
+const vars = (c) => Object.entries(c).filter(([k]) => !['id', 'icon', 'label'].includes(k)).map(([k, v]) => `--${k}:${v}`).join(';');
 const cover = (c, k) => `<div class="art" id="${c.id}" style="${vars(c)};--icon:url(assets/icons/cut/${c.icon}.svg)">
-  ${torn(c, k)}
   <div class="cut"><div class="far"></div><div class="near"></div>
     ${[5, 4, 3, 2, 1].map((d) => `<div class="edge" style="transform:translate(${d}px, ${d * 1.3}px)"></div>`).join('')}
     <div class="lift"><div class="face"></div></div></div>

@@ -28,9 +28,8 @@ Redone on 26 Oct to the -noAI rules: the first set drew its icons from basic sha
 tape on every cover. The icons are now the ones the user picked from Streamline's free Guidance set, rebuilt as clean
 vectors on its 24-unit grid (`assets/icons/`; the video icon is his SVG as exported) with one heavier stroke so they read
 in a small circle, cut from thick cream card (`assets/icons/cut/`, the same icons with a sturdier stroke) and lifted off the orange sheet:
-a cut edge, a tight shadow and a soft one, light from the upper left. Behind each icon a sheet of darker orange is torn
-across part of the cover, its white core showing along the tear; each tear has its own side, angle and shape, and
-each sheet its own orange and part of the paper texture. `node render.cjs covers.html` (run twice; the row reads the first pass) writes `out/covers-c-<name>.jpg` and
+a cut edge, a tight shadow and a soft one, light from the upper left. The user had a torn second sheet behind the icons taken out. Each cover keeps its own orange and part of the paper
+texture. `node render.cjs covers.html` (run twice; the row reads the first pass) writes `out/covers-c-<name>.jpg` and
 `out/covers-preview.jpg`, the row as it looks on the profile. Instagram crops the centre circle.
 
 Credit (Streamline's free licence asks for it): put «Icons: Streamline, streamlinehq.com» in the bio or on the
