@@ -11,13 +11,13 @@
   .plate { inset:0; width:1080px; height:1350px }
 
   /* a warm light thrown on the backdrop behind the subject, broken up by the paper so it is not an even disc */
-  .lamp { inset:0; background:radial-gradient(ellipse 46% 38% at var(--lx) var(--ly), rgba(255,118,40,.55), rgba(255,118,40,0) 70%);
+  .lamp { inset:0; background:radial-gradient(ellipse 85% 45% at var(--lx) var(--ly), rgba(255,118,40,.3), rgba(255,118,40,0) 75%);
     mix-blend-mode:screen; -webkit-mask:url(../ig-highlights/assets/img/newsprint.jpg) var(--mx) var(--my)/1800px; mask:url(../ig-highlights/assets/img/newsprint.jpg) var(--mx) var(--my)/1800px }
 
   /* one headline in two lines and one quiet line under it; the orange comes from the photo */
-  .head { right:76px; direction:rtl; text-align:right; white-space:nowrap; font-size:132px; line-height:1.12; color:#f4e5cc }
-  .head span { display:block }
-  .line { right:80px; direction:rtl; text-align:right; font-size:42px; line-height:1.4; color:#e3cba8 }
+  .head { right:70px; direction:rtl; text-align:right; white-space:nowrap; font-size:220px; line-height:1.05; color:#f4e5cc }
+  .head span { display:inline }
+  .line { right:76px; direction:rtl; text-align:right; font-size:56px; line-height:1.35; color:#e8d3b4 }
   .wm { left:70px; top:62px; font-size:60px; line-height:1; color:#f3e3c8; direction:rtl; white-space:nowrap; z-index:5 }
   .wm .h { position:absolute; width:.19em; height:.19em; border:.032em solid currentColor; background:#2a1007 }
   .handle { font-size:32px; color:#e3cba8; direction:ltr; opacity:.85 }
@@ -27,11 +27,11 @@
   .grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.12; z-index:9 }
 
   #s1 { --lx:40%; --ly:66%; --mx:-300px; --my:-200px }
-  #s1 .head { top:190px } #s1 .line { top:505px }
+  #s1 .head { top:200px } #s1 .line { top:455px }
   #s2 { --lx:30%; --ly:62%; --mx:-900px; --my:-500px }
-  #s2 .head { top:150px } #s2 .line { top:465px }
+  #s2 .head { top:180px } #s2 .line { top:420px }
   #s3 { --lx:40%; --ly:74%; --mx:-600px; --my:-1000px }
-  #s3 .head { top:220px } #s3 .line { top:535px }
+  #s3 .head { top:260px } #s3 .line { top:505px }
   .handle { left:74px; bottom:56px }
 </style>
 </head>
@@ -40,7 +40,7 @@
 <div class="art" id="s1">
   <img class="plate" src="img/plate-chameleon-1.png" alt="">
   <div class="lamp"></div>
-  <div class="head">غيرت<span>لوني</span></div>
+  <div class="head">غيرت <span>لوني</span></div>
   <div class="line">الصفحة بشكلها الجديد</div>
   <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
   <div class="handle">allawi.psd</div>
@@ -50,7 +50,7 @@
 <div class="art" id="s2">
   <img class="plate" src="img/plate-chameleon-2.png" alt="">
   <div class="lamp"></div>
-  <div class="head">شنو اسوي<span>هنا</span></div>
+  <div class="head">شنو اسوي <span>هنا</span></div>
   <div class="line">بوستات، اعلانات، ريلز موشن وهويات</div>
   <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
   <div class="handle">allawi.psd</div>
@@ -60,7 +60,7 @@
 <div class="art" id="s3">
   <img class="plate" src="img/plate-chameleon-3.png" alt="">
   <div class="lamp"></div>
-  <div class="head">دزلي<span>بالخاص</span></div>
+  <div class="head">دزلي <span>بالخاص</span></div>
   <div class="line">كلي شنو تبيع، وارجعلك بفكرة</div>
   <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
   <div class="handle">allawi.psd</div>
@@ -84,6 +84,10 @@ Promise.all([document.fonts.load("200px Sahabah", 'علاوي'), ...imgs]).then(
     const base = m.getBoundingClientRect().top - box.top; m.remove();
     h.style.left = (k.left - box.left + k.width / 2 - fs * .095) + 'px';
     h.style.top = (base + fs * K - fs * .095) + 'px';
+  });
+  document.querySelectorAll('.head').forEach((h) => {
+    let fs = 220; h.style.fontSize = fs + 'px';
+    while (h.getBoundingClientRect().width > 940 && fs > 100) { fs -= 2; h.style.fontSize = fs + 'px'; }
   });
   setTimeout(() => { document.body.dataset.ready = '1'; }, 300);
 });
