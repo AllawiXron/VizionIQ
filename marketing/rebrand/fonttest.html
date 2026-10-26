@@ -1,0 +1,56 @@
+<!doctype html><html lang="ar"><head><meta charset="utf-8"><style>
+@font-face { font-family:'Lalezar'; src:url(fonts/Lalezar.ttf) }
+@font-face { font-family:'Rakkas'; src:url(fonts/Rakkas.ttf) }
+@font-face { font-family:'Marhey'; src:url(fonts/Marhey.ttf) }
+@font-face { font-family:'El Messiri'; src:url(fonts/ElMessiri.ttf) }
+@font-face { font-family:'Badeen Display'; src:url(fonts/BadeenDisplay.ttf) }
+@font-face { font-family:'Reem Kufi'; src:url(fonts/ReemKufi.ttf) }
+@font-face { font-family:'Lemonada'; src:url(fonts/Lemonada.ttf) }
+@font-face { font-family:'Blaka'; src:url(fonts/Blaka.ttf) }
+
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#111; display:flex; flex-wrap:wrap; gap:30px; padding:30px; width:4600px }
+.art { position:relative; width:1080px; height:1350px; overflow:hidden }
+.art > * { position:absolute }
+.plate { inset:0; width:1080px; height:1350px; filter:contrast(1.06) saturate(1.06) }
+.head { right:78px; top:120px; direction:rtl; text-align:right; white-space:nowrap; font-size:210px; line-height:1.15; color:#fff6ea;
+  text-shadow:10px 16px 26px rgba(18,4,0,.55) }
+.line { right:82px; top:640px; direction:rtl; text-align:right; font-size:52px; color:#efdcc2; text-shadow:0 2px 12px rgba(18,4,0,.5) }
+.lab { left:24px; top:20px; font:600 60px sans-serif; color:#000; background:#fff; padding:2px 22px; z-index:9 }
+.grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
+</style></head><body>
+<div class="art" id="f1"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Lalezar'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Lalezar'">الصفحة بشكلها الجديد</div>
+  <div class="lab">1</div><div class="grain"></div></div>
+<div class="art" id="f2"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Rakkas'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Rakkas'">الصفحة بشكلها الجديد</div>
+  <div class="lab">2</div><div class="grain"></div></div>
+<div class="art" id="f3"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Marhey'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Marhey'">الصفحة بشكلها الجديد</div>
+  <div class="lab">3</div><div class="grain"></div></div>
+<div class="art" id="f4"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'El Messiri'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'El Messiri'">الصفحة بشكلها الجديد</div>
+  <div class="lab">4</div><div class="grain"></div></div>
+<div class="art" id="f5"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Badeen Display'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Badeen Display'">الصفحة بشكلها الجديد</div>
+  <div class="lab">5</div><div class="grain"></div></div>
+<div class="art" id="f6"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Reem Kufi'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Reem Kufi'">الصفحة بشكلها الجديد</div>
+  <div class="lab">6</div><div class="grain"></div></div>
+<div class="art" id="f7"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Lemonada'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Lemonada'">الصفحة بشكلها الجديد</div>
+  <div class="lab">7</div><div class="grain"></div></div>
+<div class="art" id="f8"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Blaka'">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Blaka'">الصفحة بشكلها الجديد</div>
+  <div class="lab">8</div><div class="grain"></div></div>
+
+<script>Promise.all([document.fonts.load("200px 'Lalezar'", 'غيرت'),document.fonts.load("200px 'Rakkas'", 'غيرت'),document.fonts.load("200px 'Marhey'", 'غيرت'),document.fonts.load("200px 'El Messiri'", 'غيرت'),document.fonts.load("200px 'Badeen Display'", 'غيرت'),document.fonts.load("200px 'Reem Kufi'", 'غيرت'),document.fonts.load("200px 'Lemonada'", 'غيرت'),document.fonts.load("200px 'Blaka'", 'غيرت')]).then(() => setTimeout(() => { document.body.dataset.ready = '1'; }, 400));</script>
+</body></html>
