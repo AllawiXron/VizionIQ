@@ -25,7 +25,8 @@ Key content sits between y 250 and 1680, clear of the story header and the reply
 ## Covers
 
 `c-prices` (a price tag), `c-work` (two prints), `c-brands` (a rubber stamp), `c-identity` (a pen nib, for the existing
-«هويات» highlight so the whole row matches): an ink icon on a torn cream disc on brand orange. Instagram crops
+«هويات» highlight so the whole row matches), `c-motion` (a tilted reel frame with a play mark, for the «موشن» highlight
+of motion videos, added 26 Oct): an ink icon on a torn cream disc on brand orange. Instagram crops
 the centre circle. `preview` shows the row as it looks on the profile.
 
 ## Putting them up

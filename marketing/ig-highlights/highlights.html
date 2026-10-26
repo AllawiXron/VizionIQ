@@ -100,7 +100,7 @@ body { background:#222; display:flex; flex-wrap:wrap; gap:40px; padding:40px; wi
 .icon .redl { stroke:var(--orange) }
 
 /* the profile preview */
-#preview { width:1600px; height:560px; background:#000 }
+#preview { width:1960px; height:560px; background:#000 }
 #preview .ttl { position:absolute; left:70px; top:50px; font:500 30px 'IBM Plex Mono', monospace; letter-spacing:.12em; color:#8a8a8a; direction:ltr }
 #preview .hl { position:absolute; top:150px; width:300px; text-align:center }
 #preview .hl .c { width:250px; height:250px; margin:0 auto; border-radius:50%; border:6px solid #3a3a3a; padding:8px; background:#000 }
@@ -254,8 +254,10 @@ const ICON = {
   brands: `<path d="M195 70 Q 250 40 305 70 L 290 210 L 210 210 Z"/><rect x="110" y="215" width="280" height="80" rx="16"/><path d="M100 330 L400 330" class="redl" style="stroke-width:34"/><path d="M130 400 L370 400" class="redl" style="stroke-width:22; opacity:.7"/>`,
   // a pen-tool nib with its hole
   identity: `<path d="M250 60 L380 250 L310 420 L190 420 L120 250 Z"/><path d="M250 60 L250 250"/><circle class="red" cx="250" cy="270" r="30"/><path d="M175 440 L325 440"/>`,
+  // a tilted 9:16 reel frame with a play mark and two speed lines behind it
+  motion: `<g transform="rotate(8 280 250)"><rect x="190" y="70" width="200" height="355" rx="28"/><path class="red" d="M262 192 L338 248 L262 304 Z"/></g><path d="M70 205 L150 205"/><path class="redl" d="M100 285 L160 285" style="stroke-width:24"/>`,
 };
-[['c-prices', 'prices'], ['c-work', 'work'], ['c-brands', 'brands'], ['c-identity', 'identity']].forEach(([id, ic]) => {
+[['c-prices', 'prices'], ['c-work', 'work'], ['c-brands', 'brands'], ['c-identity', 'identity'], ['c-motion', 'motion']].forEach(([id, ic]) => {
   A.push(`<div class="art" id="${id}"><div class="bgc orange"></div>
     <div class="disc" style="--tear:${tear()}"></div>
     <svg class="icon" viewBox="0 0 500 500">${ICON[ic]}</svg>
@@ -265,7 +267,7 @@ const ICON = {
 
 // the profile row, from the rendered covers (render twice: this reads out/)
 A.push(`<div class="art" id="preview"><div class="ttl">HOW IT LOOKS ON YOUR PROFILE</div>
-  ${[['c-prices', 'الأسعار'], ['c-work', 'أعمالي'], ['c-brands', 'براندات'], ['c-identity', 'هويات']].map(([id, n], k) =>
+  ${[['c-prices', 'الأسعار'], ['c-work', 'أعمالي'], ['c-brands', 'براندات'], ['c-identity', 'هويات'], ['c-motion', 'موشن']].map(([id, n], k) =>
     `<div class="hl" style="right:${100 + k * 360}px"><div class="c"><div style="background-image:url(out/highlights-${id}.jpg)"></div></div><span>${n}</span></div>`).join('')}
 </div>`);
 
