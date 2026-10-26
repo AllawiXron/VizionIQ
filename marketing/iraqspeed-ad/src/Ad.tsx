@@ -284,8 +284,8 @@ const Film: React.FC<{ t: number; W: number; H: number; wide: boolean }> = ({ t,
       {t >= 15.0 ? <Phone cx={px} cy={py} w={pw} img="m-karrada" dark sweep={seg(t, 16.0, 1.3)} /> : null}
       <Line t={t} t0={15.55} t1={17.75} x={L.title5.x} y={L.title5.y} size={L.title5.size} color="#F4F3F7" halo={NIGHT}>سرعة الإنترنت في العراق</Line>
       <Line t={t} t0={15.85} t1={17.75} x={L.sub5.x} y={L.sub5.y} size={L.sub5.size} weight={500} color="#A9A6B8" halo={NIGHT}>بكل محافظة ومدينة وحي</Line>
-      <Line t={t} t0={18.3} x={L.title6.x} y={L.title6.y} size={L.title6.size} color="#F4F3F7">اكتشف سرعة الإنترنت في العراق</Line>
-      <Line t={t} t0={18.6} x={L.url6.x} y={L.url6.y} size={L.url6.size} weight={500} color="#CFC6FF" dir="ltr">iraqspeed.vercel.app</Line>
+      <Line t={t} t0={18.3} x={L.title6.x} y={L.title6.y} size={L.title6.size} color="#F4F3F7" halo={NIGHT}>اكتشف سرعة الإنترنت في العراق</Line>
+      <Line t={t} t0={18.6} x={L.url6.x} y={L.url6.y} size={L.url6.size} weight={500} color="#CFC6FF" dir="ltr" halo={NIGHT}>iraqspeed.vercel.app</Line>
       {endFade > 0 ? <AbsoluteFill style={{ background: '#0C0D10', opacity: endFade }} /> : null}
     </AbsoluteFill>
   );

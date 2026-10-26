@@ -81,6 +81,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   Sound for this style (25 Oct): Apple-like UI sound from his two Drive packs, not the low air whooshes and thuds: the
   Apple keyboard click on presses, soft pops on cards, an airy swish on whips, faint ticks on counters, a clean riser,
   one chime for a win (`marketing/iraq-speed-reel/v7/mix.py`). This replaces the 24 Oct "no clicks" rule for such reels.
+- IraqSpeed ad (26 Oct, `marketing/iraqspeed-ad`): a 21 s Apple-style product film in Remotion, wide 1920×1080 and
+  tall 1080×1920 each laid out for its frame, from the user's two references (light and dark rooms, a pink and lavender
+  bloom behind floating cards, a pointer). Real site captures only; each new room opens as a sharp circle from the
+  subject (soft-edged reveals read as dark blobs); light text over the glowing outline needs a dark halo.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
