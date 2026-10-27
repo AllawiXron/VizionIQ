@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <style>
   @font-face { font-family: Sahabah; src: url(../brand-fonts/DG-Sahabah-Reg.ttf); font-weight: 400; }
-  /* headlines in a bold Ruqaa, written by hand rather than drawn, the line under it in a plain Naskh */
-  @font-face { font-family: Ruqaa; src: url(fonts/ArefRuqaa-Bold.ttf); font-weight: 700; }
+  /* headlines in a bold classic Naskh, calligraphic but easy to read, the line under it in a plain Naskh */
+  @font-face { font-family: Ruqaa; src: url(fonts/Amiri.ttf); font-weight: 700; }
   @font-face { font-family: Naskh; src: url(fonts/NotoNaskhArabic.ttf); font-weight: 700; }
   * { margin:0; padding:0; box-sizing:border-box }
   body { background:#111; display:flex; gap:40px; padding:40px; width:3500px; font-family:Sahabah, sans-serif; font-weight:400; font-synthesis:none }
@@ -20,7 +20,7 @@
 
   /* the headline: stacked on the right, lit from the same lamp (white at the top, warm at the foot), with a soft shadow
      on the backdrop behind it so it sits in the room rather than on the screen */
-  .head { right:74px; top:var(--top); direction:rtl; text-align:right; white-space:nowrap; font-family:Ruqaa; font-weight:700;
+  .head { right:74px; top:var(--top); direction:rtl; text-align:right; white-space:nowrap; font-family:Ruqaa; font-weight:700; font-feature-settings:"liga" 0, "dlig" 0;
     color:#fff1de; font-size:var(--fs); line-height:1.22; filter:drop-shadow(10px 16px 18px rgba(18,4,0,.55)) }
   .line { right:80px; top:var(--ltop); direction:rtl; text-align:right; font-family:Naskh; font-weight:700; font-size:46px; line-height:1.5;
     color:#efdcc2; text-shadow:0 2px 12px rgba(18,4,0,.5) }
@@ -64,7 +64,7 @@
 <div class="art" id="s3">
   <img class="plate" src="img/plate-chameleon-3.png" alt="">
   <div class="lamp"></div>
-  <div class="head">دزلي<br>بالخاص</div>
+  <div class="head">دزلي<br>بالـخاص</div>
   <div class="line">كلي شنو تبيع، وارجعلك بفكرة</div>
   <div class="lock"><span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span><span class="who">مصمم<br>جرافيك</span></div>
   <div class="handle">allawi.psd</div>
