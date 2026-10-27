@@ -1,0 +1,75 @@
+# The five reference reels (sent by Ali, 26 and 27 Oct 2026)
+
+All 1080x1920, 30 fps. The videos themselves are other creators' work and are not kept in the repo; these notes are
+what was learned from them. Times are in seconds.
+
+## 1. "How to go viral for caveman" (39 s, @robertmckeaveney)
+
+The whole method in caveman talk. Title in white bold over the top, under it his real Insights card (Views 19,329,610,
+Accounts reached 7,236,931, Average watch time 12s, Follows 21,229).
+
+- 0 to 2: title + Insights card. 2: three of his viral reels side by side with view counts (19.3M, 16.4M, 16M).
+- 4 to 7 "Viral video three part. Hook, build up, pay off." Holds up three fingers.
+- 7 to 12 "Hook present question to viewer. Viewer wants answer. So viewer watch build up. Watch time good." The
+  Bugatti reel ("Some idiot backed into my Bugatti") above his head, with a shocked emoji on "question".
+- 12 to 16 "Build up tells story. Story make viewer engaged." Average watch time 19s card.
+- 16 to 22 "Story lead into pay off. Pay off, answer viewer question. Viewer feel emotion." The payoff clip (the car is
+  a toy), a thinking emoji, an "Absolute cinema" meme.
+- 22 to 26 "Viewer like. Viewer comment. Viewer share." Like count 1.3M, comment count 9,040, Views 19,329,610.
+- 26 to 29 "Viewer watch whole video": the retention graph (48 % at 0:21).
+- 29 to 32 "When video go viral, you double down. Post more. More chances." His profile grid.
+- 32 to 39 "Follow me. Why me? Best marketer in world." Profile header; end card.
+
+## 2. "This two-second reel got me 30,000 followers" (51 s)
+
+Desk, laptop, holding a lav mic. Word-by-word captions at chest height.
+
+- 0 to 4 Hook: the line + the reel (13.5M views) + Follows 30,638 + the product page.
+- 4 to 19 Breakdown: "Only 1% can pause at the right time", a red outline on a garden path, the walker passes through
+  it, text flashes ("SOOOO CLOSE, 1 frame off") so people try again and again.
+- 19 to 24 Average watch time 11s on a 2 s reel, the views curve: Instagram pushed it.
+- 24 to 31 "But how did this sell out my drop?" The winning frame: "New sweatsuit Sept. 30, DM us screenshot for
+  discount".
+- 31 to 37 About 29,000 DMs with the screenshot (the inbox scrolling), sales graph spike.
+- 37 to 43 "Taking an already viral concept and adding that extra layer to make it convert into real sales." A
+  second example (a car outline challenge).
+- 43 to 47 Follow ask. End card.
+
+## 3. "Which video got us more sales?" (51 s)
+
+- 0 to 2 Two reels above his head, side by side. "This one?" Then the first plays full screen (filmed off a phone,
+  pushed in): a game on a TV, 11.7M views, 1.3M likes.
+- 15 "Or this one?" The second plays full screen: a hand swiping the sweatpants photo on a phone, then the pants
+  themselves, 46K views.
+- 26 to 31 "It was actually the second one", the two view counts stacked (11,746,863 and 46,506).
+- 31 to 44 "The first video is where people discover you, the second is where people buy from you. This is called a
+  content funnel. Half of your content should give you the attention so the other half can convert it." Both clips
+  with a red arrow: "For eyes" > "For sales".
+- 44 to 47 "Hopefully I converted you into a follower." End card with profile header (215K followers).
+
+## 4. Three ways to end music (25 s, @iam_ar_un)
+
+Speaker at a mic. "You also stop your music like this?" over a pink waveform that cuts dead, then "To naturally stop
+the music next time use any of these 3 techniques". Each one shown as a real timeline capture over his head with
+labels and arrows, played as he names it:
+
+1. The stem cut: music track, the melody stem cut out, reverb kept "to smooth out the end".
+2. The reverb: a continuous beat cut out of the music above, a studio reverb effect under it.
+3. Riser + whoosh stack: music, riser/transition, mid whoosh, low whoosh stacked.
+
+End card as the others (dark frame, IG glyph, handle).
+
+## 5. "Every great hook creates a question" (57 s)
+
+A run of other creators' viral reels, each above his head while he says the question it raises:
+
+- A man jumping off a cliff: "Where is he trying to land? How long is he going to fall? How many spins?"
+- A pink wall and an axe: "What is he painting? What will the end result be? Why is it in the corner?"
+- "Day 24 of proving you can do anything", "I'm dead broke, I'm not leaving this room until I make $100,000": "Did he
+  actually make $100k? How? How long will it take him?"
+- "Is it possible to ace a final after studying for just one hour?": "This one literally says the question in the
+  hook."
+- Then the rule, with the caption "Great hook = question": "Every great hook creates a question. If viewers aren't
+  asking a question, they won't watch to get an answer. The question acts as the hook and the answer acts as the
+  payoff." Each example's payoff shown next to its hook (the splash, the finished star painting).
+- Follow ask, end card.

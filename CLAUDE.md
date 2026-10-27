@@ -54,6 +54,12 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   tilted phones playing his real reels (phones are fine there, showing his own work). He edits in EffectCraft
   (open-source After Effects clone, `.ecproj` JSON, runs AE-style scripts): the reel ships as an editable project from
   `marketing/coin-allawi-reel/effectcraft/pack.sh` (24 Oct).
+- Reel strategy and talking-head edits (27 Oct): the user sent five reference reels and asked that every session
+  learns from them. Follow `.claude/skills/viral-reel-playbook` for any reel idea, script, content plan or review:
+  hook = a question the viewer wants answered, hook > build-up > payoff, rewatch mechanics with the offer hidden in
+  the winning frame, half "eyes" reels and half "sales" reels, and the breakdown edit (real proof above the head,
+  word-by-word captions, hard cuts, moving watermark, dark end card). End music with a stem cut, a reverb tail or a
+  riser and whoosh stack, never dead.
 - Meta ads (24 Oct): the user runs the Orange Coin reel as a Messages ad himself ($10/day, all Iraq, online sellers) and
   sends the Ads Manager report instead of connecting a connector. Read it, judge cost per conversation, the 3-second
   hook rate and how many DMs were real sellers, and suggest changes only after the first 4–5 days of learning.
