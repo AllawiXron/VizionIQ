@@ -6,11 +6,11 @@
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
   :root {
-    --paper: #f3ebdd;
-    --ink: #2a1a13;
-    --soft: #7a6352;
-    --wine: #7b1e2b;
-    --wheat: #a9844a;
+    --paper: #f1e5d2;
+    --ink: #2b1b12;
+    --soft: #7d6450;
+    --brown: #6a3c20;
+    --caramel: #a8733d;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #777; font-family: 'Almarai', sans-serif; color: var(--ink); }
@@ -24,30 +24,31 @@
 
   .in { position: absolute; display: flex; flex-direction: column; }
 
-  .band { position: absolute; top: 0; left: 0; right: 0; background: #6d1824; overflow: hidden; }
+  .band { position: absolute; top: 0; left: 0; right: 0; background: #4b2d1c; overflow: hidden; }
   .band .tone { position: absolute; inset: 0;
-    background: radial-gradient(70% 120% at 80% 30%, rgba(160,50,60,.45), transparent 70%),
-                radial-gradient(60% 120% at 5% 100%, rgba(30,5,10,.45), transparent 70%); }
+    background: radial-gradient(70% 120% at 80% 30%, rgba(150,96,58,.42), transparent 70%),
+                radial-gradient(60% 120% at 5% 100%, rgba(22,11,5,.5), transparent 70%); }
   .band svg { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: multiply; }
   .head { position: absolute; display: flex; justify-content: space-between; align-items: flex-end; }
-  .name { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: #f4e7cf; line-height: 1.05; white-space: nowrap; }
-  .sub { color: #dcbb7e; font-weight: 700; margin-top: .75em; }
+  .name { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: #f5e9d5; line-height: 1.05; white-space: nowrap; }
+  .sub { color: #d9b07a; font-weight: 700; margin-top: .75em; }
   .order { text-align: left; }
-  .order .lbl { color: #dcbb7e; font-weight: 700; }
-  .order .tel { font-weight: 800; color: #f4e7cf; direction: ltr; letter-spacing: .02em; white-space: nowrap; }
+  .logo { position: absolute; filter: drop-shadow(0 12px 20px rgba(20,8,2,.35)); }
+  .order .lbl { color: #d9b07a; font-weight: 700; }
+  .order .tel { font-weight: 800; color: #f5e9d5; direction: ltr; letter-spacing: .02em; white-space: nowrap; }
 
   .cols { display: flex; justify-content: space-between; flex: 1; }
   .col { display: flex; flex-direction: column; }
-  .sec h2 { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: var(--wine); line-height: 1.1;
+  .sec h2 { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: var(--brown); line-height: 1.1;
     display: flex; align-items: baseline; justify-content: space-between; }
-  .sec h2 small { font-family: 'Almarai', sans-serif; font-weight: 700; color: var(--wheat); }
+  .sec h2 small { font-family: 'Almarai', sans-serif; font-weight: 700; color: var(--caramel); }
   .row { display: flex; align-items: baseline; }
   .row .n { font-weight: 700; white-space: nowrap; }
   .row .d { color: var(--soft); font-weight: 400; white-space: nowrap; margin-right: .45em; }
   .row .lead { flex: 1; align-self: flex-end; height: .2em; margin: 0 .5em .34em;
     background: radial-gradient(circle, rgba(42,26,19,.38) 1.1px, transparent 1.4px) 0 50% / 9px 100% repeat-x; }
   .row .p { font-weight: 800; white-space: nowrap; direction: ltr; }
-  .row .p.t { direction: rtl; font-weight: 700; color: var(--wine); }
+  .row .p.t { direction: rtl; font-weight: 700; color: var(--brown); }
 
   .foot { display: flex; justify-content: space-between; color: var(--soft); font-weight: 700; }
 </style>
@@ -97,9 +98,9 @@ const MENU = {
 
 // sizes in px for each frame; print is 13 cm at 300 dpi (1536 px) plus 3 mm bleed
 const L = {
-  print: { w: 1606, h: 1606, bleed: 35, band: 318, headPad: 70, pad: [384, 104, 78, 104], name: 132, sub: 34, lbl: 28, tel: 52,
+  print: { w: 1606, h: 1606, bleed: 35, band: 318, logo: 292, orderX: 330, headPad: 70, pad: [384, 104, 78, 104], name: 132, sub: 34, lbl: 28, tel: 52,
            colW: 650, h2: 62, note: 28, h2gap: 14, secGap: 46, row: 37, d: 28, rowGap: 23.5, foot: 26 },
-  story: { w: 1080, h: 1920, bleed: 0, band: 520, headPad: 64, pad: [600, 60, 270, 60], name: 112, sub: 30, lbl: 25, tel: 44,
+  story: { w: 1080, h: 1920, bleed: 0, band: 520, logo: 350, orderX: 0, headPad: 64, pad: [600, 60, 270, 60], name: 112, sub: 30, lbl: 25, tel: 44,
            colW: 452, h2: 50, note: 22, h2gap: 12, secGap: 58, row: 27.5, d: 20.5, rowGap: 30, foot: 22 },
 };
 L.trim = Object.assign({}, L.print, { w: 1536, h: 1536, bleed: 0 });
@@ -137,11 +138,12 @@ function frame(id, z, seed) {
   const tall = z.h > z.w;
   const bh = z.band + z.bleed;
   return `<div class="f" id="${id}" style="width:${z.w}px;height:${z.h}px">${paper(z.w, z.h, seed)}
-    <div class="band" style="height:${bh}px"><div class="tone"></div>${paper(z.w, bh, seed + 20).replace('<div class="paper"><div class="tone"></div>', '').replace(/<\/div>$/, '')}</div>
+    <div class="band" style="height:${bh}px"><div class="tone"></div>${paper(z.w, bh, seed + 20).replace('<div class="paper"><div class="tone"></div>', '').replace(/<\/div>$/, '')}
+      <img class="logo" src="art/chef.png" style="height:${z.logo}px;left:${pl - 10}px;top:${bh - z.logo}px"></div>
     <div class="head" style="right:${pr}px;left:${pl}px;bottom:${z.h - bh + z.headPad}px;${tall ? 'flex-direction:column;align-items:flex-start;gap:30px' : ''}">
       <div><div class="name" style="font-size:${z.name}px">معجنات العافية</div>
         <div class="sub" style="font-size:${z.sub}px">وتجهيزات العافية، أم علي، بلدروز ديالى</div></div>
-      <div class="order" style="${tall ? 'text-align:right' : ''}">
+      <div class="order" style="${tall ? 'text-align:right' : `margin-left:${z.orderX}px;margin-right:auto`}">
         <div class="lbl" style="font-size:${z.lbl}px">للطلب والحجز</div>
         <div class="tel" style="font-size:${z.tel}px">0775 281 6647</div></div>
     </div>
