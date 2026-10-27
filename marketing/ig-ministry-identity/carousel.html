@@ -27,17 +27,17 @@
 const P = location.search.includes('preview') ? '-preview' : '';
 const r = (n) => `renders/${n}${P}.png`;
 const S = [
-  // [image, text html, position css, colour class, background position]; each slide set its own way
-  [r('sign'), `<h1>بوابة عشتار<br>بوابة العراق الرقمية</h1><p>مقترح هوية بصرية قدمته لمسابقة<br>وزارة الاقتصاد الرقمي والحوكمة</p>`, 'right:84px;bottom:150px', 'ink'],
-  [r('foil'), `<h2>البوابة صارت شعار</h2><p>البرجين والجدار من بوابة عشتار، والقوسين<br>الذهبيين حول المدخل موجات اتصال</p>`, 'left:76px;bottom:104px;text-align:left', 'ink'],
-  [r('grid'), `<div class="num">٢٣</div><p class="beside">مربع، هذا عرض الجدار<br>رسمت الشعار كله على شبكة وحدة</p>`, 'right:70px;top:40px', 'ink'],
-  [r('swatches'), `<h2>أربع ألوان</h2><p>الأزرق من طابوق البوابة المزجج<br>والذهبي للقوسين والإبراز بس</p>`, 'right:80px;top:90px', 'ink'],
-  [r('letterhead'), `<p class="word">الكتب الرسمية</p>`, 'left:70px;bottom:70px', 'ink'],
+  // [image, text html, position css, colour class, background position]; few words, the work does the talking
+  [r('sign'), `<h1>بوابة عشتار</h1><p>مقترحي لمسابقة هوية وزارة الاقتصاد الرقمي والحوكمة</p>`, 'right:84px;bottom:150px', 'ink'],
+  [r('foil'), ``, '', ''],
+  [r('grid'), `<p class="word">كل شي محسوب على الشبكة</p>`, 'right:76px;top:96px', 'ink'],
+  [r('swatches'), `<p class="word">الألوان</p>`, 'right:80px;top:96px', 'ink'],
+  [r('letterhead'), ``, '', ''],
   [r('stationery'), ``, '', ''],
-  [r('badge'), `<h2 style="font-size:70px">هوية الموظف</h2><p>تتعلق بشريط أزرق عليه الشرفات</p>`, 'right:70px;top:76px', 'ink'],
-  [r('phone'), `<h1 style="font-size:124px;line-height:1.08">شاشة<br>البدء</h1>`, 'left:66px;bottom:70px;text-align:left', 'ink'],
-  ['../ministry-identity/out/fig/web-1.jpg', `<h2>الموقع</h2><p>تبدي بالبحث عن الخدمة<br>وبعدها الخدمات الأكثر طلب</p>`, 'right:80px;bottom:120px', 'ink', '0% 50%'],
-  [r('macro'), `<p style="opacity:.9;margin:0">مقترح قدمته للمسابقة، مو الهوية الرسمية للوزارة</p><h2 style="margin-top:10px">علي احمد شهاب</h2><p style="direction:ltr;text-align:right;margin-top:6px">allawi.psd</p>`, 'right:80px;bottom:96px', 'ink'],
+  [r('badge'), ``, '', ''],
+  [r('phone'), `<p class="word">التطبيق</p>`, 'left:70px;bottom:80px', 'ink'],
+  ['../ministry-identity/out/fig/web-1.jpg', `<p class="word">الموقع</p>`, 'right:80px;bottom:110px', 'ink', '0% 50%'],
+  [r('macro'), `<p style="opacity:.9;margin:0">مقترح، مو الهوية الرسمية للوزارة</p><h2 style="margin-top:10px">علي احمد شهاب</h2><p style="direction:ltr;text-align:right;margin-top:6px">allawi.psd</p>`, 'right:80px;bottom:96px', 'ink'],
 ];
 S.forEach(([img, html, pos, col, bp]) => document.write(
   `<section class="s" style="background-image:url(${img})${bp ? `;background-position:${bp}` : ''}"><div class="t ${col}" style="${pos}">${html}</div></section>`));
