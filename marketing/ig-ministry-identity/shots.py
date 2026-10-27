@@ -116,9 +116,10 @@ def foil(preview):
 def grid(preview):
     s = scene(preview)
     st.surface(STONE)
-    st.sheet("grid-sheet", 21.0, 29.7, -1.0, -1.0, -4)
-    st.lights(elev=30, azim=150, soft=2.5, power=4.4)
-    cam((-2, -26, 46), (-1, 4.0, 0), 50, 5.6)            # the sheet low in the frame, stone above it for the words
+    st.sheet("grid-sheet", 21.0, 29.7, -1.0, -3.0, -6)
+    foil_card(5.5, -15.5, 16, z=0.012)                    # the foil card on the sheet's corner, a real gold object in front
+    st.lights(elev=24, azim=150, soft=2.0, power=4.4)
+    cam((-4, -46, 38), (0.0, 0.5, 0), 70, 5.0, focus=(-1.0, -2.0, 0))   # lower angle; the drawing sharp, the card falling soft
     return s
 
 
