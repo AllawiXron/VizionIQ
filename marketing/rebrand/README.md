@@ -37,10 +37,12 @@ around the subject, the wordmark small in the top corner.
 The user felt the font was the problem ("the way the text looks") and turned down DG Sahabah, eight Google display
 faces (`fonttest.html`) and six Naskh/Ruqaa faces (`naskhtest.html`), then asked me to choose to match ra.graphicc,
 whose headlines are a bold hand-brushed Naskh. Aref Ruqaa came next and was hard to read; Amiri Bold was readable but "basic". The user then asked me to choose
-again and turned down Playpen Sans Arabic too, asking for "better fonts". Google Fonts were exhausted; Thmanyah's
-fonts are personal use only. Headlines are now Dubai Bold and the line under each Dubai Regular (Dubai Font is free
-for commercial use but may not be redistributed, so the files are not in git: download Dubai from dubaifont.com into
-`fonts-local/` as `Dubai-Bold.ttf` and `Dubai-Regular.ttf` before rendering). The logo stays in DG Sahabah.
+again and turned down Playpen Sans Arabic, Dubai and a vivid red Cairo version. He then sent his own copies of the
+Thmanyah fonts: headlines are Thmanyah Serif Display Black and the line under each Thmanyah Sans Regular, in the
+version-B layout on the dark photos. Thmanyah's licence is personal use only and forbids redistribution: the files stay
+out of git (put them in `fonts-local/` as `Thmanyah-SerifDisplay-Black.otf` and `Thmanyah-Sans-Regular.otf`), and the
+user was told a commercial licence comes from Ask@thmanyah.com. «بالخاص» is set «بالـخاص» because the font stacks
+ل on خ; slide 3's headline has wider line spacing so the ي dots clear the خ. The logo stays in DG Sahabah.
 
 ## Vivid version (27 Oct)
 
