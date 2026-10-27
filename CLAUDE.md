@@ -101,6 +101,10 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   Sound for this style (25 Oct): Apple-like UI sound from his two Drive packs, not the low air whooshes and thuds: the
   Apple keyboard click on presses, soft pops on cards, an airy swish on whips, faint ticks on counters, a clean riser,
   one chime for a win (`marketing/iraq-speed-reel/v7/mix.py`). This replaces the 24 Oct "no clicks" rule for such reels.
+- Page rebrand (27 Oct, `marketing/rebrand`): the chameleon carousel's first simple build (DG Sahabah, one big
+  headline line on the dark photo, an orange and a cream line under it) was the one the user called the best after
+  20+ reworks; extra layers, scattered text, other fonts and layout changes all made it worse in his eyes. Start from
+  it and change only what he asks. Thmanyah fonts are personal use only, so not for his posts.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Before making props or images, ask whether to use AI image elements (the user generates them) or 3D (Blender);
   3D renders cost a lot of usage (20 Oct).

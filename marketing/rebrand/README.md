@@ -50,3 +50,11 @@ kashida, a second line under it, small text in both top corners, a footer with n
 slide 1 was rebuilt that way: `python3 vivid.py chameleon-1 0.62 0.42 0.09 "<branch polygon>"` regrades the dark
 studio backdrop into a lit orange-red sweep (the branch is marked by a polygon so its bark keeps its colour);
 `vivid.html` sets the type in Cairo Black and SemiBold (Google Fonts, OFL), the footer wordmark in DG Sahabah.
+
+## Final pick (27 Oct)
+
+After every later version (type behind the animal, small text, layout options, Ruqaa, Amiri, Playpen, Dubai,
+Thmanyah, Markazi, a vivid red Cairo version) the user chose the first build as the best: `post-1.html`,
+`post-2.html`, `post-3.html` (restored from commit 97f6e5f), rendered to `out/post-<n>-slide<n>.jpg`. DG Sahabah, one
+big one-line headline over the dark graded photo, an orange line and a cream line under it, the wordmark top left,
+the handle bottom left. `carousel.html`, `vivid.html` and the test pages stay as the record of what was turned down.

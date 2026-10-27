@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Sahabah; src: url(../brand-fonts/DG-Sahabah-Reg.ttf); font-weight: 400; }
+  * { margin:0; padding:0; box-sizing:border-box }
+  body { background:#111; padding:40px; font-family:Sahabah, sans-serif; font-weight:400; font-synthesis:none }
+  .art { position:relative; width:1080px; height:1350px; overflow:hidden; background:url(img/plate-chameleon-1.png) 0 0/100% }
+  .art::after { content:''; position:absolute; inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
+
+  .wm { position:absolute; left:70px; top:66px; font-size:62px; line-height:1; color:#f3e3c8; direction:rtl; white-space:nowrap }
+  .wm .h { position:absolute; width:.19em; height:.19em; border:.032em solid currentColor; background:#2a1007 }
+
+  h1 { position:absolute; right:70px; top:200px; font-size:215px; line-height:1.02; white-space:nowrap; font-weight:400; color:#f3e3c8; direction:rtl; text-align:right;
+    text-shadow:0 6px 30px rgba(20,6,0,.35) }
+  .sub { position:absolute; right:78px; top:470px; font-size:58px; line-height:1.3; color:#f08a4b; direction:rtl; text-align:right }
+  .sub span { display:block; color:#e8d3b4; font-size:40px }
+  .handle { position:absolute; left:72px; bottom:60px; font-size:34px; color:#e8d3b4; direction:ltr; opacity:.9 }
+</style>
+</head>
+<body>
+<div class="art" id="slide1">
+  <span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>
+  <h1>غيرت لوني</h1>
+  <div class="sub">الصفحة بشكلها الجديد<span>وهذا اول بوست بيه</span></div>
+  <div class="handle">allawi.psd</div>
+</div>
+<script>
+// the handle sits on the middle of the stretched kashida (same measuring as brand.html)
+document.fonts.load("200px Sahabah", 'علاوي').then(() => document.fonts.ready).then(() => {
+  const c = document.createElement('canvas'); c.width = 400; c.height = 400;
+  const x = c.getContext('2d'); x.font = '200px Sahabah'; x.fillText('ـــــ', 20, 250);
+  const d = x.getImageData(150, 0, 1, 400).data; let lo = -1, hi = -1;
+  for (let y = 0; y < 400; y++) if (d[y * 4 + 3] > 128) { if (lo < 0) lo = y; hi = y; }
+  const K = ((lo + hi) / 2 - 250) / 200;
+  document.querySelectorAll('.wm').forEach((el) => {
+    const t = el.querySelector('.t'), h = el.querySelector('.h'), fs = parseFloat(getComputedStyle(el).fontSize);
+    const r = document.createRange(); r.setStart(t.firstChild, 1); r.setEnd(t.firstChild, 9);
+    const k = r.getBoundingClientRect(), box = el.getBoundingClientRect();
+    const m = document.createElement('span'); m.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline'; t.appendChild(m);
+    const base = m.getBoundingClientRect().top - box.top; m.remove();
+    h.style.left = (k.left - box.left + k.width / 2 - fs * .095) + 'px';
+    h.style.top = (base + fs * K - fs * .095) + 'px';
+  });
+  setTimeout(() => { document.body.dataset.ready = '1'; }, 300);
+});
+</script>
+</body>
+</html>
