@@ -4,10 +4,9 @@
 <meta charset="utf-8">
 <style>
   @font-face { font-family: Sahabah; src: url(../brand-fonts/DG-Sahabah-Reg.ttf); font-weight: 400; }
-  /* Thmanyah, the user's own copies: Serif Display Black for the headlines, Sans Regular for the line under them (not in git: its
-     licence does not allow redistribution; put it in fonts-local/) */
-  @font-face { font-family: Ruqaa; src: url(fonts-local/Thmanyah-SerifDisplay-Black.otf); font-weight: 700; }
-  @font-face { font-family: Naskh; src: url(fonts-local/Thmanyah-Sans-Regular.otf); font-weight: 700; }
+  /* Markazi Text Bold for the headlines, Vazirmatn Regular for the line under them (both SIL OFL, free for commercial use) */
+  @font-face { font-family: Ruqaa; src: url(fonts/MarkaziText-Bold.ttf); font-weight: 700; }
+  @font-face { font-family: Naskh; src: url(fonts/Vazirmatn-Regular.ttf); font-weight: 700; }
   * { margin:0; padding:0; box-sizing:border-box }
   body { background:#111; display:flex; gap:40px; padding:40px; width:3500px; font-family:Sahabah, sans-serif; font-weight:400; font-synthesis:none }
   .art { position:relative; width:1080px; height:1350px; overflow:hidden }
@@ -21,7 +20,7 @@
 
   /* the headline: stacked on the right, lit from the same lamp (white at the top, warm at the foot), with a soft shadow
      on the backdrop behind it so it sits in the room rather than on the screen */
-  .head { right:74px; top:var(--top); direction:rtl; text-align:right; white-space:nowrap; font-family:Ruqaa; font-weight:700; line-height:1.32 !important; font-feature-settings:"liga" 0, "dlig" 0;
+  .head { right:74px; top:var(--top); direction:rtl; text-align:right; white-space:nowrap; font-family:Ruqaa; font-weight:700; line-height:1.12 !important; font-feature-settings:"liga" 0, "dlig" 0;
     color:#fff1de; font-size:var(--fs); line-height:1.22; filter:drop-shadow(10px 16px 18px rgba(18,4,0,.55)) }
   .line { right:80px; top:var(--ltop); direction:rtl; text-align:right; font-family:Naskh; font-weight:700; font-size:46px; line-height:1.5;
     color:#efdcc2; text-shadow:0 2px 12px rgba(18,4,0,.5) }
@@ -35,9 +34,9 @@
   .vig { inset:0; background:radial-gradient(ellipse 85% 80% at 50% 50%, rgba(0,0,0,0) 58%, rgba(10,3,0,.5) 100%) }
   .grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
 
-  #s1 { --mx:-300px; --my:-200px; --fs:200px; --top:80px; --ltop:700px }
-  #s2 { --mx:-900px; --my:-500px; --fs:150px; --top:130px; --ltop:548px }
-  #s3 { --mx:-600px; --my:-1000px; --fs:185px; --top:110px; --ltop:790px }
+  #s1 { --mx:-300px; --my:-200px; --fs:260px; --top:48px; --ltop:700px }
+  #s2 { --mx:-900px; --my:-500px; --fs:200px; --top:110px; --ltop:560px }
+  #s3 { --mx:-600px; --my:-1000px; --fs:250px; --top:100px; --ltop:770px }
 </style>
 </head>
 <body>
@@ -65,7 +64,7 @@
 <div class="art" id="s3">
   <img class="plate" src="img/plate-chameleon-3.png" alt="">
   <div class="lamp"></div>
-  <div class="head" style="line-height:1.5 !important">دزلي<br>بالـخاص</div>
+  <div class="head" style="line-height:1.22 !important">دزلي<br>بالـخاص</div>
   <div class="line">كلي شنو تبيع، وارجعلك بفكرة</div>
   <div class="lock"><span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span><span class="who">مصمم<br>جرافيك</span></div>
   <div class="handle">allawi.psd</div>
