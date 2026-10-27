@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>معجنات العافية</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root {
+    --paper: #f3ebdd;
+    --ink: #2a1a13;
+    --soft: #7a6352;
+    --wine: #7b1e2b;
+    --wheat: #a9844a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #777; font-family: 'Almarai', sans-serif; color: var(--ink); }
+  .f { position: relative; overflow: hidden; background: var(--paper); margin: 40px; }
+  .paper { position: absolute; inset: 0; pointer-events: none; }
+  .paper .tone { position: absolute; inset: 0;
+    background:
+      radial-gradient(120% 90% at 78% 12%, rgba(255,250,240,.55), transparent 60%),
+      radial-gradient(90% 80% at 10% 95%, rgba(150,110,70,.10), transparent 70%); }
+  .paper svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .in { position: absolute; display: flex; flex-direction: column; }
+
+  .band { position: absolute; top: 0; left: 0; right: 0; background: #6d1824; overflow: hidden; }
+  .band .tone { position: absolute; inset: 0;
+    background: radial-gradient(70% 120% at 80% 30%, rgba(160,50,60,.45), transparent 70%),
+                radial-gradient(60% 120% at 5% 100%, rgba(30,5,10,.45), transparent 70%); }
+  .band svg { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: multiply; }
+  .head { position: absolute; display: flex; justify-content: space-between; align-items: flex-end; }
+  .name { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: #f4e7cf; line-height: 1.05; white-space: nowrap; }
+  .sub { color: #dcbb7e; font-weight: 700; margin-top: .75em; }
+  .order { text-align: left; }
+  .order .lbl { color: #dcbb7e; font-weight: 700; }
+  .order .tel { font-weight: 800; color: #f4e7cf; direction: ltr; letter-spacing: .02em; white-space: nowrap; }
+
+  .cols { display: flex; justify-content: space-between; flex: 1; }
+  .col { display: flex; flex-direction: column; }
+  .sec h2 { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: var(--wine); line-height: 1.1;
+    display: flex; align-items: baseline; justify-content: space-between; }
+  .sec h2 small { font-family: 'Almarai', sans-serif; font-weight: 700; color: var(--wheat); }
+  .row { display: flex; align-items: baseline; }
+  .row .n { font-weight: 700; white-space: nowrap; }
+  .row .d { color: var(--soft); font-weight: 400; white-space: nowrap; margin-right: .45em; }
+  .row .lead { flex: 1; align-self: flex-end; height: .2em; margin: 0 .5em .34em;
+    background: radial-gradient(circle, rgba(42,26,19,.38) 1.1px, transparent 1.4px) 0 50% / 9px 100% repeat-x; }
+  .row .p { font-weight: 800; white-space: nowrap; direction: ltr; }
+  .row .p.t { direction: rtl; font-weight: 700; color: var(--wine); }
+
+  .foot { display: flex; justify-content: space-between; color: var(--soft); font-weight: 700; }
+</style>
+</head>
+<body>
+<div id="frames"></div>
+<script>
+const MENU = {
+  right: [
+    { t: 'الكليجة والحلويات', items: [
+      ['كليجة مشكل', 'الكيلو', '6,000'],
+      ['كليجة بالجوز', 'الكيلو', '8,000'],
+      ['خفيفي سادة', 'الكيلو', '5,000'],
+      ['كرات التمر بالجوز', 'علبة 12 قطعة', '3,000'],
+    ]},
+    { t: 'الكيك والمناسبات', items: [
+      ['كيك شاي', '', '7,000'],
+      ['كيك شاي بالجوز', '', '8,000'],
+      ['كيك مناسبات', '', 'من 15,000 إلى 35,000', 't'],
+    ]},
+    { t: 'الخبز والعجين', items: [
+      ['خبز عروك', '3 قطع', '1,000'],
+      ['خبز بيت', '5 قطع', '1,000'],
+      ['خبز سمسم', '3 قطع', '3,000'],
+      ['عجين كباب عروك', '', '3,000'],
+    ]},
+  ],
+  left: [
+    { t: 'المعجنات الساخنة', note: 'العلبة 6 قطع', items: [
+      ['لحم بعجين', '', '3,000'],
+      ['ميني بيتزا', '', '3,000'],
+      ['فطائر', 'جبن، لحم، دجاج', '3,000'],
+      ['بورك', 'لحم، دجاج، جبن', '3,000'],
+      ['مناقيش جبن وكرفس', '', '3,000'],
+      ['مناقيش زعتر', '', '3,000'],
+      ['كص دجاج', 'القطعة', '1,500'],
+      ['برياني', '', 'متوفر', 't'],
+    ]},
+    { t: 'الكبب والمقليات', note: 'العلبة 12 قطعة', items: [
+      ['كبة دجاج', '', '3,000'],
+      ['كبة لحم', '', '3,000'],
+      ['كبة جريش تكلا', '', '3,000'],
+      ['كبة جدر', '5 قطع', '3,000'],
+    ]},
+  ],
+};
+
+// sizes in px for each frame; print is 13 cm at 300 dpi (1536 px) plus 3 mm bleed
+const L = {
+  print: { w: 1606, h: 1606, bleed: 35, band: 318, headPad: 70, pad: [384, 104, 78, 104], name: 132, sub: 34, lbl: 28, tel: 52,
+           colW: 650, h2: 62, note: 28, h2gap: 14, secGap: 46, row: 37, d: 28, rowGap: 23.5, foot: 26 },
+  story: { w: 1080, h: 1920, bleed: 0, band: 520, headPad: 64, pad: [600, 60, 270, 60], name: 112, sub: 30, lbl: 25, tel: 44,
+           colW: 452, h2: 50, note: 22, h2gap: 12, secGap: 58, row: 27.5, d: 20.5, rowGap: 30, foot: 22 },
+};
+L.trim = Object.assign({}, L.print, { w: 1536, h: 1536, bleed: 0 });
+
+function paper(w, h, seed) {
+  return `<div class="paper"><div class="tone"></div>
+  <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <filter id="fib${seed}" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="4" seed="${seed}"/>
+      <feColorMatrix values="0 0 0 0 .45  0 0 0 0 .32  0 0 0 0 .2  0 0 0 .9 -.32"/>
+    </filter>
+    <filter id="grn${seed}" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="${seed + 3}"/>
+      <feColorMatrix values="0 0 0 0 .2  0 0 0 0 .14  0 0 0 0 .1  0 0 0 .75 -.28"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#fib${seed})" opacity=".22"/>
+    <rect width="100%" height="100%" filter="url(#grn${seed})" opacity=".30"/>
+  </svg></div>`;
+}
+
+function section(s, z) {
+  const note = s.note ? `<small style="font-size:${z.note}px">${s.note}</small>` : '';
+  const rows = s.items.map(([n, d, p, k]) => `
+    <div class="row" style="font-size:${z.row}px;margin-top:${z.rowGap}px">
+      <span class="n">${n}</span>${d ? `<span class="d" style="font-size:${z.d}px">${d}</span>` : ''}
+      <span class="lead"></span><span class="p ${k || ''}">${p}</span>
+    </div>`).join('');
+  return `<div class="sec" style="margin-bottom:${z.secGap}px">
+    <h2 style="font-size:${z.h2}px;margin-bottom:${z.h2gap - z.rowGap}px">${s.t}${note}</h2>${rows}</div>`;
+}
+
+function frame(id, z, seed) {
+  const [pt, pr, pb, pl] = z.pad.map((v) => v + z.bleed);
+  const col = (k) => `<div class="col" style="width:${z.colW}px">${MENU[k].map((s) => section(s, z)).join('')}</div>`;
+  const tall = z.h > z.w;
+  const bh = z.band + z.bleed;
+  return `<div class="f" id="${id}" style="width:${z.w}px;height:${z.h}px">${paper(z.w, z.h, seed)}
+    <div class="band" style="height:${bh}px"><div class="tone"></div>${paper(z.w, bh, seed + 20).replace('<div class="paper"><div class="tone"></div>', '').replace(/<\/div>$/, '')}</div>
+    <div class="head" style="right:${pr}px;left:${pl}px;bottom:${z.h - bh + z.headPad}px;${tall ? 'flex-direction:column;align-items:flex-start;gap:30px' : ''}">
+      <div><div class="name" style="font-size:${z.name}px">معجنات العافية</div>
+        <div class="sub" style="font-size:${z.sub}px">وتجهيزات العافية، أم علي، بلدروز ديالى</div></div>
+      <div class="order" style="${tall ? 'text-align:right' : ''}">
+        <div class="lbl" style="font-size:${z.lbl}px">للطلب والحجز</div>
+        <div class="tel" style="font-size:${z.tel}px">0775 281 6647</div></div>
+    </div>
+    <div class="in" style="top:${pt}px;right:${pr}px;bottom:${pb}px;left:${pl}px">
+      <div class="cols">${col('right')}${col('left')}</div>
+      <div class="foot" style="font-size:${z.foot}px"><span>الأسعار بالدينار العراقي</span></div>
+    </div></div>`;
+}
+
+document.getElementById('frames').innerHTML =
+  frame('print', L.print, 7) + frame('trim', L.trim, 7) + frame('story', L.story, 11);
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
