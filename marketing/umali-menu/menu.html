@@ -31,8 +31,8 @@
   .band svg { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: multiply; }
   .head { position: absolute; display: flex; justify-content: space-between; align-items: flex-end; }
   .name { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: #f5e9d5; line-height: 1.05; white-space: nowrap; }
-  .kick { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: #d9b07a; line-height: 1.1; margin-bottom: .05em; }
-  .sub { color: #d9b07a; font-weight: 700; margin-top: .75em; }
+  .kick { font-family: 'Aref Ruqaa', serif; font-weight: 700; color: #d9b07a; line-height: 1.1; margin-top: .3em; }
+  .sub { color: #d9b07a; font-weight: 700; margin-top: .35em; }
   .order { text-align: left; }
   .logo { position: absolute; filter: drop-shadow(0 12px 20px rgba(20,8,2,.35)); }
   .order .lbl { color: #d9b07a; font-weight: 700; }
@@ -99,7 +99,7 @@ const MENU = {
 
 // sizes in px for each frame; print is 13 cm at 300 dpi (1536 px) plus 3 mm bleed
 const L = {
-  print: { w: 1606, h: 1606, bleed: 35, band: 366, logo: 300, orderX: 330, headPad: 60, kick: 60, pad: [430, 104, 78, 104], name: 132, sub: 34, lbl: 28, tel: 52,
+  print: { w: 1606, h: 1606, bleed: 35, band: 400, logo: 310, orderX: 330, headPad: 50, kick: 60, pad: [464, 104, 78, 104], name: 132, sub: 34, lbl: 28, tel: 52,
            colW: 650, h2: 62, note: 28, h2gap: 14, secGap: 46, row: 37, d: 28, rowGap: 23.5, foot: 26 },
   story: { w: 1080, h: 1920, bleed: 0, band: 580, logo: 350, orderX: 0, headPad: 60, kick: 50, pad: [656, 60, 270, 60], name: 112, sub: 30, lbl: 25, tel: 44,
            colW: 452, h2: 50, note: 22, h2gap: 12, secGap: 58, row: 27.5, d: 20.5, rowGap: 30, foot: 22 },
@@ -142,8 +142,8 @@ function frame(id, z, seed) {
     <div class="band" style="height:${bh}px"><div class="tone"></div>${paper(z.w, bh, seed + 20).replace('<div class="paper"><div class="tone"></div>', '').replace(/<\/div>$/, '')}
       <img class="logo" src="art/chef.png" style="height:${z.logo}px;left:${pl - 10}px;top:${bh - z.logo}px"></div>
     <div class="head" style="right:${pr}px;left:${pl}px;bottom:${z.h - bh + z.headPad}px;${tall ? 'flex-direction:column;align-items:flex-start;gap:30px' : ''}">
-      <div><div class="kick" style="font-size:${z.kick}px">تجهيزات العافية</div>
-        <div class="name" style="font-size:${z.name}px">معجنات العافية</div>
+      <div><div class="name" style="font-size:${z.name}px">تجهيزات العافية</div>
+        <div class="kick" style="font-size:${z.kick}px">معجنات العافية</div>
         <div class="sub" style="font-size:${z.sub}px">أم علي، بلدروز ديالى</div></div>
       <div class="order" style="${tall ? 'text-align:right' : `margin-left:${z.orderX}px;margin-right:auto`}">
         <div class="lbl" style="font-size:${z.lbl}px">للطلب والحجز</div>
