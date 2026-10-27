@@ -37,6 +37,7 @@ around the subject, the wordmark small in the top corner.
 The user felt the font was the problem ("the way the text looks") and turned down DG Sahabah, eight Google display
 faces (`fonttest.html`) and six Naskh/Ruqaa faces (`naskhtest.html`), then asked me to choose to match ra.graphicc,
 whose headlines are a bold hand-brushed Naskh. Aref Ruqaa came next and was hard to read; Amiri Bold was readable but "basic". The user then asked me to choose
-again: headlines are Playpen Sans Arabic ExtraBold in cream, a heavy marker hand that stays easy to read, the closest
-free match to the references' marker-written headlines. The line under each headline is Noto Naskh Arabic Bold; the
-logo stays in DG Sahabah. Fonts are in `fonts/` (all SIL Open Font License, from Google Fonts).
+again and turned down Playpen Sans Arabic too, asking for "better fonts". Google Fonts were exhausted; Thmanyah's
+fonts are personal use only. Headlines are now Dubai Bold and the line under each Dubai Regular (Dubai Font is free
+for commercial use but may not be redistributed, so the files are not in git: download Dubai from dubaifont.com into
+`fonts-local/` as `Dubai-Bold.ttf` and `Dubai-Regular.ttf` before rendering). The logo stays in DG Sahabah.
