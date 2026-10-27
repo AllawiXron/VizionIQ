@@ -58,3 +58,7 @@ Thmanyah, Markazi, a vivid red Cairo version) the user chose the first build as 
 `post-2.html`, `post-3.html` (restored from commit 97f6e5f), rendered to `out/post-<n>-slide<n>.jpg`. DG Sahabah, one
 big one-line headline over the dark graded photo, an orange line and a cream line under it, the wordmark top left,
 the handle bottom left. `carousel.html`, `vivid.html` and the test pages stay as the record of what was turned down.
+
+Font (27 Oct): after two sheets of free fonts (`out/font-pick.jpg`, `out/font-pick-2.jpg`, nothing else changed) the
+user picked Scheherazade New Bold (SIL OFL, free for commercial use) for the headline and lines of `post-1..3.html`;
+the logo and handle stay in DG Sahabah. Slide 3's line moved down 30 px so the ي dots of «دزلي» clear it.

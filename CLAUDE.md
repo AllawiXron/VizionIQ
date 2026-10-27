@@ -104,7 +104,8 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - Page rebrand (27 Oct, `marketing/rebrand`): the chameleon carousel's first simple build (DG Sahabah, one big
   headline line on the dark photo, an orange and a cream line under it) was the one the user called the best after
   20+ reworks; extra layers, scattered text, other fonts and layout changes all made it worse in his eyes. Start from
-  it and change only what he asks. Thmanyah fonts are personal use only, so not for his posts.
+  it and change only what he asks. Its headline and lines are now Scheherazade New Bold, which he picked from two
+  sheets of free fonts. Thmanyah fonts are personal use only, so not for his posts.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Before making props or images, ask whether to use AI image elements (the user generates them) or 3D (Blender);
   3D renders cost a lot of usage (20 Oct).
