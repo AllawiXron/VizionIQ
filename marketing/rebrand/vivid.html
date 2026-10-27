@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Sahabah; src: url(../brand-fonts/DG-Sahabah-Reg.ttf); font-weight: 400; }
+  @font-face { font-family: Cairo; src: url(fonts/Cairo-Black.ttf); font-weight: 900; }
+  @font-face { font-family: Cairo; src: url(fonts/Cairo-SemiBold.ttf); font-weight: 600; }
+  * { margin:0; padding:0; box-sizing:border-box }
+  body { background:#111; display:flex; gap:40px; padding:40px; width:3500px; font-family:Cairo, sans-serif; color:#fff }
+  .art { position:relative; width:1080px; height:1350px; overflow:hidden }
+  .art > * { position:absolute }
+  .plate { inset:0; width:1080px; height:1350px }
+
+  /* the headline: one huge word pulled out along its kashida, a second line under it at half the size */
+  .h1 { direction:rtl; white-space:nowrap; font-weight:900; line-height:1.1; text-shadow:0 10px 30px rgba(60,8,0,.35) }
+  .h2 { direction:rtl; white-space:nowrap; font-weight:900; line-height:1.15; text-shadow:0 6px 20px rgba(60,8,0,.35) }
+
+  /* small type in the top corners and along the foot, like a printed page */
+  .corner { top:56px; direction:rtl; font-weight:600; font-size:26px; line-height:1.3; color:rgba(255,255,255,.92) }
+  .corner b { font-weight:900; font-size:30px }
+  .foot { bottom:44px; direction:rtl; font-weight:600; font-size:22px; color:rgba(255,255,255,.85); white-space:nowrap }
+  .foot .wm { font-family:Sahabah; font-size:30px; position:relative; vertical-align:-4px }
+  .foot .wm .h { position:absolute; width:.19em; height:.19em; border:.032em solid currentColor; background:#a3300b }
+
+  .vig { inset:0; background:radial-gradient(ellipse 90% 85% at 55% 45%, rgba(0,0,0,0) 60%, rgba(40,4,0,.45) 100%) }
+  .grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
+</style>
+</head>
+<body>
+
+<div class="art" id="s1">
+  <img class="plate" src="img/vivid-chameleon-1.png" alt="">
+  <div class="vig"></div>
+  <div class="h1" style="right:70px; top:250px; font-size:270px">غيـــرت</div>
+  <div class="h2" style="right:76px; top:540px; font-size:140px">لونــي</div>
+  <div class="corner" style="right:70px; text-align:right"><b>الصفحة</b><br>بشكلها الجديد</div>
+  <div class="corner" style="left:70px; text-align:left">من اليوم<br>كل بوست بهالشكل</div>
+  <div class="foot" style="left:0; right:0; text-align:center"><span class="wm"><span class="t">عـــــــلاوي</span><span class="h"></span></span>&nbsp;&nbsp;|&nbsp;&nbsp;مصمم جرافيك</div>
+  <div class="foot" style="right:70px">اسحب للتالي</div>
+  <div class="grain"></div>
+</div>
+
+<script>
+// the wordmark's handle sits on the middle of the stretched kashida
+const imgs = [...document.images].map((i) => i.complete ? null : new Promise((r) => { i.onload = i.onerror = r; }));
+Promise.all([document.fonts.load("200px Sahabah", 'علاوي'), document.fonts.load("900 200px Cairo", 'غيرت'), document.fonts.load("600 20px Cairo", 'الصفحة'), ...imgs])
+.then(() => document.fonts.ready).then(() => {
+  const c = document.createElement('canvas'); c.width = 400; c.height = 400;
+  const x = c.getContext('2d'); x.font = '200px Sahabah'; x.fillText('ـــــ', 20, 250);
+  const d = x.getImageData(150, 0, 1, 400).data; let lo = -1, hi = -1;
+  for (let y = 0; y < 400; y++) if (d[y * 4 + 3] > 128) { if (lo < 0) lo = y; hi = y; }
+  const K = ((lo + hi) / 2 - 250) / 200;
+  document.querySelectorAll('.wm').forEach((el) => {
+    const t = el.querySelector('.t'), h = el.querySelector('.h'), fs = parseFloat(getComputedStyle(el).fontSize);
+    const r = document.createRange(); r.setStart(t.firstChild, 1); r.setEnd(t.firstChild, 9);
+    const k = r.getBoundingClientRect(), box = el.getBoundingClientRect();
+    const m = document.createElement('span'); m.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline'; t.appendChild(m);
+    const base = m.getBoundingClientRect().top - box.top; m.remove();
+    h.style.left = (k.left - box.left + k.width / 2 - fs * .095) + 'px';
+    h.style.top = (base + fs * K - fs * .095) + 'px';
+  });
+  setTimeout(() => { document.body.dataset.ready = '1'; }, 300);
+});
+</script>
+</body>
+</html>

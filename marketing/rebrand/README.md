@@ -41,3 +41,11 @@ again and turned down Playpen Sans Arabic too, asking for "better fonts". Google
 fonts are personal use only. Headlines are now Dubai Bold and the line under each Dubai Regular (Dubai Font is free
 for commercial use but may not be redistributed, so the files are not in git: download Dubai from dubaifont.com into
 `fonts-local/` as `Dubai-Bold.ttf` and `Dubai-Regular.ttf` before rendering). The logo stays in DG Sahabah.
+
+## Vivid version (27 Oct)
+
+After a third reference (sa.ahmed.ayad: a subject on a vivid lit red sweep, a huge white headline with a stretched
+kashida, a second line under it, small text in both top corners, a footer with name, «مصمم جرافيك» and a swipe cue),
+slide 1 was rebuilt that way: `python3 vivid.py chameleon-1 0.62 0.42 0.09 "<branch polygon>"` regrades the dark
+studio backdrop into a lit orange-red sweep (the branch is marked by a polygon so its bark keeps its colour);
+`vivid.html` sets the type in Cairo Black and SemiBold (Google Fonts, OFL), the footer wordmark in DG Sahabah.
