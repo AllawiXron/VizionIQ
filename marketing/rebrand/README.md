@@ -31,3 +31,11 @@ around the subject, the wordmark small in the top corner.
   backdrop behind the words, a vignette and grain. No orange words; the orange comes from the photos.
 - Build: `python3 prep.py chameleon-1 420 2340` (`chameleon-2 560 2360`, `chameleon-3 200 2400`) grades each plate;
   `node render.cjs carousel.html` writes `out/carousel-s1..3.jpg`.
+
+## Type (27 Oct)
+
+The user felt the font was the problem ("the way the text looks") and turned down DG Sahabah, eight Google display
+faces (`fonttest.html`) and six Naskh/Ruqaa faces (`naskhtest.html`), then asked me to choose to match ra.graphicc,
+whose headlines are a bold hand-brushed Naskh. Headlines are now Aref Ruqaa Bold in cream (hand-written strokes; the
+Ink version shades its overlaps grey and its palette doesn't override cleanly), the line under each in Noto Naskh Arabic
+Bold. The logo stays in DG Sahabah. Fonts are in `fonts/` (all SIL Open Font License, from Google Fonts).

@@ -1,0 +1,46 @@
+<!doctype html><html lang="ar"><head><meta charset="utf-8"><style>
+@font-face { font-family:'Aref Ruqaa Ink'; src:url(fonts/ArefRuqaaInk.ttf); font-weight:700 }
+@font-face { font-family:'Katibeh'; src:url(fonts/Katibeh.ttf); font-weight:400 }
+@font-face { font-family:'Amiri'; src:url(fonts/Amiri.ttf); font-weight:700 }
+@font-face { font-family:'Mirza'; src:url(fonts/Mirza.ttf); font-weight:700 }
+@font-face { font-family:'Reem Kufi Ink'; src:url(fonts/ReemKufiInk.ttf); font-weight:400 }
+@font-face { font-family:'Noto Naskh Arabic'; src:url(fonts/NotoNaskhArabic.ttf); font-weight:700 }
+
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#111; display:flex; flex-wrap:wrap; gap:30px; padding:30px; width:3500px }
+.art { position:relative; width:1080px; height:1350px; overflow:hidden }
+.art > * { position:absolute }
+.plate { inset:0; width:1080px; height:1350px; filter:contrast(1.06) saturate(1.06) }
+.head { right:78px; top:100px; direction:rtl; text-align:right; white-space:nowrap; font-size:200px; line-height:1.25; color:#fff6ea;
+  text-shadow:10px 16px 26px rgba(18,4,0,.55) }
+.line { right:82px; top:640px; direction:rtl; text-align:right; font-size:54px; color:#efdcc2; text-shadow:0 2px 12px rgba(18,4,0,.5) }
+.lab { left:24px; top:20px; font:600 60px sans-serif; color:#000; background:#fff; padding:2px 22px; z-index:9 }
+.grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
+</style></head><body>
+<div class="art" id="n1"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Aref Ruqaa Ink';font-weight:700">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Aref Ruqaa Ink';font-weight:700">الصفحة بشكلها الجديد</div>
+  <div class="lab">1</div><div class="grain"></div></div>
+<div class="art" id="n2"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Katibeh';font-weight:400">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Katibeh';font-weight:400">الصفحة بشكلها الجديد</div>
+  <div class="lab">2</div><div class="grain"></div></div>
+<div class="art" id="n3"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Amiri';font-weight:700">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Amiri';font-weight:700">الصفحة بشكلها الجديد</div>
+  <div class="lab">3</div><div class="grain"></div></div>
+<div class="art" id="n4"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Mirza';font-weight:700">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Mirza';font-weight:700">الصفحة بشكلها الجديد</div>
+  <div class="lab">4</div><div class="grain"></div></div>
+<div class="art" id="n5"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Reem Kufi Ink';font-weight:400">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Reem Kufi Ink';font-weight:400">الصفحة بشكلها الجديد</div>
+  <div class="lab">5</div><div class="grain"></div></div>
+<div class="art" id="n6"><img class="plate" src="img/plate-chameleon-1.png" alt="">
+  <div class="head" style="font-family:'Noto Naskh Arabic';font-weight:700">غيرت<br>لوني</div>
+  <div class="line" style="font-family:'Noto Naskh Arabic';font-weight:700">الصفحة بشكلها الجديد</div>
+  <div class="lab">6</div><div class="grain"></div></div>
+
+<script>Promise.all([document.fonts.load("700 200px 'Aref Ruqaa Ink'", 'غيرت'),document.fonts.load("400 200px 'Katibeh'", 'غيرت'),document.fonts.load("700 200px 'Amiri'", 'غيرت'),document.fonts.load("700 200px 'Mirza'", 'غيرت'),document.fonts.load("400 200px 'Reem Kufi Ink'", 'غيرت'),document.fonts.load("700 200px 'Noto Naskh Arabic'", 'غيرت')]).then(() => setTimeout(() => { document.body.dataset.ready = '1'; }, 400));</script>
+</body></html>

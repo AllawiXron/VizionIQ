@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <style>
   @font-face { font-family: Sahabah; src: url(../brand-fonts/DG-Sahabah-Reg.ttf); font-weight: 400; }
+  /* headlines in a bold Ruqaa, written by hand rather than drawn, the line under it in a plain Naskh */
+  @font-face { font-family: Ruqaa; src: url(fonts/ArefRuqaa-Bold.ttf); font-weight: 700; }
+  @font-face { font-family: Naskh; src: url(fonts/NotoNaskhArabic.ttf); font-weight: 700; }
   * { margin:0; padding:0; box-sizing:border-box }
   body { background:#111; display:flex; gap:40px; padding:40px; width:3500px; font-family:Sahabah, sans-serif; font-weight:400; font-synthesis:none }
   .art { position:relative; width:1080px; height:1350px; overflow:hidden }
@@ -17,11 +20,10 @@
 
   /* the headline: stacked on the right, lit from the same lamp (white at the top, warm at the foot), with a soft shadow
      on the backdrop behind it so it sits in the room rather than on the screen */
-  .head { right:78px; top:var(--top); direction:rtl; text-align:right; white-space:nowrap; font-size:var(--fs); line-height:1.14;
-    background:linear-gradient(180deg, #fffaf2 0%, #fbeedd 55%, #efd3ad 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
-    padding:.2em 0 .3em .05em; margin-top:-.2em; filter:drop-shadow(10px 16px 18px rgba(18,4,0,.55)) }
-  .line { right:82px; top:var(--ltop); direction:rtl; text-align:right; font-size:50px; line-height:1.35; color:#efdcc2;
-    text-shadow:0 2px 12px rgba(18,4,0,.5) }
+  .head { right:74px; top:var(--top); direction:rtl; text-align:right; white-space:nowrap; font-family:Ruqaa; font-weight:700;
+    color:#fff1de; font-size:var(--fs); line-height:1.22; filter:drop-shadow(10px 16px 18px rgba(18,4,0,.55)) }
+  .line { right:80px; top:var(--ltop); direction:rtl; text-align:right; font-family:Naskh; font-weight:700; font-size:46px; line-height:1.5;
+    color:#efdcc2; text-shadow:0 2px 12px rgba(18,4,0,.5) }
 
   .lock { left:70px; top:60px; display:flex; align-items:center; gap:18px; direction:rtl }
   .wm { position:relative; font-size:54px; line-height:1; color:#f6e8d4; white-space:nowrap }
@@ -32,9 +34,9 @@
   .vig { inset:0; background:radial-gradient(ellipse 85% 80% at 50% 50%, rgba(0,0,0,0) 58%, rgba(10,3,0,.5) 100%) }
   .grain { inset:0; background:url(../ig-highlights/assets/img/grain.png) 0 0/512px; mix-blend-mode:overlay; opacity:.1 }
 
-  #s1 { --mx:-300px; --my:-200px; --fs:200px; --top:140px; --ltop:625px }
-  #s2 { --mx:-900px; --my:-500px; --fs:175px; --top:120px; --ltop:535px }
-  #s3 { --mx:-600px; --my:-1000px; --fs:185px; --top:180px; --ltop:635px }
+  #s1 { --mx:-300px; --my:-200px; --fs:210px; --top:90px; --ltop:640px }
+  #s2 { --mx:-900px; --my:-500px; --fs:185px; --top:70px; --ltop:545px }
+  #s3 { --mx:-600px; --my:-1000px; --fs:200px; --top:150px; --ltop:690px }
 </style>
 </head>
 <body>
@@ -72,7 +74,7 @@
 <script>
 // the wordmark's handle sits on the middle of the stretched kashida
 const imgs = [...document.images].map((i) => i.complete ? null : new Promise((r) => { i.onload = i.onerror = r; }));
-Promise.all([document.fonts.load("200px Sahabah", 'علاوي'), ...imgs]).then(() => document.fonts.ready).then(() => {
+Promise.all([document.fonts.load("200px Sahabah", 'علاوي'), document.fonts.load("700 200px Ruqaa", 'غيرت'), document.fonts.load("700 40px Naskh", 'الصفحة'), ...imgs]).then(() => document.fonts.ready).then(() => {
   const c = document.createElement('canvas'); c.width = 400; c.height = 400;
   const x = c.getContext('2d'); x.font = '200px Sahabah'; x.fillText('ـــــ', 20, 250);
   const d = x.getImageData(150, 0, 1, 400).data; let lo = -1, hi = -1;
