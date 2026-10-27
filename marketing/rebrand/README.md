@@ -36,7 +36,7 @@ around the subject, the wordmark small in the top corner.
 
 The user felt the font was the problem ("the way the text looks") and turned down DG Sahabah, eight Google display
 faces (`fonttest.html`) and six Naskh/Ruqaa faces (`naskhtest.html`), then asked me to choose to match ra.graphicc,
-whose headlines are a bold hand-brushed Naskh. Aref Ruqaa came next and was hard to read, so headlines are now Amiri
-Bold in cream: a classic Naskh that reads at a glance but keeps a calligraphic flow. Its required ل-خ stacking made
-«بالخاص» hard to read, so it is set «بالـخاص» with a short kashida. The line under each headline is Noto Naskh Arabic
-Bold; the logo stays in DG Sahabah. Fonts are in `fonts/` (all SIL Open Font License, from Google Fonts).
+whose headlines are a bold hand-brushed Naskh. Aref Ruqaa came next and was hard to read; Amiri Bold was readable but "basic". The user then asked me to choose
+again: headlines are Playpen Sans Arabic ExtraBold in cream, a heavy marker hand that stays easy to read, the closest
+free match to the references' marker-written headlines. The line under each headline is Noto Naskh Arabic Bold; the
+logo stays in DG Sahabah. Fonts are in `fonts/` (all SIL Open Font License, from Google Fonts).
