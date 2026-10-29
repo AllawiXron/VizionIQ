@@ -10,67 +10,45 @@
   body { background: #666; font-family: 'El Messiri', serif; color: var(--ink); }
   .f { position: relative; width: 1080px; height: 1920px; overflow: hidden; margin: 30px;
     background: url(art/cloth.jpg) 0 0 / 1080px 1920px; }
-  /* window light from the top left over the cloth, darker towards the bottom right */
   .light { position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(70% 45% at 12% 8%, rgba(255,250,240,.38), transparent 70%),
-      radial-gradient(90% 60% at 95% 100%, rgba(70,40,20,.16), transparent 70%); }
-  .dish { position: absolute; display: block;
-    filter: drop-shadow(1px 2px 1.5px rgba(45,25,12,.42))
-            drop-shadow(8px 16px 14px rgba(45,25,12,.26))
-            drop-shadow(14px 34px 48px rgba(45,25,12,.20)); }
-  .logo { position: absolute; }
-  .item { position: absolute; line-height: 1.2; }
-  .item .n { font-weight: 700; white-space: nowrap; }
-  .item .s { font-weight: 500; color: var(--soft); white-space: nowrap; margin-top: .15em; }
-  .item .p { font-weight: 700; white-space: nowrap; direction: ltr; unicode-bidi: isolate; margin-top: .12em; }
-  .foot { position: absolute; font-weight: 500; color: var(--soft); }
-  .grain { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5; }
+    background: radial-gradient(70% 45% at 85% 6%, rgba(255,250,240,.35), transparent 70%),
+                radial-gradient(90% 60% at 5% 100%, rgba(70,40,20,.13), transparent 70%); }
+  .logo { position: absolute; left: 50%; transform: translateX(-50%); }
+  .tile { position: absolute; }
+  .tile img { display: block; width: 100%;
+    box-shadow: 0 1px 2px rgba(45,25,12,.35), 0 10px 26px rgba(45,25,12,.16); }
+  .line { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; }
+  .n { font-weight: 700; white-space: nowrap; }
+  .p { font-weight: 700; white-space: nowrap; direction: ltr; }
+  .s { font-weight: 500; color: var(--soft); margin-top: 2px; }
+  .cups-head { position: absolute; display: flex; justify-content: space-between; align-items: baseline; }
+  .cup { position: absolute; text-align: center; }
+  .cup img { display: block; width: 100%; box-shadow: 0 1px 2px rgba(45,25,12,.35), 0 8px 20px rgba(45,25,12,.14); }
+  .cup .n { white-space: normal; margin-top: 14px; line-height: 1.25; }
+  .foot { position: absolute; left: 0; right: 0; text-align: center; font-weight: 500; color: var(--soft); }
+  .grain { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .45; }
 </style>
 </head>
 <body>
 <div id="frames"></div>
 <script>
-// d: dish [art, x, y, width, rotation]; t: [x, y, align, name, sub, price, size]
+// two columns, 470 wide, 40 apart; the first item of a row sits on the right (Arabic order)
+const COL = [560, 50], W = 470;
 const STORIES = {
-  'story-1': {
-    logo: [688, 196, 330],
-    dishes: [
-      ['basbousa', -170, 250, 520, -8],
-      ['honeycomb-mix', 580, 640, 540, 6],
-      ['honeycomb', -150, 1010, 480, 0],
-      ['cinnabon', 650, 1360, 500, 8],
-    ],
-    // x is the edge of the text that faces the dish
-    items: [
-      [440, 500, 'left', 'بسبوسة', 'البوكس', '8,000', 60],
-      [545, 830, 'right', 'خلية النحل الثلاثية', 'محشية بالصوصات', '8,000', 54],
-      [400, 1180, 'left', 'خلية النحل سادة', '', '5,000', 54],
-      [560, 1500, 'right', 'سينابون', 'البوكس 4 قطع', '6,000', 60],
-    ],
-    foot: [560, 1745, 'right'],
-  },
-  'story-2': {
-    logo: [728, 196, 290],
-    dishes: [
-      ['cake', 0, 150, 340, 0],
-      ['marble-cake', 600, 600, 480, 8],
-      ['cup-tiramisu', 412, 1130, 256, 0],
-      ['cup-lotus', 236, 1292, 256, 0],
-      ['cup-khashkhash', 600, 1298, 236, 0],
-      ['cup-chocolate', 410, 1450, 270, 0],
-    ],
-    items: [
-      [385, 480, 'left', 'كيكة', '', '8,000', 60],
-      [560, 790, 'right', 'كيكة الرخام', '', '10,000', 60],
-    ],
-    // the four cups share one price, each name sits by its cup
-    cups: { price: [712, 1160], names: [
-      [470, 1070, 'تراميسو'], [40, 1382, 'حلا اللوتس'], [850, 1390, 'حلا الخشخش'], [330, 1742, 'حلا بالشوكولا الدارك'],
-    ]},
-    foot: [540, 1815, 'center'],
-  },
+  'story-1': [
+    ['basbousa', 'بسبوسة', 'البوكس', '8,000'],
+    ['honeycomb-mix', 'خلية النحل الثلاثية', 'محشية بالصوصات', '8,000'],
+    ['honeycomb', 'خلية النحل سادة', '', '5,000'],
+    ['cinnabon', 'سينابون', 'البوكس 4 قطع', '6,000'],
+  ],
+  'story-2': [
+    ['cake', 'كيكة', '', '8,000'],
+    ['marble-cake', 'كيكة الرخام', '', '10,000'],
+  ],
 };
+const CUPS = [['cup-tiramisu', 'تراميسو'], ['cup-lotus', 'حلا اللوتس'], ['cup-khashkhash', 'حلا الخشخش'],
+  ['cup-chocolate', 'حلا بالشوكولا الدارك']];
+const TOP = 440, ROW = 640;
 
 function grain(seed) {
   return `<svg class="grain" viewBox="0 0 1080 1920"><filter id="g${seed}"><feTurbulence type="fractalNoise"
@@ -78,31 +56,31 @@ function grain(seed) {
     <rect width="1080" height="1920" filter="url(#g${seed})"/></svg>`;
 }
 
-function item([x, y, align, n, s, p, size]) {
-  const side = align === 'left' ? `left:${x}px;text-align:left` : `right:${1080 - x}px;text-align:right`;
-  return `<div class="item" style="top:${y}px;${side};font-size:${size}px">
-    <div class="n">${n}</div>${s ? `<div class="s" style="font-size:${size * .52}px">${s}</div>` : ''}
-    <div class="p" style="font-size:${size * .92}px">${p}</div></div>`;
+function tile([img, n, s, p], i) {
+  const x = COL[i % 2], y = TOP + Math.floor(i / 2) * ROW;
+  return `<div class="tile" style="left:${x}px;top:${y}px;width:${W}px">
+    <img src="art/photos/${img}.jpg">
+    <div class="line"><span class="n" style="font-size:${n.length > 14 ? 38 : 44}px">${n}</span><span class="p" style="font-size:44px">${p}</span></div>
+    ${s ? `<div class="s" style="font-size:26px">${s}</div>` : ''}</div>`;
 }
 
-function foot([x, y, align]) {
-  const pos = align === 'center' ? 'left:0;right:0;text-align:center' : `right:${1080 - x}px;text-align:right;line-height:1.35`;
-  const text = align === 'center' ? 'التوصيل داخل الفلوجة، وللطلب راسلونا بالخاص' : 'التوصيل داخل الفلوجة<br>وللطلب راسلونا بالخاص';
-  return `<div class="foot" style="top:${y}px;${pos};font-size:30px">${text}</div>`;
+function cups(y) {
+  const w = 230, gap = 20;
+  return `<div class="cups-head" style="left:50px;width:980px;top:${y}px">
+      <span class="n" style="font-size:44px">علب الحلا</span>
+      <span class="s" style="font-size:28px">العلبة <span class="p" style="font-size:44px;color:var(--ink)">3,000</span></span></div>
+    ${CUPS.map(([img, n], i) => `<div class="cup" style="right:${50 + i * (w + gap)}px;top:${y + 100}px;width:${w}px">
+      <img src="art/photos/${img}.jpg"><div class="n" style="font-size:30px">${n}</div></div>`).join('')}`;
 }
 
 let html = '';
-Object.entries(STORIES).forEach(([id, st], i) => {
-  const [lx, ly, lw] = st.logo;
+Object.entries(STORIES).forEach(([id, items], k) => {
   html += `<div class="f" id="${id}"><div class="light"></div>
-    ${st.dishes.map(([a, x, y, w, r]) => `<img class="dish" src="art/${a}.png" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${r}deg)">`).join('')}
-    <img class="logo" src="art/logo.png" style="left:${lx}px;top:${ly}px;width:${lw}px">
-    ${st.items.map(item).join('')}
-    ${st.cups ? `<div class="item" style="left:${st.cups.price[0]}px;top:${st.cups.price[1]}px;font-size:40px;text-align:right">
-        <div class="n">علب الحلا</div><div class="p" style="font-size:40px">3,000</div><div class="s" style="font-size:24px">للعلبة الوحدة</div></div>
-      ${st.cups.names.map(([x, y, n]) => `<div class="item" style="left:${x}px;top:${y}px;font-size:34px"><div class="n">${n}</div></div>`).join('')}` : ''}
-    ${foot(st.foot)}
-    ${grain(i + 4)}</div>`;
+    <img class="logo" src="art/logo.png" style="top:170px;width:270px">
+    ${items.map(tile).join('')}
+    ${id === 'story-2' ? cups(TOP + ROW + 10) : ''}
+    <div class="foot" style="top:1735px;font-size:30px">التوصيل داخل الفلوجة، وللطلب راسلونا بالخاص</div>
+    ${grain(k + 4)}</div>`;
 });
 document.getElementById('frames').innerHTML = html;
 Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode())]).then(() => { document.body.dataset.ready = '1'; });
