@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>شغف للحلويات</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root { --ink: #5b3a28; --soft: #8c6a54; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #666; font-family: 'El Messiri', serif; color: var(--ink); }
+  .f { position: relative; width: 1080px; height: 1920px; overflow: hidden; margin: 30px;
+    background: url(art/cloth.jpg) 0 0 / 1080px 1920px; }
+  /* window light from the top left over the cloth, darker towards the bottom right */
+  .light { position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(70% 45% at 12% 8%, rgba(255,250,240,.38), transparent 70%),
+      radial-gradient(90% 60% at 95% 100%, rgba(70,40,20,.16), transparent 70%); }
+  .dish { position: absolute; display: block;
+    filter: drop-shadow(1px 2px 1.5px rgba(45,25,12,.42))
+            drop-shadow(8px 16px 14px rgba(45,25,12,.26))
+            drop-shadow(14px 34px 48px rgba(45,25,12,.20)); }
+  .logo { position: absolute; }
+  .item { position: absolute; line-height: 1.2; }
+  .item .n { font-weight: 700; white-space: nowrap; }
+  .item .s { font-weight: 500; color: var(--soft); white-space: nowrap; margin-top: .15em; }
+  .item .p { font-weight: 700; white-space: nowrap; direction: ltr; unicode-bidi: isolate; margin-top: .12em; }
+  .foot { position: absolute; font-weight: 500; color: var(--soft); }
+  .grain { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5; }
+</style>
+</head>
+<body>
+<div id="frames"></div>
+<script>
+// d: dish [art, x, y, width, rotation]; t: [x, y, align, name, sub, price, size]
+const STORIES = {
+  'story-1': {
+    logo: [688, 196, 330],
+    dishes: [
+      ['basbousa', -170, 250, 520, -8],
+      ['honeycomb-mix', 580, 640, 540, 6],
+      ['honeycomb', -150, 1010, 480, 0],
+      ['cinnabon', 650, 1360, 500, 8],
+    ],
+    // x is the edge of the text that faces the dish
+    items: [
+      [440, 500, 'left', 'بسبوسة', 'البوكس', '8,000', 60],
+      [545, 830, 'right', 'خلية النحل الثلاثية', 'محشية بالصوصات', '8,000', 54],
+      [400, 1180, 'left', 'خلية النحل سادة', '', '5,000', 54],
+      [560, 1500, 'right', 'سينابون', 'البوكس 4 قطع', '6,000', 60],
+    ],
+    foot: [560, 1745, 'right'],
+  },
+  'story-2': {
+    logo: [728, 196, 290],
+    dishes: [
+      ['cake', 0, 150, 340, 0],
+      ['marble-cake', 600, 600, 480, 8],
+      ['cup-tiramisu', 412, 1130, 256, 0],
+      ['cup-lotus', 236, 1292, 256, 0],
+      ['cup-khashkhash', 600, 1298, 236, 0],
+      ['cup-chocolate', 410, 1450, 270, 0],
+    ],
+    items: [
+      [385, 480, 'left', 'كيكة', '', '8,000', 60],
+      [560, 790, 'right', 'كيكة الرخام', '', '10,000', 60],
+    ],
+    // the four cups share one price, each name sits by its cup
+    cups: { price: [712, 1160], names: [
+      [470, 1070, 'تراميسو'], [40, 1382, 'حلا اللوتس'], [850, 1390, 'حلا الخشخش'], [330, 1742, 'حلا بالشوكولا الدارك'],
+    ]},
+    foot: [540, 1815, 'center'],
+  },
+};
+
+function grain(seed) {
+  return `<svg class="grain" viewBox="0 0 1080 1920"><filter id="g${seed}"><feTurbulence type="fractalNoise"
+    baseFrequency="1.1" numOctaves="2" seed="${seed}"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .25  0 0 0 0 .18  0 0 0 .55 -.18"/></filter>
+    <rect width="1080" height="1920" filter="url(#g${seed})"/></svg>`;
+}
+
+function item([x, y, align, n, s, p, size]) {
+  const side = align === 'left' ? `left:${x}px;text-align:left` : `right:${1080 - x}px;text-align:right`;
+  return `<div class="item" style="top:${y}px;${side};font-size:${size}px">
+    <div class="n">${n}</div>${s ? `<div class="s" style="font-size:${size * .52}px">${s}</div>` : ''}
+    <div class="p" style="font-size:${size * .92}px">${p}</div></div>`;
+}
+
+function foot([x, y, align]) {
+  const pos = align === 'center' ? 'left:0;right:0;text-align:center' : `right:${1080 - x}px;text-align:right;line-height:1.35`;
+  const text = align === 'center' ? 'التوصيل داخل الفلوجة، وللطلب راسلونا بالخاص' : 'التوصيل داخل الفلوجة<br>وللطلب راسلونا بالخاص';
+  return `<div class="foot" style="top:${y}px;${pos};font-size:30px">${text}</div>`;
+}
+
+let html = '';
+Object.entries(STORIES).forEach(([id, st], i) => {
+  const [lx, ly, lw] = st.logo;
+  html += `<div class="f" id="${id}"><div class="light"></div>
+    ${st.dishes.map(([a, x, y, w, r]) => `<img class="dish" src="art/${a}.png" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${r}deg)">`).join('')}
+    <img class="logo" src="art/logo.png" style="left:${lx}px;top:${ly}px;width:${lw}px">
+    ${st.items.map(item).join('')}
+    ${st.cups ? `<div class="item" style="left:${st.cups.price[0]}px;top:${st.cups.price[1]}px;font-size:40px;text-align:right">
+        <div class="n">علب الحلا</div><div class="p" style="font-size:40px">3,000</div><div class="s" style="font-size:24px">للعلبة الوحدة</div></div>
+      ${st.cups.names.map(([x, y, n]) => `<div class="item" style="left:${x}px;top:${y}px;font-size:34px"><div class="n">${n}</div></div>`).join('')}` : ''}
+    ${foot(st.foot)}
+    ${grain(i + 4)}</div>`;
+});
+document.getElementById('frames').innerHTML = html;
+Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode())]).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
