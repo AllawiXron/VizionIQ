@@ -1,6 +1,6 @@
 ---
 name: viral-reel-playbook
-description: How Ali wants reels planned, scripted and edited, learned from five reference reels he sent (27 Oct). Use for any reel idea, reel script, hook, caption plan, content calendar, talking-head edit, "why didn't this reel work" review, or when ending music in a reel. Covers hook = question, hook > build-up > payoff, the content funnel (attention reels vs sales reels), interactive reels that convert, the talking-head breakdown edit, and three ways to end music.
+description: How Ali wants reels planned, scripted and edited, learned from seven reference reels he sent (27 and 29 Oct) and his fonts reel insights. Use for any reel idea, reel script, hook, caption plan, content calendar, talking-head edit, "why didn't this reel work" review, or when ending music in a reel. Covers hook = question, hook > build-up > payoff, the content funnel (attention reels vs sales reels), interactive reels that convert, the talking-head breakdown edit, three ways to end music, and the retention checklist every reel must pass before it ships (no answer in frame 1, rehook, end on the payoff).
 ---
 
 # Viral reel playbook
