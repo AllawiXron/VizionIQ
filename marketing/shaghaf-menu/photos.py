@@ -13,7 +13,6 @@ CROPS = [  # name, photo, box in pixels
     ('cinnabon',       '859144057', (0, 170, 1086, 1256)),
     ('cake',           '867588736', (0, 300, 1242, 1542)),
     ('marble-cake',    '862425682', (0, 575, 1290, 1865)),
-    ('cups',           '836468147', (0, 110, 1086, 1340)),  # the four cups whole, on her gold mat
 ]
 
 def grade(im):

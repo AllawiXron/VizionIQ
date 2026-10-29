@@ -65,15 +65,15 @@ const STORIES = {
     ],
   },
   'story-3': {
-    note: [540, 1540, 'center'],
+    note: [540, 1700, 'center'],
     head: true,
-    o: [['cups', 'print', 200, 560, 680, -1.2]],
-    // each name sits on the side of the photo where its cup is
+    // his cut-out of the four cups, laid on the table; each name sits next to its own cup
+    o: [['cups-cut.png', 'round', 70, 470, 940, 0]],
     t: [
-      [569, 478, 'center', 'تراميسو', '', '', 44],
-      [182, 850, 'right', 'حلا<br>اللوتس', '', '', 40],
-      [898, 910, 'left', 'حلا<br>الخشخش', '', '', 40],
-      [541, 1365, 'center', 'حلا بالشوكولا الدارك', '', '', 44],
+      [581, 395, 'center', 'تراميسو', '', '', 44],
+      [200, 1112, 'center', 'حلا اللوتس', '', '', 40],
+      [888, 1182, 'center', 'حلا الخشخش', '', '', 40],
+      [542, 1495, 'center', 'حلا بالشوكولا الدارك', '', '', 44],
     ],
   },
 };
@@ -86,7 +86,7 @@ function grain(seed) {
 
 function obj([img, kind, x, y, w, r, clip]) {
   return `<div class="obj ${kind}" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${r}deg)">
-    <img src="art/photos/${img}.jpg" style="${clip ? `clip-path:${clip}` : ''}"></div>`;
+    <img src="${img.endsWith('.png') ? 'art/' + img : `art/photos/${img}.jpg`}" style="${clip ? `clip-path:${clip}` : ''}"></div>`;
 }
 
 function txt([x, y, align, n, s, p, size]) {
