@@ -65,19 +65,15 @@ const STORIES = {
     ],
   },
   'story-3': {
-    note: [540, 1730, 'center'],
+    note: [540, 1540, 'center'],
     head: true,
-    o: [
-      ['cup-tiramisu', 'print', 580, 500, 440, 1.5],
-      ['cup-lotus', 'print', 60, 520, 440, -1.5],
-      ['cup-khashkhash', 'print', 580, 1090, 440, -1],
-      ['cup-chocolate', 'print', 60, 1110, 440, 1.5],
-    ],
+    o: [['cups', 'print', 200, 560, 680, -1.2]],
+    // each name sits on the side of the photo where its cup is
     t: [
-      [1020, 990, 'right', 'تراميسو', '', '', 46],
-      [60, 1010, 'left', 'حلا اللوتس', '', '', 46],
-      [1020, 1568, 'right', 'حلا الخشخش', '', '', 46],
-      [60, 1588, 'left', 'حلا بالشوكولا الدارك', '', '', 46],
+      [569, 478, 'center', 'تراميسو', '', '', 44],
+      [182, 850, 'right', 'حلا<br>اللوتس', '', '', 40],
+      [898, 910, 'left', 'حلا<br>الخشخش', '', '', 40],
+      [541, 1365, 'center', 'حلا بالشوكولا الدارك', '', '', 44],
     ],
   },
 };
@@ -94,7 +90,8 @@ function obj([img, kind, x, y, w, r, clip]) {
 }
 
 function txt([x, y, align, n, s, p, size]) {
-  const pos = align === 'right' ? `right:${1080 - x}px;text-align:right` : `left:${x}px;text-align:left`;
+  const pos = align === 'right' ? `right:${1080 - x}px;text-align:right`
+    : align === 'center' ? `left:${x - 300}px;width:600px;text-align:center` : `left:${x}px;text-align:left`;
   return `<div class="txt" style="${pos};top:${y}px;font-size:${size}px"><div class="n">${n}</div>
     ${s ? `<div class="s" style="font-size:${Math.max(28, size * .34)}px">${s}</div>` : ''}
     ${p ? `<div class="p" style="font-size:${size * .8}px">${p}</div>` : ''}</div>`;
