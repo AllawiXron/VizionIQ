@@ -5,7 +5,7 @@ description: How Ali wants reels planned, scripted and edited, learned from five
 
 # Viral reel playbook
 
-Ali sent five reels (27 Oct 2026) and asked that every session learns from them and applies them. Four are by a
+Ali sent five reels (27 Oct 2026) and two more on 29 Oct (references 6 and 7) and asked that every session learns from them and applies them. Four are by a
 clothing-brand owner who breaks down his own viral reels to camera; one is a sound-design tip. The per-reel notes,
 with timings, are in `references.md` next to this file. This page is the rules.
 
@@ -137,7 +137,10 @@ field with tiny font names, a hidden 20 % discount frame (4 frames at 9.7 s, "sc
 dark end card. It reached 1,273 views, 97 % non-followers, from the Reels tab. People who stayed liked it (saves
 1.6 % and shares 1.2 %, both above Ali's usual, 5 follows), but half had left by 0:02, average watch time was 4 s and
 6 % reached the end. Why:
+- The voice opened with an identity hook («عندك مطعم») but no pain point and no promise: it went straight into the
+  value («للوجبات السريعة اختار خط عريض وواضح»). Reference 7 order: identity, pain, hook, then value.
 - The first frame already showed the comparison (two fonts with their names), so there was no question to stay for.
+  The answer came in the first 2 s, which is exactly the mistake reference 6 describes.
 - The pause challenge was only a small orange line under the logo. The picture said "fonts lesson", not "game".
 - The hidden frame came at 9.7 s, after about 90 % of viewers had gone, so almost nobody played.
 - A lesson and a game in one reel fight each other: the lesson needs reading time, the game needs a short loop.

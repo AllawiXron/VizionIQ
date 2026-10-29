@@ -74,16 +74,40 @@ A run of other creators' viral reels, each above his head while he says the ques
   payoff." Each example's payoff shown next to its hook (the splash, the finished star painting).
 - Follow ask, end card.
 
-## 6. "Here's the graph" retention breakdown (26 s, @viewcci, sent 29 Oct)
+## 6. "If your graph looks like this" retention fix (26 s, @viewcci, sent 29 Oct)
 
-A creator at his desk explains the "How long people watched your reel" graph: a steep drop is lost people, a flat line
-is held people. The timeline of a held reel is a hook, a question or delay, a rehook, another delay, then the answer.
-Once the question is answered people leave, so the answer comes last and the reel ends on the payoff right away,
-shown on the graph as a flat line with a "Payoff" tag at the very end. The end is the IG glyph and handle over the
-dimmed graph.
+A creator at his desk, word-by-word captions at chest height, the IG glyph and handle as a watermark. Above his head:
+the real "How long people watched your reel" graph of a 67-view reel (steep drop) next to a 2.1M one (flat line),
+then the graph fills the screen and a green dot rides along the line as he talks; a red band marks where people
+left. Then a light grid board with a timeline bar that fills in coloured blocks as he names them (Hook, Question or
+Delay, Rehook, Question or Delay 2, Answer), and the graph again with a yellow "Payoff" tag at the very end. Ends on
+the IG glyph cycling to the gradient over the dimmed graph.
 
-## 7. "Your video only got 200 views" (57 s, filmed in a car at night, sent 29 Oct)
+What he says, word for word: "If your graph looks like this, here's the easiest way to get it looking like this. And
+90% of you get this completely wrong. Your hook was fine and you teased something that people wanted to know, but then
+you immediately answered it. They had no reason to stay. If you're going to answer your hook, first ask another
+question or delay the solution. Throw in a re-hook to remind them what they're watching for, or even give them a
+second reason to stay. And when you finally reveal the payoff, immediately end the video."
 
-One take, phone on the dashboard, plain white captions in the middle. Teaches the identity hook (name who the viewer
-is), "insert the knife" (their pain), a curiosity gap so they need more, the value, then the CTA; more identity
-hooks are left for later videos. Proof that a fast, funny talking head can carry a lesson with no edit tricks.
+Rules to take: the hook teases, the answer waits; between them a second question or a delay; a rehook that reminds
+them what they are waiting for or adds a second reason to stay; the reel ends the moment the payoff lands. The reel
+itself follows this: the "easiest way" is promised at 0:02 and only finished at 0:21, and it ends on that line.
+
+## 7. "Your reel only got 200 views" (57 s, one take in a car at night, sent 29 Oct)
+
+Phone on the dashboard, plain white captions in the middle, no overlays at all. A lesson told as an over-the-top
+rant, which is what makes it shareable (see section 6 of SKILL.md, a lesson as a joke).
+
+What he says: "Oh my reel only got 200 views, I must be shadowbanned. No! It's because you suck! Your video sucks and
+it's never been simpler. Identity hook, okay? Pain point, insert the knife, twist it. Okay, then you thrust in them
+with your super hook. Add some extra authority because you have some actual balls of steel. Then you get into the
+value. Not too much, don't overwhelm them, okay? Just a little bit of the special sauce. Create the curiosity gap in
+their mind so they need more, they crave it. Then after you provided the value, you reel them back in with the CTA,
+leave them begging for more, so then you can hit them with more identity hooks later on in other videos. It's never
+been simpler, follow for more."
+
+The order he teaches: identity hook (name who the viewer is) > pain point (say what hurts them, then make it worse)
+> the main hook (the promise) > authority (why listen to you: real proof) > a little value, not everything > a
+curiosity gap so they want more > the CTA > leave them wanting more, and save other identity hooks for other reels.
+His own opening uses it: identity (a creator with a 200-view reel), pain (shadowban fear), knife ("it's because you
+suck").
