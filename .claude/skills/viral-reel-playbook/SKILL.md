@@ -129,3 +129,20 @@ as he names it. A real screen capture of the timeline, not a drawn diagram.
 - **Reviewing a reel that flopped**: check, in this order, whether the first second raises a question, whether the
   build-up keeps it open, whether the payoff answers it with a feeling, and whether the reel was meant for eyes or
   for sales and judged by the right number.
+
+## 9. Lesson from the fonts reel (29 Oct): never open on the answer
+
+The «مطعم» fonts reel (12 s, the word set in Amiri and Lalezar on a brown field, then a dark end card) reached 1,273
+views, 97 % non-followers, from the Reels tab. People who stayed liked it (saves 1.6 % and shares 1.2 %, both above
+Ali's usual, 5 follows), but half had left by 0:02, average watch time was 4 s and 6 % reached the end. The first
+frame already showed the whole comparison, so the viewer had no question to stay for. Its 0 comments came from a
+fonts reel that never asked the viewer to pick one.
+
+Before any reel ships, check it against Ali's retention references (6 and 7 in `references.md`):
+- Frame 1 raises a question and does not show the answer. Show the problem first (a real sign or logo in the wrong
+  font, a word whose font gets changed); hide the comparison or the verdict until the end.
+- Hook in the first second, a delay that keeps the question open, a rehook around 0:04 to 0:06 (a new reveal or a
+  twist where the graph usually drops), and then the answer.
+- Cut the moment the payoff lands. No dead end card: the handle sits on the payoff frame, so the reel loops.
+- Type a viewer can read on a phone in under a second. Small labels such as font names under the word count as noise.
+- A design comparison is a comment game: "which one?", with the answer flashed on the last frame.

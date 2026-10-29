@@ -73,3 +73,17 @@ A run of other creators' viral reels, each above his head while he says the ques
   asking a question, they won't watch to get an answer. The question acts as the hook and the answer acts as the
   payoff." Each example's payoff shown next to its hook (the splash, the finished star painting).
 - Follow ask, end card.
+
+## 6. "Here's the graph" retention breakdown (26 s, @viewcci, sent 29 Oct)
+
+A creator at his desk explains the "How long people watched your reel" graph: a steep drop is lost people, a flat line
+is held people. The timeline of a held reel is a hook, a question or delay, a rehook, another delay, then the answer.
+Once the question is answered people leave, so the answer comes last and the reel ends on the payoff right away,
+shown on the graph as a flat line with a "Payoff" tag at the very end. The end is the IG glyph and handle over the
+dimmed graph.
+
+## 7. "Your video only got 200 views" (57 s, filmed in a car at night, sent 29 Oct)
+
+One take, phone on the dashboard, plain white captions in the middle. Teaches the identity hook (name who the viewer
+is), "insert the knife" (their pain), a curiosity gap so they need more, the value, then the CTA; more identity
+hooks are left for later videos. Proof that a fast, funny talking head can carry a lesson with no edit tricks.
