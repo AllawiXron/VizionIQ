@@ -8,7 +8,8 @@ Each story leads with one dessert big, with its name large beside it, and the ot
 wooden table (she found the plain cloth too plain, 29 Oct) under a window light from the top left, in the brown and beige of her logo, so her desserts
 glow on it the way they do in her own photos. Round plates and trays are her photos cut on the rim as a circle or an
 ellipse, so they lie on the table like dishes. The cups are my own cut-out of her cups photo (`art/cups-cut.png`),
-laid on the table with each name beside its cup. The box and the cakes are her photos as prints with a slight
+split into one cup each by `cups.py` and set in a zigzag down the story, each name in the space beside its cup; the
+lotus and the khashkhash, cut off in her photo, sit against the story edges. The box and the cakes are her photos as prints with a slight
 tilt. Every dish has three shadows, falling to the bottom right.
 
 Earlier versions: cut-outs on a light cloth (edges and mixed camera angles looked pasted) and a plain grid of squares
