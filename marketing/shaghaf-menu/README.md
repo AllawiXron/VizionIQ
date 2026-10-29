@@ -18,7 +18,7 @@ Prices (from her, 27 to 28 Oct): بسبوسة البوكس 8,000; خلية ال�
 sell) and the big trays (shown in her photos for looks only). Delivery is inside Fallujah only.
 
 Before she pays, send `out/preview/*.jpg`: 720 × 1280 copies with @allawi.psd tiled across the whole story, photos
-included, and «نسخة للمعاينة، تصميم علاوي» in the middle. Send the clean `out/shaghaf-menu-*` files after the money.
+included, and the line نسخة للمعاينة، تصميم علاوي in the middle. Send the clean `out/shaghaf-menu-*` files after the money.
 
 ## Files
 
