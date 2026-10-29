@@ -27,7 +27,7 @@
   .txt .p { font-weight: 700; color: var(--caramel); white-space: nowrap; direction: ltr; unicode-bidi: isolate; margin-top: .1em; }
   .txt .p small { font-size: .42em; font-weight: 500; color: var(--soft); margin-left: .3em; }
   .note { position: absolute; font-weight: 500; color: var(--soft); line-height: 1.4; font-size: 28px; }
-  /* preview copies only: a mark across the whole story, over the photos, so it can't be cropped off */
+  /* preview copies only */
   .mark { position: absolute; inset: 0; pointer-events: none; direction: ltr; }
   .grain { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .5; }
 </style>
@@ -107,16 +107,13 @@ function note([x, y, align]) {
 
 const PREVIEW = location.search.includes('preview');
 
-function mark() {
-  let rows = '';
-  for (let y = -300, i = 0; y < 2300; y += 230, i++) {
-    rows += `<text x="${i % 2 ? -140 : 0}" y="${y}" xml:space="preserve">${'@allawi.psd      '.repeat(6)}</text>`;
-  }
-  return `<svg class="mark" viewBox="0 0 1080 1920"><g transform="rotate(-28 540 960)" fill="#fff" fill-opacity=".2"
-      font-family="El Messiri" font-weight="700" font-size="46">${rows}</g>
-    <g font-family="El Messiri" font-weight="700" text-anchor="middle" fill="#fff">
-      <text x="540" y="990" font-size="120" fill-opacity=".3">@allawi.psd</text>
-      <text x="540" y="1060" font-size="40" fill-opacity=".55" style="direction:rtl;unicode-bidi:embed">نسخة للمعاينة، تصميم علاوي</text></g></svg>`;
+// one mark across the lead photo of each story: cropping it out means cropping the dessert
+const MARK = { 'story-1': [810, 790], 'story-2': [735, 720], 'story-3': [540, 1050] };
+
+function mark([x, y]) {
+  return `<svg class="mark" viewBox="0 0 1080 1920"><text x="${x}" y="${y}" transform="rotate(-16 ${x} ${y})"
+    text-anchor="middle" font-family="El Messiri" font-weight="700" font-size="84" fill="#fff" fill-opacity=".42"
+    style="paint-order:stroke" stroke="rgba(40,20,10,.25)" stroke-width="2">@allawi.psd</text></svg>`;
 }
 
 let html = '';
@@ -128,7 +125,7 @@ Object.entries(STORIES).forEach(([id, st], k) => {
       <div class="p" style="font-size:72px">3,000<small>للعلبة</small></div></div>` : ''}
     ${st.t.map(txt).join('')}
     ${note(st.note)}
-    ${grain(k + 4)}${PREVIEW ? mark() : ''}</div>`;
+    ${grain(k + 4)}${PREVIEW ? mark(MARK[id]) : ''}</div>`;
 });
 document.getElementById('frames').innerHTML = html;
 Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode())]).then(() => { document.body.dataset.ready = '1'; });
