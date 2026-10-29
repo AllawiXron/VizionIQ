@@ -60,6 +60,13 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   the winning frame, half "eyes" reels and half "sales" reels, and the breakdown edit (real proof above the head,
   word-by-word captions, hard cuts, moving watermark, dark end card). End music with a stem cut, a reverb tail or a
   riser and whoosh stack, never dead.
+- Retention, from the fonts reel insights and two more reference reels (29 Oct; playbook section 9, references 6
+  and 7). The «مطعم» fonts reel lost half its viewers by 0:02 (4 s average on 12.8 s, 6 % to the end) because frame 1
+  showed the answer, the hidden discount frame sat at 9.7 s where almost nobody was left, and 3 s of dark end card
+  closed it. Every reel before it ships: frame 1 asks and never answers; spoken order identity > pain > promise >
+  proof > a little value; a second question or delay, a rehook at 0:04 to 0:06, the answer last and the reel ends
+  on it (no end card, handle on the payoff frame); type readable at a glance; a comparison asks viewers to comment;
+  a pause challenge is its own 2 to 4 s reel, never bolted onto a lesson.
 - Meta ads (24 Oct): the user runs the Orange Coin reel as a Messages ad himself ($10/day, all Iraq, online sellers) and
   sends the Ads Manager report instead of connecting a connector. Read it, judge cost per conversation, the 3-second
   hook rate and how many DMs were real sellers, and suggest changes only after the first 4–5 days of learning.

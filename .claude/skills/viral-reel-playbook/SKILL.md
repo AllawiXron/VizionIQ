@@ -1,11 +1,11 @@
 ---
 name: viral-reel-playbook
-description: How Ali wants reels planned, scripted and edited, learned from five reference reels he sent (27 Oct). Use for any reel idea, reel script, hook, caption plan, content calendar, talking-head edit, "why didn't this reel work" review, or when ending music in a reel. Covers hook = question, hook > build-up > payoff, the content funnel (attention reels vs sales reels), interactive reels that convert, the talking-head breakdown edit, and three ways to end music.
+description: How Ali wants reels planned, scripted and edited, learned from seven reference reels he sent (27 and 29 Oct) and his fonts reel insights. Use for any reel idea, reel script, hook, caption plan, content calendar, talking-head edit, "why didn't this reel work" review, or when ending music in a reel. Covers hook = question, hook > build-up > payoff, the content funnel (attention reels vs sales reels), interactive reels that convert, the talking-head breakdown edit, three ways to end music, and the retention checklist every reel must pass before it ships (no answer in frame 1, rehook, end on the payoff).
 ---
 
 # Viral reel playbook
 
-Ali sent five reels (27 Oct 2026) and asked that every session learns from them and applies them. Four are by a
+Ali sent five reels (27 Oct 2026) and two more on 29 Oct (references 6 and 7) and asked that every session learns from them and applies them. Four are by a
 clothing-brand owner who breaks down his own viral reels to camera; one is a sound-design tip. The per-reel notes,
 with timings, are in `references.md` next to this file. This page is the rules.
 
@@ -129,3 +129,30 @@ as he names it. A real screen capture of the timeline, not a drawn diagram.
 - **Reviewing a reel that flopped**: check, in this order, whether the first second raises a question, whether the
   build-up keeps it open, whether the payoff answers it with a feeling, and whether the reel was meant for eyes or
   for sales and judged by the right number.
+
+## 9. Lesson from the fonts reel (29 Oct): never open on the answer
+
+The «مطعم» fonts reel (12.8 s): a voice-over lesson on which font fits which food place, the words on a flat brown
+field with tiny font names, a hidden 20 % discount frame (4 frames at 9.7 s, "screenshot it and DM"), then 3 s of a
+dark end card. It reached 1,273 views, 97 % non-followers, from the Reels tab. People who stayed liked it (saves
+1.6 % and shares 1.2 %, both above Ali's usual, 5 follows), but half had left by 0:02, average watch time was 4 s and
+6 % reached the end. Why:
+- The voice opened with an identity hook («عندك مطعم») but no pain point and no promise: it went straight into the
+  value («للوجبات السريعة اختار خط عريض وواضح»). Reference 7 order: identity, pain, hook, then value.
+- The first frame already showed the comparison (two fonts with their names), so there was no question to stay for.
+  The answer came in the first 2 s, which is exactly the mistake reference 6 describes.
+- The pause challenge was only a small orange line under the logo. The picture said "fonts lesson", not "game".
+- The hidden frame came at 9.7 s, after about 90 % of viewers had gone, so almost nobody played.
+- A lesson and a game in one reel fight each other: the lesson needs reading time, the game needs a short loop.
+- The 3 s dark end card was a quarter of the reel and killed the replay. Zero comments: nobody was asked anything.
+
+Before any reel ships, check it against Ali's retention references (6 and 7 in `references.md`):
+- Frame 1 raises a question and does not show the answer. Show the problem first (a real sign or logo in the wrong
+  font, a word whose font gets changed); hide the comparison or the verdict until the end.
+- Hook in the first second, a delay that keeps the question open, a rehook around 0:04 to 0:06 (a new reveal or a
+  twist where the graph usually drops), and then the answer.
+- Cut the moment the payoff lands. No dead end card: the handle sits on the payoff frame, so the reel loops.
+- Type a viewer can read on a phone in under a second. Small labels such as font names under the word count as noise.
+- A design comparison is a comment game: "which one?", with the answer flashed on the last frame.
+- A pause challenge is its own short reel (2 to 4 s): the challenge is the picture and the big headline, and the
+  hidden frame sits early enough that most viewers pass it. Never bolt one onto the end of a lesson.
