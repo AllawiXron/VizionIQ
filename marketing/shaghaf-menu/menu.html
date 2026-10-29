@@ -5,81 +5,113 @@
 <title>شغف للحلويات</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
-  :root { --ink: #5b3a28; --soft: #8c6a54; }
+  :root { --cream: #f1e3cc; --caramel: #d9a46a; --soft: #b8987c; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #666; font-family: 'El Messiri', serif; color: var(--ink); }
+  body { background: #444; font-family: 'El Messiri', serif; color: var(--cream); }
   .f { position: relative; width: 1080px; height: 1920px; overflow: hidden; margin: 30px;
-    background: url(art/cloth.jpg) 0 0 / 1080px 1920px; }
+    background: url(art/cloth-dark.jpg) 0 0 / 1080px 1920px; }
+  /* window light from the top left over the cloth, falling off to the corners */
   .light { position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(70% 45% at 85% 6%, rgba(255,250,240,.35), transparent 70%),
-                radial-gradient(90% 60% at 5% 100%, rgba(70,40,20,.13), transparent 70%); }
-  .logo { position: absolute; left: 50%; transform: translateX(-50%); }
-  .tile { position: absolute; }
-  .tile img { display: block; width: 100%;
-    box-shadow: 0 1px 2px rgba(45,25,12,.35), 0 10px 26px rgba(45,25,12,.16); }
-  .line { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; }
-  .n { font-weight: 700; white-space: nowrap; }
-  .p { font-weight: 700; white-space: nowrap; direction: ltr; }
-  .s { font-weight: 500; color: var(--soft); margin-top: 2px; }
-  .cups-head { position: absolute; display: flex; justify-content: space-between; align-items: baseline; }
-  .cup { position: absolute; text-align: center; }
-  .cup img { display: block; width: 100%; box-shadow: 0 1px 2px rgba(45,25,12,.35), 0 8px 20px rgba(45,25,12,.14); }
-  .cup .n { white-space: normal; margin-top: 14px; line-height: 1.25; }
-  .foot { position: absolute; left: 0; right: 0; text-align: center; font-weight: 500; color: var(--soft); }
-  .grain { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .45; }
+    background: radial-gradient(60% 40% at 30% 30%, rgba(255,200,150,.10), transparent 70%),
+                radial-gradient(55% 35% at 75% 75%, rgba(255,200,150,.06), transparent 70%),
+                radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(10,4,2,.45)); }
+  .obj { position: absolute; }
+  .obj.round { filter: drop-shadow(2px 3px 2px rgba(8,3,1,.65)) drop-shadow(14px 22px 22px rgba(8,3,1,.45))
+                       drop-shadow(26px 44px 60px rgba(8,3,1,.35)); }
+  .obj.round img { display: block; width: 100%; }
+  .obj.print img { display: block; width: 100%;
+    box-shadow: 1px 2px 2px rgba(8,3,1,.6), 12px 20px 26px rgba(8,3,1,.42), 24px 40px 70px rgba(8,3,1,.3); }
+  .txt { position: absolute; line-height: 1.15; }
+  .txt .n { font-weight: 700; white-space: nowrap; }
+  .txt .s { font-weight: 500; color: var(--soft); white-space: nowrap; margin-top: .25em; }
+  .txt .p { font-weight: 700; color: var(--caramel); white-space: nowrap; direction: ltr; unicode-bidi: isolate; margin-top: .1em; }
+  .txt .p small { font-size: .42em; font-weight: 500; color: var(--soft); margin-left: .3em; }
+  .note { position: absolute; font-weight: 500; color: var(--soft); line-height: 1.4; font-size: 28px; }
+  .grain { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .5; }
 </style>
 </head>
 <body>
 <div id="frames"></div>
 <script>
-// two columns, 470 wide, 40 apart; the first item of a row sits on the right (Arabic order)
-const COL = [560, 50], W = 470;
+// o: [photo, kind, x, y, width, rotation, clip]; t: [edge x, y, align, name, sub, price, size]
+// align is the side the text hangs from: 'right' ends at x (text to the left of a dish), 'left' starts at x
 const STORIES = {
-  'story-1': [
-    ['basbousa', 'بسبوسة', 'البوكس', '8,000'],
-    ['honeycomb-mix', 'خلية النحل الثلاثية', 'محشية بالصوصات', '8,000'],
-    ['honeycomb', 'خلية النحل سادة', '', '5,000'],
-    ['cinnabon', 'سينابون', 'البوكس 4 قطع', '6,000'],
-  ],
-  'story-2': [
-    ['cake', 'كيكة', '', '8,000'],
-    ['marble-cake', 'كيكة الرخام', '', '10,000'],
-  ],
+  'story-1': {
+    note: [60, 210, 'left'],
+    o: [
+      ['basbousa', 'round', 430, 400, 760, -6, 'circle(48.6% at 50% 50.3%)'],
+      ['honeycomb-mix', 'round', 50, 1100, 470, 4, 'ellipse(48% 44.3% at 50.4% 49.8%)'],
+      ['honeycomb', 'round', 600, 1440, 460, 0, 'circle(48.6% at 50% 50%)'],
+    ],
+    t: [
+      [420, 600, 'right', 'بسبوسة', 'البوكس', '8,000', 96],
+      [575, 1200, 'left', 'خلية النحل الثلاثية', 'محشية بالصوصات', '8,000', 56],
+      [555, 1620, 'right', 'خلية النحل سادة', '', '5,000', 56],
+    ],
+  },
+  'story-2': {
+    note: [60, 210, 'left'],
+    o: [
+      ['cinnabon', 'print', 440, 420, 590, -3],
+      ['cake', 'print', 60, 1110, 440, 3],
+      ['marble-cake', 'print', 600, 1420, 410, -2.5],
+    ],
+    t: [
+      [405, 610, 'right', 'سينابون', 'البوكس 4 قطع', '6,000', 92],
+      [560, 1250, 'left', 'كيكة', '', '8,000', 76],
+      [565, 1640, 'right', 'كيكة الرخام', '', '10,000', 64],
+    ],
+  },
+  'story-3': {
+    note: [540, 1730, 'center'],
+    head: true,
+    o: [
+      ['cup-tiramisu', 'print', 575, 520, 445, 2],
+      ['cup-lotus', 'print', 60, 545, 445, -2.5],
+      ['cup-khashkhash', 'print', 575, 1100, 445, -1.5],
+      ['cup-chocolate', 'print', 60, 1120, 445, 2],
+    ],
+    t: [
+      [1020, 990, 'right', 'تراميسو', '', '', 46],
+      [60, 1010, 'left', 'حلا اللوتس', '', '', 46],
+      [1020, 1568, 'right', 'حلا الخشخش', '', '', 46],
+      [60, 1588, 'left', 'حلا بالشوكولا الدارك', '', '', 46],
+    ],
+  },
 };
-const CUPS = [['cup-tiramisu', 'تراميسو'], ['cup-lotus', 'حلا اللوتس'], ['cup-khashkhash', 'حلا الخشخش'],
-  ['cup-chocolate', 'حلا بالشوكولا الدارك']];
-const TOP = 440, ROW = 640;
 
 function grain(seed) {
   return `<svg class="grain" viewBox="0 0 1080 1920"><filter id="g${seed}"><feTurbulence type="fractalNoise"
-    baseFrequency="1.1" numOctaves="2" seed="${seed}"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .25  0 0 0 0 .18  0 0 0 .55 -.18"/></filter>
-    <rect width="1080" height="1920" filter="url(#g${seed})"/></svg>`;
+    baseFrequency="1.05" numOctaves="2" seed="${seed}"/><feColorMatrix type="saturate" values="0"/></filter>
+    <rect width="1080" height="1920" filter="url(#g${seed})" opacity=".35"/></svg>`;
 }
 
-function tile([img, n, s, p], i) {
-  const x = COL[i % 2], y = TOP + Math.floor(i / 2) * ROW;
-  return `<div class="tile" style="left:${x}px;top:${y}px;width:${W}px">
-    <img src="art/photos/${img}.jpg">
-    <div class="line"><span class="n" style="font-size:${n.length > 14 ? 38 : 44}px">${n}</span><span class="p" style="font-size:44px">${p}</span></div>
-    ${s ? `<div class="s" style="font-size:26px">${s}</div>` : ''}</div>`;
+function obj([img, kind, x, y, w, r, clip]) {
+  return `<div class="obj ${kind}" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${r}deg)">
+    <img src="art/photos/${img}.jpg" style="${clip ? `clip-path:${clip}` : ''}"></div>`;
 }
 
-function cups(y) {
-  const w = 230, gap = 20;
-  return `<div class="cups-head" style="left:50px;width:980px;top:${y}px">
-      <span class="n" style="font-size:44px">علب الحلا</span>
-      <span class="s" style="font-size:28px">العلبة <span class="p" style="font-size:44px;color:var(--ink)">3,000</span></span></div>
-    ${CUPS.map(([img, n], i) => `<div class="cup" style="right:${50 + i * (w + gap)}px;top:${y + 100}px;width:${w}px">
-      <img src="art/photos/${img}.jpg"><div class="n" style="font-size:30px">${n}</div></div>`).join('')}`;
+function txt([x, y, align, n, s, p, size]) {
+  const pos = align === 'right' ? `right:${1080 - x}px;text-align:right` : `left:${x}px;text-align:left`;
+  return `<div class="txt" style="${pos};top:${y}px;font-size:${size}px"><div class="n">${n}</div>
+    ${s ? `<div class="s" style="font-size:${Math.max(28, size * .34)}px">${s}</div>` : ''}
+    ${p ? `<div class="p" style="font-size:${size * .8}px">${p}</div>` : ''}</div>`;
+}
+
+function note([x, y, align]) {
+  const pos = align === 'center' ? 'left:0;right:0;text-align:center' : `left:${x}px;text-align:left`;
+  return `<div class="note" style="${pos};top:${y}px">التوصيل داخل الفلوجة<br>وللطلب راسلونا بالخاص</div>`;
 }
 
 let html = '';
-Object.entries(STORIES).forEach(([id, items], k) => {
+Object.entries(STORIES).forEach(([id, st], k) => {
   html += `<div class="f" id="${id}"><div class="light"></div>
-    <img class="logo" src="art/logo.png" style="top:170px;width:270px">
-    ${items.map(tile).join('')}
-    ${id === 'story-2' ? cups(TOP + ROW + 10) : ''}
-    <div class="foot" style="top:1735px;font-size:30px">التوصيل داخل الفلوجة، وللطلب راسلونا بالخاص</div>
+    ${st.o.map(obj).join('')}
+    <img style="position:absolute;right:60px;top:165px;width:250px" src="art/logo-cream.png">
+    ${st.head ? `<div class="txt" style="left:60px;top:200px;font-size:96px;text-align:left"><div class="n">علب الحلا</div>
+      <div class="p" style="font-size:72px">3,000<small>للعلبة</small></div></div>` : ''}
+    ${st.t.map(txt).join('')}
+    ${note(st.note)}
     ${grain(k + 4)}</div>`;
 });
 document.getElementById('frames').innerHTML = html;

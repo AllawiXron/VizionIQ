@@ -12,4 +12,8 @@ a[:, int(a.shape[1] * 0.84):] = 0  # wall shadow streaks to the right of the log
 alpha = Image.fromarray(a.astype('uint8')).filter(ImageFilter.GaussianBlur(0.8))
 ink = Image.new('RGB', im.size, (98, 64, 44))
 ink.putalpha(alpha)
-ink.crop(alpha.point(lambda v: 255 if v > 40 else 0).getbbox()).save(sys.argv[2])
+box = alpha.point(lambda v: 255 if v > 40 else 0).getbbox()
+ink.crop(box).save(sys.argv[2])
+cream = Image.new('RGB', im.size, (240, 226, 204))  # for the dark cloth
+cream.putalpha(alpha)
+cream.crop(box).save(sys.argv[2].replace('.png', '-cream.png'))
