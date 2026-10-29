@@ -107,13 +107,17 @@ function note([x, y, align]) {
 
 const PREVIEW = location.search.includes('preview');
 
-// one mark across the lead photo of each story: cropping it out means cropping the dessert
-const MARK = { 'story-1': [810, 790], 'story-2': [735, 720], 'story-3': [540, 1050] };
+// preview mark: a large one in the middle, a few faint small ones behind, spaced loosely and not in a strict grid
+const SMALL = [[-60, 120], [520, 40], [180, 520], [760, 430], [-120, 900], [470, 980], [880, 1180], [120, 1420],
+  [640, 1500], [-40, 1880], [420, 1940], [900, 1760]];
 
-function mark([x, y]) {
-  return `<svg class="mark" viewBox="0 0 1080 1920"><text x="${x}" y="${y}" transform="rotate(-16 ${x} ${y})"
-    text-anchor="middle" font-family="El Messiri" font-weight="700" font-size="84" fill="#fff" fill-opacity=".42"
-    style="paint-order:stroke" stroke="rgba(40,20,10,.25)" stroke-width="2">@allawi.psd</text></svg>`;
+function mark() {
+  const small = SMALL.map(([x, y]) => `<text x="${x}" y="${y}">@allawi.psd</text>`).join('');
+  return `<svg class="mark" viewBox="0 0 1080 1920">
+    <g transform="rotate(-24 540 960)" fill="#fff" fill-opacity=".13" font-family="El Messiri" font-weight="700" font-size="40">${small}</g>
+    <g font-family="El Messiri" font-weight="700" text-anchor="middle" fill="#fff">
+      <text x="540" y="990" font-size="120" fill-opacity=".3">@allawi.psd</text>
+      <text x="540" y="1060" font-size="40" fill-opacity=".55" style="direction:rtl;unicode-bidi:embed">نسخة للمعاينة، تصميم علاوي</text></g></svg>`;
 }
 
 let html = '';
@@ -125,7 +129,7 @@ Object.entries(STORIES).forEach(([id, st], k) => {
       <div class="p" style="font-size:72px">3,000<small>للعلبة</small></div></div>` : ''}
     ${st.t.map(txt).join('')}
     ${note(st.note)}
-    ${grain(k + 4)}${PREVIEW ? mark(MARK[id]) : ''}</div>`;
+    ${grain(k + 4)}${PREVIEW ? mark() : ''}</div>`;
 });
 document.getElementById('frames').innerHTML = html;
 Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode())]).then(() => { document.body.dataset.ready = '1'; });

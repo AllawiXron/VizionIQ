@@ -101,9 +101,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   Sound for this style (25 Oct): Apple-like UI sound from his two Drive packs, not the low air whooshes and thuds: the
   Apple keyboard click on presses, soft pops on cards, an airy swish on whips, faint ticks on counters, a clean riser,
   one chime for a win (`marketing/iraq-speed-reel/v7/mix.py`). This replaces the 24 Oct "no clicks" rule for such reels.
-- Client previews before payment (29 Oct): send smaller copies (720 px wide JPG) with one @allawi.psd mark laid across
-  the lead photo of each piece; the clean files go after the money. A mark tiled over everything looked like stock
-  watermarks and less like his own work (`marketing/shaghaf-menu`, `node render.cjs` writes both).
+- Client previews before payment (29 Oct): send smaller copies (720 px wide JPG) with a large @allawi.psd in the middle,
+  «نسخة للمعاينة، تصميم علاوي» under it and about a dozen faint small marks behind, loosely placed; the clean files go
+  after the money. A dense tiled mark was too much, one mark alone too little (`marketing/shaghaf-menu`, `node render.cjs`).
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Before making props or images, ask whether to use AI image elements (the user generates them) or 3D (Blender);
   3D renders cost a lot of usage (20 Oct).

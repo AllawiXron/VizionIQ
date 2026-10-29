@@ -17,8 +17,8 @@ Prices (from her, 27 to 28 Oct): بسبوسة البوكس 8,000; خلية ال�
 البوكس 4 قطع 6,000; كيكة 8,000; كيكة الرخام 10,000; the cups 3,000 each. She left out حلا بالفستق الحلبي (it doesn't
 sell) and the big trays (shown in her photos for looks only). Delivery is inside Fallujah only.
 
-Before she pays, send `out/preview/*.jpg`: 720 × 1280 copies with one @allawi.psd mark laid across the lead photo
-of each story. Send the clean `out/shaghaf-menu-*` files after the money.
+Before she pays, send `out/preview/*.jpg`: 720 × 1280 copies with a large @allawi.psd in the middle, the line نسخة للمعاينة، تصميم علاوي
+under it, and a few faint small marks behind. Send the clean `out/shaghaf-menu-*` files after the money.
 
 ## Files
 
