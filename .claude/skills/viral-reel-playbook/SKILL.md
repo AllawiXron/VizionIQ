@@ -132,11 +132,16 @@ as he names it. A real screen capture of the timeline, not a drawn diagram.
 
 ## 9. Lesson from the fonts reel (29 Oct): never open on the answer
 
-The «مطعم» fonts reel (12 s, the word set in Amiri and Lalezar on a brown field, then a dark end card) reached 1,273
-views, 97 % non-followers, from the Reels tab. People who stayed liked it (saves 1.6 % and shares 1.2 %, both above
-Ali's usual, 5 follows), but half had left by 0:02, average watch time was 4 s and 6 % reached the end. The first
-frame already showed the whole comparison, so the viewer had no question to stay for. Its 0 comments came from a
-fonts reel that never asked the viewer to pick one.
+The «مطعم» fonts reel (12.8 s): a voice-over lesson on which font fits which food place, the words on a flat brown
+field with tiny font names, a hidden 20 % discount frame (4 frames at 9.7 s, "screenshot it and DM"), then 3 s of a
+dark end card. It reached 1,273 views, 97 % non-followers, from the Reels tab. People who stayed liked it (saves
+1.6 % and shares 1.2 %, both above Ali's usual, 5 follows), but half had left by 0:02, average watch time was 4 s and
+6 % reached the end. Why:
+- The first frame already showed the comparison (two fonts with their names), so there was no question to stay for.
+- The pause challenge was only a small orange line under the logo. The picture said "fonts lesson", not "game".
+- The hidden frame came at 9.7 s, after about 90 % of viewers had gone, so almost nobody played.
+- A lesson and a game in one reel fight each other: the lesson needs reading time, the game needs a short loop.
+- The 3 s dark end card was a quarter of the reel and killed the replay. Zero comments: nobody was asked anything.
 
 Before any reel ships, check it against Ali's retention references (6 and 7 in `references.md`):
 - Frame 1 raises a question and does not show the answer. Show the problem first (a real sign or logo in the wrong
@@ -146,3 +151,5 @@ Before any reel ships, check it against Ali's retention references (6 and 7 in `
 - Cut the moment the payoff lands. No dead end card: the handle sits on the payoff frame, so the reel loops.
 - Type a viewer can read on a phone in under a second. Small labels such as font names under the word count as noise.
 - A design comparison is a comment game: "which one?", with the answer flashed on the last frame.
+- A pause challenge is its own short reel (2 to 4 s): the challenge is the picture and the big headline, and the
+  hidden frame sits early enough that most viewers pass it. Never bolt one onto the end of a lesson.
