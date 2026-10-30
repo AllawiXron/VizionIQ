@@ -7,7 +7,7 @@
 <style>
   /* The identity carousel, 13 slides of 1080x1350 (render.cjs prints them at 1.5x, then grade.py grades them).
      Set like a brand book: the mark first (cover, on blue, a close crop), then the idea, the build, the colours and the
-     type, then the mark in use (Blender renders in renders/, photo scenes in plates/ from scenes.html). In the
+     type, then the mark in use (Blender renders in renders/; the idea slide's traced gate is plates/ from scenes.html). In the
      identity's own type: Markazi Text for headings, IBM Plex Sans Arabic for text. */
   :root { --blue: #17357d; --night: #0c1b40; --gold: #c99a2e; --clay: #ece2d0; --paper: #f7f3ec; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -115,10 +115,10 @@ S.push(['', `${meta('الخطوط')}
     <p class="lat" style="font-size:22px;opacity:.6;margin-top:10px;text-align:right">Digital Economy and Governance  0123456789</p>
   </div>`]);
 
-// 8-13. the mark in use
-for (const [img, pos] of [[`renders/foil${P}.png`, ''], [`renders/stationery${P}.png`, 'background-size:125%;background-position:20% 0'],
-  ['plates/hand.png', ''], ['plates/facade-a.png', ''], ['plates/podium.png', ''], ['plates/lobby.png', '']])
-  S.push(['', '', `background-image:url(${img});${pos}`]);
+// 8-13. the mark in use: Blender renders (shots.py)
+for (const [n, pos] of [['foil', ''], ['letterhead', ''], ['stationery', 'background-size:125%;background-position:20% 0'],
+  ['badge', ''], ['phone', ''], ['sign', 'background-size:130%;background-position:17% 16%']])
+  S.push(['', '', `background-image:url(renders/${n}${P}.png);${pos}`]);
 
 S.forEach(([cls, html, style = '']) => document.write(`<section class="s ${cls}" style="${style}">${html}</section>`));
 </script>
