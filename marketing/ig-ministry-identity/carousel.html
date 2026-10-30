@@ -3,49 +3,124 @@
 <head>
 <meta charset="utf-8">
 <title>بوابة عشتار</title>
+<link rel="stylesheet" href="../ministry-identity/fonts/fonts.css">
 <style>
-  /* The identity carousel, 10 slides of 1080x1350 (render.cjs prints them at 1.5x, then grade.py grades them).
-     Each slide is one photo: the real gate (Wikimedia Commons), a scene with the gate placed in it (scenes.html ->
-     plates/) or a Blender render (shots.py -> renders/), with its words in that photo's empty space. */
-  @font-face { font-family: 'DG Sahabah'; src: url(../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight: 400; font-display: block; }
+  /* The identity carousel, 13 slides of 1080x1350 (render.cjs prints them at 1.5x, then grade.py grades them).
+     Set like a brand book: the mark first (cover, on blue, a close crop), then the idea, the build, the colours and the
+     type, then the mark in use (Blender renders in renders/, photo scenes in plates/ from scenes.html). In the
+     identity's own type: Markazi Text for headings, IBM Plex Sans Arabic for text. */
+  :root { --blue: #17357d; --night: #0c1b40; --gold: #c99a2e; --clay: #ece2d0; --paper: #f7f3ec; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #333; }
-  .s { width: 1080px; height: 1350px; position: relative; overflow: hidden; margin: 0 0 30px; background: #bdb7ad center / cover no-repeat;
-    font: 400 36px/1.32 'DG Sahabah', sans-serif; font-synthesis: none; }
-  .t { position: absolute; }
-  .t h1 { font: 400 98px/1.2 'DG Sahabah'; }
-  .t h2 { font: 400 76px/1.22 'DG Sahabah'; }
-  .t p { margin-top: 14px; opacity: .86; }
-  .ink { color: #13203f; } .paper { color: #f3ece0; }
-  .paper { text-shadow: 0 2px 18px rgba(4, 10, 30, .45); }
-  .burn { position: absolute; inset: 0; pointer-events: none; }
-  .hex { direction: ltr; unicode-bidi: isolate; font-size: .9em; }
+  body { background: #444; }
+  .s { width: 1080px; height: 1350px; position: relative; overflow: hidden; margin: 0 0 30px; background: var(--paper) center / cover no-repeat;
+    color: var(--night); font: 400 25px/1.75 'IBM Plex Sans Arabic', 'IBM Plex Sans', sans-serif; }
+  .s > svg { position: absolute; left: 0; top: 0; }
+  .meta { position: absolute; top: 58px; right: 72px; left: 72px; display: flex; justify-content: space-between; font-size: 19px; opacity: .62; }
+  .dark { background-color: var(--night); color: var(--clay); } .blue { background-color: var(--blue); color: var(--clay); }
+  h2 { font: 600 62px/1.25 'Markazi Text'; }
+  .lat { direction: ltr; unicode-bidi: isolate; font-family: 'IBM Plex Sans', sans-serif; }
+
+  /* lockups (as in ../ministry-identity/identity.html) */
+  .lock { display: flex; align-items: center; gap: 40px; white-space: nowrap; }
+  .lock .rule { width: 2px; align-self: stretch; background: currentColor; opacity: .25; }
+  .t1 { font: 400 25px 'Markazi Text'; opacity: .8; }
+  .t2 { font: 600 50px/1.25 'Markazi Text'; margin: 2px 0 12px; }
+  .t3 { font: 500 13.5px 'IBM Plex Sans'; direction: ltr; text-align: right; letter-spacing: .8px; opacity: .72; }
+  .cover .t2 { font-size: 58px; } .cover .t1 { font-size: 28px; } .cover .t3 { font-size: 15.5px; }
+  .stack { display: flex; flex-direction: column; align-items: center; text-align: center; white-space: nowrap; }
+  .stack .t1 { margin-top: 46px; } .stack .t3 { text-align: center; }
+
+  .band { position: absolute; left: 0; right: 0; }
+  .band b { font: 600 52px/1.1 'Markazi Text'; display: block; }
+  .band span { font-size: 20px; opacity: .8; }
 </style>
 </head>
 <body>
+<script src="../ministry-identity/marks.js"></script>
 <script>
+const C = { blue: '#17357d', night: '#0c1b40', gold: '#c99a2e', clay: '#ece2d0', paper: '#f7f3ec' };
+const NAME = ['جمهورية العراق', 'وزارة الاقتصاد الرقمي والحوكمة', 'MINISTRY OF DIGITAL ECONOMY AND GOVERNANCE'];
+const names = () => `<div class="t1">${NAME[0]}</div><div class="t2">${NAME[1]}</div><div class="t3">${NAME[2]}</div>`;
+const meta = (a, b = 'مقترح هوية بصرية') => `<div class="meta"><span>${a}</span><span>${b}</span></div>`;
+const field = (w, h, def, id, op) => `<svg width="${w}" height="${h}"><defs>${def}</defs><rect width="${w}" height="${h}" fill="url(#${id})" opacity="${op}"/></svg>`;
 const P = location.search.includes('preview') ? '-preview' : '';
-const r = (n) => `renders/${n}${P}.png`, pl = (n) => `plates/${n}.png`;
-// a soft photographic darkening behind light type: [x%, y%, strength]
-const burn = (x, y, k) => `<div class="burn" style="background:radial-gradient(70% 45% at ${x}% ${y}%,rgba(3,8,24,${k}),rgba(3,8,24,0) 70%)"></div>`;
-const S = [
-  // [image, text html, position css, colour class, extra layers]
-  [pl('aurochs'), `<h1>شنو علاقة بوابة<br>عمرها ٢٦٠٠ سنة<br>بوزارة رقمية؟</h1>`,
-    'right:76px;top:70px', 'paper', burn(70, 8, .55)],
-  [pl('gate-front'), `<h2 style="font-size:62px">أخذت من البوابة شكلها بس</h2><p style="margin-top:8px">برجين بينهم جدار، والمدخل بأقواسه</p>`, 'right:76px;bottom:30px', 'ink'],
-  [pl('dragon'), `<h2>واللون من طابوقها</h2><p>والذهبي <span class="hex">#C99A2E</span> من الحيوانات</p>`,
-    'right:76px;top:70px', 'paper', burn(75, 10, .5) + `<div class="t paper" style="right:76px;top:1176px"><p style="margin:0;font-size:44px;opacity:1">أزرق بابل</p><p style="margin-top:2px"><span class="hex">#17357D</span> من الطابوق المزجج</p></div>`],
-  [r('grid'), `<h2>رسمته على شبكة</h2><p>البرج ١١ مربع والجدار ٢٣<br>والشرفات درجات متساوية تنقرا مثل البكسل</p>`, 'right:80px;top:100px', 'ink'],
-  [r('foil'), `<h2>القوسين الذهبيين</h2><p>أقواس المدخل نفسها، وبنفس الوقت<br>موجتين اتصال طالعة من البوابة</p>`, 'right:80px;bottom:110px', 'ink'],
-  [pl('facade-a'), `<h2>على واجهة الوزارة</h2><p>حروف برونز مضاءة من وراها</p>`, 'left:64px;top:54px;text-align:right', 'paper'],
-  [pl('podium'), `<h2>بالمؤتمرات</h2><p>محفور بخشب المنصة<br>ومطعم نحاس</p>`, 'left:64px;top:118px;text-align:right;width:380px', 'paper', burn(18, 14, .35)],
-  [pl('hand'), `<h2>شاشة البدء<br>بالتطبيق</h2><p>الأزرق نفسه، ونقشة الأقواس<br>خفيفة وراه</p>`, 'left:64px;bottom:120px;text-align:right', 'ink'],
-  [pl('lobby'), `<h2>جدار الاستقبال</h2><p>طابوق أزرق مزجج مثل البوابة<br>والشعار نحاس واقف عليه</p>`, 'left:64px;bottom:345px;text-align:right', 'paper'],
-  [r('macro'), `<h2>الوزارة بوابة العراق الرقمية</h2><p style="margin-top:22px">مقترح قدمته للمسابقة، مو الهوية الرسمية للوزارة</p><p style="margin-top:6px;font-size:44px;opacity:1">علي احمد شهاب</p><p style="direction:ltr;text-align:right;margin-top:2px">allawi.psd</p>`,
-    'right:80px;bottom:90px', 'ink'],
-];
-S.forEach(([img, html, pos, col, extra = '']) => document.write(
-  `<section class="s" style="background-image:url(${img})">${extra}<div class="t ${col}" style="${pos}">${html}</div></section>`));
+const S = [];
+
+// 1. cover: the horizontal lockup on paper
+S.push(['', `${meta('وزارة الاقتصاد الرقمي والحوكمة')}
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-56%)" class="lock cover">${markSVG('gate', { ink: C.blue, accent: C.gold }, 196)}<div class="rule"></div><div>${names()}</div></div>
+  <div style="position:absolute;bottom:64px;right:72px;left:72px;display:flex;justify-content:space-between;font-size:19px;opacity:.62">
+    <span>مقترح قدمته للمسابقة، وليس الهوية الرسمية للوزارة</span><span class="lat">allawi.psd</span></div>`]);
+
+// 2. the vertical lockup on Babylon blue, the arch pattern faint behind it
+S.push(['blue', `${field(1080, 1350, archTile(C.clay, 1, 180), 'arch-ece2d0', .06)}
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-52%)" class="stack">${markSVG('gate', { ink: C.clay, accent: C.gold }, 330)}${names()}</div>`]);
+
+// 3. close on the wall and the arches, cropped by the slide
+S.push(['dark', `<svg width="1080" height="1350" viewBox="66 84 168 210" preserveAspectRatio="xMidYMid slice">${gate({ ink: C.clay, accent: C.gold })}</svg>`]);
+
+// 4. the idea: the real gate with the parts the mark keeps traced in gold, then the reasoning
+S.push(['', `<div style="position:absolute;inset:0 0 520px;background:url(plates/gate-front.png) 50% 34% / 1080px auto"></div>
+  <div style="position:absolute;right:72px;left:72px;bottom:70px">
+    <div style="font-size:19px;opacity:.62;margin-bottom:14px">الفكرة الرئيسية</div>
+    <h2>بوابة عشتار، بوابة العراق الرقمية</h2>
+    <p style="margin-top:18px">بوابة عشتار أشهر مدخل في تاريخ العراق، والوزارة اليوم مدخل الدولة إلى الاقتصاد الرقمي ومنها تصل الخدمات إلى المواطن. أخذت من البوابة شكلها فقط: برجان بينهما جدار، ومدخل يحيط به قوسان ذهبيان هما أقواس البوابة وموجات الاتصال في الوقت نفسه. والشرفات المدرجة فوق الأبراج تقرأ كالبكسل.</p>
+  </div>`]);
+
+// 5. construction: the mark on its unit grid
+{
+  const L = (x1, y1, x2, y2, col = C.clay, op = .32, w = .5) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-opacity="${op}" stroke-width="${w}"/>`;
+  let g = '';
+  for (let x = 0; x <= 300; x += GATE.U) g += L(x, 0, x, 300, C.clay, .08, .35);
+  for (let y = 0; y <= 300; y += GATE.U) g += L(0, y, 300, y, C.clay, .08, .35);
+  g += gate({ ink: C.blue, accent: C.gold });
+  for (const x of [...GATE.towers.flat(), ...GATE.wall]) g += L(x, 4, x, 296);
+  for (const y of [GATE.tTop, GATE.wTop, GATE.G]) g += L(4, y, 296, y);
+  g += L(4, GATE.oy, 296, GATE.oy, C.gold, .9, .6);
+  for (const r of [GATE.r0, ...GATE.rings, GATE.wall[1] - GATE.cx]) g += `<circle cx="${GATE.cx}" cy="${GATE.oy}" r="${r}" fill="none" stroke="${C.clay}" stroke-opacity=".35" stroke-width=".5"/>`;
+  g += `<circle cx="${GATE.cx}" cy="${GATE.oy}" r="2.4" fill="${C.gold}"/>`;
+  S.push(['dark', `${meta('بناء الشعار')}
+    <svg width="840" height="840" viewBox="0 0 300 300" style="left:120px;top:150px">${g}</svg>
+    <div style="position:absolute;right:72px;left:72px;bottom:74px;display:flex;justify-content:space-between;align-items:flex-end;gap:60px">
+      <h2 style="white-space:nowrap">شبكة واحدة</h2>
+      <p style="max-width:560px;opacity:.85">البرج ١١ وحدة والجدار ٢٣، وكل شرفة ثلاث درجات متساوية. المدخل والقوسان من مركز واحد، وكل الأشرطة بعرض واحد ونصف وحدة.</p>
+    </div>`]);
+}
+
+// 6. colours: four bands, each standing on a row of merlons in its own colour
+{
+  const band = (top, h, bg, fg, name, hex, rgb, use) => `<div class="band" style="top:${top}px;height:${h}px;background:${bg};color:${fg}">
+      <svg width="1080" height="34" style="position:absolute;left:0;top:-30px">${crenRow(1080, bg, 38, 34)}</svg>
+      <div style="position:absolute;right:72px;bottom:${Math.min(56, h / 4)}px"><b>${name}</b><span>${use}</span></div>
+      <div style="position:absolute;left:72px;bottom:${Math.min(56, h / 4)}px;text-align:left" class="lat"><span style="font-size:22px;opacity:.9">${hex}</span><br><span style="font-size:17px">RGB ${rgb}</span></div></div>`;
+  S.push(['', `<div class="band" style="top:0;height:520px;background:${C.blue};color:${C.clay}">
+      <div class="meta" style="opacity:.7"><span>الألوان</span><span>مقترح هوية بصرية</span></div>
+      <div style="position:absolute;right:72px;bottom:56px"><b>أزرق بابل</b><span>من الطابوق المزجج في البوابة، اللون الأساسي</span></div>
+      <div style="position:absolute;left:72px;bottom:56px;text-align:left" class="lat"><span style="font-size:22px;opacity:.9">#17357D</span><br><span style="font-size:17px">RGB 23 53 125</span></div></div>
+    ${band(520, 330, C.night, C.clay, 'حبر الليل', '#0C1B40', '12 27 64', 'للنصوص والخلفيات الداكنة')}
+    ${band(850, 330, C.clay, C.night, 'الطين', '#ECE2D0', '236 226 208', 'خلفية دافئة للمطبوعات')}
+    ${band(1180, 170, C.gold, C.night, 'ذهب عشتار', '#C99A2E', '201 154 46', 'للقوسين والإبراز فقط')}`]);
+}
+
+// 7. type
+S.push(['', `${meta('الخطوط')}
+  <div style="position:absolute;right:66px;top:150px;font:600 330px/1.1 'Markazi Text';color:${C.blue}">بوابة</div>
+  <div style="position:absolute;right:72px;top:590px;left:72px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid rgba(12,27,64,.14);padding-top:22px">
+      <span style="font:600 40px 'Markazi Text'" class="lat">Markazi Text</span><span style="font-size:19px;opacity:.62">العناوين واسم الوزارة</span></div>
+    <div style="font:500 44px/1.5 'Markazi Text';margin-top:10px;white-space:nowrap;color:${C.blue}">ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي</div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid rgba(12,27,64,.14);padding-top:22px;margin-top:46px">
+      <span style="font:600 30px 'IBM Plex Sans'" class="lat">IBM Plex Sans Arabic</span><span style="font-size:19px;opacity:.62">النصوص والشاشات</span></div>
+    <p style="font-size:30px;line-height:1.8;margin-top:16px">خدمات حكومية أسرع وأوضح، وبيانات مفتوحة، وبيئة تدعم الابتكار وريادة الأعمال في العراق.</p>
+    <p class="lat" style="font-size:22px;opacity:.6;margin-top:10px;text-align:right">Digital Economy and Governance  0123456789</p>
+  </div>`]);
+
+// 8-13. the mark in use
+for (const [img, pos] of [[`renders/foil${P}.png`, ''], [`renders/stationery${P}.png`, 'background-size:125%;background-position:20% 0'],
+  ['plates/hand.png', ''], ['plates/facade-a.png', ''], ['plates/podium.png', ''], ['plates/lobby.png', '']])
+  S.push(['', '', `background-image:url(${img});${pos}`]);
+
+S.forEach(([cls, html, style = '']) => document.write(`<section class="s ${cls}" style="${style}">${html}</section>`));
 </script>
 </body>
 </html>

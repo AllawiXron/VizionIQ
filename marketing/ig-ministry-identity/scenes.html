@@ -168,28 +168,6 @@ const F = [];
     </svg>` });
 }
 
-// 6. The aurochs close-up, as it is.
-F.push({ img: 'aurochs', crop: 192, w: 1920, h: 1920, html: '' });
-
-// 7. A dragon from the gate, with one glazed blue brick pulled out towards the camera: an empty dark socket where it
-// sat, the brick a little bigger and lower, its top face showing, and three shadows on the wall under it.
-{
-  const [x0, y0, x1, y1] = [2083, 2176, 2650, 2312], bw = x1 - x0, bh = y1 - y0;
-  const crop = (dx, dy, extra = '') => `background:url(photos/dragon.jpg) ${-x0 + dx}px ${-y0 + dy}px / 3840px 2559px;${extra}`;
-  F.push({ img: 'dragon', crop: 1500, w: 3840, h: 2559, html: `
-    <div style="left:${x0}px;top:${y0}px;width:${bw}px;height:${bh}px;background:linear-gradient(#050505 0%,#151310 18%,#25211c 34%,#2e2924 60%,#3b352d 100%);
-      box-shadow:inset 0 14px 16px rgba(0,0,0,.85),inset 10px 0 14px rgba(0,0,0,.6),inset -10px 0 14px rgba(0,0,0,.6)"></div>
-    <div style="left:${x0 - 40}px;top:${y0 + 90}px;width:${bw + 80}px;height:${bh + 40}px;background:#000;filter:blur(60px);opacity:.32"></div>
-    <div style="left:${x0 - 4}px;top:${y0 + 74}px;width:${bw + 26}px;height:${bh + 4}px;background:#000;filter:blur(22px);opacity:.55"></div>
-    <div style="left:${x0 - 10}px;top:${y0 + 56}px;width:${bw + 22}px;height:${bh}px;background:#000;filter:blur(3px);opacity:.5"></div>
-    <div style="left:${x0 - 14}px;top:${y0 + 30}px;width:${bw + 28}px;height:18px;${crop(-14, -30)};filter:brightness(1.7) saturate(.7) blur(.6px);
-      clip-path:polygon(2% 0,98% 0,100% 100%,0 100%)"></div>
-    <div style="left:${x0 - 14}px;top:${y0 + 46}px;width:${bw + 28}px;height:${bh + 8}px;overflow:hidden">
-      <div style="position:absolute;left:0;top:0;width:${bw}px;height:${bh}px;${crop(0, 0)};transform:scale(${(bw + 28) / bw},${(bh + 8) / bh});transform-origin:0 0;filter:brightness(1.14) saturate(1.1);
-        box-shadow:inset 0 3px 2px rgba(255,238,205,.32),inset 0 -4px 6px rgba(0,0,0,.4)"></div>
-    </div>` });
-}
-
 F.forEach(({ img, crop, html, w = 2400, h = 1792 }) => document.write(`<section class="f" data-name="${img}">
   <div class="ph" style="width:${w}px;height:${h}px;background-image:url(photos/${img}.jpg);transform:scale(${1350 / h}) translateX(${-crop}px)">${html}</div></section>`));
 </script>

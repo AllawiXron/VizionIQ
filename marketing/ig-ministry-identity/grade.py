@@ -14,6 +14,6 @@ for f in sorted(Path(sys.argv[1]).glob('slide-*.png')):
     hi, lo = np.clip((lum - 0.55) / 0.45, 0, 1)[..., None], np.clip((0.45 - lum) / 0.45, 0, 1)[..., None]
     a = a + hi * np.array([0.018, 0.008, -0.014]) + lo * np.array([-0.012, 0.0, 0.016])
     g = rng.normal(0, 1, lum.shape).astype(np.float32)
-    g = (g + np.roll(g, 1, 0) + np.roll(g, 1, 1)) / 3 * 0.0425
+    g = (g + np.roll(g, 1, 0) + np.roll(g, 1, 1)) / 3 * 0.03
     a = np.clip(a + g[..., None] * (0.35 + 0.65 * (1 - np.abs(lum - 0.5) * 2))[..., None], 0, 1)
     Image.fromarray((a * 255 + 0.5).astype(np.uint8)).save(f)
