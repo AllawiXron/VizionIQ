@@ -1,1 +1,4 @@
 renders/*-preview.png
+plates/*.png
+!plates/screen.png
+!plates/hand-mask.png

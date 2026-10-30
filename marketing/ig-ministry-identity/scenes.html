@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Scenes</title>
+<link rel="stylesheet" href="../ministry-identity/fonts/fonts.css">
+<style>
+  /* The four photo scenes with the gate placed in them, one 1080x1350 frame each (scenes.cjs prints them at 1.5x
+     to plates/). Positions are in the photo's own pixels (2400x1792); each frame shows a 4:5 crop of it. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #222; }
+  .f { width: 1080px; height: 1350px; position: relative; overflow: hidden; margin: 0 0 30px; }
+  .ph { position: absolute; left: 0; top: 0; width: 2400px; height: 1792px; transform-origin: 0 0; background: center / 100% 100% no-repeat; }
+  .ph > * { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  svg text { font-family: 'Markazi Text'; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- the mark, from ../ministry-identity/out/svg/gate-blue.svg; the arches are holes in the gate -->
+    <path id="gate" fill-rule="evenodd" d="M12 282 L12 30 L18 30 L18 24 L24 24 L24 18 L30 18 L30 24 L36 24 L36 30 L42 30 L42 36 L48 36 L48 30 L54 30 L54 24 L60 24 L60 18 L66 18 L66 24 L72 24 L72 30 L78 30 L78 282 Z M222 282 L222 30 L228 30 L228 24 L234 24 L234 18 L240 18 L240 24 L246 24 L246 30 L252 30 L252 36 L258 36 L258 30 L264 30 L264 24 L270 24 L270 18 L276 18 L276 24 L282 24 L282 30 L288 30 L288 282 Z M81 282 L81 108 L87 108 L87 102 L93 102 L93 96 L99 96 L99 102 L105 102 L105 108 L111 108 L111 114 L117 114 L117 108 L123 108 L123 102 L129 102 L129 96 L135 96 L135 102 L141 102 L141 108 L147 108 L147 114 L153 114 L153 108 L159 108 L159 102 L165 102 L165 96 L171 96 L171 102 L177 102 L177 108 L183 108 L183 114 L189 114 L189 108 L195 108 L195 102 L201 102 L201 96 L207 96 L207 102 L213 102 L213 108 L219 108 L219 282 Z M90 282 V192 A60 60 0 0 1 210 192 V282 Z M99 282 V192 A51 51 0 0 1 201 192 V282 H192 V192 A42 42 0 0 0 108 192 V282 Z M117 282 V192 A33 33 0 0 1 183 192 V282 H174 V192 A24 24 0 0 0 126 192 V282 Z"/>
+    <path id="arches" d="M90 282 V192 A60 60 0 0 1 210 192 V282 H201 V192 A51 51 0 0 0 99 192 V282 Z M108 282 V192 A42 42 0 0 1 192 192 V282 H183 V192 A33 33 0 0 0 117 192 V282 Z"/>
+  </defs>
+</svg>
+<script>
+// Rectangle (0,0)-(w,h) onto a quad [TL, TR, BR, BL] as a CSS matrix3d.
+function quad(w, h, q) {
+  const src = [[0, 0], [w, 0], [w, h], [0, h]], A = [], b = [];
+  for (let i = 0; i < 4; i++) {
+    const [x, y] = src[i], [u, v] = q[i];
+    A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]); b.push(u);
+    A.push([0, 0, 0, x, y, 1, -v * x, -v * y]); b.push(v);
+  }
+  for (let c = 0; c < 8; c++) {
+    let p = c; for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+    [A[c], A[p]] = [A[p], A[c]]; [b[c], b[p]] = [b[p], b[c]];
+    for (let r = 0; r < 8; r++) if (r !== c) {
+      const k = A[r][c] / A[c][c];
+      for (let j = c; j < 8; j++) A[r][j] -= k * A[c][j]; b[r] -= k * b[c];
+    }
+  }
+  const [a, bb, c, d, e, f, g, hh] = b.map((v, i) => v / A[i][i]);
+  return `matrix3d(${a},${d},0,${g},${bb},${e},0,${hh},0,0,1,0,${c},${f},0,1)`;
+}
+
+// Metal for the signs. light: SVG azimuth of the light (270 = from above, 90 = from below).
+const metal = (id, light, tone, gain = 1) => `
+  <linearGradient id="${id}-brass" gradientUnits="userSpaceOnUse" x1="12" y1="18" x2="288" y2="282">
+    <stop offset="0" stop-color="#f1d690"/><stop offset=".3" stop-color="#b78838"/><stop offset=".52" stop-color="#e6c573"/>
+    <stop offset=".78" stop-color="#8c6226"/><stop offset="1" stop-color="#cfa758"/></linearGradient>
+  <linearGradient id="${id}-bronze" gradientUnits="userSpaceOnUse" x1="12" y1="18" x2="200" y2="282">
+    <stop offset="0" stop-color="#3a2b1d"/><stop offset=".55" stop-color="#211810"/><stop offset="1" stop-color="#30241a"/></linearGradient>
+  <filter id="${id}-bevel" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.003 1.4" numOctaves="3" seed="4" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .9 0" result="brush"/>
+    <feComposite in="brush" in2="SourceGraphic" operator="in" result="brushIn"/>
+    <feBlend in="brushIn" in2="SourceGraphic" mode="overlay" result="g0"/>
+    <feComposite in="g0" in2="SourceGraphic" operator="in" result="g"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"/>
+    <feSpecularLighting in="b" surfaceScale="2.6" specularConstant="1.1" specularExponent="18" lighting-color="${tone}" result="s">
+      <feDistantLight azimuth="${light}" elevation="38"/></feSpecularLighting>
+    <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
+    <feComposite in="g" in2="s2" operator="arithmetic" k2="${gain}" k3="${.75 * gain}"/>
+  </filter>`;
+
+const blur = (id, sd) => `<filter id="${id}" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${sd}"/></filter>`;
+
+// The sign as one group: the mark at (x, y) with width w, then the name under it.
+function sign(id, { x, y, w, gate, arches, lines, size, gap, lead, weight = 600 }) {
+  const s = w / 276, h = 264 * s, cx = x + w / 2;
+  const t = lines.map((l, i) => `<text x="${cx}" y="${y + h + gap + i * lead}" font-size="${size}" font-weight="${weight}" text-anchor="middle" fill="${gate}">${l}</text>`).join('');
+  return `<g${id ? ` id="${id}"` : ''}><g transform="translate(${x - 12 * s},${y - 18 * s}) scale(${s})"><use href="#gate" fill="${gate}"/><use href="#arches" fill="${arches}"/></g>${t}</g>`;
+}
+
+// Shadow copies of the sign in its own plane, drawn as real copies (text inside <use> can lay out before the font
+// arrives). mk(fill) draws the sign in one flat colour; list holds [dx, dy, blur, opacity].
+const shadows = (id, mk, list, col = '#000') => list.map(([dx, dy, sd, o], i) =>
+  `${blur(`${id}-sh${i}`, sd)}<g transform="translate(${dx},${dy})" filter="url(#${id}-sh${i})" opacity="${o}">${mk(col)}</g>`).join('');
+
+const NAME = ['وزارة الاقتصاد الرقمي', 'والحوكمة'];
+const F = [];
+
+// 1. Ministry front at dusk: halo-lit bronze letters on the big limestone wall, uplit from the ground.
+{
+  const W = 1350, H = 1000, sh = [[0, -3, 2.5, .55], [0, -12, 14, .26], [0, -8, 46, .18]];
+  const a = { x: 495, y: 230, w: 360, lines: NAME, size: 60, gap: 96, lead: 72 };
+  const g = sign('fs', { ...a, gate: 'url(#fa-bronze)', arches: 'url(#fa-brass)' });
+  const mk = (c) => sign('', { ...a, gate: c, arches: c });
+  F.push({ img: 'facade-a', crop: 150, html: `
+    <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="transform:${quad(W, H, [[509, 382], [1230, 142], [1250, 1567], [391, 1555]])}">
+      <defs>${metal('fa', 90, '#ffe2b0')}
+        <linearGradient id="fa-wash" gradientUnits="userSpaceOnUse" x1="0" y1="230" x2="0" y2="640"><stop offset="0" stop-color="#000" stop-opacity=".25"/><stop offset=".7" stop-color="#ffb866" stop-opacity="0"/><stop offset="1" stop-color="#ffb866" stop-opacity=".22"/></linearGradient>
+        <mask id="fa-m">${mk('#fff')}</mask></defs>
+      ${shadows('fh', mk, [[0, 0, 40, .22], [0, 0, 13, .5]], '#ffc878')}
+      ${shadows('fs', mk, sh)}
+      <g filter="url(#fa-bevel)">${g}</g>
+      <rect width="${W}" height="${H}" fill="url(#fa-wash)" mask="url(#fa-m)"/>
+    </svg>` });
+}
+
+// 2. Press room: the gate and the name inlaid in brass in the walnut front of the podium, stage light from above left.
+{
+  const W = 655, H = 824;
+  const inlay = `<filter id="pd-inset" x="-5%" y="-5%" width="110%" height="110%">
+      <feOffset in="SourceAlpha" dx="-.8" dy="1.6" result="o"/><feGaussianBlur in="o" stdDeviation=".9" result="ob"/>
+      <feComposite in="SourceAlpha" in2="ob" operator="out" result="edge"/>
+      <feFlood flood-color="#1a0f06" flood-opacity=".85"/><feComposite in2="edge" operator="in" result="dark"/>
+      <feOffset in="SourceAlpha" dx=".6" dy="-1.1" result="o2"/><feGaussianBlur in="o2" stdDeviation=".6" result="ob2"/>
+      <feComposite in="SourceAlpha" in2="ob2" operator="out" result="lip"/>
+      <feFlood flood-color="#ffe6b0" flood-opacity=".35"/><feComposite in2="lip" operator="in" result="light"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge></filter>`;
+  const g = sign('ps', { x: 200, y: 120, w: 255, gate: 'url(#pd-brass)', arches: 'url(#pd-brass)', lines: NAME, size: 50, gap: 78, lead: 58 });
+  F.push({ img: 'podium', crop: 800, html: `
+    <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="left:1395px;top:812px">
+      <defs>${metal('pd', 225, '#fff0d0', .62)}${inlay}
+        <linearGradient id="pd-fall" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient>
+        <mask id="pd-m"><g fill="#fff">${sign('psm', { x: 200, y: 120, w: 255, gate: '#fff', arches: '#fff', lines: NAME, size: 50, gap: 78, lead: 58 })}</g></mask></defs>
+      <g filter="url(#pd-inset)"><g filter="url(#pd-bevel)">${g}</g></g>
+      <rect width="${W}" height="${H}" fill="url(#pd-fall)" mask="url(#pd-m)"/>
+    </svg>` });
+}
+
+// 3. Phone: the app's start screen on the glass, under the fingers.
+{
+  const W = 1024, H = 2211;
+  F.push({ img: 'hand', crop: 500, html: `
+    <div style="width:2400px;height:1792px;-webkit-mask:url(plates/hand-mask.png) 0 0/2400px 1792px no-repeat;mask:url(plates/hand-mask.png) 0 0/2400px 1792px no-repeat">
+      <div style="position:absolute;left:0;top:0;width:${W}px;height:${H}px;transform-origin:0 0;transform:${quad(W, H, [[1201, 357], [1576, 334], [1766, 1211], [1395, 1258]])};
+        border-radius:118px;overflow:hidden;background:url(plates/screen.png) 0 0/100% 100%;filter:brightness(.9) contrast(1.03)">
+        <div style="position:absolute;inset:0;background:linear-gradient(118deg,rgba(255,240,220,.16) 0%,rgba(255,240,220,.05) 38%,rgba(255,255,255,0) 52%)"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(0,0,0,.35)"></div>
+      </div>
+    </div>` });
+}
+
+// 4. Lobby: the gate and the name in brushed brass, standing off the glazed blue brick, washed from the cove above.
+{
+  const W = 1800, H = 1360, sh = [[0, 4, 2.5, .75], [0, 30, 14, .62], [0, 18, 50, .3]];
+  const args = { x: 700, y: 200, w: 400, lines: ['وزارة الاقتصاد الرقمي والحوكمة'], size: 62, gap: 96, lead: 0 };
+  const g = sign('ls', { ...args, gate: 'url(#lb-brass)', arches: 'url(#lb-polish)' });
+  const mk = (c) => sign('', { ...args, gate: c, arches: c });
+  F.push({ img: 'lobby', crop: 483, html: `
+    <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="left:300px;top:70px">
+      <defs>${metal('lb', 270, '#fff3dc', .78)}
+        <linearGradient id="lb-polish" gradientUnits="userSpaceOnUse" x1="90" y1="132" x2="210" y2="282"><stop offset="0" stop-color="#fff2c4"/><stop offset=".45" stop-color="#e2b95c"/><stop offset="1" stop-color="#fbe6a6"/></linearGradient>
+        <linearGradient id="lb-wash" x1="0" y1="0" x2="0" y2="1"><stop offset=".1" stop-color="#fff" stop-opacity=".22"/><stop offset=".3" stop-color="#000" stop-opacity=".1"/><stop offset=".55" stop-color="#000" stop-opacity=".35"/></linearGradient>
+        <mask id="lb-m"><g fill="#fff">${sign('lsm', { ...args, gate: '#fff', arches: '#fff' })}</g></mask></defs>
+      ${shadows('ls', mk, sh, '#01040b')}
+      <g filter="url(#lb-bevel)">${g}</g>
+      <rect width="${W}" height="${H}" fill="url(#lb-wash)" mask="url(#lb-m)"/>
+    </svg>` });
+}
+
+// 5. The real gate (Pergamon Museum), with the parts the mark keeps traced over it in gold: the two towers, the
+// wall between them and the bands of the arch. Measured on photos/gate-front.jpg (3840x2739).
+{
+  const cx = 1840, cy = 1515, G = 2390;
+  const arc = (r) => `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`;
+  const d = [`M 500 ${G} V 400 H 1340 V ${G}`, `M 3300 530 H 2400 V ${G}`, `M 1390 ${G} V 1030 H 2220 V ${G}`,
+    `M ${cx - 210} ${G} V ${cy} A 210 210 0 0 1 ${cx + 210} ${cy} V ${G}`, arc(268), arc(325), `M 500 ${G} H 3300`].join(' ');
+  F.push({ img: 'gate-front', crop: 750, w: 3840, h: 2739, html: `
+    <svg width="3840" height="2739" viewBox="0 0 3840 2739">
+      <defs>${blur('gl', 5)}</defs>
+      <rect width="3840" height="2739" fill="#08102a" opacity=".22"/>
+      <path d="${d}" fill="none" stroke="#000" stroke-width="10" opacity=".45" filter="url(#gl)" transform="translate(0,4)"/>
+      <path d="${d}" fill="none" stroke="#e8c46a" stroke-width="6.5" stroke-linejoin="miter"/>
+    </svg>` });
+}
+
+// 6. The aurochs close-up, as it is.
+F.push({ img: 'aurochs', crop: 192, w: 1920, h: 1920, html: '' });
+
+// 7. A dragon from the gate, with one glazed blue brick pulled out towards the camera: an empty dark socket where it
+// sat, the brick a little bigger and lower, its top face showing, and three shadows on the wall under it.
+{
+  const [x0, y0, x1, y1] = [2083, 2176, 2650, 2312], bw = x1 - x0, bh = y1 - y0;
+  const crop = (dx, dy, extra = '') => `background:url(photos/dragon.jpg) ${-x0 + dx}px ${-y0 + dy}px / 3840px 2559px;${extra}`;
+  F.push({ img: 'dragon', crop: 1500, w: 3840, h: 2559, html: `
+    <div style="left:${x0}px;top:${y0}px;width:${bw}px;height:${bh}px;background:linear-gradient(#050505 0%,#151310 18%,#25211c 34%,#2e2924 60%,#3b352d 100%);
+      box-shadow:inset 0 14px 16px rgba(0,0,0,.85),inset 10px 0 14px rgba(0,0,0,.6),inset -10px 0 14px rgba(0,0,0,.6)"></div>
+    <div style="left:${x0 - 40}px;top:${y0 + 90}px;width:${bw + 80}px;height:${bh + 40}px;background:#000;filter:blur(60px);opacity:.32"></div>
+    <div style="left:${x0 - 4}px;top:${y0 + 74}px;width:${bw + 26}px;height:${bh + 4}px;background:#000;filter:blur(22px);opacity:.55"></div>
+    <div style="left:${x0 - 10}px;top:${y0 + 56}px;width:${bw + 22}px;height:${bh}px;background:#000;filter:blur(3px);opacity:.5"></div>
+    <div style="left:${x0 - 14}px;top:${y0 + 30}px;width:${bw + 28}px;height:18px;${crop(-14, -30)};filter:brightness(1.7) saturate(.7) blur(.6px);
+      clip-path:polygon(2% 0,98% 0,100% 100%,0 100%)"></div>
+    <div style="left:${x0 - 14}px;top:${y0 + 46}px;width:${bw + 28}px;height:${bh + 8}px;overflow:hidden">
+      <div style="position:absolute;left:0;top:0;width:${bw}px;height:${bh}px;${crop(0, 0)};transform:scale(${(bw + 28) / bw},${(bh + 8) / bh});transform-origin:0 0;filter:brightness(1.14) saturate(1.1);
+        box-shadow:inset 0 3px 2px rgba(255,238,205,.32),inset 0 -4px 6px rgba(0,0,0,.4)"></div>
+    </div>` });
+}
+
+F.forEach(({ img, crop, html, w = 2400, h = 1792 }) => document.write(`<section class="f" data-name="${img}">
+  <div class="ph" style="width:${w}px;height:${h}px;background-image:url(photos/${img}.jpg);transform:scale(${1350 / h}) translateX(${-crop}px)">${html}</div></section>`));
+</script>
+</body>
+</html>

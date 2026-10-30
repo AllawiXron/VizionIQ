@@ -4,40 +4,48 @@
 <meta charset="utf-8">
 <title>بوابة عشتار</title>
 <style>
-  /* The identity carousel, 10 slides of 1080x1350 (render.cjs prints them at 1.5x). Each slide is one render from
-     shots.py, with its words placed in that photo's empty space. carousel.html?preview uses the quick renders. */
+  /* The identity carousel, 10 slides of 1080x1350 (render.cjs prints them at 1.5x, then grade.py grades them).
+     Each slide is one photo: the real gate (Wikimedia Commons), a scene with the gate placed in it (scenes.html ->
+     plates/) or a Blender render (shots.py -> renders/), with its words in that photo's empty space. */
   @font-face { font-family: 'DG Sahabah'; src: url(../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight: 400; font-display: block; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #333; }
   .s { width: 1080px; height: 1350px; position: relative; overflow: hidden; margin: 0 0 30px; background: #bdb7ad center / cover no-repeat;
-    font: 400 38px/1.35 'DG Sahabah', sans-serif; font-synthesis: none; }
-  .s::after { content: ""; position: absolute; inset: 0; background: url(grain.png); mix-blend-mode: soft-light; opacity: .55; pointer-events: none; }
+    font: 400 36px/1.32 'DG Sahabah', sans-serif; font-synthesis: none; }
   .t { position: absolute; }
-  .t h1 { font: 400 104px/1.18 'DG Sahabah'; }
-  .t h2 { font: 400 84px/1.2 'DG Sahabah'; }
-  .t p { margin-top: 18px; opacity: .82; }
+  .t h1 { font: 400 98px/1.2 'DG Sahabah'; }
+  .t h2 { font: 400 76px/1.22 'DG Sahabah'; }
+  .t p { margin-top: 14px; opacity: .86; }
   .ink { color: #13203f; } .paper { color: #f3ece0; }
+  .paper { text-shadow: 0 2px 18px rgba(4, 10, 30, .45); }
+  .burn { position: absolute; inset: 0; pointer-events: none; }
+  .hex { direction: ltr; unicode-bidi: isolate; font-size: .9em; }
 </style>
 </head>
 <body>
 <script>
 const P = location.search.includes('preview') ? '-preview' : '';
-const r = (n) => `renders/${n}${P}.png`;
+const r = (n) => `renders/${n}${P}.png`, pl = (n) => `plates/${n}.png`;
+// a soft photographic darkening behind light type: [x%, y%, strength]
+const burn = (x, y, k) => `<div class="burn" style="background:radial-gradient(70% 45% at ${x}% ${y}%,rgba(3,8,24,${k}),rgba(3,8,24,0) 70%)"></div>`;
 const S = [
-  // [image, text html, position css, colour class, background position]
-  [r('sign'), `<h1>بوابة عشتار<br>بوابة العراق الرقمية</h1><p>مقترح هوية بصرية قدمته لمسابقة<br>وزارة الاقتصاد الرقمي والحوكمة</p>`, 'right:84px;bottom:150px', 'ink'],
-  [r('foil'), `<h2>البوابة صارت شعار</h2><p>البرجين والجدار من بوابة عشتار، والقوسين<br>الذهبيين حول المدخل موجات اتصال</p>`, 'right:80px;bottom:110px', 'ink'],
-  [r('grid'), `<h2>رسمته على شبكة</h2><p>البرج ١١ مربع والجدار ٢٣<br>وكل الشرفات بنفس القياس</p>`, 'right:80px;top:110px', 'ink'],
-  [r('swatches'), `<h2>أربع ألوان<br>من البوابة نفسها</h2><p>أزرق بابل من الطابوق المزجج<br>والذهبي للقوسين والإبراز وبس</p>`, 'right:80px;top:90px', 'ink'],
-  [r('letterhead'), `<h2>الكتب الرسمية</h2><p>الشعار فوق، وشريط الشرفات يحد الورقة</p>`, 'right:84px;bottom:120px', 'ink'],
-  [r('stationery'), `<h2>الورق والظرف<br>وبطاقة العمل</h2>`, 'left:72px;bottom:90px;text-align:left', 'ink'],
-  [r('badge'), `<h2>هوية الموظف</h2><p>تتعلق بشريط أزرق عليه الشرفات</p>`, 'right:80px;bottom:110px', 'ink'],
-  [r('phone'), `<h2>شاشة البدء بالتطبيق</h2>`, 'right:80px;bottom:84px', 'ink'],
-  ['../ministry-identity/out/fig/web-1.jpg', `<h2>الموقع</h2><p>تبدي بالبحث عن الخدمة<br>وبعدها الخدمات الأكثر طلب</p>`, 'right:80px;bottom:120px', 'ink', '0% 50%'],
-  [r('macro'), `<p style="opacity:.9;margin:0">مقترح قدمته للمسابقة، مو الهوية الرسمية للوزارة</p><h2 style="margin-top:10px">علي احمد شهاب</h2><p style="direction:ltr;text-align:right;margin-top:6px">allawi.psd</p>`, 'right:80px;bottom:96px', 'ink'],
+  // [image, text html, position css, colour class, extra layers]
+  [pl('aurochs'), `<h1>شنو علاقة بوابة<br>عمرها ٢٦٠٠ سنة<br>بوزارة رقمية؟</h1>`,
+    'right:76px;top:70px', 'paper', burn(70, 8, .55)],
+  [pl('gate-front'), `<h2 style="font-size:62px">أخذت من البوابة شكلها بس</h2><p style="margin-top:8px">برجين بينهم جدار، والمدخل بأقواسه</p>`, 'right:76px;bottom:30px', 'ink'],
+  [pl('dragon'), `<h2>واللون من طابوقها</h2><p>والذهبي <span class="hex">#C99A2E</span> من الحيوانات</p>`,
+    'right:76px;top:70px', 'paper', burn(75, 10, .5) + `<div class="t paper" style="right:76px;top:1176px"><p style="margin:0;font-size:44px;opacity:1">أزرق بابل</p><p style="margin-top:2px"><span class="hex">#17357D</span> من الطابوق المزجج</p></div>`],
+  [r('grid'), `<h2>رسمته على شبكة</h2><p>البرج ١١ مربع والجدار ٢٣<br>والشرفات درجات متساوية تنقرا مثل البكسل</p>`, 'right:80px;top:100px', 'ink'],
+  [r('foil'), `<h2>القوسين الذهبيين</h2><p>أقواس المدخل نفسها، وبنفس الوقت<br>موجتين اتصال طالعة من البوابة</p>`, 'right:80px;bottom:110px', 'ink'],
+  [pl('facade-a'), `<h2>على واجهة الوزارة</h2><p>حروف برونز مضاءة من وراها</p>`, 'left:64px;top:54px;text-align:right', 'paper'],
+  [pl('podium'), `<h2>بالمؤتمرات</h2><p>محفور بخشب المنصة<br>ومطعم نحاس</p>`, 'left:64px;top:118px;text-align:right;width:380px', 'paper', burn(18, 14, .35)],
+  [pl('hand'), `<h2>شاشة البدء<br>بالتطبيق</h2><p>الأزرق نفسه، ونقشة الأقواس<br>خفيفة وراه</p>`, 'left:64px;bottom:120px;text-align:right', 'ink'],
+  [pl('lobby'), `<h2>جدار الاستقبال</h2><p>طابوق أزرق مزجج مثل البوابة<br>والشعار نحاس واقف عليه</p>`, 'left:64px;bottom:345px;text-align:right', 'paper'],
+  [r('macro'), `<h2>الوزارة بوابة العراق الرقمية</h2><p style="margin-top:22px">مقترح قدمته للمسابقة، مو الهوية الرسمية للوزارة</p><p style="margin-top:6px;font-size:44px;opacity:1">علي احمد شهاب</p><p style="direction:ltr;text-align:right;margin-top:2px">allawi.psd</p>`,
+    'right:80px;bottom:90px', 'ink'],
 ];
-S.forEach(([img, html, pos, col, bp]) => document.write(
-  `<section class="s" style="background-image:url(${img})${bp ? `;background-position:${bp}` : ''}"><div class="t ${col}" style="${pos}">${html}</div></section>`));
+S.forEach(([img, html, pos, col, extra = '']) => document.write(
+  `<section class="s" style="background-image:url(${img})">${extra}<div class="t ${col}" style="${pos}">${html}</div></section>`));
 </script>
 </body>
 </html>

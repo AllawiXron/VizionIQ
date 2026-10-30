@@ -1,5 +1,5 @@
 // node render.cjs [--preview] -> out/slide-1..10.png (1620x2025): the carousel slides from carousel.html.
-// Image metadata is stripped afterwards (strip.py), so the files are only pixels.
+// Then grade.py grades every slide the same way and strip.py leaves only pixels in each file (no metadata).
 const { chromium } = require('playwright'); const path = require('path'); const fs = require('fs'); const { execFileSync } = require('child_process');
 const OUT = path.join(__dirname, 'out'); fs.mkdirSync(OUT, { recursive: true });
 (async () => {
@@ -9,6 +9,7 @@ const OUT = path.join(__dirname, 'out'); fs.mkdirSync(OUT, { recursive: true });
   const slides = await p.$$('.s');
   for (let i = 0; i < slides.length; i++) await slides[i].screenshot({ path: path.join(OUT, `slide-${i + 1}.png`) });
   await b.close();
+  execFileSync('python3', [path.join(__dirname, 'grade.py'), OUT]);
   execFileSync('python3', [path.join(__dirname, 'strip.py'), OUT]);
   console.log(slides.length, 'slides');
 })();
