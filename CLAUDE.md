@@ -119,6 +119,9 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
   told with photos; a story version read to them "like news" (`marketing/ig-ministry-identity`). The user hates
   the generated scene photos (Gemini building front, podium, hand with phone, lobby) used as mockups: use Blender
   renders or flat mockups.
+- Ministry logo competition result (31 Oct): the Ishtar Gate entry did not make the public-vote top 10. The ten picked
+  were mostly tech symbols (circuit and chip patterns, radial bursts and stars, a key, a chain link) in blue and teal;
+  for state or tech briefs, the digital meaning has to read at a glance, not only after the heritage story is explained.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Before making props or images, ask whether to use AI image elements (the user generates them) or 3D (Blender);
   3D renders cost a lot of usage (20 Oct).
