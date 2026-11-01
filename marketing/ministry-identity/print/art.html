@@ -129,5 +129,50 @@ function pixels(n, size, fill, seed = 7) {
   <script>document.write(svg(240, 60, '<rect y="57.6" width="240" height="2.4" fill="#c99a2e"/>'))</script>
 </div>
 
+<!-- business card front, foil mask: white where the gold arches are foil-stamped -->
+<div class="art" id="card-front-foil" style="width:85mm;height:55mm;background:#000">
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><script>document.write(markSVG('gate', { ink: '#000', accent: '#fff' }, 22 * 3.7795))</script></div>
+</div>
+
+<!-- construction sheet, A4: the mark on its grid, as printed for the brand manual -->
+<div class="art" id="grid-sheet" style="width:210mm;height:297mm">
+  <script>
+    (() => {
+      const g = GATE, AR = (n) => String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[d]).replace('.', '٫');
+      const ln = (x1, y1, x2, y2, c, o, w, d = '') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-opacity="${o}" stroke-width="${w}" ${d && `stroke-dasharray="${d}"`}/>`;
+      const txt = (x, y, t) => `<text x="${x}" y="${y}" font-family="Markazi Text" font-size="9" font-weight="700" fill="#17357d" text-anchor="middle">${t}</text>`;
+      const dim = (x1, x2, y, t) => ln(x1, y, x2, y, '#17357d', .9, .6) + ln(x1, y - 3, x1, y + 3, '#17357d', .9, .6) + ln(x2, y - 3, x2, y + 3, '#17357d', .9, .6)
+        + `<rect x="${(x1 + x2) / 2 - 10}" y="${y - 6}" width="20" height="11" fill="#fff"/>` + txt((x1 + x2) / 2, y + 3, t);
+      let s = '';
+      for (let x = 0; x <= 300; x += g.U) s += ln(x, 6, x, 300, '#0c1b40', .12, .3);
+      for (let y = 6; y <= 300; y += g.U) s += ln(0, y, 300, y, '#0c1b40', .12, .3);
+      s += gate({ ink: '#17357d', accent: '#c99a2e' });
+      for (const x of [...g.towers.flat(), ...g.wall]) s += ln(x, 6, x, 300, '#0c1b40', .4, .35, '2 2');
+      s += ln(0, g.oy, 300, g.oy, '#c99a2e', 1, .5, '3 2');
+      for (const r of [g.r0, ...g.rings]) s += `<circle cx="${g.cx}" cy="${g.oy}" r="${r}" fill="none" stroke="#0c1b40" stroke-opacity=".4" stroke-width=".35" stroke-dasharray="2 2"/>`;
+      s += `<circle cx="${g.cx}" cy="${g.oy}" r="2.2" fill="#c99a2e"/>`;
+      s += dim(g.towers[0][0], g.towers[0][1], -4, AR(11)) + dim(g.wall[0], g.wall[1], -4, AR(23)) + dim(g.towers[1][0], g.towers[1][1], -4, AR(11)) + dim(g.cx - g.r0, g.cx + g.r0, 296, AR(8));
+      document.write(`<svg viewBox="-6 -14 312 324" style="position:absolute;left:20mm;top:40mm;width:170mm;height:176mm">${s}</svg>`);
+    })();
+  </script>
+  <div style="position:absolute;top:18mm;right:20mm;font:700 15pt 'Markazi Text';color:#0c1b40">بناء الشعار</div>
+  <div style="position:absolute;top:27mm;right:20mm;font-size:8pt;color:#3c4660">وحدة القياس (و) = مربع واحد من الشبكة</div>
+  <div style="position:absolute;bottom:22mm;right:20mm;left:20mm;font-size:8pt;line-height:1.9;color:#3c4660;border-top:.3mm solid #d9d4c8;padding-top:4mm">
+    البرج ١١ وحدة والجدار ٢٣ وحدة. كل الشرفات ٥ × ٣ وحدات بدرجات متساوية، والمدخل والقوسان من مركز واحد بأشرطة عرضها وحدة ونصف.</div>
+  <div style="position:absolute;bottom:12mm;left:20mm;font-size:7pt;color:#8a8f9c">٢٫١</div>
+</div>
+
+<!-- colour swatch cards, 50 x 90 mm, like a printer's colour chips -->
+<script>
+  [['blue', 'أزرق بابل', '#17357D', '82 58 0 51', '23 53 125'], ['night', 'حبر الليل', '#0C1B40', '81 58 0 75', '12 27 64'],
+   ['gold', 'ذهب عشتار', '#C99A2E', '0 23 77 21', '201 154 46'], ['clay', 'الطين', '#ECE2D0', '0 4 12 7', '236 226 208']].forEach(([id, n, h, cmyk, rgb]) =>
+    document.write(`<div class="art" id="swatch-${id}" style="width:50mm;height:90mm">
+      <div style="position:absolute;top:0;left:0;right:0;height:62mm;background:${h}"></div>
+      <div style="position:absolute;top:66mm;right:4.5mm;left:4.5mm">
+        <div style="font:700 13pt/1.2 'Markazi Text'">${n}</div>
+        <div class="lat" style="font-size:6.2pt;line-height:1.75;color:#3c4660;margin-top:1mm;text-align:right">${h}<br>RGB ${rgb}<br>CMYK ${cmyk}</div>
+      </div></div>`));
+</script>
+
 </body>
 </html>

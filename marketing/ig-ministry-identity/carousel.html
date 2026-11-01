@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>بوابة عشتار</title>
+<style>
+  /* The identity carousel, 10 slides of 1080x1350 (render.cjs prints them at 1.5x). Each slide is one render from
+     shots.py, with its words placed in that photo's empty space. carousel.html?preview uses the quick renders. */
+  @font-face { font-family: 'DG Sahabah'; src: url(../brand-fonts/DG-Sahabah-Reg.ttf) format('truetype'); font-weight: 400; font-display: block; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #333; }
+  .s { width: 1080px; height: 1350px; position: relative; overflow: hidden; margin: 0 0 30px; background: #bdb7ad center / cover no-repeat;
+    font: 400 38px/1.35 'DG Sahabah', sans-serif; font-synthesis: none; }
+  .s::after { content: ""; position: absolute; inset: 0; background: url(grain.png); mix-blend-mode: soft-light; opacity: .55; pointer-events: none; }
+  .t { position: absolute; }
+  .t h1 { font: 400 104px/1.18 'DG Sahabah'; }
+  .t h2 { font: 400 84px/1.2 'DG Sahabah'; }
+  .t p { margin-top: 18px; opacity: .82; }
+  .ink { color: #13203f; } .paper { color: #f3ece0; }
+  .num { font: 400 330px/.9 'DG Sahabah'; letter-spacing: -6px; }
+  .beside { position: absolute; right: 360px; top: 128px; width: 600px; margin: 0; }
+  .word { font: 400 58px/1.2 'DG Sahabah'; opacity: 1; margin: 0; }
+</style>
+</head>
+<body>
+<script>
+const P = location.search.includes('preview') ? '-preview' : '';
+const r = (n) => `renders/${n}${P}.png`;
+const S = [
+  // each slide is [image, text html, position css, colour class, extra background css], a heading and a line or two in Ali's own words
+  [r('sign'), `<h1>بوابة عشتار</h1><p>هذا مقترحي لهوية وزارة الاقتصاد الرقمي والحوكمة<br>شاركت بيه بمسابقة الوزارة، اسحب وشوف</p>`, 'right:84px;bottom:150px', 'ink'],
+  [r('foil'), `<h2>البوابة صارت شعار</h2><p>بسطت البوابة لحد ما صارت برجين وجدار<br>والقوسين الذهبية حول الباب هي موجات الاتصال</p>`, 'left:76px;bottom:104px;text-align:left', 'ink'],
+  [r('grid'), `<h2>كل شي محسوب</h2><p>الأبراج والأقواس مرسومة على نفس المربعات<br>تكبره او تصغره يبقى مضبوط</p>`, 'right:76px;top:90px', 'ink'],
+  [r('swatches'), `<h2>الألوان</h2><p>الأزرق اخذته من طابوق البوابة<br>والذهبي خليته بس للأقواس والأشياء المهمة</p>`, 'right:80px;top:90px', 'ink'],
+  [r('letterhead'), `<h2>الكتب الرسمية</h2><p>شرفات البوابة صارت حاشية فوق الورقة</p>`, 'left:70px;bottom:80px;text-align:left', 'ink'],
+  [r('stationery'), `<h2>ورق الوزارة</h2><p>الظرف والكارت يمشون على نفس النظام</p>`, 'left:70px;bottom:70px;text-align:left', 'ink'],
+  [r('badge'), `<h2>باج الموظف</h2><p>الشريط أزرق ومطبوعة عليه الشرفات</p>`, 'right:70px;top:76px', 'ink'],
+  [r('phone'), `<h2>التطبيق</h2><p>أول ما تفتحه يطلعلك الشعار على الأزرق الغامق</p>`, 'left:66px;bottom:70px;text-align:left', 'ink'],
+  ['../ministry-identity/out/fig/web-1.jpg', `<h2>الموقع</h2><p>أول شي تشوفه مربع البحث<br>لان الناس تجي للموقع تدور على خدمة</p>`, 'right:80px;top:84px', 'ink', 'background-position:0% 100%;background-size:auto 86%;background-color:#e7e2dc'],
+  [r('macro'), `<p style="opacity:.9;margin:0">مقترح شخصي، مو الهوية الرسمية للوزارة</p><h2 style="margin-top:10px">علي احمد شهاب</h2><p style="direction:ltr;text-align:right;margin-top:6px">allawi.psd</p><p style="margin-top:22px">اكتبولي رأيكم بالتعليقات</p>`, 'right:80px;bottom:96px', 'ink'],
+];
+S.forEach(([img, html, pos, col, bp]) => document.write(
+  `<section class="s" style="background-image:url(${img})${bp ? `;${bp}` : ''}"><div class="t ${col}" style="${pos}">${html}</div></section>`));
+</script>
+</body>
+</html>

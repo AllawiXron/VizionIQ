@@ -34,9 +34,22 @@ everything for Instagram (posts, reels, briefs, sound and transition packs) is i
 - Ad reels for the page (22 Oct): the user likes the Brandek style, one cut-out element per line (objects, hands,
   people as PNGs acting out the words), not screenshots or his post designs (`marketing/hf-allawi-ad-reel`). His reels
   may play on phones. He wants it as a true one take in Brandek's visual language: one vivid coral field, big bold
-  white type with dark key words, black-and-white cut-outs anchored to the frame edges and acting on the words, ideas
+  white type with dark key words, cut-outs in their original colours (23 Oct; he dropped the black-and-white look) anchored
+  to the frame edges and acting on the words, ideas
   pushing each other out; no dark or muddy backgrounds, heavy vignettes, blur transitions or one poster per sentence.
-  Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it.
+  Keep the motion blur and the 15 fps steps. Check every frame of a render before sending it. No phone mock-ups (23 Oct:
+  "ugly weird phones"): big type that fills the frame, each image doing one physical thing on its word.
+- Ad reel direction (24 Oct): the user turned down the Brandek-style engine version, a 3D product look and a Blender
+  paper-stage test, and asked for the motion of a premium ad he sent (BlueVisa): every scene grows out of the last
+  (circle morphs, cards stacking, diagonal panel wipes, a lens, three panels, a dot that becomes the end title), clean
+  big type, no cuts, crossfades, glows or bounces. Built as `marketing/coin-allawi-reel` (60 fps, 3 subframes). He liked its palette and sync, then asked (24 Oct) for no web cards,
+  panels or slider dots: kinetic type with a camera over the page, a stamp that holds before the wipe, and on «شوف أعمالنا»
+  tilted phones playing his real reels (phones are fine there, showing his own work). He edits in EffectCraft
+  (open-source After Effects clone, `.ecproj` JSON, runs AE-style scripts): the reel ships as an editable project from
+  `marketing/coin-allawi-reel/effectcraft/pack.sh` (24 Oct).
+- Meta ads (24 Oct): the user runs the Orange Coin reel as a Messages ad himself ($10/day, all Iraq, online sellers) and
+  sends the Ads Manager report instead of connecting a connector. Read it, judge cost per conversation, the 3-second
+  hook rate and how many DMs were real sellers, and suggest changes only after the first 4–5 days of learning.
 - كاكتوس (`marketing/gift-cactus`) is a small project by a girl who crochets by hand, not a shop: never call it محل.
 - Be honest: don't invent features, results, clients or prices. No emojis on the site.
 - Privacy: never commit voice-artist or applicant recordings, chat exports or screenshots of leads; don't repeat
@@ -224,6 +237,9 @@ These are the defaults Claude reaches for when it designs with code. Each one al
 Use only the user's own sound packs in `marketing/sfx-pack/` (two Drive packs, 127 sounds; run `./fetch.sh` there
 first; `README.md` lists every sound and its length). Don't synthesize sound effects, don't use HyperFrames-kit or other stock sounds, and don't add
 generated or stock music. If a piece needs music, ask the user for a track.
+Exception (24 Oct): for the Orange Coin reel the user asked for a sound design synthesized in Web Audio on six
+tracks (Whoosh 1, Whoosh 3, FireWhoosh, Counting 8, Deep, UI Pop), 12–16 dB under the voice, with an AE SFX_TIMELINE
+script: `marketing/coin-allawi-reel/sfx.js`.
 
 A pop on every word as it appears (softer on the orange key words), a whoosh on each camera move or transition, a
 stamp or impact on big moments.

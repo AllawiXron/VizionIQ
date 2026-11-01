@@ -4,6 +4,12 @@ The ad reel for my page (`../rm-allawi-ad-reel`: same script, fitted voice, soun
 small motion engine of my own. The same timeline renders in the browser and is written out as an After Effects
 project, so the reel can be finished or changed by hand in AE.
 
+The look: one orange field, big DG Sahabah that fills the frame, and every cut-out in its own colours doing one
+physical thing on its word. The film camera kicks on «موشن جرافيك», a hand brings the box for «إعلانية», three huge
+words shove each other off the frame with the binoculars, the bulb and the cash register, the camera dives through
+the magnifier's glass into the handshake, and a finger presses the button next to the handle at the end. No phone
+mock-ups.
+
 ## How it works
 
 Everything on screen is a node, parented the way an AE layer is (anchor, position, rotation, scale, depth). Every
@@ -32,13 +38,13 @@ The reel is `reel/reel.js` (shots, camera path, every line and cut-out and how t
 - Every tween becomes two keys whose temporal ease is the tween's Bézier: influence is the handle's x, speed comes
   from its slope and the move between the keys, per dimension. The whips come out at 87% / 87%. The elastic is baked
   into keys at 30 per second. The sine micro-motion is an expression added to the keyed Y position and rotation.
-- One 3D null per shot, line and word. Cut-outs are footage layers with Tint, Brightness & Contrast, a little Noise
-  and a warm Drop Shadow. Front pieces get Gaussian Blur and sit at z −900.
+- One 3D null per shot, line and word. Cut-outs are footage layers in their own colours with a warm Drop Shadow.
+  Front pieces get Gaussian Blur and sit at z −900.
 - Every word is an editable text layer in DG Sahabah, with a rectangle as its alpha track matte. Bars and pills are
   shape layers. Outline words have a stroked copy and a filled copy revealed by Linear Wipe. Tatweel stretches are
   Source Text keys.
-- The phones are footage layers. Their screens (the reel clips, the orange wipe, the words) are parented to them and
-  matted by the screen shape.
+- The engine can still put a phone with a reel on its screen (its screen layers parented to it and matted by the
+  screen shape); this reel doesn't use one.
 - The far plane (spotlight and word grid) sits at z 5600. The orange field is a solid with a Gradient Ramp. Paper,
   grain, vignette and the handle are 2D layers on top.
 - The voice and all 124 sound cues are audio layers at their times and gains.
@@ -59,7 +65,7 @@ wraps undocumented binary chunks, and a file written outside AE can't be trusted
 ## Build
 
 - `tools/assets.sh` fills `media/` (not committed). It takes the cut-outs, textures and font from
-  `../rm-allawi-ad-reel/public`, and the voice and sounds from `../hf-allawi-ad-reel/assets`. It cuts the four phone
+  `../rm-allawi-ad-reel/public`, and the voice and sounds from `../hf-allawi-ad-reel/assets`. It also cuts the four phone
   clips to the stretches the reel shows (MP4 for AE, VP9 for the page).
 - Preview: open `index.html` from a local server and click to play with sound. `?t=12.3` shows one frame.
 - Render: `NODE_PATH=<folder with playwright-core> node tools/render.cjs` writes `out/allawi-ad-reel.mp4`: 618

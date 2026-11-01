@@ -5,7 +5,7 @@
 (async function () {
   const { TextRig, Env } = Core;
   const D = 41.2;
-  const SRC = ["bag-black.png", "bag-black2.png", "bag-blue.png", "bag-orange.png", "binoculars-man.png", "binoculars.png", "bulb.png", "cash-fan.png", "cash-pile.png", "chess-king.png", "chess-pawn.png", "coin-stacks.png", "coin.png", "crowd.png", "crowd2.png", "handshake.png", "magnifier.png", "megaphone.png", "padlock.png", "phone.png", "receiver.png", "shop-owner.png", "stop-hand.png", "stopwatch-hand.png", "wallet.png"];
+  const SRC = ["bag-black.png", "bag-black2.png", "bag-blue.png", "bag-orange.png", "binoculars-man.png", "binoculars.png", "box-hand.png", "bulb.png", "button-finger.png", "cash-fan.png", "cash-pile.png", "chess-king.png", "chess-pawn.png", "coin-stacks.png", "coin.png", "crowd.png", "crowd2.png", "film-camera.png", "handshake.png", "magnifier.png", "megaphone.png", "padlock.png", "phone.png", "receiver.png", "register.png", "shop-owner.png", "stop-hand.png", "stopwatch-hand.png", "wallet.png"];
   const sizes = {};
   await Promise.all([
     ...SRC.map((s) => new Promise((ok, no) => { const i = new Image(); i.onload = () => { sizes[s] = [i.naturalWidth, i.naturalHeight]; ok(); }; i.onerror = no; i.src = Core.MEDIA + "el/" + s; })),
@@ -43,12 +43,12 @@
   };
   add("A", 0, 2.6, "whip", { cx: 540, cy: 960, r: 0, s: 1 });
   whip("B", 2.6, 5.2, -1900, 1260, -7);
-  into("D1", 5.2, 6.55, screenOf(290, 820, 500, -2), -2);
+  whip("D1", 5.2, 6.55, 540 + 2300, 960 + 400, 7);
   whip("D2", 6.55, 7.74, 540, 960 + 2500, 6);
   whip("F", 7.74, 12.62, 540 + 2300, 960 - 500, 9);
-  into("I", 12.62, 14.42, screenOf(190, 620, 700, -3), -3);
+  whip("I", 12.62, 14.42, 540 - 2200, 960 - 700, -6);
   whip("J1", 14.42, 16.3, 540 - 2300, 960 + 300, -8);
-  back("J2", 16.3, 19.04, 2.3, 540, 960 + 2100, 5);
+  into("J2", 16.3, 19.04, [534, 581, 257], -8);
   whip("L", 19.04, 23.52, 540 + 300, 960 - 2600, -6);
   whip("M1", 23.52, 26.5, 540 - 2300, 960 + 100, 8);
   whip("M2", 26.5, 28.5, 540 + 2000, 960 + 600, -5, 0.92);
@@ -60,8 +60,7 @@
   const S = {};
   for (const p of P) {
     M.label(p.id, p.a);
-    const clipUntil = p.id === "D1" ? 5.47 : p.id === "I" ? 12.89 : undefined;
-    S[p.id] = M.node("shot", { id: p.id, name: `SHOT ${p.id}`, anchor: [540, 960], v: { x: p.cx, y: p.cy, rotation: p.r, scale: p.s }, life: [p.a - 0.45, p.b + 0.45], data: { clipUntil, place: p } });
+    S[p.id] = M.node("shot", { id: p.id, name: `SHOT ${p.id}`, anchor: [540, 960], v: { x: p.cx, y: p.cy, rotation: p.r, scale: p.s }, life: [p.a - 0.45, p.b + 0.45], data: { place: p } });
   }
 
   // ───── the camera: a drift on every hold, a whip, push or pull into the next shot ─────
@@ -79,7 +78,7 @@
   // ───── helpers for the cut-outs ─────
   const img = (sh, src, w, left, top, o = {}) => {
     const [nw, nh] = Core.size(src), h = (w * nh) / nw;
-    return M.node(o.kind || "image", { parent: sh, shot: sh, name: o.name || src.replace(".png", ""), stack: o.z ?? 10, box: [w, h], anchor: [w / 2, h / 2], v: { x: left + w / 2, y: top + h / 2, rotation: o.r || 0 }, life: (o.life || sh.life).slice(), data: { src, colour: o.colour } });
+    return M.node(o.kind || "image", { parent: sh, shot: sh, name: o.name || src.replace(".png", ""), stack: o.z ?? 10, box: [w, h], anchor: [w / 2, h / 2], v: { x: left + w / 2, y: top + h / 2, rotation: o.r || 0 }, life: (o.life || sh.life).slice(), data: { src, colour: true } });
   };
   // slam in from an offset with the overshoot; from and rest are offsets from where it was laid out, r and s absolute
   const slam = (n, t0, d, from, rest = {}) => {
@@ -108,10 +107,10 @@
     n.v.fy = -amp; n.v.fr = -0.6;
   };
   // a short push out and back, for a hit on a word
-  const punch = (n, t0, amt, dy = 0) => {
-    const b = { scale: n.v.scale, y: n.v.y };
+  const punch = (n, t0, amt, dy = 0, back = 0.45) => {
+    const b = n.rest || { scale: n.v.scale, y: n.v.y };
     tl.to(n.v, { scale: b.scale * (1 + amt), y: b.y + dy, duration: 0.1, ease: "kickOut" }, t0);
-    tl.to(n.v, { scale: b.scale, y: b.y, duration: 0.45, ease: "snapPop" }, ">");
+    tl.to(n.v, { scale: b.scale, y: b.y, duration: back, ease: "snapPop" }, ">");
   };
   // a shake that dies out: half swings alternating around the base value
   const shake = (v, ch, t0, base, amp, dur, n) => {
@@ -144,9 +143,10 @@
   };
 
   // ───── A · مشروعك متعوب عليه، بس أرباحك قليلة ─────
-  line(S.A, { top: 330, size: 92, words: W([["مشروعك", 0.0], ["متعوب", 0.56], ["عليه،", 0.88], ["بس", 1.38]]) });
-  line(S.A, { top: 430, size: 300, words: [kw("أرباحك", 1.66, "fill", { fill: 1.95 })] });
-  const few = line(S.A, { top: 780, size: 210, words: [kw("*قليلة؟", 2.1, "punch")] }).words[0];
+  line(S.A, { top: 250, size: 130, words: W([["مشروعك", 0.0], ["متعوب", 0.56]]) });
+  line(S.A, { top: 400, size: 130, words: W([["عليه،", 0.88], ["بس", 1.38]]) });
+  line(S.A, { top: 540, size: 300, words: [kw("أرباحك", 1.66, "fill", { fill: 1.95 })] });
+  const few = line(S.A, { top: 860, size: 210, words: [kw("*قليلة؟", 2.1, "punch")] }).words[0];
   tl.to(few.v, { y: few.v.y + 26, rotation: -8, duration: 0.3, ease: "snapPop" }, 2.28);
   const wallet = img(S.A, "wallet.png", 1000, 40, 1110);
   {
@@ -167,16 +167,23 @@
   }
 
   // ───── B · عدنا نصمملك موشن جرافيك وبوستات إعلانية ─────
-  line(S.B, { top: 300, size: 124, stretch: 5, out: 4.1, words: W([["عدنا", 2.65], ["*نصم~ملك", 2.91]]) });
-  line(S.B, { top: 470, size: 140, out: 4.1, words: W([["موشن", 3.45, "bar"], ["جرافيك", 3.73, "bar"]]) });
-  line(S.B, { top: 300, size: 124, words: W([["وبوستات", 4.2]]) });
-  line(S.B, { top: 440, size: 190, words: [kw("إعلانية", 4.73, "fill", { fill: 4.88 })] });
-  phone(S.B, "phone left", 20, 960, 400, -10, 2.2, { clip: "dollar", at: 0, from: 2.2, dur: 3.4 }, 4.2);
-  phone(S.B, "phone right", 660, 960, 400, 9, 2.3, { clip: "logos-a", at: 0, from: 2.2, dur: 3.4 }, 4.26);
-  phone(S.B, "phone middle", 290, 820, 500, -2, 0, { clip: "vizion", at: 0, from: 2.2, dur: 3.0 }, 4.32, 4.7);
+  line(S.B, { top: 250, size: 128, stretch: 3, out: 4.1, words: W([["عدنا", 2.65], ["*نصم~ملك", 2.91]]) });
+  line(S.B, { top: 430, size: 160, out: 4.1, words: W([["موشن", 3.45, "bar"], ["جرافيك", 3.73, "bar"]]) });
+  line(S.B, { top: 260, size: 170, words: W([["وبوستات", 4.2]]) });
+  line(S.B, { top: 480, size: 250, words: [kw("إعلانية", 4.73, "fill", { fill: 4.88 })] });
+  // the film camera rolls in from the right edge and kicks on each word of «موشن جرافيك», then rolls out
+  const film = img(S.B, "film-camera.png", 980, 300, 860, { name: "film camera" });
+  slam(film, 2.55, 0.55, { x: 900, r: 18 }, { r: -4 });
+  punch(film, 3.45, 0.05, -20, 0.17);
+  punch(film, 3.73, 0.05, -20);
+  leave(film, 4.1, { x: 1200, r: 25 }, 0.35);
+  // a hand brings the box in from the left on «وبوستات» and lifts it on «إعلانية»
+  const box = img(S.B, "box-hand.png", 1100, -60, 1080, { name: "box in hand" });
+  slam(box, 4.2, 0.5, { x: -1200, r: -14 }, { r: -3 });
+  punch(box, 4.73, 0.05, -40);
 
-  // ───── D1 · تحجي بقوة براندك (inside the phone) ─────
-  line(S.D1, { top: 300, size: 110, words: W([["تحجي", 5.25], ["بقوة", 5.63, "bar"]]) });
+  // ───── D1 · تحجي بقوة براندك ─────
+  line(S.D1, { top: 260, size: 170, words: W([["تحجي", 5.25], ["بقوة", 5.63, "bar"]]) });
   const mega = img(S.D1, "megaphone.png", 860, -260, 820);
   slam(mega, 5.22, 0.5, { x: -700, r: -40 }, { r: -18 });
   tl.to(mega.v, { x: mega.rest.x - 60, scale: 1.08, duration: 0.12, ease: "kickOut" }, 6.04);
@@ -193,72 +200,75 @@
   }
 
   // ───── D2 · وتبيع بمكانك ─────
-  line(S.D2, { top: 300, size: 136, words: [kw("وتبيع", 6.67), kw("*بمكانك", 7.09, "punch")] });
+  line(S.D2, { top: 270, size: 174, words: [kw("وتبيع", 6.67), kw("*بمكانك", 7.09, "punch")] });
   const owner = img(S.D2, "shop-owner.png", 920, 80, 960);
   wait(owner, 8);
   punch(owner, 7.09, 0.07, -40);
 
   // ───── F · حركة تشد العين، فكرة تقنع الزبون، ونتيجة ترفع مبيعاتك ─────
-  line(S.F, { top: 300, size: 112, out: 9.1, words: W([["تشد", 8.37, "bar"], ["*العين", 8.61, "punch"]]) });
-  line(S.F, { top: 300, size: 112, out: 10.7, words: W([["تقنع", 9.63, "bar"], ["الزبون", 10.03, "bar"]]) });
-  line(S.F, { top: 300, size: 112, words: W([["ترفع", 11.45, "bar"], ["*مبيعاتك", 11.83, "punch"]]) });
-  const phF = phone(S.F, "phone big", 190, 620, 700, -3, 0, null, undefined, 12.08);
-  const sw = (text, t0, t1) => {
-    // the screen is the mask: each word comes up from below its bottom edge and leaves through its top
-    const bw = phF.box[0] * 0.8804, bh = phF.box[1] * 0.9621, far = bh / 2 + 130 * 0.6;
-    const n = M.node("sword", { host: phF, plane: "screen", name: `screen ${text}`, box: [bw, bh], v: { ty: far }, life: [t0, t1 + 0.3], data: { text, size: 130, base: TextRig.measureBlock(text, 130).base } });
-    tl.fromTo(n.v, { ty: far }, { ty: 0, duration: 0.4, ease: "kineticSlam" }, t0);
-    tl.to(n.v, { ty: -far, duration: 0.28, ease: "liftOff" }, t1);
+  line(S.F, { top: 250, size: 150, out: 9.1, words: W([["تشد", 8.37, "bar"], ["*العين", 8.61, "punch"]]) });
+  line(S.F, { top: 250, size: 150, out: 10.7, words: W([["تقنع", 9.63, "bar"], ["الزبون", 10.03, "bar"]]) });
+  line(S.F, { top: 250, size: 150, words: W([["ترفع", 11.45, "bar"], ["*مبيعاتك", 11.83, "punch"]]) });
+  // three huge words, each one shoving the last off the left edge as it comes in from the right
+  const huge = (text, t0, t1, size = 330) => {
+    const n = block(S.F, text, size, { left: 40, top: 520, width: 1000, shadow: true, life: [t0, t1 ? t1 + 0.32 : S.F.life[1]] });
+    n.v.x = n.base.x + 1150; n.v.rotation = 8;
+    tl.fromTo(n.v, { x: n.base.x + 1150, rotation: 8 }, { x: n.base.x, rotation: 0, duration: 0.42, ease: "kineticSlam" }, t0);
+    if (t1) tl.to(n.v, { x: n.base.x - 1250, rotation: -8, duration: 0.3, ease: "liftOff" }, t1);
   };
-  sw("حركة", 7.79, 9.1);
-  sw("فكرة", 9.19, 10.7);
-  sw("ونتيجة", 10.77, 12.1);
-  const bino = img(S.F, "binoculars.png", 520, -120, 1300, { z: 14 });
-  slam(bino, 7.79, 0.45, { x: -500, y: 300, r: -30 }, { r: -10 });
-  leave(bino, 9.12, { x: -700, r: -40 }, 0.3);
-  const bulb = img(S.F, "bulb.png", 300, 760, 430, { z: 14 });
-  slam(bulb, 9.19, 0.45, { y: -900, r: 30 }, { r: 12 });
-  leave(bulb, 10.72, { x: 600, y: -300, r: 50 }, 0.3);
-  const coins = img(S.F, "coin-stacks.png", 540, 600, 1380, { z: 14 });
-  slam(coins, 10.77, 0.45, { x: 500, y: 300, r: 20 }, { r: 6 });
+  huge("حركة", 7.79, 9.14);
+  huge("فكرة", 9.19, 10.72);
+  huge("ونتيجة", 10.77, undefined, 270);
+  // what each word does, anchored to the bottom edge: eyes on the move, the idea dropping in, the till ringing
+  const bino = img(S.F, "binoculars.png", 900, 90, 1150, { z: 14 });
+  slam(bino, 7.79, 0.45, { y: 800, r: 10 }, {});
+  leave(bino, 9.14, { y: 900, r: -12 }, 0.3);
+  const bulb = img(S.F, "bulb.png", 500, 290, 1080, { z: 14 });
+  slam(bulb, 9.19, 0.5, { y: -1700, r: 25 }, { r: -6 });
+  leave(bulb, 10.72, { y: 1100, r: 30 }, 0.3);
+  const till = img(S.F, "register.png", 820, 130, 1040, { z: 14, name: "cash register" });
+  slam(till, 10.77, 0.45, { y: 1000 }, {});
+  punch(till, 11.83, 0.06, -20);
+  const cash = img(S.F, "cash-fan.png", 560, 260, 700, { z: 12, name: "cash out of the till", life: [11.83, S.F.life[1]] });
+  slam(cash, 11.83, 0.5, { y: 520, s: 0.3, r: -20 }, { r: -8 });
 
-  // ───── I · من أول 3 ثواني بإعلانك (inside the phone) ─────
+  // ───── I · من أول 3 ثواني بإعلانك ─────
   line(S.I, { top: 290, size: 210, stretch: 11, words: W([["م~ن", 12.67]]) });
-  line(S.I, { top: 600, size: 110, align: "r", words: W([["أول", 12.93, "pill"]]) });
+  line(S.I, { top: 560, size: 150, align: "r", words: W([["أول", 12.93, "pill"]]) });
   const three = block(S.I, "3", 820, { left: 40, top: 640, lh: 1, colour: Core.INK, origin: [0.5, 0.7], z: 9, life: [13.17, S.I.life[1]] });
   three.v.scale = 0; three.v.rotation = -14;
   tl.fromTo(three.v, { scale: 0 }, { scale: 1, duration: 1, ease: "snapElastic" }, 13.17);
   tl.fromTo(three.v, { rotation: -14 }, { rotation: 0, duration: 0.15, ease: "kineticSlam" }, 13.17);
   tl.to(three.v, { x: three.base.x - 50, rotation: -7, duration: 0.35, ease: "snapPop" }, 13.32);
-  line(S.I, { top: 1500, size: 104, align: "l", words: W([["ثواني", 13.35], ["*بإعلانك", 13.73, "punch"]]) });
+  line(S.I, { top: 1430, size: 140, align: "l", words: W([["ثواني", 13.35], ["*بإعلانك", 13.73, "punch"]]) });
   const hand = img(S.I, "stopwatch-hand.png", 520, 620, 930);
   slam(hand, 12.72, 0.5, { y: 900, x: 200, r: 18 }, { r: -6 });
   tl.to(hand.v, { x: hand.rest.x - 40, duration: 0.1, ease: "kickOut" }, 13.22);
   tl.to(hand.v, { x: hand.rest.x, duration: 0.2, ease: "snapPop" }, ">");
 
   // ───── J1 · الزبون راح يلمس الكواليتي العالي ─────
-  line(S.J1, { top: 300, size: 104, words: W([["الزبون", 14.47], ["راح", 14.87], ["يلمس", 15.09]]) });
-  const qual = line(S.J1, { top: 460, size: 150, words: [kw("الكواليتي", 15.37)] }).words[0];
+  line(S.J1, { top: 260, size: 140, out: 16.0, words: W([["الزبون", 14.47], ["راح", 14.87], ["يلمس", 15.09]]) });
+  const qual = line(S.J1, { top: 460, size: 185, out: 16.0, words: [kw("الكواليتي", 15.37)] }).words[0];
   tl.to(qual.v, { scale: 1.14, y: qual.v.y - 8, duration: 0.4, ease: "snapPop" }, 15.45);
-  line(S.J1, { top: 680, size: 150, words: [kw("*العالي", 15.79, "punch")] });
+  line(S.J1, { top: 720, size: 220, out: 16.02, words: [kw("*العالي", 15.79, "punch")] });
   const lens = img(S.J1, "magnifier.png", 520, 390, 410, { z: 32 });
   slam(lens, 14.62, 0.6, { x: 700, y: 400, r: 30 }, { r: -8 });
 
   // ───── J2 · يثق بمنتجك، ويدخل يطلب منك مباشرة ─────
-  const trust = line(S.J2, { top: 300, size: 160, out: 17.45, words: [kw("يثق", 16.41), kw("*بمنتجك", 16.69, "punch")] }).words;
-  line(S.J2, { top: 300, size: 112, words: W([["ويدخل", 17.55], ["يطلب", 17.89], ["منك", 18.23]]) });
-  line(S.J2, { top: 560, size: 210, words: W([["مباشرة", 18.55, "bar"]]) });
-  const hands = img(S.J2, "handshake.png", 1320, -120, 1000);
-  wait(hands, 6);
-  shake(hands.v, "y", 16.75, hands.base.y, 22, 0.45, 3);
-  for (const w of trust) shake(w.v, "y", 16.75, w.v.y, 13, 0.45, 3);
+  const trust = line(S.J2, { top: 790, size: 190, out: 17.45, words: [kw("يثق", 16.41), kw("*بمنتجك", 16.69, "punch")] }).words;
+  line(S.J2, { top: 260, size: 130, words: W([["ويدخل", 17.55], ["يطلب", 17.89], ["منك", 18.23]]) });
+  line(S.J2, { top: 480, size: 250, words: W([["مباشرة", 18.55, "bar"]]) });
+  const hands = img(S.J2, "handshake.png", 1320, -120, 1060);
+  slam(hands, 16.58, 0.45, { y: 900, r: 6 }, {});
+  shake(hands.v, "y", 17.04, hands.base.y, 22, 0.4, 3);
+  for (const w of trust) shake(w.v, "y", 17.04, w.v.y, 13, 0.4, 3);
   punch(hands, 18.55, 0.06);
 
   // ───── L · لأن ويانا راح يطلع إعلانك بمستوى يعزلك تماما عن منافسيك ─────
-  line(S.L, { top: 300, size: 104, out: 21.42, words: W([["لأن", 19.09], ["ويانا", 19.65], ["راح", 20.21], ["يطلع", 20.43]]) });
-  line(S.L, { top: 440, size: 150, out: 21.42, words: W([["إعلانك", 20.69, "bar"], ["بمستوى", 21.13, "bar"]]) });
-  line(S.L, { top: 300, size: 180, words: [kw("يعزلك", 21.75, "punch"), kw("تماما", 22.17, "fill", { fill: 22.4 })] });
-  const rivals = line(S.L, { top: 540, size: 116, dim: true, words: [kw("عن", 22.69), kw("منافسيك", 22.77)] }).words;
+  line(S.L, { top: 260, size: 130, out: 21.42, words: W([["لأن", 19.09], ["ويانا", 19.65], ["راح", 20.21], ["يطلع", 20.43]]) });
+  line(S.L, { top: 430, size: 152, out: 21.42, words: W([["إعلانك", 20.69, "bar"], ["بمستوى", 21.13, "bar"]]) });
+  line(S.L, { top: 290, size: 205, words: [kw("يعزلك", 21.75, "punch"), kw("تماما", 22.17, "fill", { fill: 22.4 })] });
+  const rivals = line(S.L, { top: 560, size: 150, dim: true, words: [kw("عن", 22.69), kw("منافسيك", 22.77)] }).words;
   rivals.forEach((w, i) => {
     const dir = i ? -1 : 1;
     tl.to(w.v, { rotation: dir * 80, duration: 0.45, ease: "kineticSlam" }, 23.05);
@@ -281,7 +291,12 @@
   punch(king, 21.75, 0.08);
 
   // ───── M1 · ويخلي الزبون يشتري منك مرة ومرتين وعشرة ─────
-  line(S.M1, { top: 300, size: 100, out: 24.72, words: W([["ويخلي", 23.57], ["الزبون", 23.93], ["يشتري", 24.27], ["منك", 24.63]]) });
+  line(S.M1, { top: 260, size: 160, out: 24.72, words: W([["ويخلي", 23.57], ["الزبون", 23.93]]) });
+  line(S.M1, { top: 450, size: 200, out: 24.72, words: W([["*يشتري", 24.27, "punch"], ["منك", 24.63]]) });
+  const pay = img(S.M1, "cash-pile.png", 820, 130, 1080, { name: "cash on the counter" });
+  slam(pay, 23.55, 0.5, { y: 1000, r: 14 }, { r: -4 });
+  punch(pay, 24.27, 0.07, -30);
+  leave(pay, 24.9, { y: 1100, r: -20 }, 0.3);
   line(S.M1, { top: 330, size: 180, align: "r", rot: -8, words: W([["مرة", 24.97, "punch"], ["×1", 24.97, "pill"]]) });
   line(S.M1, { top: 560, size: 180, align: "l", rot: 5, words: W([["ومرتين", 25.35, "punch"], ["×2", 25.35, "pill"]]) });
   const ten = line(S.M1, { top: 800, size: 190, rot: -4, words: [kw("*وعشرة", 25.97, "punch"), kw("×10", 25.97, "pill")] }).words;
@@ -294,19 +309,20 @@
   });
 
   // ───── M2 · لأن شاف براند حقيقي قدامه ─────
-  line(S.M2, { top: 520, size: 112, align: "r", words: W([["لأن", 26.67], ["شاف", 27.01]]) });
-  line(S.M2, { top: 650, size: 240, align: "r", words: W([["*براند", 27.21, "punch"]]) });
-  line(S.M2, { top: 930, size: 132, align: "r", words: W([["حقيقي", 27.57, "bar"], ["قدامه", 27.97, "bar"]]) });
+  line(S.M2, { top: 470, size: 150, align: "r", words: W([["لأن", 26.67], ["شاف", 27.01]]) });
+  line(S.M2, { top: 640, size: 270, align: "r", words: W([["*براند", 27.21, "punch"]]) });
+  line(S.M2, { top: 960, size: 165, align: "r", words: W([["حقيقي", 27.57, "bar"], ["قدامه", 27.97, "bar"]]) });
   const watcher = img(S.M2, "binoculars-man.png", 560, -10, 430);
   wait(watcher, 8);
   tl.to(watcher.v, { x: watcher.base.x + 30, rotation: 3, duration: 0.4, ease: "snapPop" }, 27.21);
 
   // ───── O1 · كافي تضيع جمهورك بتصاميم عادية، الكل يتخطاها، ابدأ اليوم ─────
-  line(S.O1, { top: 300, size: 112, out: 30.6, words: W([["كافي", 28.55], ["تضيع", 28.93], ["*جمهورك", 29.15, "punch"]]) });
-  line(S.O1, { top: 450, size: 150, out: 30.6, words: [kw("بتصاميم", 29.65), kw("عادية", 30.15, "fill")] });
+  line(S.O1, { top: 250, size: 160, out: 30.6, words: W([["كافي", 28.55], ["تضيع", 28.93]]) });
+  line(S.O1, { top: 430, size: 230, out: 30.6, words: W([["*جمهورك", 29.15, "punch"]]) });
+  line(S.O1, { top: 720, size: 165, out: 30.6, words: [kw("بتصاميم", 29.65), kw("عادية", 30.15, "fill")] });
   const all = line(S.O1, { top: 1000, size: 150, out: 31.5, words: W([["الكل", 30.85], ["يتخطاها", 30.99]]) }).line;
   tl.to(all.v, { x: all.v.x - 260, duration: 0.5, ease: "kineticSlam" }, 31.0);
-  line(S.O1, { top: 360, size: 180, words: W([["ابدأ", 31.63, "punch"], ["اليوم", 32.05, "bar"]]) });
+  line(S.O1, { top: 330, size: 240, words: W([["ابدأ", 31.63, "punch"], ["اليوم", 32.05, "bar"]]) });
   const crowd1 = img(S.O1, "crowd.png", 1000, 0, 1220, { name: "crowd 1", life: [28.3, S.O1.life[1]] });
   crowd1.v.x = crowd1.base.x + 1100;
   tl.fromTo(crowd1.v, { x: crowd1.base.x + 1100 }, { x: crowd1.base.x - 1400, duration: 4.2, ease: "glide" }, 28.3);
@@ -315,9 +331,10 @@
   tl.fromTo(crowd2.v, { x: crowd2.base.x + 1200 }, { x: crowd2.base.x - 1300, duration: 2.4, ease: "glide" }, 30.6);
 
   // ───── O2 · بتصاميم توقف الزبون وتقفل وياه البيعة ─────
-  const stops = line(S.O2, { top: 300, size: 104, words: [kw("بتصاميم", 32.51), kw("*توقف", 33.09, "punch"), kw("الزبون", 33.51)] }).words;
-  tl.to(stops[1].v, { y: stops[1].v.y - 50, duration: 0.3, ease: "snapPop" }, 33.0);
-  const sale = line(S.O2, { top: 470, size: 140, words: [kw("وتقفل", 34.05), kw("وياه", 34.61), kw("البيعة", 34.85, "bar")] }).words[2];
+  line(S.O2, { top: 240, size: 150, words: [kw("بتصاميم", 32.51)] });
+  const stops = line(S.O2, { top: 410, size: 180, words: [kw("*توقف", 33.09, "punch"), kw("الزبون", 33.51)] }).words;
+  tl.to(stops[0].v, { y: stops[0].v.y - 50, duration: 0.3, ease: "snapPop" }, 33.0);
+  const sale = line(S.O2, { top: 640, size: 126, words: [kw("وتقفل", 34.05), kw("وياه", 34.61), kw("البيعة", 34.85, "bar")] }).words[2];
   shake(sale.v, "x", 34.9, sale.v.x, 10, 0.31, 6);
   const crowd3 = img(S.O2, "crowd2.png", 960, 0, 1180, { name: "crowd 3", life: [32.2, 34.3] });
   crowd3.v.x = crowd3.base.x + 1100;
@@ -327,7 +344,7 @@
   const stop = img(S.O2, "stop-hand.png", 760, 160, 880, { z: 12 });
   slam(stop, 32.98, 0.32, { y: 1000, r: 10 }, {});
   leave(stop, 33.95, { y: 1000 }, 0.32);
-  const lock = img(S.O2, "padlock.png", 330, 375, 760, { life: [34.05, S.O2.life[1]] });
+  const lock = img(S.O2, "padlock.png", 330, 375, 860, { life: [34.05, S.O2.life[1]] });
   lock.v.y = lock.base.y - 1400;
   tl.fromTo(lock.v, { y: lock.base.y - 1400 }, { y: lock.base.y, duration: 0.32, ease: "gravity" }, 34.05);
   tl.to(lock.v, { y: lock.base.y + 16, duration: 0.15, ease: "kickOut" }, 34.37);
@@ -335,23 +352,30 @@
   shake(lock.v, "rotation", 34.85, 0, 6, 0.3, 5);
 
   // ───── R1 · تواصل ويانا بالخاص ─────
-  line(S.R1, { top: 300, size: 136, words: W([["تواصل", 35.53], ["ويانا", 35.81, "bar"]]) });
-  line(S.R1, { top: 700, size: 160, align: "l", words: W([["بالخاص", 36.09, "pill"]]) });
+  line(S.R1, { top: 260, size: 185, words: W([["تواصل", 35.53], ["ويانا", 35.81, "bar"]]) });
+  line(S.R1, { top: 660, size: 180, align: "l", words: W([["بالخاص", 36.09, "pill"]]) });
   const recv = img(S.R1, "receiver.png", 760, 520, 540);
   slam(recv, 35.3, 0.45, { x: 700, r: 40 }, {});
   shake(recv.v, "rotation", 36.09, 0, 8, 0.47, 6);
 
   // ───── R2 · شوف أعمالنا، وخلي براندك يبيع صح ─────
-  line(S.R2, { top: 300, size: 150, out: 37.45, words: W([["شوف", 36.79], ["*أعمالنا", 36.99, "punch"]]) });
-  line(S.R2, { top: 300, size: 98, words: W([["وخلي", 37.53], ["براندك", 38.05], ["*يبيع", 38.71, "punch"], ["صح", 39.07, "bar"]]) });
-  line(S.R2, { top: 470, size: 92, words: [{ w: "@allawi.psd", t: 39.55, v: "pill" }] });
-  phone(S.R2, "phone left", 20, 960, 400, -10, 36.4, { clip: "logos-b", at: 0, from: 36.3, dur: 4.9 });
-  phone(S.R2, "phone right", 660, 960, 400, 9, 36.5, { clip: "dollar", at: 0.7, from: 36.3, dur: 4.9 });
-  phone(S.R2, "phone middle", 290, 820, 500, -2, 36.6, { clip: "vizion", at: 0.3, from: 36.3, dur: 4.9 });
+  line(S.R2, { top: 330, size: 200, out: 37.45, words: W([["شوف", 36.79], ["*أعمالنا", 36.99, "punch"]]) });
+  const fan = img(S.R2, "cash-fan.png", 760, 200, 960, { name: "cash fan" });
+  slam(fan, 36.99, 0.45, { y: 900, r: 30 }, { r: -12 });
+  // the money stays through the line, jumps on «يبيع» and slides aside for the finger
+  punch(fan, 38.71, 0.08, -40);
+  tl.to(fan.v, { x: fan.rest.x - 330, rotation: -22, duration: 0.35, ease: "kineticSlam" }, 39.2);
+  line(S.R2, { top: 260, size: 150, words: W([["وخلي", 37.53], ["براندك", 38.05]]) });
+  line(S.R2, { top: 450, size: 210, words: W([["*يبيع", 38.71, "punch"], ["صح", 39.07, "bar"]]) });
+  line(S.R2, { top: 760, size: 120, words: [{ w: "@allawi.psd", t: 39.55, v: "pill" }] });
+  // a finger comes down from the top edge and presses the button next to the handle
+  const press = img(S.R2, "button-finger.png", 700, 480, 420, { name: "finger on the button" });
+  slam(press, 39.1, 0.42, { y: -1500, r: 8 }, {});
+  punch(press, 39.55, 0.03, 34);
 
   // ───── the depths: the far plane, and what crosses the lens on every whip ─────
   Env.build(M, P.map((p, j) => ({ t: j ? p.a - 0.1 : 0, x: p.cx + (j % 2 ? 800 : -800) * Math.max(0.6, p.s), y: p.cy - 900 * Math.max(0.6, p.s) })));
-  const PASS = ["cash-fan.png", "coin.png", "bag-black.png", "cash-pile.png", "bulb.png", "coin.png", "bag-orange.png", "cash-fan.png", "coin-stacks.png", "cash-pile.png", "coin.png"];
+  const PASS = ["cash-fan.png", "bag-black.png", "cash-pile.png", "bulb.png", "bag-blue.png", "cash-fan.png", "coin-stacks.png", "cash-pile.png", "bag-orange.png"];
   let pi = 0;
   P.forEach((n, j) => {
     if (!j || n.tin !== "whip") return;
