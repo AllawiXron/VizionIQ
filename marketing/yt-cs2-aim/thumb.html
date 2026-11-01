@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CS2 Inhuman Aim</title>
+<style>
+@font-face { font-family: Serif; src: url(fonts/PT_Serif-Web-Regular.ttf); font-weight: 400; font-style: normal; }
+@font-face { font-family: Serif; src: url(fonts/PT_Serif-Web-BoldItalic.ttf); font-weight: 700; font-style: italic; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; }
+.f { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #e4e4e2; }
+.f > * { position: absolute; }
+
+/* 1. light studio grey, darker toward the edges */
+.edge { inset: 0; background:
+  linear-gradient(90deg, rgba(0, 0, 0, .13) 0%, rgba(0, 0, 0, 0) 22%, rgba(0, 0, 0, 0) 78%, rgba(0, 0, 0, .13) 100%),
+  linear-gradient(0deg, rgba(0, 0, 0, .1) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, .06) 100%); }
+
+/* 2. the words */
+.t { left: 0; right: 0; top: 96px; text-align: center; font-family: Serif; color: #0d0d0d; white-space: nowrap; }
+.t .a { font-weight: 400; font-size: 168px; letter-spacing: -2px; }
+.t .b { font-weight: 700; font-style: italic; font-size: 214px; letter-spacing: -4px; margin-left: 26px; }
+
+/* 3. the gun and its smear */
+.smear { left: -177px; top: 470px; width: 2272px; }
+.ak { left: 70px; top: 470px; width: 1778px; filter: drop-shadow(0 26px 30px rgba(0, 0, 0, .22)); }
+
+/* 4. the marker arrow, from the word to the gun */
+.arrow { left: 1140px; top: 262px; width: 222px; transform: rotate(4deg); }
+
+/* 5. watermark: the dot in the name is the red aim dot */
+.wm { right: 46px; bottom: 30px; font: italic 700 50px Serif; color: #6f6f6c; letter-spacing: -1px; }
+.wm b { color: #e2120f; }
+</style>
+</head>
+<body>
+<div class="f" id="thumb">
+  <div class="edge"></div>
+  <div class="t"><span class="a">inhuman</span><span class="b">aim</span></div>
+  <img class="smear" src="img/smear.png">
+  <img class="ak" src="img/ak.png">
+  <img class="arrow" src="img/arrow.png">
+  <div class="wm">visuals<b>.</b>gg</div>
+</div>
+<script>
+Promise.all([document.fonts.load('400 168px Serif'), document.fonts.load('italic 700 214px Serif')])
+  .then(() => Promise.all([...document.images].map((i) => i.decode())))
+  .then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

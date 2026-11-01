@@ -199,6 +199,8 @@ These are the defaults Claude reaches for when it designs with code. Each one al
   The user wants a clever idea in each one and textured title type, not flat gradient fills (23 Oct). A concrete
   title broken by the hammer was rejected; `-4` now has Sledge smashing a locked operators screen (grey cards with
   padlocks) open onto the same operators unlocked in colour, which the user picked.
+  CS2 cheat thumbnails (1 Nov): `marketing/yt-cs2-aim`, on the user's two references (light grey, big black serif or
+  sans type with one stressed word, one game object), with a visuals.gg watermark the user wants done creatively.
 
 - Reel motion (22 Oct, the standard from now on): `marketing/hf-simple-logos-reel`, built on an After Effects project
   the user sent. A camera per shot that lands fast and settles, then speeds into a hard cut with a 0.3 s blur pulse;
