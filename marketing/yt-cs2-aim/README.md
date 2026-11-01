@@ -20,12 +20,28 @@ concrete wall with stencilled paint read as too realistic and is in the git hist
 ## Rebuild
 
 - `python prep.py` builds `img/ak.png` (the gun's mask is kept in `src/`).
-- `python minimal1.py` builds `out/raw.png`; `python finish.py` grades it into `out/cs2-one-hole.png` and `.jpg`.
+- `python minimal1.py` builds `out/raw.png`; `python finish.py cs2-one-hole` grades it into `out/cs2-one-hole.png` and
+  `.jpg`.
   (Pillow, numpy, scipy, OpenCV.)
+
+## 2. i can see you (`out/cs2-see-you.jpg`, 1920×1080)
+
+The idea: the frame is the wall, and the enemy behind it shows only the way a wallhack draws him.
+
+1. Plain light grey: the wall.
+2. The Phoenix agent in the balaclava, from his Steam item render (head and shoulders, 316×348, scaled to 780 px tall;
+   at that size only his shape and shading matter). Flat red with his own shading kept, slightly see-through.
+3. White corner brackets round him with a dark edge, a green health bar on the left, and his name above the box:
+   visuals.gg, the watermark.
+4. The CS2 crosshair in its default green, between the eye holes of his mask.
+5. The AK-47 Point Disarray mirrored to point right, low on the left, cropped by the left edge.
+6. i can / see you in Bricolage Grotesque 800 at 300 px, left.
+7. `python minimal2.py`, then `python finish.py cs2-see-you`.
 
 ## Sources
 
 - Bullet hole: from "Damaged concrete wall with large hole and impact marks", Pexels (photo 35452995), free under
   the Pexels licence.
 - AK-47 Point Disarray: the skin's Steam Workshop render by C-LEGFX, via the Counter-Strike wiki. Game art.
+- Phoenix agent (Soldier): his CS2 item image from the Steam Community Market. Game art.
 - Font: Bricolage Grotesque, SIL Open Font License, from Google Fonts.
