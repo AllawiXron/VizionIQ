@@ -1,30 +1,34 @@
 # CS2 cheat video: YouTube thumbnails
 
-Thumbnails for the CS2 cheat video, built on two reference thumbnails I was sent: a light grey studio background,
-big black type with one word stressed, one game object as the hero, and the visuals.gg watermark.
+Thumbnails for the CS2 cheat video. Two thumbnails were sent as a reference for the feel only (light, one object, big
+type); a first version followed one of them too closely and was replaced. Each one carries the visuals.gg watermark.
 
-## 1. inhuman aim (`out/cs2-inhuman-aim.jpg`, 1920×1080)
+## 1. 30 bullets, 1 hole (`out/cs2-one-hole.jpg`, 1920×1080)
 
-1. Light studio grey (`#e4e4e2`), a little darker toward the edges.
-2. inhuman aim in PT Serif: inhuman in Regular at 168 px, aim in Bold Italic at 214 px, like the reference's
-   bookish serif with the stressed word.
-3. The AK-47 Point Disarray, a real CS2 skin, cut from its Steam Workshop render (2000 px, side-on), 1778 px wide on
-   the frame with a soft shadow. Behind it the smear (`prep.py`): the gun dragged sideways in red, cyan and green
-   copies, motion-blurred along the barrel, as if it just snapped onto a target.
-4. A red marker arrow from aim down to the receiver, stopping just above the gun so it doesn't vanish on the red skin.
-   It is drawn as a brush stroke: the width swells and thins, the line wobbles, the ink is a little uneven.
-5. Watermark bottom right: visuals.gg in the same Bold Italic, grey, with the dot in red, the aim dot.
+The idea: every CS player knows the AK's spray climbs and pulls sideways; here a whole magazine went through one hole.
+
+1. The wall (`wall1.py`): the upper right of a photo of a concrete panel wall full of bullet holes. Every hole and
+   its soot is found (darker than the concrete around it), filled from that concrete at quarter size, and the grain
+   is put back from clean parts of the same wall, so the panels, joints and rain streaks stay real. A little lighter
+   top left, falling off toward the bottom right.
+2. The one hole: a single crater from the same photo, chosen between joints, set back on the clean wall right of
+   the words at about 320 px.
+3. 30 BULLETS / 1 HOLE stencilled on the wall like spray paint (Big Shoulders Stencil Display, 800 and 900): the paint
+   takes the wall's texture, the edges are a little soft, with a faint overspray.
+4. Watermark: visuals.gg as a red spray tag in the top right, the way a CS2 graffiti sits on a wall (Permanent Marker).
+5. The AK-47 Point Disarray (`prep.py` cuts it from its workshop render) across the bottom, 2150 px wide so both
+   edges crop it, turned 3°, with its shadow on the wall.
 6. `finish.py`: gentle S curve, warm/cool split, about 2.5 % grain; writes the PNG and the JPG with no metadata.
 
 ## Rebuild
 
-- `python prep.py` (Pillow, numpy, scipy, OpenCV) builds `img/ak.png`, `img/smear.png` and `img/arrow.png`. The gun's
-  cut-out mask is kept in `src/`.
-- `NODE_PATH=/opt/node-tools/node_modules node render.cjs` renders `thumb.html` to `out/raw.png`.
-- `python finish.py` grades it and writes `out/cs2-inhuman-aim.png` and `.jpg`.
+- `python prep.py` builds `img/ak.png` (the mask is kept in `src/`).
+- `python wall1.py` builds `out/raw.png`; `python finish.py` grades it into `out/cs2-one-hole.png` and `.jpg`.
+  (Pillow, numpy, scipy, OpenCV.)
 
 ## Sources
 
-- AK-47 Point Disarray: the skin's Steam Workshop render by C-LEGFX, via the Counter-Strike wiki
-  (`Csgo-ak47-point-disarray-workshop.jpg`). Game art; used as fan content, as the references do.
-- Font: PT Serif, SIL Open Font License, from Google Fonts.
+- Wall: "Damaged concrete wall with large hole and impact marks", Pexels (photo 35452995), free under the Pexels
+  licence.
+- AK-47 Point Disarray: the skin's Steam Workshop render by C-LEGFX, via the Counter-Strike wiki. Game art.
+- Fonts: Big Shoulders Stencil Display (SIL Open Font License) and Permanent Marker (Apache 2.0), from Google Fonts.

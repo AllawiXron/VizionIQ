@@ -1,5 +1,5 @@
 """Grade over the whole frame, then the two exports with no metadata.
-out/raw.png -> out/cs2-inhuman-aim.png (lossless) and out/cs2-inhuman-aim.jpg (YouTube takes thumbnails up to 2 MB)"""
+out/raw.png -> out/cs2-one-hole.png (lossless) and out/cs2-one-hole.jpg (YouTube takes thumbnails up to 2 MB)"""
 import os
 import numpy as np
 from PIL import Image
@@ -26,11 +26,11 @@ rng = np.random.default_rng(7)
 im = im + rng.normal(0, .025, im.shape[:2]).astype(np.float32)[..., None]
 
 out = Image.fromarray((np.clip(im, 0, 1) * 255 + .5).astype(np.uint8))
-out.save('out/cs2-inhuman-aim.png', optimize=True)
+out.save('out/cs2-one-hole.png', optimize=True)
 q = 93
 while True:
-    out.save('out/cs2-inhuman-aim.jpg', quality=q, subsampling=0, optimize=True)
-    if os.path.getsize('out/cs2-inhuman-aim.jpg') < 1_950_000 or q <= 80:
+    out.save('out/cs2-one-hole.jpg', quality=q, subsampling=0, optimize=True)
+    if os.path.getsize('out/cs2-one-hole.jpg') < 1_950_000 or q <= 80:
         break
     q -= 2
-print('jpg quality', q, os.path.getsize('out/cs2-inhuman-aim.jpg') // 1024, 'KB')
+print('jpg quality', q, os.path.getsize('out/cs2-one-hole.jpg') // 1024, 'KB')
