@@ -215,6 +215,7 @@ These are the defaults Claude reaches for when it designs with code. Each one al
   CS2 cheat thumbnails (1 Nov): `marketing/yt-cs2-aim`, on the user's two references (light grey, big black serif or
   sans type with one stressed word, one game object), with a visuals.gg watermark the user wants done creatively.
   References are for the feel only: a version that copied one's layout (red arrow, colour smear) was rejected as a copy.
+  The user wants these minimal and modern, not realistic: a version on a real shot concrete wall was rejected (1 Nov).
 
 - Reel motion (22 Oct, the standard from now on): `marketing/hf-simple-logos-reel`, built on an After Effects project
   the user sent. A camera per shot that lands fast and settles, then speeds into a hard cut with a 0.3 s blur pulse;

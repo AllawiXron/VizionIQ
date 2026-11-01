@@ -6,29 +6,26 @@ type); a first version followed one of them too closely and was replaced. Each o
 ## 1. 30 bullets, 1 hole (`out/cs2-one-hole.jpg`, 1920×1080)
 
 The idea: every CS player knows the AK's spray climbs and pulls sideways; here a whole magazine went through one hole.
+Kept minimal and modern on purpose: one light background, one line of big type, one object. (A version on a real
+concrete wall with stencilled paint read as too realistic and is in the git history.)
 
-1. The wall (`wall1.py`): the upper right of a photo of a concrete panel wall full of bullet holes. Every hole and
-   its soot is found (darker than the concrete around it), filled from that concrete at quarter size, and the grain
-   is put back from clean parts of the same wall, so the panels, joints and rain streaks stay real. A little lighter
-   top left, falling off toward the bottom right.
-2. The one hole: a single crater from the same photo, chosen between joints, set back on the clean wall right of
-   the words at about 320 px.
-3. 30 BULLETS / 1 HOLE stencilled on the wall like spray paint (Big Shoulders Stencil Display, 800 and 900): the paint
-   takes the wall's texture, the edges are a little soft, with a faint overspray.
-4. Watermark: visuals.gg as a red spray tag in the top right, the way a CS2 graffiti sits on a wall (Permanent Marker).
-5. The AK-47 Point Disarray (`prep.py` cuts it from its workshop render) across the bottom, 2150 px wide so both
-   edges crop it, turned 3°, with its shadow on the wall.
-6. `finish.py`: gentle S curve, warm/cool split, about 2.5 % grain; writes the PNG and the JPG with no metadata.
+1. Plain light grey, a touch lighter at the top.
+2. Bricolage Grotesque, a grotesk with some character in its curves: 30 bullets at 118 px in grey, 1 hole at 392 px
+   in near-black. The o of hole is the bullet hole: a real crater cut from a photo of a shot concrete wall, the
+   concrete round it toned to the background so it reads as a hole punched through the page.
+3. The AK-47 Point Disarray under the words, 1250 px wide, tipped up 5°, muzzle just below the hole, soft shadow.
+4. Watermark bottom left: visuals.gg in the same face, grey, its dot a tiny copy of the same bullet hole.
+5. `finish.py`: gentle S curve, warm/cool split, about 2.5 % grain; writes the PNG and the JPG with no metadata.
 
 ## Rebuild
 
-- `python prep.py` builds `img/ak.png` (the mask is kept in `src/`).
-- `python wall1.py` builds `out/raw.png`; `python finish.py` grades it into `out/cs2-one-hole.png` and `.jpg`.
+- `python prep.py` builds `img/ak.png` (the gun's mask is kept in `src/`).
+- `python minimal1.py` builds `out/raw.png`; `python finish.py` grades it into `out/cs2-one-hole.png` and `.jpg`.
   (Pillow, numpy, scipy, OpenCV.)
 
 ## Sources
 
-- Wall: "Damaged concrete wall with large hole and impact marks", Pexels (photo 35452995), free under the Pexels
-  licence.
+- Bullet hole: from "Damaged concrete wall with large hole and impact marks", Pexels (photo 35452995), free under
+  the Pexels licence.
 - AK-47 Point Disarray: the skin's Steam Workshop render by C-LEGFX, via the Counter-Strike wiki. Game art.
-- Fonts: Big Shoulders Stencil Display (SIL Open Font License) and Permanent Marker (Apache 2.0), from Google Fonts.
+- Font: Bricolage Grotesque, SIL Open Font License, from Google Fonts.
