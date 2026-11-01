@@ -26,17 +26,19 @@ concrete wall with stencilled paint read as too realistic and is in the git hist
 
 ## 2. i can see you (`out/cs2-see-you.jpg`, 1920×1080)
 
-The idea: the frame is the wall, and the enemy behind it shows only the way a wallhack draws him.
+The idea: the enemy is behind mid doors on Dust2 and the wallhack shows him through the wood. (A first version on a
+plain grey background looked too simple and is in the git history.)
 
-1. Plain light grey: the wall.
-2. The Phoenix agent in the balaclava, from his Steam item render (head and shoulders, 316×348, scaled to 780 px tall;
-   at that size only his shape and shading matter). Flat red with his own shading kept, slightly see-through.
-3. White corner brackets round him with a dark edge, a green health bar on the left, and his name above the box:
-   visuals.gg, the watermark.
-4. The CS2 crosshair in its default green, between the eye holes of his mask.
-5. The AK-47 Point Disarray mirrored to point right, low on the left, cropped by the left edge.
-6. i can / see you in Bricolage Grotesque 800 at 300 px, left.
-7. `python minimal2.py`, then `python finish.py cs2-see-you`.
+1. Scene: Valve's own CS2 screenshot of Dust2 mid doors from counter-strike.net, cropped to 16:9 and softened a
+   little so the gun stays the sharpest thing.
+2. Behind the right-hand door, the Phoenix agent in the balaclava (his Steam item render, 316×348, at 690 px tall):
+   red with his own shading, the door's grain and iron ring still showing through him, and a faint red light on the
+   wood round him.
+3. White corner brackets, a green health bar, and his name tag above: visuals.gg, the watermark.
+4. The CS2 crosshair in its default green on his head.
+5. The AK-47 Point Disarray big in the foreground, mirrored to point at the door, with its shadow on the ground.
+6. i can / see you in Bricolage Grotesque 800 at 250 px, white with a soft shadow, on the sunlit wall at the left.
+7. `python scene2.py`, then `python finish.py cs2-see-you`.
 
 ## Sources
 
@@ -44,4 +46,5 @@ The idea: the frame is the wall, and the enemy behind it shows only the way a wa
   the Pexels licence.
 - AK-47 Point Disarray: the skin's Steam Workshop render by C-LEGFX, via the Counter-Strike wiki. Game art.
 - Phoenix agent (Soldier): his CS2 item image from the Steam Community Market. Game art.
+- Dust2 mid doors: CS2 screenshot from counter-strike.net (Valve). Game art.
 - Font: Bricolage Grotesque, SIL Open Font License, from Google Fonts.
