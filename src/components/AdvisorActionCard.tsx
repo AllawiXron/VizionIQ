@@ -88,12 +88,10 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
   const [addedToPlan, setAddedToPlan] = useState(false);
   const [showSecondary, setShowSecondary] = useState(false);
 
-  // Resolve base action config
   const actionConfig: AdvisorActionConfig = topicId
     ? getAdvisorActionForTopic(topicId)
     : resolveAdvisorActionFromContent(responseText || scriptText || "");
 
-  // Prioritize explicit recommendations from Structured Diagnosis if valid
   const effectiveChapterId = (recommendedChapterId && isValidChapterId(recommendedChapterId))
     ? recommendedChapterId
     : actionConfig.chapterId;
@@ -106,7 +104,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
   const effectiveToolTitle = recommendedToolTitle || actionConfig.toolTitleAr || "الأداة الموصى بها";
   const hasValidTool = isValidToolId(effectiveToolId);
 
-  // Check if response contains an applicable script
   const hasScript = Boolean(
     scriptText ||
     responseText.includes("") ||
@@ -117,7 +114,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
 
   const relevanceLabel = customRelevanceReason || actionConfig.relevanceReasonAr;
 
-  // Handlers
   const handleCopyScript = () => {
     const textToCopy = scriptText || responseText;
     if (!textToCopy) return;
@@ -129,7 +125,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "تم نسخ السكريبت بنجاح!",
+        "تم نسخ السكريبت",
         "تكدر الآن لصقه وإرساله للزبون مباشرة."
       );
     }
@@ -148,7 +144,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "تم نسخ نص الإجابة كاملاً",
+        "تم نسخ نص الإجابة كاملا",
         "تم حفظ محتوى التوصية في الحافظة."
       );
     }
@@ -244,7 +240,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       onShowToast(
         "navigate",
         `جاري فتح ${effectiveChapterTitle}`,
-        "تم حفظ محادثتك مع المستشار الذكي تلقائياً."
+        "تم حفظ محادثتك مع المستشار الذكي تلقائيا."
       );
     }
 
@@ -253,11 +249,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     }
   };
 
-  // Determine ONE Primary Action:
-  // Priority 1: Interactive Tool -> "افتح الأداة: ..."
-  // Priority 2: In-depth Chapter -> "راجع الفصل: ..."
-  // Priority 3: Ready Script -> "انسخ السكريبت"
-  // Priority 4: 7-Day Plan -> "أضفها لخطة 7 أيام"
   const primaryType: "tool" | "chapter" | "script" | "plan" = hasValidTool
     ? "tool"
     : hasValidChapter
@@ -266,7 +257,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     ? "script"
     : "plan";
 
-  // Determine relevant secondary actions
   const hasSecondaryActions = true;
 
   return (
@@ -274,7 +264,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       className={`rounded-2xl bg-[#081436] border border-white/10 p-3.5 sm:p-4 text-vz-accent dir-rtl space-y-3 ${className}`}
       data-testid="advisor-action-card"
     >
-      {/* 1. Subtle relevance indicator */}
       {relevanceLabel && (
         <div className="space-y-1">
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-vz-accent">
@@ -287,7 +276,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         </div>
       )}
 
-      {/* 2. One Primary Next Action (The ONLY Gold Button on the card) */}
       <div className="pt-0.5">
         {primaryType === "tool" && (
           <button             type="button"
@@ -346,7 +334,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         )}
       </div>
 
-      {/* 3. “خيارات إضافية” button & disclosure (min-h-[44px], accessible toggle) */}
       {hasSecondaryActions && (
         <div>
           <button             type="button"
@@ -368,7 +355,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               id="advisor-secondary-actions"
               className="mt-2 pt-2 border-t border-white/10 space-y-2 animate-in fade-in slide-in-from-top-1 duration-200"
             >
-              {/* Secondary: Save recommendation */}
               <button                 type="button"
                 onClick={handleSaveRecommendation}
                 className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ saved ? "bg-slate-900/40 border-white/18 text-vz-accent" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
@@ -380,7 +366,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                 <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </button>
 
-              {/* Secondary: Open Chapter if not primary */}
               {primaryType !== "chapter" && hasValidChapter && (
                 <button                   type="button"
                   onClick={handleOpenChapter}
@@ -394,7 +379,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                 </button>
               )}
 
-              {/* Secondary: Open Tool if not primary */}
               {primaryType !== "tool" && hasValidTool && (
                 <button                   type="button"
                   onClick={handleOpenTool}
@@ -408,7 +392,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                 </button>
               )}
 
-              {/* Secondary: Add to 7-Day Plan if not primary */}
               {primaryType !== "plan" && (
                 <button                   type="button"
                   onClick={handleAddToPlan}
@@ -426,7 +409,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                 </button>
               )}
 
-              {/* Secondary: Copy response */}
               <button                 type="button"
                 onClick={handleCopyFull}
                 className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ isFullCopiedState ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300" : "bg-white/5 hover:bg-white/10 border-white/10 text-slate-200" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
@@ -437,12 +419,11 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                   ) : (
                     <Copy className="w-4 h-4 text-slate-400 shrink-0" />
                   )}
-                  <span>{isFullCopiedState ? "تم نسخ الإجابة بنجاح ✓" : "نسخ نص الإجابة كاملاً"}</span>
+                  <span>{isFullCopiedState ? "تم نسخ الإجابة بنجاح ✓" : "نسخ نص الإجابة كاملا"}</span>
                 </span>
                 <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </button>
 
-              {/* Secondary: Copy Script if not primary */}
               {hasScript && primaryType !== "script" && (
                 <button                   type="button"
                   onClick={handleCopyScript}
@@ -460,7 +441,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                 </button>
               )}
 
-              {/* Secondary: Follow-up action prompts */}
               {followUpActions && followUpActions.length > 0 && (
                 <div className="pt-2 border-t border-white/5 space-y-1.5">
                   <span className="text-[11px] text-slate-400 block font-medium">متابعات وأسئلة سريعة:</span>
@@ -479,7 +459,6 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                 </div>
               )}
 
-              {/* Secondary: Feedback controls (Compact and secondary) */}
               {feedback && feedback.onRate && (
                 <div className="pt-2 border-t border-white/5 space-y-2">
                   <span className="text-[11px] text-slate-400 block font-medium">تقييم جودة الإجابة:</span>

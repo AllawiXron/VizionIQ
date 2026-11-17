@@ -64,7 +64,7 @@ const MAIN_PROBLEMS = [
   },
   {
     id: "ad_cost",
-    title: "كلفة الرسالة بالإعلانات مرتفعة جداً (CPA عالي)",
+    title: "كلفة الرسالة بالإعلانات مرتفعة جدا (CPA عالي)",
     desc: "الإعلانات تستهلك الميزانية بدون نتائج كافية.",
     icon: "",
   },
@@ -89,7 +89,7 @@ const MAIN_PROBLEMS = [
   {
     id: "other_problem",
     title: "تحدي آخر يحتاج استشارة مخصصة",
-    desc: "أريد تشخيصاً شاملاً لجميع أجزاء مشروعي.",
+    desc: "أريد تشخيصا شاملا لجميع أجزاء مشروعي.",
     icon: "",
   },
 ];
@@ -103,7 +103,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
-  // Form Profile State
   const [businessType, setBusinessType] = useState<string>(initialProfile?.businessType || "fashion");
   const [productOrService, setProductOrService] = useState<string>(initialProfile?.productOrService || "");
   const [salesChannel, setSalesChannel] = useState<string>(initialProfile?.salesChannel || "instagram");
@@ -130,7 +129,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
   );
   const [notes, setNotes] = useState<string>(initialProfile?.notes || "");
 
-  // Load saved profile on mount if available
   useEffect(() => {
     try {
       const saved = localStorage.getItem(storageKey);
@@ -149,11 +147,9 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
         if (parsed.notes) setNotes(parsed.notes);
       }
     } catch {
-      // Ignore storage errors
     }
   }, [storageKey]);
 
-  // Derived numeric values for live calculation
   const parsedSellingPrice = normalizeIraqiNumericInput(sellingPriceStr);
   const parsedProductCost = normalizeIraqiNumericInput(productCostStr);
   const parsedDailyMessages = normalizeIraqiNumericInput(dailyMessagesStr);
@@ -173,17 +169,17 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
     if (step === 1) {
       if (!productOrService.trim()) {
-        errors.productOrService = "رجاءً كتابة اسم المنتج أو الخدمة باختصار (مثال: حقائب نسائية، ساعات رجالية).";
+        errors.productOrService = "رجاء كتابة اسم المنتج أو الخدمة باختصار (مثال: حقائب نسائية، ساعات رجالية).";
       }
     } else if (step === 2) {
       const priceVal = validateDiagnosticNumericInput(sellingPriceStr, "سعر البيع", { min: 1000 });
       if (!priceVal.isValid) {
-        errors.sellingPrice = priceVal.error || "رجاءً إدخال سعر بيع صحيح بالدينار.";
+        errors.sellingPrice = priceVal.error || "رجاء إدخال سعر بيع صحيح بالدينار.";
       }
 
       const costVal = validateDiagnosticNumericInput(productCostStr, "كلفة المنتج", { min: 0 });
       if (!costVal.isValid) {
-        errors.productCost = costVal.error || "رجاءً إدخال كلفة صحيحة للمنتج بالدينار.";
+        errors.productCost = costVal.error || "رجاء إدخال كلفة صحيحة للمنتج بالدينار.";
       }
 
       if (priceVal.isValid && costVal.isValid && priceVal.value !== null && costVal.value !== null) {
@@ -242,11 +238,9 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
       notes: notes.trim(),
     };
 
-    // Save profile locally
     try {
       localStorage.setItem(storageKey, JSON.stringify(profile));
     } catch {
-      // Storage safe ignore
     }
 
     onComplete(profile, currentMetrics);
@@ -256,7 +250,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
   return (
     <div className="vizion-diagnostic-stepper flex flex-col h-full max-h-[85vh] bg-[#0a163c] text-vz-accent rounded-2xl overflow-hidden border border-white/9 shadow-2xl">
-      {/* Header Bar */}
       <div className="p-4 sm:p-5 border-b border-white/9">
         <div className="flex items-center justify-between gap-3 mb-3">
           <div className="flex items-center gap-2.5">
@@ -265,7 +258,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-bold text-vz-accent">
-                شخّص مشروعك مع مستشار فيزيون
+                شخص مشروعك مع مستشار فيزيون
               </h2>
               <p className="text-xs text-slate-400">
                 تشخيص ذكي مبني على أرقام وسيكولوجية السوق العراقي
@@ -281,7 +274,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           )}
         </div>
 
-        {/* Progress Bar & Stepper Indicators */}
         <div className="space-y-1.5">
           <div className="flex justify-between text-xs text-slate-400 font-medium">
             <span>الخطوة {currentStep} من 4</span>
@@ -302,9 +294,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
         </div>
       </div>
 
-      {/* Main Body - Step Content */}
       <div className="vizion-diagnostic-body flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-5 custom-scrollbar">
-        {/* Step 1: Business Identity & Sales Channel */}
         {currentStep === 1 && (
           <div className="space-y-4 animate-fadeIn">
             <div>
@@ -334,7 +324,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             <div>
               <label htmlFor="diag-product-service" className="block text-sm font-semibold text-slate-200 mb-1.5">
-                2. ما هو المنتج أو الخدمة التي تبيعها حالياً؟ <span className="text-vz-accent">*</span>
+                2. ما هو المنتج أو الخدمة التي تبيعها حاليا؟ <span className="text-vz-accent">*</span>
               </label>
               <input                 
                 id="diag-product-service"
@@ -381,7 +371,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           </div>
         )}
 
-        {/* Step 2: Pricing & Costs in IQD */}
         {currentStep === 2 && (
           <div className="space-y-4 animate-fadeIn">
             <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
@@ -389,7 +378,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                 <DollarSign className="w-4 h-4" /> التسعير بالدينار العراقي:
               </span>
               <p>
-                أدخل الأرقام بالدينار (تكدر كتابة 25000 أو 25 ألف). سنحسب لك الهامش الإجمالي للقطعة فوراً.
+                أدخل الأرقام بالدينار (تكدر كتابة 25000 أو 25 ألف). سنحسب لك الهامش الإجمالي للقطعة فورا.
               </p>
             </div>
 
@@ -449,7 +438,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               </div>
             </div>
 
-            {/* Live Gross Margin Card */}
             {currentMetrics.grossMargin !== null && (
               <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900 via-slate-900/20 to-slate-900 border border-white/14 space-y-2">
                 <div className="flex items-center justify-between">
@@ -469,13 +457,12 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           </div>
         )}
 
-        {/* Step 3: Messages, Orders & Delivery Areas */}
         {currentStep === 3 && (
           <div className="space-y-4 animate-fadeIn">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="diag-daily-messages" className="block text-sm font-semibold text-slate-200 mb-1.5">
-                  كم رسالة أو استفسار يوصلك يومياً؟
+                  كم رسالة أو استفسار يوصلك يوميا؟
                 </label>
                 <input                   
                   id="diag-daily-messages"
@@ -494,7 +481,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
               <div>
                 <label htmlFor="diag-daily-orders" className="block text-sm font-semibold text-slate-200 mb-1.5">
-                  كم طلب مؤكد ومغلق يومياً تقريباً؟
+                  كم طلب مؤكد ومغلق يوميا تقريبا؟
                 </label>
                 <input                   
                   id="diag-daily-orders"
@@ -512,7 +499,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               </div>
             </div>
 
-            {/* Live Conversion Rate Preview */}
             {currentMetrics.conversionRate !== null && (
               <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
                 <div>
@@ -567,12 +553,11 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           </div>
         )}
 
-        {/* Step 4: Main Challenge & Review */}
         {currentStep === 4 && (
           <div className="space-y-4 animate-fadeIn">
             <div>
               <label className="block text-sm font-semibold text-slate-200 mb-2">
-                ما هو التحدي الأكبر والمشكلة التي تريد حلها فوراً؟
+                ما هو التحدي الأكبر والمشكلة التي تريد حلها فورا؟
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {MAIN_PROBLEMS.map((prob) => (
@@ -600,12 +585,11 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               <textarea                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
-                placeholder="مثال: أصرف 15$ يومياً إعلانات فيسبوك، والتوصيل مع شركة الأمانة، والزبائن أكثرهم من البصرة والنجف..."
+                placeholder="مثال: أصرف 15$ يوميا إعلانات فيسبوك، والتوصيل مع شركة الأمانة، والزبائن أكثرهم من البصرة والنجف..."
                 className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl p-3 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition resize-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               />
             </div>
 
-            {/* Diagnostic Summary Badge */}
             <div className="p-3.5 bg-gradient-to-r from-white/5 via-slate-900 to-white/5 border border-white/9 rounded-xl flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-slate-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -617,7 +601,6 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
         )}
       </div>
 
-      {/* Footer Navigation Bar */}
       <div className="vizion-diagnostic-footer p-4 bg-white/[0.02] border-t border-slate-800/80 flex items-center justify-between gap-3">
         {currentStep > 1 ? (
           <button             type="button"

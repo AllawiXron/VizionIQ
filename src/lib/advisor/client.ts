@@ -1,9 +1,3 @@
-/**
- * Browser side of the advisor stream. Reads NDJSON events from
- * /api/advisor/chat and reports text as it arrives. Falls back to the old
- * JSON response shape transparently (e.g. if a proxy buffers the stream or
- * an older server answers).
- */
 import type { BusinessProfile } from "./profile";
 
 export interface AdvisorImagePayload {
@@ -19,7 +13,6 @@ export interface AdvisorRequest {
   diagnosticProfile?: unknown;
   userContext?: unknown;
   profile?: BusinessProfile;
-  /** Answer text already on screen; the server continues after it. */
   continueFrom?: string;
 }
 
@@ -32,11 +25,8 @@ export interface StreamOutcome {
   text: string;
   requestId?: string;
   fallback?: boolean;
-  /** Set when the stream failed after some text had already arrived. */
   error?: string;
-  /** The server stopped near its time limit; ask for a continuation. */
   truncated?: boolean;
-  /** The connection ended without a "done" event (e.g. the platform cut it). */
   cut?: boolean;
 }
 
@@ -61,7 +51,6 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
     try {
       data = JSON.parse(raw);
     } catch {
-      /* not JSON */
     }
     if (!res.ok || !data.reply) throw new AdvisorHttpError(data.error || `تعذر الحصول على رد (${res.status}).`, res.status);
     onDelta(data.reply);
@@ -115,7 +104,7 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
   outcome.text = text;
   if (!sawEnd) outcome.cut = true;
   if (!text && !outcome.error && !body.continueFrom) {
-    throw new AdvisorHttpError(sawEnd ? "وصل رد فارغ من المستشار. جرّب مرة ثانية." : "انقطع الاتصال قبل لا يوصل الجواب. جرّب مرة ثانية.", 500);
+    throw new AdvisorHttpError(sawEnd ? "وصل رد فارغ من المستشار. جرب مرة ثانية." : "انقطع الاتصال قبل لا يوصل الجواب. جرب مرة ثانية.", 500);
   }
   return outcome;
 }

@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from "react";
 import { motion } from "motion/react";
 import { WordsReveal } from "./ui/Motion";
@@ -14,7 +9,6 @@ interface PricingSectionProps {
   onOpenUpgradeModal?: () => void;
 }
 
-/** The one plan, shown under Home for trial members. */
 export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeModal }) => {
   const openCodeEntry = () => {
     if (onOpenUpgradeModal) onOpenUpgradeModal();
@@ -29,12 +23,12 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
         <div className="text-center space-y-3 sm:space-y-4">
           <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="vz-eyebrow text-xs sm:text-sm">
             <Sparkles className="w-4 h-4 opacity-80" />
-            <span>اشتراك واحد • تدفع مرة وحدة • مدى الحياة</span>
+            <span>اشتراك واحد، تدفع مرة وحدة، مدى الحياة</span>
           </motion.div>
           <WordsReveal
             delay={0.1}
             className="text-xl sm:text-4xl font-black text-white leading-tight tracking-tight px-2"
-            segments={["افتح كلشي، و", { text: "طبّقه على مشروعك", className: "vz-silver-text" }]}
+            segments={["افتح كلشي، و", { text: "طبقه على مشروعك", className: "vz-silver-text" }]}
           />
           <p className="text-xs sm:text-base text-white/55 leading-relaxed px-2">
             مو فيديوهات طويلة ولا قناة تلكرام: منصة تقرا بيها خطوة، تحسب أرقامك، وتنسخ الرسائل الجاهزة لمشروعك.

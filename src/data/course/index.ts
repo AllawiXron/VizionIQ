@@ -13,7 +13,6 @@ import { chapter11 } from "./chapter11.js";
 
 export type { Block, CourseChapter, Lesson } from "./types";
 
-/** Every chapter of the course, by chapter id. */
 export const courseChapters: Record<string, CourseChapter> = {
   chapter1,
   chapter2,
@@ -49,7 +48,6 @@ function blockText(b: Block): string {
 
 const words = (text: string) => text.split(/\s+/).filter(Boolean).length;
 
-/** Study time of one lesson in minutes (careful reading pace, at least 4). */
 export function lessonMinutes(lesson: Lesson): number {
   const n = words([lesson.intro, ...lesson.blocks.map(blockText), lesson.takeaway].join(" "));
   return Math.max(4, Math.round(n / 80));
@@ -59,7 +57,6 @@ export function chapterMinutes(chapter: CourseChapter): number {
   return chapter.lessons.reduce((sum, l) => sum + lessonMinutes(l), 0);
 }
 
-/** Plain text of a lesson, for search and the advisor's knowledge. */
 export function lessonText(lesson: Lesson): string {
   return [lesson.intro, ...lesson.blocks.map(blockText), lesson.takeaway].join("\n");
 }

@@ -1,9 +1,3 @@
-/**
- * Text of the answer that is streaming right now, kept outside React state.
- * Only the streaming bubble subscribes to it, so the rest of the advisor
- * (older answers, action cards, the composer) doesn't re-render while words
- * arrive. The final text is written to the message list once, at the end.
- */
 import { useSyncExternalStore } from "react";
 
 const texts = new Map<string, string>();
@@ -40,15 +34,9 @@ export function useStreamText(id: string): string {
   );
 }
 
-/**
- * How much of the streamed text to show now. Text is revealed a phrase at a
- * time (up to the last line break or sentence end) instead of word by word,
- * unless nothing has been shown for `maxWaitMs`.
- */
 export function revealUpTo(full: string, shown: number, waitedMs: number, maxWaitMs = 280): number {
   if (full.length <= shown) return shown;
   if (waitedMs >= maxWaitMs) {
-    // Waited long enough: show everything up to the last whole word.
     const lastSpace = full.lastIndexOf(" ");
     return lastSpace > shown ? lastSpace + 1 : full.length;
   }

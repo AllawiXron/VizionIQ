@@ -1,7 +1,3 @@
-/**
- * Utility functions for Vizion AI Advisor guided business diagnostic workflow.
- */
-
 import { BusinessDiagnosticProfile, DiagnosticMetrics, StructuredDiagnosticSection } from "../types";
 
 export function formatIraqiDinar(amount: number | null | undefined): string {
@@ -9,9 +5,6 @@ export function formatIraqiDinar(amount: number | null | undefined): string {
   return `${amount.toLocaleString("en-US")} د.ع`;
 }
 
-/**
- * Normalizes Eastern Arabic numerals (٠-٩) and text notations to standard numbers.
- */
 export function normalizeIraqiNumericInput(raw: string | number | null | undefined): number | null {
   if (raw === null || raw === undefined) return null;
   if (typeof raw === "number") {
@@ -21,10 +14,8 @@ export function normalizeIraqiNumericInput(raw: string | number | null | undefin
   const str = String(raw).trim();
   if (!str) return null;
 
-  // Convert Eastern Arabic numerals (٠١٢٣٤٥٦٧٨٩) to Western (0123456789)
   const westernized = str.replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d).toString());
 
-  // Handle "ألف" or "k" shorthand (e.g., "25 ألف" -> 25000, "25k" -> 25000)
   const isKilo = /ألف|الف|k|K/i.test(westernized);
   const cleanDigits = westernized.replace(/[^0-9.]/g, "");
 
@@ -40,9 +31,6 @@ export function normalizeIraqiNumericInput(raw: string | number | null | undefin
   return parsed;
 }
 
-/**
- * Validates a numeric field input from the diagnostic form.
- */
 export function validateDiagnosticNumericInput(
   raw: string | number | null | undefined,
   fieldName: string,
@@ -65,7 +53,7 @@ export function validateDiagnosticNumericInput(
     return {
       isValid: false,
       value: null,
-      error: `رجاءً إدخال رقم صحيح لحقل ${fieldName} (مثال: 25000 أو 25 ألف).`,
+      error: `رجاء إدخال رقم صحيح لحقل ${fieldName} (مثال: 25000 أو 25 ألف).`,
     };
   }
 
@@ -88,23 +76,17 @@ export function validateDiagnosticNumericInput(
   return { isValid: true, value: num };
 }
 
-/**
- * Format a number as Iraqi Dinars (IQD).
- */
 export function formatIQD(amount: number | null | undefined): string {
   if (amount === null || amount === undefined || isNaN(amount)) return "غير محدد";
   return `${Math.round(amount).toLocaleString("en-US")} د.ع`;
 }
 
-/**
- * Calculates essential local e-commerce metrics with transparent assumptions.
- */
 export function calculateDiagnosticMetrics(
   profile: Partial<BusinessDiagnosticProfile>
 ): DiagnosticMetrics {
   const assumptions: string[] = [];
   let conversionRate: number | null = null;
-  let conversionRateLabel = "غير كافٍ للحساب";
+  let conversionRateLabel = "غير كاف للحساب";
   let isConversionEstimated = false;
 
   const messages = profile.dailyMessages ?? null;
@@ -113,7 +95,7 @@ export function calculateDiagnosticMetrics(
   if (messages !== null && messages > 0 && orders !== null && orders >= 0) {
     conversionRate = Math.min(100, Math.round(((orders / messages) * 100) * 10) / 10);
     if (conversionRate >= 15) {
-      conversionRateLabel = "ممتاز جداً (أعلى من معدل السوق العراقي)";
+      conversionRateLabel = "ممتاز جدا (أعلى من معدل السوق العراقي)";
     } else if (conversionRate >= 8) {
       conversionRateLabel = "جيد وطبيعي (معدل قياسي للمحادثات)";
     } else if (conversionRate >= 4) {
@@ -172,9 +154,6 @@ export function calculateDiagnosticMetrics(
   };
 }
 
-/**
- * Builds the structured diagnostic prompt sent to the Vizion AI Advisor.
- */
 export function constructDiagnosticPrompt(
   profile: BusinessDiagnosticProfile,
   metrics: DiagnosticMetrics
@@ -198,7 +177,7 @@ export function constructDiagnosticPrompt(
     parts.push(`- ملاحظات إضافية من التاجر: ${profile.notes.trim()}`);
   }
 
-  parts.push(`\nالحسابات والمؤشرات المحسوبة محلياً:`);
+  parts.push(`\nالحسابات والمؤشرات المحسوبة محليا:`);
   if (metrics.conversionRate !== null) {
     parts.push(`- معدل التحويل المحسوب: ${metrics.conversionRate}% (${metrics.conversionRateLabel})`);
   }
@@ -209,22 +188,19 @@ export function constructDiagnosticPrompt(
   }
 
   parts.push(`\nالمطلوب صياغة تقرير تشخيصي متكامل باللهجة العراقية المهنية وفق الأقسام الإجبارية التالية:
-1. **التشخيص**: تحليل دقيق ومباشر لواقع المشروع بناءً على أرقام ومعايير السوق العراقي.
+1. **التشخيص**: تحليل دقيق ومباشر لواقع المشروع بناء على أرقام ومعايير السوق العراقي.
 2. **الأرقام المهمة**: قراءة للمعدلات الحالية والحسابات مقارنة بالمعيار الموصى به في كورس فيزيون مع بيان الفرضيات.
 3. **الأسباب المحتملة**: 2-3 أسباب جذرية للمشكلة.
 4. **أول 3 خطوات**: أول 3 خطوات عملية فورية وقابلة للتطبيق السريع خلال 48 ساعة.
 5. **النص الجاهز أو التطبيق العملي**: سكريبت محادثة للواتساب أو زاوية إعلانية باللهجة العراقية جاهز للنسخ الفوري.
 6. **المقياس الذي تتابعه**: المؤشر الرقمي الأهم لهذا الأسبوع لمراقبة التحسن.
-7. **الخطوة التالية**: خطوة واحدة محددة للبدء بها فوراً (مع ذكر الفصل أو الأداة المعنية من فصول فيزيون الـ 11).
+7. **الخطوة التالية**: خطوة واحدة محددة للبدء بها فورا (مع ذكر الفصل أو الأداة المعنية من فصول فيزيون الـ 11).
 
-*ملاحظة هامة*: إذا كانت هناك معلومة جوهرية ناقصة تؤثر على دقة التشخيص، اطلب توضيحاً سريعاً ومباشراً بلباقة بدلاً من التخمين غير المؤكد.`);
+*ملاحظة هامة*: إذا كانت هناك معلومة جوهرية ناقصة تؤثر على دقة التشخيص، اطلب توضيحا سريعا ومباشرا بلباقة بدلا من التخمين غير المؤكد.`);
 
   return parts.join("\n");
 }
 
-/**
- * Parses the structured AI advisor response into interactive UI sections.
- */
 export function parseStructuredAdvisorResponse(rawText: string): StructuredDiagnosticSection {
   const result: StructuredDiagnosticSection = {
     diagnosis: "",
@@ -238,10 +214,8 @@ export function parseStructuredAdvisorResponse(rawText: string): StructuredDiagn
 
   if (!rawText) return result;
 
-  // Clean raw suggestions tag if present
   const clean = rawText.replace(/\[SUGGESTIONS:\s*.*?\]/gi, "").trim();
 
-  // Pattern detection for sections (supports numbered or formatted section titles)
   const headerRegex = /(?:^|\n)(?:(?:\d+[\.\-\)]|\*\*|\#\#)\s*)?(?:[•\-\*]\s*)?(التشخيص الشامل|التشخيص|قراءة الأرقام|الأرقام والمؤشرات|الأرقام المهمة|الأرقام|الأسباب الجذرية|الأسباب المحتملة|الأسباب|أول 3 خطوات|الخطوات الأولى|الخطوات|النص الجاهز أو التطبيق العملي|النص الجاهز|التطبيق العملي|سكربت المحادثة|سكربت أو إجراء جاهز|السكربت الجاهز|السكربت|المقياس الذي تتابعه|المقياس الواجب متابعته|المقياس الذي يجب متابعته|المقياس|المؤشر الأهم|الخطوة التالية|الخطوة القادمة|الفصل والأداة|الفصل أو الأداة المقترحة|الفصل المقترح|الأداة المقترحة)[^\n:]*[:\n]/gi;
 
   const matches: { key: string; index: number; contentStart: number }[] = [];
@@ -310,7 +284,6 @@ export function parseStructuredAdvisorResponse(rawText: string): StructuredDiagn
     }
   }
 
-  // If diagnosis is empty, set from full text
   if (!result.diagnosis) {
     result.diagnosis = clean;
   }

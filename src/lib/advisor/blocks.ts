@@ -1,9 +1,3 @@
-/**
- * Splits an advisor answer into renderable blocks: markdown prose,
- * ```script blocks (ready-to-send messages) and ```calc blocks (live profit
- * calculator). Works on partial text while streaming: an unclosed fence is
- * returned as an open block so it can render progressively.
- */
 export type RichBlock =
   | { type: "markdown"; content: string }
   | { type: "script"; content: string; open?: boolean }

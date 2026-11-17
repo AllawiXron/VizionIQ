@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { sanitizeProfile, type BusinessProfile } from "../../lib/advisor/profile";
 
-/** The merchant's business profile, saved per access code on this device. */
 const keyFor = (userCode?: string) => `vizion_business_profile_${(userCode || "guest").toLowerCase()}`;
 
 function read(userCode?: string): BusinessProfile {
@@ -26,13 +25,11 @@ export function useBusinessProfile(userCode?: string) {
       try {
         localStorage.setItem(keyFor(userCode), JSON.stringify(clean));
       } catch {
-        /* storage full or blocked: keep in memory */
       }
     },
     [userCode]
   );
 
-  /** Merges updates (e.g. learned from the chat); returns the keys that actually changed. */
   const merge = useCallback(
     (update: BusinessProfile): (keyof BusinessProfile)[] => {
       const current = read(userCode);

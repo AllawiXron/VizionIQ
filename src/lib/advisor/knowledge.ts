@@ -1,9 +1,3 @@
-/**
- * Course knowledge for the advisor: every chapter section, playbook,
- * case study, insight, swipe file and phone script is split into small chunks and
- * ranked against the merchant's question, so answers are grounded in what
- * the course actually teaches (and can point to the right chapter).
- */
 import { chaptersList, phoneScripts } from "../../data/chaptersData.js";
 import { courseChapters, lessonText } from "../../data/course/index.js";
 import { caseStudiesList } from "../../data/caseStudiesData.js";
@@ -14,24 +8,19 @@ import { guideModules, GUIDE_RESEARCHED } from "../../data/iraqGuideData.js";
 
 export interface KnowledgeChunk {
   id: string;
-  /** Human label shown to the model, e.g. "الفصل الثالث — سلم الأسعار". */
   source: string;
   chapterId?: string;
-  /** Link token for non-chapter sources, e.g. "solution:ghosting". */
   linkId?: string;
   text: string;
 }
 
 const MAX_CHUNK_CHARS = 1600;
 
-/* ------------------------------------------------------------------ */
-/* Arabic normalisation + tokenising                                   */
-/* ------------------------------------------------------------------ */
 
 export function normalizeArabic(input: string): string {
   return input
     .toLowerCase()
-    .replace(/[ً-ٰٟـ]/g, "") // diacritics + tatweel
+    .replace(/[-ٰٟـ]/g, "")
     .replace(/[أإآٱ]/g, "ا")
     .replace(/ى/g, "ي")
     .replace(/ة/g, "ه")
@@ -50,7 +39,6 @@ const STOPWORDS = new Set(
   ).split(/\s+/)
 );
 
-/** Synonym groups: any token in a group is indexed as the group's key. */
 const SYNONYMS: Record<string, string[]> = {
   رساله: ["رساله", "رسايل", "رسائل", "مسج", "مسجات", "ميسج", "استفسار", "استفسارات", "message", "messages", "cpm", "cpr"],
   اعلان: ["اعلان", "اعلانات", "اعلاني", "حمله", "حملات", "ads", "ad", "ممول", "تمويل", "بوست", "sponsored", "campaign"],
@@ -74,7 +62,6 @@ for (const [key, words] of Object.entries(SYNONYMS)) for (const w of words) SYN_
 
 function stem(token: string): string {
   let t = token;
-  // Definite article and attached prepositions: "بالاعلان" → "اعلان".
   for (const p of ["وبال", "وال", "بال", "كال", "فال", "لل", "ال"]) {
     if (t.startsWith(p) && t.length - p.length >= 3) {
       t = t.slice(p.length);
@@ -106,9 +93,6 @@ export function tokenize(text: string): string[] {
   return out;
 }
 
-/* ------------------------------------------------------------------ */
-/* Chunking the course                                                 */
-/* ------------------------------------------------------------------ */
 
 const clip = (s: string) => (s.length > MAX_CHUNK_CHARS ? `${s.slice(0, MAX_CHUNK_CHARS)}…` : s);
 
@@ -125,29 +109,29 @@ function buildChunks(): KnowledgeChunk[] {
       chunks.push({
         id: `${id}-lesson-${i}`,
         chapterId: id,
-        source: `${label} — ${l.title}`,
+        source: `${label}، ${l.title}`,
         text: clip(`${lessonText(l)}\nالخلاصة: ${l.takeaway}`),
       })
     );
     chunks.push({
       id: `${id}-practice`,
       chapterId: id,
-      source: `${label} — طبّق على مشروعك`,
+      source: `${label}، طبق على مشروعك`,
       text: clip(ch.practice.tasks.map((t, i) => `${i + 1}. ${t.title}: ${t.detail} (تطلع بـ: ${t.output})`).join("\n")),
     });
     ch.templates.forEach((t, i) =>
       chunks.push({
         id: `${id}-template-${i}`,
         chapterId: id,
-        source: `${label} — جاهز للنسخ: ${t.title}`,
+        source: `${label}، جاهز للنسخ: ${t.title}`,
         text: clip([`متى: ${t.when}`, t.text, t.note].filter(Boolean).join("\n")),
       })
     );
     chunks.push({
       id: `${id}-mistakes`,
       chapterId: id,
-      source: `${label} — أغلاط شائعة`,
-      text: clip(ch.mistakes.map((m) => `غلط: ${m.mistake} — ليش: ${m.why} — الحل: ${m.fix}`).join("\n")),
+      source: `${label}، أغلاط شائعة`,
+      text: clip(ch.mistakes.map((m) => `غلط: ${m.mistake}، ليش: ${m.why}، الحل: ${m.fix}`).join("\n")),
     });
   }
   for (const c of caseStudiesList) {
@@ -188,7 +172,7 @@ function buildChunks(): KnowledgeChunk[] {
       source: label,
       text: clip(
         [
-          `المشكلة: «${pb.problem}»`,
+          `المشكلة: ${pb.problem}`,
           pb.promise,
           "شلون تعرف إنها مشكلتك (زين / انتبه / مشكلة):",
           ...pb.metrics.rows.map((r) => `• ${r.label}: ${r.good} / ${r.warning} / ${r.bad}`),
@@ -199,30 +183,30 @@ function buildChunks(): KnowledgeChunk[] {
     chunks.push({
       id: `pb-${pb.id}-causes`,
       linkId,
-      source: `${label} — الأسباب`,
-      text: clip(pb.causes.map((c) => `✗ ${c.cause} — العلامة: ${c.signs} — الحل: ${c.fix}`).join("\n")),
+      source: `${label}، الأسباب`,
+      text: clip(pb.causes.map((c) => `✗ ${c.cause}، العلامة: ${c.signs}، الحل: ${c.fix}`).join("\n")),
     });
     pb.steps.forEach((s, i) =>
       chunks.push({
         id: `pb-${pb.id}-step-${i}`,
         linkId,
-        source: `${label} — خطوة ${i + 1}: ${s.title}`,
+        source: `${label}، خطوة ${i + 1}: ${s.title}`,
         text: clip([s.why, ...s.how.map((h) => `• ${h}`), s.example && `مثال: ${s.example}`].filter(Boolean).join("\n")),
       })
     );
     pb.scripts.forEach((s, i) =>
-      chunks.push({ id: `pb-${pb.id}-script-${i}`, linkId, source: `${label} — رسالة جاهزة: ${s.title}`, text: clip(`${s.when}\n${s.text}`) })
+      chunks.push({ id: `pb-${pb.id}-script-${i}`, linkId, source: `${label}، رسالة جاهزة: ${s.title}`, text: clip(`${s.when}\n${s.text}`) })
     );
     chunks.push({
       id: `pb-${pb.id}-example`,
       linkId,
-      source: `${label} — مثال وأغلاط`,
+      source: `${label}، مثال وأغلاط`,
       text: clip(
         [
-          `مثال توضيحي (مو قصة حقيقية) — ${pb.example.title}: ${pb.example.story}`,
+          `مثال توضيحي (مو قصة حقيقية)، ${pb.example.title}: ${pb.example.story}`,
           ...pb.example.rows.map((r) => `${r.label}: ${r.before} ← ${r.after}`),
           `الدرس: ${pb.example.lesson}`,
-          ...pb.mistakes.map((m) => `✗ ${m.mistake} — ✓ ${m.fix}`),
+          ...pb.mistakes.map((m) => `✗ ${m.mistake}، ✓ ${m.fix}`),
         ].join("\n")
       ),
     });
@@ -240,7 +224,7 @@ function buildChunks(): KnowledgeChunk[] {
       chunks.push({
         id: `guide-${g.id}-${i}`,
         linkId,
-        source: `${label} — ${s.heading}`,
+        source: `${label}، ${s.heading}`,
         text: clip(
           [
             ...s.body,
@@ -265,9 +249,6 @@ function buildChunks(): KnowledgeChunk[] {
   return chunks;
 }
 
-/* ------------------------------------------------------------------ */
-/* Index + retrieval (BM25-style)                                      */
-/* ------------------------------------------------------------------ */
 
 interface Indexed {
   chunk: KnowledgeChunk;
@@ -297,10 +278,6 @@ export function knowledgeSize() {
   return getIndex().docs.length;
 }
 
-/**
- * Most relevant course chunks for a question, within a character budget and
- * with at most two chunks from the same chapter (so answers stay broad).
- */
 export function retrieveKnowledge(query: string, { k = 4, budgetChars = 5000 }: { k?: number; budgetChars?: number } = {}): KnowledgeChunk[] {
   const { docs, df, avgLen } = getIndex();
   const q = [...new Set(tokenize(query))];
@@ -338,17 +315,14 @@ export function retrieveKnowledge(query: string, { k = 4, budgetChars = 5000 }: 
   return picked;
 }
 
-/** Iraq Guide module list for the prompt. */
 export function guideCatalog(): string {
   return guideModules.map((g) => `- [[guide:${g.id}]] ${g.title}`).join("\n");
 }
 
-/** Playbook list for the prompt. */
 export function solutionCatalog(): string {
-  return playbooksList.map((p) => `- [[solution:${p.id}]] ${p.title} — «${p.problem}»`).join("\n");
+  return playbooksList.map((p) => `- [[solution:${p.id}]] ${p.title}، ${p.problem}`).join("\n");
 }
 
-/** Chapter list for the prompt, generated from the real course data. */
 export function chapterCatalog(): string {
-  return chaptersList.map((c) => `- [[${c.id}]] ${c.number}: ${c.title} — ${c.subtitle}`).join("\n");
+  return chaptersList.map((c) => `- [[${c.id}]] ${c.number}: ${c.title}، ${c.subtitle}`).join("\n");
 }

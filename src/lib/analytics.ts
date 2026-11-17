@@ -1,16 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- * 
- * Privacy-Conscious Product Analytics Engine for Vizion Platform.
- * 
- * STRICT PRIVACY DIRECTIVE:
- * - Tracks only structured product lifecycle events.
- * - NEVER logs raw user prompts, private customer messages, customer phone numbers,
- *   full business profiles, passwords, API keys, or full advisor conversations.
- * - Enforces zero-PII scrubbing and attribute sanitization.
- */
-
 export type AnalyticsEventType =
   | "landing_viewed"
   | "diagnosis_started"
@@ -29,7 +16,7 @@ export type AnalyticsEventType =
 export type FeedbackRating = "helpful" | "unhelpful";
 
 export type FeedbackReason =
-  | "عام جداً"
+  | "عام جدا"
   | "مو مرتبط بسؤالي"
   | "الحساب غير واضح"
   | "أريد تفاصيل أكثر"
@@ -61,7 +48,6 @@ const STORAGE_KEY_EVENTS = "vizion_analytics_events_v1";
 const STORAGE_KEY_AGGREGATES = "vizion_analytics_aggregates_v1";
 const MAX_STORED_EVENTS = 200;
 
-// Allowed non-PII attribute keys
 const ALLOWED_PROPERTY_KEYS = new Set([
   "chapterId",
   "chapterNumber",
@@ -89,9 +75,6 @@ const ALLOWED_PROPERTY_KEYS = new Set([
 let memoryEvents: AnalyticsEventPayload[] = [];
 let memoryAggregates: Record<string, number> = {};
 
-/**
- * Strips any potential PII or private strings from properties
- */
 export function sanitizeAnalyticsProperties(
   props?: Record<string, any>
 ): Record<string, string | number | boolean> {
@@ -100,7 +83,6 @@ export function sanitizeAnalyticsProperties(
   const clean: Record<string, string | number | boolean> = {};
 
   for (const [key, val] of Object.entries(props)) {
-    // Only accept allowed safe property keys
     if (!ALLOWED_PROPERTY_KEYS.has(key)) {
       continue;
     }
@@ -108,13 +90,11 @@ export function sanitizeAnalyticsProperties(
     if (typeof val === "boolean" || typeof val === "number") {
       clean[key] = val;
     } else if (typeof val === "string") {
-      // Scrub any Iraqi phone numbers (e.g. 07XXXXXXXX) or emails or API keys
       let safeStr = val
         .replace(/07[3-9]\d{8}/g, "[PHONE_REDACTED]")
         .replace(/[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/g, "[EMAIL_REDACTED]")
         .replace(/AIza[0-9A-Za-z-_]{35}/g, "[KEY_REDACTED]");
 
-      // Limit length to avoid storing large text blocks
       if (safeStr.length > 80) {
         safeStr = safeStr.substring(0, 80);
       }
@@ -125,9 +105,6 @@ export function sanitizeAnalyticsProperties(
   return clean;
 }
 
-/**
- * Central event tracking function
- */
 export function trackEvent(
   eventType: AnalyticsEventType,
   properties?: Record<string, any>
@@ -141,21 +118,17 @@ export function trackEvent(
 
   try {
     if (typeof window !== "undefined" && window.localStorage) {
-      // 1. Update In-Memory / Local Storage Event Log
       const rawExisting = localStorage.getItem(STORAGE_KEY_EVENTS);
       const existing: AnalyticsEventPayload[] = rawExisting ? JSON.parse(rawExisting) : [];
       
-      // Maintain sliding window of events
       const updated = [eventPayload, ...existing].slice(0, MAX_STORED_EVENTS);
       localStorage.setItem(STORAGE_KEY_EVENTS, JSON.stringify(updated));
 
-      // 2. Update Fast Aggregates
       const rawAggregates = localStorage.getItem(STORAGE_KEY_AGGREGATES);
       const aggregates: Record<string, number> = rawAggregates ? JSON.parse(rawAggregates) : {};
       aggregates[eventType] = (aggregates[eventType] || 0) + 1;
       localStorage.setItem(STORAGE_KEY_AGGREGATES, JSON.stringify(aggregates));
 
-      // 3. Dispatch window custom event for reactive UI updates
       window.dispatchEvent(
         new CustomEvent("vizion-analytics-event", {
           detail: eventPayload,
@@ -173,9 +146,6 @@ export function trackEvent(
   }
 }
 
-/**
- * Returns aggregated analytics summary for admin and quality review
- */
 export function getAnalyticsSummary(): AnalyticsSummary {
   const defaultSummary: AnalyticsSummary = {
     totalEvents: 0,
@@ -227,7 +197,6 @@ export function getAnalyticsSummary(): AnalyticsSummary {
       total += eventsByType[key];
     }
 
-    // Feedback calculations
     let helpful = 0;
     let unhelpful = 0;
     const reasonsBreakdown: Record<string, number> = {};
@@ -268,9 +237,6 @@ export function getAnalyticsSummary(): AnalyticsSummary {
   }
 }
 
-/**
- * Clear analytics data
- */
 export function clearAnalyticsData(): void {
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.removeItem(STORAGE_KEY_EVENTS);

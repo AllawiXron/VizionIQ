@@ -16,19 +16,11 @@ type DivProps = Omit<HTMLMotionProps<"div">, "initial" | "whileInView" | "viewpo
 
 interface RevealProps extends DivProps {
   delay?: number;
-  /** Starting vertical offset in px. */
   y?: number;
-  /** Starting scale. */
   scale?: number;
-  /** Fraction of the element that must be visible before it reveals. */
   amount?: number;
 }
 
-/**
- * Scroll reveal: fades up from a soft blur and settles at full scale the first
- * time the element enters the viewport. Uses IntersectionObserver under the
- * hood (via motion's whileInView), so nothing runs while idle.
- */
 export function Reveal({ delay = 0, y = 24, scale = 0.97, amount = 0.15, transition, children, ...rest }: RevealProps) {
   const reduce = useReducedMotion();
   const blur = allowBlur();
@@ -51,7 +43,6 @@ interface RevealGroupProps extends DivProps {
   amount?: number;
 }
 
-/** Container that reveals its <RevealItem> children in a short cascade. */
 export function RevealGroup({ stagger = 0.07, delay = 0, amount = 0.1, children, ...rest }: RevealGroupProps) {
   return (
     <motion.div
@@ -76,19 +67,12 @@ export function RevealItem({ children, ...rest }: Omit<HTMLMotionProps<"div">, "
 
 interface MagneticProps {
   children: React.ReactNode;
-  /** Fraction of the cursor offset the element follows (keep small). */
   strength?: number;
-  /** Max travel in px in any direction. */
   max?: number;
-  /** Invisible padding (px) around the child that already attracts the cursor. */
   reach?: number;
   className?: string;
 }
 
-/**
- * Magnetic wrapper for primary CTAs: the child drifts a few pixels toward the
- * cursor and springs back on leave. Desktop + motion-allowed only.
- */
 export function Magnetic({ children, strength = 0.22, max = 8, reach = 16, className }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -124,9 +108,6 @@ export function Magnetic({ children, strength = 0.22, max = 8, reach = 16, class
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Typography in motion                                               */
-/* ------------------------------------------------------------------ */
 
 type WordSegment = string | { text: string; className?: string } | { br: string };
 
@@ -134,18 +115,11 @@ interface WordsRevealProps {
   segments: WordSegment[];
   as?: "h1" | "h2" | "h3" | "p";
   className?: string;
-  /** "mount" plays on first render (hero); "view" plays when scrolled into view. */
   trigger?: "mount" | "view";
   delay?: number;
   stagger?: number;
 }
 
-/**
- * Headline reveal: each word springs up out of a soft blur in reading order,
- * then a band of light sweeps once across any silver words — the way Apple
- * introduces a product name. Words are split on spaces only, so Arabic letter
- * joining inside a word is never broken.
- */
 export function WordsReveal({ segments, as = "h2", className, trigger = "view", delay = 0, stagger = 0.05 }: WordsRevealProps) {
   const reduce = useReducedMotion();
   const blur = allowBlur();
@@ -210,10 +184,6 @@ export function WordsReveal({ segments, as = "h2", className, trigger = "view", 
   );
 }
 
-/**
- * Scroll-scrubbed statement: words brighten one after another as the
- * paragraph travels up the screen, and dim again when scrolling back.
- */
 export function ScrollWords({ text, className }: { text: string; className?: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reduce = useReducedMotion();
@@ -239,10 +209,6 @@ function ScrollWord({ progress, range, still, children }: { key?: React.Key; pro
   );
 }
 
-/**
- * Number that counts up on a spring the first time it is seen, and glides to
- * new values afterwards (e.g. when a filter changes the count).
- */
 export function CountUp({
   value,
   className,
@@ -277,13 +243,6 @@ export function CountUp({
   );
 }
 
-/**
- * Scroll-linked zoom: the block scales up from slightly smaller and rises into
- * place as it approaches the middle of the screen — reversible, scrubbed by
- * the scroll position, smoothed by a spring (desktop). On phones the same zoom
- * plays once as a spring when the block enters the viewport, so nothing is
- * measured or re-composited on every scroll frame.
- */
 export function ScrollZoom(props: { children: React.ReactNode; className?: string; from?: number }) {
   const [desktop] = useState(allowBlur);
   return desktop ? <ScrollZoomScrubbed {...props} /> : <ScrollZoomOnce {...props} />;
@@ -319,7 +278,6 @@ function ScrollZoomOnce({ children, className }: { children: React.ReactNode; cl
   );
 }
 
-/** Sliding selection pill for `.vz-chip` groups: one per group, keyed by layoutId. */
 export function ChipPill({ layoutId }: { layoutId: string }) {
   return <motion.span layoutId={layoutId} transition={SPRING_SNAPPY} className="vz-chip-pill" aria-hidden="true" />;
 }

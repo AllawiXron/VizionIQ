@@ -86,15 +86,10 @@ interface Message {
   isDivider?: boolean;
   isError?: boolean;
   failedPrompt?: { text: string; presetSuggestions?: string[] };
-  /** True while the answer is still streaming in. */
   streaming?: boolean;
-  /** Small thumbnails of images the merchant attached (full images are never stored). */
   images?: string[];
-  /** What the advisor learned and saved to the business profile. */
   profileUpdate?: string[];
-  /** The merchant stopped the answer early. */
   stopped?: boolean;
-  /** The stream broke after part of the answer arrived. */
   partialError?: string;
 }
 
@@ -108,7 +103,6 @@ interface VizionAdvisorModalProps {
   onUpgradeSuccess?: (newVipCode: string) => void;
 }
 
-// Interactive Problem Diagnosis Tree
 interface DiagnosticCategory {
   id: string;
   title: string;
@@ -134,18 +128,18 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
         topicId: "topic_ads_low_conversion",
         label: "رسائل كثيرة على الإعلان لكن لا أحد يشتري",
         subtext: "جودة الزبائن ضعيفة والرسائل غير جادة",
-        prompt: "إعلاناتي تجلب عدداً كبيراً من الرسائل والاستفسارات بأسعار مناسبة، ولكن نسبة الإغلاق شبه معدومة (محد يشتري فعلياً). ما هو التشخيص العلمي وفق منظومة فيزيون وكيف أحل المشكلة فوراً؟",
+        prompt: "إعلاناتي تجلب عددا كبيرا من الرسائل والاستفسارات بأسعار مناسبة، ولكن نسبة الإغلاق شبه معدومة (محد يشتري فعليا). ما هو التشخيص العلمي وفق منظومة فيزيون وكيف أحل المشكلة فورا؟",
         defaultSuggestions: [
           "كيف أعدل محتوى الإعلان وفلترة الزبائن؟",
-          "اعطيني سكريبت لتحويل السائل إلى مشترٍ بالواتساب",
+          "اعطيني سكريبت لتحويل السائل إلى مشتر بالواتساب",
           "هل أرفع السعر أم أغير طريقة الاستهداف؟"
         ]
       },
       {
         topicId: "topic_ads_high_cpa",
-        label: "كلفة الرسالة مرتفعة جداً (CPA/CPR عالي)",
-        subtext: "صرف الميزانية بدون الحصول على عدد استفسارات كافٍ",
-        prompt: "كلفة الرسالة في إعلانات الفيسبوك والانستغرام مرتفعة جداً وتستهلك كل هامش الربح. كيف أخفض كلفة الرسالة بالسوق العراقي وأحسن الـ CTR؟",
+        label: "كلفة الرسالة مرتفعة جدا (CPA/CPR عالي)",
+        subtext: "صرف الميزانية بدون الحصول على عدد استفسارات كاف",
+        prompt: "كلفة الرسالة في إعلانات الفيسبوك والانستغرام مرتفعة جدا وتستهلك كل هامش الربح. كيف أخفض كلفة الرسالة بالسوق العراقي وأحسن الـ CTR؟",
         defaultSuggestions: [
           "كيف أصيغ الهوك (Hook) البصري الأول للإعلان؟",
           "ما هي أفضل إعدادات استهداف للمحافظات؟",
@@ -197,9 +191,9 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
         topicId: "topic_sales_discount",
         label: "الزبون يطلب خصم أو توصيل مجاني بإصرار",
         subtext: "المساومة على أجور التوصيل وهامش الربح",
-        prompt: "الزبائن في العراق دائماً يطلبون 'توصيل مجاني' أو 'تخفيض السعر'. كيف أحافظ على أرباحي وفي نفس الوقت أرضي رغبة الزبون بالخصم؟",
+        prompt: "الزبائن في العراق دائما يطلبون 'توصيل مجاني' أو 'تخفيض السعر'. كيف أحافظ على أرباحي وفي نفس الوقت أرضي رغبة الزبون بالخصم؟",
         defaultSuggestions: [
-          "كيف أصيغ عروض الحزم (Bundles 1+1 مجاناً)؟",
+          "كيف أصيغ عروض الحزم (Bundles 1+1 مجانا)؟",
           "سكريبت الرد على طلب التوصيل المجاني",
           "كيف أدمج كلفة التوصيل بالسعر بطريقة ذكية؟"
         ]
@@ -246,7 +240,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
         topicId: "topic_pricing_profit",
         label: "كيف أسعر منتج كلفته 10,000 - 15,000 د.ع لضمان ربح صافي؟",
         subtext: "حساب كلفة الشراء + الإعلانات + التوصيل والراجع",
-        prompt: "عندي منتج كلفة شرائه من الجملة 12,000 دينار عراقي، وتكلفة التوصيل 5,000 دينار. كيف أسعر المنتج بسعر جذاب ويضمن لي ربحاً صافياً بعد كلفة الإعلانات والراجع؟",
+        prompt: "عندي منتج كلفة شرائه من الجملة 12,000 دينار عراقي، وتكلفة التوصيل 5,000 دينار. كيف أسعر المنتج بسعر جذاب ويضمن لي ربحا صافيا بعد كلفة الإعلانات والراجع؟",
         defaultSuggestions: [
           "احسب لي نقطة التعادل (Break-Even ROAS)",
           "ما هو الهامش الموصى به للمنتجات الاستهلاكية؟",
@@ -257,7 +251,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
         topicId: "topic_budget_planning",
         label: "الأرباح تختفي في نهاية الشهر ولا أعرف أين تذهب",
         subtext: "إيرادات عالية بدون سيولة نقدية صافية",
-        prompt: "صفحتي تحقق مبيعات جيدة وحجم إيرادات محترم، لكن نهاية الشهر لا أجد أرباحاً كاش في يدي. ما هي الثغرات المالية الخفية في التجارة الإلكترونية بالعراق؟",
+        prompt: "صفحتي تحقق مبيعات جيدة وحجم إيرادات محترم، لكن نهاية الشهر لا أجد أرباحا كاش في يدي. ما هي الثغرات المالية الخفية في التجارة الإلكترونية بالعراق؟",
         defaultSuggestions: [
           "قائمة التدقيق المالي للمصاريف الخفية (Leak Checklist)",
           "كيف أحسب كلفة الراجع على كل قطعة مباعة؟",
@@ -268,7 +262,6 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
   }
 ];
 
-// Presets for Script Generator
 const SCRIPT_OBJECTIONS = [
   {
     id: "expensive",
@@ -280,13 +273,13 @@ const SCRIPT_OBJECTIONS = [
     id: "think_later",
     label: "بعدين أردلك خبر",
     icon: "",
-    promptContext: "الزبون يراح ويقول استشير أو أردلك خبر لاحقاً"
+    promptContext: "الزبون يراح ويقول استشير أو أردلك خبر لاحقا"
   },
   {
     id: "cheaper_elsewhere",
     label: "شفته أرخص بصفحة ثانية",
     icon: "",
-    promptContext: "الزبون يقارن بصفحة أخرى تبيع منتجاً مشابهاً أو مقلداً بسعر أقل"
+    promptContext: "الزبون يقارن بصفحة أخرى تبيع منتجا مشابها أو مقلدا بسعر أقل"
   },
   {
     id: "quality_fear",
@@ -310,7 +303,6 @@ const SCRIPT_NICHES = [
   { id: "home", label: "منزل ومطبخ", icon: "" }
 ];
 
-// Helper to get or create a unique device ID
 const getOrCreateDeviceId = (): string => {
   if (typeof window === "undefined") return "server_device";
   let devId = localStorage.getItem("vizion_device_uid");
@@ -321,7 +313,6 @@ const getOrCreateDeviceId = (): string => {
   return devId;
 };
 
-// Helper to compute storage key for the current device and user
 const getChatStorageKey = (code?: string): string => {
   const activeCode = code || (typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") : "") || "";
   const normalized = normalizeCode(activeCode);
@@ -332,7 +323,6 @@ const getChatStorageKey = (code?: string): string => {
   return `vizion_chat_history_device_${deviceId}`;
 };
 
-// Helper to compute profile storage key for diagnostic workflow
 const getProfileStorageKey = (code?: string): string => {
   const activeCode = code || (typeof window !== "undefined" ? localStorage.getItem("sales_guide_user_code") : "") || "";
   const normalized = normalizeCode(activeCode);
@@ -343,7 +333,6 @@ const getProfileStorageKey = (code?: string): string => {
   return `vizion_user_profile_${deviceId}`;
 };
 
-// 4 Curated Example Questions for Advisor Empty State
 const EXAMPLE_QUESTIONS = [
   {
     id: "ex_no_sales",
@@ -415,7 +404,6 @@ interface ChatInputFormProps {
   restoredText?: string;
   onTextRestored?: () => void;
   onInputFocus?: () => void;
-  /** Stops the answer that is streaming in. */
   onStop?: () => void;
   attachments?: PreparedImage[];
   onAttach?: (files: FileList | File[]) => void;
@@ -450,7 +438,6 @@ function ChatInputForm({
   const lastDraftRef = React.useRef("");
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  // Restore text when requested (e.g. from retry or edit button)
   React.useEffect(() => {
     if (restoredText !== undefined && restoredText !== "") {
       setInputText(restoredText);
@@ -465,7 +452,6 @@ function ChatInputForm({
     }
   }, [restoredText, onTextRestored]);
 
-  // Dynamic auto-resize for textarea up to 120px
   React.useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -474,7 +460,6 @@ function ChatInputForm({
     }
   }, [inputText]);
 
-  // When loading finishes (success or failure), restore textarea to enabled state & resize
   React.useEffect(() => {
     if (!isLoading && textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -497,7 +482,6 @@ function ChatInputForm({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Enter sends message, Shift+Enter creates a new line
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
@@ -508,7 +492,6 @@ function ChatInputForm({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {/* 2. Failure State Banner with visible Retry & Restore actions */}
       {!isLoading && lastFailedPrompt && (
         <div 
           role="alert"
@@ -517,7 +500,7 @@ function ChatInputForm({
         >
           <div className="flex items-center gap-2" role="alert" aria-live="assertive">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span className="font-bold text-xs sm:text-sm">{lastFailedPrompt.errorText || "صار خلل بسيط. جرّب مرة ثانية."}</span>
+            <span className="font-bold text-xs sm:text-sm">{lastFailedPrompt.errorText || "صار خلل بسيط. جرب مرة ثانية."}</span>
           </div>
 
           <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end">
@@ -547,7 +530,6 @@ function ChatInputForm({
         </div>
       )}
 
-      {/* Explicit Suggestions Panel (Max 4, compact 2-col grid, complete phrases, hideable) */}
       {isSuggestionsOpen && suggestions && suggestions.length > 0 && (
         <div 
           role="region"
@@ -589,7 +571,6 @@ function ChatInputForm({
         </div>
       )}
 
-      {/* Attached screenshots */}
       {attachments.length > 0 && (
         <div className="flex items-center gap-2 px-1" aria-label="الصور المرفقة">
           {attachments.map((im, i) => (
@@ -605,7 +586,7 @@ function ChatInputForm({
               </button>
             </div>
           ))}
-          <span className="text-[11px] text-white/55 font-bold">المستشار راح يقرا الصورة ويشخّصها</span>
+          <span className="text-[11px] text-white/55 font-bold">المستشار راح يقرا الصورة ويشخصها</span>
         </div>
       )}
       {dictation.error && <div className="px-2 text-[11px] font-bold text-rose-300">{dictation.error}</div>}
@@ -622,14 +603,11 @@ function ChatInputForm({
         }}
       />
 
-      {/* 3. Composer Form: [اقتراحات] [اكتب سؤالك هنا...] [إرسال] */}
       <form onSubmit={handleSubmit} dir="rtl" className="flex items-end gap-1.5 sm:gap-2 relative w-full">
-        {/* Invisible live region for screen readers */}
         <div aria-live="polite" className="sr-only">
-          {isLoading ? "جاري المعالجة، رجاءً الانتظار..." : ""}
+          {isLoading ? "جاري المعالجة، رجاء الانتظار..." : ""}
         </div>
 
-        {/* 1. Explicit Suggestions Action Button: [اقتراحات] */}
         <button 
           type="button"
           onClick={onToggleSuggestions}
@@ -655,7 +633,6 @@ function ChatInputForm({
           </button>
         )}
 
-        {/* 2. Text Input Area: [اكتب سؤالك هنا...] */}
         <div className="flex-1 relative flex items-center min-w-0">
           <textarea 
             ref={textareaRef}
@@ -692,7 +669,6 @@ function ChatInputForm({
           )}
         </div>
 
-        {/* 3. Large Send Button: [إرسال] — becomes Stop while an answer streams */}
         {isLoading && onStop ? (
           <button
             type="button"
@@ -729,7 +705,6 @@ interface AnswerHandlers {
   addTask: (task: string, topicId?: string) => boolean | void;
 }
 
-/** A finished answer. Memoised: it only re-renders when its own text changes. */
 const FinishedAnswer = React.memo(function FinishedAnswer({ text, topicId, handlers }: { text: string; topicId?: string; handlers: AnswerHandlers }) {
   const onAddTask = React.useCallback((task: string) => handlers.addTask(task, topicId), [handlers, topicId]);
   return (
@@ -755,11 +730,9 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-    // Focus trap and Escape handler
   useEffect(() => {
     if (!isOpen) return;
 
-    // Capture the element that was focused before opening the modal
     const previousActiveElement = document.activeElement as HTMLElement | null;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -793,7 +766,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
     document.addEventListener("keydown", handleKeyDown);
     
-    // Focus first element on open if nothing is focused yet
     if (modalRef.current && !modalRef.current.contains(document.activeElement)) {
       const focusableElements = modalRef.current.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -807,7 +779,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      // Restore focus when modal closes
       if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
         setTimeout(() => {
           previousActiveElement.focus();
@@ -816,15 +787,11 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  // Tabs: 'chat' | 'business_diagnostic' | 'diagnostic' | 'script_gen' | 'saved_plan'
   const [activeTab, setActiveTab] = useState<"chat" | "profile" | "business_diagnostic" | "diagnostic" | "script_gen" | "saved_plan">("chat");
-  // What the advisor knows about this merchant's shop (sent with every question).
   const { profile: businessProfile, save: saveBusinessProfile, merge: mergeBusinessProfile } = useBusinessProfile(userCode);
-  // Screenshots attached in the composer, sent with the next question.
   const [attachments, setAttachments] = useState<PreparedImage[]>([]);
   const [selectedDiagCat, setSelectedDiagCat] = useState<string>("ads");
   
-  // Toast Notification System
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const showToast = (type: "success" | "copy" | "saved" | "plan" | "navigate", title: string, description?: string) => {
     setToast({
@@ -835,7 +802,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     });
   };
 
-  // Saved Recommendations & 7-Day Plan State
   const [savedRecommendations, setSavedRecommendations] = useState<SavedRecommendation[]>([]);
   const [planTasks, setPlanTasks] = useState<PlanTaskItem[]>([]);
 
@@ -875,7 +841,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       localStorage.setItem(planKey, JSON.stringify(updated));
       const target = updated.find((t) => t.id === taskId);
       if (target?.completed) {
-        showToast("success", "أحسنت! أتممت هذه المهمة", target.task);
+        showToast("success", "أحسنت أتممت هذه المهمة", target.task);
       }
     } catch (e) {
       console.warn("Failed to update plan task:", e);
@@ -901,12 +867,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     showToast("success", "تم حذف التوصية من المحفوظات");
   };
   
-  // Script Generator States
   const [selectedObjection, setSelectedObjection] = useState<string>("expensive");
   const [selectedNiche, setSelectedNiche] = useState<string>("general");
   const [customProductNote, setCustomProductNote] = useState<string>("");
 
-  // Load initial messages from localStorage specific to this device & user
   const [messages, setMessages] = useState<Message[]>(() => {
     if (typeof window !== "undefined") {
       try {
@@ -925,13 +889,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     return [];
   });
 
-  // Track if any user questions have been sent
   const hasUserMessages = messages.some((m) => m.role === "user");
   const lastAssistantId = [...messages].reverse().find((m) => m.role === "assistant" && !m.isDivider && !m.isError)?.id;
-  // A regenerate resends text only, so skip it when the last question carried a screenshot.
   const canRegenerate = !([...messages].reverse().find((m) => m.role === "user")?.images?.length);
 
-  // Re-sync messages when userCode changes or modal opens
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
@@ -949,7 +910,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     }
   }, [userCode, isOpen]);
 
-  // Persist messages whenever they change
   useEffect(() => {
     if (typeof window !== "undefined" && messages.length > 0) {
       try {
@@ -961,7 +921,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     }
   }, [messages, userCode]);
 
-  // State for active topic isolation
   const [currentTopicId, setCurrentTopicId] = useState<string>(() => `topic_${Date.now()}`);
   const currentTopicRef = useRef<string>(currentTopicId);
   useEffect(() => {
@@ -989,7 +948,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     }
   });
 
-  // Reload feedback whenever modal opens or userCode changes
   useEffect(() => {
     if (isOpen && typeof window !== "undefined") {
       try {
@@ -1053,8 +1011,8 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       showToast(
         "success",
         rating === "helpful"
-          ? "شكراً لتقييمك! سعداء بأن الإجابة أفادتك بالسوق العراقي"
-          : "شكراً لملاحظتك! سنعمل على تطوير الإجابات لواقع التجارة بالعراق"
+          ? "شكرا لتقييمك سعداء بأن الإجابة أفادتك بالسوق العراقي"
+          : "شكرا لملاحظتك سنعمل على تطوير الإجابات لواقع التجارة بالعراق"
       );
     }
   };
@@ -1095,8 +1053,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     return () => observer.disconnect();
   }, [isOpen]);
 
-  // The advisor is a full-screen mobile surface. Lock the course page behind it
-  // so users never get a second document scrollbar while reading the chat.
   useEffect(() => {
     if (!isOpen || typeof document === "undefined") return;
 
@@ -1111,9 +1067,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     };
   }, [isOpen]);
 
-  // Computed suggestions for explicit "اقتراحات" action (max 4, complete readable phrases, topic IDs preserved)
   const activeSuggestions = React.useMemo(() => {
-    // 1. If latest assistant message has contextual suggestions, offer those
     const latestAssistant = [...messages].reverse().find((m) => m.role === "assistant" && !m.isError && m.suggestions && m.suggestions.length > 0);
     if (latestAssistant && latestAssistant.suggestions && latestAssistant.suggestions.length > 0) {
       return latestAssistant.suggestions.slice(0, 4).map((sug) => ({
@@ -1123,7 +1077,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       }));
     }
 
-    // 2. Otherwise provide the 4 core example questions with preserved topic IDs
     return EXAMPLE_QUESTIONS.slice(0, 4).map((ex) => ({
       label: ex.label,
       prompt: ex.label,
@@ -1157,7 +1110,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     setShowScrollBottomBtn(isFarFromBottom);
   };
 
-  // ResizeObserver for smooth tracking when AI content height changes dynamically
   useEffect(() => {
     const chat = chatScrollRef.current;
     if (!chat || typeof ResizeObserver === "undefined") return;
@@ -1175,10 +1127,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     return () => observer.disconnect();
   }, [activeTab, isOpen]);
 
-  // Monitor visualViewport resize (e.g. mobile virtual keyboard)
   useEffect(() => {
-    // Only track the visual viewport while the sheet is open: on phones it
-    // fires on every scroll frame, and the closed modal must stay idle.
     if (!isOpen || typeof window === "undefined" || !window.visualViewport) return;
 
     let frame = 0;
@@ -1214,8 +1163,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const responseFinished = prevIsLoadingRef.current && !isLoading;
     const isInitial = isInitialOpenRef.current;
 
-    // Maintain scroll position when user is reading older messages.
-    // Only scroll to newest response when user sends a message, new response finishes, or initial open.
     if (isInitial || messagesCountChanged || responseFinished) {
       scrollToBottom(isInitial ? "auto" : "smooth");
       isInitialOpenRef.current = false;
@@ -1225,7 +1172,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     prevIsLoadingRef.current = isLoading;
   }, [messages.length, isLoading, isOpen, isVip, activeTab]);
 
-  // Clean up any ongoing request when unmounting or closing
   useEffect(() => {
     if (!isOpen && abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -1234,7 +1180,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     }
   }, [isOpen]);
 
-  // Parse AI message to extract suggestions
   const parseResponseSuggestions = (rawText: string): { cleanText: string; suggestions: string[] } => {
     const suggestionMatch = rawText.match(/\[SUGGESTIONS:\s*(.*?)\]/i);
     if (suggestionMatch && suggestionMatch[1]) {
@@ -1246,7 +1191,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       return { cleanText, suggestions };
     }
 
-    // Default fallback suggestions if not returned in tags
     return {
       cleanText: rawText,
       suggestions: [
@@ -1278,7 +1222,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const isValid = validCodes.includes(normalizedInput);
 
     if (isValid) {
-      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي بنجاح! جاري فتح النظام...");
+      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي بنجاح. دا ينفتح المستشار");
       localStorage.setItem("sales_guide_user_code", trimmed);
       setTimeout(() => {
         if (onUpgradeSuccess) {
@@ -1290,9 +1234,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     }
   };
 
-  // Start clean topic
   const handleStartNewTopic = () => {
-    // Ask for confirmation only if existing conversation data would be lost
     const hasUserMessages = messages.some((m) => m.role === "user");
     if (hasUserMessages) {
       const confirmed = confirm("هل تريد بدء موضوع جديد ومسح المحادثة الحالية؟");
@@ -1347,7 +1289,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     handleSendMessage(
       prompt,
       [
-        "حوّلها إلى خطة 7 أيام",
+        "حولها إلى خطة 7 أيام",
         "اكتبلي السكربت العراقي",
         "احسب صافي الربح",
         "افتح الفصل المرتبط"
@@ -1369,18 +1311,14 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       diagnosticProfile?: BusinessDiagnosticProfile;
     }
   ) => {
-    // Screenshots attached in the composer ride along with this question.
     const pendingImages = attachments;
-    const text = textToSend?.trim() || (pendingImages.length ? "حلل هذي الصورة وشخّصلي على ضوء مشروعي." : "");
+    const text = textToSend?.trim() || (pendingImages.length ? "حلل هذي الصورة وشخصلي على ضوء مشروعي." : "");
 
-    // Prevent duplicate submissions
     if (!text || isLoadingRef.current) return;
 
-    // Automatically hide suggestions when a message is sent
     setIsSuggestionsOpen(false);
 
-    // Support quick trigger from suggestions: "ابدأ تشخيص مشروعي الشامل"
-    if (text.includes("ابدأ تشخيص مشروعي") || text.includes("شخّص مشروعي")) {
+    if (text.includes("ابدأ تشخيص مشروعي") || text.includes("شخص مشروعي")) {
       setActiveTab("business_diagnostic");
       return;
     }
@@ -1407,7 +1345,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       requestId: clientRequestId,
       images: pendingImages.length ? pendingImages.map((im) => im.thumb) : undefined,
     };
-    // The answer streams into this placeholder.
     const botId = (Date.now() + 1).toString();
     const placeholder: Message = { id: botId, role: "assistant", text: "", timestamp: now(), topicId, requestId: clientRequestId, streaming: true };
 
@@ -1418,8 +1355,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     abortControllerRef.current = controller;
     const timeoutId = setTimeout(() => controller.abort(), 170000);
 
-    // Streamed text goes to the stream store (only the streaming bubble
-    // re-renders) and is revealed a phrase at a time, not word by word.
     let streamed = "";
     let shownLen = 0;
     let lastShownAt = Date.now();
@@ -1439,7 +1374,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         lastShownAt = Date.now();
         setStreamText(botId, streamed.slice(0, next));
       }
-      // Something is still held back mid-phrase: check again shortly.
       if (shownLen < streamed.length && !waitTimer) {
         waitTimer = setTimeout(() => {
           waitTimer = null;
@@ -1461,7 +1395,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     };
 
     try {
-      // Recent history of this topic only, to avoid cross-contamination.
       const history: { role: "user" | "assistant"; text: string; topicId?: string; hadImages?: boolean; images?: { mimeType: string; data: string }[] }[] = messages
         .filter((m) => !m.isDivider && !m.isError && !m.streaming && m.topicId === topicId && m.text)
         .slice(-15)
@@ -1482,13 +1415,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         profile: businessProfile,
         userContext: { isVip, platform: "Vizion Iraq E-Commerce Suite" },
       };
-      // If the answer comes back cut (server time limit, dropped connection),
-      // quietly ask for the rest — up to twice — into the same bubble.
       let outcome: StreamOutcome;
       try {
         outcome = await streamAdvisor(payload, { onDelta, signal: controller.signal });
       } catch (e) {
-        // A dropped connection after some text: continue below instead of failing.
         if (controller.signal.aborted || !streamed.trim()) throw e;
         outcome = { text: "", cut: true };
       }
@@ -1514,9 +1444,9 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         requestId: outcome.requestId || clientRequestId,
         suggestions: presetSuggestions || (suggestions.length > 0 ? suggestions : undefined),
         profileUpdate: learnedSummary.length ? learnedSummary : undefined,
-        partialError: outcome.error || (outcome.truncated || outcome.cut ? "الجواب طويل وانقطع بالنص. اضغط 'جواب جديد' أو اسألني 'كمّل'." : undefined),
+        partialError: outcome.error || (outcome.truncated || outcome.cut ? "الجواب طويل وانقطع بالنص. اضغط 'جواب جديد' أو اسألني 'كمل'." : undefined),
       });
-      if (learnedSummary.length) showToast("saved", "حدّثت ملف مشروعك", learnedSummary.join(" • "));
+      if (learnedSummary.length) showToast("saved", "حدثت ملف مشروعك", learnedSummary.join("، "));
       setLastFailedPrompt(null);
       trackEvent("advisor_answer_completed", { topicId, requestId: outcome.requestId || clientRequestId });
     } catch (err: any) {
@@ -1534,13 +1464,13 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       }
 
       console.error("AI Advisor error:", err);
-      let errorText = "صار خلل بسيط. جرّب مرة ثانية.";
+      let errorText = "صار خلل بسيط. جرب مرة ثانية.";
       if (err?.name === "AbortError") {
-        errorText = "الرد طوّل أكثر من العادة بسبب ضغط الخوادم. اضغط 'إعادة المحاولة'.";
+        errorText = "الرد طول أكثر من العادة بسبب ضغط الخوادم. اضغط 'إعادة المحاولة'.";
       } else if (err instanceof AdvisorHttpError || (err?.message && typeof err.message === "string" && err.message.length > 3 && !err.message.includes("Failed to fetch"))) {
         errorText = err.message;
       } else if (err?.message?.includes("Failed to fetch")) {
-        errorText = "تعذر الاتصال بالسيرفر. تأكد من الإنترنت وجرّب مرة ثانية.";
+        errorText = "تعذر الاتصال بالسيرفر. تأكد من الإنترنت وجرب مرة ثانية.";
       }
 
       const errorMessage: Message = {
@@ -1567,8 +1497,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const handleSendMessageRef = useRef(handleSendMessage);
   handleSendMessageRef.current = handleSendMessage;
 
-  // Stable callbacks for answer bubbles, so finished answers don't re-render
-  // (and re-parse) every time something else in the advisor changes.
   const answerDepsRef = useRef({ onNavigateToSection, onNavigateTool, showToast, mergeBusinessProfile, addTask: (_t: string, _topic?: string): boolean | void => undefined });
   answerDepsRef.current = { onNavigateToSection, onNavigateTool, showToast, mergeBusinessProfile, addTask: (t: string, topic?: string) => handleAddTaskToPlan(t, topic) };
   const answerHandlers = React.useMemo(
@@ -1584,25 +1512,21 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     }),
     []
   );
-  // While an answer streams, keep the chat pinned to the bottom if the merchant is already there.
   const keepPinnedToBottom = React.useCallback(() => {
     const chat = chatScrollRef.current;
     if (!chat) return;
     if (chat.scrollHeight - chat.scrollTop - chat.clientHeight < 320) chat.scrollTop = chat.scrollHeight;
   }, []);
 
-  /** Re-asks the last question for a fresh answer. */
   const handleRegenerate = () => {
     if (isLoadingRef.current) return;
     const lastUserIdx = messages.map((m) => m.role === "user" && !m.isDivider).lastIndexOf(true);
     if (lastUserIdx < 0) return;
     const lastUser = messages[lastUserIdx];
     setMessages((prev) => prev.slice(0, lastUserIdx));
-    // Wait a tick so the trimmed history is what gets sent.
     setTimeout(() => handleSendMessageRef.current?.(lastUser.text, undefined, lastUser.topicId), 0);
   };
 
-  /** Adds an action item from an answer to the 7-day plan. */
   const handleAddTaskToPlan = (task: string, topicId?: string) => {
     const result = addRecommendationTo7DayPlanStorage({ title: task.slice(0, 90), details: task, topicId }, userCode);
     if (result.success) {
@@ -1640,7 +1564,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${customProductNote.trim()}` : ""}
 المطلوب:
 1. صياغة سكريبت محادثة واتساب مباشر جاهز للنسخ والإرسال.
-2. نصيحة ذهبية لمنع خسارة الزبون وإغلاق البيعة فوراً.`;
+2. نصيحة ذهبية لمنع خسارة الزبون وإغلاق البيعة فورا.`;
 
     handleSendMessage(
       prompt,
@@ -1670,7 +1594,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
   const currentDiag = DIAGNOSTIC_CATEGORIES.find((c) => c.id === selectedDiagCat) || DIAGNOSTIC_CATEGORIES[0];
 
-  // Opens out of the button/card that summoned it (full-screen on phones).
   const originSheet = useOriginSheet(isOpen, { width: 896, height: 760 });
 
   return (
@@ -1690,13 +1613,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
             }
             className={`vizion-advisor-modal ${isCompactLayout ? "vizion-advisor-compact" : ""} relative w-full max-w-4xl h-[100dvh] sm:h-[88vh] min-h-0 glass-elevated glass-edge border-0 sm:border rounded-none sm:rounded-4xl flex flex-col overflow-hidden overscroll-none text-white dir-rtl motion-reduce:transition-none motion-reduce:transform-none`}
           >
-            {/* Mobile Pull Indicator */}
             <div className="w-10 h-[5px] bg-white/20 rounded-full mx-auto mt-1.5 mb-1 sm:hidden shrink-0" />
 
-            {/* In-Modal Toast Alerts */}
             <AdvisorToast toast={toast} onDismiss={() => setToast(null)} />
 
-            {/* Calm Header */}
             <div className="px-3 sm:px-6 py-2 sm:py-3 vz-sheet-header flex items-center justify-between relative shrink-0">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div className="relative shrink-0">
@@ -1765,7 +1685,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               </div>
             </div>
 
-            {/* TRIAL: the advisor comes with the one full plan */}
             {!isVip && isFreeTrialUser(userCode) ? (
               <div role="region" aria-label="المستشار ضمن الاشتراك الكامل" className="flex-1 overflow-y-auto p-4 sm:p-8 text-right">
                 <div className="max-w-xl mx-auto space-y-5">
@@ -1810,7 +1729,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 aria-label="اشتراك المستشار الذكي"
                 className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 text-right"
               >
-                {/* Top Header Card */}
                 <div className="max-w-xl mx-auto text-center space-y-3">
                   <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-white/10 via-white/10 to-white/10 border border-white/22 text-xs sm:text-sm font-black text-vz-accent shadow-md">
                     <Sparkles className="w-4 h-4 text-vz-accent animate-pulse" />
@@ -1818,7 +1736,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
 
                   <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
-                    اشترك الآن في <span className="text-transparent bg-clip-text bg-gradient-to-r from-vz-blue-light via-white to-vz-blue">المستشار الذكي</span> بـ 14,000 دينار فقط!
+                    اشترك الآن في <span className="text-transparent bg-clip-text bg-gradient-to-r from-vz-blue-light via-white to-vz-blue">المستشار الذكي</span> بـ 14,000 دينار بس
                   </h3>
                   
                   <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
@@ -1826,44 +1744,40 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </p>
                 </div>
 
-                {/* Price Breakdown & Value Pitch Box */}
                 <div className="max-w-xl mx-auto glass border-2 rounded-3xl p-5 sm:p-7 space-y-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 bg-gradient-to-r from-vz-blue-light to-vz-blue text-white font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
                     <Flame className="w-3.5 h-3.5 fill-white" />
                     <span>عرض الاشتراك الشهري الفوري</span>
                   </div>
 
-                  {/* Main Pricing Highlight */}
                   <div className="flex items-center justify-between border-b border-white/14 pb-4 pt-3">
                     <div>
                       <span className="text-xs font-bold text-vz-accent block mb-1">الاشتراك الشهري المباشر</span>
                       <h4 className="text-lg sm:text-2xl font-black text-white">المستشار الذكي (Vizion AI)</h4>
                       <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full inline-block mt-1">
-                        فقط 466 د.ع باليوم! (أقل من سعر استكان شاي)
+                        بس 466 دينار باليوم (أقل من سعر استكان شاي)
                       </span>
                     </div>
 
                     <div className="text-left shrink-0">
                       <div className="text-2xl sm:text-4xl font-black text-vz-accent font-mono tracking-tight">14,000</div>
-                      <div className="text-xs font-bold text-vz-accent">د.ع / شهرياً</div>
+                      <div className="text-xs font-bold text-vz-accent">د.ع / شهريا</div>
                     </div>
                   </div>
 
-                  {/* Why it's worth every dinar (Value Comparison) */}
                   <div className="bg-black/30 border border-white/14 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
                     <div className="flex items-center gap-2 text-vz-accent font-bold text-xs sm:text-sm">
                       <TrendingDown className="w-4 h-4 text-emerald-400" />
                       <span>حسبة بسيطة: ليش هذا الاشتراك يوفر عليك ثروة؟</span>
                     </div>
                     <p className="text-[11px] sm:text-xs text-white/75 leading-relaxed">
-                      حملة إعلانية واحدة فاشلة بالفيسبوك تضيع عليك <strong className="text-rose-400">50,000 إلى 100,000 دينار</strong>. المستشار الذكي يحميك من الخسارة بحسبة تسعير واحدة أو سكريبت رد واحد بالواتساب ويرجعلك المبلغ أضعاف من أول يوم!
+                      حملة إعلانية واحدة فاشلة بالفيسبوك تضيع عليك <strong className="text-rose-400">50,000 إلى 100,000 دينار</strong>. المستشار الذكي يحميك من الخسارة بحسبة تسعير واحدة أو سكريبت رد واحد بالواتساب ويرجعلك المبلغ أضعاف من أول يوم
                     </p>
                   </div>
 
-                  {/* Features Checklist */}
                   <div className="space-y-2.5">
                     <span className="text-xs font-black text-white/90 block border-b border-white/10 pb-1.5">
-                      شنو ينفتحلك فوراً بعد الاشتراك؟
+                      شنو ينفتحلك فورا بعد الاشتراك؟
                     </span>
                     <ul className="space-y-2 text-xs sm:text-sm text-white/90">
                       <li className="flex items-start gap-2">
@@ -1872,33 +1786,32 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تحليل <strong className="text-white">المحادثات الفاشلة</strong> — دخل المحادثة للمستشار وراح يكشفلك أخطاءك وينطيك الرد الصح.</span>
+                        <span>تحليل <strong className="text-white">المحادثات الفاشلة</strong>، دخل المحادثة للمستشار وراح يكشفلك أخطاءك وينطيك الرد الصح.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>حل مشكلة <strong className="text-white">الزبون الي يسأل ويختفي</strong> — وسكريبتات تخلي المتردد يشتري فوراً.</span>
+                        <span>حل مشكلة <strong className="text-white">الزبون الي يسأل ويختفي</strong>، وسكريبتات تخلي المتردد يشتري فورا.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تكتشف <strong className="text-vz-accent">وين تضيع ميزانيتك</strong> — وتفهم شلون الإعلان والمنتج والزبون مرتبطين ببعض.</span>
+                        <span>تكتشف <strong className="text-vz-accent">وين تضيع ميزانيتك</strong>، وتفهم شلون الإعلان والمنتج والزبون مرتبطين ببعض.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span><strong className="text-white">خبير بصفك 24 ساعة</strong> — مو بس تتعلم تسويق، تتعلم شلون تفهم مشروعك وتحل مشاكله.</span>
+                        <span><strong className="text-white">خبير بصفك 24 ساعة</strong>، مو بس تتعلم تسويق، تتعلم شلون تفهم مشروعك وتحل مشاكله.</span>
                       </li>
                     </ul>
                   </div>
 
-                  {/* Instant Subscribe via WhatsApp Button */}
                   <div className="pt-2 space-y-3">
                     <a 
-                      href="https://wa.me/9647757851379?text=مرحباً،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهرياً"
+                      href="https://wa.me/9647757851379?text=مرحبا،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهريا"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-[0.97] transition cursor-pointer min-h-[50px]"
                     >
                       <Sparkles className="w-5 h-5 text-vz-accent animate-pulse" />
-                      <span>اشترك الآن عبر الواتساب (14,000 د.ع / شهرياً)</span>
+                      <span>اشترك الآن عبر الواتساب (14,000 د.ع / شهريا)</span>
                     </a>
                     <p className="text-[11px] text-center text-white/60">
                       تواصل مباشر مع الدعم عبر الواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
@@ -1906,7 +1819,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
                 </div>
 
-                {/* Existing Subscriber Code Entry */}
                 <div className="max-w-xl mx-auto glass-subtle p-4 sm:p-5 rounded-2xl border space-y-3 text-right">
                   <div className="space-y-1">
                     <label htmlFor="vip-code-input" className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
@@ -1953,7 +1865,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               </div>
             ) : (
               <>
-                {/* Mode Selector - Universal Responsive Horizontal Pill Tab Bar */}
                 <div className="px-2 sm:px-6 py-2 border-b border-white/[0.06] shrink-0 w-full overflow-hidden">
                   <div className="vizion-advisor-tab-strip flex flex-row flex-nowrap items-center gap-1.5 sm:gap-2 overflow-x-auto w-full no-scrollbar py-0.5">
                     <button
@@ -2004,7 +1915,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     >
                       {activeTab === "diagnostic" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
                       <Compass className="relative w-4 h-4 shrink-0" />
-                      <span className="relative">مشخّص المشاكل</span>
+                      <span className="relative">مشخص المشاكل</span>
                     </button>
 
                     <button
@@ -2016,7 +1927,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     >
                       {activeTab === "script_gen" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
                       <FileText className="relative w-4 h-4 shrink-0" />
-                      <span className="relative">مولّد السكريبتات</span>
+                      <span className="relative">مولد السكريبتات</span>
                     </button>
 
                     <button
@@ -2038,7 +1949,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
                 </div>
 
-                {/* TAB: GUIDED BUSINESS DIAGNOSTIC STEPPER */}
                 {activeTab === "profile" && (
                   <BusinessProfilePanel
                     profile={businessProfile}
@@ -2063,22 +1973,20 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
                 )}
 
-                {/* TAB 1: DIAGNOSTIC WIZARD (Choose your problem & get instant AI diagnosis) */}
                 {activeTab === "diagnostic" && (
                   <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-5">
                     <div className="glass-subtle border rounded-2xl p-4 sm:p-5">
                       <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <Compass className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
-                          اختر التحدي الذي يواجه مشروعك حالياً:
+                          اختر التحدي الذي يواجه مشروعك حاليا:
                         </h4>
                       </div>
                       <p className="text-xs text-white/70">
-                        حدد القسم والمشكلة المحددة وسيقوم مستشار فيزيون بتحليل السبب وتقديم الحلول والسكريبتات فوراً.
+                        حدد القسم والمشكلة المحددة وسيقوم مستشار فيزيون بتحليل السبب وتقديم الحلول والسكريبتات فورا.
                       </p>
                     </div>
 
-                    {/* Categories Tabs */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {DIAGNOSTIC_CATEGORIES.map((cat) => (
                         <button 
@@ -2091,7 +1999,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       ))}
                     </div>
 
-                    {/* Specific Options for Selected Category */}
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-vz-accent flex items-center gap-1">
@@ -2135,14 +2042,13 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
                 )}
 
-                {/* TAB 2: INSTANT SCRIPT GENERATOR (Choose objection & generate copy-paste script) */}
                 {activeTab === "script_gen" && (
                   <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-5">
                     <div className="glass-subtle border rounded-2xl p-4 sm:p-5">
                       <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <FileText className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
-                          مولّد سكريبتات إغلاق الصفقات بالسوق العراقي
+                          مولد سكريبتات إغلاق الصفقات بالسوق العراقي
                         </h4>
                       </div>
                       <p className="text-xs text-white/70">
@@ -2150,7 +2056,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </p>
                     </div>
 
-                    {/* 1. Choose Objection */}
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                         <span className="w-5 h-5 rounded-full bg-white/10 border border-white/18 flex items-center justify-center text-[10px] text-vz-accent">1</span>
@@ -2169,7 +2074,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
                     </div>
 
-                    {/* 2. Choose Niche */}
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                         <span className="w-5 h-5 rounded-full bg-white/10 border border-white/18 flex items-center justify-center text-[10px] text-vz-accent">2</span>
@@ -2188,7 +2092,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
                     </div>
 
-                    {/* 3. Custom Product Note (Optional) */}
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-white/80 flex items-center justify-between">
                         <span>ملاحظات إضافية أو اسم المنتج (اختياري):</span>
@@ -2203,7 +2106,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       />
                     </div>
 
-                    {/* Generate Button */}
                     <button 
                       onClick={handleGenerateScript}
                       disabled={isLoading}
@@ -2215,10 +2117,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
                 )}
 
-                {/* TAB: SAVED RECOMMENDATIONS & 7-DAY ACTION PLAN */}
                 {activeTab === "saved_plan" && (
                   <div className="flex-1 overflow-y-auto animate-fade-in p-4 sm:p-6 space-y-6">
-                    {/* Top Stat Banner */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="p-4 rounded-2xl glass-subtle border flex items-center justify-between">
                         <div className="space-y-1">
@@ -2243,7 +2143,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </div>
                     </div>
 
-                    {/* Section 1: 7-Day Plan Tasks */}
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -2299,7 +2198,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                     </p>
                                   )}
 
-                                  {/* Direct Actions in Plan item */}
                                   <div className="pt-2 flex flex-wrap gap-2">
                                     {task.toolId && (
                                       <button 
@@ -2336,7 +2234,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       )}
                     </div>
 
-                    {/* Section 2: Saved Recommendations & Scripts */}
                     <div className="space-y-3 pt-4 border-t border-white/10">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -2355,7 +2252,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           <Bookmark className="w-8 h-8 text-white/60 mx-auto" />
                           <p className="text-xs text-white/70 font-semibold">ماكو توصيات محفوظة حتى الآن</p>
                           <p className="text-[11px] text-white/60">
-                            اضغط على زر <strong className="text-vz-accent">"حفظ التوصية"</strong> في أي رد أو سكريبت لتجده محفوظاً هنا للرجوع إليه دائماً.
+                            اضغط على زر <strong className="text-vz-accent">"حفظ التوصية"</strong> في أي رد أو سكريبت لتجده محفوظا هنا للرجوع إليه دائما.
                           </p>
                         </div>
                       ) : (
@@ -2377,7 +2274,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                     </p>
                                   )}
                                   <span className="text-[9px] text-white/60 font-mono">
-                                    حُفظت بتاريخ: {new Date(rec.savedAt).toLocaleDateString("ar-IQ")}
+                                    حفظت بتاريخ: {new Date(rec.savedAt).toLocaleDateString("ar-IQ")}
                                   </span>
                                 </div>
 
@@ -2390,7 +2287,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 </button>
                               </div>
 
-                              {/* Script Preview if available */}
                               {rec.scriptText && (
                                 <div className="p-3 rounded-lg bg-black/30 border border-white/14 text-white/90 text-xs space-y-2">
                                   <div className="flex items-center justify-between text-[10px] text-vz-accent font-bold">
@@ -2412,7 +2308,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 </div>
                               )}
 
-                              {/* Actions */}
                               <div className="flex flex-wrap gap-2 pt-1">
                                 {rec.toolId && (
                                   <button 
@@ -2441,10 +2336,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
                 )}
 
-                {/* TAB 3: INTERACTIVE CHAT (Default Chat view with Dynamic Suggestions) */}
                 {activeTab === "chat" && (
                   <>
-                    {/* Messages Scroll Area / Focused Empty State */}
                     <div 
                       aria-live="polite"
                       aria-atomic="false"
@@ -2453,9 +2346,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       className="vizion-advisor-chat min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6 relative"
                     >
                       {!hasUserMessages ? (
-                        /* Focused Empty-State Layout */
                         <div className="min-h-full flex flex-col justify-center py-4 my-auto w-full max-w-xl mx-auto">
-                          {/* 1. Short Welcome Heading & Icon */}
                           <div className="text-center mb-4 sm:mb-5">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/14 text-vz-accent mb-2.5 shadow-sm">
                               <Bot className="w-6 h-6" />
@@ -2468,7 +2359,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             </p>
                           </div>
 
-                          {/* What makes this advisor different: it knows your shop and reads screenshots */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                             <button
                               type="button"
@@ -2478,7 +2368,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               <Brain className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
                               <span>
                                 <span className="block text-xs sm:text-sm font-black text-white">
-                                  {profileFilledCount(businessProfile) >= 3 ? "أعرف مشروعك ✓" : "عرّفني على مشروعك"}
+                                  {profileFilledCount(businessProfile) >= 3 ? "أعرف مشروعك ✓" : "عرفني على مشروعك"}
                                 </span>
                                 <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">
                                   {profileFilledCount(businessProfile) >= 3 ? "كل جواب راح يكون على منتجك وأرقامك" : "منتجك وأسعارك وكلفة رسالتك، حتى أحسبلك ربحك بالضبط"}
@@ -2488,13 +2378,12 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             <div className="text-right p-3 rounded-2xl border border-white/10 bg-white/[0.03] flex items-start gap-2.5">
                               <ImagePlus className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
                               <span>
-                                <span className="block text-xs sm:text-sm font-black text-white">صوّرلي إعلانك</span>
+                                <span className="block text-xs sm:text-sm font-black text-white">صورلي إعلانك</span>
                                 <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">ارفع لقطة من مدير الإعلانات أو محادثة زبون، أو احچيلي بالمايك</span>
                               </span>
                             </div>
                           </div>
 
-                          {/* Example Questions / Suggestions in Empty State */}
                           <div className="w-full space-y-2.5">
                             <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-vz-accent pr-1">
                               <Lightbulb className="w-4 h-4 text-vz-accent shrink-0" />
@@ -2519,10 +2408,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       ) : (
                         <div className="space-y-4 sm:space-y-6">
                           {messages.map((msg, msgIndex) => {
-                            // Older messages skip layout/paint while off-screen, so a long
-                            // chat stays smooth while a new answer streams in.
                             const settledClass = msgIndex < messages.length - 3 ? " vz-msg-settled" : "";
-                            // 1. Clean New Topic Notice (No duplicate suggestions)
                             if (msg.isDivider) {
                               return (
                                 <motion.div
@@ -2541,7 +2427,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               );
                             }
 
-                            // 2. Standard Chat Message Display
                             const isUser = msg.role === "user";
                             return (
                               <motion.div
@@ -2553,7 +2438,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   isUser ? "max-w-[85%] sm:max-w-[75%] ms-auto flex-row-reverse" : "max-w-[92%] sm:max-w-[85%] me-auto"
                                 }${settledClass}`}
                               >
-                                {/* Avatar */}
                                 <div className="flex-shrink-0">
                                   {isUser ? (
                                     <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-vz-blue text-white font-bold text-[10px] sm:text-[11px] flex items-center justify-center shrink-0 mt-1 select-none">
@@ -2566,7 +2450,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                   )}
                                 </div>
 
-                                {/* Message Box */}
                                 <div className="group relative flex-1 min-w-0">
                                   <div
                                     className={`p-3.5 sm:p-4 rounded-2xl text-[15px] sm:text-[16px] leading-[1.8] break-words [overflow-wrap:anywhere] ${
@@ -2577,7 +2460,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                         : "glass-subtle text-vz-accent rounded-tl-md"
                                     }`}
                                   >
-                                    {/* Error State Card */}
                                     {msg.isError ? (
                                       <div 
                                         role="alert" 
@@ -2586,7 +2468,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                       >
                                         <div className="flex items-start gap-2 text-rose-300 font-bold text-sm sm:text-base">
                                           <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-                                          <span className="leading-relaxed">{msg.text || "صار خلل بسيط. جرّب مرة ثانية."}</span>
+                                          <span className="leading-relaxed">{msg.text || "صار خلل بسيط. جرب مرة ثانية."}</span>
                                         </div>
 
                                         {msg.failedPrompt?.text && (
@@ -2645,7 +2527,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                             <Brain className="w-4 h-4 shrink-0 mt-0.5" />
                                             <span className="leading-relaxed">
                                               <span className="font-black text-white">حفظت بملف مشروعك: </span>
-                                              {msg.profileUpdate.join(" • ")}
+                                              {msg.profileUpdate.join("، ")}
                                             </span>
                                           </button>
                                         )}
@@ -2701,7 +2583,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                       </>
                                     )}
 
-                                    {/* Message Footer Actions & Iraqi Market Feedback Bar */}
                                     {!msg.isError && !msg.streaming && (
                                       isUser ? (
                                         <div className="mt-2 pt-1.5 border-t border-black/15 text-[10px] flex items-center justify-between">
@@ -2730,7 +2611,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         </div>
                       )}
 
-                      {/* Calm Inline Typing Loader with User Question Visible Above */}
                       {isLoading && !messages.some((m) => m.streaming) && (
                         <motion.div
                           role="status"
@@ -2765,7 +2645,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         </motion.div>
                       )}
 
-                      {/* Scroll to Bottom Floating Action */}
                       {showScrollBottomBtn && (
                         <button
                           type="button"
@@ -2780,7 +2659,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Footer Input */}
                     <div 
                       ref={composerRef}
                       className="vizion-advisor-composer p-2 sm:p-3.5 pb-[max(env(safe-area-inset-bottom,0px),0.75rem)] bg-black/25 border-t border-white/[0.07] backdrop-blur-xl relative shrink-0 z-20"
@@ -2826,7 +2704,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                           <ShieldCheck className="w-3 h-3 text-slate-200" /> مخصص ومبرمج للتجارة الإلكترونية بالسوق العراقي
                         </span>
                         <span className="flex items-center gap-1 text-emerald-300/80 bg-emerald-400/[0.06] px-2 py-0.5 rounded-full border border-emerald-400/15 font-sans">
-                          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> محفوظ على هاتفك تلقائياً
+                          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> محفوظ على هاتفك تلقائيا
                         </span>
                       </div>
                     </div>

@@ -18,7 +18,6 @@ interface GuideIndexProps {
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-/** The Iraq Guide: researched modules on how online selling works in Iraq. */
 export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
   const plans = usePlaybookPlans(userCode);
   const isTrial = isFreeTrialUser(userCode);
@@ -28,7 +27,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><Compass className="w-4 h-4" /> الدليل العراقي</>}
-        title="شلون يشتغل البيع أونلاين بالعراق فعلاً"
+        title="شلون يشتغل البيع أونلاين بالعراق فعلا"
         subtitle={`مبني على بحث ومصادر: أرقام المنصات، الدفع، التوصيل، الاستيراد والكمرك، المواسم، والقانون الجديد. آخر تحديث: ${GUIDE_RESEARCHED}.`}
       />
 
@@ -47,7 +46,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
             <span className="block text-xs font-bold text-vz-accent">الموسم الجاي</span>
             <span className="block text-base sm:text-lg font-black text-white">
               {next[0].title} بعد {next[0].days} يوم
-              {next[1] && <span className="text-white/50 font-bold text-sm"> · وبعده {next[1].title} ({next[1].days} يوم)</span>}
+              {next[1] && <span className="text-white/50 font-bold text-sm">، وبعده {next[1].title} ({next[1].days} يوم)</span>}
             </span>
             <span className="block text-xs sm:text-sm text-white/60 line-clamp-2">{next[0].prepare}</span>
           </span>

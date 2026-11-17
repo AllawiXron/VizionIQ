@@ -62,11 +62,9 @@ describe("Diagnostic Metrics Calculation", () => {
 
     const metrics = calculateDiagnosticMetrics(profile);
 
-    // 5 orders / 50 messages = 10%
     expect(metrics.conversionRate).toBe(10);
-    // (40,000 - 16,000) / 40,000 = 60%
     expect(metrics.grossMarginPercent).toBe(60);
-    expect(metrics.estimatedDailyGrossProfit).toBe(120000); // 5 * (40000 - 16000) = 120,000
+    expect(metrics.estimatedDailyGrossProfit).toBe(120000);
     expect(metrics.assumptions.length).toBeGreaterThan(0);
   });
 
@@ -113,8 +111,8 @@ describe("Prompt Constructor & Response Parser", () => {
     expect(prompt).toContain("عطور فرنسية أصلية");
     expect(prompt).toContain("Instagram");
     expect(prompt).toContain("50,000 د.ع");
-    expect(prompt).toContain("8%"); // Conversion rate
-    expect(prompt).toContain("60%"); // Margin
+    expect(prompt).toContain("8%");
+    expect(prompt).toContain("60%");
     expect(prompt).toContain("بغداد والجنوب");
   });
 
@@ -125,11 +123,9 @@ describe("Prompt Constructor & Response Parser", () => {
 
 2. قراءة الأرقام والمؤشرات الحيوية:
 - معدل التحويل 8% منخفض بالنسبة للعطور عبر الانستغرام (المعدل المستهدف 12-15%).
-- نسبة الراجع 15% تشكل ضغطاً على أرباح التوصيلات الناجحة.
+- نسبة الراجع 15% تشكل ضغطا على أرباح التوصيلات الناجحة.
 
-3. الأسباب الجذرية المحتملة:
-• عدم وجود مكالمة تثبيت صوتية فورية لتأكيد الجدية.
-• الاعتماد على الرد النصي البارد بدون سحب رقم هاتف بديل.
+3. الأسباب الجذرية المحتملة:، عدم وجود مكالمة تثبيت صوتية فورية لتأكيد الجدية.، الاعتماد على الرد النصي البارد بدون سحب رقم هاتف بديل.
 
 4. أول 3 خطوات للبدء خلال 48 ساعة:
 1. تطبيق مكالمة تثبيت صوتية خلال 30 دقيقة من استلام الطلب.
@@ -137,7 +133,7 @@ describe("Prompt Constructor & Response Parser", () => {
 3. تجهيز سكريبت إغلاق مخصص يوضح سياسة الفحص والاستبدال.
 
 5. سكربت المحادثة / الإجراء الجاهز للنسخ:
-📞 "أهلاً بيك أستاذ [اسم الزبون]، طلبك للعطر الفرنسي تم تجهيزه ومحجوز باسمك. للتأكيد النهائي والتسليم باجر، تفضل العنوان التفصيلي مع رقم هاتف بديل إذا أمكن؟"
+📞 "أهلا بيك أستاذ [اسم الزبون]، طلبك للعطر الفرنسي تم تجهيزه ومحجوز باسمك. للتأكيد النهائي والتسليم باجر، تفضل العنوان التفصيلي مع رقم هاتف بديل إذا أمكن؟"
 
 6. المقياس الواجب متابعته:
 معدل استلام التوصيلات اليومي (Delivery Confirmation Rate) للوصول إلى فوق 90%.
@@ -152,7 +148,7 @@ describe("Prompt Constructor & Response Parser", () => {
     expect(parsed.keyMetrics).toContain("معدل التحويل 8%");
     expect(parsed.probableCauses.length).toBeGreaterThan(0);
     expect(parsed.next48HoursSteps.length).toBe(3);
-    expect(parsed.readyScriptOrSOP).toContain("أهلاً بيك أستاذ");
+    expect(parsed.readyScriptOrSOP).toContain("أهلا بيك أستاذ");
     expect(parsed.metricToTrack).toContain("معدل استلام التوصيلات اليومي");
     expect(parsed.recommendedChapterOrTool?.chapterTitle).toContain("الفصل 8");
     expect(parsed.recommendedChapterOrTool?.chapterId).toBe("delivery-ops");

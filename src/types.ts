@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export interface AccessCode {
   code: string;
   isRevoked: boolean;
@@ -10,16 +5,15 @@ export interface AccessCode {
   dateAdded: string;
 }
 
-// Basic ROI Calculator
 export interface CalculatorInputs {
-  budget: number;       // USD or Dinar
-  cpm: number;          // Cost per 1000 Impressions
-  ctr: number;          // Click-Through Rate (%)
-  cvr: number;          // Conversion Rate on Store (%)
-  productCost: number;  // Sourcing Cost
-  shippingCost: number; // Delivery fee to customer
-  sellingPrice: number; // Price of product sold
-  deliveryRate: number; // Delivery Success Rate (%)
+  budget: number;
+  cpm: number;
+  ctr: number;
+  cvr: number;
+  productCost: number;
+  shippingCost: number;
+  sellingPrice: number;
+  deliveryRate: number;
 }
 
 export interface CalculatorResults {
@@ -37,7 +31,6 @@ export interface CalculatorResults {
   roi: number;
 }
 
-// 11 Chapters Structure
 export interface ChapterItem {
   id: string;
   number: string;
@@ -106,7 +99,6 @@ export interface PhoneScriptItem {
 }
 
 
-// Iraqi Case Study
 export interface CaseStudy {
   id: string;
   chapterId: string;
@@ -134,7 +126,6 @@ export interface CaseStudy {
   keyLearnings: string[];
 }
 
-// Swipe Files / Resources
 export interface SwipeFile {
   id: string;
   chapterId: string;
@@ -146,7 +137,6 @@ export interface SwipeFile {
   downloadUrl?: string;
 }
 
-// Video Lessons
 export interface VideoLesson {
   id: string;
   chapterId: string;
@@ -161,7 +151,6 @@ export interface VideoLesson {
   actionItem: string;
 }
 
-// Interactive Decision Tree
 export interface DecisionTreeNode {
   id: string;
   question: string;
@@ -183,7 +172,6 @@ export interface DiagnosticResult {
   relatedSwipeFileId?: string;
 }
 
-// Scenario-based learning challenges
 export interface ScenarioChallenge {
   id: string;
   title: string;
@@ -211,7 +199,6 @@ export interface DayTask {
   completed: boolean;
 }
 
-// Guided Business Diagnostic Profile
 export interface BusinessDiagnosticProfile {
   businessType: string;
   productOrService: string;

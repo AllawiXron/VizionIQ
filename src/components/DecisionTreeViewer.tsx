@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { useState } from "react";
 import { decisionTreesList } from "../data/decisionTreesData";
 import { DecisionTreeNode, DiagnosticResult } from "../types";
@@ -25,12 +20,11 @@ export default function DecisionTreeViewer() {
   return (
     <div className="glass-subtle border rounded-4xl p-6 md:p-10 space-y-8 text-right">
       
-      {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <Compass className="w-3.5 h-3.5" />
-            <span>محرك تشخيص الأعطال التفاعلي • Decision Trees</span>
+            <span>محرك تشخيص الأعطال التفاعلي، Decision Trees</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
             شجرة القرارات والتشخيص الجذري للاختناقات
@@ -47,7 +41,6 @@ export default function DecisionTreeViewer() {
         )}
       </div>
 
-      {/* QUESTION STEP STATE */}
       {!selectedResult ? (
         <div className="space-y-6 animate-fade-in">
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-3">
@@ -82,10 +75,8 @@ export default function DecisionTreeViewer() {
           </div>
         </div>
       ) : (
-        /* DIAGNOSTIC RESULT STATE */
         <div className="space-y-6 animate-fade-in">
           
-          {/* Result Card Header */}
           <div className={`p-6 md:p-8 rounded-3xl border ${
             selectedResult.severity === "critical"
               ? "bg-red-950/30 border-red-500/40 text-red-200"
@@ -94,7 +85,7 @@ export default function DecisionTreeViewer() {
             <div className="flex items-center gap-3 mb-3">
               <AlertTriangle className="w-6 h-6 text-vz-accent" />
               <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/40 border border-white/10">
-                تشخيص الخلل: {selectedResult.severity === "critical" ? "عطل حاد يتطلب تدخلاً فورياً" : "عطل متوسط"}
+                تشخيص الخلل: {selectedResult.severity === "critical" ? "عطل حاد يتطلب تدخلا فوريا" : "عطل متوسط"}
               </span>
             </div>
             <h4 className="text-2xl md:text-3xl font-black text-white mb-2">
@@ -105,7 +96,6 @@ export default function DecisionTreeViewer() {
             </p>
           </div>
 
-          {/* Action Plan Grid */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
             <h5 className="text-base font-bold text-white flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-emerald-400" />
@@ -124,7 +114,6 @@ export default function DecisionTreeViewer() {
             </div>
           </div>
 
-          {/* Recommended Tool & Swipe Ref */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-gradient-to-r from-white/8 to-transparent border border-white/14 p-4 rounded-2xl flex items-center justify-between">
               <div className="space-y-0.5">

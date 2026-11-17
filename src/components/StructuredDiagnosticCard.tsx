@@ -58,7 +58,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
     navigator.clipboard.writeText(script);
     setCopiedScript(true);
     if (onShowToast) {
-      onShowToast("copy", "تم نسخ السكربت بنجاح!", "تكدر الآن إرساله للزبون مباشرة.");
+      onShowToast("copy", "تم نسخ السكربت", "تكدر الآن إرساله للزبون مباشرة.");
     }
     setTimeout(() => setCopiedScript(false), 2000);
   };
@@ -66,7 +66,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
   return (
     <div className="space-y-3.5 my-1 text-vz-accent text-[15px] sm:text-[16px] leading-[1.75] sm:leading-[1.85] break-words [overflow-wrap:anywhere]">
 
-      {/* 1. Diagnosis Overview */}
       {data.diagnosis && (
         <div className="p-3 sm:p-4 rounded-xl glass-subtle border sm:border-white/14">
           <div className="flex items-center gap-1.5 mb-1.5 text-vz-accent font-bold text-xs sm:text-sm">
@@ -79,7 +78,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         </div>
       )}
 
-      {/* 2. Key Metrics Analysis */}
       {data.keyMetrics && (
         <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center gap-1.5 mb-1.5 text-slate-300 font-bold text-xs sm:text-sm">
@@ -92,7 +90,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         </div>
       )}
 
-      {/* 3. Probable Causes */}
       {data.probableCauses.length > 0 && (
         <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center gap-1.5 mb-1.5 text-rose-400 font-bold text-xs sm:text-sm">
@@ -110,7 +107,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         </div>
       )}
 
-      {/* 4. First 3 Steps within 48 Hours */}
       {data.next48HoursSteps.length > 0 && (
         <div className="p-3.5 rounded-xl bg-slate-900/90 border border-emerald-500/30 bg-emerald-950/10">
           <div className="flex items-center gap-2 mb-2 text-emerald-400 font-bold text-xs sm:text-sm">
@@ -133,7 +129,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         </div>
       )}
 
-      {/* 5. Ready-to-use Script / SOP */}
       {data.readyScriptOrSOP && (
         <div className="p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center justify-between gap-2 mb-2">
@@ -148,7 +143,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
               {copiedScript ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">تم النسخ!</span>
+                  <span className="text-emerald-400">تم النسخ</span>
                 </>
               ) : (
                 <>
@@ -164,7 +159,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         </div>
       )}
 
-      {/* 6. Metric to Track & 7. Recommended Chapter */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {data.metricToTrack && (
           <div className="p-3 rounded-xl glass-subtle border">
@@ -191,7 +185,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         )}
       </div>
 
-      {/* Optional Clarification Prompt */}
       {data.clarificationQuestion && (
         <div className="p-3 rounded-xl bg-slate-900/20 border border-white/14 flex items-start gap-2.5 text-[14px] text-slate-200 leading-[1.7]">
           <HelpCircle className="w-4 h-4 text-slate-300 shrink-0 mt-1" />
@@ -202,7 +195,6 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         </div>
       )}
 
-      {/* Response Action Hierarchy: One primary next action + Secondary actions grouped */}
       <AdvisorActionCard
         topicId={topicId}
         responseText={rawText}
@@ -214,8 +206,8 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         recommendedToolTitle={data.recommendedChapterOrTool?.toolTitle}
         followUpActions={[
           {
-            label: "حوّلها إلى خطة 7 أيام",
-            prompt: "حوّل هذا التشخيص إلى خطة تنفيذية يومية مفصلة لمدة 7 أيام بالتسلسل.",
+            label: "حولها إلى خطة 7 أيام",
+            prompt: "حول هذا التشخيص إلى خطة تنفيذية يومية مفصلة لمدة 7 أيام بالتسلسل.",
           },
           {
             label: "اكتبلي السكربت العراقي",

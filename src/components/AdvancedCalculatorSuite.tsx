@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { NumberField } from "./ui/NumberField";
 import React, { useState } from "react";
 import { Calculator, TrendingUp, DollarSign, PieChart, ShieldAlert, Layers, ArrowRight, CheckCircle2, RefreshCw, BarChart3, HelpCircle, Lock, Crown } from "lucide-react";
@@ -20,7 +15,6 @@ export default function AdvancedCalculatorSuite() {
     window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
   };
 
-  // 1. ROAS & Net Profit State
   const [roasInputs, setRoasInputs] = useState({
     budgetUSD: 30,
     cpm: 2.2,
@@ -33,21 +27,19 @@ export default function AdvancedCalculatorSuite() {
     exchangeRate: 1490
   });
 
-  // ROAS Calculations
   const totalSpendIQD = roasInputs.budgetUSD * roasInputs.exchangeRate;
   const impressions = (roasInputs.budgetUSD / roasInputs.cpm) * 1000;
   const clicks = Math.round(impressions * (roasInputs.ctr / 100));
   const orders = Math.round(clicks * (roasInputs.cvr / 100));
   const deliveredOrders = Math.round(orders * (roasInputs.deliveryRatePct / 100));
   const revenueIQD = deliveredOrders * roasInputs.sellingPriceIQD;
-  const productTotalIQD = orders * roasInputs.productCostIQD; // cost for all sourced items
+  const productTotalIQD = orders * roasInputs.productCostIQD;
   const shippingTotalIQD = orders * roasInputs.shippingCostIQD;
   const totalCostsIQD = totalSpendIQD + productTotalIQD + shippingTotalIQD;
   const netProfitIQD = revenueIQD - totalCostsIQD;
   const roasVal = totalSpendIQD > 0 ? (revenueIQD / totalSpendIQD).toFixed(2) : "0";
   const cpaIQD = orders > 0 ? Math.round(totalSpendIQD / orders) : 0;
 
-  // 2. LTV Calculator State
   const [ltvInputs, setLtvInputs] = useState({
     aovIQD: 42000,
     purchaseFreqPerYear: 2.4,
@@ -56,10 +48,8 @@ export default function AdvancedCalculatorSuite() {
   });
   const ltvValueIQD = Math.round(ltvInputs.aovIQD * ltvInputs.purchaseFreqPerYear * ltvInputs.lifespanYears * (ltvInputs.grossMarginPct / 100));
 
-  // 3. Scaling Simulator State
-  const [scalePct, setScalePct] = useState(100); // 100% = double ad spend
+  const [scalePct, setScalePct] = useState(100);
   const scaledSpendUSD = roasInputs.budgetUSD * (1 + scalePct / 100);
-  // Account for slight CPM/CPA degradation during scaling (10% efficiency loss per 100% scale)
   const efficiencyMultiplier = 1 - (scalePct / 100) * 0.12;
   const scaledOrders = Math.round(orders * (1 + scalePct / 100) * Math.max(0.6, efficiencyMultiplier));
   const scaledDelivered = Math.round(scaledOrders * (roasInputs.deliveryRatePct / 100));
@@ -68,22 +58,19 @@ export default function AdvancedCalculatorSuite() {
   const scaledCostsIQD = scaledSpendIQD + (scaledOrders * (roasInputs.productCostIQD + roasInputs.shippingCostIQD));
   const scaledProfitIQD = scaledRevenueIQD - scaledCostsIQD;
 
-  // 4. Break-Even Calculator State
   const [breakEvenInputs, setBreakEvenInputs] = useState({
-    fixedCostsIQD: 600000, // Monthly salaries, software, office
-    unitContributionMarginIQD: 14000 // Price - COGS - Shipping - CPA
+    fixedCostsIQD: 600000,
+    unitContributionMarginIQD: 14000
   });
   const breakEvenOrdersRequired = breakEvenInputs.unitContributionMarginIQD > 0
     ? Math.ceil(breakEvenInputs.fixedCostsIQD / breakEvenInputs.unitContributionMarginIQD)
     : 0;
 
-  // 5. Margin Optimizer (50/30/20) State
   const [marginSellingPrice, setMarginSellingPrice] = useState(40000);
-  const targetCogs = marginSellingPrice * 0.50; // 50%
-  const targetAds = marginSellingPrice * 0.30;  // 30%
-  const targetNetProfit = marginSellingPrice * 0.20; // 20%
+  const targetCogs = marginSellingPrice * 0.50;
+  const targetAds = marginSellingPrice * 0.30;
+  const targetNetProfit = marginSellingPrice * 0.20;
 
-  // 6. Return Rate Impact State
   const [returnRateInputs, setReturnRateInputs] = useState({
     monthlyOrders: 300,
     currentReturnRatePct: 18,
@@ -94,12 +81,11 @@ export default function AdvancedCalculatorSuite() {
   const currentReturnsCount = Math.round(returnRateInputs.monthlyOrders * (returnRateInputs.currentReturnRatePct / 100));
   const targetReturnsCount = Math.round(returnRateInputs.monthlyOrders * (returnRateInputs.targetReturnRatePct / 100));
   const savedReturnsCount = currentReturnsCount - targetReturnsCount;
-  const monthlySavingsIQD = savedReturnsCount * (returnRateInputs.returnShippingFeeIQD + returnRateInputs.itemSellingPriceIQD * 0.15); // Saved shipping + unrecoverable repackaging
+  const monthlySavingsIQD = savedReturnsCount * (returnRateInputs.returnShippingFeeIQD + returnRateInputs.itemSellingPriceIQD * 0.15);
 
   return (
     <div className="vizion-calculator-suite glass-subtle border rounded-3xl sm:rounded-4xl p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 text-right">
       
-      {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
           <div className="vz-eyebrow text-xs mb-2">
@@ -109,11 +95,10 @@ export default function AdvancedCalculatorSuite() {
           <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">احسبها قبل لا تقرر</h3>
         </div>
         <p className="text-xs md:text-sm text-white/60 max-w-md leading-relaxed">
-          اختار الحاسبة وغيّر الأرقام حسب مشروعك، والنتيجة تتحدث وياك مباشرة.
+          اختار الحاسبة وغير الأرقام حسب مشروعك، والنتيجة تتحدث وياك مباشرة.
         </p>
       </div>
 
-      {/* Tabs Navigation */}
       <div className="vizion-calculator-tabs -mx-4 px-4 sm:mx-0 sm:px-0 flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
         {[
           { id: "roas", label: "ربح الحملة", icon: TrendingUp },
@@ -137,11 +122,9 @@ export default function AdvancedCalculatorSuite() {
         })}
       </div>
 
-      {/* TAB CONTENT: 1. ROAS & NET PROFIT CALCULATOR */}
       {activeTab === "roas" && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-fade-in">
           
-          {/* Controls Inputs */}
           <div className="lg:col-span-7 order-2 lg:order-1 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h4 className="text-lg font-bold text-vz-accent flex items-center gap-2">
               <Calculator className="w-5 h-5" />
@@ -187,7 +170,6 @@ export default function AdvancedCalculatorSuite() {
             </div>
           </div>
 
-          {/* Dynamic Results Display */}
           <div className="lg:col-span-5 order-1 lg:order-2 sticky top-4 glass border rounded-3xl p-6 space-y-6">
             <h4 className="text-vz-accent font-black text-sm uppercase tracking-wider border-b border-white/10 pb-3">
               النتيجة باليوم
@@ -223,7 +205,6 @@ export default function AdvancedCalculatorSuite() {
               </div>
             </div>
 
-            {/* Total Net Profit Banner */}
             <div className={`p-5 rounded-2xl border text-center space-y-1 ${
               netProfitIQD >= 0
                 ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
@@ -242,7 +223,6 @@ export default function AdvancedCalculatorSuite() {
         </div>
       )}
 
-      {/* TAB CONTENT: 2. LTV CALCULATOR */}
       {activeTab === "ltv" && (
         isFreeTrial ? (
           <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
@@ -303,7 +283,6 @@ export default function AdvancedCalculatorSuite() {
         )
       )}
 
-      {/* TAB CONTENT: 3. SCALING SIMULATOR */}
       {activeTab === "scaling" && (
         isFreeTrial ? (
           <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
@@ -327,7 +306,7 @@ export default function AdvancedCalculatorSuite() {
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 animate-fade-in">
           <h4 className="text-xl font-bold text-vz-accent">إذا زدت الميزانية، شنو يصير بربحك؟</h4>
           <p className="text-xs md:text-sm text-white/70">
-            إذا زدت صرف الإعلان {scalePct}%، الطلبات ما تزيد بنفس النسبة لأن الإعلان يغلى شوية كل ما تكبّر. هنا الحسبة الواقعية.
+            إذا زدت صرف الإعلان {scalePct}%، الطلبات ما تزيد بنفس النسبة لأن الإعلان يغلى شوية كل ما تكبر. هنا الحسبة الواقعية.
           </p>
 
           <div className="space-y-3">
@@ -358,7 +337,6 @@ export default function AdvancedCalculatorSuite() {
         )
       )}
 
-      {/* TAB CONTENT: 4. BREAK-EVEN CALCULATOR */}
       {activeTab === "breakeven" && (
         isFreeTrial ? (
           <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
@@ -403,14 +381,13 @@ export default function AdvancedCalculatorSuite() {
             <div className="glass border rounded-3xl p-6 text-center flex flex-col justify-center space-y-3">
               <span className="text-xs text-white/60 font-bold uppercase">الطلبات اللي تحتاجها بالشهر</span>
               <span className="text-5xl font-mono font-black text-vz-accent">{breakEvenOrdersRequired} <span className="text-base text-white/60">طلب بالشهر</span></span>
-              <span className="text-xs text-white/70">يعني تقريباً {Math.ceil(breakEvenOrdersRequired / 30)} طلب باليوم. أي طلب فوق هذا ربح.</span>
+              <span className="text-xs text-white/70">يعني تقريبا {Math.ceil(breakEvenOrdersRequired / 30)} طلب باليوم. أي طلب فوق هذا ربح.</span>
             </div>
           </div>
         </div>
         )
       )}
 
-      {/* TAB CONTENT: 5. MARGIN OPTIMIZER (50/30/20) */}
       {activeTab === "margin" && (
         isFreeTrial ? (
           <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">
@@ -462,7 +439,6 @@ export default function AdvancedCalculatorSuite() {
         )
       )}
 
-      {/* TAB CONTENT: 6. RETURN RATE IMPACT */}
       {activeTab === "returns" && (
         isFreeTrial ? (
           <div className="p-8 rounded-3xl glass border text-center space-y-4 animate-fade-in">

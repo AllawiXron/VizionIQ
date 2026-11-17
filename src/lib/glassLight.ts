@@ -1,18 +1,5 @@
-/**
- * Glass lighting: one delegated, rAF-throttled pointer listener that lets
- * glass surfaces catch light from the cursor.
- *
- * Any element with `.glass-interactive` (cards) or `.btn` (buttons) receives
- * `--mx` / `--my` (pointer position in px) which CSS turns into a faint
- * radial highlight. Elements that also carry `data-tilt` receive `--rx` /
- * `--ry` (a tilt of at most ~3deg) for physical depth.
- *
- * Only writes CSS variables on the single hovered element, so it never
- * triggers layout. Disabled on touch devices and for reduced motion.
- */
-
 const SELECTOR = ".glass-interactive, .btn";
-const MAX_TILT = 3; // degrees
+const MAX_TILT = 3;
 
 export function initGlassLight(): () => void {
   if (typeof window === "undefined") return () => {};

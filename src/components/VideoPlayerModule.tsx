@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { videoLessonsList } from "../data/videoLessonsData";
 import { VideoLesson } from "../types";
@@ -20,12 +15,11 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
   return (
     <div className="glass-subtle border rounded-4xl p-6 md:p-10 space-y-8 text-right dir-rtl">
       
-      {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <BookOpen className="w-3.5 h-3.5 text-vz-accent" />
-            <span>موجز الشرح والأدلة التنفيذية • Executive Lesson Guides</span>
+            <span>موجز الشرح والأدلة التنفيذية، Executive Lesson Guides</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
             موجز الدروس التطبيقية والخطوات العملية
@@ -33,13 +27,10 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
         </div>
       </div>
 
-      {/* MAIN LESSON GUIDE VIEW */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Main Content Display Container */}
         <div className="lg:col-span-8 space-y-6">
           
-          {/* Card Visual Hero Header */}
           <div className="relative aspect-[16/9] sm:aspect-[21/9] rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
             <div 
               className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]" 
@@ -69,10 +60,8 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
             </div>
           </div>
 
-          {/* Lesson Meta Summary & Details */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
             
-            {/* Executive Summary */}
             <div className="space-y-2">
               <h5 className="text-base font-extrabold text-vz-accent flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-slate-200" />
@@ -83,7 +72,6 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
               </p>
             </div>
 
-            {/* Timestamps / Topic Roadmap */}
             <div className="space-y-3 pt-2 border-t border-white/10">
               <span className="text-xs font-extrabold text-white/90 flex items-center gap-2">
                 <ListOrdered className="w-4 h-4 text-vz-accent" />
@@ -104,7 +92,6 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
               </div>
             </div>
 
-            {/* Key Takeaways */}
             <div className="space-y-3 pt-2 border-t border-white/10">
               <span className="text-xs font-extrabold text-white flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -120,7 +107,6 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
               </div>
             </div>
 
-            {/* Action Item Box */}
             <div className="bg-gradient-to-r from-white/8 to-white/3 border border-white/18 p-4 sm:p-5 rounded-2xl space-y-1.5 shadow-lg">
               <span className="text-xs font-black text-vz-accent flex items-center gap-1.5">
                 <Zap className="w-4 h-4 text-vz-accent animate-pulse" />
@@ -132,7 +118,6 @@ export default function VideoPlayerModule({ chapterId }: { chapterId?: string })
           </div>
         </div>
 
-        {/* Lesson List Selector Sidebar */}
         <div className="lg:col-span-4 space-y-4">
           <h4 className="text-xs font-extrabold text-white/70 uppercase tracking-wider flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-slate-200" />

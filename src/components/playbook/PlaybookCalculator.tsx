@@ -39,7 +39,6 @@ function Result({ label, value, tone = "plain", hint }: { label: string; value: 
   );
 }
 
-/** "How much can I pay per message?" from the member's own numbers. */
 function MaxMessageCost() {
   const [price, setPrice] = useState(35000);
   const [cost, setCost] = useState(12000);
@@ -66,7 +65,7 @@ function MaxMessageCost() {
       </div>
       {losing ? (
         <p className="p-4 rounded-2xl bg-red-500/10 border border-red-500/25 text-sm text-red-200 leading-relaxed">
-          بهاي الأرقام كل طلب خسران حتى قبل الإعلان. ارفع السعر، نزّل الكلفة، أو نزّل الراجع أول (شوف حل الراجع).
+          بهاي الأرقام كل طلب خسران حتى قبل الإعلان. ارفع السعر، نزل الكلفة، أو نزل الراجع أول (شوف حل الراجع).
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -84,7 +83,6 @@ function MaxMessageCost() {
   );
 }
 
-/** Messages × close rate × order value × repeat: what a small lift on each does. */
 function SalesLevers() {
   const [messages, setMessages] = useState(1500);
   const [close, setClose] = useState(10);
@@ -119,7 +117,6 @@ function SalesLevers() {
   );
 }
 
-/** What returns cost per month, and what getting them to 10% saves. */
 function ReturnsCost() {
   const [orders, setOrders] = useState(400);
   const [returns, setReturns] = useState(25);
@@ -142,7 +139,7 @@ function ReturnsCost() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Result label="خسارة الراجع بالشهر" value={`${fmt(monthly)} د.ع`} tone="bad" hint="توصيل + إعلان على طلبات ما انباعت" />
         <Result label="لو نزل الراجع لـ 10%" value={`${fmt(atTen)} د.ع`} />
-        <Result label="توفّر بالشهر" value={`${fmt(saving)} د.ع`} tone="good" hint="ربح صافي يرجع لجيبك" />
+        <Result label="توفر بالشهر" value={`${fmt(saving)} د.ع`} tone="good" hint="ربح صافي يرجع لجيبك" />
       </div>
     </>
   );
@@ -164,7 +161,7 @@ export function PlaybookCalculator({ kind }: { kind: CalculatorKind }) {
       {kind === "max-message-cost" && <MaxMessageCost />}
       {kind === "sales-levers" && <SalesLevers />}
       {kind === "returns-cost" && <ReturnsCost />}
-      <p className="text-[11px] text-white/40">غيّر الأرقام لأرقام مشروعك. الحساب يصير على جهازك وما ينحفظ.</p>
+      <p className="text-[11px] text-white/40">غير الأرقام لأرقام مشروعك. الحساب يصير على جهازك وما ينحفظ.</p>
     </div>
   );
 }

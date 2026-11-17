@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SPRING_SNAPPY, overlayMotion } from "../lib/motion";
@@ -50,13 +45,11 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
   const [activeTab, setActiveTab] = useState<"codes" | "add" | "analytics_eval">("codes");
   const [codes, setCodes] = useState<AccessCode[]>([]);
   
-  // Analytics and Evaluation state
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [evalResult, setEvalResult] = useState<AdvisorEvaluationSuiteResult | null>(null);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [expandedTestId, setExpandedTestId] = useState<string | null>(null);
 
-  // Form states
   const [newBuyerName, setNewBuyerName] = useState("");
   const [customCode, setCustomCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -95,7 +88,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
     }, 400);
   };
 
-  // (No early return: AnimatePresence below needs to see the close to animate it.)
   const saveCodes = (updatedCodes: AccessCode[]) => {
     setCodes(updatedCodes);
     localStorage.setItem("sales_guide_codes", JSON.stringify(updatedCodes));
@@ -108,14 +100,12 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
     setSuccessMessage("");
 
     if (!newBuyerName.trim()) {
-      setErrorMessage("رجاءً إدخال اسم المشتري أو الجهة المستفيدة.");
+      setErrorMessage("رجاء إدخال اسم المشتري أو الجهة المستفيدة.");
       return;
     }
 
-    // Generate code or use custom code
     let finalCode = customCode.trim().toLowerCase();
     if (!finalCode) {
-      // Auto-generate ali#1 style or user#random
       const transliterated = newBuyerName
         .trim()
         .toLowerCase()
@@ -126,9 +116,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
       finalCode = `${transliterated}#${randomNum}`;
     }
 
-    // Check duplicates
     if (codes.some(c => c.code === finalCode)) {
-      setErrorMessage(`كود الدخول [${finalCode}] مستخدم بالفعل! رجاءً اختيار رمز آخر.`);
+      setErrorMessage(`كود الدخول [${finalCode}] مستخدم بالفعل. رجاء اختيار رمز آخر.`);
       return;
     }
 
@@ -142,7 +131,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
     const updated = [newCodeItem, ...codes];
     saveCodes(updated);
 
-    setSuccessMessage(`تم إنشاء كود الدخول للمشترك [${newBuyerName}] بنجاح! الكود: ${finalCode}`);
+    setSuccessMessage(`تم إنشاء كود الدخول للمشترك [${newBuyerName}] بنجاح. الكود: ${finalCode}`);
     setNewBuyerName("");
     setCustomCode("");
   };
@@ -158,13 +147,12 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
   };
 
   const handleDeleteCode = (codeToDelete: string) => {
-    if (window.confirm(`هل أنت متأكد من رغبتك في حذف الرمز [${codeToDelete}] نهائياً؟`)) {
+    if (window.confirm(`هل أنت متأكد من رغبتك في حذف الرمز [${codeToDelete}] نهائيا؟`)) {
       const updated = codes.filter(c => c.code !== codeToDelete);
       saveCodes(updated);
     }
   };
 
-  // Stats calculation
   const totalCodes = codes.length;
   const revokedCodes = codes.filter(c => c.isRevoked).length;
   const activeCodes = totalCodes - revokedCodes;
@@ -175,7 +163,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
     <AnimatePresence>
       {isOpen && (
         <motion.div key="admin-overlay" {...overlayMotion} className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 vz-backdrop safe-area-top safe-area-bottom">
-          {/* Modal Card */}
           <motion.div
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
@@ -190,10 +177,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             aria-modal="true"
             className="relative w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl overflow-hidden max-h-[94dvh] sm:max-h-[90vh] flex flex-col dir-rtl touch-pan-y my-auto"
           >
-            {/* Mobile Drag Down Bar Indicator */}
             <div className="w-10 h-[5px] bg-white/25 rounded-full mx-auto mt-2 mb-1 sm:hidden shrink-0 cursor-grab active:cursor-grabbing" />
             
-            {/* Modal Header */}
         <div className="flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 vz-sheet-header">
           <div className="flex items-center gap-2 text-vz-accent min-w-0">
             <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-vz-accent shrink-0" />
@@ -207,7 +192,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           </button>
         </div>
 
-        {/* Stats Strip */}
         <div className="grid grid-cols-3 gap-1.5 sm:gap-3 px-3 sm:px-6 py-3 sm:py-4 border-b border-white/[0.06] text-center">
           <div className="glass-subtle rounded-2xl py-2 sm:py-2.5 px-1 sm:px-3">
             <span className="text-[8px] sm:text-[10px] text-white/70 block font-semibold truncate">إجمالي الأكواد</span>
@@ -223,7 +207,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           </div>
         </div>
 
-        {/* Tab Buttons */}
         <div className="flex gap-1 mx-3 sm:mx-6 mt-3 p-1 rounded-full bg-white/[0.04] border border-white/[0.06] overflow-x-auto no-scrollbar">
           <button             onClick={() => setActiveTab("codes")}
             className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "codes" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
@@ -235,7 +218,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "add" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {activeTab === "add" && <motion.span layoutId="admin-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />}
-            <span className="relative">إضافة مشترِ</span>
+            <span className="relative">إضافة مشتر</span>
           </button>
           <button             onClick={() => {
               setActiveTab("analytics_eval");
@@ -250,13 +233,10 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           </button>
         </div>
 
-        {/* Content Body */}
         <div className="p-3 sm:p-6 overflow-y-auto flex-1 no-scrollbar space-y-4">
           
-          {/* TAB 1: CODES REGISTRY */}
           {activeTab === "codes" && (
             <div className="space-y-4 animate-fade-in">
-              {/* Quick Export Box */}
               <div className="p-4 bg-gradient-to-r from-white/5 via-white/3 to-transparent border border-white/14 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
                 <div className="space-y-0.5 text-right w-full sm:w-auto">
                   <h4 className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
@@ -278,12 +258,12 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
               <div className="flex justify-between items-center text-[10px] sm:text-xs text-white/70 pb-1">
                 <span>سجل الأكواد الصالحة والملغاة</span>
-                <span>الأحدث أولاً</span>
+                <span>الأحدث أولا</span>
               </div>
 
               {codes.length === 0 ? (
                 <div className="py-12 text-center text-white/60 text-xs">
-                  ماكو أكواد دخول حالية مسجلة بالنظام. رجاءً إضافة كود جديد.
+                  ماكو أكواد دخول حالية مسجلة بالنظام. رجاء إضافة كود جديد.
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -311,14 +291,14 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                         </div>
                         <div className="text-[10px] sm:text-[11px] text-white/60 flex items-center gap-1 flex-wrap">
                           <span className="font-semibold text-white/80">{item.buyerName || "بدون اسم"}</span>
-                          <span>· تاريخ التسجيل: {item.dateAdded}</span>
+                          <span>تاريخ التسجيل: {item.dateAdded}</span>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-1.5 w-full sm:w-auto justify-end border-t sm:border-0 border-white/5 pt-2 sm:pt-0">
                         <button                           onClick={() => handleToggleRevoke(item.code)}
                           className={`px-2.5 py-1.5 rounded-lg border transition-all motion-reduce:transition-none motion-reduce:transform-none text-xs cursor-pointer flex items-center gap-1 ${ item.isRevoked ? "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400" : "bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
-                          title={item.isRevoked ? "تفعيل الكود مجدداً" : "تعطيل الكود وإلغاء الدخول"}
+                          title={item.isRevoked ? "تفعيل الكود مجددا" : "تعطيل الكود وإلغاء الدخول"}
                         >
                           {item.isRevoked ? <Check className="w-3.5 h-3.5" /> : <Ban className="w-3.5 h-3.5" />}
                           <span>{item.isRevoked ? "تفعيل" : "إلغاء"}</span>
@@ -337,14 +317,12 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             </div>
           )}
 
-          {/* TAB 2: ADD NEW BUYER/CODE */}
           {activeTab === "add" && (
             <form onSubmit={handleCreateCode} className="space-y-4 animate-fade-in">
               <div className="p-4 bg-white/3 border border-white/9 rounded-xl mb-2 text-xs text-vz-accent leading-relaxed">
-                تكدر توليد كود دخول ذهبي تلقائي للمشتركين الذين اشتروا الدليل يدوياً أو ترغب بمنحهم وصولاً خاصاً.
+                تكدر توليد كود دخول ذهبي تلقائي للمشتركين الذين اشتروا الدليل يدويا أو ترغب بمنحهم وصولا خاصا.
               </div>
 
-              {/* Input Buyer Name */}
               <div className="space-y-1.5">
                 <label className="text-xs text-white/70 font-semibold block">اسم المشتري / الجهة المستفيدة (مثال: علي الرافدين):</label>
                 <input                   type="text"
@@ -355,9 +333,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 />
               </div>
 
-              {/* Input Custom Code */}
               <div className="space-y-1.5">
-                <label className="text-xs text-white/70 font-semibold block">رمز كود الوصول الاختياري (أو اتركه فارغاً لتوليد كود تلقائي):</label>
+                <label className="text-xs text-white/70 font-semibold block">رمز كود الوصول الاختياري (أو اتركه فارغا لتوليد كود تلقائي):</label>
                 <input                   type="text"
                   value={customCode}
                   onChange={(e) => setCustomCode(e.target.value)}
@@ -366,7 +343,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 />
               </div>
 
-              {/* Error / Success feedback */}
               {errorMessage && (
                 <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-xs text-red-300">
                   {errorMessage}
@@ -379,7 +355,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 </div>
               )}
 
-              {/* Submit */}
               <button                 type="submit"
                 className="w-full py-3 rounded-xl gold-gradient-bg text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] transition-transform shadow-lg md:shadow-black/40 shadow-xl/25 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
@@ -389,10 +364,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             </form>
           )}
 
-          {/* TAB 3: ANALYTICS & QUALITY EVALUATION */}
           {activeTab === "analytics_eval" && (
             <div className="space-y-5 animate-fade-in">
-              {/* Privacy Notice Banner */}
               <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl flex items-start gap-2.5 text-xs text-emerald-300">
                 <Shield className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
@@ -403,7 +376,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 </div>
               </div>
 
-              {/* Feedback Summary Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-center">
                   <span className="text-[10px] text-white/70 block font-semibold">إجمالي التفاعلات المسجلة</span>
@@ -440,7 +412,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 </div>
               </div>
 
-              {/* Unhelpful Reasons Breakdown (if any) */}
               {analytics && Object.keys(analytics.feedback.reasonsBreakdown).length > 0 && (
                 <div className="p-3 bg-rose-950/20 border border-rose-500/20 rounded-xl space-y-2">
                   <span className="text-xs font-bold text-rose-300 block">
@@ -456,7 +427,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 </div>
               )}
 
-              {/* Events Breakdown Grid */}
               <div className="space-y-2">
                 <h4 className="text-xs font-bold text-white/80 flex items-center justify-between">
                   <span>سجل استخدام مسارات المنصة:</span>
@@ -523,7 +493,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 </div>
               </div>
 
-              {/* Quality Evaluation Benchmark Suite */}
               <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                   <div className="space-y-0.5">
@@ -554,10 +523,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   </button>
                 </div>
 
-                {/* Evaluation Results Display */}
                 {evalResult && (
                   <div className="space-y-3 animate-in fade-in">
-                    {/* Overall Summary Bar */}
                     <div className="p-3.5 bg-gradient-to-r from-emerald-500/15 via-emerald-500/5 to-transparent border border-emerald-500/30 rounded-2xl flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-black text-lg">
@@ -580,7 +547,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                       </div>
                     </div>
 
-                    {/* Benchmark Test Cases List */}
                     <div className="space-y-2">
                       {evalResult.reports.map((report) => {
                         const isExpanded = expandedTestId === report.testCaseId;
@@ -628,7 +594,6 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                               </div>
                             </button>
 
-                            {/* Detailed Rubric Breakdown */}
                             {isExpanded && (
                               <div className="p-3 bg-black/40 border-t border-white/5 space-y-2 text-xs">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
@@ -694,9 +659,8 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
         </div>
 
-        {/* Modal Footer */}
         <div className="px-6 py-4 border-t border-white/[0.06] bg-black/20 text-center text-[10px] text-white/45">
-          تذكر: جميع الأكواد تحفظ محلياً بالكامل بالمتصفح، ولا يتم إرسالها لأي خادم بعيد لتأمين الخصوصية الكاملة.
+          تذكر: جميع الأكواد تحفظ محليا بالكامل بالمتصفح، ولا يتم إرسالها لأي خادم بعيد لتأمين الخصوصية الكاملة.
         </div>
 
           </motion.div>

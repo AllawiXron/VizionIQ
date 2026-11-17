@@ -1,6 +1,5 @@
 import React, { useId, useState } from "react";
 
-/** Arabic-Indic digits and separators → a plain number string. */
 function toWestern(text: string): string {
   return text
     .replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d)))
@@ -12,11 +11,6 @@ function toWestern(text: string): string {
 const format = (n: number) =>
   Number.isFinite(n) ? n.toLocaleString("en-US", { maximumFractionDigits: 2 }) : "";
 
-/**
- * One number input for every calculator: the unit sits in its own cell
- * (never on top of the digits), thousands get separators, Arabic digits are
- * accepted, and the value is clamped to min/max when the field loses focus.
- */
 export function NumberField({
   label,
   value,

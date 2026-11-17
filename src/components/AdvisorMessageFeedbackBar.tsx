@@ -80,15 +80,12 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
 
   return (
     <div className="mt-2.5 pt-2 border-t border-white/10 text-xs dir-rtl select-none" data-testid={`feedback-bar-${messageId}`}>
-      {/* Top Action Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        {/* Rating & Copy Actions */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <span className="text-[11px] text-white/50 hidden sm:inline ml-1 font-medium">
             هل الجواب مفيد؟
           </span>
 
-          {/* Thumbs Up Button */}
           <button
             type="button"
             onClick={handleThumbsUp}
@@ -104,7 +101,6 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             <span>مفيد</span>
           </button>
 
-          {/* Thumbs Down Button */}
           <button
             type="button"
             onClick={handleThumbsDown}
@@ -120,11 +116,10 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             <span>يحتاج تحسين</span>
           </button>
 
-          {/* Copy Button */}
           <button
             type="button"
             onClick={onCopy}
-            title="نسخ نص الإجابة كاملاً"
+            title="نسخ نص الإجابة كاملا"
             aria-label="نسخ الرد"
             className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
               isCopied
@@ -146,7 +141,6 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
           </button>
         </div>
 
-        {/* Timestamp & Reset feedback option */}
         <div className="flex items-center gap-2 mr-auto text-white/40 font-mono text-[10px]">
           {currentRating && (
             <button
@@ -167,17 +161,15 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
         </div>
       </div>
 
-      {/* Helpful Status Banner */}
       {currentRating === "helpful" && (
         <div className="mt-2 p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-[11px] sm:text-xs flex items-center justify-between gap-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>عاشت إيدك! تم تسجيل تقييمك لمساعدتنا في تطوير المستشار للسوق العراقي</span>
+            <span>عاشت إيدك تم تسجيل تقييمك لمساعدتنا في تطوير المستشار للسوق العراقي</span>
           </div>
         </div>
       )}
 
-      {/* Unhelpful Reasons Picker (Tailored to Iraqi Market) */}
       {currentRating === "unhelpful" && isPickerExpanded && (
         <div className="mt-2.5 p-3 rounded-xl bg-[#040c2a] border border-rose-500/30 text-slate-200 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="flex items-center justify-between text-rose-300 font-bold text-[11px] sm:text-xs">
@@ -195,7 +187,6 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             </button>
           </div>
 
-          {/* Fast Iraqi Market Tags */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
             {IRAQI_MARKET_FEEDBACK_REASONS.map((r) => {
               const isSelected = currentReason === r.label;
@@ -216,7 +207,6 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             })}
           </div>
 
-          {/* Custom Note Toggle & Form */}
           {!showCustomInput ? (
             <div className="pt-1 flex items-center justify-between">
               <button
@@ -264,12 +254,11 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
         </div>
       )}
 
-      {/* Unhelpful collapsed summary if reason chosen but picker hidden */}
       {currentRating === "unhelpful" && !isPickerExpanded && (
         <div className="mt-2 p-2 rounded-xl bg-rose-950/30 border border-rose-500/30 text-rose-200 text-[11px] sm:text-xs flex items-center justify-between gap-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-1.5">
             <span>
-              تم تسجيل ملاحظتك {currentReason ? `(${currentReason})` : ""}. سنعمل على تحسين جودة الإجابة!
+              تم تسجيل ملاحظتك {currentReason ? `(${currentReason})` : ""}. سنعمل على تحسين جودة الإجابة
             </span>
           </div>
           <button

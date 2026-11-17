@@ -2,17 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Brain, Check, RotateCcw, Sparkles } from "lucide-react";
 import { PROFILE_FIELDS, profileFilledCount, sanitizeProfile, type BusinessProfile, type ProfileField } from "../../lib/advisor/profile";
 
-/**
- * "ملف مشروعي": everything the advisor knows about this merchant's shop.
- * Filled by hand or learned from the chat; sent with every question so the
- * answers are about their own product, prices and ad numbers.
- */
 
 const GROUPS: { id: ProfileField["group"]; title: string; hint: string }[] = [
   { id: "shop", title: "المشروع", hint: "شنو تبيع ووين" },
   { id: "numbers", title: "أرقام الطلب", hint: "حتى نحسب ربحك الصافي بالضبط" },
-  { id: "ads", title: "الإعلانات والمبيعات", hint: "حتى نشخّص كلفة الرسالة والإغلاق" },
-  { id: "goals", title: "المشكلة والهدف", hint: "حتى يكون كل جواب موجّه إلك" },
+  { id: "ads", title: "الإعلانات والمبيعات", hint: "حتى نشخص كلفة الرسالة والإغلاق" },
+  { id: "goals", title: "المشكلة والهدف", hint: "حتى يكون كل جواب موجه إلك" },
 ];
 
 const UNIT: Partial<Record<ProfileField["kind"], string>> = { iqd: "د.ع", usd: "$", percent: "%" };
@@ -52,7 +47,6 @@ export function BusinessProfilePanel({
   return (
     <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-6" dir="rtl">
       <div className="max-w-2xl mx-auto space-y-4">
-        {/* Header with completeness ring */}
         <div className="flex items-center gap-4 rounded-3xl glass-subtle border p-4">
           <div className="relative w-16 h-16 shrink-0">
             <svg viewBox="0 0 36 36" className="w-16 h-16 -rotate-90">
@@ -73,7 +67,7 @@ export function BusinessProfilePanel({
               ملف مشروعي
             </div>
             <p className="text-xs sm:text-sm text-white/65 leading-relaxed mt-0.5">
-              المستشار يقرا هالملف ويه كل سؤال، فيجاوبك على منتجك وأرقامك إنت مو حجي عام. يتحدث تلقائياً من تذكر معلومة بالمحادثة.
+              المستشار يقرا هالملف ويه كل سؤال، فيجاوبك على منتجك وأرقامك إنت مو حجي عام. يتحدث تلقائيا من تذكر معلومة بالمحادثة.
             </p>
           </div>
         </div>
@@ -134,10 +128,10 @@ export function BusinessProfilePanel({
               }}
               disabled={filled < 3}
               className="btn btn-glass min-h-[46px] rounded-2xl px-4 text-sm font-black disabled:opacity-40"
-              title={filled < 3 ? "عبّي 3 معلومات على الأقل" : undefined}
+              title={filled < 3 ? "عبي 3 معلومات على الأقل" : undefined}
             >
               <Sparkles className="w-4 h-4" />
-              شخّص مشروعي
+              شخص مشروعي
             </button>
             {filled > 0 && (
               <button

@@ -3,11 +3,6 @@ import { Calculator, Check, Save, TrendingDown, TrendingUp } from "lucide-react"
 import { computeUnitEconomics, formatIqd, type CalcInput } from "../../lib/advisor/calc";
 import type { BusinessProfile } from "../../lib/advisor/profile";
 
-/**
- * Live profit calculator rendered from the advisor's ```calc block. The
- * numbers are computed here (exactly), and every input is editable so the
- * merchant can try "what if I raise the price / cut the cost per message".
- */
 
 type Key = "price" | "productCost" | "delivery" | "cpa" | "costPerMessage" | "closeRate" | "returnRate" | "ordersPerDay";
 
@@ -32,7 +27,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
 
   const tone = r.verdict === "profit" ? "text-emerald-300" : r.verdict === "thin" ? "text-amber-300" : "text-rose-300";
   const ring = r.verdict === "profit" ? "border-emerald-400/30 bg-emerald-400/[0.07]" : r.verdict === "thin" ? "border-amber-400/30 bg-amber-400/[0.07]" : "border-rose-400/30 bg-rose-400/[0.07]";
-  const verdictText = r.verdict === "profit" ? "الحسبة رابحة" : r.verdict === "thin" ? "ربح ضعيف — أي تذبذب يقلبه خسارة" : "الحسبة خسرانة بهالأرقام";
+  const verdictText = r.verdict === "profit" ? "الحسبة رابحة" : r.verdict === "thin" ? "ربح ضعيف، أي تذبذب يقلبه خسارة" : "الحسبة خسرانة بهالأرقام";
 
   return (
     <div className="my-1 rounded-3xl border border-white/12 bg-gradient-to-b from-white/[0.07] to-white/[0.02] overflow-hidden" dir="rtl">
@@ -43,7 +38,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
           </span>
           حسبة الطلب الواحد
         </div>
-        <span className="text-[11px] text-white/50 font-bold">غيّر أي رقم وتتحدث فوراً</span>
+        <span className="text-[11px] text-white/50 font-bold">غير أي رقم وتتحدث فورا</span>
       </div>
 
       <div className={`mx-3 mt-3 rounded-2xl border px-4 py-3 ${ring}`}>
@@ -61,12 +56,12 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
           {r.net > 0 ? <TrendingUp className={`w-9 h-9 ${tone}`} /> : <TrendingDown className={`w-9 h-9 ${tone}`} />}
         </div>
         <div className={`mt-1 text-xs font-bold ${tone}`}>
-          {verdictText} • هامش {r.marginPct.toFixed(0)}%
+          {verdictText}، هامش {r.marginPct.toFixed(0)}%
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-2 p-3">
-        <Stat label="أعلى كلفة إعلان للطلب (حد التعادل)" value={r.breakEvenCpa > 0 ? formatIqd(r.breakEvenCpa) : "ماكو — المنتج خسران حتى بدون إعلان"} />
+        <Stat label="أعلى كلفة إعلان للطلب (حد التعادل)" value={r.breakEvenCpa > 0 ? formatIqd(r.breakEvenCpa) : "ماكو، المنتج خسران حتى بدون إعلان"} />
         {r.breakEvenCostPerMessage !== undefined && <Stat label="أعلى كلفة رسالة تتحملها" value={`$${r.breakEvenCostPerMessage.toFixed(2)}`} highlight />}
         {r.breakEvenCloseRate !== undefined && <Stat label="أقل نسبة إغلاق تحتاجها" value={`${r.breakEvenCloseRate.toFixed(1)}%`} />}
         <Stat label="كلفة الإعلان للطلب هسة" value={formatIqd(r.cpa)} />
@@ -76,7 +71,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
 
       <details className="group border-t border-white/10">
         <summary className="list-none cursor-pointer px-4 py-2.5 text-xs font-bold text-vz-accent flex items-center justify-between">
-          <span>عدّل الأرقام</span>
+          <span>عدل الأرقام</span>
           <span className="transition-transform group-open:rotate-180">⌄</span>
         </summary>
         <div className="grid grid-cols-2 gap-2 px-3 pb-3">

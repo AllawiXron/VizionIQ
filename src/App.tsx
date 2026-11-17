@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -11,7 +6,6 @@ import { takeOrigin } from "./lib/origin";
 import { routeForSection, routeToHash, useRoute, type Route } from "./lib/route";
 import { requestTool, type ToolCategory } from "./lib/toolRequest";
 
-// Import modular components
 import LockScreen, { isFreeTrialUser, isAiUser } from "./components/LockScreen";
 import Navbar from "./components/Navbar";
 import HomeView from "./components/HomeView";
@@ -35,7 +29,6 @@ import { useMobileKeyboard } from "./hooks/useMobileKeyboard";
 
 const SIGNOUT_VERSION = "signout_2026_09_08_v1";
 
-/** Returns the stored member code when a valid session exists, otherwise null. */
 function readStoredSession(): string | null {
   try {
     if (localStorage.getItem("sales_guide_signout_flag") !== SIGNOUT_VERSION) return null;
@@ -49,9 +42,6 @@ function readStoredSession(): string | null {
 
 export default function App() {
   useMobileKeyboard();
-  // Read the stored session synchronously so returning members land straight in
-  // the app (no lock-screen flash). The mount effect below still runs the
-  // sign-out migration and remains the source of truth.
   const [isLoggedIn, setIsLoggedIn] = useState(() => readStoredSession() !== null);
   const [userCode, setUserCode] = useState(() => readStoredSession() ?? "");
   const [route, navigate] = useRoute();
@@ -63,13 +53,11 @@ export default function App() {
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
   const routeKey = routeToHash(route);
 
-  // Every screen starts at its top.
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
     setIsMobileMoreOpen(false);
   }, [routeKey]);
 
-  // Check login state on mount
   useEffect(() => {
     const handleOpenVip = () => setIsAdvisorOpen(true);
     const handleOpenUpgrade = () => setIsUpgradeModalOpen(true);
@@ -81,7 +69,6 @@ export default function App() {
     window.addEventListener("open-welcome-intro", handleOpenWelcome);
     window.addEventListener("open-trial-onboarding", handleOpenTrialOnboarding);
 
-    // Execute immediate sign-out request
     const signoutVersion = SIGNOUT_VERSION;
     if (localStorage.getItem("sales_guide_signout_flag") !== signoutVersion) {
       localStorage.removeItem("sales_guide_user_token");
@@ -89,19 +76,15 @@ export default function App() {
       localStorage.setItem("sales_guide_signout_flag", signoutVersion);
     }
 
-    // Check session
     const sessionToken = localStorage.getItem("sales_guide_user_token");
     const sessionCode = localStorage.getItem("sales_guide_user_code");
     
-    // If signout was triggered or session exists
     if (sessionToken === "true" && sessionCode) {
       setIsLoggedIn(true);
       setUserCode(sessionCode);
 
-      // Check if welcome intro was already shown
       const welcomeSeen = localStorage.getItem(`sales_guide_welcome_seen_${sessionCode}`);
       if (!welcomeSeen) {
-        // Trial members start with the one-minute check on their own project.
         if (isFreeTrialUser(sessionCode)) setIsTrialOnboardingOpen(true);
         else setIsWelcomeModalOpen(true);
       }
@@ -143,7 +126,6 @@ export default function App() {
     window.scrollTo({ top: 0 });
   };
 
-  /** Old section ids (advisor links, legacy components) open the matching screen. */
   const handleScrollToSection = (id: string) => {
     const target = routeForSection(id);
     if (target) {
@@ -164,13 +146,8 @@ export default function App() {
 
   const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-  // iOS-style depth: while a sheet is open, the page behind it recedes slightly.
-  // Desktop/tablet only (phones show most sheets full-screen anyway).
   const isSheetOpen = isAdvisorOpen || isUpgradeModalOpen || isWelcomeModalOpen || isTrialOnboardingOpen || isAdminOpen;
   const [stageEnabled] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches);
-  // Rack focus, like an app launching on iOS: the page pushes in toward the
-  // control that opened the sheet (and settles back from the same point).
-  // Default: the centre of the visible viewport (not of the whole page).
   const stageOriginRef = useRef(
     typeof window !== "undefined" ? `50% ${Math.round(window.scrollY + window.innerHeight / 2)}px` : "50% 0px"
   );
@@ -193,8 +170,6 @@ export default function App() {
     </div>
   );
 
-  // One screen at a time. Memoised so sheets opening/closing never re-render
-  // the page behind them.
   const stageContent = useMemo(() => {
     let screen: React.ReactNode;
     switch (route.view) {
@@ -275,7 +250,7 @@ export default function App() {
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
             <div className="vz-hairline mb-6" aria-hidden="true" />
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-white/40 text-center">
-              <span>© 2026 فيزيون • Vizion</span>
+              <span>© 2026 فيزيون viZion</span>
               <span>كورس عملي للتجارة الإلكترونية بالعراق</span>
             </div>
           </div>
@@ -285,21 +260,15 @@ export default function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [routeKey, userCode]);
 
-  // Sheets only re-render when one opens/closes or the member changes — not
-  // when the active section changes while scrolling (the closed advisor alone
-  // is a large component).
   const modalLayer = useMemo(() => (
     <>
-      {/* ADMIN CONTROL MODAL PANEL */}
       <React.Suspense fallback={null}><AdminPanel
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
         onCodesChange={() => {
-          // Trigger force-reload logic if necessary
         }}
       /></React.Suspense>
 
-      {/* VIZION AI ADVISOR CHATBOT MODAL */}
       <React.Suspense fallback={null}><VizionAdvisorModal
         isOpen={isAdvisorOpen}
         onClose={() => setIsAdvisorOpen(false)}
@@ -319,7 +288,6 @@ export default function App() {
         }}
       /></React.Suspense>
 
-      {/* FREE TRIAL UPGRADE PAYWALL MODAL */}
       <React.Suspense fallback={null}><FreeTrialPaywallModal
         isOpen={isUpgradeModalOpen}
         onClose={() => setIsUpgradeModalOpen(false)}
@@ -330,7 +298,6 @@ export default function App() {
         }}
       /></React.Suspense>
 
-      {/* HEAVENLY WELCOME INTRO MODAL */}
       <React.Suspense fallback={null}><WelcomeIntroModal
         isOpen={isWelcomeModalOpen}
         onClose={() => {
@@ -348,7 +315,6 @@ export default function App() {
         }}
       /></React.Suspense>
 
-      {/* TRIAL: ONE-MINUTE CHECK ON THEIR OWN NUMBERS */}
       <React.Suspense fallback={null}><TrialOnboarding
         isOpen={isTrialOnboardingOpen}
         onClose={() => {
@@ -365,12 +331,8 @@ export default function App() {
 
   return (
     <SensoryProvider>
-      {/* Shared atmospheric background: every glass layer floats above it */}
       <div className="vz-atmosphere" aria-hidden="true" />
 
-      {/* PAGE TRANSITION: lock screen ⇄ app — the old view softens away, the new one rises in */}
-      {/* presenceAffectsLayout={false}: otherwise the presence context is rebuilt on
-          every App render and every motion element in the page re-renders with it. */}
       <AnimatePresence mode="wait" presenceAffectsLayout={false}>
         {!isLoggedIn ? (
           <motion.div
@@ -378,7 +340,6 @@ export default function App() {
             className="relative z-[1]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } }}
-            // Unlock: the lock screen zooms toward you and dissolves into blur.
             exit={{ opacity: 0, scale: 1.08, filter: "blur(14px)", transition: { duration: 0.34, ease: EASE_OUT } }}
           >
             <LockScreen onSuccess={handleLoginSuccess} />
@@ -392,7 +353,6 @@ export default function App() {
         className="relative z-[1] min-h-screen text-white overflow-x-clip"
       >
 
-      {/* FIXED HEADER NAVIGATION */}
       <Navbar
         activeView={route.view}
         onNavigate={navigate}
@@ -402,7 +362,6 @@ export default function App() {
         userCode={userCode}
       />
 
-      {/* PAGE STAGE — hero, sections and footer recede together behind sheets */}
       <motion.div
         className="vz-stage"
         style={{ transformOrigin: stageOrigin }}
@@ -416,10 +375,8 @@ export default function App() {
 
       {modalLayer}
 
-      {/* FLOATING BACK TO TOP BUTTON (owns its scroll listener, so scrolling never re-renders the app) */}
       <BackToTop className={focusRing} />
 
-      {/* FIXED MOBILE BOTTOM NAVIGATION BAR (Hidden during modals or intro) */}
       <AnimatePresence>
       {!isWelcomeModalOpen && !isTrialOnboardingOpen && !isAdvisorOpen && !isAdminOpen && !isUpgradeModalOpen && (
         <MobileBottomNav
@@ -444,11 +401,6 @@ export default function App() {
   );
 }
 
-/**
- * Floating back-to-top control. Visibility comes from an IntersectionObserver
- * on a sentinel 400px down the page, so scrolling does no per-frame work and
- * the app never re-renders for it.
- */
 function BackToTop({ className }: { className: string }) {
   const [visible, setVisible] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -456,7 +408,6 @@ function BackToTop({ className }: { className: string }) {
     const el = sentinelRef.current;
     if (!el || !("IntersectionObserver" in window)) return;
     const io = new IntersectionObserver(([entry]) => {
-      // Sentinel above the viewport → the page has scrolled past 400px.
       setVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0);
     });
     io.observe(el);

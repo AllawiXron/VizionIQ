@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
 import {
   Home,
@@ -56,7 +51,6 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     setInternalMoreOpen(open);
   };
 
-  // Close sheet on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isMoreSheetOpen) {
@@ -91,17 +85,14 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     { key: "more", label: "المزيد", aria: "المزيد", icon: Menu, active: isMoreSheetOpen || activeView === "tools" || activeView === "market" || activeView === "guide" || activeView === "guideModule", expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
   ];
 
-  // The More sheet grows out of the dock button (or top menu button) like a liquid-glass panel.
   const originSheet = useOriginSheet(isMoreSheetOpen, { width: 480, anchor: "bottom", height: 420 });
   const moreSheetMotion = originSheet === sheetMotion ? bottomSheetMotion : originSheet;
 
   return (
     <>
-      {/* 1. SLIDE-UP BOTTOM SHEET FOR "المزيد" (SECONDARY ACTIONS) */}
       <AnimatePresence>
         {isMoreSheetOpen && (
           <div className="fixed inset-0 z-[90] lg:hidden dir-rtl">
-            {/* Backdrop: darkens while its blur fades in */}
             <motion.div
               {...overlayMotion}
               onClick={() => setMoreSheetOpen(false)}
@@ -109,7 +100,6 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               aria-hidden="true"
             />
 
-            {/* Bottom Sheet — anchored to thumb reach, drag down to dismiss */}
             <motion.div
               {...moreSheetMotion}
               drag="y"
@@ -123,10 +113,8 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               aria-label="المزيد"
               className="absolute inset-x-0 bottom-0 max-h-[85vh] glass-elevated glass-edge rounded-t-4xl overflow-hidden flex flex-col pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] touch-pan-y"
             >
-              {/* Drag bar indicator */}
               <div className="w-10 h-[5px] bg-white/25 rounded-full mx-auto mt-2.5 mb-1.5 shrink-0 cursor-grab active:cursor-grabbing" />
 
-              {/* Sheet Header */}
               <div className="px-4 pb-2.5 flex items-center justify-between shrink-0">
                 <h3 className="text-base font-black text-white">المزيد</h3>
                 <button
@@ -211,7 +199,6 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         )}
       </AnimatePresence>
 
-      {/* 2. THE FLOATING MOBILE BOTTOM NAVIGATION DOCK (USABLE WITH ONE HAND) */}
       <motion.nav
         role="navigation"
         aria-label="شريط التنقل السفلي المخصص للجوال"

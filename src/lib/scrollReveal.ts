@@ -1,13 +1,3 @@
-/**
- * Attribute-driven scroll reveals.
- *
- * Any element with `data-reveal` fades up out of a soft blur the first time it
- * enters the viewport (CSS in index.css does the animation; this file only
- * flips the `is-revealed` class). `data-reveal-delay="1".."6"` staggers
- * siblings. One shared IntersectionObserver, unobserved after reveal, plus a
- * MutationObserver so lazily-mounted sections are picked up automatically.
- */
-
 export function initScrollReveal(): () => void {
   if (typeof window === "undefined") return () => {};
   const root = document.documentElement;

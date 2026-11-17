@@ -1,27 +1,10 @@
-/**
- * Unit economics for one Iraqi COD order, computed in code so the advisor's
- * numbers are exact (the model proposes inputs in a ```calc block, the UI
- * computes and lets the merchant tweak them live).
- *
- * Model (per delivered order):
- *   returns per delivered order   = r / (1 − r)
- *   each return wastes             = delivery fee + the ad cost that won it
- *   net profit                     = price − product − delivery − CPA − returnShare
- *   break-even CPA                 = (1 − r)(price − product) − delivery
- * which matches the course formula (صافي الربح = السعر − الكلفة − الإعلان − التوصيل − مخصص الراجع).
- */
-
 export interface CalcInput {
   price: number;
   productCost: number;
   delivery: number;
-  /** Ad cost per confirmed order, IQD. Derived from cost per message when absent. */
   cpa?: number;
-  /** USD per message. */
   costPerMessage?: number;
-  /** % of messages that become confirmed orders. */
   closeRate?: number;
-  /** % of shipped orders that come back. */
   returnRate: number;
   usdRate: number;
   ordersPerDay?: number;
@@ -33,9 +16,7 @@ export interface CalcResult {
   net: number;
   marginPct: number;
   breakEvenCpa: number;
-  /** Highest cost per message (USD) that still breaks even, if close rate is known. */
   breakEvenCostPerMessage?: number;
-  /** Lowest close rate (%) that breaks even at the current cost per message. */
   breakEvenCloseRate?: number;
   monthlyNet?: number;
   verdict: "profit" | "thin" | "loss";
@@ -48,7 +29,6 @@ const num = (v: unknown): number | undefined => {
   return Number.isFinite(n) && n >= 0 ? n : undefined;
 };
 
-/** Reads a ```calc JSON block from the model; tolerant of extra keys and strings. */
 export function parseCalcBlock(raw: string): CalcInput | null {
   let obj: Record<string, unknown>;
   try {
@@ -93,5 +73,4 @@ export function computeUnitEconomics(input: CalcInput): CalcResult {
   return { cpa, returnShare, net, marginPct, breakEvenCpa, breakEvenCostPerMessage, breakEvenCloseRate, monthlyNet, verdict };
 }
 
-/** "12,600 د.ع"; negatives keep the sign attached to the number in RTL text. */
 export const formatIqd = (n: number) => `${n < 0 ? "\u2066−" : "\u2066"}${Math.round(Math.abs(n)).toLocaleString("en-US")}\u2069 د.ع`;

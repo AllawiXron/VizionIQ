@@ -6,7 +6,6 @@ import { playbooksList } from "../data/playbooksData";
 describe("trial diagnosis", () => {
   it("uses the playbooks' per-order model", () => {
     const d = diagnose(TRIAL_DEFAULTS);
-    // (1 − 20%) × (35,000 − 12,000) − 5,000 − 1,500 ÷ 10%
     expect(d.real).toBeCloseTo(0.8 * 23000 - 5000 - 15000);
     expect(d.thinks).toBe(23000);
     expect(d.cpa).toBe(15000);

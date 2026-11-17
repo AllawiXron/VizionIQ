@@ -5,7 +5,6 @@ import { TRIAL_PROBLEMS, diagnose, iqd, useTrialProfile } from "../lib/trial";
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-/** 99,000 struck through, 49,000, and the real deadline (or the full price once it has passed). */
 export function OfferPrice({ size = "md", className = "" }: { size?: "sm" | "md" | "lg"; className?: string }) {
   const state = offerState();
   const big = size === "lg" ? "text-4xl sm:text-5xl" : size === "md" ? "text-3xl sm:text-4xl" : "text-2xl";
@@ -22,14 +21,13 @@ export function OfferPrice({ size = "md", className = "" }: { size?: "sm" | "md"
       {state.active && (
         <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/[0.12] border border-red-400/30 text-red-200 text-xs font-bold">
           <Clock className="w-3.5 h-3.5" />
-          الخصم لحد {OFFER_LAST_DAY} · {deadlineLabel(state)}
+          الخصم لحد {OFFER_LAST_DAY}، {deadlineLabel(state)}
         </p>
       )}
     </div>
   );
 }
 
-/** The trial member's diagnosis as lines for the WhatsApp message, so the conversation starts from their project. */
 export function useSubscribeMessage(): string {
   const profile = useTrialProfile();
   if (!profile) return subscribeMessage();
@@ -43,7 +41,6 @@ export function useSubscribeMessage(): string {
   ]);
 }
 
-/** Opens WhatsApp with "I want to subscribe" already written. */
 export function SubscribeButton({ label, className = "" }: { label?: string; className?: string }) {
   const message = useSubscribeMessage();
   const state = offerState();

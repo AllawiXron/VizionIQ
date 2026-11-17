@@ -120,7 +120,6 @@ describe("tool requests", () => {
   });
 
   it("keeps a request until the tools screen takes it", () => {
-    // No window in the node test environment: stub the event target.
     const g = globalThis as unknown as { window?: unknown; CustomEvent?: unknown };
     const hadWindow = "window" in g;
     if (!hadWindow) g.window = { dispatchEvent: () => true };

@@ -1,14 +1,3 @@
-/**
- * The advisor's server side, shared by the Vercel function
- * (api/advisor/chat.ts) and the local Express server (server.ts).
- *
- * - Grounds every answer in the merchant's business profile and in the most
- *   relevant chunks of the course.
- * - Keeps a longer conversation window and accepts screenshots (vision).
- * - Streams the answer as NDJSON events ({"t":"delta"} … {"t":"done"}) so the
- *   chat shows words as they are written; falls back across models before the
- *   first token, and to the offline Iraqi fallback if every model is down.
- */
 import { GoogleGenAI } from "@google/genai";
 import { generateIraqiAdvisorFallback } from "../iraqiAdvisorFallback.js";
 import { buildSystemInstruction } from "./prompt.js";
@@ -17,10 +6,9 @@ import { formatProfileForPrompt, sanitizeProfile } from "./profile.js";
 
 export const ADVISOR_MODELS = ["gemini-3.8-flash", "gemini-3.1-flash-lite", "gemini-flash-latest"];
 
-/** How many recent messages the model sees (was 6). */
 export const HISTORY_WINDOW = 16;
 const MAX_IMAGES = 3;
-const MAX_IMAGE_BASE64 = 2_800_000; // ~2 MB per image after base64
+const MAX_IMAGE_BASE64 = 2_800_000;
 const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 export interface AdvisorImage {
@@ -33,7 +21,6 @@ export interface ChatMessagePayload {
   text: string;
   topicId?: string;
   images?: AdvisorImage[];
-  /** Set on history messages that carried images (the bytes are not resent). */
   hadImages?: boolean;
 }
 
@@ -44,7 +31,6 @@ export interface ChatOptions {
   isNewTopic?: boolean;
   diagnosticProfile?: unknown;
   profile?: unknown;
-  /** Text already shown from an interrupted answer: resume after it. */
   continueFrom?: string;
 }
 
@@ -69,11 +55,6 @@ function validImages(images: unknown): AdvisorImage[] {
     .slice(0, MAX_IMAGES);
 }
 
-/**
- * Conversation turns for the model: recent window only, tags stripped,
- * images attached to the latest user message, consecutive same-role turns
- * merged (the API expects alternating roles).
- */
 export function prepareCleanContents(messages: ChatMessagePayload[], options?: ChatOptions): Content[] {
   if (!messages || messages.length === 0) return [];
   const window = options?.isNewTopic ? [messages[messages.length - 1]] : messages.slice(-HISTORY_WINDOW);
@@ -87,21 +68,18 @@ export function prepareCleanContents(messages: ChatMessagePayload[], options?: C
     let text = sanitizeMessageForHistory(m.text);
     if (role === "user" && i !== lastUserIndex && (m.hadImages || (m.images && m.images.length))) text = `${text}\n[أرفقت صورة بهذي الرسالة]`.trim();
     if (!text && images.length === 0) return;
-    const parts: Part[] = [...images.map((im) => ({ inlineData: { mimeType: im.mimeType, data: im.data } })), { text: text || "حلل هذي الصورة وشخّصلي." }];
+    const parts: Part[] = [...images.map((im) => ({ inlineData: { mimeType: im.mimeType, data: im.data } })), { text: text || "حلل هذي الصورة وشخصلي." }];
     const prev = contents[contents.length - 1];
     if (prev && prev.role === role) prev.parts.push(...parts);
     else contents.push({ role, parts });
   });
-  // The conversation has to start with the user.
   while (contents.length && contents[0].role !== "user") contents.shift();
   return contents;
 }
 
-/** System instruction for this request: base prompt + profile + course excerpts. */
 export function buildRequestInstruction(messages: ChatMessagePayload[], options: ChatOptions = {}) {
   const profile = sanitizeProfile(options.profile);
   const userTexts = messages.filter((m) => m?.role === "user").map((m) => m.text || "");
-  // The last question plus the one before it, so follow-ups ("وضحلي أكثر") still find the topic.
   const query = [userTexts[userTexts.length - 1], userTexts[userTexts.length - 2], options.topicContext].filter(Boolean).join("\n");
   const chunks = retrieveKnowledge(query);
   const knowledge = chunks
@@ -123,10 +101,10 @@ export function getGeminiClient() {
   const apiKey = (process.env.GEMINI_API_KEY || "").trim();
   if (!apiKey) {
     throw new Error(
-      "مفتاح GEMINI_API_KEY غير معرف في إعدادات البيئة. أضفه في Vercel > Settings > Environment Variables (أو ملف .env محلياً) ثم أعد النشر."
+      "مفتاح GEMINI_API_KEY غير معرف في إعدادات البيئة. أضفه في Vercel > Settings > Environment Variables (أو ملف .env محليا) ثم أعد النشر."
     );
   }
-  return new GoogleGenAI({ apiKey, httpOptions: { headers: { "User-Agent": "aistudio-build" } } });
+  return new GoogleGenAI({ apiKey, httpOptions: { headers: { "User-Agent": "vizion" } } });
 }
 
 const errText = (err: unknown) => JSON.stringify((err as Error)?.message || err || "");
@@ -139,7 +117,7 @@ export function friendlyError(err: unknown): string {
   if (/429|RESOURCE_EXHAUSTED|Quota/i.test(s)) return "وصلنا الحد المؤقت للطلبات. انتظر شوية وأعد المحاولة.";
   if (/GEMINI_API_KEY/.test(s)) return (err as Error).message;
   if (/Incomplete JSON|terminated|ECONNRESET|socket|fetch failed|network|aborted|timeout/i.test(s)) return "انقطع الاتصال بالمستشار بنص الجواب. اضغط 'جواب جديد' أو أعد المحاولة.";
-  return "تعذر الحصول على رد حالياً. جرّب مرة ثانية.";
+  return "تعذر الحصول على رد حاليا. جرب مرة ثانية.";
 }
 
 export interface RunResult {
@@ -147,38 +125,28 @@ export interface RunResult {
   model?: string;
   fallback?: boolean;
   aborted?: boolean;
-  /** Ran out of server time mid-answer: the client should ask for a continuation. */
   truncated?: boolean;
 }
 
-/** Vercel kills the function at 60 s (vercel.json); finish cleanly before that. */
 export const DEADLINE_MS = 50_000;
-/** If a model hasn't written a word by then, move on to the next model. */
 export const FIRST_TOKEN_MS = 10_000;
 const MAX_CONTINUATIONS = 2;
 
-/** Models that rejected thinkingConfig once are called without it from then on. */
 const NO_THINKING_CONFIG = new Set<string>();
-/** Models that rejected the MINIMAL thinking level: they get LOW instead. */
 const NO_MINIMAL_THINKING = new Set<string>();
 
 type ThinkingLevel = "MINIMAL" | "LOW";
 
-/**
- * Light questions get minimal thinking (first words in about a second);
- * screenshots, long questions and diagnostics get a little more.
- */
 export function thinkingLevelFor(messages: ChatMessagePayload[], options: ChatOptions): ThinkingLevel {
   const last = [...messages].reverse().find((m) => m?.role === "user");
   const heavy =
     Boolean(last?.images?.length) ||
     (last?.text?.length ?? 0) > 400 ||
     Boolean(options.diagnosticProfile) ||
-    /احسب|حسبة|شخص|شخّص|خطة|حلل|حلّل|قارن|ميزانية/.test(last?.text ?? "");
+    /احسب|حسبة|شخص|شخص|خطة|حلل|حلل|قارن|ميزانية/.test(last?.text ?? "");
   return heavy ? "LOW" : "MINIMAL";
 }
 
-/** Turns that make the model resume a broken answer exactly where it stopped. */
 export function continuationContents(contents: Content[], partial: string): Content[] {
   const tail = partial.slice(-160);
   return [
@@ -188,22 +156,13 @@ export function continuationContents(contents: Content[], partial: string): Cont
       role: "user",
       parts: [
         {
-          text: `انقطع جوابك هنا: «…${tail}». كمّل من آخر كلمة بالضبط، بدون أي مقدمة وبدون ما تعيد شي كتبته، وبنفس التنسيق (إذا كنت بنص بلوك \`\`\` كمّله وسكّره).`,
+          text: `انقطع جوابك هنا: …${tail}. كمل من آخر كلمة بالضبط، بدون أي مقدمة وبدون ما تعيد شي كتبته، وبنفس التنسيق (إذا كنت بنص بلوك \`\`\` كمله وسكره).`,
         },
       ],
     },
   ];
 }
 
-/**
- * Runs the advisor. `onDelta` receives text as it streams.
- * - Before the first word: transient failures and slow starts fall through
- *   to the next model, then to the offline Iraqi fallback.
- * - After words have streamed: a broken connection is resumed with a
- *   continuation request, so the merchant sees one uninterrupted answer.
- * - Near the server deadline it stops cleanly with `truncated` so the
- *   browser can request the rest.
- */
 export async function runAdvisor(
   messages: ChatMessagePayload[],
   options: ChatOptions,
@@ -215,7 +174,6 @@ export async function runAdvisor(
   const startedAt = Date.now();
   const budget = timing.deadlineMs ?? DEADLINE_MS;
   const deadline = startedAt + budget;
-  // Time kept in hand to start another call / finish cleanly (6 s of the 50 s budget).
   const reserve = Math.min(6000, budget / 8);
   const firstTokenMs = timing.firstTokenMs ?? FIRST_TOKEN_MS;
   const base = prepareCleanContents(messages, options);
@@ -224,7 +182,6 @@ export async function runAdvisor(
   const ai = client ?? getGeminiClient();
   const wantedLevel = thinkingLevelFor(messages, options);
 
-  // Text already shown to the merchant (from an earlier, interrupted request).
   const prior = typeof options.continueFrom === "string" ? options.continueFrom.slice(-20_000) : "";
   let produced = "";
   let continuations = 0;
@@ -233,7 +190,6 @@ export async function runAdvisor(
 
   const contentsNow = () => (prior || produced ? continuationContents(base, prior + produced) : base);
 
-  /** One streaming call. Resolves "done" | "truncated" | "aborted"; throws on failure. */
   const streamOnce = async (model: string): Promise<"done" | "truncated" | "aborted"> => {
     const controller = new AbortController();
     let gotText = false;
@@ -268,7 +224,6 @@ export async function runAdvisor(
       if (isAborted()) return "aborted";
       if (gotText && Date.now() >= deadline - Math.min(500, reserve)) return "truncated";
       if (timedOut) throw Object.assign(new Error(`timeout: no first token from ${model}`), { timeout: true });
-      // A model that doesn't accept this thinking level: step down (MINIMAL → LOW → none) and retry it.
       if (!NO_THINKING_CONFIG.has(model) && /thinking/i.test(errText(err)) && /400|INVALID_ARGUMENT|not supported|Unknown name/i.test(errText(err))) {
         if (level === "MINIMAL") NO_MINIMAL_THINKING.add(model);
         else NO_THINKING_CONFIG.add(model);
@@ -296,7 +251,6 @@ export async function runAdvisor(
         const e = err as { retryPlain?: boolean; timeout?: boolean; message?: string };
         console.warn(`[Advisor] ${model} attempt ${attempt + 1} failed:`, e?.message || err);
         if (e.retryPlain) continue;
-        // Words already reached the merchant: resume instead of starting over.
         if (produced.length > 0) {
           if (continuations >= MAX_CONTINUATIONS) throw Object.assign(new Error(friendlyError(err)), { partial: produced });
           if (Date.now() > deadline - reserve * 1.3) return { text: produced, model, truncated: true };
@@ -325,9 +279,6 @@ export async function runAdvisor(
   throw new Error(friendlyError(lastError));
 }
 
-/* ------------------------------------------------------------------ */
-/* HTTP handler (Express and Vercel share it)                           */
-/* ------------------------------------------------------------------ */
 
 interface Req {
   method?: string;
@@ -346,7 +297,6 @@ interface Res {
   on?: (event: string, cb: () => void) => void;
 }
 
-/** Soft per-IP limit: protects the API key from abuse without bothering real merchants. */
 const hits = new Map<string, number[]>();
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX = 60;
@@ -411,7 +361,6 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
     return sendJson(res, 500, { error: (e as Error).message, requestId });
   }
 
-  // Non-streaming (older cached clients): same JSON shape as before.
   if (!b.stream) {
     try {
       const result = await runAdvisor(messages, options, () => {}, undefined, ai);
@@ -421,8 +370,6 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
     }
   }
 
-  // The response (not the request) closes early only when the merchant hits
-  // stop or leaves: Node fires the request's "close" as soon as its body is read.
   let aborted = false;
   res.on?.("close", () => {
     if (!res.writableEnded) aborted = true;
@@ -445,7 +392,6 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
   res.end();
 }
 
-/** Non-streaming helper kept for older call sites. */
 export async function handleAdvisorChat(messages: ChatMessagePayload[], options: ChatOptions = {}) {
   return (await runAdvisor(messages, options, () => {})).text;
 }

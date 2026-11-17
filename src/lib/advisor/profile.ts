@@ -1,12 +1,3 @@
-/**
- * The merchant's business profile ("ملف مشروعي"): what the advisor knows
- * about this person's shop. It is filled in by the merchant or learned from
- * the conversation (the model emits [PROFILE: key=value | ...]) and sent with
- * every question, so answers are about *their* numbers, not generic ones.
- *
- * Shared by the browser and the server — no Node or DOM APIs here.
- */
-
 export type ProfileFieldKind = "text" | "iqd" | "usd" | "percent" | "number" | "choice";
 
 export interface ProfileField {
@@ -38,11 +29,11 @@ export interface BusinessProfile {
 }
 
 export const PROFILE_FIELDS: ProfileField[] = [
-  { key: "businessName", label: "اسم الصفحة / المشروع", kind: "text", placeholder: "مثلاً: متجر نور", group: "shop" },
-  { key: "product", label: "المنتج الأساسي", kind: "text", placeholder: "مثلاً: ساعات رجالية", group: "shop" },
+  { key: "businessName", label: "اسم الصفحة / المشروع", kind: "text", placeholder: "مثلا: متجر نور", group: "shop" },
+  { key: "product", label: "المنتج الأساسي", kind: "text", placeholder: "مثلا: ساعات رجالية", group: "shop" },
   { key: "niche", label: "المجال", kind: "text", placeholder: "إكسسوارات، ملابس، عناية…", group: "shop" },
   { key: "city", label: "المدينة / التغطية", kind: "text", placeholder: "بغداد + المحافظات", group: "shop" },
-  { key: "stage", label: "مرحلة المشروع", kind: "choice", options: ["بعدني فكرة", "بديت وماكو مبيعات ثابتة", "عندي مبيعات يومية", "دا أكبّر الشغل"], group: "shop" },
+  { key: "stage", label: "مرحلة المشروع", kind: "choice", options: ["بعدني فكرة", "بديت وماكو مبيعات ثابتة", "عندي مبيعات يومية", "دا أكبر الشغل"], group: "shop" },
   { key: "price", label: "سعر البيع", kind: "iqd", placeholder: "35000", group: "numbers" },
   { key: "productCost", label: "كلفة المنتج", kind: "iqd", placeholder: "15000", group: "numbers" },
   { key: "deliveryCost", label: "كروة التوصيل", kind: "iqd", placeholder: "5000", group: "numbers" },
@@ -59,7 +50,6 @@ export const PROFILE_FIELDS: ProfileField[] = [
 const FIELD_BY_KEY = new Map(PROFILE_FIELDS.map((f) => [f.key, f]));
 const NUMERIC: ProfileFieldKind[] = ["iqd", "usd", "percent", "number"];
 
-/** "35,000" / "٣٥ ألف" / "35k" / "1.5$" → number. */
 export function parseNumber(raw: string): number | undefined {
   if (!raw) return undefined;
   let s = raw
@@ -82,7 +72,6 @@ export function profileFilledCount(p: BusinessProfile): number {
   return PROFILE_FIELDS.filter((f) => p[f.key] !== undefined && p[f.key] !== "").length;
 }
 
-/** Keeps only known keys with sane values (protects the prompt from junk). */
 export function sanitizeProfile(input: unknown): BusinessProfile {
   if (!input || typeof input !== "object") return {};
   const out: Record<string, string | number> = {};
@@ -114,20 +103,15 @@ export function formatProfileValue(field: ProfileField, v: string | number): str
   }
 }
 
-/** Profile rendered for the system prompt. Empty string when nothing is known. */
 export function formatProfileForPrompt(p: BusinessProfile): string {
   const lines = PROFILE_FIELDS.filter((f) => p[f.key] !== undefined).map((f) => `- ${f.label} (${f.key}): ${formatProfileValue(f, p[f.key] as string | number)}`);
   return lines.join("\n");
 }
 
-/* ------------------------------------------------------------------ */
-/* Tags emitted by the model                                           */
-/* ------------------------------------------------------------------ */
 
 const SUGGESTIONS_RE = /\[SUGGESTIONS:\s*([\s\S]*?)\]/gi;
 const PROFILE_RE = /\[PROFILE:\s*([\s\S]*?)\]/gi;
 
-/** Profile updates the model inferred from what the merchant said. */
 export function parseProfileTags(text: string): BusinessProfile {
   const raw: Record<string, string> = {};
   for (const m of text.matchAll(PROFILE_RE)) {
@@ -151,10 +135,6 @@ export function parseSuggestionTags(text: string): string[] {
   return out;
 }
 
-/**
- * Text without machine tags. While streaming, a tag that has started but not
- * closed yet is hidden too, so "[SUGGES…" never flashes on screen.
- */
 export function stripAdvisorTags(text: string, streaming = false): string {
   let out = text.replace(SUGGESTIONS_RE, "").replace(PROFILE_RE, "");
   if (streaming) {
@@ -169,7 +149,6 @@ export function stripAdvisorTags(text: string, streaming = false): string {
   return out.replace(/\n{3,}/g, "\n\n").trimEnd();
 }
 
-/** Human summary of what changed, for the "updated your profile" chip. */
 export function describeProfileUpdate(update: BusinessProfile): string[] {
   return PROFILE_FIELDS.filter((f) => update[f.key] !== undefined).map((f) => `${f.label}: ${formatProfileValue(f, update[f.key] as string | number)}`);
 }

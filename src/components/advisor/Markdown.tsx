@@ -4,12 +4,6 @@ import { chaptersList } from "../../data/chaptersData";
 import { playbooksList } from "../../data/playbooksData";
 import { guideModules } from "../../data/iraqGuideData";
 
-/**
- * Small markdown renderer for advisor answers. Handles exactly what the
- * advisor is told to write: headings, lists, "- [ ]" action items, tables,
- * quotes, bold/italic/code, and [[chapterN]] / [[tool:id]] / [[solution:id]] / [[guide:id]] course links.
- * No HTML is ever injected — everything renders as React nodes.
- */
 
 export const TOOL_LABELS: Record<string, string> = {
   diagnostics: "فحص مشروعك",
@@ -48,9 +42,6 @@ export interface MarkdownActions {
   onAddTask?: (task: string) => boolean | void;
 }
 
-/* ------------------------------------------------------------------ */
-/* Inline                                                              */
-/* ------------------------------------------------------------------ */
 
 const INLINE_RE = /(\*\*[^*\n]+\*\*|\[\[[^\]\n]+\]\]|`[^`\n]+`|\[[^\]\n]+\]\(https?:\/\/[^)\s]+\)|\*[^*\n]+\*)/g;
 
@@ -70,7 +61,6 @@ function CourseChip({ token, actions }: { key?: React.Key; token: string; action
   if (id.startsWith("solution:")) {
     const pb = playbooksList.find((p) => p.id === id.slice(9));
     if (!pb) return null;
-    // Section navigation understands "solution:<id>" and opens the playbook.
     return (
       <button type="button" onClick={() => actions.onChapter?.(id)} className="vz-md-chip" title={pb.problem}>
         <LifeBuoy className="w-3.5 h-3.5" />
@@ -116,9 +106,6 @@ export function Inline({ text, actions }: { text: string; actions: MarkdownActio
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Blocks                                                              */
-/* ------------------------------------------------------------------ */
 
 type MdBlock =
   | { kind: "h"; level: number; text: string }
@@ -219,10 +206,6 @@ function TaskItem({ text, done, actions }: { key?: React.Key; text: string; done
 
 const NO_ACTIONS: MarkdownActions = {};
 
-/**
- * One markdown block. Memoised on its content, so while an answer streams
- * only the block that is still growing re-renders.
- */
 const BlockView = memo(
   function BlockView({ block, actions }: { block: MdBlock; sig: string; actions: MarkdownActions }) {
     return renderBlock(block, actions);
@@ -243,7 +226,6 @@ function MarkdownImpl({ text, actions = NO_ACTIONS }: { text: string; actions?: 
 
 export const Markdown = memo(MarkdownImpl);
 
-/** Renders one parsed block (no wrapper; the caller keys it). */
 function renderBlock(b: MdBlock, actions: MarkdownActions): React.ReactElement {
   switch (b.kind) {
     case "h":

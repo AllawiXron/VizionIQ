@@ -6,11 +6,9 @@ interface PageHeaderProps {
   eyebrow?: React.ReactNode;
   title: React.ReactNode;
   subtitle?: React.ReactNode;
-  /** Actions shown beside the title on wide screens, under it on phones. */
   children?: React.ReactNode;
 }
 
-/** The calm, consistent title block every member screen starts with. */
 export function PageHeader({ eyebrow, title, subtitle, children }: PageHeaderProps) {
   return (
     <motion.header

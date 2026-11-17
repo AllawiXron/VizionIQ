@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { LogOut, Bot, Sparkles, Crown } from "lucide-react";
@@ -21,7 +16,6 @@ interface NavbarProps {
   userCode: string;
 }
 
-/** Distance (px) over which the bar condenses into the floating capsule. */
 const CONDENSE_DISTANCE = 140;
 
 export default function Navbar({
@@ -33,7 +27,6 @@ export default function Navbar({
   userCode,
 }: NavbarProps) {
 
-  // Glass morphing: one continuous 0 → 1 progress drives every dimension of the bar.
   const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const rawProgress = useTransform(scrollY, [0, CONDENSE_DISTANCE], [0, 1], { clamp: true });
@@ -48,9 +41,6 @@ export default function Navbar({
   const hairlineOpacity = useTransform(progress, [0, 0.4], [1, 0]);
   const logoScale = useTransform(progress, [0, 1], [1, 0.94]);
 
-  // Touch-size screens get the same morph built from transform + opacity only
-  // (no per-frame layout): a pre-shaped capsule settles into place around the
-  // content while the content glides down to its centre.
   const [gpuMorph] = useState(() => typeof window !== "undefined" && !window.matchMedia("(min-width: 1024px)").matches);
   const capsuleScale = useTransform(progress, [0, 1], [1.045, 1]);
   const capsuleY = useTransform(progress, [0, 1], [-6, 0]);
@@ -79,7 +69,6 @@ export default function Navbar({
           style={gpuMorph ? undefined : { maxWidth: barMaxWidth, marginTop: barOffset, height: barHeight, borderRadius: barRadius }}
           className={`pointer-events-auto relative mx-auto ${gpuMorph ? "h-16" : ""}`}
         >
-          {/* Floating glass layer: fades in as the bar condenses (blur stays constant, only opacity animates). */}
           {gpuMorph ? (
             <motion.div
               aria-hidden="true"
@@ -89,7 +78,6 @@ export default function Navbar({
           ) : (
             <motion.div aria-hidden="true" style={{ opacity: glassOpacity }} className="absolute inset-0 rounded-[inherit] glass-floating glass-edge" />
           )}
-          {/* Resting state: a single hairline under a transparent bar. */}
           <motion.div aria-hidden="true" style={{ opacity: hairlineOpacity }} className="absolute inset-x-0 bottom-0 vz-hairline" />
 
           <motion.div
@@ -97,7 +85,6 @@ export default function Navbar({
             className={`relative w-full h-full flex items-center justify-between gap-3 ${gpuMorph ? "px-5" : "px-2.5 sm:px-5"}`}
           >
 
-          {/* Logo Brand: Clear Vizion brand */}
           <motion.button
             style={{ scale: logoScale }}
             onClick={() => onNavigate({ view: "home" })}
@@ -118,7 +105,6 @@ export default function Navbar({
             </div>
           </motion.button>
 
-          {/* Desktop Navigation Links: segmented control with a sliding glass pill */}
           <div className="hidden lg:flex items-center gap-0.5 p-1 rounded-full bg-white/[0.035] border border-white/[0.06]">
             {desktopLinks.map((link) => (
               <button
@@ -141,12 +127,9 @@ export default function Navbar({
             ))}
           </div>
 
-          {/* User Controls and Action Buttons */}
           <div className="hidden lg:flex items-center gap-1.5 xl:gap-2">
-            {/* Optional sound feedback toggle */}
             <SoundToggleButton variant="compact" />
 
-            {/* Logout */}
             <button
               onClick={onLogout}
               className={`btn btn-ghost px-2.5 xl:px-3 text-xs whitespace-nowrap text-white/55 hover:!text-red-300 ${focusRing}`}
@@ -156,7 +139,6 @@ export default function Navbar({
               <span className="hidden xl:inline">خروج</span>
             </button>
 
-            {/* Free Trial Upgrade Button or User Tag */}
             {isFreeTrialUser(userCode) ? (
               <button
                 onClick={onOpenUpgrade}
@@ -168,7 +150,6 @@ export default function Navbar({
               </button>
             ) : null}
 
-            {/* AI Advisor Button — the primary action, gently magnetic */}
             {onOpenAdvisor && (
               <Magnetic strength={0.18} max={5} reach={10}>
                 <button

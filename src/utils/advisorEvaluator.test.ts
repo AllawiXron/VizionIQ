@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { describe, it, expect } from "vitest";
 import {
   ADVISOR_EVALUATION_DATASET,
@@ -45,15 +40,13 @@ describe("Advisor Quality Evaluation Suite (8 Benchmarks & 6 Rubrics)", () => {
       (t) => t.category === "unrelated_sequential_questions"
     )!;
 
-    // A contaminated answer that leaks previous phone script into China import calculations
     const contaminatedAnswer =
-      "أهلاً بيك يا غالي.. كلفة الاستيراد من الصين تعتمد على الجمارك، وألو سلام عليكم أخوية طالعلك المندوب اليوم لتثبيت الأوردر!";
+      "أهلا بيك يا غالي.. كلفة الاستيراد من الصين تعتمد على الجمارك، وألو سلام عليكم أخوية طالعلك المندوب اليوم لتثبيت الأوردر!";
 
     const report = evaluateAdvisorResponse(sequentialTest, contaminatedAnswer);
     expect(report.criteria.noContextContamination.passed).toBe(false);
     expect(report.passedAll).toBe(false);
 
-    // A clean answer
     const cleanReport = evaluateAdvisorResponse(sequentialTest, sequentialTest.sampleGoldAnswer!);
     expect(cleanReport.criteria.noContextContamination.passed).toBe(true);
     expect(cleanReport.passedAll).toBe(true);
@@ -64,12 +57,10 @@ describe("Advisor Quality Evaluation Suite (8 Benchmarks & 6 Rubrics)", () => {
       (t) => t.category === "ambiguous_question"
     )!;
 
-    // Bad response that assumes facts blindly
-    const blindAnswer = "حلك هو تزيد ميزانية الإعلان لـ 100 دولار فوراً وتبيع كوزمتكس.";
+    const blindAnswer = "حلك هو تزيد ميزانية الإعلان لـ 100 دولار فورا وتبيع كوزمتكس.";
     const badReport = evaluateAdvisorResponse(ambiguousTest, blindAnswer);
     expect(badReport.criteria.appropriateUncertainty.passed).toBe(false);
 
-    // Good response that asks clarifying questions
     const goodReport = evaluateAdvisorResponse(ambiguousTest, ambiguousTest.sampleGoldAnswer!);
     expect(goodReport.criteria.appropriateUncertainty.passed).toBe(true);
     expect(goodReport.passedAll).toBe(true);
@@ -93,14 +84,14 @@ describe("Privacy-Conscious Product Analytics Engine", () => {
     const dirtyProps = {
       chapterId: "chapter3",
       source: "whatsapp",
-      phone: "07701234567", // Disallowed key
+      phone: "07701234567",
       customerInfo: "علي 07809988776 email: test@domain.com API: AIzaSyD983949823489234892348923489234",
     };
 
     const clean = sanitizeAnalyticsProperties(dirtyProps);
     expect(clean.chapterId).toBe("chapter3");
     expect(clean.source).toBe("whatsapp");
-    expect((clean as any).phone).toBeUndefined(); // Key not allowed
+    expect((clean as any).phone).toBeUndefined();
     expect((clean as any).customerInfo).toBeUndefined();
   });
 

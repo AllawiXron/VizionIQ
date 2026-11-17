@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { NumberField } from "./ui/NumberField";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -48,7 +43,6 @@ export default function VizionGrowthSuite() {
     window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
   };
 
-  // State for Tool 1: Business Diagnostics Wizard
   const [t1MonthlyOrders, setT1MonthlyOrders] = useState<number>(100);
   const [t1SellingPrice, setT1SellingPrice] = useState<number>(35000);
   const [t1ProductCost, setT1ProductCost] = useState<number>(12000);
@@ -57,34 +51,28 @@ export default function VizionGrowthSuite() {
   const [t1ConversionRate, setT1ConversionRate] = useState<number>(8);
   const [t1ShowReport, setT1ShowReport] = useState<boolean>(false);
 
-  // State for Tool 2: Smart Ad Campaign Advisor
   const [t2Spend, setT2Spend] = useState<number>(150000);
   const [t2Messages, setT2Messages] = useState<number>(60);
   const [t2Confirmed, setT2Confirmed] = useState<number>(12);
   const [t2Delivered, setT2Delivered] = useState<number>(8);
   const [t2ShowAnalysis, setT2ShowAnalysis] = useState<boolean>(false);
 
-  // State for Tool 3: Competitor Content Strategy Helper
   const [t3Name, setT3Name] = useState<string>("");
   const [t3Niche, setT3Niche] = useState<string>("clothing");
   const [t3ShowAnalysis, setT3ShowAnalysis] = useState<boolean>(false);
 
-  // State for Tool 4: Message Conversion Diagnoser
   const [t4Messages, setT4Messages] = useState<number>(80);
   const [t4Orders, setT4Orders] = useState<number>(6);
   const [t4ShowReport, setT4ShowReport] = useState<boolean>(false);
 
-  // State for Tool 5: Iraqi Pricing & Profit Calculator
   const [t5Cost, setT5Cost] = useState<number>(14000);
   const [t5Price, setT5Price] = useState<number>(38000);
   const [t5Shipping, setT5Shipping] = useState<number>(5000);
   const [t5AdCost, setT5AdCost] = useState<number>(7000);
   const [t5ReturnRate, setT5ReturnRate] = useState<number>(20);
 
-  // State for Tool 6: Iraqi Customer Types Guide
   const [activeCustomer, setActiveCustomer] = useState<string>("ghoster");
 
-  // State for Tool 8: Pre-Ad Product Evaluator
   const [t8Margin, setT8Margin] = useState<boolean>(true);
   const [t8Benefit, setT8Benefit] = useState<boolean>(true);
   const [t8Problem, setT8Problem] = useState<boolean>(false);
@@ -93,32 +81,26 @@ export default function VizionGrowthSuite() {
   const [t8Video, setT8Video] = useState<boolean>(false);
   const [t8ShowScore, setT8ShowScore] = useState<boolean>(false);
 
-  // State for Tool 9: Profit Leak Calculator
   const [t9Orders, setT9Orders] = useState<number>(120);
   const [t9ReturnRate, setT9ReturnRate] = useState<number>(30);
   const [t9ReturnFee, setT9ReturnFee] = useState<number>(5000);
 
-  // State for Tool 10: 30-Day Interactive Roadmap
   const [t10CheckedDays, setT10CheckedDays] = useState<number[]>([1, 2, 3]);
   const [t10SelectedWeek, setT10SelectedWeek] = useState<number>(1);
 
-  // State for Tool 11: What's stopping my sales? Diagnostic
-  const [t11CTR, setT11CTR] = useState<string>("low"); // low (<1%), medium (1-2%), high (>2%)
-  const [t11Messages, setT11Messages] = useState<string>("low"); // low, high
-  const [t11Speed, setT11Speed] = useState<string>("slow"); // slow, fast
-  const [t11Delivery, setT11Delivery] = useState<string>("low"); // low (<70%), high (>70%)
+  const [t11CTR, setT11CTR] = useState<string>("low");
+  const [t11Messages, setT11Messages] = useState<string>("low");
+  const [t11Speed, setT11Speed] = useState<string>("slow");
+  const [t11Delivery, setT11Delivery] = useState<string>("low");
   const [t11ShowResult, setT11ShowResult] = useState<boolean>(false);
 
-  // State for Tool 12: Campaign Forecasting Tool
   const [t12Budget, setT12Budget] = useState<number>(250000);
   const [t12MsgCost, setT12MsgCost] = useState<number>(1800);
   const [t12ConvRate, setT12ConvRate] = useState<number>(10);
 
-  // State for Tool 13: Ad Budget Planner
   const [t13TargetProfit, setT13TargetProfit] = useState<number>(1500000);
   const [t13ProfitMargin, setT13ProfitMargin] = useState<number>(15000);
 
-  // Tool Category State (افهم، احسب، حسّن، نفّذ)
   const [selectedCategory, setSelectedCategory] = useState<"all" | "understand" | "calculate" | "optimize" | "execute">("all");
 
   useEffect(() => {
@@ -145,7 +127,6 @@ export default function VizionGrowthSuite() {
       applyRequest((e as CustomEvent<ToolRequest>).detail);
     };
 
-    // A request made before this screen mounted (e.g. from an advisor link).
     applyRequest(takePendingTool());
     window.addEventListener("open-tool-category", handleCategoryEvent);
     return () => {
@@ -154,34 +135,29 @@ export default function VizionGrowthSuite() {
   }, []);
 
   const toolCategories = [
-    { id: "all" as const, label: "جميع الأدوات (١٣)", icon: "" },
+    { id: "all" as const, label: "جميع الأدوات", icon: "" },
     { id: "understand" as const, label: "١. افهم", icon: "", subtitle: "تشخيص واقع المشروع والمنافسين" },
     { id: "calculate" as const, label: "٢. احسب", icon: "", subtitle: "حاسبات الأرباح، التسعير، والميزانيات" },
-    { id: "optimize" as const, label: "٣. حسّن", icon: "", subtitle: "تحسين الإعلانات، المحادثات، والمنتج" },
-    { id: "execute" as const, label: "٤. نفّذ", icon: "", subtitle: "خطط العمل والتشغيل اليومي" },
+    { id: "optimize" as const, label: "٣. حسن", icon: "", subtitle: "تحسين الإعلانات، المحادثات، والمنتج" },
+    { id: "execute" as const, label: "٤. نفذ", icon: "", subtitle: "خطط العمل والتشغيل اليومي" },
   ];
 
-  // Constants - Categorized into افهم، احسب، حسّن، نفّذ
   const toolTabs = [
-    // 1. افهم (Understand)
     { id: "diagnostics", category: "understand" as const, label: "فحص مشروعك", desc: "افحص صحة وربحية شغلك" },
     { id: "sales-blocker", category: "understand" as const, label: "ليش ماكو مبيعات؟", desc: "اعرف الخلل وين بمشروعك" },
     { id: "customer-types", category: "understand" as const, label: "دليل أنواع الزبائن", desc: "ردود جاهزة ومقنعة لغلق الطلبات" },
     { id: "competitors", category: "understand" as const, label: "محلل المنافسين", desc: "شيك صفحات ومحتوى اللي ينافسوك" },
 
-    // 2. احسب (Calculate)
     { id: "pricing-calculator", category: "calculate" as const, label: "حاسبة التسعير والربح", desc: "احسب أسعارك وأرباحك بالضبط" },
     { id: "profit-leak", category: "calculate" as const, label: "كاشف تسرب الأرباح", desc: "احسب فلوسك الضايعة من الراجع" },
     { id: "forecaster", category: "calculate" as const, label: "متوقع الأرباح", desc: "توقع مبيعاتك قبل لا تشغل الإعلان" },
     { id: "budget-planner", category: "calculate" as const, label: "مخطط الميزانية", desc: "خطط ميزانيتك حتى توصل لهدفك" },
 
-    // 3. حسّن (Optimize)
     { id: "campaign-advisor", category: "optimize" as const, label: "مستشار الحملات", desc: "شيك أداء حملاتك الإعلانية" },
     { id: "message-diagnoser", category: "optimize" as const, label: "جودة الرسائل", desc: "وين دي يضيع زبونك بالخاص؟" },
     { id: "product-evaluator", category: "optimize" as const, label: "تقييم المنتج", desc: "افحص المنتج قبل لا تصرف عليه" },
     { id: "ads-library", category: "optimize" as const, label: "مكتبة الإعلانات", desc: "شلون تشتغل الإعلانات الناجحة" },
 
-    // 4. نفّذ (Execute)
     { id: "roadmap", category: "execute" as const, label: "مخطط الـ 100 طلب", desc: "خطة يومية حتى تبدي شغلك صح" },
   ];
 
@@ -189,18 +165,15 @@ export default function VizionGrowthSuite() {
     ? toolTabs 
     : toolTabs.filter(t => t.category === selectedCategory);
 
-  // Helper calculation for Tool 1
   const runDiagnosticsCalculator = () => {
-    // Math logic based on Iraqi delivery landscape
     const estimatedShipped = t1MonthlyOrders;
     const estimatedDelivered = Math.round(t1MonthlyOrders * (1 - t1ReturnRate / 100));
     const estimatedReturned = t1MonthlyOrders - estimatedDelivered;
 
     const totalRevenue = estimatedDelivered * t1SellingPrice;
-    const totalProductCost = t1MonthlyOrders * t1ProductCost; // assume product was bought
-    const totalShippingPaid = (estimatedDelivered * 5000) + (estimatedReturned * 5000); // 5000 IQD avg shipping fee
+    const totalProductCost = t1MonthlyOrders * t1ProductCost;
+    const totalShippingPaid = (estimatedDelivered * 5000) + (estimatedReturned * 5000);
     
-    // We need to estimate how many messages were generated
     const estimatedMessagesRequired = Math.round(t1MonthlyOrders / (t1ConversionRate / 100));
     const totalAdSpend = estimatedMessagesRequired * t1MessageCost;
 
@@ -220,7 +193,6 @@ export default function VizionGrowthSuite() {
 
   const diagResult = runDiagnosticsCalculator();
 
-  // Helper analysis for Tool 2
   const getAdAnalysis = () => {
     const costPerMsg = Math.round(t2Spend / t2Messages);
     const convRate = parseFloat(((t2Confirmed / t2Messages) * 100).toFixed(1));
@@ -246,31 +218,30 @@ export default function VizionGrowthSuite() {
       verdict = "شغلك متوسط وتكدر تحسنه بتعديلات بسيطة بالرد.";
       recommendations.push("حاول تخير الزبون بين لونين أو قياسين بدل ما تسأله 'تريد لو لا؟' حتى تقفل الطلب بسرعة.");
     } else {
-      verdict = "أداء الردود والتحويل ممتاز جداً ومحترف!";
+      verdict = "أداء الردود والتحويل ممتاز جدا ومحترف";
     }
 
     if (deliveryRate < 70) {
       warning += " ونسبة استلام الطلبات مالتك تعبانة (" + deliveryRate + "%).";
       recommendations.push("المناديب ديواجهون صعوبة يحصلون الزبون أو الزباين ديبطلون لأن التوصيل يتأخر.");
-      recommendations.push("خابر الزبائن خلال نص ساعة من يدزون الرسالة حتى تأكد الطلب تلفونياً ولا تطلع أي طلب بدون تأكيد.");
+      recommendations.push("خابر الزبائن خلال نص ساعة من يدزون الرسالة حتى تأكد الطلب تلفونيا ولا تطلع أي طلب بدون تأكيد.");
       recommendations.push("دز فيديو للتعبئة للزبون عالواتساب قبل لا تدز الطلب حتى يحس بمسؤولية ويستلم.");
     }
 
     if (recommendations.length === 0) {
-      recommendations.push("الحملة ممتازة، ضاعف ميزانيتها فوراً بدون تردد!");
+      recommendations.push("الحملة ممتازة، ضاعف ميزانيتها فورا بدون تردد");
     }
 
     return { costPerMsg, convRate, deliveryRate, verdict, warning, recommendations };
   };
 
-  // Helper analysis for Tool 3
   const getCompetitorTactics = () => {
     switch (t3Niche) {
       case "clothing":
         return {
           weakness: "أغلب بيجات الملابس ينشرون صور أجنبية جاهزة أو قياسات ما مفهومة وينتظرون الزبون عالخاص.",
           opportunity: "صور الملابس بفيديو حقيقي على الموديل أو ملكانة بكاميرا تلفون طبيعية ووضح الألوان والخامة بصوتك.",
-          hook: "شلون تختار القياس الصح بدون ما تدوخ بالراجع؟ افحص خامة القطعة كدام المندوب قبل الدفع!"
+          hook: "شلون تختار القياس الصح بدون ما تدوخ بالراجع؟ افحص خامة القطعة كدام المندوب قبل الدفع"
         };
       case "perfumes":
         return {
@@ -293,7 +264,6 @@ export default function VizionGrowthSuite() {
     }
   };
 
-  // Tool 10 Roadmap Weeks
   const roadmapData = [
     {
       week: 1,
@@ -331,7 +301,7 @@ export default function VizionGrowthSuite() {
         { day: 18, title: "تصوير وإرسال 'فيديو التجهيز' للزبائن عالواتساب." },
         { day: 19, title: "تسليم أول وجبة طلبات لمندوب التوصيل ومتابعتها بالنظام." },
         { day: 20, title: "شلون تتعامل ويا الزبون اللي يكول 'أفكر وأرجعلك' أو 'غالي'." },
-        { day: 21, title: "حساب نسبة الناس اللي اشترت فعلياً من الرسايل وتسجيل الملاحظات." }
+        { day: 21, title: "حساب نسبة الناس اللي اشترت فعليا من الرسايل وتسجيل الملاحظات." }
       ]
     },
     {
@@ -343,10 +313,10 @@ export default function VizionGrowthSuite() {
         { day: 24, title: "ترتيب علاقة زينة ويا المناديب بالمحافظات الصعبة حتى يزيدون الاستلام." },
         { day: 25, title: "استلام أول كشف حساب كأرباح صافية من شركة التوصيل." },
         { day: 26, title: "تحليل المشاكل وعلاج الأماكن اللي ضاعت بيها الفلوس." },
-        { day: 27, title: "استلام الطلبات الراجعة وإعادة تغليفها فوراً حتى تطلع لغير زبائن." },
+        { day: 27, title: "استلام الطلبات الراجعة وإعادة تغليفها فورا حتى تطلع لغير زبائن." },
         { day: 28, title: "معرفة المنتجات الناجحة وتصعيد ميزانية إعلانها بنسبة 50%." },
-        { day: 29, title: "تجهيز عروض خاصة لزبائنك القدامى حتى يشترون مرة ثانية مجاناً." },
-        { day: 30, title: "وصولك لـ 100 طلب الأولى وبداية ترتيب الشغل حتى يمشي تلقائياً." }
+        { day: 29, title: "تجهيز عروض خاصة لزبائنك القدامى حتى يشترون مرة ثانية مجانا." },
+        { day: 30, title: "وصولك لـ 100 طلب الأولى وبداية ترتيب الشغل حتى يمشي تلقائيا." }
       ]
     }
   ];
@@ -368,10 +338,9 @@ export default function VizionGrowthSuite() {
         <PageHeader
           eyebrow={<><Sparkles className="w-4 h-4" /> الأدوات</>}
           title="احسب أرقامك قبل لا تصرف"
-          subtitle="13 أداة بالدينار العراقي. اختار الأداة من القائمة، دخّل أرقامك، وتطلعلك النتيجة فوراً."
+          subtitle="13 أداة بالدينار العراقي. اختار الأداة من القائمة، دخل أرقامك، وتطلعلك النتيجة فورا."
         />
 
-        {/* Free Trial Gatekeeping Banner */}
         {isFreeTrial && (
           <div className="glass-elevated glass-edge p-5 sm:p-7 rounded-3xl sm:rounded-4xl space-y-3 text-center relative overflow-hidden my-4 z-20 animate-fade-in">
             <div className="vz-eyebrow text-xs sm:text-sm">
@@ -394,7 +363,6 @@ export default function VizionGrowthSuite() {
         )}
       </div>
 
-      {/* Category Tabs Filter Bar (افهم، احسب، حسّن، نفّذ) */}
       <div className="vizion-tool-categories flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
         {toolCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
@@ -403,7 +371,6 @@ export default function VizionGrowthSuite() {
             <button               key={cat.id}
               onClick={() => {
                 setSelectedCategory(cat.id);
-                // If current tab not in selected category, switch to first tab of that category
                 if (cat.id !== "all") {
                   const firstInCat = toolTabs.find(t => t.category === cat.id);
                   if (firstInCat && !toolTabs.filter(t => t.category === cat.id).some(t => t.id === activeTab)) {
@@ -425,10 +392,8 @@ export default function VizionGrowthSuite() {
         })}
       </div>
 
-      {/* Main Grid: Tabs Sidebar + Active Tab Content */}
       <div className="vizion-tool-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
-        {/* MOBILE SELECTOR & LAUNCHPAD (Visible only on mobile/tablet) */}
         <div className="vizion-tool-picker lg:hidden w-full mb-6 relative z-30">
           <div className="glass-elevated rounded-3xl overflow-hidden">
             <button
@@ -451,7 +416,6 @@ export default function VizionGrowthSuite() {
               </motion.div>
             </button>
             
-            {/* Expandable Menu */}
             <AnimatePresence>
               {isLaunchpadOpen && (
                 <motion.div 
@@ -496,7 +460,6 @@ export default function VizionGrowthSuite() {
           </div>
         </div>
 
-        {/* SIDE BAR / SELECTOR RAIL (4 Columns, hidden on mobile/tablet) */}
         <div className="hidden lg:flex lg:col-span-4 glass glass-edge rounded-4xl p-5 md:p-6 flex-col space-y-4 h-[750px] overflow-hidden relative">
                     <div className="flex items-center justify-between border-b border-white/[0.07] pb-4 px-1">
             <span className="text-[12px] font-bold text-white/55 uppercase tracking-widest">
@@ -518,7 +481,6 @@ export default function VizionGrowthSuite() {
                 <button                   key={tab.id}
                   onClick={() => {
                     setActiveTab(tab.id);
-                    // Reset show status for smoother navigation
                     setT1ShowReport(false);
                     setT2ShowAnalysis(false);
                     setT3ShowAnalysis(false);
@@ -554,7 +516,6 @@ export default function VizionGrowthSuite() {
           </div>
         </div>
 
-        {/* CONTENT VIEWPORT (8 Columns) */}
         <div className="vizion-tool-viewport lg:col-span-8 glass glass-edge rounded-4xl p-6 sm:p-8 md:p-12 relative min-h-[750px] flex flex-col justify-between overflow-hidden group">
           
           <AnimatePresence mode="wait">
@@ -580,7 +541,7 @@ export default function VizionGrowthSuite() {
                   </div>
                   
                   <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                    أداة «{toolTabs.find(t => t.id === activeTab)?.label}» تنفتح ويا الاشتراك
+                    أداة {toolTabs.find(t => t.id === activeTab)?.label} تنفتح ويا الاشتراك
                   </h3>
                   
                   <p className="text-xs md:text-sm text-white/80 font-light leading-relaxed">
@@ -630,7 +591,6 @@ export default function VizionGrowthSuite() {
             ) : (
               <>
               
-            {/* TOOL 1: Business Diagnostics Wizard */}
             {activeTab === "diagnostics" && (
               <div className="space-y-6 text-right">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -641,7 +601,7 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  دخل أرقام مشروعك الحالية حتى نكشفلك فوراً نقاط قوتك ووين كاعد تضيع فلوسك ويقل ربحك بدون ما تحس.
+                  دخل أرقام مشروعك الحالية حتى نكشفلك فورا نقاط قوتك ووين كاعد تضيع فلوسك ويقل ربحك بدون ما تحس.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
@@ -731,7 +691,6 @@ export default function VizionGrowthSuite() {
                       </div>
                     </div>
 
-                    {/* Verdict Box */}
                     <div className="p-4 rounded-xl bg-white/[0.01] border-r-2 border-white/35 space-y-2">
                       <span className="text-xs font-bold text-white block">التشخيص الفوري:</span>
                       <ul className="space-y-1.5 text-[11px] text-white/70 leading-relaxed">
@@ -758,7 +717,6 @@ export default function VizionGrowthSuite() {
                       </ul>
                     </div>
 
-                    {/* Future Potential Projection */}
                     <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
                       <strong>فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت الراجع لـ <strong>10%</strong> وصعدت قفل الطلبات لـ <strong>15%</strong>، راح يطفر ربحك الصافي من <span className="font-mono text-white underline">{Math.round(diagResult.netProfit).toLocaleString()} دينار</span> إلى <strong className="text-emerald-400 font-mono underline">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>! وهيج تزيد أرباحك بدون ما تصرف إعلانات أكثر.
                     </div>
@@ -767,7 +725,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 2: Smart Ad Campaign Advisor */}
             {activeTab === "campaign-advisor" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -799,7 +756,7 @@ export default function VizionGrowthSuite() {
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">الطلبات اللي استلموها الزبائن فعلياً</label>
+                    <label className="text-xs font-bold text-white/80 block">الطلبات اللي استلموها الزبائن فعليا</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t2Delivered} onChange={(v) => setT2Delivered(v)} unit="طلب" step={1} />
 </div>
@@ -833,7 +790,7 @@ export default function VizionGrowthSuite() {
                     )}
 
                     <div className="space-y-2">
-                      <span className="text-xs font-bold text-vz-accent block">الخطوات والتعديلات المطلوبة فوراً:</span>
+                      <span className="text-xs font-bold text-vz-accent block">الخطوات والتعديلات المطلوبة فورا:</span>
                       <ul className="space-y-2 text-xs text-white/80">
                         {getAdAnalysis().recommendations.map((rec, i) => (
                           <li key={i} className="flex items-start gap-2">
@@ -847,7 +804,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 3: Competitor Content Strategy Helper */}
             {activeTab === "competitors" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -921,7 +877,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 4: Message Conversion Diagnoser */}
             {activeTab === "message-diagnoser" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -937,7 +892,7 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل كلياً</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل كليا</label>
                     <NumberField className="w-full" value={t4Messages} onChange={(v) => setT4Messages(v)} unit="رسالة" step={10} />
                   </div>
                   <div className="space-y-1.5">
@@ -967,7 +922,6 @@ export default function VizionGrowthSuite() {
           alert('انتسخ');
         }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة</button>
       </div>
-                    {/* Diagnostic Score Card */}
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <h4 className="text-sm font-black text-vz-accent">نتيجة غلق الصفقات:</h4>
                       <span className="text-xs text-white/70 font-mono">نسبة التحويل: {((t4Orders / t4Messages) * 100).toFixed(1)}%</span>
@@ -1000,7 +954,7 @@ export default function VizionGrowthSuite() {
                       </div>
                     ) : (
                       <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
-                        <strong>شغلك فول وممتاز!</strong> نسبة قفل الطلبات عابرة الـ 12% وهاي من أحسن النسب بالسوك. ركز هسة تزيد ميزانية إعلانك حتى تجيب رسايل أكثر وتضاعف شغلك.
+                        <strong>شغلك فول وممتاز</strong> نسبة قفل الطلبات عابرة الـ 12% وهاي من أحسن النسب بالسوك. ركز هسة تزيد ميزانية إعلانك حتى تجيب رسايل أكثر وتضاعف شغلك.
                       </div>
                     )}
                   </div>
@@ -1008,7 +962,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 5: Iraqi Pricing & Profit Calculator */}
             {activeTab === "pricing-calculator" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1058,13 +1011,12 @@ export default function VizionGrowthSuite() {
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
                   <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">حساب الأرباح والخسائر للقطعة:</h4>
 
-                  {/* Math calculation */}
                   {(() => {
                     const returnDec = t5ReturnRate / 100;
                     const deliverDec = 1 - returnDec;
                     
                     const totalAdWastedOnReturnsPerDelivered = (returnDec / deliverDec) * t5AdCost;
-                    const totalShippingWastedOnReturnsPerDelivered = (returnDec / deliverDec) * 5000; // 5k courier return penalty
+                    const totalShippingWastedOnReturnsPerDelivered = (returnDec / deliverDec) * 5000;
                     
                     const netProfitReal = t5Price - t5Cost - t5Shipping - t5AdCost - totalAdWastedOnReturnsPerDelivered - totalShippingWastedOnReturnsPerDelivered;
                     
@@ -1094,11 +1046,11 @@ export default function VizionGrowthSuite() {
 
                         {netProfitReal <= 0 ? (
                           <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-[11px] text-red-300">
-                            <strong>تنبيه دتخسر!</strong> بهالأسعار ونسبة الراجع مالتك، إنت دتخسر فعلياً من كل طلب دزه. صعد سعرك أو نزل كلفة الإعلان والراجع بسرعة.
+                            <strong>تنبيه، دتخسر</strong> بهالأسعار ونسبة الراجع مالتك، إنت دتخسر فعليا من كل طلب دزه. صعد سعرك أو نزل كلفة الإعلان والراجع بسرعة.
                           </div>
                         ) : (
                           <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-[11px] text-emerald-300">
-                            <strong>تسعيرك بطل وآمن!</strong> أرباحك الصافية زينة بعد ما شلنا كل الخسائر والراجع. مشروعك هسة جاهز يكبر ويصعد.
+                            <strong>تسعيرك بطل وآمن</strong> أرباحك الصافية زينة بعد ما شلنا كل الخسائر والراجع. مشروعك هسة جاهز يكبر ويصعد.
                           </div>
                         )}
                       </div>
@@ -1108,7 +1060,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 6: Iraqi Customer Types Guide */}
             {activeTab === "customer-types" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1122,7 +1073,6 @@ export default function VizionGrowthSuite() {
                   اعرف أشهر 5 أنواع من الزبائن اللي يراسلون بيجك، واكتشف شلون تفكر وشنو الرد اللي يقنعهم يشترون مباشرة.
                 </p>
 
-                {/* Grid of customers */}
                 <div className="grid grid-cols-1 gap-y-5 sm:grid-cols-5 gap-2">
                   <button                     onClick={() => setActiveCustomer("ghoster")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "ghoster" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
@@ -1151,7 +1101,6 @@ export default function VizionGrowthSuite() {
                   </button>
                 </div>
 
-                {/* Customer specific detail */}
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
                   {activeCustomer === "ghoster" && (
                     <div className="space-y-3 text-xs leading-relaxed text-right">
@@ -1229,7 +1178,7 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">اللي يقارن (شفت بيج ثاني يبيعه أرخص):</span>
-                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يريد يبرر فرق السعر حتى يرتاح نفسياً.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يريد يبرر فرق السعر حتى يرتاح نفسيا.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-vz-accent">شلون تحلها:</strong> لا تهاجم المنافسين. بس وضحله ليش إنت أغلى (جودة خامة، ضمان، خدمات ما بعد البيع).
@@ -1237,7 +1186,7 @@ export default function VizionGrowthSuite() {
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
                         <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
                         <p className="text-white/90">
-                          "أهلاً بيك أخي.. فعلاً تلكه أنواع أرخص بالإنترنت، بس الفرق عيني بالخامة والضمان. البضاعة الرخيصة تسويلك مشاكل ومحد يجاوبك بعدين. ويانا إنت تشتري راحة بالك وضمان حقيقي، وتجربة فحص براحتك. يسوى تجرب الأصلي لو لا عيني؟"
+                          "أهلا بيك أخي.. فعلا تلكه أنواع أرخص بالإنترنت، بس الفرق عيني بالخامة والضمان. البضاعة الرخيصة تسويلك مشاكل ومحد يجاوبك بعدين. ويانا إنت تشتري راحة بالك وضمان حقيقي، وتجربة فحص براحتك. يسوى تجرب الأصلي لو لا عيني؟"
                         </p>
                       </div>
                     </div>
@@ -1246,7 +1195,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 7: Real Ads Library */}
             {activeTab === "ads-library" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1294,13 +1242,12 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 8: Pre-Ad Product Evaluator */}
             {activeTab === "product-evaluator" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
                     <span className="text-[10px] text-vz-accent font-bold">لا تروج لمنتج يفشل بعدين</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مقيِّم المنتجات قبل ما تشغل إعلان</h3>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مقيم المنتجات قبل ما تشغل إعلان</h3>
                   </div>
                 </div>
 
@@ -1361,12 +1308,11 @@ export default function VizionGrowthSuite() {
 
                 {t8ShowScore && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3 animate-fade-in-down">
-                    {/* Calculation of Score */}
                     {(() => {
                       let score = 0;
                       if (t8Margin) score += 25;
                       if (t8Benefit) score += 25;
-                      if (!t8Problem) score += 20; // Good if NOT common in Shorja
+                      if (!t8Problem) score += 20;
                       if (t8Ship) score += 15;
                       if (t8Video) score += 15;
 
@@ -1379,7 +1325,7 @@ export default function VizionGrowthSuite() {
 
                           {score >= 75 ? (
                             <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-emerald-300 leading-relaxed font-light">
-                              <strong>منتجك بطل وجاهز!</strong> بي كل الشغلات اللي تنجحه بسرعة. نصيحة ابدي صور فيديوهاتك وشغل حملتك فوراً ولا تتردد.
+                              <strong>منتجك بطل وجاهز</strong> بي كل الشغلات اللي تنجحه بسرعة. نصيحة ابدي صور فيديوهاتك وشغل حملتك فورا ولا تتردد.
                             </div>
                           ) : score >= 50 ? (
                             <div className="p-3 bg-white/3 rounded-xl border border-white/5 text-vz-accent leading-relaxed font-light">
@@ -1387,7 +1333,7 @@ export default function VizionGrowthSuite() {
                             </div>
                           ) : (
                             <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-red-300 leading-relaxed font-light">
-                              <strong>مخاطرة جبيرة!</strong> هذا المنتج ممكن يطير ميزانيتك لأن ربحه قليل أو صعب تتوصيله. لا تصرف فلوس إعلان عليه إلا إذا حليت هاي المشاكل وصورت فيديوهاتك بيدك.
+                              <strong>مخاطرة جبيرة</strong> هذا المنتج ممكن يطير ميزانيتك لأن ربحه قليل أو صعب تتوصيله. لا تصرف فلوس إعلان عليه إلا إذا حليت هاي المشاكل وصورت فيديوهاتك بيدك.
                             </div>
                           )}
                         </div>
@@ -1398,7 +1344,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 9: Profit Leak Calculator */}
             {activeTab === "profit-leak" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1435,11 +1380,9 @@ export default function VizionGrowthSuite() {
                   </div>
                 </div>
 
-                {/* Calculation outcomes */}
                 {(() => {
                   const numReturned = Math.round(t9Orders * (t9ReturnRate / 100));
                   const directLossWasted = numReturned * t9ReturnFee;
-                  // Including ad spend of say 6000 IQD per order also wasted
                   const totalWastedWithAds = numReturned * (t9ReturnFee + 6000);
 
                   return (
@@ -1462,7 +1405,7 @@ export default function VizionGrowthSuite() {
                       </div>
 
                       <p className="text-[11px] text-white/60 leading-relaxed font-light">
-                        * فكر بيها زين: ميزانية بقيمة <strong className="text-red-400 font-mono">{(totalWastedWithAds).toLocaleString()} دينار</strong> تروح شهرياً عالفاضي لأن ما تتابع الزبون وما تأكد الطلبات زين. من تطبق الحلول مالتنا راح توكف هذا النزيف وترجع الفلوس لصافي جيبك فوراً.
+                        * فكر بيها زين: ميزانية بقيمة <strong className="text-red-400 font-mono">{(totalWastedWithAds).toLocaleString()} دينار</strong> تروح شهريا عالفاضي لأن ما تتابع الزبون وما تأكد الطلبات زين. من تطبق الحلول مالتنا راح توكف هذا النزيف وترجع الفلوس لصافي جيبك فورا.
                       </p>
                     </div>
                   );
@@ -1470,7 +1413,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 10: 30-Day Interactive Roadmap */}
             {activeTab === "roadmap" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1484,7 +1426,6 @@ export default function VizionGrowthSuite() {
                   خطة مرتبة تمشي بيها يوم بيومه. اختار الأسبوع وتابع مهامك اليومية واضغط عالمهمة من تخلصها حتى تشوف مشروعك شلون يتقدم.
                 </p>
 
-                {/* Week selector */}
                 <div className="flex justify-between border-b border-white/10 pb-2">
                   {[1, 2, 3, 4].map((wk) => (
                     <button                       key={wk}
@@ -1519,7 +1460,6 @@ export default function VizionGrowthSuite() {
                   })}
                 </div>
 
-                {/* Progress tracker */}
                 <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 flex justify-between items-center text-xs">
                   <span className="text-white/60 font-light">معدل التقدم بمشروعك:</span>
                   <strong className="text-vz-accent font-mono">{Math.round((t10CheckedDays.length / 30) * 100)}% ({t10CheckedDays.length} / 30 يوم)</strong>
@@ -1527,7 +1467,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 11: What's stopping my sales? Diagnostic */}
             {activeTab === "sales-blocker" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1538,7 +1477,7 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  جاوب بصدق على هاي الأسئلة الأربعة عن أرقامك هسة، وراح نكشفلك بالضبط الخلل وين صاير بشغلك وشلون تحله فوراً.
+                  جاوب بصدق على هاي الأسئلة الأربعة عن أرقامك هسة، وراح نكشفلك بالضبط الخلل وين صاير بشغلك وشلون تحله فورا.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4 text-xs text-right">
@@ -1563,7 +1502,7 @@ export default function VizionGrowthSuite() {
                     <label className="text-white/80 font-bold block">٣. شلون سرعتك وطريقتك بالرد عالخاص؟</label>
                     <select value={t11Speed} onChange={(e) => setT11Speed(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                       <option value="slow">بطيء (أكثر من ساعتين) أو أرد رد جاهز وناشف</option>
-                      <option value="fast">سريع جداً (أقل من 15 دقيقة) وبأسلوب حلو وودود</option>
+                      <option value="fast">سريع جدا (أقل من 15 دقيقة) وبأسلوب حلو وودود</option>
                     </select>
                   </div>
 
@@ -1580,7 +1519,7 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setT11ShowResult(true)}
                     className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
-                    <span>اعرف المشكلة وعالجها فوراً</span>
+                    <span>اعرف المشكلة وعالجها فورا</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
                   </button>
                 </div>
@@ -1613,7 +1552,7 @@ export default function VizionGrowthSuite() {
                     {t11Delivery === "low" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
                         <strong>الخلل الرابع: ما دتأكد الطلبات زين</strong>
-                        <p className="text-white/70 leading-relaxed font-light">إنت دتطلع طلبيات عشوائية وبدون ما تخابرهم وتأكد عليهم، فهالشي يخلي المندوب يسجلها راجع وتخسر كروة. الحل: خابر أكد الطلب فوراً ودز فيديو للواتساب يبين تجهيز طلبهم.</p>
+                        <p className="text-white/70 leading-relaxed font-light">إنت دتطلع طلبيات عشوائية وبدون ما تخابرهم وتأكد عليهم، فهالشي يخلي المندوب يسجلها راجع وتخسر كروة. الحل: خابر أكد الطلب فورا ودز فيديو للواتساب يبين تجهيز طلبهم.</p>
                       </div>
                     )}
 
@@ -1628,7 +1567,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 12: Campaign Forecasting Tool */}
             {activeTab === "forecaster" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1695,7 +1633,6 @@ export default function VizionGrowthSuite() {
               </div>
             )}
 
-            {/* TOOL 13: Ad Budget Planner */}
             {activeTab === "budget-planner" && (
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -1725,7 +1662,7 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 {(() => {
-                  const requiredOrders = Math.ceil(t13TargetProfit / (t13ProfitMargin - 6000)); // assuming 6000 IQD avg ad cost per order
+                  const requiredOrders = Math.ceil(t13TargetProfit / (t13ProfitMargin - 6000));
                   const estimatedBudgetRequired = requiredOrders * 6000;
 
                   return (
@@ -1761,7 +1698,6 @@ export default function VizionGrowthSuite() {
           </motion.div>
           </AnimatePresence>
 
-          {/* Golden Footer branding for Vizion OS */}
           
         </div>
         

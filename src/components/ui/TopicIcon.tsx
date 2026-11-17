@@ -5,7 +5,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-/** Line icons for chapters, solutions and Iraq-guide modules (in place of emoji). */
 const ICONS: Record<"chapter" | "playbook" | "guide", Record<string, LucideIcon>> = {
   chapter: {
     chapter1: Users,
@@ -52,7 +51,6 @@ const SIZES = {
   lg: "w-12 h-12 sm:w-14 sm:h-14 rounded-2xl [&>svg]:w-6 [&>svg]:h-6",
 };
 
-/** The icon on a quiet tile, sized for list rows, cards or page titles. */
 export function TopicIcon({ kind, id, size = "md", className = "" }: { kind: Kind; id: string; size?: keyof typeof SIZES; className?: string }) {
   const Icon = ICONS[kind][id] ?? Target;
   return (

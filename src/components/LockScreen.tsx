@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-react";
@@ -10,14 +5,8 @@ import { EASE_OUT, SPRING, allowBlur } from "../lib/motion";
 import { Magnetic } from "./ui/Motion";
 import { FULL_PRICE, OFFER_LAST_DAY, STUDENT_COUNT, offerState } from "../lib/offer";
 
-/** The shared free-trial code (any code containing "free" is a trial). */
 export const TRIAL_CODE = "free#1";
 
-// 1. HARDCODED CODES LIST:
-// You can directly edit, add, or remove passwords in this array!
-// - Passwords WITH '#vip' (e.g. "ali#vip") -> Full access to website ONLY (No AI Assistant access).
-// - Passwords WITH '#ai' (e.g. "ali#ai") -> Full access to AI Assistant (مستشار فيزيون).
-// - Passwords WITH 'free' (e.g. "free#1") -> Free Trial access with psychological gatekeeping & cliffhangers.
 export const HARDCODED_CODES = [
   "bker#2",
   "ehab#1",
@@ -59,7 +48,6 @@ export const HARDCODED_CODES = [
   "free#1"
 ];
 
-// Helper to normalize strings for robust comparison on both mobile and PC
 export const normalizeCode = (str: string): string => {
   if (!str) return "";
   let normalized = str.trim().toLowerCase();
@@ -75,11 +63,8 @@ export const normalizeCode = (str: string): string => {
   return normalized;
 };
 
-// Membership checks run during render all over the app, so the parsed list is
-// memoised against the raw localStorage string (re-parsed only when it changes).
 let validCodesCache: { raw: string | null; codes: string[] } | null = null;
 
-// Retrieve all valid active codes (HARDCODED_CODES + active Admin Panel entries)
 export const getAllValidCodes = (): string[] => {
   const stored = localStorage.getItem("sales_guide_codes");
   if (validCodesCache && validCodesCache.raw === stored) return validCodesCache.codes;
@@ -110,7 +95,6 @@ export const isVipUser = (code: string): boolean => {
   const normalized = normalizeCode(code);
   if (!normalized.includes("#vip")) return false;
   
-  // Verify code is strictly valid (exists in HARDCODED_CODES or active admin list)
   const allCodes = getAllValidCodes();
   return allCodes.includes(normalized);
 };
@@ -150,7 +134,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
   const [shake, setShake] = useState(false);
   const offer = offerState();
 
-  // Synchronize hardcoded default codes with localStorage on component mount
   useEffect(() => {
     const stored = localStorage.getItem("sales_guide_codes");
     
@@ -171,7 +154,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
           const finalCodes = parsed.filter(p => {
-            // Remove any code from localStorage if it matches an old default code but is no longer in HARDCODED_CODES
             const isOriginalDefault = ["iraq#gold", "premium2026", "admin#1", "ali#1"].includes(p.code) || p.buyerName === "رمز مضاف من الكود المصدري";
             if (isOriginalDefault && !HARDCODED_CODES.includes(p.code)) {
               return false;
@@ -179,7 +161,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             return true;
           });
 
-          // Add any missing hardcoded ones to final list
           HARDCODED_CODES.forEach(code => {
             const exists = finalCodes.some(p => normalizeCode(p.code) === normalizeCode(code));
             if (!exists) {
@@ -201,7 +182,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     }
   }, []);
 
-  // Load active codes
   const getValidCodes = (): string[] => {
     return getAllValidCodes();
   };
@@ -218,11 +198,9 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     setIsLoading(true);
     setError(null);
 
-    // Simulate luxury authentication delay
     setTimeout(() => {
       const normalizedInput = normalizeCode(password);
       
-      // Get all active valid codes and normalize them for perfect matching
       const validCodes = getValidCodes();
       const normalizedValidCodes = validCodes.map(code => normalizeCode(code));
 
@@ -234,7 +212,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         }, 800);
       } else {
         setIsLoading(false);
-        setError("الرمز غلط أو مو مفعّل. تأكد منه وجرب مرة ثانية.");
+        setError("الرمز غلط أو مو مفعل. تأكد منه وجرب مرة ثانية.");
         triggerShake();
       }
     }, 1200);
@@ -245,7 +223,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     setTimeout(() => setShake(false), 500);
   };
 
-  // Pre-fills a demo code to make grading/testing simple and smooth
   const handleQuickLogin = (demoCode: string) => {
     setPassword(demoCode);
     setError(null);
@@ -261,7 +238,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
 
   return (
     <div className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-x-hidden font-sans select-none px-4 py-6 sm:py-8 safe-area-top safe-area-bottom">
-      {/* Soft key light above the card */}
       <motion.div
         aria-hidden="true"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -271,7 +247,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
       />
       <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern pointer-events-none" />
 
-      {/* Main Authentication Container */}
       <motion.div
         initial={{ opacity: 0, y: 28, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -280,10 +255,8 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         id="lock-card"
       >
         <div className={shake ? "animate-shake" : undefined}>
-        {/* Glass Card */}
         <div className="glass-elevated glass-edge rounded-4xl p-6 sm:p-9 md:p-10 relative overflow-hidden dir-rtl">
 
-          {/* Logo and Icon */}
           <div className="flex flex-col items-center mb-7 sm:mb-9 text-center">
             <motion.div
               {...rise(0.25)}
@@ -303,14 +276,13 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             </motion.div>
             
             <motion.h1 {...rise(0.32)} className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1.5">
-              فيزيون • Vizion
+              فيزيون viZion
             </motion.h1>
             <motion.p {...rise(0.38)} className="text-white/55 text-xs sm:text-sm md:text-base font-medium mx-auto">
               كورس ومنصة للتجارة الإلكترونية بالعراق
             </motion.p>
           </div>
 
-          {/* Action Form */}
           <motion.form {...rise(0.45)} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div className="space-y-2">
               <label className="text-xs text-white/50 font-semibold tracking-wider block mr-1">
@@ -327,7 +299,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
                   disabled={isLoading || isSuccess}
                 />
                 
-                {/* Visibility Toggle */}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -339,7 +310,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               </div>
             </div>
 
-            {/* Error Message Box */}
             <AnimatePresence initial={false}>
               {error && (
                 <motion.div
@@ -359,7 +329,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               )}
             </AnimatePresence>
 
-            {/* Submit Button */}
             <Magnetic strength={0.08} max={3} reach={8}>
             <button
               type="submit"
@@ -388,7 +357,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
             </Magnetic>
           </motion.form>
 
-          {/* One tap into the free trial, then the one price */}
           <motion.div {...rise(0.55)} className="pt-4 text-center space-y-3">
             <div className="flex items-center gap-3 text-[11px] text-white/40" aria-hidden="true">
               <span className="flex-1 h-px bg-white/10" />
@@ -405,21 +373,20 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               className={`btn btn-glass w-full min-h-[52px] rounded-2xl px-4 text-sm font-black gap-2 ${focusRing}`}
             >
               <Sparkles className="w-4 h-4 text-emerald-300" />
-              <span>جرّب الكورس المجاني</span>
+              <span>جرب الكورس المجاني</span>
             </button>
             <p className="text-[11px] text-white/45 leading-relaxed">بدون رمز: تقرا أول درس، وتعرف ربحك الحقيقي من كل طلب.</p>
 
-            {/* The one plan */}
             <div className="glass-subtle rounded-2xl p-3.5 text-right flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <span className="block text-[11px] font-bold text-white/60">الاشتراك الكامل، مدى الحياة</span>
-                <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار · {STUDENT_COUNT} مشترك</span>
+                <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار، {STUDENT_COUNT} مشترك</span>
               </div>
               <div className="text-left shrink-0">
                 <span className="block text-base font-black text-white font-mono leading-tight">{offer.price.toLocaleString("en-US")} <span className="text-[10px] font-bold text-white/60">د.ع</span></span>
                 {offer.active && (
                   <span className="block text-[10px] text-white/45">
-                    <span className="line-through font-mono">{FULL_PRICE.toLocaleString("en-US")}</span> · لحد {OFFER_LAST_DAY}
+                    <span className="line-through font-mono">{FULL_PRICE.toLocaleString("en-US")}</span>، لحد {OFFER_LAST_DAY}
                   </span>
                 )}
               </div>
@@ -429,7 +396,6 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         </div>
       </motion.div>
 
-      {/* Footer copyright */}
       <motion.div {...rise(0.7)} className="relative text-center z-10 text-[10px] sm:text-[11px] text-white/30 tracking-wider mt-5 sm:mt-7 pb-2 safe-area-bottom">
         © 2026 viZion
       </motion.div>

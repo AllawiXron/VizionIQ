@@ -51,7 +51,6 @@ function Shell({ icon: Icon, title, children, note }: { icon: React.ComponentTyp
   );
 }
 
-/** Landed cost per unit for an import, in dinars at the member's real dollar rate. */
 function LandedCost() {
   const [unitPrice, setUnitPrice] = useState(4);
   const [units, setUnits] = useState(200);
@@ -67,7 +66,7 @@ function LandedCost() {
   const markup = goods > 0 ? ((totalUsd - goods) / goods) * 100 : 0;
 
   return (
-    <Shell icon={Calculator} title="احسب: كلفة القطعة الواصلة لمخزنك" note="الكمرك هنا محسوب تقريباً على قيمة البضاعة والشحن. النسبة والرسوم الدقيقة يحددها المخلص الكمركي حسب البند.">
+    <Shell icon={Calculator} title="احسب: كلفة القطعة الواصلة لمخزنك" note="الكمرك هنا محسوب تقريبا على قيمة البضاعة والشحن. النسبة والرسوم الدقيقة يحددها المخلص الكمركي حسب البند.">
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         <Field label="سعر القطعة من المورد" value={unitPrice} onChange={setUnitPrice} suffix="$" step={0.1} />
         <Field label="عدد القطع" value={units} onChange={setUnits} suffix="قطعة" step={10} />
@@ -85,7 +84,6 @@ function LandedCost() {
   );
 }
 
-/** What delivery really costs per delivered order, and how much cash sits with the courier. */
 function DeliveryCost() {
   const [orders, setOrders] = useState(400);
   const [aov, setAov] = useState(30000);
@@ -105,7 +103,7 @@ function DeliveryCost() {
   const cashStuck = (delivered / 30) * aov * remitDays;
 
   return (
-    <Shell icon={Truck} title="احسب: كلفة التوصيل الحقيقية وفلوسك العالقة" note="الأرقام الافتراضية من نطاقات 2026 الشائعة. غيّرها لأرقام شركتك.">
+    <Shell icon={Truck} title="احسب: كلفة التوصيل الحقيقية وفلوسك العالقة" note="الأرقام الافتراضية من نطاقات 2026 الشائعة. غيرها لأرقام شركتك.">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Field label="طلبات تطلع بالشهر" value={orders} onChange={setOrders} suffix="طلب" step={10} />
         <Field label="متوسط قيمة الطلب" value={aov} onChange={setAov} suffix="د.ع" step={1000} />
@@ -145,7 +143,6 @@ export function upcomingSeasons(now: Date = new Date(), count = 6): (SeasonEvent
 const dateLabel = (iso: string) =>
   new Date(`${iso}T00:00:00Z`).toLocaleDateString("ar-IQ-u-nu-latn", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
-/** The next seasons from today, with days left and what to prepare. */
 function SeasonCalendar() {
   const [showAll, setShowAll] = useState(false);
   const events = useMemo(() => upcomingSeasons(new Date(), showAll ? 50 : 6), [showAll]);
@@ -165,7 +162,7 @@ function SeasonCalendar() {
                   <span className="text-sm sm:text-base font-black text-white">{e.title}</span>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${style.cls}`}>{style.label}</span>
                 </div>
-                <p className="text-[11px] text-white/45">{e.approx ? "تقريباً " : ""}{dateLabel(e.date)}</p>
+                <p className="text-[11px] text-white/45">{e.approx ? "تقريبا " : ""}{dateLabel(e.date)}</p>
                 <p className="text-xs sm:text-sm text-white/75 leading-relaxed">{e.prepare}</p>
               </div>
             </li>

@@ -17,7 +17,6 @@ interface SolutionsIndexProps {
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-/** The playbooks, listed by the problem as the merchant would say it. */
 export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexProps) {
   const plans = usePlaybookPlans(userCode);
   const isTrial = isFreeTrialUser(userCode);
@@ -48,7 +47,7 @@ export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexP
                 <div className="flex items-start gap-3.5">
                   <TopicIcon kind="playbook" id={pb.id} />
                   <div className="min-w-0 space-y-1.5">
-                    <p className="text-sm sm:text-base text-white/60 leading-relaxed">«{pb.problem}»</p>
+                    <p className="text-sm sm:text-base text-white/60 leading-relaxed">{pb.problem}</p>
                     <h2 className="text-base sm:text-lg font-black text-white leading-snug">{pb.title}</h2>
                     {isTrial && <LockChip label="الحل الكامل بالاشتراك" />}
                   </div>
@@ -56,10 +55,10 @@ export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexP
                 <div className="mt-auto pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs text-white/50">
                   <span className="flex items-center gap-3">
                     <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{pb.minutes} دقيقة</span>
-                    <span>{pb.steps.length} خطوات · {pb.scripts.length} رسائل جاهزة</span>
+                    <span>{pb.steps.length} خطوات، {pb.scripts.length} رسائل جاهزة</span>
                   </span>
                   <span className="inline-flex items-center gap-1 font-bold text-white/75 group-hover:text-white transition-colors">
-                    {isTrial ? "شخّص مشكلتك" : done > 0 ? `${done}/${total} من الخطة` : "افتح الحل"}
+                    {isTrial ? "شخص مشكلتك" : done > 0 ? `${done}/${total} من الخطة` : "افتح الحل"}
                     <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
                   </span>
                 </div>

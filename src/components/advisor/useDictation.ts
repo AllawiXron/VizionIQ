@@ -1,10 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-/**
- * Voice typing in Iraqi Arabic via the browser's speech recognition
- * (Chrome/Android, Safari 14.5+). `supported` is false elsewhere, and the
- * mic button simply doesn't render.
- */
 type Recognition = {
   lang: string;
   continuous: boolean;
@@ -53,7 +48,7 @@ export function useDictation(onFinal: (text: string) => void, onInterim?: (text:
       }
       interimRef.current?.(interim);
     };
-    rec.onerror = (e) => setError(e.error === "not-allowed" ? "اسمح للمايك من إعدادات المتصفح." : "ما گدرت أسمعك، جرّب مرة ثانية.");
+    rec.onerror = (e) => setError(e.error === "not-allowed" ? "اسمح للمايك من إعدادات المتصفح." : "ما گدرت أسمعك، جرب مرة ثانية.");
     rec.onend = () => {
       setListening(false);
       interimRef.current?.("");

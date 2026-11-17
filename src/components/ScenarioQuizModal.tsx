@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { scenarioChallengesList } from "../data/scenariosData";
 import { ScenarioChallenge } from "../types";
@@ -41,12 +36,11 @@ export default function ScenarioQuizModal() {
   return (
     <div className="glass-subtle border rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 text-right">
       
-      {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <BrainCircuit className="w-3.5 h-3.5" />
-            <span>تحديات السيناريوهات الواقعية • Scenario Challenges</span>
+            <span>تحديات السيناريوهات الواقعية، Scenario Challenges</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
             اختبارات اتخاذ القرار والتكتيك بالسوق
@@ -64,10 +58,8 @@ export default function ScenarioQuizModal() {
         </div>
       </div>
 
-      {/* SCENARIO CARD */}
       <div className="space-y-6 animate-fade-in">
         
-        {/* Scenario Background */}
         <div className="glass border rounded-3xl p-6 md:p-8 space-y-4">
           <div className="flex items-center justify-between gap-2">
             <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/18 text-vz-accent text-xs font-bold">
@@ -94,12 +86,10 @@ export default function ScenarioQuizModal() {
           </div>
         </div>
 
-        {/* Question */}
         <h5 className="text-base font-bold text-vz-accent">
           {currentScenario.question}
         </h5>
 
-        {/* Options */}
         <div className="space-y-3">
           {currentScenario.options.map((opt) => {
             const isSelected = selectedOptionId === opt.id;
@@ -117,7 +107,6 @@ export default function ScenarioQuizModal() {
                   {showWrong && <XCircle className="w-5 h-5 text-red-400 flex-shrink-0" />}
                 </button>
 
-                {/* Feedback Explanation */}
                 {hasAnswered && (isSelected || opt.isCorrect) && (
                   <div className={`p-4 rounded-xl text-xs leading-relaxed border ${
                     opt.isCorrect ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-200" : "bg-red-950/40 border-red-500/30 text-red-200"
@@ -130,7 +119,6 @@ export default function ScenarioQuizModal() {
           })}
         </div>
 
-        {/* Next Scenario Button */}
         {hasAnswered && currentIndex < scenarioChallengesList.length - 1 && (
           <button             onClick={handleNext}
             className="btn btn-primary w-full py-3.5 text-white font-black rounded-2xl text-xs md:text-sm flex items-center justify-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"

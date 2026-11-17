@@ -1,18 +1,9 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useMemo, useState } from "react";
 import { Calculator, Megaphone, Package, TrendingDown, TrendingUp } from "lucide-react";
 import { NumberField } from "./ui/NumberField";
 
 const fmt = (n: number) => `⁦${Math.round(n).toLocaleString("en-US")}⁩`;
 
-/**
- * A test campaign before spending: the ad budget in dollars (that is how Meta
- * bills), everything else in dinars, and the result as money in or out.
- */
 export default function RoiCalculator() {
   const [budgetUsd, setBudgetUsd] = useState(100);
   const [rate, setRate] = useState(1490);
@@ -38,7 +29,6 @@ export default function RoiCalculator() {
     const returns = returned * returnFee;
     const net = revenue - spend - goods - shipping - returns;
     const cpa = orders > 0 ? spend / orders : 0;
-    // Before ads, what one order (delivered or not) leaves on average.
     const maxCpa = (deliveredPct / 100) * (price - cost - delivery) - (1 - deliveredPct / 100) * returnFee;
     return { spend, impressions, clicks, orders, delivered, returned, revenue, goods, shipping, returns, net, cpa, maxCpa, roi: spend > 0 ? (net / spend) * 100 : 0 };
   }, [budgetUsd, rate, cpm, ctr, orderPct, price, cost, delivery, deliveredPct, returnFee]);
@@ -58,7 +48,6 @@ export default function RoiCalculator() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8">
-        {/* Inputs */}
         <div className="lg:col-span-5 space-y-4">
           <section className="glass-subtle rounded-2xl p-4 space-y-4">
             <h4 className="text-sm font-black text-white flex items-center gap-2"><Megaphone className="w-4 h-4 text-vz-accent" /> الإعلان</h4>
@@ -79,11 +68,10 @@ export default function RoiCalculator() {
               <NumberField label="التوصيل" unit="د.ع" value={delivery} onChange={setDelivery} step={500} />
               <NumberField label="كلفة الطلب الراجع" unit="د.ع" value={returnFee} onChange={setReturnFee} step={500} />
             </div>
-            <NumberField label="من كل 100 طلب، كم يستلم الزبون فعلاً؟" unit="%" value={deliveredPct} onChange={setDeliveredPct} max={100} step={1} />
+            <NumberField label="من كل 100 طلب، كم يستلم الزبون فعلا؟" unit="%" value={deliveredPct} onChange={setDeliveredPct} max={100} step={1} />
           </section>
         </div>
 
-        {/* Results */}
         <div className="lg:col-span-7 space-y-4">
           <div className={`rounded-2xl p-5 sm:p-6 border ${winning ? "bg-emerald-400/[0.06] border-emerald-400/25" : "bg-red-500/[0.07] border-red-400/25"}`}>
             <div className="flex items-start justify-between gap-3 flex-wrap">
@@ -95,12 +83,12 @@ export default function RoiCalculator() {
               </div>
               <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${winning ? "bg-emerald-400/15 text-emerald-200" : "bg-red-500/15 text-red-200"}`}>
                 {winning ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
-                {winning ? "الحملة رابحة" : "الحملة خسرانة"} · العائد {Math.round(r.roi)}%
+                {winning ? "الحملة رابحة" : "الحملة خسرانة"}، العائد {Math.round(r.roi)}%
               </span>
             </div>
             <p className="text-xs sm:text-sm text-white/65 leading-relaxed mt-3">
               {r.orders < 1
-                ? "بهالأرقام الحملة ما تجيب ولا طلب. زيد الميزانية أو حسّن نسبة النقر."
+                ? "بهالأرقام الحملة ما تجيب ولا طلب. زيد الميزانية أو حسن نسبة النقر."
                 : r.cpa <= r.maxCpa
                   ? <>كل طلب يكلفك إعلان <span className="font-mono font-bold text-white">{fmt(r.cpa)}</span> د.ع، وتكدر تتحمل لحد <span className="font-mono font-bold text-white">{fmt(r.maxCpa)}</span> د.ع وتبقى رابح.</>
                   : r.maxCpa <= 0

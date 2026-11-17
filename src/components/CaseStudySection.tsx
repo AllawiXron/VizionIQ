@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { caseStudiesList } from "../data/caseStudiesData";
 import { CaseStudy } from "../types";
@@ -37,19 +32,17 @@ export default function CaseStudySection() {
   return (
     <div className="glass-subtle border rounded-4xl p-6 md:p-10 space-y-8 text-right">
       
-      {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <Award className="w-3.5 h-3.5" />
-            <span>تفكيك التجارب الناجحة • 5-10 Case Studies عراقية</span>
+            <span>تفكيك التجارب الناجحة، 5-10 Case Studies عراقية</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
             دراسات حالة تفصيلية من سوق العراق الفعلي
           </h3>
         </div>
 
-        {/* City Filter Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 no-scrollbar">
           {cities.map((city) => (
             <button               key={city}
@@ -62,7 +55,6 @@ export default function CaseStudySection() {
         </div>
       </div>
 
-      {/* CASE STUDIES LIST */}
       <div className="space-y-6">
         {filteredCaseStudies.map((cs, idx) => {
           const isExpanded = expandedId === cs.id;
@@ -71,7 +63,6 @@ export default function CaseStudySection() {
               <div
                 className="glass border hover:border-white/18 rounded-3xl overflow-hidden transition-all motion-reduce:transition-none motion-reduce:transform-none"
               >
-              {/* Card Title Banner (Toggle Header) */}
               <button                 onClick={() => setExpandedId(isExpanded ? null : cs.id)}
                 className="w-full p-6 text-right flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02] min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
@@ -102,7 +93,6 @@ export default function CaseStudySection() {
                 </div>
               </button>
 
-              {/* EXPANDED CONTENT DETAILS */}
               {isExpanded && (
                 <div className="p-6 md:p-8 border-t border-white/10 space-y-6 bg-black/20 animate-fade-in">
                   {isFreeTrial && idx >= 1 ? (
@@ -125,7 +115,6 @@ export default function CaseStudySection() {
                     </div>
                   ) : (
                     <>
-                      {/* Before vs After Metrics Comparison */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
                     <div>
                       <span className="text-[10px] text-white/70 block font-bold">عائد الإعلانات ROAS</span>
@@ -152,7 +141,6 @@ export default function CaseStudySection() {
                     </div>
                   </div>
 
-                  {/* Problem & Psychology */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-red-950/20 border border-red-500/20 p-4 rounded-2xl space-y-1">
                       <span className="text-xs font-bold text-red-400 block">التحدي والمشكلة السابقة:</span>
@@ -165,7 +153,6 @@ export default function CaseStudySection() {
                     </div>
                   </div>
 
-                  {/* Offer Stack */}
                   <div className="space-y-2">
                     <span className="text-xs font-bold text-vz-accent">حزمة العرض المركب (Offer Stack):</span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -178,13 +165,11 @@ export default function CaseStudySection() {
                     </div>
                   </div>
 
-                  {/* Ad Creative Hook */}
                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-1">
                     <span className="text-xs font-bold text-vz-accent block">الخطاف الإعلاني الفائز (Hook):</span>
                     <p className="text-xs text-white/80 font-mono leading-relaxed">{cs.adCreativeHook}</p>
                   </div>
 
-                  {/* WhatsApp Script snippet with Copy Button */}
                   <div className="bg-emerald-950/40 border border-emerald-500/30 p-4 rounded-2xl space-y-2 relative">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
@@ -211,7 +196,6 @@ export default function CaseStudySection() {
                     <p className="text-xs text-emerald-100 font-mono leading-relaxed dir-rtl">{cs.whatsappScriptSnippet}</p>
                   </div>
 
-                  {/* Key Learnings */}
                   <div className="space-y-2 pt-2 border-t border-white/10">
                     <span className="text-xs font-bold text-white block">أهم الدروس المستفادة:</span>
                     <ul className="list-disc list-inside text-xs text-white/70 space-y-1">

@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { isSoundMuted, toggleSoundMute, soundEngine } from "../lib/soundEngine";
@@ -54,7 +49,7 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
         {!muted ? (
           <>
             <Volume2 className="w-4 h-4" />
-            <span>الصوت مفعّل</span>
+            <span>الصوت مفعل</span>
           </>
         ) : (
           <>

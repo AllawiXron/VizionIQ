@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { PhoneCall, UserCheck, MessageSquare, Copy, Check, Star } from "lucide-react";
 import { phoneScripts } from "../data/chaptersData";
@@ -24,9 +19,7 @@ export default function ScriptSimulator() {
 
   return (
     <div className="w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-3.5 sm:p-6 md:p-8 relative" id="script-simulator">
-      {/* Background glow */}
 
-      {/* Header */}
       <div className="border-b border-white/10 pb-4 mb-6">
         <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           مكالمات جاهزة حسب نوع الزبون
@@ -36,7 +29,6 @@ export default function ScriptSimulator() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Left Side: Selectors (4 Columns) */}
         <div className="lg:col-span-4 space-y-3">
           <span className="text-xs font-semibold text-vz-accent block">نوع الزبون:</span>
           {phoneScripts.map((script, idx) => (
@@ -55,7 +47,6 @@ export default function ScriptSimulator() {
             </button>
           ))}
 
-          {/* Golden Standard COD notice */}
           <div className="p-4 bg-white/3 border border-white/9 rounded-xl mt-4">
             <span className="text-xs font-bold text-vz-accent flex items-center gap-1.5 mb-1">
               <Star className="w-3.5 h-3.5 fill-slate-200" />
@@ -67,10 +58,8 @@ export default function ScriptSimulator() {
           </div>
         </div>
 
-        {/* Right Side: Conversation Script Screen (8 Columns) */}
         <div className="lg:col-span-8 space-y-4">
           
-          {/* Header Title of selected character */}
           <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
               <span className="text-[10px] bg-white/10 text-vz-accent px-2 py-0.5 rounded font-bold">{activeScript.title}</span>
@@ -94,7 +83,6 @@ export default function ScriptSimulator() {
             </button>
           </div>
 
-          {/* Styled Dialog Balloon bubbles */}
           <div className="space-y-4 p-5 bg-black/40 rounded-xl border border-white/10 min-h-[220px] flex flex-col justify-center">
             {activeScript.dialog.map((d, dIdx) => {
               const isAgent = d.speaker === "المبيعات";
@@ -105,7 +93,6 @@ export default function ScriptSimulator() {
                     isAgent ? "self-start flex-row" : "self-end flex-row-reverse"
                   }`}
                 >
-                  {/* Icon Avatar */}
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 font-bold text-xs shadow ${
                       isAgent
@@ -116,7 +103,6 @@ export default function ScriptSimulator() {
                     {isAgent ? "" : ""}
                   </div>
 
-                  {/* Speech Bubble */}
                   <div className="space-y-1">
                     <span className="text-[9px] text-white/60 block">
                       {isAgent ? "إنت" : "الزبون"}
@@ -136,7 +122,6 @@ export default function ScriptSimulator() {
             })}
           </div>
 
-          {/* Expert Tip Notice */}
           <div className="p-4 bg-white/3 border border-white/9 rounded-xl">
             <h5 className="text-xs font-bold text-vz-accent flex items-center gap-1.5 mb-1">
               <Star className="w-3.5 h-3.5 text-vz-accent" />

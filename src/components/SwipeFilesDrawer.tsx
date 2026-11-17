@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { swipeFilesList } from "../data/swipeFilesData";
 import { SwipeFile } from "../types";
@@ -55,19 +50,17 @@ export default function SwipeFilesDrawer() {
   return (
     <div className="glass-subtle border rounded-2xl sm:rounded-4xl p-4 sm:p-6 md:p-10 space-y-6 sm:space-y-8 text-right">
       
-      {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <FolderDown className="w-3.5 h-3.5" />
-            <span>خزانة الموارد وسوايب فايلز • Swipe Files & Templates</span>
+            <span>خزانة الموارد وسوايب فايلز، Swipe Files & Templates</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
             ملفات السوايب الجاهزة للنسخ والاستخدام الفوري
           </h3>
         </div>
 
-        {/* Search Bar */}
         <div className="relative w-full md:w-64">
           <input             type="text"
             placeholder="بحث في السكريبتات والنصوص..."
@@ -79,7 +72,6 @@ export default function SwipeFilesDrawer() {
         </div>
       </div>
 
-      {/* Category Pills */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
         {categories.map((cat) => (
           <button             key={cat.id}
@@ -91,7 +83,6 @@ export default function SwipeFilesDrawer() {
         ))}
       </div>
 
-      {/* FILES GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredFiles.map((sf, idx) => {
           const isLocked = isFreeTrial && idx >= 2;
@@ -120,7 +111,6 @@ export default function SwipeFilesDrawer() {
                   {sf.description}
                 </p>
 
-                {/* Code/Text Container */}
                 {!isLocked ? (
                   <div className="bg-black/50 border border-white/10 rounded-2xl p-4 font-mono text-xs text-white/90 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap dir-rtl no-scrollbar">
                     {sf.content}
@@ -143,7 +133,6 @@ export default function SwipeFilesDrawer() {
                 )}
               </div>
 
-              {/* Action Buttons */}
               {!isLocked && (
                 <div className="flex items-center gap-3 pt-2 border-t border-white/10">
                   <button                     onClick={() => handleCopy(sf.content, sf.id)}

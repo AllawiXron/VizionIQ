@@ -21,7 +21,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
   onClose,
   userCode,
   onUpgradeSuccess,
-  title = "افتح الكورس كامل، وطبّقه على مشروعك",
+  title = "افتح الكورس كامل، وطبقه على مشروعك",
   subtitle = "إنت هسه بالنسخة التجريبية. بالاشتراك الكامل ينفتحلك كلشي: الفصول، الحلول، الأدوات والمستشار."
 }) => {
   const [inputCode, setInputCode] = useState("");
@@ -42,7 +42,6 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
     const normalized = normalizeCode(trimmed);
     const validCodes = getAllValidCodes();
 
-    // Check if code is valid and NOT another free code
     if (validCodes.includes(normalized) && !isFreeTrialUser(normalized)) {
       setSuccess("الرمز صحيح، دا ينفتح الكورس كامل...");
       setTimeout(() => {
@@ -52,11 +51,10 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
     } else if (isFreeTrialUser(normalized)) {
       setError("هذا رمز التجربة. اكتب رمز الاشتراك الكامل.");
     } else {
-      setError("الرمز غلط أو مو مفعّل. تأكد منه، أو راسلنا عالواتساب.");
+      setError("الرمز غلط أو مو مفعل. تأكد منه، أو راسلنا عالواتساب.");
     }
   };
 
-  // Grows out of whichever upgrade button was pressed, and returns into it.
   const originSheet = useOriginSheet(isOpen, { width: 672 });
 
   return (
@@ -69,7 +67,6 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
           aria-modal="true"
           className="w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[90vh] my-auto"
         >
-          {/* Header */}
           <div className="px-4 sm:px-6 py-3 sm:py-4 vz-sheet-header flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] shrink-0">
@@ -91,13 +88,11 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
             </button>
           </div>
 
-          {/* Body */}
           <div className="p-4 sm:p-8 overflow-y-auto overscroll-contain space-y-5 sm:space-y-6">
-            {/* Title & Badge */}
             <div className="text-center space-y-2">
               <div className="vz-eyebrow text-[10px] sm:text-xs">
                 <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-vz-accent" />
-                <span>{STUDENT_COUNT} مشترك · تدفع مرة وحدة · مدى الحياة</span>
+                <span>{STUDENT_COUNT} مشترك، تدفع مرة وحدة، مدى الحياة</span>
               </div>
               <h3 className="text-base sm:text-2xl font-black text-white leading-tight">
                 {title}
@@ -107,7 +102,6 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               </p>
             </div>
 
-            {/* THE ONE PLAN */}
             <div className="bg-gradient-to-b from-white/[0.1] to-white/[0.025] border border-white/20 rounded-3xl p-4 sm:p-6 space-y-4 text-right shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_20px_50px_-24px_rgba(0,0,0,0.9)]">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 border-b border-white/14 pb-4">
                 <div>
@@ -136,14 +130,13 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               </div>
             </div>
 
-            {/* Upgrade Password Input Form */}
             <form onSubmit={handleUpgrade} className="glass-subtle p-4 sm:p-5 rounded-3xl space-y-4">
               <div className="space-y-1 text-right">
                 <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                   <KeyRound className="w-4 h-4 text-vz-accent" />
                   <span>اشتركت وعندك الرمز؟ اكتبه هنا:</span>
                 </label>
-                <p className="text-[11px] text-white/70">ينفتح كلشي فوراً، بدون ما تطلع وترجع تسجل.</p>
+                <p className="text-[11px] text-white/70">ينفتح كلشي فورا، بدون ما تطلع وترجع تسجل.</p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2">

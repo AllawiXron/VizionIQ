@@ -6,11 +6,6 @@ import { stripAdvisorTags, type BusinessProfile } from "../../lib/advisor/profil
 import { Markdown, type MarkdownActions } from "./Markdown";
 import { CalcCard } from "./CalcCard";
 
-/**
- * One advisor answer, rendered rich: markdown prose, ready-to-send script
- * bubbles (copy / open in WhatsApp) and live calculator cards. Safe to render
- * on every streamed chunk — partial fences and tags are handled.
- */
 export interface RichMessageProps extends MarkdownActions {
   text: string;
   streaming?: boolean;
@@ -24,7 +19,6 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
     try {
       await navigator.clipboard.writeText(text);
     } catch {
-      /* clipboard blocked: still report so the merchant can long-press */
     }
     setCopied(true);
     onCopy?.(text);
@@ -72,7 +66,6 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
 }
 
 function RichMessageImpl({ text, streaming, onCopy, onSaveProfile, onChapter, onTool, onAddTask }: RichMessageProps) {
-  // One stable object, so memoised markdown blocks don't re-render for nothing.
   const actions = useMemo<MarkdownActions>(() => ({ onChapter, onTool, onAddTask }), [onChapter, onTool, onAddTask]);
   const blocks = parseRichBlocks(stripAdvisorTags(text, streaming), streaming);
   const lastIndex = blocks.length - 1;
@@ -105,7 +98,6 @@ function RichMessageImpl({ text, streaming, onCopy, onSaveProfile, onChapter, on
 
 export const RichMessage = memo(RichMessageImpl);
 
-/** What the advisor is doing while the first words are on their way. */
 const THINKING_STAGES: [number, string][] = [
   [0, "دا أقرا سؤالك…"],
   [2500, "دا أراجع ملف مشروعك ومحتوى الكورس…"],

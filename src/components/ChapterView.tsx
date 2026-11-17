@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useEffect, useState } from "react";
 import { EASE_OUT } from "../lib/motion";
 import { motion } from "motion/react";
@@ -22,7 +17,6 @@ import { setChapterDone, setLastChapter, stageOf, togglePlanDay, useCourseProgre
 import type { Route } from "../lib/route";
 import type { PlaybookCalculator as CalculatorKind } from "../data/playbooksData";
 
-// Interactive tools
 const RoiCalculator = React.lazy(() => import("./RoiCalculator"));
 const AdSimulator = React.lazy(() => import("./AdSimulator"));
 const ScriptSimulator = React.lazy(() => import("./ScriptSimulator"));
@@ -39,7 +33,6 @@ interface ChapterViewProps {
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-/** The tool that goes with each chapter's practice. */
 const CHAPTER_TOOL: Record<string, { label: string; render: () => React.ReactNode }> = {
   chapter1: { label: "حاسبة الحملة التجريبية", render: () => <RoiCalculator /> },
   chapter2: { label: "شكد يزيد البيع بدون ما تزيد الإعلان", render: () => <PlaybookCalculator kind={"sales-levers" as CalculatorKind} /> },
@@ -53,12 +46,11 @@ const CHAPTER_TOOL: Record<string, { label: string; render: () => React.ReactNod
   chapter11: { label: "خطة 30 يوم لأول 100 طلب", render: () => <ThirtyDayPlan /> },
 };
 
-/** "5 دقايق" / "25 دقيقة" */
 const minutesLabel = (n: number) => `${n} ${n <= 10 ? "دقايق" : "دقيقة"}`;
 
 const SECTIONS = [
   { id: "ch-lessons", label: "الدروس" },
-  { id: "ch-practice", label: "طبّق" },
+  { id: "ch-practice", label: "طبق" },
   { id: "ch-templates", label: "جاهز للنسخ" },
   { id: "ch-example", label: "مثال بالأرقام" },
   { id: "ch-mistakes", label: "أغلاط" },
@@ -77,7 +69,6 @@ function SectionTitle({ id, icon: Icon, children, sub }: { id: string; icon: Rea
   );
 }
 
-/** One block of a lesson. */
 function LessonBlock({ block }: { key?: React.Key; block: Block }) {
   switch (block.kind) {
     case "p":
@@ -219,7 +210,7 @@ function Quiz({ chapter }: { chapter: CourseChapter }) {
         );
       })}
       {answered === chapter.quiz.length && (
-        <p className="text-sm font-bold text-white/80">جاوبت صح على {right} من {chapter.quiz.length}.{right < chapter.quiz.length ? " راجع الدروس اللي غلطت بيها قبل لا تكمل." : " ممتاز، كمّل للفصل الجاي."}</p>
+        <p className="text-sm font-bold text-white/80">جاوبت صح على {right} من {chapter.quiz.length}.{right < chapter.quiz.length ? " راجع الدروس اللي غلطت بيها قبل لا تكمل." : " ممتاز، كمل للفصل الجاي."}</p>
       )}
     </div>
   );
@@ -235,7 +226,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   const minutes = chapterMinutes(course);
 
   const isFreeTrial = isFreeTrialUser(userCode);
-  // Trial members get the first lesson (and some of the rest) of chapters 1–2; other chapters show their outline only.
   const trialLocked = isFreeTrial && !isTrialChapter(chapter.id);
   const progress = useCourseProgress(userCode);
   const isDone = progress.done.includes(chapter.id);
@@ -249,7 +239,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   const openTemplates = isFreeTrial ? 2 : course.templates.length;
   const openMistakes = isFreeTrial ? 3 : course.mistakes.length;
 
-  // Remember where the member stopped so Home can offer "continue".
   useEffect(() => {
     setLastChapter(userCode, chapter.id);
   }, [userCode, chapter.id]);
@@ -266,7 +255,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
   return (
     <section id={chapter.id} className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 relative text-right">
-      {/* Back to the list + position */}
       <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
         <button onClick={() => onNavigate({ view: "chapters" })} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}>
           <ArrowRight className="w-4 h-4" />
@@ -275,14 +263,11 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         <span className="text-xs text-white/50 font-mono">{chapterIndex + 1} / {chaptersList.length}</span>
       </div>
 
-      {/* Title */}
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
         <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm font-bold text-white/55">
           <span className="text-vz-accent">{chapter.number}</span>
-          {stage && <><span aria-hidden="true">·</span><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
-          <span aria-hidden="true">·</span>
+          {stage && <><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
           <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{minutesLabel(minutes)}</span>
-          <span aria-hidden="true">·</span>
           <span>{course.lessons.length} دروس</span>
           {trialLocked && <LockChip label="بالتجربة تشوف المحتوى بس" />}
           {isDone && (
@@ -298,7 +283,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         <p className="text-sm sm:text-lg text-white/65 leading-relaxed">{course.goal}</p>
       </motion.header>
 
-      {/* What you will be able to do */}
       <div className="glass rounded-3xl p-5 sm:p-6 mb-8 sm:mb-10 space-y-3">
         <p className="text-sm font-black text-white flex items-center gap-2"><Target className="w-4 h-4 text-vz-accent" /> بنهاية هذا الفصل</p>
         <ul className="space-y-2">
@@ -334,7 +318,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         </div>
       ) : (
         <>
-          {/* In-page sections */}
           <nav aria-label="أقسام الفصل" className="sticky top-[4.5rem] sm:top-[4.75rem] z-20 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 sm:mb-10">
             <div className="flex items-center gap-1 p-1 rounded-full glass-floating overflow-x-auto no-scrollbar w-full sm:w-fit">
               {SECTIONS.map((s) => (
@@ -350,7 +333,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           </nav>
 
           <div className="space-y-14 sm:space-y-20">
-            {/* Lessons */}
             <section>
               <SectionTitle id="ch-lessons" icon={BookOpen} sub="اقراها بالترتيب. كل درس يبني على اللي قبله.">الدروس</SectionTitle>
               <ol className="glass rounded-3xl overflow-hidden divide-y divide-white/[0.06] mb-8 sm:mb-10">
@@ -376,7 +358,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                 {course.lessons.slice(0, openLessons).map((lesson, i) => (
                   <article key={lesson.title} id={`ch-lesson-${i}`} className="scroll-mt-36 space-y-5 sm:space-y-6">
                     <header className="space-y-2">
-                      <p className="text-xs sm:text-sm font-bold text-vz-accent">الدرس {i + 1} · {minutesLabel(lessonMinutes(lesson))}</p>
+                      <p className="text-xs sm:text-sm font-bold text-vz-accent">الدرس {i + 1}، {minutesLabel(lessonMinutes(lesson))}</p>
                       <h3 className="text-xl sm:text-3xl font-black text-white leading-snug">{lesson.title}</h3>
                       <p className="text-sm sm:text-lg text-white/70 leading-relaxed">{lesson.intro}</p>
                     </header>
@@ -399,9 +381,8 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               </div>
             </section>
 
-            {/* Practice */}
             <section>
-              <SectionTitle id="ch-practice" icon={ClipboardList} sub={course.practice.intro}>طبّق على مشروعك</SectionTitle>
+              <SectionTitle id="ch-practice" icon={ClipboardList} sub={course.practice.intro}>طبق على مشروعك</SectionTitle>
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={course.practice.tasks.length} aria-valuenow={ticked.size} aria-label="تقدم التطبيق">
                   <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((ticked.size / course.practice.tasks.length) * 100)}%` }} />
@@ -435,14 +416,13 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               {tool && (
                 <div className="mt-8 space-y-4">
                   <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2"><Wrench className="w-4 h-4 text-vz-accent" /> الأداة: {tool.label}</h3>
-                  <React.Suspense fallback={<div className="p-4 text-center text-white/60 text-sm">دا يحمّل...</div>}>{tool.render()}</React.Suspense>
+                  <React.Suspense fallback={<div className="p-4 text-center text-white/60 text-sm">دا يحمل...</div>}>{tool.render()}</React.Suspense>
                 </div>
               )}
             </section>
 
-            {/* Templates */}
             <section>
-              <SectionTitle id="ch-templates" icon={FileText} sub="انسخها، غيّر اللي بين القوسين [ ] لمشروعك، واستخدمها.">جاهز للنسخ</SectionTitle>
+              <SectionTitle id="ch-templates" icon={FileText} sub="انسخها، غير اللي بين القوسين [ ] لمشروعك، واستخدمها.">جاهز للنسخ</SectionTitle>
               <div className="grid grid-cols-1 gap-3 sm:gap-4">
                 {course.templates.slice(0, openTemplates).map((t) => (
                   <div key={t.title} className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-5 space-y-3">
@@ -467,7 +447,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               </div>
             </section>
 
-            {/* Worked example */}
             <section>
               <SectionTitle id="ch-example" icon={TrendingUp} sub={isFreeTrial ? undefined : course.example.setup}>{`مثال بالأرقام: ${course.example.title}`}</SectionTitle>
               {isFreeTrial ? (
@@ -501,7 +480,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               )}
             </section>
 
-            {/* Mistakes */}
             <section>
               <SectionTitle id="ch-mistakes" icon={AlertTriangle}>أغلاط لا توكع بيها</SectionTitle>
               <ul className="space-y-2.5">
@@ -518,7 +496,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               )}
             </section>
 
-            {/* Quiz */}
             <section>
               <SectionTitle id="ch-quiz" icon={HelpCircle} sub="أسئلة قصيرة تتأكد بيها إنك فهمت الفصل.">اختبر نفسك</SectionTitle>
               <Quiz chapter={course} />
@@ -527,7 +504,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         </>
       )}
 
-      {/* Practice: the matching playbook */}
       {playbook && (
         <button
           onClick={() => onNavigate({ view: "solution", id: playbook.id })}
@@ -543,7 +519,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         </button>
       )}
 
-      {/* Finish + move on */}
       <div className="mt-4 sm:mt-5 glass rounded-3xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
         <div className="flex-1 min-w-0">
           <p className="text-base sm:text-lg font-black text-white">{isDone ? "خلصت هذا الفصل" : "خلصت الفصل؟"}</p>

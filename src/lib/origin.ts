@@ -1,12 +1,3 @@
-/**
- * Spatial continuity, the way iOS opens apps: a sheet grows out of the exact
- * control that summoned it and shrinks back into it when dismissed.
- *
- * One capture-phase listener remembers the bounding box of the last pressed
- * control (pointer or keyboard). Sheets read it the moment they open and turn
- * it into a transform from that box to their resting place, blurred in flight
- * and sharpening as they land.
- */
 import { useMemo } from "react";
 import { useReducedMotion } from "motion/react";
 import { EASE_OUT, sheetMotion } from "./motion";
@@ -45,26 +36,17 @@ export function initOriginTracker(): () => void {
   };
 }
 
-/** The last pressed control, if it was pressed recently enough to have caused this. */
 export function takeOrigin(maxAgeMs = 2000): Origin | null {
   if (!lastOrigin || performance.now() - lastOrigin.t > maxAgeMs) return null;
   return lastOrigin;
 }
 
 interface OriginSheetOptions {
-  /** Approximate rendered width of the sheet (px), used to size the starting scale. */
   width?: number;
-  /** Where the sheet rests: centred in the viewport, or anchored to the bottom edge. */
   anchor?: "center" | "bottom";
-  /** Approximate height for bottom-anchored sheets (px). */
   height?: number;
 }
 
-/**
- * Motion props for a sheet that opens from the control that summoned it.
- * Falls back to the standard rise-and-settle when there is no recent origin
- * (e.g. opened programmatically on load) or when reduced motion is on.
- */
 export function useOriginSheet(isOpen: boolean, { width = 640, anchor = "center", height = 560 }: OriginSheetOptions = {}) {
   const reduce = useReducedMotion();
   return useMemo(() => {
@@ -92,7 +74,6 @@ export function useOriginSheet(isOpen: boolean, { width = 640, anchor = "center"
         scale: 1,
         filter: "blur(0px)",
         transition: {
-          // Position and size ride one lively spring; content sharpens as it lands.
           type: "spring",
           stiffness: 280,
           damping: 27,
@@ -105,7 +86,6 @@ export function useOriginSheet(isOpen: boolean, { width = 640, anchor = "center"
         ...away,
         filter: "blur(10px)",
         transition: {
-          // Back into the control: quicker, critically damped (no bounce on the way out).
           type: "spring",
           stiffness: 420,
           damping: 40,

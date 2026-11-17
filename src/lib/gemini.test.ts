@@ -57,7 +57,7 @@ describe("Vizion AI Advisor Conversation Reliability", () => {
     const last = prepared[2].parts as Array<{ inlineData?: unknown }>;
     expect(first.some((p) => p.inlineData)).toBe(false);
     expect(textOf(first)).toContain("أرفقت صورة");
-    expect(last.filter((p) => p.inlineData).length).toBe(1); // the html "image" is rejected
+    expect(last.filter((p) => p.inlineData).length).toBe(1);
   });
 
   it("should ground the instruction in the profile and the course", () => {
@@ -71,7 +71,6 @@ describe("Vizion AI Advisor Conversation Reliability", () => {
   });
 });
 
-/** Fake Gemini client that streams the given chunks (or throws). */
 function fakeClient(script: Array<string[] | Error>) {
   let call = 0;
   return {
@@ -121,16 +120,15 @@ describe("Advisor streaming", () => {
         method: "POST",
         headers: { "x-forwarded-for": "10.0.0.1" },
         body: { stream: true, messages: [{ role: "user", text: "مرحبا" }] },
-        // Node fires the request's "close" as soon as the body is read — must not cancel the answer.
         on: (_event: string, cb: () => void) => cb(),
       },
       res,
-      fakeClient([["أهلاً ", "بيك"]])
+      fakeClient([["أهلا ", "بيك"]])
     );
     expect(headers["content-type"]).toContain("ndjson");
     const events = written.join("").trim().split("\n").map((l) => JSON.parse(l));
     expect(events[0].t).toBe("start");
-    expect(events.filter((e) => e.t === "delta").map((e) => e.v).join("")).toBe("أهلاً بيك");
+    expect(events.filter((e) => e.t === "delta").map((e) => e.v).join("")).toBe("أهلا بيك");
     expect(events[events.length - 1].t).toBe("done");
   });
 
@@ -143,7 +141,6 @@ describe("Advisor streaming", () => {
   });
 });
 
-/** Scriptable fake: each call gets the request and returns an async iterable (or throws). */
 function scriptedClient(steps: Array<(req: any) => AsyncIterable<{ text: string }> | Promise<never>>) {
   const calls: any[] = [];
   return {
@@ -164,7 +161,6 @@ const breaksAfter = (...parts: string[]) => async function* () {
   for (const p of parts) yield { text: p };
   throw new Error("Incomplete JSON segment at the end");
 };
-/** Never yields until the request's abort signal fires. */
 const hangs = () => (req: any) =>
   (async function* () {
     await new Promise((_, reject) => req.config.abortSignal.addEventListener("abort", () => reject(new Error("aborted"))));
@@ -180,7 +176,7 @@ describe("Advisor resilience", () => {
     expect(deltas.join("")).toBe(r.text);
     const resumed = calls[1].contents;
     expect(resumed[resumed.length - 2]).toMatchObject({ role: "model" });
-    expect(JSON.stringify(resumed[resumed.length - 1])).toContain("كمّل من آخر كلمة");
+    expect(JSON.stringify(resumed[resumed.length - 1])).toContain("كمل من آخر كلمة");
   });
 
   it("moves to the next model when the first one is too slow to start", async () => {

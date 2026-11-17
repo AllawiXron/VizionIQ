@@ -1,8 +1,3 @@
-/**
- * Per-member reading progress: which chapters are finished and which one was
- * opened last. Kept in localStorage and shared by every screen through a
- * small subscribable store.
- */
 import { useSyncExternalStore } from "react";
 import { chaptersList } from "../data/chaptersData";
 
@@ -42,7 +37,6 @@ function write(userCode: string, next: CourseProgress) {
   try {
     localStorage.setItem(storageKey(userCode), JSON.stringify(next));
   } catch {
-    // Storage unavailable (private mode): progress lives for this visit only.
   }
   listeners.forEach((l) => l());
 }
@@ -69,7 +63,6 @@ export function useCourseProgress(userCode: string): CourseProgress {
   return useSyncExternalStore(subscribe, () => read(userCode), () => EMPTY);
 }
 
-/** The chapter a member should open next: the last one opened if unfinished, else the first unfinished. */
 export function nextChapterId(progress: CourseProgress): string | null {
   const done = new Set(progress.done);
   if (progress.last && !done.has(progress.last)) return progress.last;
@@ -78,7 +71,6 @@ export function nextChapterId(progress: CourseProgress): string | null {
   return ordered.find((c) => !done.has(c.id))?.id ?? null;
 }
 
-/** The four learning stages the 11 chapters are grouped into. */
 export const CHAPTER_STAGES = [
   { id: "foundation", label: "التأسيس والسوق", chapters: ["chapter1", "chapter2", "chapter3"] },
   { id: "marketing", label: "الإعلانات والمحتوى", chapters: ["chapter4", "chapter5", "chapter6"] },
@@ -91,9 +83,6 @@ export function stageOf(chapterId: string) {
   return index >= 0 ? { index, stage: CHAPTER_STAGES[index] } : null;
 }
 
-/* ------------------------------------------------------------------ */
-/* Playbook 7-day plans: which days are ticked, per member             */
-/* ------------------------------------------------------------------ */
 
 type PlanState = Record<string, number[]>;
 const EMPTY_PLANS: PlanState = {};
@@ -127,7 +116,6 @@ export function togglePlanDay(userCode: string, playbookId: string, day: number)
   try {
     localStorage.setItem(plansKey(userCode), JSON.stringify(next));
   } catch {
-    // Storage unavailable: ticks last for this visit only.
   }
   listeners.forEach((l) => l());
 }

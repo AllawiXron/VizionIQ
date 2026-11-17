@@ -19,7 +19,6 @@ interface ChaptersIndexProps {
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
 
-/** The course as a simple ordered list: four stages, one row per chapter. */
 export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexProps) {
   const progress = useCourseProgress(userCode);
   const done = new Set(progress.done);

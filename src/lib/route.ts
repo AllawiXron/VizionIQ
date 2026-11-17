@@ -1,8 +1,3 @@
-/**
- * Tiny hash router for the member area. Each destination is its own screen
- * (home, chapters, solutions, the Iraq guide, tools, market insights) instead of one
- * endless page, and the browser/phone back button moves between them.
- */
 import { useCallback, useEffect, useState } from "react";
 import { chaptersList } from "../data/chaptersData";
 import { playbooksList } from "../data/playbooksData";
@@ -68,18 +63,12 @@ export function routeToHash(route: Route): string {
   }
 }
 
-/**
- * Maps the old single-page section ids (still used by the advisor's chapter
- * links and a few components) to a screen.
- */
 export function routeForSection(id: string): Route | null {
   if (CHAPTER_IDS.has(id)) return { view: "chapter", id };
-  // Advisor links to a playbook: "solution:ghosting".
   if (id.startsWith("solution:")) {
     const playbookId = id.slice("solution:".length);
     return PLAYBOOK_IDS.has(playbookId) ? { view: "solution", id: playbookId } : { view: "solutions" };
   }
-  // Advisor links to an Iraq Guide module: "guide:delivery".
   if (id.startsWith("guide:")) {
     const moduleId = id.slice("guide:".length);
     return GUIDE_IDS.has(moduleId) ? { view: "guideModule", id: moduleId } : { view: "guide" };
@@ -125,7 +114,6 @@ export function useRoute(): [Route, (next: Route) => void] {
   const navigate = useCallback((next: Route) => {
     const hash = routeToHash(next);
     if (window.location.hash === hash || (hash === "#/" && !window.location.hash)) {
-      // Same screen: just return to its top.
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }

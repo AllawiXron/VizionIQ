@@ -54,13 +54,11 @@ function SectionTitle({ id, icon: Icon, children, sub }: { id: string; icon: Rea
   );
 }
 
-/** One playbook: diagnose with numbers, fix in order, copy the messages, follow the 7-day plan. */
 export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, onOpenTool }: PlaybookViewProps) {
   const pb = playbooksList.find((p) => p.id === id) ?? playbooksList[0];
   const plans = usePlaybookPlans(userCode);
   const ticked = new Set(plans[pb.id] ?? []);
   const planPercent = Math.round((ticked.size / pb.plan.length) * 100);
-  // Trial members can diagnose (numbers, causes); the fix itself is the paid part.
   const isTrial = isFreeTrialUser(userCode);
   const sections = isTrial ? TRIAL_SECTIONS : SECTIONS;
 
@@ -79,10 +77,9 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         <span className="text-xs text-white/50 inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{pb.minutes} دقيقة قراءة</span>
       </div>
 
-      {/* Title */}
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
         <p className="text-sm sm:text-base text-white/60 leading-relaxed">
-          «{pb.problem}»
+          {pb.problem}
         </p>
         <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight">{pb.title}</h1>
         <p className="text-sm sm:text-lg text-white/70 leading-relaxed">{pb.promise}</p>
@@ -93,7 +90,6 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         )}
       </motion.header>
 
-      {/* In-page sections */}
       <nav aria-label="أقسام الحل" className="sticky top-[4.5rem] sm:top-[4.75rem] z-20 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 sm:mb-10">
         <div className="flex items-center gap-1 p-1 rounded-full glass-floating overflow-x-auto no-scrollbar w-full sm:w-fit">
           {sections.map((s) => (
@@ -109,7 +105,6 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
       </nav>
 
       <div className="space-y-12 sm:space-y-16">
-        {/* Numbers */}
         <section>
           <SectionTitle id="pb-numbers" icon={Gauge} sub={pb.metrics.intro}>شلون تعرف إن هاي مشكلتك؟</SectionTitle>
           <div className="glass rounded-2xl sm:rounded-3xl overflow-hidden">
@@ -138,7 +133,6 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
           )}
         </section>
 
-        {/* Causes */}
         <section>
           <SectionTitle id="pb-causes" icon={Search} sub="لكل سبب: شلون تعرف إنه هو، وشنو الحل.">ليش يصير هذا؟</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -167,12 +161,11 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
             items={[
               ...pb.steps.map((st, i) => `خطوة ${i + 1}: ${st.title}`),
               ...pb.scripts.slice(0, 3).map((sc) => (sc.title.startsWith("رسالة") ? sc.title : `رسالة جاهزة: ${sc.title}`)),
-              "خطة 7 أيام تعلّم عليها كل يوم",
+              "خطة 7 أيام تعلم عليها كل يوم",
             ]}
           />
         ) : (
         <>
-        {/* Steps */}
         <section>
           <SectionTitle id="pb-steps" icon={ListChecks} sub="طبقها بالترتيب. كل خطوة تبني على اللي قبلها.">الحل خطوة بخطوة</SectionTitle>
           <ol className="relative space-y-4 sm:space-y-5 before:absolute before:top-2 before:bottom-2 before:right-[1.2rem] sm:before:right-[1.45rem] before:w-px before:bg-white/[0.1]">
@@ -204,9 +197,8 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
           </ol>
         </section>
 
-        {/* Scripts */}
         <section>
-          <SectionTitle id="pb-scripts" icon={MessageSquareText} sub="انسخها، غيّر اللي بين الأقواس [ ] لمنتجك، وحطها ردود سريعة بواتساب بزنس.">رسائل جاهزة تنسخها</SectionTitle>
+          <SectionTitle id="pb-scripts" icon={MessageSquareText} sub="انسخها، غير اللي بين الأقواس [ ] لمنتجك، وحطها ردود سريعة بواتساب بزنس.">رسائل جاهزة تنسخها</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {pb.scripts.map((s) => (
               <div key={s.title} className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col gap-3">
@@ -223,7 +215,6 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
           </div>
         </section>
 
-        {/* Example */}
         <section>
           <SectionTitle id="pb-example" icon={TrendingUp} sub={pb.example.story}>{`مثال توضيحي: ${pb.example.title}`}</SectionTitle>
           <div className="glass rounded-2xl sm:rounded-3xl overflow-hidden">
@@ -245,7 +236,6 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
           <p className="mt-3 text-sm text-white/75 leading-relaxed"><span className="font-bold text-vz-accent">الدرس: </span>{pb.example.lesson}</p>
         </section>
 
-        {/* Mistakes */}
         <section>
           <SectionTitle id="pb-mistakes" icon={AlertTriangle}>أغلاط لا توكع بيها</SectionTitle>
           <ul className="space-y-2.5">
@@ -258,9 +248,8 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
           </ul>
         </section>
 
-        {/* 7-day plan */}
         <section>
-          <SectionTitle id="pb-plan" icon={CheckCircle2} sub="علّم كل يوم تخلصه. تقدمك ينحفظ.">خطة 7 أيام</SectionTitle>
+          <SectionTitle id="pb-plan" icon={CheckCircle2} sub="علم كل يوم تخلصه. تقدمك ينحفظ.">خطة 7 أيام</SectionTitle>
           <div className="glass-elevated glass-edge rounded-3xl p-4 sm:p-6 space-y-4">
             <div className="flex items-center gap-3">
               <div className="flex-1 h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={pb.plan.length} aria-valuenow={ticked.size} aria-label="تقدم الخطة">
@@ -296,9 +285,8 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         </>
         )}
 
-        {/* Related */}
         <section className="glass rounded-3xl p-5 sm:p-7 space-y-5">
-          <h2 className="text-base sm:text-lg font-black text-white">كمّل من هنا</h2>
+          <h2 className="text-base sm:text-lg font-black text-white">كمل من هنا</h2>
           <div className="flex flex-wrap gap-2">
             {pb.relatedChapters.map((cid) => {
               const ch = chaptersList.find((c) => c.id === cid);

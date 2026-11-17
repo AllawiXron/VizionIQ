@@ -10,10 +10,6 @@ interface FadeInUpProps {
   yOffset?: number;
 }
 
-/**
- * Scroll reveal kept for existing call sites: delegates to the shared <Reveal>
- * so every section enters with the same blur → sharp, rise and settle motion.
- */
 export function FadeInUp({
   children,
   delay = 0,

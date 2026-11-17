@@ -1,10 +1,3 @@
-/**
- * First visit on the free trial: a one-minute check on the member's own
- * numbers. They pick what they sell and what hurts, type their price and
- * cost, and see their real profit per order, where the money goes, what
- * fixing it is worth, and the exact solution waiting in the platform, with
- * one tap to subscribe on WhatsApp (the message already carries their result).
- */
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useSpring } from "motion/react";
 import { ArrowLeft, ArrowRight, BookOpen, Calculator, Check, LifeBuoy, Lock, Sparkles, TrendingUp, X } from "lucide-react";
@@ -32,7 +25,6 @@ const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-wh
 type Step = "intro" | "business" | "problem" | "numbers" | "working" | "result";
 const FORM_STEPS: Step[] = ["business", "problem", "numbers"];
 
-/** "35000", "35,000", "٣٥", "35 ألف" → 35000. Small numbers are read as thousands. */
 function parseIqd(text: string): number | null {
   const western = text.replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d))).replace(/[^\d.]/g, "");
   if (!western) return null;
@@ -78,7 +70,6 @@ function ChipRow<T extends string | number>({ label, hint, options, value, onCha
   );
 }
 
-/** Counts from what they think they earn down (or up) to what they really earn. */
 function CountTo({ from, to, className }: { from: number; to: number; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduce = useReducedMotion();
@@ -107,7 +98,6 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
   const [returnsOf10, setReturnsOf10] = useState<number>(saved ? (saved.estimated.includes("returnPct") ? -2 : saved.returnPct / 10) : -1);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Reopened later: land on the result if there is one.
   useEffect(() => {
     if (isOpen) setStep(saved ? "result" : "intro");
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -177,7 +167,6 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
           >
             <div aria-hidden="true" className="absolute top-0 inset-x-0 h-40 bg-[radial-gradient(ellipse_at_top,rgba(72,128,255,0.25)_0%,transparent_75%)] pointer-events-none" />
 
-            {/* Top bar: back, progress, close */}
             <div className="relative shrink-0 flex items-center gap-3 px-4 pt-[calc(env(safe-area-inset-top,0px)+0.75rem)] pb-3">
               {formIndex >= 0 ? (
                 <button onClick={back} aria-label="رجوع" className={`vz-close ${focusRing}`}>
@@ -213,7 +202,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                   {step === "intro" && (
                     <div className="space-y-6 pt-4">
                       <div className="space-y-3">
-                        <p className="text-sm font-bold text-vz-accent">أهلاً بيك بـ viZion</p>
+                        <p className="text-sm font-bold text-vz-accent">أهلا بيك بـ viZion</p>
                         <h2 className="text-[1.7rem] sm:text-4xl font-black leading-tight">قبل لا تبدي، خلي نشوف مشروعك بدقيقة وحدة</h2>
                         <p className="text-sm sm:text-base text-white/65 leading-relaxed">
                           هنا مو فيديوهات طويلة ولا قناة تلكرام. تكتب أرقامك، وتعرف بالضبط وين تروح فلوسك وشنو تسوي بعدين.
@@ -223,7 +212,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                       <ul className="space-y-2.5">
                         {[
                           { icon: Calculator, text: "تعرف ربحك الحقيقي من كل طلب، بعد التوصيل والإعلان والراجع" },
-                          { icon: TrendingUp, text: "تشوف شكد يفرق وياك لو صلّحت الردود والراجع" },
+                          { icon: TrendingUp, text: "تشوف شكد يفرق وياك لو صلحت الردود والراجع" },
                           { icon: LifeBuoy, text: "توصل للحل الجاهز لمشكلتك إنت، خطوة بخطوة" },
                         ].map(({ icon: Icon, text }, i) => (
                           <motion.li
@@ -312,7 +301,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                       <div className="space-y-1.5">
                         <h2 className="text-2xl sm:text-3xl font-black leading-tight">هسه أرقامك</h2>
                         <p className="text-sm text-white/55">
-                          {stage === "idea" ? "حتى لو بعده فكرة: اكتب السعر اللي ناوي تبيع بيه." : "تقريبية تكفي. اللي ما تعرفه، اختار «ما أعرف» ونحسبه بالمعدل."}
+                          {stage === "idea" ? "حتى لو بعده فكرة: اكتب السعر اللي ناوي تبيع بيه." : "تقريبية تكفي. اللي ما تعرفه، اختار ما أعرف ونحسبه بالمعدل."}
                         </p>
                       </div>
 
@@ -356,7 +345,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                         onChange={setMessageCost}
                       />
                       <ChipRow
-                        label="من كل 10 ناس يراسلوك، كم واحد يطلب فعلاً؟"
+                        label="من كل 10 ناس يراسلوك، كم واحد يطلب فعلا؟"
                         options={[...[1, 2, 3, 5].map((v) => ({ value: v, label: String(v) })), { value: 0, label: "ما أعرف" }]}
                         value={closeOf10 === -1 ? null : closeOf10}
                         onChange={setCloseOf10}
@@ -375,7 +364,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                           className={`btn btn-primary w-full min-h-[54px] rounded-full text-base gap-2 disabled:opacity-40 disabled:pointer-events-none ${focusRing}`}
                         >
                           <Sparkles className="w-4 h-4" />
-                          <span>طلّعلي النتيجة</span>
+                          <span>طلعلي النتيجة</span>
                         </button>
                         <button onClick={() => finish(true)} className={`btn btn-ghost w-full min-h-[44px] rounded-full text-sm text-white/60 ${focusRing}`}>
                           ما عندي أرقام بعد، وريني على مثال
@@ -451,7 +440,6 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
 
   return (
     <div className="space-y-6 pt-2">
-      {/* The number */}
       <section className="space-y-4">
         <p className="text-sm font-bold text-vz-accent">
           {example ? "مثال: منتج تبيعه بـ 35 ألف" : `نتيجة مشروعك (${profile.category})`}
@@ -475,11 +463,10 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
             ? <>كل طلب دا يخسرك <span className="text-red-300 font-mono">{iqd(-d.real)}</span> دينار، حتى لو تبيع هواية.</>
             : thin
               ? <>من كل <span className="font-mono">{iqd(d.thinks)}</span> تحسبها ربح، يبقالك بس <span className="text-amber-200 font-mono">{iqd(d.real)}</span>.</>
-              : <>مشروعك رابح بالطلب. الشغل الجاي إنك تكبّر بدون ما يضيع هالربح.</>}
+              : <>مشروعك رابح بالطلب. الشغل الجاي إنك تكبر بدون ما يضيع هالربح.</>}
         </h2>
       </section>
 
-      {/* Where it goes */}
       <section className="glass rounded-3xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.07] text-sm">
           <span className="font-bold text-white/70">سعر البيع</span>
@@ -502,7 +489,6 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         </div>
       </section>
 
-      {/* What fixing it is worth */}
       {gain > 0 && (
         <section className="glass-elevated glass-edge rounded-3xl p-5 space-y-3">
           <p className="text-xs font-bold text-emerald-300 inline-flex items-center gap-1.5">
@@ -522,12 +508,11 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         </section>
       )}
 
-      {/* The solution waiting for them */}
       <section className="glass rounded-3xl p-5 space-y-4">
         <div className="flex items-start gap-3">
           <TopicIcon kind="playbook" id={pb.id} />
           <div className="min-w-0 space-y-1">
-            <p className="text-xs font-bold text-vz-accent">حل مشكلتك جاهز بالمنصة{problem ? `: «${problem.label}»` : ""}</p>
+            <p className="text-xs font-bold text-vz-accent">حل مشكلتك جاهز بالمنصة{problem ? `: ${problem.label}` : ""}</p>
             <h3 className="text-base sm:text-lg font-black leading-snug">{pb.title}</h3>
             <p className="text-xs text-white/55">{pb.steps.length} خطوات، {pb.scripts.length} رسائل جاهزة تنسخها، وخطة 7 أيام</p>
           </div>
@@ -555,17 +540,15 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         </button>
       </section>
 
-      {/* A real member */}
       <section className="glass-subtle rounded-3xl p-5 space-y-2">
         <p className="text-[11px] font-bold text-white/45">رسالة من واحد من {STUDENT_COUNT} مشترك</p>
-        <p className="text-base sm:text-lg font-black leading-snug">«استاذ والله دامشي حسب الخطة بالضبط»</p>
+        <p className="text-base sm:text-lg font-black leading-snug">استاذ والله دامشي حسب الخطة بالضبط</p>
         <p className="text-sm text-white/65 leading-relaxed">صرف 70$ على الإعلان، وباع بمليون و475 ألف.</p>
       </section>
 
-      {/* The offer */}
       <section className="glass-elevated glass-edge rounded-3xl p-5 sm:p-6 space-y-4">
         <div className="space-y-1">
-          <h3 className="text-lg sm:text-xl font-black">افتح الحل كامل، وطبّقه من اليوم</h3>
+          <h3 className="text-lg sm:text-xl font-black">افتح الحل كامل، وطبقه من اليوم</h3>
           <p className="text-xs sm:text-sm text-white/60">اشتراك واحد يفتح كلشي، مو بس هالحل. وياك {STUDENT_COUNT} مشترك لحد هسه.</p>
         </div>
         <OfferPrice size="md" />
@@ -582,7 +565,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
           <p className="text-[11px] text-center text-white/50">تنفتح واتساب والرسالة مكتوبة بيها نتيجتك، بس دوس إرسال.</p>
         </div>
         <button onClick={() => onGo({ view: "chapter", id: "chapter1" })} className={`btn btn-ghost w-full min-h-[44px] rounded-full text-sm text-white/65 ${focusRing}`}>
-          كمّل التجربة المجانية من الفصل الأول
+          كمل التجربة المجانية من الفصل الأول
         </button>
       </section>
 
@@ -590,7 +573,6 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         <button onClick={onRedo} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/50 ${focusRing}`}>
           عيدها بأرقام ثانية
         </button>
-        <span className="text-white/20" aria-hidden="true">·</span>
         <button onClick={onClose} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/50 ${focusRing}`}>
           ارجع للمنصة
         </button>

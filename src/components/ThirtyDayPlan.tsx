@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
 import { CheckSquare, Square, Calendar, Award, RotateCcw, ChevronRight, Zap } from "lucide-react";
 import { defaultDays } from "../data/chaptersData";
@@ -13,14 +8,12 @@ export default function ThirtyDayPlan() {
   const [selectedDayNum, setSelectedDayNum] = useState<number>(1);
   const [activeWeek, setActiveWeek] = useState<number>(1);
 
-  // Initialize tasks from localStorage or defaults
   useEffect(() => {
     const stored = localStorage.getItem("sales_guide_30day_progress");
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          // Keep only which days are ticked; the text always comes from the current plan.
           const done = new Set(parsed.filter((t: DayTask) => t && t.completed).map((t: DayTask) => t.day));
           setTasks(defaultDays.map((item) => ({ ...item, completed: done.has(item.day) })));
           return;
@@ -30,7 +23,6 @@ export default function ThirtyDayPlan() {
       }
     }
 
-    // Set initial default tasks
     const initialTasks: DayTask[] = defaultDays.map(item => ({
       ...item,
       completed: false
@@ -60,13 +52,11 @@ export default function ThirtyDayPlan() {
     }
   };
 
-  // Compute stats
   const completedCount = tasks.filter(t => t.completed).length;
   const progressPercent = Math.round((completedCount / 30) * 100);
 
   const selectedTask = tasks.find(t => t.day === selectedDayNum);
 
-  // Helper to get week number for a day (1-7 = W1, 8-14 = W2, 15-21 = W3, 22-30 = W4)
   const getWeekForDay = (day: number) => {
     if (day <= 7) return 1;
     if (day <= 14) return 2;
@@ -74,14 +64,11 @@ export default function ThirtyDayPlan() {
     return 4;
   };
 
-  // Filter tasks for active week
   const filteredTasks = tasks.filter(t => getWeekForDay(t.day) === activeWeek);
 
   return (
     <div className="w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-3.5 sm:p-6 md:p-8 relative" id="thirty-day-plan">
-      {/* Background glow */}
 
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/10 pb-5 mb-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-vz-blue-light to-white flex items-center justify-center text-white shadow-md md:shadow-black/40 shadow-xl/25">
@@ -89,11 +76,10 @@ export default function ThirtyDayPlan() {
           </div>
           <div>
             <h3 className="text-base sm:text-lg md:text-xl font-black text-white">خطة 30 يوم لأول 100 طلب</h3>
-            <p className="text-[10px] sm:text-xs text-white/70 mt-1">كل يوم مهمة وحدة واضحة. علّم اليوم من تخلصه، وتقدمك ينحفظ.</p>
+            <p className="text-[10px] sm:text-xs text-white/70 mt-1">كل يوم مهمة وحدة واضحة. علم اليوم من تخلصه، وتقدمك ينحفظ.</p>
           </div>
         </div>
 
-        {/* Reset button */}
         <button           onClick={handleReset}
           className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white/70 hover:text-white transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
         >
@@ -102,7 +88,6 @@ export default function ThirtyDayPlan() {
         </button>
       </div>
 
-      {/* Progress Card */}
       <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-2 h-full bg-vz-blue" />
         
@@ -115,7 +100,6 @@ export default function ThirtyDayPlan() {
             <span className="font-mono text-white/60">{completedCount} من 30 يوم</span>
           </div>
 
-          {/* Progress bar container */}
           <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-[2px]">
             <div
               className="h-full rounded-full gold-gradient-bg transition-all motion-reduce:transition-none motion-reduce:transform-none duration-500 ease-out shadow md:shadow-black/40 shadow-xl/50"
@@ -143,7 +127,6 @@ export default function ThirtyDayPlan() {
         </div>
       </div>
 
-      {/* Week Selector tabs */}
       <div className="flex justify-start gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar border-b border-white/5">
         {[1, 2, 3, 4].map(w => (
           <button             key={w}
@@ -158,10 +141,8 @@ export default function ThirtyDayPlan() {
         ))}
       </div>
 
-      {/* Grid: Day boxes vs Day description panel */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Days grid layout (6 columns) */}
         <div className="lg:col-span-7 space-y-4">
           <span className="text-xs font-semibold text-white/60 block mr-1">اضغط على اليوم حتى تشوف مهمته:</span>
           
@@ -180,7 +161,6 @@ export default function ThirtyDayPlan() {
                       : "border-white/10 bg-white/[0.02] hover:bg-white/5"
                   }`}
                 >
-                  {/* Badge corner */}
                   {t.completed && (
                     <span className="absolute top-1.5 right-1.5 text-emerald-400 font-bold text-[10px]">
                       ✓
@@ -214,7 +194,6 @@ export default function ThirtyDayPlan() {
           </div>
         </div>
 
-        {/* Selected Day Details Panel (5 columns) */}
         <div className="lg:col-span-5">
           {selectedTask ? (
             <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 space-y-4 h-full flex flex-col justify-between relative overflow-hidden">
@@ -228,7 +207,7 @@ export default function ThirtyDayPlan() {
                   <button                     onClick={() => handleToggleComplete(selectedTask.day)}
                     className={`px-3 py-1 text-xs rounded-lg font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 ${ selectedTask.completed ? "bg-emerald-500/10 border-emerald-500 text-emerald-400" : "bg-white/5 border-white/10 hover:bg-white/10 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    {selectedTask.completed ? "خلصته" : "علّم إنه خلص"}
+                    {selectedTask.completed ? "خلصته" : "علم إنه خلص"}
                   </button>
                 </div>
 
@@ -249,7 +228,6 @@ export default function ThirtyDayPlan() {
                 </div>
               </div>
 
-              {/* Progress tips footer */}
               <div className="border-t border-white/5 pt-3 flex items-center gap-2 text-[11px] text-white/60 mt-4">
                 <Zap className="w-4 h-4 text-vz-accent shrink-0" />
                 <span>مهمة وحدة باليوم تكفي. المهم ما توكف.</span>

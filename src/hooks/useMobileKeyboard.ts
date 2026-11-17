@@ -12,10 +12,6 @@ export function useMobileKeyboard() {
     let focusTimer: number | undefined;
     let resizeTimer: number | undefined;
 
-    // visualViewport fires "scroll"/"resize" on every frame while the mobile
-    // URL bar collapses. Writing custom properties on <html> invalidates style
-    // for the whole document, so only write when a value really changes, and
-    // at most once per frame.
     let lastKeyboard = -1;
     let lastViewport = -1;
     let syncFrame = 0;
@@ -56,7 +52,6 @@ export function useMobileKeyboard() {
 
     const onViewportChange = () => {
       syncViewport();
-      // Only keyboard-related changes matter beyond this point.
       if (isEditable(document.activeElement)) {
         body.classList.add("keyboard-is-open");
         window.clearTimeout(resizeTimer);
@@ -69,8 +64,6 @@ export function useMobileKeyboard() {
     syncViewport();
     document.addEventListener("focusin", onFocusIn);
     document.addEventListener("focusout", onFocusOut);
-    // URL-bar collapse arrives as "resize"; per-frame "scroll" events only
-    // matter while the keyboard is up (a field is focused).
     const onViewportScroll = () => {
       if (isEditable(document.activeElement)) onViewportChange();
     };

@@ -4,10 +4,6 @@ import { FULL_PRICE, OFFER_LAST_DAY, offerState, thousands } from "../lib/offer"
 
 const openUpgrade = () => window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
 
-/**
- * What a trial member sees in place of paid content: what is inside (titles
- * only, so they know exactly what they are missing) and one way to open it.
- */
 export function TrialLock({
   id,
   title,
@@ -64,7 +60,6 @@ export function TrialLock({
   );
 }
 
-/** Small "locked" marker for list rows. */
 export function LockChip({ label = "بالاشتراك الكامل" }: { label?: string }) {
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.1] text-[10px] sm:text-[11px] font-bold text-white/55">

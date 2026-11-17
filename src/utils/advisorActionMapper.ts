@@ -1,8 +1,3 @@
-/**
- * Typed mapping between Vizion AI Advisor topics, course chapters, and interactive tools.
- * Uses stable IDs and safe validation to prevent broken links and ensure safe navigation.
- */
-
 export interface AdvisorActionConfig {
   topicId: string;
   topicNameAr: string;
@@ -44,7 +39,6 @@ export interface PlanTaskItem {
   addedAt: string;
 }
 
-// 1. Stable, Valid Chapter IDs from chaptersList
 export const VALID_CHAPTER_IDS = [
   "chapter1",
   "chapter2",
@@ -61,7 +55,6 @@ export const VALID_CHAPTER_IDS = [
 
 export type ValidChapterId = (typeof VALID_CHAPTER_IDS)[number];
 
-// 2. Stable, Valid Tool IDs from VizionGrowthSuite
 export const VALID_TOOL_IDS = [
   "diagnostics",
   "sales-blocker",
@@ -80,9 +73,7 @@ export const VALID_TOOL_IDS = [
 
 export type ValidToolId = (typeof VALID_TOOL_IDS)[number];
 
-// 3. Typed Mapping Registry linking Stable Topic IDs to Chapters and Tools
 export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
-  // Ads & Campaign Optimization
   topic_ads_low_conversion: {
     topicId: "topic_ads_low_conversion",
     topicNameAr: "رسائل كثيرة ونسبة تحويل منخفضة",
@@ -99,14 +90,14 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
   topic_ads_high_cpa: {
     topicId: "topic_ads_high_cpa",
     topicNameAr: "كلفة الرسالة والإعلان مرتفعة",
-    relevanceReasonAr: "كلفة الرسالة تلتهم هامش ربحك، تحتاج تحسين الخطاف البصري (Hook) في أول 3 ثوانٍ وفحص الحملة.",
+    relevanceReasonAr: "كلفة الرسالة تلتهم هامش ربحك، تحتاج تحسين الخطاف البصري (Hook) في أول 3 ثوان وفحص الحملة.",
     toolId: "campaign-advisor",
     toolTitleAr: "مستشار الحملات الإعلانية",
     toolCategory: "optimize",
     chapterId: "chapter4",
     chapterTitleAr: "طريقة الإعلانات ومقاييس النجاح",
     chapterNumberAr: "الفصل الرابع",
-    defaultTaskForPlan: "إعادة تصوير هوك إعلاني واقعي لمدة 3 ثوانٍ وإعادة اختبار الإعلان بميزانية تجريبية.",
+    defaultTaskForPlan: "إعادة تصوير هوك إعلاني واقعي لمدة 3 ثوان وإعادة اختبار الإعلان بميزانية تجريبية.",
     scriptType: "ad_copy",
   },
   topic_ad_fatigue: {
@@ -123,7 +114,6 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
     scriptType: "ad_copy",
   },
 
-  // Sales Objections & Closing
   topic_sales_price_objection: {
     topicId: "topic_sales_price_objection",
     topicNameAr: "اعتراض 'السعر غالي ومبالغ بيه'",
@@ -140,7 +130,7 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
   topic_sales_hesitation: {
     topicId: "topic_sales_hesitation",
     topicNameAr: "تسويف الزبون: 'بعدين أردلك خبر'",
-    relevanceReasonAr: "الزبون يماطل لعدم وجود دافع استعجال (Urgency)، طبّق طريقة الإغلاق بالسؤال البديل.",
+    relevanceReasonAr: "الزبون يماطل لعدم وجود دافع استعجال (Urgency)، طبق طريقة الإغلاق بالسؤال البديل.",
     toolId: "customer-types",
     toolTitleAr: "دليل أنواع الزبائن وردود الإغلاق",
     toolCategory: "understand",
@@ -153,7 +143,7 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
   topic_sales_discount: {
     topicId: "topic_sales_discount",
     topicNameAr: "طلب التخفيض أو التوصيل المجاني",
-    relevanceReasonAr: "بدل حرق السعر وخسارة الأرباح، قدّم عرض باكيج (قطعتين + هدية) أو ادمج التوصيل بذكاء.",
+    relevanceReasonAr: "بدل حرق السعر وخسارة الأرباح، قدم عرض باكيج (قطعتين + هدية) أو ادمج التوصيل بذكاء.",
     toolId: "pricing-calculator",
     toolTitleAr: "حاسبة التسعير والربح الصافي",
     toolCategory: "calculate",
@@ -164,7 +154,6 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
     scriptType: "whatsapp",
   },
 
-  // Delivery & Returns Mitigation
   topic_delivery_returns: {
     topicId: "topic_delivery_returns",
     topicNameAr: "ارتفاع نسبة الراجع والمرتجع بالمحافظات",
@@ -181,7 +170,7 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
   topic_delivery_confirmation: {
     topicId: "topic_delivery_confirmation",
     topicNameAr: "المكالمة الذهبية لتأكيد الطلب",
-    relevanceReasonAr: "تأكيد العنوان ورقم الزبون البديل يضمن جاهزية الزبون للاستلام من المندوب فوراً.",
+    relevanceReasonAr: "تأكيد العنوان ورقم الزبون البديل يضمن جاهزية الزبون للاستلام من المندوب فورا.",
     toolId: "customer-types",
     toolTitleAr: "دليل أنواع الزبائن والمكالمات",
     toolCategory: "understand",
@@ -205,7 +194,6 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
     scriptType: "general_sop",
   },
 
-  // Financial Structure & Pricing
   topic_pricing_profit: {
     topicId: "topic_pricing_profit",
     topicNameAr: "هيكل التسعير وقاعدة 50/30/20",
@@ -229,11 +217,10 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
     chapterId: "chapter10",
     chapterTitleAr: "متابعة الأرقام واتخاذ القرارات",
     chapterNumberAr: "الفصل العاشر",
-    defaultTaskForPlan: "وضع جدول أسبوعي لتوزيع الميزانية الإعلانية ومراقبة مؤشر الـ ROAS يومياً.",
+    defaultTaskForPlan: "وضع جدول أسبوعي لتوزيع الميزانية الإعلانية ومراقبة مؤشر الـ ROAS يوميا.",
     scriptType: "general_sop",
   },
 
-  // Product Selection & Competitors
   topic_product_selection: {
     topicId: "topic_product_selection",
     topicNameAr: "اختيار وتقييم المنتج الرابح",
@@ -261,7 +248,6 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
     scriptType: "general_sop",
   },
 
-  // General Diagnostic & Roadmap
   topic_general_diagnostic: {
     topicId: "topic_general_diagnostic",
     topicNameAr: "الفحص الشامل لواقع المشروع",
@@ -290,10 +276,6 @@ export const ADVISOR_TOPIC_REGISTRY: Record<string, AdvisorActionConfig> = {
   },
 };
 
-/**
- * Fallback action configuration when no specific topic ID matches.
- * Directs the merchant to the general diagnostic tool and core chapter safely.
- */
 export const DEFAULT_FALLBACK_ACTION: AdvisorActionConfig = {
   topicId: "topic_general_diagnostic",
   topicNameAr: "استشارة ومتابعة شاملة",
@@ -308,25 +290,16 @@ export const DEFAULT_FALLBACK_ACTION: AdvisorActionConfig = {
   scriptType: "general_sop",
 };
 
-/**
- * Validates whether a chapterId is defined in the system.
- */
 export function isValidChapterId(chapterId?: string): chapterId is ValidChapterId {
   if (!chapterId) return false;
   return VALID_CHAPTER_IDS.includes(chapterId as ValidChapterId);
 }
 
-/**
- * Validates whether a toolId is defined in the system.
- */
 export function isValidToolId(toolId?: string): toolId is ValidToolId {
   if (!toolId) return false;
   return VALID_TOOL_IDS.includes(toolId as ValidToolId);
 }
 
-/**
- * Retrieves the action mapping for a specific topic ID with strict validation.
- */
 export function getAdvisorActionForTopic(topicId?: string): AdvisorActionConfig {
   if (topicId && ADVISOR_TOPIC_REGISTRY[topicId]) {
     return ADVISOR_TOPIC_REGISTRY[topicId];
@@ -334,10 +307,6 @@ export function getAdvisorActionForTopic(topicId?: string): AdvisorActionConfig 
   return DEFAULT_FALLBACK_ACTION;
 }
 
-/**
- * Intelligently maps an advisor response text or diagnosed bottleneck to the most relevant stable action.
- * Analyzes keywords in Arabic while ensuring only verified chapters and tools are returned.
- */
 export function resolveAdvisorActionFromContent(
   text: string,
   explicitTopicId?: string
@@ -350,7 +319,6 @@ export function resolveAdvisorActionFromContent(
 
   const lower = text.toLowerCase();
 
-  // 1. Returns / Delivery issues
   if (
     lower.includes("راجع") ||
     lower.includes("المرتجع") ||
@@ -364,7 +332,6 @@ export function resolveAdvisorActionFromContent(
     return ADVISOR_TOPIC_REGISTRY.topic_delivery_returns;
   }
 
-  // 2. Sales objections / WhatsApp closing
   if (
     lower.includes("واتساب") ||
     lower.includes("محادثة") ||
@@ -381,7 +348,6 @@ export function resolveAdvisorActionFromContent(
     return ADVISOR_TOPIC_REGISTRY.topic_ads_low_conversion;
   }
 
-  // 3. Pricing / Profit Margin
   if (
     lower.includes("تسعير") ||
     lower.includes("صافي الربح") ||
@@ -391,7 +357,6 @@ export function resolveAdvisorActionFromContent(
     return ADVISOR_TOPIC_REGISTRY.topic_pricing_profit;
   }
 
-  // 4. Ads / High Cost / CPA / Hook
   if (
     lower.includes("إعلان") ||
     lower.includes("كلفة الرسالة") ||
@@ -406,7 +371,6 @@ export function resolveAdvisorActionFromContent(
     return ADVISOR_TOPIC_REGISTRY.topic_ads_high_cpa;
   }
 
-  // 5. Product Evaluation / Competitors
   if (lower.includes("منتج رابح") || lower.includes("تقييم المنتج") || lower.includes("فكرة المنتج")) {
     return ADVISOR_TOPIC_REGISTRY.topic_product_selection;
   }
@@ -414,13 +378,9 @@ export function resolveAdvisorActionFromContent(
     return ADVISOR_TOPIC_REGISTRY.topic_competitors;
   }
 
-  // Default fallback
   return DEFAULT_FALLBACK_ACTION;
 }
 
-// -----------------------------------------------------------------------------------------
-// Storage Helpers for Saved Recommendations & 7-Day Plan
-// -----------------------------------------------------------------------------------------
 
 export const getSavedRecommendationsStorageKey = (userCode?: string): string => {
   const code = userCode?.trim() || "guest";
@@ -432,9 +392,6 @@ export const get7DayPlanStorageKey = (userCode?: string): string => {
   return `sales_guide_7day_custom_plan_${code}`;
 };
 
-/**
- * Saves a recommendation card or script locally.
- */
 export function saveRecommendationToStorage(
   rec: Omit<SavedRecommendation, "id" | "timestamp">,
   userCode?: string
@@ -463,9 +420,6 @@ export function saveRecommendationToStorage(
   }
 }
 
-/**
- * Loads all saved recommendations for the current user.
- */
 export function getSavedRecommendationsFromStorage(userCode?: string): SavedRecommendation[] {
   if (typeof window === "undefined") return [];
   try {
@@ -478,9 +432,6 @@ export function getSavedRecommendationsFromStorage(userCode?: string): SavedReco
   }
 }
 
-/**
- * Removes a saved recommendation by ID.
- */
 export function removeSavedRecommendationFromStorage(id: string, userCode?: string): boolean {
   if (typeof window === "undefined") return false;
   try {
@@ -495,9 +446,6 @@ export function removeSavedRecommendationFromStorage(id: string, userCode?: stri
   }
 }
 
-/**
- * Adds a recommended action into the user's 7-Day Plan.
- */
 export function addRecommendationTo7DayPlanStorage(
   task: {
     title: string;
@@ -513,7 +461,6 @@ export function addRecommendationTo7DayPlanStorage(
     const key = get7DayPlanStorageKey(userCode);
     const existing: PlanTaskItem[] = JSON.parse(localStorage.getItem(key) || "[]");
     
-    // Assign next logical day (1 through 7)
     const nextDay = Math.min(7, (existing.length % 7) + 1);
     const id = `plan_task_${Date.now()}`;
     
@@ -539,15 +486,10 @@ export function addRecommendationTo7DayPlanStorage(
   }
 }
 
-/**
- * Safe anonymous click tracking.
- * NEVER logs prompts, numbers, names, or private business data.
- */
 export function trackAdvisorAction(
   actionType: "open_chapter" | "open_tool" | "copy_script" | "save_recommendation" | "add_to_plan",
   targetId: string
 ): void {
-  // Only log event type and stable ID for telemetry
   if (typeof window !== "undefined") {
     try {
       const eventDetail = {
@@ -557,7 +499,6 @@ export function trackAdvisorAction(
       };
       window.dispatchEvent(new CustomEvent("advisor-action-tracked", { detail: eventDetail }));
     } catch {
-      // Silent telemetry failure
     }
   }
 }

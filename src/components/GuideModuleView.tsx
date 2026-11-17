@@ -21,7 +21,6 @@ interface GuideModuleViewProps {
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-/** One researched Iraq Guide module: stats, sections, an interactive tool, a checklist and sources. */
 export default function GuideModuleView({ id, userCode, onNavigate }: GuideModuleViewProps) {
   const m = guideModules.find((g) => g.id === id) ?? guideModules[0];
   const plans = usePlaybookPlans(userCode);
@@ -29,7 +28,6 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
   const ticked = new Set(plans[planKey] ?? []);
   const index = guideModules.indexOf(m);
   const nextModule = guideModules[index + 1] ?? null;
-  // Trial members read the numbers and the first section of each module.
   const isTrial = isFreeTrialUser(userCode);
   const sections = isTrial ? m.sections.slice(0, 1) : m.sections;
 
@@ -40,7 +38,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
           <ArrowRight className="w-4 h-4" />
           <span>الدليل العراقي</span>
         </button>
-        <span className="text-xs text-white/50 inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{m.minutes} دقيقة · محدث {GUIDE_RESEARCHED}</span>
+        <span className="text-xs text-white/50 inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{m.minutes} دقيقة، محدث {GUIDE_RESEARCHED}</span>
       </div>
 
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-3 sm:space-y-4 mb-8">
@@ -51,7 +49,6 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
         <p className="text-sm sm:text-lg text-white/65 leading-relaxed">{m.subtitle}</p>
       </motion.header>
 
-      {/* Key numbers */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.08, ease: EASE_OUT }} className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 mb-10 sm:mb-14">
         {m.stats.map((s) => (
           <div key={s.label} className="glass rounded-2xl p-4 space-y-1.5">
@@ -120,7 +117,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
             items={[
               ...m.sections.slice(1).map((sec) => sec.heading),
               ...(m.tool ? ["أداة الحساب مال هالوحدة"] : []),
-              `طبّقها هالأسبوع: ${m.checklist.length} خطوات`,
+              `طبقها هالأسبوع: ${m.checklist.length} خطوات`,
             ]}
             cta="افتح الدليل كامل"
           />
@@ -128,11 +125,10 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
         <>
         {m.tool && <GuideToolView tool={m.tool} />}
 
-        {/* Checklist */}
         <section className="space-y-4">
           <h2 className="text-lg sm:text-2xl font-black text-white flex items-center gap-2.5">
             <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-vz-accent" />
-            طبّقها هالأسبوع
+            طبقها هالأسبوع
             <span className="text-sm font-bold text-white/50 font-mono">{ticked.size}/{m.checklist.length}</span>
           </h2>
           <ul className="space-y-2">
@@ -159,10 +155,9 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
         </>
         )}
 
-        {/* Related */}
         {(m.relatedPlaybooks.length > 0 || m.relatedChapters.length > 0) && (
           <section className="glass rounded-3xl p-5 sm:p-6 space-y-4">
-            <h2 className="text-base sm:text-lg font-black text-white">طبّقها ويا</h2>
+            <h2 className="text-base sm:text-lg font-black text-white">طبقها ويا</h2>
             <div className="flex flex-wrap gap-2">
               {m.relatedPlaybooks.map((pid) => {
                 const pb = playbooksList.find((p) => p.id === pid);
@@ -188,7 +183,6 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
           </section>
         )}
 
-        {/* Sources */}
         {!isTrial && (
         <section className="space-y-3">
           <h2 className="text-sm sm:text-base font-black text-white/80">المصادر</h2>

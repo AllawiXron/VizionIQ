@@ -102,17 +102,15 @@ describe("business profile", () => {
 describe("unit economics", () => {
   it("matches the course formula", () => {
     const r = computeUnitEconomics({ price: 35000, productCost: 15000, delivery: 5000, cpa: 7000, returnRate: 10, usdRate: 1500 });
-    // return share = 0.1/0.9 × (5000 + 7000) = 1333.3
     expect(Math.round(r.returnShare)).toBe(1333);
     expect(Math.round(r.net)).toBe(35000 - 15000 - 5000 - 7000 - 1333);
-    // break-even CPA = 0.9 × 20000 − 5000
     expect(r.breakEvenCpa).toBe(13000);
     expect(r.verdict).toBe("profit");
   });
 
   it("derives CPA from cost per message and close rate", () => {
     const r = computeUnitEconomics({ price: 25000, productCost: 12000, delivery: 5000, costPerMessage: 2, closeRate: 5, returnRate: 15, usdRate: 1500 });
-    expect(r.cpa).toBe(60000); // $2 × 1500 / 5%
+    expect(r.cpa).toBe(60000);
     expect(r.verdict).toBe("loss");
     expect(r.breakEvenCostPerMessage).toBeCloseTo(((0.85 * 13000 - 5000) * 0.05) / 1500, 5);
   });
@@ -141,13 +139,9 @@ describe("streaming reveal", () => {
   it("reveals a phrase at a time, not word by word", async () => {
     const { revealUpTo } = await import("./streamStore");
     const text = "هلا بيك عيني. خلي نحسبها ورقة وقلم";
-    // Mid-phrase after the first sentence: show up to the sentence end only.
     expect(text.slice(0, revealUpTo(text, 0, 0))).toBe("هلا بيك عيني. ");
-    // Nothing new to break on yet: hold.
     expect(revealUpTo(text, 14, 50)).toBe(14);
-    // Waited long enough: show up to the last whole word.
     expect(text.slice(0, revealUpTo(text, 14, 400))).toBe("هلا بيك عيني. خلي نحسبها ورقة ");
-    // Line breaks count as phrase ends.
     expect(revealUpTo("سطر أول\nسطر ث", 0, 0)).toBe("سطر أول\n".length);
   });
 });

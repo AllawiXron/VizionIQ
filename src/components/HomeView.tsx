@@ -28,10 +28,6 @@ const rise = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: EASE_OUT },
 });
 
-/**
- * "Start here": one obvious next step, how the site works in three steps,
- * and nothing else. Everything else lives on its own screen.
- */
 export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUpgrade }: HomeViewProps) {
   const progress = useCourseProgress(userCode);
   const doneCount = progress.done.filter((id) => chaptersList.some((c) => c.id === id)).length;
@@ -58,7 +54,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
     {
       n: 2,
       icon: Calculator,
-      title: "طبّق بالأدوات",
+      title: "طبق بالأدوات",
       desc: "احسب ربحك وتكلفة الرسالة بالدينار قبل لا تصرف.",
       cta: "الأدوات",
       onClick: () => onNavigate({ view: "tools" }),
@@ -75,11 +71,10 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-10 sm:space-y-14 text-right">
-      {/* Greeting */}
       <motion.div {...rise(0.05)} className="space-y-2 sm:space-y-3">
-        <p className="text-sm sm:text-base font-bold text-vz-accent">{started ? "هلا بيك مرة ثانية" : "أهلاً بيك بـ فيزيون"}</p>
+        <p className="text-sm sm:text-base font-bold text-vz-accent">{started ? "هلا بيك مرة ثانية" : "أهلا بيك بـ فيزيون"}</p>
         <h1 className="text-[1.75rem] sm:text-5xl font-black text-white tracking-tight leading-tight">
-          {finished ? "خلصت الكورس كله، عاشت إيدك" : started ? "كمّل من وين ما وكفت" : "ابدأ من هنا، خطوة وحدة كل مرة"}
+          {finished ? "خلصت الكورس كله، عاشت إيدك" : started ? "كمل من وين ما وكفت" : "ابدأ من هنا، خطوة وحدة كل مرة"}
         </h1>
         <p className="text-sm sm:text-lg text-white/60 max-w-2xl leading-relaxed">
           {total} فصل قصير، أدوات تحسبلك أرقامك، ومستشار يجاوبك على مشروعك.
@@ -88,7 +83,6 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
 
       {isFreeTrialUser(userCode) && <TrialHomeCard />}
 
-      {/* The one next step */}
       <motion.section {...rise(0.15)} aria-label="خطوتك الجاية" className="glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-5 sm:p-8 relative overflow-hidden">
         <div aria-hidden="true" className="absolute -top-24 -left-24 w-72 h-72 bg-[radial-gradient(circle_at_center,rgba(72,128,255,0.22),transparent_70%)] pointer-events-none" />
         <div className="relative flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
@@ -98,7 +92,6 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 {finished ? "راجع أي فصل تحتاجه" : "خطوتك الجاية"}
               </span>
-              {/* Phones: progress as one compact line instead of a box */}
               <span className="md:hidden text-xs font-bold text-white/55 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                 {doneCount}/{total}
@@ -111,7 +104,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
                   <div className="min-w-0">
                     <p className="text-xs sm:text-sm text-white/55 font-bold">
                       الفصل {nextIndex + 1} من {total}
-                      {stage && <> · {stage.stage.label}</>}
+                      {stage && <>، {stage.stage.label}</>}
                     </p>
                     <h2 className="text-xl sm:text-3xl font-black text-white leading-snug mt-1">{next.title}</h2>
                     <p className="text-sm sm:text-base text-white/60 mt-1.5 leading-relaxed">{next.subtitle}</p>
@@ -122,7 +115,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
                     onClick={() => onNavigate({ view: "chapter", id: next.id })}
                     className={`btn btn-primary min-h-[50px] px-7 rounded-full text-sm sm:text-base gap-2 ${focusRing}`}
                   >
-                    <span>{progress.last === next.id ? "كمّل الفصل" : started ? "ابدأ الفصل" : "ابدأ الفصل الأول"}</span>
+                    <span>{progress.last === next.id ? "كمل الفصل" : started ? "ابدأ الفصل" : "ابدأ الفصل الأول"}</span>
                     <ArrowLeft className="w-4 h-4" />
                   </button>
                   <button
@@ -144,10 +137,9 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
             )}
           </div>
 
-          {/* Progress */}
           <div className="hidden md:block md:w-56 shrink-0 glass-subtle rounded-3xl p-5 space-y-3">
             <div className="flex items-baseline justify-between">
-              <span className="text-xs sm:text-sm font-bold text-white/60">تقدّمك</span>
+              <span className="text-xs sm:text-sm font-bold text-white/60">تقدمك</span>
               <span className="text-lg sm:text-2xl font-black text-white font-mono">{percent}%</span>
             </div>
             <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={doneCount} aria-label="الفصول المكتملة">
@@ -166,7 +158,6 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
         </div>
       </motion.section>
 
-      {/* Problem → playbook shortcuts */}
       <motion.section {...rise(0.22)} aria-labelledby="home-solutions" className="space-y-4 sm:space-y-5">
         <div className="flex items-end justify-between gap-3">
           <div className="space-y-1">
@@ -187,7 +178,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
               >
                 <TopicIcon kind="playbook" id={pb.id} size="sm" />
                 <span className="flex-1 min-w-0 space-y-1">
-                  <span className="block text-sm sm:text-base font-black text-white leading-snug">«{pb.problem}»</span>
+                  <span className="block text-sm sm:text-base font-black text-white leading-snug">{pb.problem}</span>
                   <span className="hidden md:inline-flex items-center gap-1 pt-2 text-xs font-bold text-white/70 group-hover:text-white transition-colors">
                     شوف الحل
                     <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
@@ -200,7 +191,6 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
         </ul>
       </motion.section>
 
-      {/* How it works */}
       <motion.section {...rise(0.28)} aria-labelledby="how-it-works" className="space-y-4 sm:space-y-5">
         <h2 id="how-it-works" className="text-lg sm:text-2xl font-black text-white">شلون تستفاد من الموقع؟</h2>
         <ol className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
@@ -231,7 +221,6 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
         </ol>
       </motion.section>
 
-      {/* Secondary: the Iraq Guide (with the next season) + (trial) upgrade */}
       <motion.div {...rise(0.34)} className={`grid grid-cols-1 gap-3 sm:gap-4 ${isFreeTrialUser(userCode) ? "md:grid-cols-2" : ""}`}>
         <button
           onClick={() => onNavigate({ view: "guide" })}
@@ -269,7 +258,6 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
   );
 }
 
-/** Trial members: their own result from the one-minute check (or an invitation to do it), and the way to subscribe. */
 function TrialHomeCard() {
   const profile = useTrialProfile();
   const offer = offerState();
@@ -303,22 +291,22 @@ function TrialHomeCard() {
     <motion.section {...rise(0.1)} aria-label="نتيجة مشروعك" className="glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-5 sm:p-7 space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
         <div className="flex-1 min-w-0 space-y-1.5">
-          <p className="text-xs sm:text-sm font-bold text-vz-accent">نتيجة مشروعك{problem ? ` · ${problem.label}` : ""}</p>
+          <p className="text-xs sm:text-sm font-bold text-vz-accent">نتيجة مشروعك{problem ? `، ${problem.label}` : ""}</p>
           <p className="text-sm text-white/65">
             تحسب ربحك <span className="font-mono line-through text-white/45">{iqd(d.thinks)}</span>، بس اللي يبقالك من كل طلب:
           </p>
           <p className={`text-3xl sm:text-4xl font-black font-mono ${tone}`}>{iqd(d.real)} <span className="text-sm text-white/55 font-sans font-bold">دينار</span></p>
-          {pb && <p className="text-xs sm:text-sm text-white/60">حلك جاهز: «{pb.title}»</p>}
+          {pb && <p className="text-xs sm:text-sm text-white/60">حلك جاهز: {pb.title}</p>}
         </div>
         <div className="sm:w-72 shrink-0 space-y-2">
           <SubscribeButton label="افتح الحل كامل" />
           <p className="text-[11px] text-center text-white/50">
-            {offer.active ? `${thousands(offer.price)} بدل ${thousands(FULL_PRICE)} · ${deadlineLabel(offer)}` : `${thousands(offer.price)}، مدى الحياة`}
+            {offer.active ? `${thousands(offer.price)} بدل ${thousands(FULL_PRICE)}، ${deadlineLabel(offer)}` : `${thousands(offer.price)}، مدى الحياة`}
           </p>
         </div>
       </div>
       <button onClick={openCheck} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 text-white/70 ${focusRing}`}>
-        شوف النتيجة كاملة، وشكد يفرق وياك لو صلّحتها
+        شوف النتيجة كاملة، وشكد يفرق وياك لو صلحتها
         <ArrowLeft className="w-3.5 h-3.5" />
       </button>
     </motion.section>

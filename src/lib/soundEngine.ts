@@ -1,15 +1,6 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-// Apple-Grade sound feedback Sound Engine using Web Audio API synthesis
-// Low-latency, ultra-smooth, zero-network dependency audio engine.
-
 let audioCtx: AudioContext | null = null;
 let soundMuted = false;
 
-// Initialize mute state from localStorage
 if (typeof window !== "undefined") {
   try {
     const saved = localStorage.getItem("sales_guide_sound_muted");
@@ -53,15 +44,12 @@ export const toggleSoundMute = (): boolean => {
   const newMuted = !soundMuted;
   setSoundMuted(newMuted);
   if (!newMuted) {
-    // Play subtle chime on unmute
     soundEngine.playSuccess();
   }
   return newMuted;
 };
 
-// Global Sound Engine Methods
 export const soundEngine = {
-  // 1. Soft Pop for Hover / Subtle micro-interactions
   playHover: () => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -71,7 +59,6 @@ export const soundEngine = {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       
-      // Pitch micro-randomization (±4%) for organic feel
       const baseFreq = 580 + (Math.random() * 40 - 20);
       osc.type = "sine";
       osc.frequency.setValueAtTime(baseFreq, ctx.currentTime);
@@ -86,11 +73,9 @@ export const soundEngine = {
       osc.start(ctx.currentTime);
       osc.stop(ctx.currentTime + 0.03);
     } catch {
-      // Ignore audio autoplay restrictions safely
     }
   },
 
-  // 2. Tactile Button Click / Primary Action Press
   playClick: () => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -99,7 +84,6 @@ export const soundEngine = {
     try {
       const now = ctx.currentTime;
       
-      // Warm Sine Pop
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       
@@ -110,7 +94,6 @@ export const soundEngine = {
       gain.gain.setValueAtTime(0.06, now);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
 
-      // Glassy overtone
       const osc2 = ctx.createOscillator();
       const gain2 = ctx.createGain();
       osc2.type = "triangle";
@@ -129,11 +112,9 @@ export const soundEngine = {
       osc.stop(now + 0.05);
       osc2.stop(now + 0.04);
     } catch {
-      // Ignore audio errors
     }
   },
 
-  // 3. Toggle Switch (Ascending for On, Descending for Off)
   playToggle: (isOn: boolean) => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -160,11 +141,9 @@ export const soundEngine = {
       osc.start(now);
       osc.stop(now + 0.06);
     } catch {
-      // Ignore audio errors
     }
   },
 
-  // 4. Modal Open / Card Expansion Resonant Swell
   playModalOpen: () => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -173,8 +152,7 @@ export const soundEngine = {
     try {
       const now = ctx.currentTime;
       
-      // Warm chord triad swell (Db major / Golden chord)
-      const freqs = [277.18, 349.23, 415.30]; // Db4, F4, Ab4
+      const freqs = [277.18, 349.23, 415.30];
       freqs.forEach((f, idx) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -194,11 +172,9 @@ export const soundEngine = {
         osc.stop(now + 0.38 + idx * 0.02);
       });
     } catch {
-      // Ignore audio errors
     }
   },
 
-  // 5. Modal Close / Dismiss
   playModalClose: () => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -222,11 +198,9 @@ export const soundEngine = {
       osc.start(now);
       osc.stop(now + 0.08);
     } catch {
-      // Ignore audio errors
     }
   },
 
-  // 6. Success / Apple Pay Style Triumph Chime
   playSuccess: () => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -234,7 +208,6 @@ export const soundEngine = {
 
     try {
       const now = ctx.currentTime;
-      // Multi-note arpeggio chord (F#4, A#4, C#5, F#5)
       const notes = [369.99, 466.16, 554.37, 739.99];
       
       notes.forEach((freq, idx) => {
@@ -256,11 +229,9 @@ export const soundEngine = {
         osc.stop(startTime + 0.48);
       });
     } catch {
-      // Ignore audio errors
     }
   },
 
-  // 7. Navigation / Tab Shift Air Sweep
   playTabShift: () => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -284,11 +255,9 @@ export const soundEngine = {
       osc.start(now);
       osc.stop(now + 0.04);
     } catch {
-      // Ignore audio errors
     }
   },
 
-  // 8. Soft Keyboard Tap for Form Typing
   playKeyTap: () => {
     if (soundMuted) return;
     const ctx = getAudioContext();
@@ -313,7 +282,6 @@ export const soundEngine = {
       osc.start(now);
       osc.stop(now + 0.015);
     } catch {
-      // Ignore audio errors
     }
   }
 };

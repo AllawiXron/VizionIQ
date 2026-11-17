@@ -1,9 +1,3 @@
-/**
- * Prepares a photo/screenshot for the advisor: decoded, scaled down so the
- * long edge is at most 1600px (numbers in Ads Manager stay readable), and
- * re-encoded as JPEG. Also produces a tiny thumbnail that is safe to keep in
- * the saved chat history.
- */
 export interface PreparedImage {
   mimeType: "image/jpeg";
   data: string;
@@ -24,7 +18,7 @@ function loadImage(file: File): Promise<HTMLImageElement> {
     };
     img.onerror = () => {
       URL.revokeObjectURL(url);
-      reject(new Error("ما گدرت أقرا الصورة. جرّب صورة ثانية."));
+      reject(new Error("ما گدرت أقرا الصورة. جرب صورة ثانية."));
     };
     img.src = url;
   });
@@ -49,8 +43,6 @@ export async function prepareImage(file: File): Promise<PreparedImage> {
   if (!file.type.startsWith("image/")) throw new Error("لازم يكون الملف صورة.");
   if (file.size > 15 * 1024 * 1024) throw new Error("الصورة كبيرة هواية (أكثر من 15MB).");
   const img = await loadImage(file);
-  // Three images plus the chat must stay under Vercel's 4.5 MB request limit,
-  // so each one is squeezed to ~1 MB of base64 (screenshots stay sharp).
   let full = draw(img, MAX_EDGE, 0.82);
   for (const [edge, q] of [[1280, 0.75], [1024, 0.7], [800, 0.65]] as const) {
     if (full.length <= MAX_BASE64) break;

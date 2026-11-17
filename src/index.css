@@ -1,27 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-/* ==========================================================================
-   VIZION DESIGN SYSTEM
-   Black / white identity · layered glass · one motion language
-   ========================================================================== */
-
 @theme {
   --font-sans: "Tajawal", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
 
-  /* Scale up default sizes for pristine Arabic readability & clear distinction between headings and body */
-  --font-size-xs: 0.875rem;      /* ~14px */
-  --font-size-sm: 1rem;          /* ~16px */
-  --font-size-base: 1.125rem;    /* ~18px */
-  --font-size-lg: 1.35rem;       /* ~21.6px */
-  --font-size-xl: 1.6rem;        /* ~25.6px */
-  --font-size-2xl: 2rem;         /* ~32px */
-  --font-size-3xl: 2.5rem;       /* ~40px */
-  --font-size-4xl: 3.25rem;      /* ~52px */
-  --font-size-5xl: 4.25rem;      /* ~68px */
-
-  /* Vizion blue system — navy depth, electric-blue accent, sky highlights */
-  --color-vz-navy: #040e33;
+    --font-size-xs: 0.875rem;        --font-size-sm: 1rem;            --font-size-base: 1.125rem;      --font-size-lg: 1.35rem;         --font-size-xl: 1.6rem;          --font-size-2xl: 2rem;           --font-size-3xl: 2.5rem;         --font-size-4xl: 3.25rem;        --font-size-5xl: 4.25rem;      
+    --color-vz-navy: #040e33;
   --color-vz-navy-deep: #020823;
   --color-vz-navy-light: #0b1d58;
   --color-vz-blue: #2f6bff;
@@ -41,15 +25,13 @@
   --color-glass-card: rgba(255, 255, 255, 0.04);
   --color-glass-border: rgba(255, 255, 255, 0.08);
 
-  /* One continuous radius scale (10 / 14 / 18 / 24 / 32) */
-  --radius-lg: 0.625rem;
+    --radius-lg: 0.625rem;
   --radius-xl: 0.875rem;
   --radius-2xl: 1.125rem;
   --radius-3xl: 1.5rem;
   --radius-4xl: 2rem;
 
-  /* Every Tailwind transition uses the same physical curve */
-  --default-transition-duration: 300ms;
+    --default-transition-duration: 300ms;
   --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -95,10 +77,8 @@
   --color-glass-card: rgba(255, 255, 255, 0.04);
   --color-glass-border: rgba(255, 255, 255, 0.08);
 
-  /* Motion tokens */
-  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.28, 0.64, 1); /* fallback: gentle overshoot */
-  --ease-spring-snappy: cubic-bezier(0.22, 1.12, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.28, 0.64, 1);   --ease-spring-snappy: cubic-bezier(0.22, 1.12, 0.36, 1);
   --dur-spring: 480ms;
   --dur-spring-snappy: 420ms;
   --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
@@ -107,8 +87,7 @@
   --dur-base: 320ms;
   --dur-slow: 560ms;
 
-  /* Glass hierarchy */
-  --glass-primary-fill: rgba(14, 32, 92, 0.42);
+    --glass-primary-fill: rgba(14, 32, 92, 0.42);
   --glass-primary-border: rgba(140, 178, 255, 0.13);
   --glass-elevated-fill: rgba(18, 40, 112, 0.66);
   --glass-elevated-border: rgba(150, 188, 255, 0.2);
@@ -116,24 +95,13 @@
   --glass-floating-border: rgba(150, 188, 255, 0.18);
   --glass-highlight: rgba(255, 255, 255, 0.07);
 
-  /* Fluid Typography & Spacing System for Chapters & Mobile Screens */
-  --fluid-font-body: clamp(0.875rem, 0.8rem + 0.45vw, 1.125rem);       /* ~14px on 320px -> 18px on desktop */
-  --fluid-font-lead: clamp(0.95rem, 0.88rem + 0.55vw, 1.25rem);       /* ~15.2px -> 20px */
-  --fluid-font-h1: clamp(1.65rem, 1.35rem + 1.8vw, 3.25rem);          /* ~26.4px -> 52px */
-  --fluid-font-h2: clamp(1.3rem, 1.1rem + 1.2vw, 2.25rem);           /* ~20.8px -> 36px */
-  --fluid-font-h3: clamp(1.1rem, 1rem + 0.8vw, 1.6rem);               /* ~17.6px -> 25.6px */
+    --fluid-font-body: clamp(0.875rem, 0.8rem + 0.45vw, 1.125rem);         --fluid-font-lead: clamp(0.95rem, 0.88rem + 0.55vw, 1.25rem);         --fluid-font-h1: clamp(1.65rem, 1.35rem + 1.8vw, 3.25rem);            --fluid-font-h2: clamp(1.3rem, 1.1rem + 1.2vw, 2.25rem);             --fluid-font-h3: clamp(1.1rem, 1rem + 0.8vw, 1.6rem);               
+  --fluid-line-height-body: clamp(1.65, 1.55 + 0.35vw, 1.95);         --fluid-line-height-heading: clamp(1.2, 1.15 + 0.25vw, 1.4);
 
-  --fluid-line-height-body: clamp(1.65, 1.55 + 0.35vw, 1.95);       /* Fluid line height prevents text overlap on mobile */
-  --fluid-line-height-heading: clamp(1.2, 1.15 + 0.25vw, 1.4);
-
-  --fluid-paragraph-margin: clamp(0.625rem, 0.45rem + 0.8vw, 1.5rem);/* Fluid paragraph margin */
-  --fluid-heading-margin: clamp(0.75rem, 0.5rem + 1vw, 1.75rem);
+  --fluid-paragraph-margin: clamp(0.625rem, 0.45rem + 0.8vw, 1.5rem);  --fluid-heading-margin: clamp(0.75rem, 0.5rem + 1vw, 1.75rem);
   --fluid-section-gap: clamp(1rem, 0.75rem + 1.5vw, 2.5rem);
 }
 
-/* Real spring physics for CSS transitions where the browser supports linear():
-   the curves below are sampled from damped-spring equations (ζ≈0.42 / ζ≈0.62),
-   so hovers, presses and releases overshoot and settle like physical objects. */
 @supports (transition-timing-function: linear(0, 1)) {
   :root {
     --ease-spring: linear(0, 0.0532, 0.1893, 0.3736, 0.5753, 0.7695, 0.9385, 1.0713, 1.1636, 1.2162, 1.2336, 1.2229, 1.1923, 1.1498, 1.1027, 1.057, 1.017, 0.9853, 0.963, 0.9501, 0.9455, 0.9476, 0.9544, 0.9642, 0.9752, 0.9859, 0.9954, 1.003, 1.0083, 1.0115, 1.0127, 1.0123, 1.0108, 1.0085, 1.006, 1.0035, 1.0012, 0.9994, 0.9981, 0.9973, 0.997, 0.9971, 0.9974, 0.998, 1);
@@ -143,7 +111,6 @@
   }
 }
 
-/* Fluid Typography Classes for Chapter Prose and Content */
 .fluid-prose {
   font-size: var(--fluid-font-body);
   line-height: var(--fluid-line-height-body);
@@ -210,12 +177,10 @@ body {
   color: #ffffff;
 }
 
-/* Guard rails to ensure Arabic script does not get cramped/distorted by letter-spacing utility classes */
 body, button, input, select, textarea, p, span, h1, h2, h3, h4, h5, h6 {
   letter-spacing: normal !important;
 }
 
-/* Typography Hierarchy Scale & Heading Consistency */
 h1, .h1-display {
   font-weight: 900;
   line-height: 1.15;
@@ -236,19 +201,16 @@ h4, .h4-heading {
   line-height: 1.4;
 }
 
-/* Prevent text stretching on wide screens: limit long article paragraphs to 65-75ch */
 p {
   max-width: 75ch;
   line-height: 1.8;
 }
 
 .max-readable-prose {
-  max-width: 52rem; /* ~832px max width for comfortable Arabic scanning */
-  margin-left: auto;
+  max-width: 52rem;   margin-left: auto;
   margin-right: auto;
 }
 
-/* Scrollbar: thin, quiet, glassy */
 * {
   scrollbar-color: rgba(130, 170, 255, 0.24) transparent;
 }
@@ -269,10 +231,6 @@ p {
   background-color: rgba(130, 170, 255, 0.4);
 }
 
-/* ==========================================================================
-   ATMOSPHERE — the background layer every surface floats above
-   ========================================================================== */
-
 .vz-atmosphere {
   position: fixed;
   inset: 0;
@@ -287,7 +245,6 @@ p {
   animation: vz-atmosphere-in 0.7s var(--ease-out-expo) both;
 }
 
-/* Fine film grain keeps the dark gradients from banding and reads as "material". */
 .vz-atmosphere::after {
   content: "";
   position: absolute;
@@ -302,15 +259,11 @@ p {
   to { opacity: 1; }
 }
 
-/* Hairline divider used between major sections */
 .vz-hairline {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(130, 175, 255, 0.24) 20%, rgba(130, 175, 255, 0.24) 80%, transparent);
 }
 
-/* Silver text: the monochrome replacement for the old gold gradients.
-   Two layers — a light band (parked off to the right) over the silver
-   gradient — so .vz-shine can sweep a single glint across it. */
 .vz-silver-text {
   background-image:
     linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%),
@@ -330,18 +283,9 @@ p {
   to { background-position: 110% 0, 0 0; }
 }
 
-/* Page "stage": recedes behind sheets the way iOS pushes content back. */
 .vz-stage {
   transform-origin: 50% 50%;
 }
-
-/* ==========================================================================
-   GLASS HIERARCHY
-   primary  → sections, cards, containers
-   elevated → featured cards, modals, sheets
-   floating → navigation, floating buttons, small controls
-   subtle   → nested surfaces inside glass (no blur)
-   ========================================================================== */
 
 @layer components {
   .glass {
@@ -393,8 +337,7 @@ p {
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.035);
   }
 
-  /* Light-catching edge: brighter at the top, fading down the sides. */
-  .glass-edge::before {
+    .glass-edge::before {
     content: "";
     position: absolute;
     inset: -1px;
@@ -407,17 +350,13 @@ p {
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   }
 
-  /* Modal backdrop: constant blur, opacity animated by motion. */
-  .vz-backdrop {
+    .vz-backdrop {
     background: rgba(2, 8, 32, 0.62);
     -webkit-backdrop-filter: blur(18px) saturate(120%);
     backdrop-filter: blur(18px) saturate(120%);
   }
 
-  /* ------------------------------------------------------------------------
-     Interactive glass: hover depth + cursor light (vars set by glassLight.ts)
-     ------------------------------------------------------------------------ */
-  .glass-interactive {
+    .glass-interactive {
     isolation: isolate;
     transition:
       transform var(--dur-spring-snappy) var(--ease-spring-snappy),
@@ -449,8 +388,7 @@ p {
     .glass-interactive:hover::after {
       opacity: 1;
     }
-    /* Content inside the card drifts 1–2px against the tilt for depth. */
-    .glass-interactive .glass-depth {
+        .glass-interactive .glass-depth {
       transition: transform var(--dur-slow) var(--ease-out-expo);
     }
     .glass-interactive:hover .glass-depth {
@@ -463,10 +401,7 @@ p {
     transition-duration: var(--dur-press);
   }
 
-  /* ------------------------------------------------------------------------
-     Buttons — physical: lift on hover, compress on press
-     ------------------------------------------------------------------------ */
-  .btn {
+    .btn {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -519,8 +454,7 @@ p {
     cursor: not-allowed;
   }
 
-  /* Primary: luminous white, the strongest action on any screen. */
-  .btn-primary {
+    .btn-primary {
     color: #ffffff;
     background: linear-gradient(180deg, #5b8eff 0%, #2f6bff 48%, #2259f2 100%);
     border: 1px solid rgba(150, 190, 255, 0.55);
@@ -543,8 +477,7 @@ p {
     }
   }
 
-  /* Secondary: glass control. */
-  .btn-glass {
+    .btn-glass {
     color: #f3f6ff;
     background: linear-gradient(180deg, rgba(150, 188, 255, 0.16), rgba(120, 165, 255, 0.05));
     border: 1px solid rgba(150, 188, 255, 0.22);
@@ -562,8 +495,7 @@ p {
     }
   }
 
-  /* Quiet text/icon button. */
-  .btn-ghost {
+    .btn-ghost {
     color: rgba(225, 233, 255, 0.72);
     background: transparent;
     border: 1px solid transparent;
@@ -575,8 +507,7 @@ p {
     }
   }
 
-  /* Destructive glass. */
-  .btn-danger {
+    .btn-danger {
     color: #fca5a5;
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.22);
@@ -588,8 +519,7 @@ p {
     }
   }
 
-  /* Segmented control / chips (filters, tabs). */
-  .vz-chip {
+    .vz-chip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -629,8 +559,7 @@ p {
     position: relative;
     z-index: 1;
   }
-  /* The white selection is a separate pill (ChipPill) that slides between chips. */
-  .vz-chip[data-active="true"] {
+    .vz-chip[data-active="true"] {
     color: #ffffff;
     background: transparent;
     border-color: transparent;
@@ -644,8 +573,7 @@ p {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 8px 22px -8px rgba(47, 107, 255, 0.7);
   }
 
-  /* Round glass close control used by every sheet and modal. */
-  .vz-close {
+    .vz-close {
     width: 44px;
     height: 44px;
     flex-shrink: 0;
@@ -673,14 +601,12 @@ p {
     transition-duration: var(--dur-press);
   }
 
-  /* Sheet header strip (inside elevated glass). */
-  .vz-sheet-header {
+    .vz-sheet-header {
     border-bottom: 1px solid rgba(150, 188, 255, 0.12);
     background: linear-gradient(180deg, rgba(150, 188, 255, 0.07), rgba(150, 188, 255, 0));
   }
 
-  /* Eyebrow pill above section titles. */
-  .vz-eyebrow {
+    .vz-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -695,8 +621,7 @@ p {
     backdrop-filter: blur(12px);
   }
 
-  /* Form fields share one calm treatment. */
-  .vz-field {
+    .vz-field {
     background: rgba(2, 9, 34, 0.5);
     border: 1px solid rgba(140, 178, 255, 0.18);
     border-radius: var(--radius-xl);
@@ -711,9 +636,6 @@ p {
   }
 }
 
-/* ==========================================================================
-   SCROLL REVEAL — [data-reveal] (driven by lib/scrollReveal.ts)
-   ========================================================================== */
 .reveal-ready [data-reveal]:not(.is-revealed) {
   opacity: 0;
   transform: translate3d(0, 26px, 0) scale(0.975);
@@ -735,7 +657,6 @@ p {
 [data-reveal-delay="5"] { transition-delay: 0.35s !important; }
 [data-reveal-delay="6"] { transition-delay: 0.42s !important; }
 
-/* Hairlines draw outward from the centre instead of fading. */
 .reveal-ready .vz-hairline[data-reveal]:not(.is-revealed) {
   transform: scaleX(0);
   filter: none;
@@ -759,7 +680,6 @@ p {
   }
 }
 
-/* All native form controls ease between states instead of snapping. */
 input, select, textarea {
   transition:
     border-color var(--dur-base) var(--ease-out-expo),
@@ -773,7 +693,6 @@ input::placeholder, textarea::placeholder {
   color: rgba(200, 215, 255, 0.36);
 }
 
-/* Native selects get a custom chevron instead of the browser default chrome. */
 select {
   -webkit-appearance: none;
   appearance: none;
@@ -787,7 +706,6 @@ select option {
   color: #f3f6ff;
 }
 
-/* Range sliders: thin glass track, luminous thumb that springs when pressed */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -838,10 +756,6 @@ input[type="range"]:active::-moz-range-thumb {
 input[type="range"]:focus {
   box-shadow: none;
 }
-
-/* ==========================================================================
-   LEGACY HELPERS — re-skinned so older markup inherits the new system
-   ========================================================================== */
 
 .gold-gradient-text {
   background: linear-gradient(180deg, #ffffff 0%, #d4e2ff 42%, #6f9cff 100%);
@@ -902,7 +816,6 @@ input[type="range"]:focus {
   mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, #000 30%, transparent 75%);
 }
 
-/* Legacy glass helpers map onto the hierarchy. */
 .glass-panel {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.012) 100%),
@@ -953,15 +866,12 @@ input[type="range"]:focus {
   to { opacity: 1; transform: none; }
 }
 
-/* Touch screens: press feedback on cards waits a beat, so starting a scroll
-   gesture on a card never makes it flinch. Taps still feel instant. */
 @media (hover: none) {
   .glass-interactive:active {
     transition-delay: 70ms;
   }
 }
 
-/* Undefined utility names used by older markup → real Apple-style entrances. */
 .animate-in {
   animation: vz-fade-in 0.45s var(--ease-out-expo) both;
 }
@@ -969,7 +879,6 @@ input[type="range"]:focus {
   animation: vz-fade-in 0.45s var(--ease-out-expo) both;
 }
 
-/* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -978,14 +887,12 @@ input[type="range"]:focus {
   scrollbar-width: none;
 }
 
-/* Mobile GPU Hardware Acceleration & Anti-Flicker Optimizations */
 @media (max-width: 768px) {
   * {
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Disable continuous heavy transform & opacity animation keyframes on mobile to stop screen flashing */
-  .animate-pulse-slow,
+    .animate-pulse-slow,
   .animate-glow-breathing,
   .animate-float-slow,
   .animate-float-medium,
@@ -993,9 +900,7 @@ input[type="range"]:focus {
     animation: none !important;
   }
 
-  /* Primary glass drops its blur on phones: the background behind it is a
-     quiet gradient anyway, and this keeps scrolling at 60fps. */
-  .glass,
+    .glass,
   .glass-panel {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
@@ -1004,12 +909,7 @@ input[type="range"]:focus {
       rgba(9, 24, 74, 0.84);
   }
 
-  /* In-flow elevated surfaces (cards, banners, sheets) skip the backdrop
-     blur — re-blurring moving content behind them every scroll frame is the
-     single most expensive thing a phone GPU can do. A denser fill and the
-     same highlight edge keep the material reading as glass. Sheets still sit
-     on the blurred .vz-backdrop, so their depth is unchanged. */
-  .glass-elevated,
+    .glass-elevated,
   .glass-panel-gold {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
@@ -1027,22 +927,17 @@ input[type="range"]:focus {
     background: linear-gradient(180deg, rgba(150, 188, 255, 0.16), rgba(120, 165, 255, 0.06)), rgba(10, 26, 82, 0.6);
   }
 
-  /* Fixed chrome (navbar capsule, dock, toasts) keeps real glass: it is
-     what floats over moving content. */
-  .glass-floating {
+    .glass-floating {
     -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     backdrop-filter: blur(16px) saturate(160%) !important;
   }
 
-  /* The film grain uses plain opacity on phones: a full-screen fixed layer
-     with mix-blend-mode forces re-compositing of everything above it. */
-  .vz-atmosphere::after {
+    .vz-atmosphere::after {
     mix-blend-mode: normal;
     opacity: 0.018;
   }
 
-  /* Entrance keyframes without blur filters (cheap on mobile GPUs). */
-  :root {
+    :root {
     --animate-fade-in: vz-fade-in-lite 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
     --animate-fade-in-down: vz-fade-in-down-lite 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -1056,8 +951,7 @@ input[type="range"]:focus {
     backdrop-filter: blur(10px) !important;
   }
   
-  /* Cap backdrop blurs on mobile to prevent WebKit GPU memory buffer flickering */
-  .backdrop-blur-3xl,
+    .backdrop-blur-3xl,
   .backdrop-blur-2xl,
   .backdrop-blur-xl,
   .backdrop-blur-lg,
@@ -1066,8 +960,7 @@ input[type="range"]:focus {
     backdrop-filter: blur(8px) !important;
   }
   
-  /* Prevent transform jitter on mobile scroll */
-  canvas, iframe, video {
+    canvas, iframe, video {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     -webkit-backface-visibility: hidden;
@@ -1075,7 +968,6 @@ input[type="range"]:focus {
   }
 }
 
-/* Reduced Motion Support for Accessibility and Calm Reading Experience */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
@@ -1092,8 +984,7 @@ input[type="range"]:focus {
     animation: none !important;
   }
 
-  /* No hover lift, tilt or press compression — state changes stay visible via color. */
-  .glass-interactive:hover,
+    .glass-interactive:hover,
   .glass-interactive:active,
   .btn:hover,
   .btn:active,
@@ -1102,14 +993,12 @@ input[type="range"]:focus {
   }
 }
 
-/* Keyboard Navigation Focus Rings (WCAG 2.1 Focus Visible Compliant) */
 :focus-visible {
   outline: 2px solid rgba(125, 170, 255, 0.95) !important;
   outline-offset: 2px !important;
   box-shadow: 0 0 0 5px rgba(47, 107, 255, 0.28) !important;
 }
 
-/* RTL Number, Currency & Technical Term Isolation to prevent visual glitching */
 .bidi-isolate {
   unicode-bidi: isolate;
   display: inline-block;
@@ -1122,7 +1011,6 @@ input[type="range"]:focus {
   display: inline-block;
 }
 
-/* Screen reader only utility */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1135,7 +1023,6 @@ input[type="range"]:focus {
   border-width: 0;
 }
 
-/* Safe Area Inset Utilities */
 .safe-area-top {
   padding-top: env(safe-area-inset-top, 0px);
 }
@@ -1149,7 +1036,6 @@ input[type="range"]:focus {
   padding-right: env(safe-area-inset-right, 0px);
 }
 
-/* Universal safe text wrapping for mixed Arabic & English words, URLs, and currency */
 *, ::before, ::after {
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -1160,7 +1046,6 @@ pre, code, kbd, samp, .no-word-break {
   word-break: normal;
 }
 
-/* Prevent auto-zooming in mobile WebKit / Safari on form inputs */
 @media (max-width: 768px) {
   input[type="text"],
   input[type="number"],
@@ -1173,20 +1058,11 @@ pre, code, kbd, samp, .no-word-break {
   }
 }
 
-
-
-
-
-
-
-
-/* Advisor Modal Modern Layout & Scroll Optimization */
 .vizion-advisor-modal {
   container-type: inline-size;
   container-name: advisor;
 }
 
-/* Universal Tab Bar styling: smooth horizontal scrolling, hidden scrollbars, touch acceleration */
 .vizion-advisor-tab-strip {
   display: flex !important;
   flex-direction: row !important;
@@ -1207,7 +1083,6 @@ pre, code, kbd, samp, .no-word-break {
   display: none !important;
 }
 
-/* Chat Scroll Container Fixes */
 .vizion-advisor-chat {
   min-height: 0;
   flex: 1 1 auto;
@@ -1259,7 +1134,6 @@ pre, code, kbd, samp, .no-word-break {
   }
 }
 
-/* Mobile tools design system: calm surfaces, clear hierarchy, comfortable controls. */
 .vizion-tools-suite,
 .vizion-calculator-suite,
 .vizion-roi-calculator {
@@ -1401,7 +1275,6 @@ pre, code, kbd, samp, .no-word-break {
   }
 }
 
-/* Strong visible treatment for the tools area. */
 .vizion-tools-suite .vizion-tool-picker,
 .vizion-tools-suite .vizion-tool-viewport {
   isolation: isolate;
@@ -1464,7 +1337,6 @@ pre, code, kbd, samp, .no-word-break {
   }
 }
 
-/* Tool cards: make each active tool read as a focused task, not a long dashboard. */
 .vizion-tool-viewport .space-y-6 > .flex.items-center {
   border-bottom-color: rgba(150, 188, 255, 0.14);
 }
@@ -1548,7 +1420,6 @@ pre, code, kbd, samp, .no-word-break {
   }
 }
 
-/* Keyboard-safe mobile behavior. The JS viewport manager adds keyboard-is-open. */
 :root {
   --keyboard-height: 0px;
   --visual-viewport-height: 100dvh;
@@ -1609,7 +1480,6 @@ body,
   }
 }
 
-/* Diagnostic stepper: keep form content and navigation inside the keyboard viewport. */
 .vizion-diagnostic-stepper {
   min-height: 0;
 }
@@ -1684,11 +1554,6 @@ body,
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* Advisor rich answers                                                */
-/* ------------------------------------------------------------------ */
-
-/* Course chapter / tool link inside an answer. */
 .vz-md-chip {
   display: inline-flex;
   align-items: center;
@@ -1712,7 +1577,6 @@ body,
   transform: scale(0.96);
 }
 
-/* Caret that trails the text while the answer streams in. */
 .vz-caret,
 .vz-streaming .vz-md > :last-child::after {
   content: "";
@@ -1731,7 +1595,6 @@ body,
   }
 }
 
-/* Advisor: messages above the newest few skip layout and paint while off-screen. */
 .vz-msg-settled {
   content-visibility: auto;
   contain-intrinsic-size: auto 360px;

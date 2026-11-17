@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { EASE_OUT, overlayMotion } from "../lib/motion";
@@ -12,17 +7,15 @@ import { BookOpen, Bot, Calculator, X, ArrowLeft } from "lucide-react";
 interface WelcomeIntroModalProps {
   isOpen: boolean;
   onClose: () => void;
-  /** Close the welcome and open the first chapter. */
   onStart: () => void;
 }
 
 const STEPS = [
   { icon: BookOpen, title: "اقرأ فصل", desc: "11 فصل بالترتيب، كل واحد يشرح خطوة وحدة." },
-  { icon: Calculator, title: "طبّق بالأدوات", desc: "احسب ربحك وتكلفة الرسالة بأرقامك." },
+  { icon: Calculator, title: "طبق بالأدوات", desc: "احسب ربحك وتكلفة الرسالة بأرقامك." },
   { icon: Bot, title: "اسأل المستشار", desc: "اكتبله مشكلتك ويجاوبك على مشروعك." },
 ];
 
-/** First-visit welcome: what the site is and the one place to start. */
 export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({ isOpen, onClose, onStart }) => {
   const originSheet = useOriginSheet(isOpen, { width: 480 });
 
@@ -51,7 +44,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({ isOpen, on
 
             <div className="relative p-6 sm:p-8 space-y-6 text-right">
               <div className="space-y-2 pt-2">
-                <p className="text-sm font-bold text-vz-accent">أهلاً بيك بـ فيزيون</p>
+                <p className="text-sm font-bold text-vz-accent">أهلا بيك بـ فيزيون</p>
                 <h2 id="welcome-title" className="text-2xl sm:text-3xl font-black leading-tight">الطريقة بسيطة</h2>
                 <p className="text-sm text-white/60 leading-relaxed">ثلاث خطوات، وكرر عليها لكل فصل:</p>
               </div>

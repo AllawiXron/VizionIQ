@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "./ui/PageHeader";
 import { motion, AnimatePresence } from "motion/react";
@@ -32,7 +27,6 @@ import { Insight, insightsList } from "../data/insightsData";
 import { isFreeTrialUser } from "./LockScreen";
 import { Lock, Crown } from "lucide-react";
 
-/** Cards shown at first; the rest load on demand so the screen stays short. */
 const PAGE_SIZE = 12;
 
 export default function IraqiInsights() {
@@ -52,7 +46,6 @@ export default function IraqiInsights() {
     window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
   };
 
-  // Load votes from localStorage
   useEffect(() => {
     const storedVotes = localStorage.getItem("iraqi_insights_votes");
     if (storedVotes) {
@@ -62,10 +55,8 @@ export default function IraqiInsights() {
         console.error("Error parsing votes", e);
       }
     } else {
-      // Initialize some realistic seed values for votes
       const seedVotes: Record<string, number> = {};
       insightsList.forEach(insight => {
-        // Seed value between 14 and 92
         seedVotes[insight.id] = Math.floor(Math.random() * 78) + 14;
       });
       setVotes(seedVotes);
@@ -93,7 +84,6 @@ export default function IraqiInsights() {
     { id: "newbies", label: "المشاريع الجديدة", color: "from-white/10 to-white/15" }
   ];
 
-  // Filter insights based on Search and Category
   const filteredInsights = insightsList.filter(insight => {
     const matchesSearch = 
       insight.text.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -120,7 +110,6 @@ export default function IraqiInsights() {
     }
   };
 
-  // The random-insight sheet grows out of the shuffle button.
   const originSheet = useOriginSheet(showRandomModal, { width: 672 });
 
   return (
@@ -140,11 +129,9 @@ export default function IraqiInsights() {
         </button>
       </PageHeader>
 
-      {/* FILTER & SEARCH BAR */}
       <div className="glass rounded-3xl sm:rounded-4xl p-4 sm:p-6 space-y-4 sm:space-y-6 relative z-10">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-5 items-center justify-between">
           
-          {/* Search Input */}
           <div className="relative w-full md:max-w-xl">
             <Search className="absolute right-3.5 top-3 w-4 h-4 text-white/60" />
             <input               type="text"
@@ -162,13 +149,11 @@ export default function IraqiInsights() {
             )}
           </div>
 
-          {/* Quick Counter Display */}
           <span className="text-xs sm:text-sm text-white/55 font-bold glass-subtle px-4 py-2 sm:px-5 sm:py-2.5 rounded-full w-full md:w-auto text-center">
             حقائق: <CountUp value={filteredInsights.length} className="text-white font-mono font-black text-sm sm:text-lg mx-1 inline-block" /> من أصل <span className="font-mono text-white mx-1">{insightsList.length}</span>
           </span>
         </div>
 
-        {/* Categories Pills Grid */}
         <div className="flex overflow-x-auto gap-2 pt-1 pb-1 no-scrollbar justify-start">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
@@ -194,7 +179,6 @@ export default function IraqiInsights() {
         </div>
       </div>
 
-      {/* INSIGHTS GRID LAYOUT - 2 Column Layout with Stunning Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 relative z-10">
         {filteredInsights.slice(0, visibleCount).map((insight, index) => {
           const isExpanded = expandedInsightId === insight.id;
@@ -212,7 +196,6 @@ export default function IraqiInsights() {
               >
               <div className="p-4 sm:p-7 space-y-3 sm:space-y-5">
                 
-                {/* Card Top Information */}
                 <div className="flex justify-between items-center flex-wrap gap-2">
                   <span className={`text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full border uppercase tracking-wider ${
                     insight.category === "ads" ? "bg-white/5 text-vz-accent border-white/14" :
@@ -239,14 +222,12 @@ export default function IraqiInsights() {
                   </div>
                 </div>
 
-                {/* Insight Quote Text */}
                 <div className="text-right border-r-2 border-white/18 pr-3 sm:pr-4 group-hover:border-white/35 transition-colors duration-300">
                   <p className="fluid-prose font-black text-white leading-relaxed group-hover:text-vz-accent transition-colors duration-300">
                     "{insight.text}"
                   </p>
                 </div>
 
-                {/* EXPANDABLE CORNER (DIAGNOSTIC DETAILED LESSON) */}
                 <AnimatePresence initial={false}>
                 {isExpanded && (
                   <motion.div key="lesson" {...collapseMotion} className="overflow-hidden">
@@ -292,16 +273,14 @@ export default function IraqiInsights() {
 
               </div>
 
-              {/* Card Footer controls */}
               <div className="px-4 sm:px-7 py-3.5 sm:py-4 border-t border-white/[0.06] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-white/60 mt-auto">
                 
-                {/* Interactive VOTE button - 'والله هاي صارت وياي' */}
                 <button                   onClick={(e) => handleVote(insight.id, e)}
                   className="px-3.5 py-2.5 rounded-xl bg-gradient-to-b from-white/10 to-white/5 hover:from-white/10 hover:to-white/5 hover:text-vz-accent border border-white/10 hover:border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex items-center justify-center sm:justify-start gap-2 font-bold cursor-pointer active:scale-[0.97] shadow-lg w-full sm:w-auto min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                  title="نعم، لقد واجهت هذا الموقف في مشروعي سابقاً"
+                  title="نعم، لقد واجهت هذا الموقف في مشروعي سابقا"
                 >
                   <ThumbsUp className="w-3.5 h-3.5 text-vz-accent" />
-                  <span className="text-xs">والله هاي صارت وياي!</span>
+                  <span className="text-xs">والله هاي صارت وياي</span>
                   <span className="font-mono text-[11px] text-emerald-400 font-black bg-black/40 px-2 py-0.5 rounded-full border border-white/5">
                     {voteCount}
                   </span>
@@ -319,7 +298,6 @@ export default function IraqiInsights() {
         })}
       </div>
 
-      {/* Empty Search Result feedback */}
       {filteredInsights.length > visibleCount && (
         <div className="flex justify-center">
           <button
@@ -346,7 +324,6 @@ export default function IraqiInsights() {
         </div>
       )}
 
-      {/* RANDOM INSIGHT FEATURE MODAL */}
       <AnimatePresence>
         {showRandomModal && randomInsight && (
           <motion.div key="insight-overlay" {...overlayMotion} className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 vz-backdrop">
@@ -364,12 +341,10 @@ export default function IraqiInsights() {
               aria-modal="true"
               className="relative w-full max-w-2xl glass-elevated glass-edge rounded-3xl sm:rounded-4xl p-5 sm:p-8 md:p-12 text-right space-y-6 sm:space-y-8 max-h-[90vh] overflow-y-auto touch-pan-y"
             >
-              {/* Mobile Drag Down Bar Indicator */}
               <div className="w-10 h-[5px] bg-white/25 rounded-full mx-auto my-1 sm:hidden shrink-0 cursor-grab active:cursor-grabbing" />
 
               <div className="absolute top-0 right-0 w-[2px] h-full bg-gradient-to-b from-white/45 via-white/10 to-transparent" />
               
-              {/* Modal top decor */}
             <div className="flex justify-between items-center border-b border-white/10 pb-6 relative z-10">
               <button                 onClick={() => setShowRandomModal(false)}
                 aria-label="إغلاق"
@@ -411,13 +386,12 @@ export default function IraqiInsights() {
               </div>
             </div>
 
-            {/* Modal action footer */}
             <div className="flex justify-between items-center pt-6 border-t border-white/10 relative z-10">
               <button                 onClick={(e) => handleVote(randomInsight.id, e)}
                 className="px-5 py-3 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-white/15 text-vz-accent border border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none font-bold text-sm flex items-center gap-2 cursor-pointer shadow-lg hover:-translate-y-0.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <ThumbsUp className="w-4 h-4" />
-                <span>والله هاي صارت وياي!</span>
+                <span>والله هاي صارت وياي</span>
                 <span className="font-mono bg-black/40 px-2 py-0.5 rounded-full text-[12px] border border-white/9">
                   {votes[randomInsight.id] || 0}
                 </span>
