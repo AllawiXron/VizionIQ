@@ -14,7 +14,7 @@ const ACT_STYLE: Record<Act, { label: string; cls: string }> = {
   save: { label: "حفظ", cls: "bg-amber-300/15 text-amber-100 border-amber-200/35" },
 };
 
-function Avatar({ name, tone = "bg-white/10 text-white/80" }: { name: string; tone?: string }) {
+export function Avatar({ name, tone = "bg-white/10 text-white/80" }: { name: string; tone?: string }) {
   return (
     <span className={`w-9 h-9 rounded-full shrink-0 flex items-center justify-center text-[14px] font-black ${tone}`} aria-hidden="true">
       {name.replace(/^(أم|أبو)\s/, "").charAt(0)}
@@ -22,7 +22,7 @@ function Avatar({ name, tone = "bg-white/10 text-white/80" }: { name: string; to
   );
 }
 
-function FeedPost({
+export function FeedPost({
   page,
   creative,
   caption,
@@ -70,7 +70,7 @@ function FeedPost({
   );
 }
 
-function Num({ n }: { n: number }) {
+export function Num({ n }: { n: number }) {
   return (
     <motion.span
       initial={{ scale: 0.6, opacity: 0 }}
@@ -86,7 +86,7 @@ function Num({ n }: { n: number }) {
 type Zone = { x: number; y: number; w: number; h: number };
 
 // the lesson's example posts are real designed posts (1080x1350), shown as images. Zones are in % of the post.
-function PostImage({ src, alt, ring, marks }: { src: string; alt: string; ring?: Zone | null; marks?: { n: number; x: number; y: number }[] }) {
+export function PostImage({ src, alt, ring, marks }: { src: string; alt: string; ring?: Zone | null; marks?: { n: number; x: number; y: number }[] }) {
   return (
     <div className="relative overflow-hidden bg-black/20">
       <img src={src} alt={alt} width={900} height={1125} decoding="async" className="block w-full h-auto" />

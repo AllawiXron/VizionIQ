@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Check, ShieldCheck, User } from "lucide-react";
 import { EASE_OUT } from "../../lib/motion";
+import { KIT } from "./kit";
 
 const ease = { duration: 0.5, ease: EASE_OUT };
 const fmt = (n: number) => n.toLocaleString("en-US");
@@ -564,4 +565,5 @@ export const GENERIC: Record<string, { render: (data: any, shown: number) => Rea
   splitRows: { render: (d) => <SplitRows d={d} /> },
   versus: { render: (d, s) => <Versus d={d} shown={s} />, steps: (d: VersusData) => d.rows.length },
   pick: { render: (d) => <Pick d={d} /> },
+  ...KIT,
 };
