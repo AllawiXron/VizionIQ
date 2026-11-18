@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { EASE_OUT } from "../lib/motion";
 import { motion } from "motion/react";
 import {
   AlertTriangle, ArrowLeft, ArrowRight, BookOpen, Check, CheckCircle2, Clock, ClipboardList,
-  FileText, HelpCircle, Lightbulb, Lock, Target, TrendingUp, Wrench, X,
+  FileText, HelpCircle, Lightbulb, Lock, Play, RotateCcw, Target, TrendingUp, Wrench, X,
 } from "lucide-react";
+import LessonPlayer from "./LessonPlayer";
 import { isFreeTrialUser } from "./LockScreen";
 import { isTrialChapter } from "../lib/trial";
 import { LockChip, TrialLock } from "./TrialLock";
@@ -13,7 +14,7 @@ import { CopyButton } from "./ui/CopyButton";
 import { chaptersList } from "../data/chaptersData";
 import { courseChapters, chapterMinutes, lessonMinutes, type Block, type CourseChapter } from "../data/course";
 import { chapterPlaybook, playbooksList } from "../data/playbooksData";
-import { setChapterDone, setLastChapter, stageOf, togglePlanDay, useCourseProgress, usePlaybookPlans } from "../lib/progress";
+import { setChapterDone, setLastChapter, setLessonDone, stageOf, togglePlanDay, useCourseProgress, useLessonsDone, usePlaybookPlans } from "../lib/progress";
 import type { Route } from "../lib/route";
 import type { PlaybookCalculator as CalculatorKind } from "../data/playbooksData";
 
@@ -149,6 +150,15 @@ function LessonBlock({ block }: { key?: React.Key; block: Block }) {
           </div>
         </div>
       );
+    case "visual":
+      return null;
+    case "image":
+      return (
+        <figure className="space-y-2">
+          <img src={block.src} alt={block.alt ?? block.caption} className="w-full h-auto rounded-2xl" />
+          <figcaption className="text-xs text-white/55">{block.caption}</figcaption>
+        </figure>
+      );
     case "compare":
       return (
         <div className="space-y-2.5">
@@ -170,49 +180,92 @@ function LessonBlock({ block }: { key?: React.Key; block: Block }) {
 
 function Quiz({ chapter }: { chapter: CourseChapter }) {
   const [picked, setPicked] = useState<Record<number, number>>({});
-  const answered = Object.keys(picked).length;
+  const [at, setAt] = useState(0);
+  const total = chapter.quiz.length;
+  const finished = at >= total;
   const right = chapter.quiz.filter((q, i) => picked[i] === q.answer).length;
+
+  if (finished) {
+    return (
+      <div className="glass-elevated glass-edge rounded-3xl p-6 sm:p-8 text-center">
+        <p className="text-sm font-bold text-white/55 mb-2">نتيجتك</p>
+        <p className="text-6xl sm:text-7xl font-black text-white mb-3" dir="ltr">{right}/{total}</p>
+        <p className="text-base text-white/75 mb-6">{right === total ? "فاهم الفصل كله. كمل للفصل الجاي." : "راجع الدروس اللي غلطت بيها، وعيد الاختبار."}</p>
+        <button onClick={() => { setPicked({}); setAt(0); }} className={`btn btn-glass min-h-[48px] px-6 rounded-2xl text-sm ${focusRing}`}>عيد الاختبار</button>
+      </div>
+    );
+  }
+
+  const q = chapter.quiz[at];
+  const choice = picked[at];
+  const done = choice !== undefined;
   return (
-    <div className="space-y-3">
-      {chapter.quiz.map((q, qi) => {
-        const choice = picked[qi];
-        const done = choice !== undefined;
-        return (
-          <div key={q.q} className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-5 space-y-3">
-            <p className="text-sm sm:text-base font-black text-white leading-relaxed">{qi + 1}. {q.q}</p>
-            <div className="grid gap-2">
-              {q.options.map((opt, oi) => {
-                const isRight = oi === q.answer;
-                const state = !done ? "idle" : isRight ? "right" : oi === choice ? "wrong" : "idle";
-                return (
-                  <button
-                    key={opt}
-                    disabled={done}
-                    onClick={() => setPicked((p) => ({ ...p, [qi]: oi }))}
-                    className={`w-full text-right flex items-center gap-2.5 p-3 rounded-xl border text-sm leading-relaxed transition-colors min-h-[48px] ${focusRing} ${
-                      state === "right" ? "bg-emerald-400/[0.1] border-emerald-400/40 text-white"
-                        : state === "wrong" ? "bg-red-500/[0.08] border-red-400/35 text-white"
-                          : done ? "bg-white/[0.02] border-white/[0.06] text-white/50"
-                            : "bg-white/[0.04] border-white/10 text-white/85 hover:bg-white/[0.08] cursor-pointer"
-                    }`}
-                  >
-                    <span className={`w-5 h-5 shrink-0 rounded-full border flex items-center justify-center ${state === "right" ? "bg-emerald-400 border-emerald-300 text-[#062018]" : state === "wrong" ? "bg-red-400 border-red-300 text-[#2a0606]" : "border-white/25"}`}>
-                      {state === "right" && <Check className="w-3 h-3" strokeWidth={3} />}
-                      {state === "wrong" && <X className="w-3 h-3" strokeWidth={3} />}
-                    </span>
-                    <span>{opt}</span>
-                  </button>
-                );
-              })}
-            </div>
-            {done && <p className="text-xs sm:text-sm text-white/70 leading-relaxed pr-3 border-r-2 border-vz-accent/60">{q.why}</p>}
-          </div>
-        );
-      })}
-      {answered === chapter.quiz.length && (
-        <p className="text-sm font-bold text-white/80">جاوبت صح على {right} من {chapter.quiz.length}.{right < chapter.quiz.length ? " راجع الدروس اللي غلطت بيها قبل لا تكمل." : " ممتاز، كمل للفصل الجاي."}</p>
+    <div className="glass-elevated glass-edge rounded-3xl p-5 sm:p-7">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <span className="text-sm font-black text-vz-accent">السؤال {at + 1} من {total}</span>
+        <span className="flex gap-1.5" aria-hidden="true">
+          {chapter.quiz.map((qq, i) => (
+            <span key={i} className={`w-2.5 h-2.5 rounded-full ${i < at ? (picked[i] === qq.answer ? "bg-emerald-400" : "bg-red-400") : i === at ? "bg-white" : "bg-white/15"}`} />
+          ))}
+        </span>
+      </div>
+      <p className="text-lg sm:text-2xl font-black text-white leading-relaxed mb-5">{q.q}</p>
+      <div className="grid gap-2.5">
+        {q.options.map((opt, oi) => {
+          const isRight = oi === q.answer;
+          const state = !done ? "idle" : isRight ? "right" : oi === choice ? "wrong" : "idle";
+          return (
+            <button
+              key={opt}
+              disabled={done}
+              onClick={() => setPicked((p) => ({ ...p, [at]: oi }))}
+              className={`w-full text-right flex items-center gap-3 p-4 rounded-2xl border text-base leading-relaxed transition-colors min-h-[56px] ${focusRing} ${
+                state === "right" ? "bg-emerald-400/[0.12] border-emerald-400/45 text-white"
+                  : state === "wrong" ? "bg-red-500/[0.1] border-red-400/40 text-white"
+                    : done ? "bg-white/[0.02] border-white/[0.06] text-white/45"
+                      : "bg-white/[0.04] border-white/12 text-white/90 hover:bg-white/[0.08] cursor-pointer"
+              }`}
+            >
+              <span className={`w-6 h-6 shrink-0 rounded-full border flex items-center justify-center ${state === "right" ? "bg-emerald-400 border-emerald-300 text-[#062018]" : state === "wrong" ? "bg-red-400 border-red-300 text-[#2a0606]" : "border-white/25"}`}>
+                {state === "right" && <Check className="w-3.5 h-3.5" strokeWidth={3} />}
+                {state === "wrong" && <X className="w-3.5 h-3.5" strokeWidth={3} />}
+              </span>
+              <span>{opt}</span>
+            </button>
+          );
+        })}
+      </div>
+      {done && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-5 space-y-4">
+          <p className={`text-base font-black ${choice === q.answer ? "text-emerald-300" : "text-red-300"}`}>{choice === q.answer ? "صح" : "مو هذا"}</p>
+          <p className="text-sm sm:text-base text-white/75 leading-relaxed">{q.why}</p>
+          <button onClick={() => setAt((a) => a + 1)} className={`btn btn-primary min-h-[52px] px-6 rounded-2xl text-base gap-2 ${focusRing}`}>
+            <span>{at + 1 < total ? "السؤال الجاي" : "شوف نتيجتك"}</span>
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+        </motion.div>
       )}
     </div>
+  );
+}
+
+function MistakeCard({ m }: { key?: React.Key; m: CourseChapter["mistakes"][number] }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <li className="glass rounded-3xl p-5 sm:p-6">
+      <p className="flex items-start gap-3 text-base sm:text-lg font-black text-white leading-snug">
+        <span className="w-8 h-8 shrink-0 rounded-xl bg-red-500/15 text-red-300 flex items-center justify-center"><X className="w-4 h-4" strokeWidth={3} /></span>
+        <span className="pt-0.5">{m.mistake}</span>
+      </p>
+      {open ? (
+        <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-4 space-y-3 pr-11">
+          <p className="text-sm sm:text-base text-white/65 leading-relaxed"><span className="font-black text-white/80">ليش غلط: </span>{m.why}</p>
+          <p className="text-sm sm:text-base text-emerald-100 leading-relaxed flex items-start gap-2"><Check className="w-4 h-4 shrink-0 mt-1 text-emerald-300" strokeWidth={3} /><span><span className="font-black">الصح: </span>{m.fix}</span></p>
+        </motion.div>
+      ) : (
+        <button onClick={() => setOpen(true)} className={`mt-4 mr-11 btn btn-glass min-h-[40px] px-4 rounded-xl text-sm ${focusRing}`}>شنو الصح؟</button>
+      )}
+    </li>
   );
 }
 
@@ -242,6 +295,15 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   useEffect(() => {
     setLastChapter(userCode, chapter.id);
   }, [userCode, chapter.id]);
+
+  const lessonsDone = useLessonsDone(userCode);
+  const doneLessons = new Set(
+    lessonsDone.filter((x) => x.startsWith(`${chapter.id}:`)).map((x) => Number(x.split(":")[1])),
+  );
+  const nextLesson = course.lessons.findIndex((_, i) => i < openLessons && !doneLessons.has(i));
+  const [playing, setPlaying] = useState<number | null>(null);
+  const closePlayer = useCallback(() => setPlaying(null), []);
+  const markLessonDone = useCallback((i: number) => setLessonDone(userCode, chapter.id, i), [userCode, chapter.id]);
 
   const jump = (sectionId: string) => {
     const el = document.getElementById(sectionId);
@@ -281,6 +343,20 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           <span>{chapter.title}</span>
         </h1>
         <p className="text-sm sm:text-lg text-white/65 leading-relaxed">{course.goal}</p>
+        {!trialLocked && (
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <button
+              onClick={() => setPlaying(nextLesson >= 0 ? nextLesson : 0)}
+              className={`btn btn-primary min-h-[52px] px-7 rounded-2xl text-base gap-2 ${focusRing}`}
+            >
+              {nextLesson >= 0 ? <Play className="w-4 h-4" /> : <RotateCcw className="w-4 h-4" />}
+              <span>{nextLesson < 0 ? "عيد الفصل من أوله" : nextLesson === 0 ? "ابدأ الدرس الأول" : `كمل، الدرس ${nextLesson + 1}`}</span>
+            </button>
+            <span className="text-sm font-bold text-white/55">
+              خلصت {doneLessons.size} من {course.lessons.length} دروس
+            </span>
+          </div>
+        )}
       </motion.header>
 
       <div className="glass rounded-3xl p-5 sm:p-6 mb-8 sm:mb-10 space-y-3">
@@ -334,51 +410,65 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
           <div className="space-y-14 sm:space-y-20">
             <section>
-              <SectionTitle id="ch-lessons" icon={BookOpen} sub="اقراها بالترتيب. كل درس يبني على اللي قبله.">الدروس</SectionTitle>
-              <ol className="glass rounded-3xl overflow-hidden divide-y divide-white/[0.06] mb-8 sm:mb-10">
+              <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس شاشات قصيرة: تقرا، تشوف مثال، وتختار الجواب الصح. اضغط على الدرس وابدي.">الدروس</SectionTitle>
+              <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس المكتملة">
+                <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((doneLessons.size / course.lessons.length) * 100)}%` }} />
+              </div>
+              <ol className="relative space-y-3">
                 {course.lessons.map((l, i) => {
                   const locked = i >= openLessons;
+                  const done = doneLessons.has(i);
+                  const isNext = i === nextLesson;
                   return (
-                    <li key={l.title}>
+                    <li key={l.title} className="relative">
+                      {i < course.lessons.length - 1 && (
+                        <span aria-hidden="true" className={`absolute right-[35px] sm:right-[43px] top-16 sm:top-[4.5rem] bottom-[-12px] w-0.5 ${done ? "bg-emerald-400/50" : "bg-white/10"}`} />
+                      )}
                       <button
-                        onClick={() => jump(locked ? "ch-lessons-locked" : `ch-lesson-${i}`)}
-                        className={`w-full flex items-center gap-3 px-4 sm:px-5 py-3.5 text-right text-sm hover:bg-white/[0.04] transition-colors cursor-pointer ${focusRing}`}
+                        onClick={() => (locked ? jump("ch-lessons-locked") : setPlaying(i))}
+                        className={`relative w-full flex items-center gap-4 p-3 sm:p-4 rounded-3xl text-right cursor-pointer transition-colors duration-300 ${
+                          isNext ? "glass-elevated glass-edge" : "hover:bg-white/[0.04]"
+                        } ${focusRing}`}
                       >
-                        <span className="w-7 h-7 shrink-0 rounded-full bg-white/[0.06] border border-white/10 text-xs font-black flex items-center justify-center text-white/75">{i + 1}</span>
-                        <span className={`flex-1 ${locked ? "text-white/55" : "text-white/90 font-bold"}`}>{l.title}</span>
-                        <span className="text-xs text-white/40 font-mono shrink-0">{lessonMinutes(l)} د</span>
-                        {locked && <Lock className="w-3.5 h-3.5 text-white/35 shrink-0" />}
+                        <span
+                          className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-black ${
+                            done
+                              ? "bg-emerald-400/15 border border-emerald-400/40 text-emerald-300"
+                              : isNext
+                                ? "bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_24px_-10px_rgba(47,107,255,0.7)]"
+                                : locked
+                                  ? "bg-white/[0.03] border border-white/[0.08] text-white/35"
+                                  : "bg-white/[0.06] border border-white/10 text-white/80"
+                          }`}
+                        >
+                          {done ? <Check className="w-6 h-6" strokeWidth={3} /> : locked ? <Lock className="w-5 h-5" /> : isNext ? <Play className="w-5 h-5" /> : i + 1}
+                        </span>
+                        <span className="flex-1 min-w-0">
+                          <span className="block text-xs sm:text-sm font-bold text-white/50">الدرس {i + 1}، {minutesLabel(lessonMinutes(l))}</span>
+                          <span className={`block text-base sm:text-lg font-black leading-snug mt-0.5 ${locked ? "text-white/45" : "text-white"}`}>{l.title}</span>
+                        </span>
+                        {!locked && (
+                          <span className={`hidden sm:inline-flex items-center gap-1.5 text-sm font-black shrink-0 ${isNext ? "text-white" : "text-white/55"}`}>
+                            {done ? "عيده" : isNext ? "ابدي" : "افتح"}
+                            <ArrowLeft className="w-4 h-4" />
+                          </span>
+                        )}
                       </button>
                     </li>
                   );
                 })}
               </ol>
-
-              <div className="space-y-12 sm:space-y-16">
-                {course.lessons.slice(0, openLessons).map((lesson, i) => (
-                  <article key={lesson.title} id={`ch-lesson-${i}`} className="scroll-mt-36 space-y-5 sm:space-y-6">
-                    <header className="space-y-2">
-                      <p className="text-xs sm:text-sm font-bold text-vz-accent">الدرس {i + 1}، {minutesLabel(lessonMinutes(lesson))}</p>
-                      <h3 className="text-xl sm:text-3xl font-black text-white leading-snug">{lesson.title}</h3>
-                      <p className="text-sm sm:text-lg text-white/70 leading-relaxed">{lesson.intro}</p>
-                    </header>
-                    {lesson.blocks.map((b, bi) => <LessonBlock key={bi} block={b} />)}
-                    <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/[0.12] flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                      <p className="text-sm sm:text-base text-white leading-relaxed"><span className="font-black">الخلاصة: </span>{lesson.takeaway}</p>
-                    </div>
-                  </article>
-                ))}
-                {openLessons < course.lessons.length && (
+              {openLessons < course.lessons.length && (
+                <div className="mt-6">
                   <TrialLock
                     id="ch-lessons-locked"
                     title="باقي الدروس تنفتح ويا الاشتراك"
-                    desc="قريت أول درس. الدروس الباقية بنفس التفصيل، ويا أمثلة وخطوات تطبقها."
+                    desc="جربت أول درس. الدروس الباقية بنفس الطريقة، شاشة شاشة، ويا أمثلة وأسئلة."
                     items={course.lessons.slice(openLessons).map((l, i) => `الدرس ${openLessons + i + 1}: ${l.title}`)}
                     cta="افتح الكورس كامل"
                   />
-                )}
-              </div>
+                </div>
+              )}
             </section>
 
             <section>
@@ -453,19 +543,20 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                 <TrialLock title="المثال بالأرقام ينفتح ويا الاشتراك" desc="مثال محسوب خطوة بخطوة: الأرقام قبل وبعد، وشنو تغير بالضبط." cta="افتح الكورس كامل" />
               ) : (
                 <div className="space-y-4">
-                  <div className="glass rounded-2xl sm:rounded-3xl overflow-hidden">
-                    <div className="grid grid-cols-3 gap-3 px-4 sm:px-5 py-3 text-xs font-bold text-white/50 border-b border-white/[0.07]">
-                      <span>الرقم</span><span>قبل</span><span>بعد</span>
-                    </div>
-                    <ul className="divide-y divide-white/[0.06]">
-                      {course.example.rows.map((r) => (
-                        <li key={r.label} className="grid grid-cols-3 gap-3 px-4 sm:px-5 py-3 text-sm items-center">
-                          <span className="font-bold text-white">{r.label}</span>
-                          <span className="text-red-300/90">{r.before}</span>
-                          <span className="text-emerald-300 font-bold">{r.after}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {course.example.rows.map((r, ri) => {
+                      const last = ri === course.example.rows.length - 1;
+                      return (
+                        <div key={r.label} className={`${last ? "glass-elevated glass-edge sm:col-span-2" : "glass"} rounded-3xl p-5`}>
+                          <p className="text-sm font-black text-white/65 mb-3">{r.label}</p>
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-base sm:text-lg text-red-300/90 line-through decoration-red-400/60">{r.before}</span>
+                            <ArrowLeft className="w-5 h-5 text-white/40 shrink-0" />
+                            <span className={`${last ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"} font-black text-emerald-300`}>{r.after}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                   <ul className="space-y-2">
                     {course.example.whatChanged.map((w) => (
@@ -482,13 +573,9 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
             <section>
               <SectionTitle id="ch-mistakes" icon={AlertTriangle}>أغلاط لا توكع بيها</SectionTitle>
-              <ul className="space-y-2.5">
+              <ul className="space-y-3">
                 {course.mistakes.slice(0, openMistakes).map((m) => (
-                  <li key={m.mistake} className="glass-subtle rounded-2xl p-4 sm:p-5 space-y-2 text-sm">
-                    <p className="flex items-start gap-2 font-black text-red-200"><X className="w-4 h-4 shrink-0 mt-0.5 text-red-300" />{m.mistake}</p>
-                    <p className="text-white/65 leading-relaxed pr-6">{m.why}</p>
-                    <p className="flex items-start gap-2 text-emerald-100/90 leading-relaxed"><Check className="w-4 h-4 shrink-0 mt-0.5 text-emerald-300" />{m.fix}</p>
-                  </li>
+                  <MistakeCard key={m.mistake} m={m} />
                 ))}
               </ul>
               {openMistakes < course.mistakes.length && (
@@ -538,6 +625,18 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           </button>
         </div>
       </div>
+
+      {playing !== null && (
+        <LessonPlayer
+          chapterLabel={chapter.number}
+          lessons={course.lessons}
+          index={playing}
+          openLessons={openLessons}
+          onOpenLesson={setPlaying}
+          onDone={markLessonDone}
+          onClose={closePlayer}
+        />
+      )}
     </section>
   );
 }

@@ -123,3 +123,38 @@ export function togglePlanDay(userCode: string, playbookId: string, day: number)
 export function usePlaybookPlans(userCode: string): PlanState {
   return useSyncExternalStore(subscribe, () => readPlans(userCode), () => EMPTY_PLANS);
 }
+
+const lessonKey = (userCode: string) => `vz_lessons_${userCode || "guest"}`;
+const lessonCache = new Map<string, string[]>();
+
+function readLessons(userCode: string): string[] {
+  const cached = lessonCache.get(userCode);
+  if (cached) return cached;
+  let value: string[] = [];
+  try {
+    const raw = localStorage.getItem(lessonKey(userCode));
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (Array.isArray(parsed)) value = parsed.filter((x: unknown) => typeof x === "string");
+  } catch {
+    value = [];
+  }
+  lessonCache.set(userCode, value);
+  return value;
+}
+
+export function setLessonDone(userCode: string, chapterId: string, index: number) {
+  const id = `${chapterId}:${index}`;
+  const current = readLessons(userCode);
+  if (current.includes(id)) return;
+  const next = [...current, id];
+  lessonCache.set(userCode, next);
+  try {
+    localStorage.setItem(lessonKey(userCode), JSON.stringify(next));
+  } catch {
+  }
+  listeners.forEach((l) => l());
+}
+
+export function useLessonsDone(userCode: string): string[] {
+  return useSyncExternalStore(subscribe, () => readLessons(userCode), () => [] as string[]);
+}

@@ -43,6 +43,10 @@ function blockText(b: Block): string {
       return [b.title ?? "", ...b.head, ...b.rows.flat()].join(" ");
     case "compare":
       return `${b.title ?? ""} ${b.bad.text} ${b.good.text}`;
+    case "image":
+      return b.caption;
+    case "visual":
+      return [b.title, b.caption ?? "", b.text ?? ""].join(" ");
   }
 }
 
