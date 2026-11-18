@@ -83,7 +83,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 sm:gap-2">
           <span className="text-[11px] text-white/50 hidden sm:inline ml-1 font-medium">
-            هل الجواب مفيد؟
+            الجواب فادك؟
           </span>
 
           <button
@@ -130,7 +130,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             {isCopied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-vz-accent" />
-                <span className="text-vz-accent font-bold">تم النسخ</span>
+                <span className="text-vz-accent font-bold">انتسخ</span>
               </>
             ) : (
               <>
@@ -165,7 +165,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
         <div className="mt-2 p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-[11px] sm:text-xs flex items-center justify-between gap-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>عاشت إيدك تم تسجيل تقييمك لمساعدتنا في تطوير المستشار للسوق العراقي</span>
+            <span>عاشت إيدك، تقييمك وصل ويساعدنا نطور المستشار</span>
           </div>
         </div>
       )}
@@ -218,7 +218,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
               </button>
               {currentReason && (
                 <span className="text-[10px] text-emerald-400 font-mono">
-                  تم الحفظ: {currentReason}
+                  انحفظ: {currentReason}
                 </span>
               )}
             </div>
@@ -258,7 +258,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
         <div className="mt-2 p-2 rounded-xl bg-rose-950/30 border border-rose-500/30 text-rose-200 text-[11px] sm:text-xs flex items-center justify-between gap-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-1.5">
             <span>
-              تم تسجيل ملاحظتك {currentReason ? `(${currentReason})` : ""}. سنعمل على تحسين جودة الإجابة
+              وصلت ملاحظتك {currentReason ? `(${currentReason})` : ""}. سنعمل على تحسين جودة الإجابة
             </span>
           </div>
           <button

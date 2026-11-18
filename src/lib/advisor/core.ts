@@ -117,7 +117,7 @@ export function friendlyError(err: unknown): string {
   if (/429|RESOURCE_EXHAUSTED|Quota/i.test(s)) return "وصلنا الحد المؤقت للطلبات. انتظر شوية وأعد المحاولة.";
   if (/GEMINI_API_KEY/.test(s)) return (err as Error).message;
   if (/Incomplete JSON|terminated|ECONNRESET|socket|fetch failed|network|aborted|timeout/i.test(s)) return "انقطع الاتصال بالمستشار بنص الجواب. اضغط 'جواب جديد' أو أعد المحاولة.";
-  return "تعذر الحصول على رد حاليا. جرب مرة ثانية.";
+  return "ما وصل رد هسه. جرب مرة ثانية.";
 }
 
 export interface RunResult {

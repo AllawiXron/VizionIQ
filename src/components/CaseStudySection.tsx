@@ -6,7 +6,7 @@ import FadeInUp from "./FadeInUp";
 import { isFreeTrialUser } from "./LockScreen";
 
 export default function CaseStudySection() {
-  const [selectedCity, setSelectedCity] = useState<string>("جميع المحافظات");
+  const [selectedCity, setSelectedCity] = useState<string>("كل المحافظات");
   const [expandedId, setExpandedId] = useState<string | null>(caseStudiesList[0].id);
   const [copiedScript, setCopiedScript] = useState<string | null>(null);
 
@@ -17,9 +17,9 @@ export default function CaseStudySection() {
     window.dispatchEvent(new CustomEvent("open-upgrade-modal"));
   };
 
-  const cities = ["جميع المحافظات", "بغداد", "البصرة", "أربيل", "النجف وكربلاء", "الموصل"];
+  const cities = ["كل المحافظات", "بغداد", "البصرة", "أربيل", "النجف وكربلاء", "الموصل"];
 
-  const filteredCaseStudies = selectedCity === "جميع المحافظات"
+  const filteredCaseStudies = selectedCity === "كل المحافظات"
     ? caseStudiesList
     : caseStudiesList.filter((cs) => cs.city.includes(selectedCity));
 

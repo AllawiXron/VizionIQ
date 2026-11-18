@@ -23,7 +23,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
         <div className="text-center space-y-3 sm:space-y-4">
           <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="vz-eyebrow text-xs sm:text-sm">
             <Sparkles className="w-4 h-4 opacity-80" />
-            <span>اشتراك واحد، تدفع مرة وحدة، مدى الحياة</span>
+            <span>تدفع مرة وحدة بس، والكورس يبقى الك مدى الحياة</span>
           </motion.div>
           <WordsReveal
             delay={0.1}

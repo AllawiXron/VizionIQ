@@ -126,35 +126,35 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
     options: [
       {
         topicId: "topic_ads_low_conversion",
-        label: "رسائل كثيرة على الإعلان لكن لا أحد يشتري",
+        label: "رسائل هواية على الإعلان بس محد يشتري",
         subtext: "جودة الزبائن ضعيفة والرسائل غير جادة",
-        prompt: "إعلاناتي تجلب عددا كبيرا من الرسائل والاستفسارات بأسعار مناسبة، ولكن نسبة الإغلاق شبه معدومة (محد يشتري فعليا). ما هو التشخيص العلمي وفق منظومة فيزيون وكيف أحل المشكلة فورا؟",
+        prompt: "إعلاناتي تجيب رسائل واستفسارات هواية وبسعر مقبول، بس تقريبا محد يطلب فعليا. شنو التشخيص حسب طريقة فيزيون، وشلون أحل المشكلة بسرعة؟",
         defaultSuggestions: [
-          "كيف أعدل محتوى الإعلان وفلترة الزبائن؟",
-          "اعطيني سكريبت لتحويل السائل إلى مشتر بالواتساب",
-          "هل أرفع السعر أم أغير طريقة الاستهداف؟"
+          "شلون أعدل محتوى الإعلان وأفلتر الزبائن؟",
+          "انطيني سكريبت يحول اللي يسأل لزبون يطلب بالواتساب",
+          "أرفع السعر لو أغير الاستهداف؟"
         ]
       },
       {
         topicId: "topic_ads_high_cpa",
-        label: "كلفة الرسالة مرتفعة جدا (CPA/CPR عالي)",
+        label: "كلفة الرسالة كلش عالية (CPA/CPR)",
         subtext: "صرف الميزانية بدون الحصول على عدد استفسارات كاف",
-        prompt: "كلفة الرسالة في إعلانات الفيسبوك والانستغرام مرتفعة جدا وتستهلك كل هامش الربح. كيف أخفض كلفة الرسالة بالسوق العراقي وأحسن الـ CTR؟",
+        prompt: "كلفة الرسالة بإعلانات الفيسبوك والانستغرام كلش عالية وتاكل كل الربح. شلون أنزل كلفة الرسالة بالسوق العراقي وأحسن الـ CTR؟",
         defaultSuggestions: [
-          "كيف أصيغ الهوك (Hook) البصري الأول للإعلان؟",
-          "ما هي أفضل إعدادات استهداف للمحافظات؟",
-          "كيف أعرف إذا كان المنتج نفسه هو المشكلة؟"
+          "شلون أسوي أول لقطة بالإعلان (Hook) توكف الناس؟",
+          "شنو أحسن استهداف للمحافظات؟",
+          "شلون أعرف إذا المنتج نفسه هو المشكلة؟"
         ]
       },
       {
         topicId: "topic_ad_fatigue",
-        label: "الحملة تنجح يومين ثم ينخفض الأداء فجأة (Ad Fatigue)",
+        label: "الحملة تمشي يومين وبعدين تطيح فجأة (Ad Fatigue)",
         subtext: "تذبذب النتائج وتوقف الطلبات بعد البداية القوية",
-        prompt: "الحملة الإعلانية تبدأ بنتائج قوية أول 48 ساعة ثم ينحدر الأداء وترتفع الكلفة فجأة. كيف أتعامل مع احتراق الإعلان وتوسيع الجمهور العراقي؟",
+        prompt: "الحملة تبدي قوية أول 48 ساعة، وبعدين النتائج تنزل والكلفة تصعد فجأة. شلون أتعامل ويا احتراق الإعلان وأوسع الجمهور العراقي؟",
         defaultSuggestions: [
-          "كيف أصنع زوايا إعلانية (Angles) جديدة لنفس المنتج؟",
-          "متى يجب زيادة الميزانية (Scaling)؟",
-          "كيف أختبر محتوى تيك توك مقابل انستغرام؟"
+          "شلون أطلع زوايا إعلانية (Angles) جديدة لنفس المنتج؟",
+          "شوكت أزيد الميزانية (Scaling)؟",
+          "شلون أقارن محتوى تيك توك ويا انستغرام؟"
         ]
       }
     ]
@@ -171,31 +171,31 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
         subtext: "مقارنة السعر بصفحات أخرى أو شعور بعدم الاستحقاق",
         prompt: "الزبون بالواتساب يقول: 'السعر غالي ومبالغ بيه، شفته بغير مكان أرخص'. اعطيني سكريبت الرد الذهبي لإقناعه بالقيمة دون حرق السعر.",
         defaultSuggestions: [
-          "كيف أضيف بونص أو عرض إضافي بدون كلفة عالية؟",
-          "ماذا أفعل إذا أصر الزبون على الخصم؟",
+          "شلون أضيف هدية أو عرض بدون ما تغلى الكلفة؟",
+          "شسوي إذا الزبون أصر على الخصم؟",
           "سكريبت تثبيت الضمان وخدمة ما بعد البيع"
         ]
       },
       {
         topicId: "topic_sales_hesitation",
         label: "الزبون يقول: 'بعدين أردلك خبر / استشير'",
-        subtext: "تسويف الزبون واختفائه بعد معرفة السعر والمواصفات",
-        prompt: "الزبائن يقرأون التفاصيل ثم يكتبون: 'بعدين أردلك خبر' أو 'استشير الأهل' ثم يختفون. كيف أتعامل مع التسويف وأغلق الطلب في نفس اللحظة؟",
+        subtext: "الزبون يأجل ويختفي بعد ما يعرف السعر والمواصفات",
+        prompt: "الزبائن يقرون التفاصيل ويكتبون 'بعدين أردلك خبر' أو 'أشاور أهلي' ويختفون. شلون أتعامل ويا التأجيل وأسكر الطلب بنفس اللحظة؟",
         defaultSuggestions: [
           "سكريبت إعادة المتابعة بعد 24 ساعة (Follow-up)",
-          "كيف أخلق دافع استعجال (Urgency) حقيقي وأخلاقي؟",
+          "شلون أخلي الزبون يستعجل (Urgency) بصدق وبدون كذب؟",
           "طريقة السؤال الختامي البديل (Alternative Choice Close)"
         ]
       },
       {
         topicId: "topic_sales_discount",
         label: "الزبون يطلب خصم أو توصيل مجاني بإصرار",
-        subtext: "المساومة على أجور التوصيل وهامش الربح",
-        prompt: "الزبائن في العراق دائما يطلبون 'توصيل مجاني' أو 'تخفيض السعر'. كيف أحافظ على أرباحي وفي نفس الوقت أرضي رغبة الزبون بالخصم؟",
+        subtext: "المساومة على كروة التوصيل والربح",
+        prompt: "الزبائن بالعراق دايما يطلبون 'توصيل مجاني' أو 'نزلي السعر'. شلون أحافظ على ربحي وبنفس الوقت أرضي الزبون اللي يريد خصم؟",
         defaultSuggestions: [
-          "كيف أصيغ عروض الحزم (Bundles 1+1 مجانا)؟",
+          "شلون أكتب عروض البكجات (مثل 1+1 مجانا)؟",
           "سكريبت الرد على طلب التوصيل المجاني",
-          "كيف أدمج كلفة التوصيل بالسعر بطريقة ذكية؟"
+          "شلون أدخل كلفة التوصيل بالسعر بطريقة ذكية؟"
         ]
       }
     ]
@@ -204,27 +204,27 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
     id: "delivery_returns",
     title: "تقليل الراجع ومشاكل التوصيل",
     icon: "",
-    description: "خفض نسبة الإرجاع إلى أقل من 10% وتأكيد الطلبات",
+    description: "تنزيل الراجع لأقل من 10% وتأكيد الطلبات",
     options: [
       {
         topicId: "topic_delivery_returns",
         label: "الزبون يرفض الاستلام أو يكنسل عند اتصال المندوب",
         subtext: "ضياع أجور التوصيل والجهد وهدر المنتجات بالراجع",
-        prompt: "نسبة الراجع عندي في المحافظات تتجاوز 25% والزبائن يرفضون الاستلام عند اتصال المندوب. ما هي الخطة العملية في منظومة فيزيون لتنزيل الراجع لأقل من 10%؟",
+        prompt: "الراجع عندي بالمحافظات فوك 25%، والزبائن يرفضون الاستلام من يتصل بيهم المندوب. شنو الخطة العملية بطريقة فيزيون حتى أنزل الراجع لأقل من 10%؟",
         defaultSuggestions: [
           "اعطيني سكريبت مكالمة تأكيد الطلب قبل التوصيل",
-          "كيف أتعامل مع تأخير شركات التوصيل؟",
-          "كيف أمنع طلبات التجار الوهميين أو غير الجادين؟"
+          "شلون أتعامل ويا تأخير شركات التوصيل؟",
+          "شلون أوكف الطلبات الوهمية واللي مو جديين؟"
         ]
       },
       {
         topicId: "topic_delivery_driver",
         label: "المندوب يتأخر والزبون يفقد الحماس",
         subtext: "بطء التوصيل 4-6 أيام يؤدي لإلغاء الطلب",
-        prompt: "تأخر توصيل الطلبات في المحافظات إلى 4-6 أيام يجعل الزبون يشتري من السوق المحلي ويلغي الطلب. كيف أحافظ على حماس الزبون أثناء فترة التوصيل؟",
+        prompt: "التوصيل للمحافظات يتأخر 4 لـ 6 أيام، فالزبون يشتري من السوك ويلغي الطلب. شلون أخلي الزبون متحمس لحد ما يوصله الطلب؟",
         defaultSuggestions: [
-          "سكريبت رسائل المتابعة أثناء التوصيل عبر الواتساب",
-          "كيف أختار شركة التوصيل الموثوقة بالعراق؟",
+          "سكريبت رسائل متابعة بالواتساب لحد ما يوصل الطلب",
+          "شلون أختار شركة توصيل أعتمد عليها بالعراق؟",
           "نظام الحوافز للمناديب والزبائن"
         ]
       }
@@ -238,23 +238,23 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
     options: [
       {
         topicId: "topic_pricing_profit",
-        label: "كيف أسعر منتج كلفته 10,000 - 15,000 د.ع لضمان ربح صافي؟",
+        label: "شلون أسعر منتج كلفته 10,000 لـ 15,000 دينار حتى أضمن ربح صافي؟",
         subtext: "حساب كلفة الشراء + الإعلانات + التوصيل والراجع",
-        prompt: "عندي منتج كلفة شرائه من الجملة 12,000 دينار عراقي، وتكلفة التوصيل 5,000 دينار. كيف أسعر المنتج بسعر جذاب ويضمن لي ربحا صافيا بعد كلفة الإعلانات والراجع؟",
+        prompt: "عندي منتج أشتريه بالجملة بـ 12,000 دينار، والتوصيل 5,000. شلون أسعره بسعر يجذب الزبون ويبقيلي ربح صافي بعد الإعلان والراجع؟",
         defaultSuggestions: [
           "احسب لي نقطة التعادل (Break-Even ROAS)",
-          "ما هو الهامش الموصى به للمنتجات الاستهلاكية؟",
-          "كيف أسعر العرض الثاني والثالث (Upsell Stack)؟"
+          "شكد هامش الربح المناسب للمنتجات اليومية؟",
+          "شلون أسعر القطعة الثانية والثالثة (Upsell)؟"
         ]
       },
       {
         topicId: "topic_budget_planning",
-        label: "الأرباح تختفي في نهاية الشهر ولا أعرف أين تذهب",
+        label: "الأرباح تختفي بآخر الشهر وما أعرف وين تروح",
         subtext: "إيرادات عالية بدون سيولة نقدية صافية",
-        prompt: "صفحتي تحقق مبيعات جيدة وحجم إيرادات محترم، لكن نهاية الشهر لا أجد أرباحا كاش في يدي. ما هي الثغرات المالية الخفية في التجارة الإلكترونية بالعراق؟",
+        prompt: "صفحتي تبيع زين والمبيعات محترمة، بس بآخر الشهر ما ألكى ربح كاش بإيدي. شنو الثغرات المخفية اللي تاكل الربح بالبيع أونلاين بالعراق؟",
         defaultSuggestions: [
           "قائمة التدقيق المالي للمصاريف الخفية (Leak Checklist)",
-          "كيف أحسب كلفة الراجع على كل قطعة مباعة؟",
+          "شلون أحسب كلفة الراجع على كل قطعة أبيعها؟",
           "إدارة دورة رأس المال والتحصيل من شركات التوصيل"
         ]
       }
@@ -267,7 +267,7 @@ const SCRIPT_OBJECTIONS = [
     id: "expensive",
     label: "السعر غالي",
     icon: "",
-    promptContext: "الزبون يرى أن السعر مرتفع ومبالغ فيه"
+    promptContext: "الزبون يشوف السعر غالي ومبالغ بيه"
   },
   {
     id: "think_later",
@@ -285,7 +285,7 @@ const SCRIPT_OBJECTIONS = [
     id: "quality_fear",
     label: "خايف من الجودة والتوصيل",
     icon: "",
-    promptContext: "الزبون يخاف أن تكون البضاعة غير مطابقة للصورة أو رديئة"
+    promptContext: "الزبون يخاف البضاعة تطلع مو مثل الصورة أو نوعيتها تعبانة"
   },
   {
     id: "confirm_call",
@@ -341,7 +341,7 @@ const EXAMPLE_QUESTIONS = [
     suggestions: [
       "شنو أخطاء الرد السريع على الزبون؟",
       "اعطيني سكريبت فحص جدية الزبون",
-      "كيف أقنع الزبون يطلب هسة؟"
+      "شلون أقنع الزبون يطلب هسه؟"
     ]
   },
   {
@@ -351,7 +351,7 @@ const EXAMPLE_QUESTIONS = [
     suggestions: [
       "اعطيني سكريبت رد على 'السعر غالي'",
       "طريقة صياغة عروض البكجات 1+1",
-      "كيف أظهر قيمة المنتج العالية؟"
+      "شلون أبين قيمة المنتج؟"
     ]
   },
   {
@@ -360,7 +360,7 @@ const EXAMPLE_QUESTIONS = [
     topicId: "topic_delivery_returns",
     suggestions: [
       "سكريبت مكالمة تأكيد الطلب قبل التوصيل",
-      "كيف أتعامل مع تأخير شركة التوصيل؟",
+      "شلون أتعامل ويا تأخير شركة التوصيل؟",
       "نصائح لاختيار شركة توصيل موثوقة"
     ]
   },
@@ -841,7 +841,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       localStorage.setItem(planKey, JSON.stringify(updated));
       const target = updated.find((t) => t.id === taskId);
       if (target?.completed) {
-        showToast("success", "أحسنت أتممت هذه المهمة", target.task);
+        showToast("success", "عاشت إيدك، خلصت هاي المهمة", target.task);
       }
     } catch (e) {
       console.warn("Failed to update plan task:", e);
@@ -855,7 +855,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       setPlanTasks(updated);
       const planKey = get7DayPlanStorageKey(userCode);
       localStorage.setItem(planKey, JSON.stringify(updated));
-      showToast("success", "تم حذف المهمة من الخطة");
+      showToast("success", "انحذفت المهمة من الخطة");
     } catch (e) {
       console.warn("Failed to delete task:", e);
     }
@@ -864,7 +864,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const handleDeleteRecommendation = (recId: string) => {
     removeSavedRecommendationFromStorage(recId, userCode);
     refreshSavedData();
-    showToast("success", "تم حذف التوصية من المحفوظات");
+    showToast("success", "انحذفت التوصية من المحفوظات");
   };
   
   const [selectedObjection, setSelectedObjection] = useState<string>("expensive");
@@ -1030,7 +1030,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       }
       return updated;
     });
-    showToast("success", "تمت إعادة تعيين التقييم، تكدر تقيم من جديد");
+    showToast("success", "رجعنا التقييم، تكدر تقيم من جديد");
   };
 
   const [vipUpgradeInput, setVipUpgradeInput] = useState("");
@@ -1195,8 +1195,8 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       cleanText: rawText,
       suggestions: [
         "اعطيني سكريبت عملي قابل للنسخ",
-        "كيف أطبق هذا في حملتي الإعلانية؟",
-        "ما هو الخطأ الشائع الذي يجب تجنبه؟"
+        "شلون أطبق هذا بحملتي؟",
+        "شنو الغلط اللي الكل يوكع بيه هنا؟"
       ]
     };
   };
@@ -1214,7 +1214,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
     const normalizedInput = normalizeCode(trimmed);
     if (!normalizedInput.includes("#ai")) {
-      setUpgradeError("الرمز المدخل لا يتضمن صلاحية المستشار الذكي (يجب أن يحتوي على #ai).");
+      setUpgradeError("هذا الرمز ما بيه صلاحية المستشار الذكي (لازم يكون بيه #ai).");
       return;
     }
 
@@ -1222,7 +1222,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const isValid = validCodes.includes(normalizedInput);
 
     if (isValid) {
-      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي بنجاح. دا ينفتح المستشار");
+      setUpgradeSuccessMsg("تفعل اشتراك المستشار الذكي. دا ينفتح المستشار");
       localStorage.setItem("sales_guide_user_code", trimmed);
       setTimeout(() => {
         if (onUpgradeSuccess) {
@@ -1237,7 +1237,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const handleStartNewTopic = () => {
     const hasUserMessages = messages.some((m) => m.role === "user");
     if (hasUserMessages) {
-      const confirmed = confirm("هل تريد بدء موضوع جديد ومسح المحادثة الحالية؟");
+      const confirmed = confirm("تريد تبدي موضوع جديد وتمسح المحادثة الحالية؟");
       if (!confirmed) return;
     }
 
@@ -1289,7 +1289,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     handleSendMessage(
       prompt,
       [
-        "حولها إلى خطة 7 أيام",
+        "حولها لخطة 7 أيام",
         "اكتبلي السكربت العراقي",
         "احسب صافي الربح",
         "افتح الفصل المرتبط"
@@ -1560,7 +1560,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     else if (selectedObjection === "quality_fear") topicId = "topic_sales_price_objection";
     else if (selectedObjection === "confirm_call") topicId = "topic_delivery_confirmation";
 
-    const prompt = `اعطيني سكريبت رد احترافي مكتوب باللهجة العراقية المفهومة والودية للتعامل مع اعتراض: "${objObj?.label}" (${objObj?.promptContext}) لمتجر يعمل في مجال: "${nicheObj?.label}".
+    const prompt = `اعطيني سكريبت رد احترافي مكتوب باللهجة العراقية المفهومة والودية للتعامل مع اعتراض: "${objObj?.label}" (${objObj?.promptContext}) لمتجر يشتغل بمجال: "${nicheObj?.label}".
 ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${customProductNote.trim()}` : ""}
 المطلوب:
 1. صياغة سكريبت محادثة واتساب مباشر جاهز للنسخ والإرسال.
@@ -1570,15 +1570,15 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
       prompt,
       [
         "اعطني خيار رد بديل لنفس الاعتراض",
-        "كيف أضيف عرض حزمة (Bundle) مقنع؟",
-        "سكريبت المتابعة في حال لم يرد الزبون"
+        "شلون أضيف عرض بكج يقنع؟",
+        "سكريبت متابعة إذا الزبون ما رد"
       ],
       topicId
     );
   };
 
   const handleClearHistory = () => {
-    if (confirm("هل أنت متأكد من مسح محادثة المستشار الذكي المحفوظة على هذا الجهاز؟")) {
+    if (confirm("متأكد تريد تمسح محادثة المستشار المحفوظة على هذا الجهاز؟")) {
       setMessages([]);
       if (typeof window !== "undefined") {
         try {
@@ -1588,7 +1588,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
           console.warn("Failed to clear local chat history:", e);
         }
       }
-      showToast("success", "تم مسح المحادثة بنجاح");
+      showToast("success", "انمسحت المحادثة");
     }
   };
 
@@ -1686,7 +1686,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
             </div>
 
             {!isVip && isFreeTrialUser(userCode) ? (
-              <div role="region" aria-label="المستشار ضمن الاشتراك الكامل" className="flex-1 overflow-y-auto p-4 sm:p-8 text-right">
+              <div role="region" aria-label="المستشار ويا الاشتراك الكامل" className="flex-1 overflow-y-auto p-4 sm:p-8 text-right">
                 <div className="max-w-xl mx-auto space-y-5">
                   <div className="text-center space-y-3">
                     <div className="vz-eyebrow text-xs sm:text-sm">
@@ -1736,11 +1736,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </div>
 
                   <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
-                    اشترك الآن في <span className="text-transparent bg-clip-text bg-gradient-to-r from-vz-blue-light via-white to-vz-blue">المستشار الذكي</span> بـ 14,000 دينار بس
+                    اشترك بـ<span className="text-transparent bg-clip-text bg-gradient-to-r from-vz-blue-light via-white to-vz-blue">المستشار الذكي</span> بـ 14,000 دينار بس
                   </h3>
                   
                   <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
-                    احصل على خبير إعلانات ومبيعات يعمل في هاتفك 24 ساعة بدون توقف لتشخيص حملاتك وتوليد سكريبتات إغلاق الصفقات عبر الواتساب.
+                    خبير إعلانات ومبيعات بموبايلك 24 ساعة، يشخص حملاتك ويكتبلك سكريبتات تسكر البيعة بالواتساب.
                   </p>
                 </div>
 
@@ -1771,7 +1771,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <span>حسبة بسيطة: ليش هذا الاشتراك يوفر عليك ثروة؟</span>
                     </div>
                     <p className="text-[11px] sm:text-xs text-white/75 leading-relaxed">
-                      حملة إعلانية واحدة فاشلة بالفيسبوك تضيع عليك <strong className="text-rose-400">50,000 إلى 100,000 دينار</strong>. المستشار الذكي يحميك من الخسارة بحسبة تسعير واحدة أو سكريبت رد واحد بالواتساب ويرجعلك المبلغ أضعاف من أول يوم
+                      حملة إعلانية واحدة فاشلة بالفيسبوك تضيع عليك <strong className="text-rose-400">50,000 لـ 100,000 دينار</strong>. المستشار الذكي يحميك من الخسارة بحسبة تسعير واحدة أو سكريبت رد واحد بالواتساب ويرجعلك المبلغ أضعاف من أول يوم
                     </p>
                   </div>
 
@@ -1805,16 +1805,16 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                   <div className="pt-2 space-y-3">
                     <a 
-                      href="https://wa.me/9647757851379?text=مرحبا،%20أريد%20الاشتراك%20في%20المستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهريا"
+                      href="https://wa.me/9647757851379?text=هلا،%20أريد%20أشترك%20بالمستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهريا"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-[0.97] transition cursor-pointer min-h-[50px]"
                     >
                       <Sparkles className="w-5 h-5 text-vz-accent animate-pulse" />
-                      <span>اشترك الآن عبر الواتساب (14,000 د.ع / شهريا)</span>
+                      <span>اشترك بالواتساب (14,000 دينار بالشهر)</span>
                     </a>
                     <p className="text-[11px] text-center text-white/60">
-                      تواصل مباشر مع الدعم عبر الواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
+                      راسل الدعم مباشرة بالواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
                     </p>
                   </div>
                 </div>
@@ -1825,7 +1825,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <KeyRound className="w-4 h-4 text-vz-accent" />
                       <span>عندك رمز تفعيل الاشتراك؟ أدخله هنا:</span>
                     </label>
-                    <p className="text-[11px] text-white/60">أدخل الرمز الذي استلمته عبر الواتساب للتفعيل الفوري.</p>
+                    <p className="text-[11px] text-white/60">اكتب الرمز اللي وصلك بالواتساب حتى يتفعل فورا.</p>
                   </div>
 
                   <form onSubmit={handleVipUpgrade} className="flex flex-col sm:flex-row gap-2">
@@ -1979,7 +1979,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <Compass className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
-                          اختر التحدي الذي يواجه مشروعك حاليا:
+                          اختار المشكلة اللي تواجه مشروعك هسه:
                         </h4>
                       </div>
                       <p className="text-xs text-white/70">
@@ -2002,7 +2002,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-vz-accent flex items-center gap-1">
-                          <span>اختر الحالة الدقيقة لمشروعك:</span>
+                          <span>اختار وضع مشروعك بالضبط:</span>
                         </span>
                         <span className="text-[11px] text-white/70 font-mono">
                           {currentDiag.options.length} خيارات متاحة
@@ -2052,14 +2052,14 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         </h4>
                       </div>
                       <p className="text-xs text-white/70">
-                        اختر نوع الاعتراض ومجال المنتج، وسيكتب لك مستشار فيزيون سكريبت محادثة جاهز للنسخ والإرسال للزبون على الواتساب أو عبر الاتصال.
+                        اختار نوع الاعتراض ومجال المنتج، والمستشار يكتبلك سكريبت جاهز تنسخه وتدزه للزبون بالواتساب أو تحجيه بالمكالمة.
                       </p>
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                         <span className="w-5 h-5 rounded-full bg-white/10 border border-white/18 flex items-center justify-center text-[10px] text-vz-accent">1</span>
-                        <span>ما هو اعتراض الزبون الذي تريد تجاوزه؟</span>
+                        <span>شنو اعتراض الزبون اللي تريد تتجاوزه؟</span>
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {SCRIPT_OBJECTIONS.map((obj) => (
@@ -2077,7 +2077,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                         <span className="w-5 h-5 rounded-full bg-white/10 border border-white/18 flex items-center justify-center text-[10px] text-vz-accent">2</span>
-                        <span>ما هو مجال أو تخصص متجرك؟</span>
+                        <span>شنو مجال متجرك؟</span>
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                         {SCRIPT_NICHES.map((niche) => (
@@ -2112,7 +2112,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       className="btn btn-primary w-full py-3.5 rounded-xl text-white font-black text-sm flex items-center justify-center gap-2 disabled:opacity-50 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     >
                       <Sparkles className="w-4 h-4" />
-                      <span>توليد السكريبت العراقي الآن</span>
+                      <span>اكتبلي السكريبت</span>
                     </button>
                   </div>
                 )}
@@ -2159,9 +2159,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       {planTasks.length === 0 ? (
                         <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Calendar className="w-8 h-8 text-white/60 mx-auto" />
-                          <p className="text-xs text-white/70 font-semibold">لم تضف أي توصيات لخطة الـ 7 أيام بعد</p>
+                          <p className="text-xs text-white/70 font-semibold">بعدك ما ضفت ولا توصية لخطة الـ 7 أيام</p>
                           <p className="text-[11px] text-white/60">
-                            عند استشارة مستشار فيزيون، اضغط على زر <strong className="text-vz-accent">"إضافة للخطة 7 أيام"</strong> في بطاقة الإجراءات لتنظيم خطواتك هنا.
+                            من تسأل المستشار، اضغط على زر <strong className="text-vz-accent">"إضافة للخطة 7 أيام"</strong> ببطاقة الإجراءات وترتب خطواتك هنا.
                           </p>
                         </div>
                       ) : (
@@ -2250,9 +2250,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       {savedRecommendations.length === 0 ? (
                         <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Bookmark className="w-8 h-8 text-white/60 mx-auto" />
-                          <p className="text-xs text-white/70 font-semibold">ماكو توصيات محفوظة حتى الآن</p>
+                          <p className="text-xs text-white/70 font-semibold">ماكو توصيات محفوظة لحد هسه</p>
                           <p className="text-[11px] text-white/60">
-                            اضغط على زر <strong className="text-vz-accent">"حفظ التوصية"</strong> في أي رد أو سكريبت لتجده محفوظا هنا للرجوع إليه دائما.
+                            اضغط على زر <strong className="text-vz-accent">"حفظ التوصية"</strong> بأي رد أو سكريبت، وتلكاه محفوظ هنا ترجعله بأي وقت.
                           </p>
                         </div>
                       ) : (
@@ -2294,7 +2294,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                     <button 
                                       onClick={() => {
                                         navigator.clipboard.writeText(rec.scriptText || "");
-                                        showToast("copy", "تم نسخ السكريبت بنجاح", "تكدر لصقه مباشرة في محادثة الواتساب");
+                                        showToast("copy", "انتسخ السكريبت", "تكدر تلصقه بمحادثة الواتساب مباشرة");
                                       }}
                                       className="px-2 py-0.5 rounded bg-white/10 hover:bg-vz-blue text-vz-accent hover:text-white transition-colors flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                     >
@@ -2421,7 +2421,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 >
                                   <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-vz-accent">
                                     <Sparkles className="w-4 h-4 text-vz-accent shrink-0" />
-                                    <span>بدأنا موضوع جديد. اكتب سؤالك هسه أو اختر من الاقتراحات.</span>
+                                    <span>بدينا موضوع جديد. اكتب سؤالك هسه أو اختار من الاقتراحات.</span>
                                   </div>
                                 </motion.div>
                               );
@@ -2493,7 +2493,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                               type="button"
                                               onClick={() => {
                                                 setRestoredText(msg.failedPrompt!.text);
-                                                showToast("copy", "تم استرجاع السؤال للتعديل");
+                                                showToast("copy", "رجعنالك السؤال حتى تعدله");
                                               }}
                                               className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-rose-100 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.97] transition min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                               title="استرجاع السؤال للتعديل عليه"
@@ -2563,7 +2563,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                               }}
                                               onCopyFull={() => {
                                                 handleCopy(msg.id, msg.text);
-                                                showToast("copy", "تم نسخ الرد بالكامل بنجاح");
+                                                showToast("copy", "انتسخ الرد كامل");
                                               }}
                                               isFullCopied={copiedId === msg.id}
                                             />
@@ -2596,7 +2596,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           onClearFeedback={() => handleClearFeedback(msg.id)}
                                           onCopy={() => {
                                             handleCopy(msg.id, msg.text);
-                                            showToast("copy", "تم نسخ الرد بالكامل بنجاح");
+                                            showToast("copy", "انتسخ الرد كامل");
                                           }}
                                           isCopied={copiedId === msg.id}
                                           timestamp={msg.timestamp}

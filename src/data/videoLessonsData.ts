@@ -41,7 +41,7 @@ export const videoLessonsList: VideoLesson[] = [
     "title": "شلون ترتب عرض قوي وتجاوب على حجج الزبائن",
     "duration": "05:30",
     "thumbnailUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-    "summary": "تحويل المنتج العادي إلى عرض مغري ما يرفضه الزبون باستخدام ترتيب الهدايا وتجميع العروض وتوفير الطمأنينة.",
+    "summary": "تحويل المنتج العادي لعرض مغري ما يرفضه الزبون باستخدام ترتيب الهدايا وتجميع العروض وتوفير الطمأنينة.",
     "timestamps": [
       {
         "time": "00:00",

@@ -379,7 +379,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
 
             <div className="glass-subtle rounded-2xl p-3.5 text-right flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <span className="block text-[11px] font-bold text-white/60">الاشتراك الكامل، مدى الحياة</span>
+                <span className="block text-[11px] font-bold text-white/60">الكورس كامل، تدفع مرة وحدة ويبقى الك</span>
                 <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار، {STUDENT_COUNT} مشترك</span>
               </div>
               <div className="text-left shrink-0">

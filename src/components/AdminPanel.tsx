@@ -131,7 +131,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
     const updated = [newCodeItem, ...codes];
     saveCodes(updated);
 
-    setSuccessMessage(`تم إنشاء كود الدخول للمشترك [${newBuyerName}] بنجاح. الكود: ${finalCode}`);
+    setSuccessMessage(`انسوى كود الدخول للمشترك [${newBuyerName}] بنجاح. الكود: ${finalCode}`);
     setNewBuyerName("");
     setCustomCode("");
   };
@@ -147,7 +147,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
   };
 
   const handleDeleteCode = (codeToDelete: string) => {
-    if (window.confirm(`هل أنت متأكد من رغبتك في حذف الرمز [${codeToDelete}] نهائيا؟`)) {
+    if (window.confirm(`متأكد تريد تحذف الرمز [${codeToDelete}] نهائيا؟`)) {
       const updated = codes.filter(c => c.code !== codeToDelete);
       saveCodes(updated);
     }
@@ -320,7 +320,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           {activeTab === "add" && (
             <form onSubmit={handleCreateCode} className="space-y-4 animate-fade-in">
               <div className="p-4 bg-white/3 border border-white/9 rounded-xl mb-2 text-xs text-vz-accent leading-relaxed">
-                تكدر توليد كود دخول ذهبي تلقائي للمشتركين الذين اشتروا الدليل يدويا أو ترغب بمنحهم وصولا خاصا.
+                تكدر تسوي كود دخول ذهبي للمشتركين اللي اشتروا الدليل يدويا، أو للي تريد تنطيهم دخول خاص.
               </div>
 
               <div className="space-y-1.5">
@@ -328,7 +328,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 <input                   type="text"
                   value={newBuyerName}
                   onChange={(e) => setNewBuyerName(e.target.value)}
-                  placeholder="أدخل الاسم الثلاثي للمشتري..."
+                  placeholder="اكتب الاسم الثلاثي للمشتري..."
                   className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white text-xs focus:outline-none focus:border-white/35 min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
@@ -338,7 +338,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 <input                   type="text"
                   value={customCode}
                   onChange={(e) => setCustomCode(e.target.value)}
-                  placeholder="مثال: ali#gold (أحرف إنجليزية وأرقام فقط)"
+                  placeholder="مثال: ali#gold (بس أحرف إنجليزية وأرقام)"
                   className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-white/35 min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
@@ -371,7 +371,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 <div className="space-y-0.5">
                   <p className="font-bold">نظام تحليلات وتقييم يحترم الخصوصية 100%</p>
                   <p className="text-[11px] text-emerald-200/80 leading-relaxed">
-                    يتم تسجيل الأحداث الحركية العامة فقط بدون تخزين نصوص الرسائل الخاصة، أرقام هواتف الزبائن، أو مفاتيح API.
+                    نسجل بس الحركات العامة، بدون نصوص الرسائل الخاصة أو أرقام الزبائن أو مفاتيح API.
                   </p>
                 </div>
               </div>
@@ -660,7 +660,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
         </div>
 
         <div className="px-6 py-4 border-t border-white/[0.06] bg-black/20 text-center text-[10px] text-white/45">
-          تذكر: جميع الأكواد تحفظ محليا بالكامل بالمتصفح، ولا يتم إرسالها لأي خادم بعيد لتأمين الخصوصية الكاملة.
+          تذكر: كل الأكواد تنحفظ بالمتصفح نفسه وما تنرسل لأي سيرفر، حتى تبقى الخصوصية كاملة.
         </div>
 
           </motion.div>

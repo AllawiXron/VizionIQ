@@ -1,5 +1,5 @@
-export const FULL_PRICE = 99000;
-export const OFFER_PRICE = 49000;
+export const FULL_PRICE = 39000;
+export const OFFER_PRICE = 39000;
 export const OFFER_LAST_DAY = "30 أكتوبر";
 export const OFFER_ENDS_AT = new Date("2026-10-31T00:00:00+03:00");
 

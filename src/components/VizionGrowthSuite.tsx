@@ -135,7 +135,7 @@ export default function VizionGrowthSuite() {
   }, []);
 
   const toolCategories = [
-    { id: "all" as const, label: "جميع الأدوات", icon: "" },
+    { id: "all" as const, label: "كل الأدوات", icon: "" },
     { id: "understand" as const, label: "١. افهم", icon: "", subtitle: "تشخيص واقع المشروع والمنافسين" },
     { id: "calculate" as const, label: "٢. احسب", icon: "", subtitle: "حاسبات الأرباح، التسعير، والميزانيات" },
     { id: "optimize" as const, label: "٣. حسن", icon: "", subtitle: "تحسين الإعلانات، المحادثات، والمنتج" },
@@ -218,7 +218,7 @@ export default function VizionGrowthSuite() {
       verdict = "شغلك متوسط وتكدر تحسنه بتعديلات بسيطة بالرد.";
       recommendations.push("حاول تخير الزبون بين لونين أو قياسين بدل ما تسأله 'تريد لو لا؟' حتى تقفل الطلب بسرعة.");
     } else {
-      verdict = "أداء الردود والتحويل ممتاز جدا ومحترف";
+      verdict = "الردود والتحويل كلش ممتازة ومحترفة";
     }
 
     if (deliveryRate < 70) {
@@ -718,7 +718,7 @@ export default function VizionGrowthSuite() {
                     </div>
 
                     <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
-                      <strong>فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت الراجع لـ <strong>10%</strong> وصعدت قفل الطلبات لـ <strong>15%</strong>، راح يطفر ربحك الصافي من <span className="font-mono text-white underline">{Math.round(diagResult.netProfit).toLocaleString()} دينار</span> إلى <strong className="text-emerald-400 font-mono underline">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>! وهيج تزيد أرباحك بدون ما تصرف إعلانات أكثر.
+                      <strong>فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت الراجع لـ <strong>10%</strong> وصعدت قفل الطلبات لـ <strong>15%</strong>، راح يطفر ربحك الصافي من <span className="font-mono text-white underline">{Math.round(diagResult.netProfit).toLocaleString()} دينار</span> لـ <strong className="text-emerald-400 font-mono underline">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>! وهيج تزيد أرباحك بدون ما تصرف إعلانات أكثر.
                     </div>
                   </div>
                 )}
@@ -892,7 +892,7 @@ export default function VizionGrowthSuite() {
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل كليا</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل بالمجموع</label>
                     <NumberField className="w-full" value={t4Messages} onChange={(v) => setT4Messages(v)} unit="رسالة" step={10} />
                   </div>
                   <div className="space-y-1.5">
@@ -1485,7 +1485,7 @@ export default function VizionGrowthSuite() {
                     <label className="text-white/80 font-bold block">١. شكد نسبة النقر عالفيديو مالتك؟</label>
                     <select value={t11CTR} onChange={(e) => setT11CTR(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                       <option value="low">ضعيفة (أقل من 1% - الزباين يعبرون الفيديو)</option>
-                      <option value="medium">متوسطة (1% إلى 2%)</option>
+                      <option value="medium">متوسطة (1% لـ 2%)</option>
                       <option value="high">قوية (أكثر من 2% - التفاعل عالي)</option>
                     </select>
                   </div>
@@ -1502,7 +1502,7 @@ export default function VizionGrowthSuite() {
                     <label className="text-white/80 font-bold block">٣. شلون سرعتك وطريقتك بالرد عالخاص؟</label>
                     <select value={t11Speed} onChange={(e) => setT11Speed(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                       <option value="slow">بطيء (أكثر من ساعتين) أو أرد رد جاهز وناشف</option>
-                      <option value="fast">سريع جدا (أقل من 15 دقيقة) وبأسلوب حلو وودود</option>
+                      <option value="fast">كلش سريع (أقل من 15 دقيقة) وبأسلوب حلو</option>
                     </select>
                   </div>
 

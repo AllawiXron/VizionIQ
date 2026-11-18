@@ -277,7 +277,7 @@ export default function IraqiInsights() {
                 
                 <button                   onClick={(e) => handleVote(insight.id, e)}
                   className="px-3.5 py-2.5 rounded-xl bg-gradient-to-b from-white/10 to-white/5 hover:from-white/10 hover:to-white/5 hover:text-vz-accent border border-white/10 hover:border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex items-center justify-center sm:justify-start gap-2 font-bold cursor-pointer active:scale-[0.97] shadow-lg w-full sm:w-auto min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                  title="نعم، لقد واجهت هذا الموقف في مشروعي سابقا"
+                  title="إي، صارت وياي بمشروعي"
                 >
                   <ThumbsUp className="w-3.5 h-3.5 text-vz-accent" />
                   <span className="text-xs">والله هاي صارت وياي</span>
@@ -311,9 +311,9 @@ export default function IraqiInsights() {
 
       {filteredInsights.length === 0 && (
         <div className="text-center py-20 glass to-black/40 border rounded-4xl space-y-4">
-          <h4 className="text-lg font-black text-white">لم نجد أي حقيقة تطابق بحثك</h4>
+          <h4 className="text-lg font-black text-white">ما لكينا شي يطابق بحثك</h4>
           <p className="text-sm text-white/70 max-w-sm mx-auto leading-relaxed">
-            جرب كتابة كلمات مختلفة مثل 'إعلان'، 'سعر'، 'مرتجع'، أو اختر تبويب تصنيف آخر أعلاه.
+            جرب كلمات ثانية مثل 'إعلان' أو 'سعر' أو 'راجع'، أو اختار تصنيف ثاني من فوك.
           </p>
           <button             onClick={() => { setSearchTerm(""); setSelectedCategory("all"); }}
             className="text-sm text-vz-accent font-black hover:text-white transition-colors cursor-pointer mt-4 inline-flex items-center gap-2 border-b border-white/14 hover:border-vz-blue-light pb-1 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"

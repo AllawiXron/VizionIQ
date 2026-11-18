@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { AlertTriangle, ArrowLeft, ArrowRight, Check, CheckCircle2, Clock, Lightbulb, Lock, X } from "lucide-react";
 import type { Block, Lesson } from "../data/course";
@@ -260,6 +260,136 @@ function TableScreen({ block }: { block: Extract<Block, { kind: "table" }> }) {
   );
 }
 
+function CheckScreen({ block, choice, onChoose }: { block: Extract<Block, { kind: "check" }>; choice: number | "skip" | undefined; onChoose: (i: number) => void }) {
+  const revealed = choice !== undefined;
+  const right = choice === block.answer;
+  return (
+    <div>
+      <Kicker>سؤال سريع</Kicker>
+      <h3 className="text-[21px] sm:text-[26px] font-black text-white leading-[1.6] mb-6">
+        <Rich text={block.question} />
+      </h3>
+      <div className="grid gap-3">
+        {block.options.map((o, i) => {
+          const isAnswer = i === block.answer;
+          const picked = choice === i;
+          const state = !revealed ? "idle" : isAnswer ? "good" : picked ? "bad" : "muted";
+          return (
+            <button
+              key={o}
+              type="button"
+              disabled={revealed}
+              onClick={() => onChoose(i)}
+              className={`w-full text-right rounded-2xl px-4 sm:px-5 py-4 border text-[17px] sm:text-[19px] font-bold leading-[1.7] transition-colors duration-300 flex items-start justify-between gap-3 ${
+                state === "idle"
+                  ? "bg-white/[0.04] border-white/12 text-white hover:bg-white/[0.08] cursor-pointer"
+                  : state === "good"
+                    ? "bg-emerald-400/[0.1] border-emerald-400/50 text-white"
+                    : state === "bad"
+                      ? "bg-red-500/[0.08] border-red-400/40 text-white/80"
+                      : "bg-white/[0.02] border-white/[0.06] text-white/40"
+              }`}
+            >
+              <span>{o}</span>
+              {state === "good" && <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0 mt-1" />}
+              {state === "bad" && <X className="w-5 h-5 text-red-300 shrink-0 mt-1" />}
+            </button>
+          );
+        })}
+      </div>
+      {revealed && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: EASE_OUT }} className="mt-5">
+          <p className={`text-[17px] font-black mb-1.5 ${right ? "text-emerald-300" : "text-amber-200"}`}>{right ? "صح." : choice === "skip" ? "هذا الجواب." : "مو هاي، الصح المأشر بالأخضر."}</p>
+          <p className="text-[17px] sm:text-[19px] text-white/80 leading-[1.85]">
+            <Rich text={block.explain} />
+          </p>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+const countWord = (n: number, one: string, two: string, many: string) => (n === 1 ? one : n === 2 ? two : `${n} ${many}`);
+
+const applyKey = (chapterId: string, lessonIndex: number) => `vz_apply_${chapterId}_${lessonIndex}`;
+
+function readApply(key: string): Record<string, string> {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function ApplyScreen({ block, storageKey }: { block: Extract<Block, { kind: "apply" }>; storageKey: string }) {
+  const [vals, setVals] = useState<Record<string, string>>(() => readApply(storageKey));
+  const [copied, setCopied] = useState(false);
+  const set = (id: string, v: string) => {
+    const nextVals = { ...vals, [id]: v };
+    setVals(nextVals);
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(nextVals));
+    } catch {
+      /* storage blocked, the text stays on screen */
+    }
+  };
+  const filled = block.fields.filter((f) => f.id !== "product").every((f) => (vals[f.id] || "").trim().length > 0);
+  const sentence = block.template.replace(/\{(\w+)\}/g, (_, id) => (vals[id] || "").trim() || "...");
+  const hints = (block.hints ?? []).filter((h, i, all) => {
+    const v = (vals[h.field] || "").trim();
+    if (!v) return false;
+    const hit = (x: typeof h) => (x.when === "short" ? v.length < 14 : (x.words ?? []).some((w) => v.includes(w)));
+    return hit(h) && !all.slice(0, i).some((x) => x.field === h.field && hit(x));
+  });
+  const copy = () => {
+    navigator.clipboard?.writeText(sentence).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    });
+  };
+  return (
+    <div>
+      <Kicker tone="green">طبقها على منتجك</Kicker>
+      <h3 className="text-[22px] sm:text-[28px] font-black text-white leading-snug mb-2">{block.title}</h3>
+      <p className="text-[16px] sm:text-[18px] text-white/70 leading-[1.8] mb-5">{block.intro}</p>
+      <div className="space-y-4">
+        {block.fields.map((f) => (
+          <label key={f.id} className="block">
+            <span className="block text-[15px] font-black text-white mb-1.5">{f.label}</span>
+            <textarea
+              value={vals[f.id] || ""}
+              onChange={(e) => set(f.id, e.target.value)}
+              placeholder={f.placeholder}
+              rows={f.id === "product" ? 1 : 2}
+              className="w-full rounded-2xl bg-white/[0.05] border border-white/12 focus:border-vz-blue-light/70 focus:bg-white/[0.07] outline-none px-4 py-3 text-[17px] text-white placeholder:text-white/30 leading-relaxed resize-none transition-colors duration-200"
+            />
+          </label>
+        ))}
+      </div>
+      {hints.length > 0 && (
+        <div className="mt-4 space-y-2">
+          {hints.map((h) => (
+            <p key={h.say} className="flex items-start gap-2.5 rounded-2xl bg-amber-300/[0.07] border border-amber-200/25 px-4 py-3 text-[15px] text-amber-50/90 leading-relaxed">
+              <Lightbulb className="w-4 h-4 text-amber-200 shrink-0 mt-1" />
+              {h.say}
+            </p>
+          ))}
+        </div>
+      )}
+      <div className={`mt-5 rounded-3xl p-5 border transition-colors duration-300 ${filled ? "bg-emerald-400/[0.08] border-emerald-300/35" : "bg-white/[0.03] border-white/[0.08]"}`}>
+        <p className="text-[13px] font-black text-white/50 mb-2">جملتك</p>
+        <p className="text-[18px] sm:text-[21px] font-bold text-white leading-[1.8]">{sentence}</p>
+        {filled && (
+          <button type="button" onClick={copy} className="mt-3 btn btn-glass min-h-[44px] px-4 rounded-xl text-[15px]">
+            {copied ? "انتسخت" : "انسخ الجملة"}
+          </button>
+        )}
+      </div>
+      <p className="mt-3 text-[13px] text-white/40">تنحفظ بهذا الجهاز بس.</p>
+    </div>
+  );
+}
+
 function VisualScreen({ block, shown }: { block: Extract<Block, { kind: "visual" }>; shown: number }) {
   const v = VISUALS[block.name];
   const g = GENERIC[block.name];
@@ -284,7 +414,30 @@ function ImageScreen({ block }: { block: Extract<Block, { kind: "image" }> }) {
   );
 }
 
+class ScreenGuard extends React.Component<{ children: React.ReactNode; onSkip: () => void }, { broken: boolean }> {
+  declare props: { children: React.ReactNode; onSkip: () => void };
+  state = { broken: false };
+
+  static getDerivedStateFromError() {
+    return { broken: true };
+  }
+
+  render() {
+    if (!this.state.broken) return this.props.children;
+    return (
+      <div className="text-center">
+        <p className="text-[19px] font-bold text-white mb-2">هالخطوة ما انفتحت عندك.</p>
+        <p className="text-[16px] text-white/60 mb-6">كمل للخطوة الجاية، وإذا تكررت دز لنا رسالة.</p>
+        <button type="button" onClick={this.props.onSkip} className="btn btn-glass min-h-[48px] px-5 rounded-2xl text-[16px]">
+          كمل للخطوة الجاية
+        </button>
+      </div>
+    );
+  }
+}
+
 interface LessonPlayerProps {
+  chapterId?: string;
   chapterLabel: string;
   lessons: Lesson[];
   index: number;
@@ -294,21 +447,41 @@ interface LessonPlayerProps {
   onClose: () => void;
 }
 
-export default function LessonPlayer({ chapterLabel, lessons, index, openLessons, onOpenLesson, onDone, onClose }: LessonPlayerProps) {
+export default function LessonPlayer({ chapterId = "course", chapterLabel, lessons, index, openLessons, onOpenLesson, onDone, onClose }: LessonPlayerProps) {
   const lesson = lessons[index];
   const screens = useMemo(() => buildScreens(lesson), [lesson]);
   const [at, setAt] = useState(0);
   const [shown, setShown] = useState(1);
   const [dir, setDir] = useState(1);
   const [choices, setChoices] = useState<Record<number, "good" | "bad" | "skip">>({});
-  const screen = screens[at];
-  const lastStep = screens.length - 2;
-
-  useEffect(() => {
+  const [answers, setAnswers] = useState<Record<number, number | "skip">>({});
+  const [shownIndex, setShownIndex] = useState(index);
+  if (shownIndex !== index) {
+    // a new lesson opened from inside the player: start it from its first screen
+    setShownIndex(index);
     setAt(0);
     setShown(1);
+    setDir(1);
     setChoices({});
-  }, [index]);
+    setAnswers({});
+  }
+  const safeAt = Math.min(at, screens.length - 1);
+  const screen = screens[safeAt];
+  const lastStep = screens.length - 2;
+  const scroller = useRef<HTMLDivElement>(null);
+  const counts = useMemo(() => {
+    const c = { checks: 0, visuals: 0, apply: false };
+    for (const b of lesson.blocks) {
+      if (b.kind === "check" || b.kind === "compare") c.checks++;
+      else if (b.kind === "visual") c.visuals++;
+      else if (b.kind === "apply") c.apply = true;
+    }
+    return c;
+  }, [lesson]);
+
+  useEffect(() => {
+    scroller.current?.scrollTo({ top: 0 });
+  }, [index, at]);
 
   useEffect(() => {
     if (screen.kind === "done") onDone(index);
@@ -333,6 +506,10 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
       setChoices((c) => ({ ...c, [at]: "skip" }));
       return;
     }
+    if (screen.kind === "block" && screen.block.kind === "check" && answers[at] === undefined) {
+      setAnswers((c) => ({ ...c, [at]: "skip" }));
+      return;
+    }
     if (shown < revealCount(screen)) {
       setShown((s) => s + 1);
       return;
@@ -342,7 +519,7 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
       setAt((a) => a + 1);
       setShown(1);
     }
-  }, [screen, shown, at, screens.length, choices]);
+  }, [screen, shown, at, screens.length, choices, answers]);
 
   const back = useCallback(() => {
     if (at === 0) return;
@@ -365,6 +542,8 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
     screen.kind === "intro" ? "يلا نبدي"
       : screen.kind === "takeaway" ? "خلصت الدرس"
         : screen.kind === "block" && screen.block.kind === "compare" && choices[at] === undefined ? "شوف الجواب"
+          : screen.kind === "block" && screen.block.kind === "check" && answers[at] === undefined ? "شوف الجواب"
+          : screen.kind === "block" && screen.block.kind === "apply" ? "حفظت، كمل"
           : shown < revealCount(screen) ? (screen.kind === "block" && screen.block.kind === "visual" ? "كمل" : "الخطوة الجاية")
             : "التالي";
 
@@ -391,10 +570,11 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
         </div>
       </div>
 
-      <div className="relative z-10 flex-1 overflow-y-auto overscroll-contain">
+      <div ref={scroller} className="relative z-10 flex-1 overflow-y-auto overscroll-contain">
         <div className="w-full max-w-2xl mx-auto px-5 py-8 sm:py-12 min-h-full flex flex-col justify-center">
+            <ScreenGuard key={`${index}-${safeAt}`} onSkip={next}>
             <motion.div
-              key={at}
+              key={`${index}-${safeAt}`}
               custom={dir}
               variants={{
                 enter: (d: number) => ({ opacity: 0, x: d > 0 ? -40 : 40 }),
@@ -404,7 +584,7 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
               initial="enter"
               animate="center"
               transition={{ duration: 0.28, ease: EASE_OUT }}
-              drag={screen.kind === "done" || (screen.kind === "block" && screen.block.kind === "visual") ? false : "x"}
+              drag={screen.kind === "done" || (screen.kind === "block" && (screen.block.kind === "visual" || screen.block.kind === "apply")) ? false : "x"}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.18}
               onDragEnd={(_, info) => {
@@ -421,7 +601,14 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
                   </p>
                   <p className="inline-flex items-center gap-2 text-[14px] font-bold text-white/50">
                     <Clock className="w-4 h-4" />
-                    {lessonMinutes(lesson)} دقايق، {screens.length - 2} شاشات
+                    {[
+                      `${lessonMinutes(lesson)} دقايق`,
+                      counts.visuals ? `${countWord(counts.visuals, "رسم واحد", "رسمين", "رسوم")} تتفاعل وياها` : "",
+                      counts.checks ? countWord(counts.checks, "سؤال واحد", "سؤالين", "أسئلة") : "",
+                      counts.apply ? "وتطبيق على منتجك" : "",
+                    ]
+                      .filter(Boolean)
+                      .join("، ")}
                   </p>
                 </div>
               )}
@@ -436,6 +623,10 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
               {screen.kind === "block" && screen.block.kind === "table" && <TableScreen block={screen.block} />}
               {screen.kind === "block" && screen.block.kind === "image" && <ImageScreen block={screen.block} />}
               {screen.kind === "block" && screen.block.kind === "visual" && <VisualScreen block={screen.block} shown={shown} />}
+              {screen.kind === "block" && screen.block.kind === "check" && (
+                <CheckScreen block={screen.block} choice={answers[at]} onChoose={(c) => setAnswers((s) => ({ ...s, [at]: c }))} />
+              )}
+              {screen.kind === "block" && screen.block.kind === "apply" && <ApplyScreen block={screen.block} storageKey={applyKey(chapterId, index)} />}
               {screen.kind === "takeaway" && (
                 <div>
                   <Kicker tone="green">
@@ -473,6 +664,7 @@ export default function LessonPlayer({ chapterLabel, lessons, index, openLessons
                 </div>
               )}
             </motion.div>
+            </ScreenGuard>
         </div>
       </div>
 

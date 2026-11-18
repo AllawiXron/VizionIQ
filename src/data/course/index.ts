@@ -47,14 +47,20 @@ function blockText(b: Block): string {
       return b.caption;
     case "visual":
       return [b.title, b.caption ?? "", b.text ?? ""].join(" ");
+    case "check":
+      return [b.question, ...b.options, b.explain].join(" ");
+    case "apply":
+      return [b.title, b.intro, ...b.fields.map((f) => f.label)].join(" ");
   }
 }
 
 const words = (text: string) => text.split(/\s+/).filter(Boolean).length;
 
 export function lessonMinutes(lesson: Lesson): number {
-  const n = words([lesson.intro, ...lesson.blocks.map(blockText), lesson.takeaway].join(" "));
-  return Math.max(4, Math.round(n / 80));
+  const shown = lesson.blocks.map((b) => (b.kind === "visual" ? [b.title, b.caption ?? ""].join(" ") : blockText(b)));
+  const reading = words([lesson.intro, ...shown, lesson.takeaway].join(" ")) / 120;
+  const doing = lesson.blocks.reduce((t, b) => t + (b.kind === "apply" ? 2 : b.kind === "visual" || b.kind === "check" || b.kind === "compare" ? 0.5 : 0), 0);
+  return Math.max(4, Math.round(reading + doing));
 }
 
 export function chapterMinutes(chapter: CourseChapter): number {

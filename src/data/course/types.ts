@@ -8,7 +8,16 @@ export type Block =
   | { kind: "table"; title?: string; head: string[]; rows: string[][] }
   | { kind: "compare"; title?: string; bad: { label: string; text: string }; good: { label: string; text: string } }
   | { kind: "image"; src: string; caption: string; alt?: string }
-  | { kind: "visual"; name: string; title: string; caption?: string; text?: string; data?: unknown };
+  | { kind: "visual"; name: string; title: string; caption?: string; text?: string; data?: unknown }
+  | { kind: "check"; question: string; options: string[]; answer: number; explain: string }
+  | {
+      kind: "apply";
+      title: string;
+      intro: string;
+      fields: { id: string; label: string; placeholder: string }[];
+      template: string;
+      hints?: { field: string; when: "short" | "has"; words?: string[]; say: string }[];
+    };
 
 export interface Lesson {
   title: string;

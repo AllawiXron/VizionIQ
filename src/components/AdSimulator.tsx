@@ -39,7 +39,7 @@ export default function AdSimulator() {
               </button>
               <button                 onClick={() => {
                   setHeadline("من اليوم ماكو كشخة تخرب بسبب الكشنات!");
-                  setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\nحجمها صغير ومثالية لكشنات وزوايا السيارة.\nتعبئة USB يدوم لأسابيع.\nالتوصيل لباب بيتك مجاني هذا الأسبوع!\n\nاضغط على 'اطلب الآن' واحصل عليها بخصم خاص اليوم!");
+                  setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\nحجمها صغير ومثالية لكشنات وزوايا السيارة.\nتعبئة USB يدوم لأسابيع.\nالتوصيل لباب بيتك مجاني هذا الأسبوع!\n\nدوس 'اطلب الآن' وخذها بخصم خاص اليوم!");
                   setCta("تسوق الآن");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -49,7 +49,7 @@ export default function AdSimulator() {
               </button>
               <button                 onClick={() => {
                   setHeadline("اشتري وحدة الك والثانية لبيت أبوك مجانا!");
-                  setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة!\n\nيشتغل من شمس الصيف الحارة ويشتغل تلقائيا بالليل.\nخامة قوية ومقاومة للأمطار وعواصف الغبار.\nتوصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف فقط!\n\nالعرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
+                  setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة!\n\nيشتغل من شمس الصيف الحارة ويشتغل تلقائيا بالليل.\nخامة قوية ومقاومة للأمطار وعواصف الغبار.\nتوصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف بس!\n\nالعرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
                   setCta("اشتري قطعتين والتوصيل مجاني");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -143,7 +143,7 @@ export default function AdSimulator() {
                 <div className="z-10 text-center p-4">
                   <span className="text-[10px] bg-white/10 text-vz-accent border border-white/18 px-2 py-0.5 rounded-full font-bold">خصم ٢٥٪ - الدفع عند الاستلام</span>
                   <h6 className="text-sm font-bold text-white tracking-wide">مظلة الزجاج الذكية للسيارات</h6>
-                  <p className="text-[10px] text-white/60 mt-1">المظهر الأصلي المضمون في العراق</p>
+                  <p className="text-[10px] text-white/60 mt-1">المظهر الأصلي المضمون بالعراق</p>
                 </div>
               </div>
 

@@ -49,22 +49,22 @@ const SALES_CHANNELS = [
 
 const DELIVERY_AREAS = [
   { id: "all_iraq", label: "كل محافظات العراق (بغداد + 17 محافظة)" },
-  { id: "baghdad_only", label: "بغداد وضواحيها فقط" },
+  { id: "baghdad_only", label: "بس بغداد وأطرافها" },
   { id: "baghdad_and_center", label: "بغداد والفرات الأوسط" },
-  { id: "kurdistan", label: "إقليم كردستان فقط" },
-  { id: "south", label: "المحافظات الجنوبية فقط" },
+  { id: "kurdistan", label: "بس إقليم كردستان" },
+  { id: "south", label: "بس المحافظات الجنوبية" },
 ];
 
 const MAIN_PROBLEMS = [
   {
     id: "high_cpa",
-    title: "رسائل كثيرة لكن ماكو مبيعات (ضعف الإغلاق)",
+    title: "رسائل هواية بس ماكو مبيعات (ضعف الإغلاق)",
     desc: "الزبائن يستفسرون عن السعر ويختفون دون تأكيد الطلب.",
     icon: "",
   },
   {
     id: "ad_cost",
-    title: "كلفة الرسالة بالإعلانات مرتفعة جدا (CPA عالي)",
+    title: "كلفة الرسالة بالإعلانات كلش عالية (CPA)",
     desc: "الإعلانات تستهلك الميزانية بدون نتائج كافية.",
     icon: "",
   },
@@ -77,7 +77,7 @@ const MAIN_PROBLEMS = [
   {
     id: "low_margin",
     title: "هامش الربح ضعيف بعد خصم التوصيل والإعلانات",
-    desc: "مبيعات موجودة لكن صافي الربح الحقيقي في نهاية الشهر قليل.",
+    desc: "اكو مبيعات، بس الربح الصافي بآخر الشهر قليل.",
     icon: "",
   },
   {
@@ -125,7 +125,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
     initialProfile?.deliveryAreas || "كل محافظات العراق (بغداد + 17 محافظة)"
   );
   const [mainProblem, setMainProblem] = useState<string>(
-    initialProfile?.mainProblem || "رسائل كثيرة لكن ماكو مبيعات (ضعف الإغلاق)"
+    initialProfile?.mainProblem || "رسائل هواية بس ماكو مبيعات (ضعف الإغلاق)"
   );
   const [notes, setNotes] = useState<string>(initialProfile?.notes || "");
 
@@ -184,7 +184,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
       if (priceVal.isValid && costVal.isValid && priceVal.value !== null && costVal.value !== null) {
         if (costVal.value >= priceVal.value) {
-          errors.productCost = "كلفة المنتج يجب أن تكون أقل من سعر البيع لتحقيق هامش ربح.";
+          errors.productCost = "كلفة المنتج لازم تكون أقل من سعر البيع حتى يبقى ربح.";
         }
       }
     } else if (step === 3) {
@@ -299,7 +299,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           <div className="space-y-4 animate-fadeIn">
             <div>
               <label className="block text-sm font-semibold text-slate-200 mb-2">
-                1. ما هو مجال ونوع مشروعك التجاري؟
+                1. شنو مجال مشروعك؟
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {BUSINESS_TYPES.map((type) => {
@@ -324,7 +324,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             <div>
               <label htmlFor="diag-product-service" className="block text-sm font-semibold text-slate-200 mb-1.5">
-                2. ما هو المنتج أو الخدمة التي تبيعها حاليا؟ <span className="text-vz-accent">*</span>
+                2. شنو المنتج أو الخدمة اللي تبيعها هسه؟ <span className="text-vz-accent">*</span>
               </label>
               <input                 
                 id="diag-product-service"
@@ -346,7 +346,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             <div>
               <label className="block text-sm font-semibold text-slate-200 mb-2">
-                3. ما هي قناة البيع واستقبال الزبائن الأساسية؟
+                3. منين تبيع وتستقبل زبائنك بالأساس؟
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {SALES_CHANNELS.map((ch) => {
@@ -378,7 +378,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                 <DollarSign className="w-4 h-4" /> التسعير بالدينار العراقي:
               </span>
               <p>
-                أدخل الأرقام بالدينار (تكدر كتابة 25000 أو 25 ألف). سنحسب لك الهامش الإجمالي للقطعة فورا.
+                اكتب الأرقام بالدينار (تكدر تكتب 25000 أو 25 ألف)، ونحسبلك ربح القطعة فورا.
               </p>
             </div>
 
@@ -502,7 +502,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             {currentMetrics.conversionRate !== null && (
               <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-slate-400 block">معدل تحويل الرسائل إلى طلبات:</span>
+                  <span className="text-xs text-slate-400 block">شكد من الرسائل تصير طلبات:</span>
                   <span className="text-xs text-vz-accent font-semibold">{currentMetrics.conversionRateLabel}</span>
                 </div>
                 <span className="text-lg font-bold text-vz-accent">
@@ -515,7 +515,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               <div>
                 <div className="flex justify-between items-center mb-1.5">
                   <label htmlFor="diag-return-rate" className="text-sm font-semibold text-slate-200">
-                    نسبة المرتجعات (إن كنت تعرفها)
+                    نسبة الراجع (إذا تعرفها)
                   </label>
                   <span className="text-[11px] text-slate-500">اختياري</span>
                 </div>
@@ -557,7 +557,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           <div className="space-y-4 animate-fadeIn">
             <div>
               <label className="block text-sm font-semibold text-slate-200 mb-2">
-                ما هو التحدي الأكبر والمشكلة التي تريد حلها فورا؟
+                شنو أكبر مشكلة تريد تحلها هسه؟
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {MAIN_PROBLEMS.map((prob) => (
@@ -629,7 +629,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-vz-blue-light via-vz-blue to-vz-blue-deep hover:from-vz-blue-light hover:to-vz-blue text-slate-950 text-xs font-bold shadow-lg shadow-black/40 transition transform hover:scale-[1.02] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Zap className="w-4 h-4 text-slate-950 fill-current" />
-              ابدأ تشخيص مشروعي الآن
+              شخص مشروعي
             </button>
           )}
         </div>

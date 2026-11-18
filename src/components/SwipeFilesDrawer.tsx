@@ -17,7 +17,7 @@ export default function SwipeFilesDrawer() {
   };
 
   const categories = [
-    { id: "all", label: "الكل (جميع الملفات)" },
+    { id: "all", label: "كل الملفات" },
     { id: "ad_copy", label: "نصوص الإعلانات (Ad Copy)" },
     { id: "whatsapp_script", label: "سكريبتات الواتساب" },
     { id: "confirmation_call", label: "مكالمة تأكيد الطلب" },
@@ -63,7 +63,7 @@ export default function SwipeFilesDrawer() {
 
         <div className="relative w-full md:w-64">
           <input             type="text"
-            placeholder="بحث في السكريبتات والنصوص..."
+            placeholder="دور بالسكريبتات والنصوص..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-white/5 border border-white/10 focus:border-white/35 rounded-xl px-4 py-2 pr-9 text-xs text-white placeholder-white/40 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"

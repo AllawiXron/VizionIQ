@@ -95,11 +95,11 @@ export function calculateDiagnosticMetrics(
   if (messages !== null && messages > 0 && orders !== null && orders >= 0) {
     conversionRate = Math.min(100, Math.round(((orders / messages) * 100) * 10) / 10);
     if (conversionRate >= 15) {
-      conversionRateLabel = "ممتاز جدا (أعلى من معدل السوق العراقي)";
+      conversionRateLabel = "كلش ممتاز (فوك معدل السوق العراقي)";
     } else if (conversionRate >= 8) {
       conversionRateLabel = "جيد وطبيعي (معدل قياسي للمحادثات)";
     } else if (conversionRate >= 4) {
-      conversionRateLabel = "متوسط (يحتاج تحسين في سكريبت الإغلاق)";
+      conversionRateLabel = "متوسط (يحتاج تحسين بسكريبت الإغلاق)";
     } else {
       conversionRateLabel = "منخفض (هدر كبير بالرسائل أو تسعير غير مقنع)";
     }
@@ -110,7 +110,7 @@ export function calculateDiagnosticMetrics(
     assumptions.push("ماكو طلبات مؤكدة مسجلة مع وجود رسائل يومية.");
   } else {
     isConversionEstimated = true;
-    assumptions.push("لم يتم إدخال عدد الرسائل أو الطلبات اليومية لحساب معدل التحويل بدقة.");
+    assumptions.push("ما كتبت عدد الرسائل أو الطلبات اليومية، فما نكدر نحسب التحويل بدقة.");
   }
 
   let grossMargin: number | null = null;
@@ -128,7 +128,7 @@ export function calculateDiagnosticMetrics(
     );
   } else {
     isMarginEstimated = true;
-    assumptions.push("لم يتم تحديد سعر البيع أو كلفة المنتج لحساب هامش الربح الإجمالي.");
+    assumptions.push("ما حددت سعر البيع أو كلفة المنتج، فما نكدر نحسب الربح.");
   }
 
   let estimatedDailyRevenue: number | null = null;

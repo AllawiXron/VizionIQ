@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Check, Clock, MessageCircle, ShieldCheck, Truck, User, X } from "lucide-react";
 import { EASE_OUT } from "../../lib/motion";
+import { AUDIENCE_VISUALS } from "./audience";
 
 const ease = { duration: 0.5, ease: EASE_OUT };
 
@@ -57,12 +58,12 @@ export function OnePerson() {
         {focus ? (
           <>
             <p className="text-[19px] sm:text-[22px] font-black text-white leading-relaxed">موظف ببغداد، يركن سيارته بالشمس من 8 لـ 2</p>
-            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">هو يحس الإعلان إله ويوكف. واللي يشبهونه حوله يوكفون هم.</p>
+            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">هو يحس الإعلان إله ويوكف. واللي يشبهونه يوكفون هم.</p>
           </>
         ) : (
           <>
             <p className="text-[19px] sm:text-[22px] font-black text-white leading-relaxed">مظلة سيارة لكل أنواع السيارات</p>
-            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">الكل يشوفه، ومحد يحس إنه إله. يعبرون خلال ثانية.</p>
+            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">الكل يشوفه، ومحد يحس إنه إله. يعبرون بثانية.</p>
           </>
         )}
       </motion.div>
@@ -74,7 +75,7 @@ const SENTENCE = [
   { tag: "منو هو", text: "موظف ببغداد يركن سيارته بالشمس من 8 لـ 2", before: "زبوني هو ", tone: "bg-vz-blue/25 border-vz-blue-light/50 text-white" },
   { tag: "مشكلته بكلامه", text: "السيارة تصير فرن والستيرن ما ينلزم", before: "، مشكلته إنه ", tone: "bg-rose-500/20 border-rose-400/45 text-white" },
   { tag: "شنو يريد", text: "يصعد للسيارة الظهر وما يحترك", before: "، يريد ", tone: "bg-emerald-500/20 border-emerald-400/45 text-white" },
-  { tag: "شنو يخاف", text: "تطلع رديئة وتتكسر بعد شهر", before: "، بس خايف ", tone: "bg-amber-400/20 border-amber-300/45 text-white" },
+  { tag: "شنو يخاف", text: "تطلع نوعيتها تعبانة وتتكسر بعد شهر", before: "، بس خايف ", tone: "bg-amber-400/20 border-amber-300/45 text-white" },
 ];
 
 export function CustomerSentence({ shown = SENTENCE.length }: { shown?: number }) {
@@ -314,7 +315,7 @@ export function SalaryMonth() {
       <p className="mt-4 text-[16px] sm:text-[18px] text-white/75 leading-relaxed">
         {mode === "demand"
           ? "هذا شكل تقريبي. الرواتب تنزل بأواخر الشهر أو بدايته، والمواعيد تتغير. سجل طلباتك شهرين وشوف شكل شهرك."
-          : "الصرف الأقوى بعد الراتب، وتخفف قبله بدل ما تطفي الإعلان كليا. واحكم على أسبوع كامل، مو يوم أو يومين."}
+          : "الصرف الأقوى بعد الراتب، وتخفف قبله بدل ما تطفي الإعلان بالمرة. واحكم على أسبوع كامل، مو يوم أو يومين."}
       </p>
     </div>
   );
@@ -500,4 +501,5 @@ export const VISUALS: Record<string, { render: (shown: number) => React.ReactNod
   "order-waterfall": { render: (shown) => <OrderWaterfall shown={shown} />, steps: COSTS.length + 2 },
   "price-slider": { render: () => <PriceSlider /> },
   "scroll-stop": { render: () => <ScrollStop /> },
+  ...AUDIENCE_VISUALS,
 };

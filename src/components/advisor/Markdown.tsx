@@ -194,7 +194,7 @@ function TaskItem({ text, done, actions }: { key?: React.Key; text: string; done
           className={`shrink-0 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold border transition-colors ${
             added ? "border-emerald-400/40 text-emerald-300 bg-emerald-400/10" : "border-white/15 text-vz-accent hover:bg-white/10"
           }`}
-          aria-label="أضف هذه الخطوة لخطتي"
+          aria-label="ضيف هاي الخطوة لخطتي"
         >
           {added ? <Check className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
           {added ? "بالخطة" : "خطتي"}

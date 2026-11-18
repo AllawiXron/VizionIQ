@@ -125,8 +125,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "تم نسخ السكريبت",
-        "تكدر الآن لصقه وإرساله للزبون مباشرة."
+        "انتسخ السكريبت",
+        "هسه تكدر تلصقه وتدزه للزبون."
       );
     }
     setTimeout(() => setCopiedScript(false), 2500);
@@ -144,8 +144,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "تم نسخ نص الإجابة كاملا",
-        "تم حفظ محتوى التوصية في الحافظة."
+        "انتسخ الجواب كامل",
+        "التوصية انتسخت."
       );
     }
     setTimeout(() => setCopiedFullLocal(false), 2500);
@@ -177,8 +177,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       if (onShowToast) {
         onShowToast(
           "saved",
-          "تم حفظ التوصية بنجاح",
-          "تمت إضافة هذه التوصية إلى سجل توصياتك المحفوظة للرجوع إليها بأي وقت."
+          "انحفظت التوصية",
+          "ضفناها لتوصياتك المحفوظة، ترجعلها بأي وقت."
         );
       }
     }
@@ -208,8 +208,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       if (onShowToast) {
         onShowToast(
           "plan",
-          "تمت الإضافة لخطة 7 أيام",
-          "ستظهر هذه المهمة ضمن خطتك التنفيذية الأسبوعية لمتابعة إنجازها."
+          "انضافت لخطة 7 أيام",
+          "تلكى هاي المهمة بخطة الأسبوع حتى تتابعها."
         );
       }
     }
@@ -223,7 +223,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       onShowToast(
         "navigate",
         `جاري فتح ${effectiveToolTitle}`,
-        "تم حفظ جلسة المستشار الذكي وتكدر العودة إليها في أي وقت."
+        "انحفظت جلسة المستشار، وتكدر ترجعلها بأي وقت."
       );
     }
 
@@ -240,7 +240,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       onShowToast(
         "navigate",
         `جاري فتح ${effectiveChapterTitle}`,
-        "تم حفظ محادثتك مع المستشار الذكي تلقائيا."
+        "محادثتك ويا المستشار تنحفظ وحدها."
       );
     }
 
@@ -313,7 +313,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
           >
             <span className="flex items-center gap-2 text-right">
               {copiedScript ? <Check className="w-4 h-4 text-white shrink-0" /> : <Copy className="w-4 h-4 text-white shrink-0" />}
-              <span>{copiedScript ? "تم نسخ السكريبت بنجاح ✓" : "انسخ السكريبت الجاهز للتطبيق"}</span>
+              <span>{copiedScript ? "انتسخ السكريبت ✓" : "انسخ السكريبت الجاهز للتطبيق"}</span>
             </span>
             <ArrowLeft className="w-4 h-4 text-white shrink-0" />
           </button>
@@ -361,7 +361,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
               >
                 <span className="flex items-center gap-2 text-right">
                   <Bookmark className={`w-4 h-4 text-vz-accent shrink-0 ${saved ? "fill-vz-accent" : ""}`} />
-                  <span>{saved ? "تم حفظ التوصية في سجلك ✓" : "حفظ التوصية في سجلك"}</span>
+                  <span>{saved ? "انحفظت بسجلك ✓" : "احفظ التوصية بسجلك"}</span>
                 </span>
                 <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </button>
@@ -419,7 +419,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                   ) : (
                     <Copy className="w-4 h-4 text-slate-400 shrink-0" />
                   )}
-                  <span>{isFullCopiedState ? "تم نسخ الإجابة بنجاح ✓" : "نسخ نص الإجابة كاملا"}</span>
+                  <span>{isFullCopiedState ? "انتسخ الجواب ✓" : "نسخ نص الإجابة كاملا"}</span>
                 </span>
                 <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </button>
@@ -435,7 +435,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                     ) : (
                       <Copy className="w-4 h-4 text-vz-accent shrink-0" />
                     )}
-                    <span>{copiedScript ? "تم نسخ السكريبت بنجاح ✓" : "نسخ السكريبت الجاهز للتطبيق"}</span>
+                    <span>{copiedScript ? "انتسخ السكريبت ✓" : "نسخ السكريبت الجاهز للتطبيق"}</span>
                   </span>
                   <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 </button>
@@ -483,7 +483,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                   {feedback.rating === "unhelpful" && (
                     <div className="p-2.5 bg-rose-950/30 border border-rose-500/20 rounded-lg space-y-1.5 animate-in fade-in">
                       <span className="text-[11px] text-rose-300 font-bold block">
-                        {feedback.reason ? `السبب المسجل: ${feedback.reason}` : "ما هو السبب لتحسين الإجابة؟"}
+                        {feedback.reason ? `السبب المسجل: ${feedback.reason}` : "شنو الناقص بالجواب حتى نحسنه؟"}
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {ADVISOR_FEEDBACK_REASONS.map((reason) => (

@@ -151,6 +151,8 @@ function LessonBlock({ block }: { key?: React.Key; block: Block }) {
         </div>
       );
     case "visual":
+    case "check":
+    case "apply":
       return null;
     case "image":
       return (
@@ -410,7 +412,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
           <div className="space-y-14 sm:space-y-20">
             <section>
-              <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس شاشات قصيرة: تقرا، تشوف مثال، وتختار الجواب الصح. اضغط على الدرس وابدي.">الدروس</SectionTitle>
+              <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس تمشي بيه خطوة خطوة: تفهم الفكرة، تشوفها بالرسم والأرقام، تجربها بإيدك، وبالأخير تطبقها على منتجك. اضغط على الدرس وابدي.">الدروس</SectionTitle>
               <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس المكتملة">
                 <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((doneLessons.size / course.lessons.length) * 100)}%` }} />
               </div>
@@ -463,7 +465,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                   <TrialLock
                     id="ch-lessons-locked"
                     title="باقي الدروس تنفتح ويا الاشتراك"
-                    desc="جربت أول درس. الدروس الباقية بنفس الطريقة، شاشة شاشة، ويا أمثلة وأسئلة."
+                    desc="جربت أول درس. الدروس الباقية بنفس الطريقة، خطوة خطوة، ويا رسوم وأمثلة وأسئلة."
                     items={course.lessons.slice(openLessons).map((l, i) => `الدرس ${openLessons + i + 1}: ${l.title}`)}
                     cta="افتح الكورس كامل"
                   />
@@ -628,6 +630,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
       {playing !== null && (
         <LessonPlayer
+          chapterId={course.id}
           chapterLabel={chapter.number}
           lessons={course.lessons}
           index={playing}

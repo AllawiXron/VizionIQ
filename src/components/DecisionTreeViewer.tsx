@@ -117,7 +117,7 @@ export default function DecisionTreeViewer() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-gradient-to-r from-white/8 to-transparent border border-white/14 p-4 rounded-2xl flex items-center justify-between">
               <div className="space-y-0.5">
-                <span className="text-[10px] text-white/60 block font-bold">الأداة الموصى بها في الحزمة:</span>
+                <span className="text-[10px] text-white/60 block font-bold">الأداة اللي ننصحك بيها:</span>
                 <span className="text-xs font-bold text-vz-accent">{selectedResult.recommendedTool}</span>
               </div>
               <Wrench className="w-5 h-5 text-vz-accent" />
@@ -127,7 +127,7 @@ export default function DecisionTreeViewer() {
               <div className="bg-white/5 border border-white/10 p-4 rounded-2xl flex items-center justify-between">
                 <div className="space-y-0.5">
                   <span className="text-[10px] text-white/60 block font-bold">السكريبت الجاهز للنسخ:</span>
-                  <span className="text-xs font-bold text-white">متوفر في قسم Swipe Files</span>
+                  <span className="text-xs font-bold text-white">موجود بقسم Swipe Files</span>
                 </div>
                 <FileText className="w-5 h-5 text-emerald-400" />
               </div>

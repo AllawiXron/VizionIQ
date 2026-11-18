@@ -58,7 +58,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
     navigator.clipboard.writeText(script);
     setCopiedScript(true);
     if (onShowToast) {
-      onShowToast("copy", "تم نسخ السكربت", "تكدر الآن إرساله للزبون مباشرة.");
+      onShowToast("copy", "انتسخ السكربت", "هسه تكدر تدزه للزبون.");
     }
     setTimeout(() => setCopiedScript(false), 2000);
   };
@@ -143,7 +143,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
               {copiedScript ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">تم النسخ</span>
+                  <span className="text-emerald-400">انتسخ</span>
                 </>
               ) : (
                 <>
@@ -206,8 +206,8 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         recommendedToolTitle={data.recommendedChapterOrTool?.toolTitle}
         followUpActions={[
           {
-            label: "حولها إلى خطة 7 أيام",
-            prompt: "حول هذا التشخيص إلى خطة تنفيذية يومية مفصلة لمدة 7 أيام بالتسلسل.",
+            label: "حولها لخطة 7 أيام",
+            prompt: "حول هذا التشخيص لخطة يومية مفصلة 7 أيام، يوم ورا يوم.",
           },
           {
             label: "اكتبلي السكربت العراقي",

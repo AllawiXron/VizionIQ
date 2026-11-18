@@ -27,7 +27,7 @@ describe("trial diagnosis", () => {
 });
 
 describe("offer", () => {
-  it("is 49k until the end of 30 October (Baghdad), then 99k", () => {
+  it("is the one price before and after the old offer date", () => {
     const during = offerState(new Date("2026-10-30T23:30:00+03:00"));
     expect(during).toMatchObject({ active: true, price: OFFER_PRICE, daysLeft: 1 });
     expect(deadlineLabel(during)).toBe("آخر ساعة من العرض");
@@ -38,7 +38,7 @@ describe("offer", () => {
   it("prefills the WhatsApp message", () => {
     const msg = subscribeMessage(["أبيع: عطور"], new Date("2026-10-20T12:00:00+03:00"));
     expect(msg).toContain("أبيع: عطور");
-    expect(msg).toContain("49 ألف");
+    expect(msg).toContain("39 ألف");
     expect(whatsappLink(msg)).toMatch(/^https:\/\/wa\.me\/9647757851379\?text=/);
   });
 });
