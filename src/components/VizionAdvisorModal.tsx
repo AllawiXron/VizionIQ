@@ -138,7 +138,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
       {
         topicId: "topic_ads_high_cpa",
         label: "كلفة الرسالة كلش عالية (CPA/CPR)",
-        subtext: "الميزانية دا تنصرف بدون ما تجيني استفسارات كافية",
+        subtext: "الميزانية تنصرف بدون ما تجيني استفسارات كافية",
         prompt: "كلفة الرسالة بإعلانات فيسبوك وإنستغرام كلش عالية ودا تاكل من الربح. شلون أنزل كلفة الرسالة بالسوق العراقي وأحسن الـ CTR؟",
         defaultSuggestions: [
           "شلون أسوي أول لقطة بالإعلان (Hook) حتى أوقف المشاهد؟",
@@ -251,7 +251,7 @@ const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
         topicId: "topic_budget_planning",
         label: "الأرباح تختفي بنهاية الشهر وما أعرف وين تروح",
         subtext: "مبيعات عالية بس ماكو سيولة نقدية صافية",
-        prompt: "صفحتي تبيع زين ومبيعاتي جيدة، بس بنهاية الشهر ما يبقى بإيدي ربح كاش. شنو المصاريف والثغرات المخفية اللي دا تاكل أرباح البيع أونلاين بالعراق؟",
+        prompt: "صفحتي تبيع زين ومبيعاتي جيدة، بس بنهاية الشهر ما يبقى بإيدي ربح كاش. شنو المصاريف والثغرات المخفية اللي تاكل أرباح البيع أونلاين بالعراق؟",
         defaultSuggestions: [
           "قائمة مراجعة المصاريف اللي تاكل الربح بدون ما تنتبه إلها (Leak Checklist)",
           "شلون أحسب كلفة الطلبات الراجعة على كل قطعة أبيعها؟",
@@ -605,7 +605,7 @@ function ChatInputForm({
 
       <form onSubmit={handleSubmit} dir="rtl" className="flex items-end gap-1.5 sm:gap-2 relative w-full">
         <div aria-live="polite" className="sr-only">
-          {isLoading ? "دا نعالج الطلب، انتظر شوي..." : ""}
+          {isLoading ? "نعالج الطلب، انتظر شوي..." : ""}
         </div>
 
         <button 
@@ -648,7 +648,7 @@ function ChatInputForm({
                 onAttach(files);
               }
             }}
-            placeholder={dictation.listening ? interim || "دا أسمعك... احچي" : attachments.length ? "اكتبلي شنو تريد أفحص بالصورة (اختياري)" : "اكتب سؤالك هنا..."}
+            placeholder={dictation.listening ? interim || "أسمعك... احچي" : attachments.length ? "اكتبلي شنو تريد أفحص بالصورة (اختياري)" : "اكتب سؤالك هنا..."}
             aria-label="اكتب سؤالك هنا..."
             disabled={isLoading}
             dir="rtl"
@@ -1222,7 +1222,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const isValid = validCodes.includes(normalizedInput);
 
     if (isValid) {
-      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي. دا نفتح المستشار");
+      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي. نفتح المستشار");
       localStorage.setItem("sales_guide_user_code", trimmed);
       setTimeout(() => {
         if (onUpgradeSuccess) {
@@ -1750,16 +1750,16 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <span>اشترك هسه وفعل اشتراكك الشهري</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-white/14 pb-4 pt-3">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-white/14 pb-4 pt-6 sm:pt-3">
                     <div>
                       <span className="text-xs font-bold text-vz-accent block mb-1">الاشتراك الشهري المباشر</span>
-                      <h4 className="text-lg sm:text-2xl font-black text-white">المستشار الذكي (Vizion AI)</h4>
+                      <h4 className="text-lg sm:text-2xl font-black text-white">المستشار الذكي <span dir="ltr" className="inline-block whitespace-nowrap">(Vizion AI)</span></h4>
                       <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full inline-block mt-1">
                         بس 466 دينار باليوم (أقل من سعر استكان شاي)
                       </span>
                     </div>
 
-                    <div className="text-left shrink-0">
+                    <div className="text-right sm:text-left shrink-0 flex sm:block items-baseline gap-2">
                       <div className="text-2xl sm:text-4xl font-black text-vz-accent font-mono tracking-tight">14,000</div>
                       <div className="text-xs font-bold text-vz-accent">دينار عراقي / شهريا</div>
                     </div>
@@ -1794,7 +1794,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>اكتشف <strong className="text-vz-accent">وين دا تضيع ميزانيتك</strong>، وافهم شلون الإعلان والمنتج والزبون يأثرون على بعض.</span>
+                        <span>اكتشف <strong className="text-vz-accent">وين تضيع ميزانيتك</strong>، وافهم شلون الإعلان والمنتج والزبون يأثرون على بعض.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -2625,7 +2625,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             </div>
                             <div className="p-3 sm:p-3.5 rounded-2xl glass-subtle border text-vz-accent rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
                               <div className="flex items-center gap-2">
-                                <span className="text-[13px] sm:text-[14px] text-vz-accent font-bold">دا أجهزلك الجواب...</span>
+                                <span className="text-[13px] sm:text-[14px] text-vz-accent font-bold">أجهزلك الجواب...</span>
                                 <div className="flex gap-1.5 items-center mr-1">
                                   <span className="w-2 h-2 rounded-full bg-vz-blue animate-pulse" />
                                   <span className="w-2 h-2 rounded-full bg-vz-blue animate-pulse delay-150" />

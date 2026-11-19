@@ -99,11 +99,11 @@ function RichMessageImpl({ text, streaming, onCopy, onSaveProfile, onChapter, on
 export const RichMessage = memo(RichMessageImpl);
 
 const THINKING_STAGES: [number, string][] = [
-  [0, "دا أراجع سؤالك..."],
-  [2500, "دا أراجع ملف مشروعك ومحتوى الكورس..."],
-  [7000, "دا أحسب الأرقام وأرتبلك الإجابة..."],
+  [0, "أراجع سؤالك..."],
+  [2500, "أراجع ملف مشروعك ومحتوى الكورس..."],
+  [7000, "أحسب الأرقام وأرتبلك الإجابة..."],
   [14000, "الإجابة تحتاج شوية وقت، ثواني وتكون جاهزة..."],
-  [26000, "الخوادم عليها ضغط، دا أجرب طريقة أسرع..."],
+  [26000, "الخوادم عليها ضغط، أجرب طريقة أسرع..."],
 ];
 
 export function ThinkingDots({ label }: { label?: string }) {

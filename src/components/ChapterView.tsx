@@ -337,6 +337,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   );
   const nextLesson = course.lessons.findIndex((_, i) => i < openLessons && !doneLessons.has(i));
   const [playing, setPlaying] = useState<number | null>(null);
+  const [goalOpen, setGoalOpen] = useState(false);
   const closePlayer = useCallback(() => setPlaying(null), []);
   const markLessonDone = useCallback((i: number) => setLessonDone(userCode, chapter.id, i), [userCode, chapter.id]);
 
@@ -393,8 +394,10 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm font-bold text-white/55">
           <span className="text-vz-accent">{chapter.number}</span>
           {stage && <><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
-          <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{minutesLabel(minutes)}</span>
-          <span>{course.lessons.length} دروس</span>
+          <span className="inline-flex items-center gap-2 whitespace-nowrap">
+            <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{minutesLabel(minutes)}</span>
+            <span>{course.lessons.length} دروس</span>
+          </span>
           {trialLocked && <LockChip label="بالتجربة تكدر تشوف المحتوى بس" />}
           {isDone && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-[11px]">
@@ -406,12 +409,19 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           <TopicIcon kind="chapter" id={chapter.id} size="lg" className="mt-0.5" />
           <span>{chapter.title}</span>
         </h1>
-        <p className="text-sm sm:text-lg text-white/65 leading-relaxed">{course.goal}</p>
+        <div>
+          <p className={`text-[15px] sm:text-lg text-white/65 leading-relaxed ${goalOpen ? "" : "line-clamp-3 sm:line-clamp-none"}`}>{course.goal}</p>
+          {!goalOpen && (
+            <button type="button" onClick={() => setGoalOpen(true)} className={`sm:hidden mt-1 min-h-[36px] text-[14px] font-bold text-vz-accent ${focusRing}`}>
+              اقرا هدف الفصل كامل
+            </button>
+          )}
+        </div>
         {!trialLocked && (
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
             <button
               onClick={() => setPlaying(nextLesson >= 0 ? nextLesson : 0)}
-              className={`btn btn-primary min-h-[52px] px-7 rounded-2xl text-base gap-2 ${focusRing}`}
+              className={`btn btn-primary w-full sm:w-auto min-h-[52px] px-7 rounded-2xl text-base gap-2 ${focusRing}`}
             >
               {nextLesson >= 0 ? <Play className="w-4 h-4" /> : <RotateCcw className="w-4 h-4" />}
               <span>{nextLesson < 0 ? "عيد الفصل من البداية" : nextLesson === 0 ? "ابدأ بالدرس الأول" : `كمل، الدرس ${nextLesson + 1}`}</span>
@@ -448,7 +458,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
       ) : (
         <>
           <div ref={tabsTop} aria-hidden="true" />
-          <nav aria-label="أقسام الفصل" className="sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-6 sm:mb-8">
+          <nav aria-label="أقسام الفصل" className="vz-tabs-sticky sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-6 sm:mb-8">
             <Segmented
               items={TABS.map((t) => ({
                 id: t.id,

@@ -126,7 +126,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         )}
       </motion.header>
 
-      <nav aria-label="أقسام الحل" className="sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-8 sm:mb-10">
+      <nav aria-label="أقسام الحل" className="vz-tabs-sticky sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-8 sm:mb-10">
         <Segmented
           items={sections.map((x) => ({ id: x.id, label: x.label, done: x.id === "pb-plan" && ticked.size === pb.plan.length }))}
           active={current}

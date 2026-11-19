@@ -426,7 +426,7 @@ function BackToTop({ className }: { className: string }) {
           exit={{ opacity: 0, y: 12, scale: 0.85, transition: { duration: 0.2, ease: EASE_OUT } }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="الرجوع لأعلى الصفحة"
-          className={`btn glass-floating fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5.5rem)] left-3 sm:left-4 lg:bottom-6 lg:left-6 z-40 w-11 h-11 !min-h-0 rounded-full text-white/85 ${className}`}
+          className={`btn glass-floating fixed bottom-6 left-6 z-40 w-11 h-11 !min-h-0 rounded-full text-white/85 max-lg:!hidden ${className}`}
           title="الرجوع للبداية"
         >
           <ArrowUp className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />

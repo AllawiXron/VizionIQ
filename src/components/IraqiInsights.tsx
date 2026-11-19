@@ -149,12 +149,12 @@ export default function IraqiInsights() {
             )}
           </div>
 
-          <span className="text-xs sm:text-sm text-white/55 font-bold glass-subtle px-4 py-2 sm:px-5 sm:py-2.5 rounded-full w-full md:w-auto text-center">
+          <span className="text-xs sm:text-sm text-white/55 font-bold w-full md:w-auto text-right md:text-center md:bg-white/[0.04] md:border md:border-white/10 md:px-5 md:py-2.5 md:rounded-full">
             حقائق: <CountUp value={filteredInsights.length} className="text-white font-mono font-black text-sm sm:text-lg mx-1 inline-block" /> من مجموع <span className="font-mono text-white mx-1">{insightsList.length}</span>
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-2 pt-1 pb-1 justify-start">
+        <div className="flex sm:flex-wrap gap-2 pt-1 pb-1 justify-start overflow-x-auto sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,transparent_0,#000_40px)] sm:[mask-image:none]">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             const count = cat.id === "all" 
@@ -197,7 +197,7 @@ export default function IraqiInsights() {
               <div className="p-4 sm:p-7 space-y-3 sm:space-y-5">
                 
                 <div className="flex justify-between items-center flex-wrap gap-2">
-                  <span className={`text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full border uppercase tracking-wider ${
+                  <span className={`text-[12px] font-black px-2.5 py-1 rounded-full border ${
                     insight.category === "ads" ? "bg-white/5 text-vz-accent border-white/14" :
                     insight.category === "sales" ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30" :
                     insight.category === "pricing" ? "bg-white/5 text-slate-200 border-white/14" :
@@ -211,8 +211,8 @@ export default function IraqiInsights() {
                   </span>
 
                   <div className="flex items-center gap-1.5 bg-white/[0.03] px-2.5 py-1 rounded-full border border-white/[0.06]">
-                    <span className="text-[10px] sm:text-[11px] text-white/60 font-mono">مستوى الصعوبة:</span>
-                    <span className={`text-[10px] sm:text-[11px] font-black ${
+                    <span className="hidden sm:inline text-[11px] text-white/60">مستوى الصعوبة:</span>
+                    <span className={`text-[12px] font-black ${
                       insight.difficulty === "بسيط" ? "text-emerald-400" :
                       insight.difficulty === "متوسط" ? "text-vz-accent" :
                       "text-red-400"
@@ -224,7 +224,7 @@ export default function IraqiInsights() {
 
                 <div className="text-right border-r-2 border-white/18 pr-3 sm:pr-4 group-hover:border-white/35 transition-colors duration-300">
                   <p className="fluid-prose font-black text-white leading-relaxed group-hover:text-vz-accent transition-colors duration-300">
-                    "{insight.text}"
+                    {insight.text}
                   </p>
                 </div>
 
@@ -253,14 +253,14 @@ export default function IraqiInsights() {
                   ) : (
                     <div className="pt-4 border-t border-white/10 space-y-4 text-right animate-fade-in">
                       <div className="space-y-1.5">
-                        <span className="text-[11px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-vz-accent"/> تحليل المشكلة:</span>
+                        <span className="text-[12px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-vz-accent"/> تحليل المشكلة:</span>
                         <p className="fluid-prose text-white/80 font-light pr-3 border-r border-white/10">
                           {insight.lesson}
                         </p>
                       </div>
 
                       <div className="space-y-1.5 bg-emerald-400/[0.05] border border-emerald-400/15 p-4 sm:p-5 rounded-2xl">
-                        <span className="text-[11px] font-black text-vz-accent block flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400"/> الحل والخطوة العملية:</span>
+                        <span className="text-[12px] font-black text-vz-accent block flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-400"/> الحل والخطوة العملية:</span>
                         <p className="fluid-prose text-white/95 font-bold">
                           {insight.practicalAction}
                         </p>
@@ -273,10 +273,10 @@ export default function IraqiInsights() {
 
               </div>
 
-              <div className="px-4 sm:px-7 py-3.5 sm:py-4 border-t border-white/[0.06] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs text-white/60 mt-auto">
+              <div className="px-4 sm:px-7 py-3 sm:py-4 border-t border-white/[0.06] flex flex-row items-center justify-between gap-2.5 text-xs text-white/60 mt-auto">
                 
                 <button                   onClick={(e) => handleVote(insight.id, e)}
-                  className="px-3.5 py-2.5 rounded-xl bg-gradient-to-b from-white/10 to-white/5 hover:from-white/10 hover:to-white/5 hover:text-vz-accent border border-white/10 hover:border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex items-center justify-center sm:justify-start gap-2 font-bold cursor-pointer active:scale-[0.97] shadow-lg w-full sm:w-auto min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
+                  className="px-3.5 py-2.5 rounded-xl bg-gradient-to-b from-white/10 to-white/5 hover:from-white/10 hover:to-white/5 hover:text-vz-accent border border-white/10 hover:border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none duration-300 flex items-center justify-center sm:justify-start gap-2 font-bold cursor-pointer active:scale-[0.97] shadow-lg w-auto min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   title="إي، صارت وياي بمشروعي"
                 >
                   <ThumbsUp className="w-3.5 h-3.5 text-vz-accent" />
@@ -286,7 +286,7 @@ export default function IraqiInsights() {
                   </span>
                 </button>
 
-                <span className="text-[11px] font-bold text-vz-accent/80 group-hover:text-vz-accent transition-colors flex items-center justify-center sm:justify-end gap-1.5 py-1">
+                <span className="text-[13px] font-bold text-vz-accent/80 group-hover:text-vz-accent transition-colors flex items-center justify-end gap-1.5 py-1">
                   <span className="drop-shadow-sm">{isExpanded ? "اضغط حتى تغلق" : "اعرف الحل العملي"}</span>
                   <span className={`transform transition-transform duration-300 text-[10px] ${isExpanded ? "rotate-180" : ""}`}>▼</span>
                 </span>

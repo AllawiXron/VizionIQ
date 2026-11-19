@@ -3,6 +3,8 @@
 
 @theme {
   --font-sans: "Tajawal", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  /* digits stay monospaced, Arabic falls through to Tajawal instead of a fixed-width Arabic face */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Tajawal", "IBM Plex Sans Arabic", monospace;
 
     --font-size-xs: 0.875rem;        --font-size-sm: 1rem;            --font-size-base: 1.125rem;      --font-size-lg: 1.35rem;         --font-size-xl: 1.6rem;          --font-size-2xl: 2rem;           --font-size-3xl: 2.5rem;         --font-size-4xl: 3.25rem;        --font-size-5xl: 4.25rem;      
     --color-vz-navy: #040e33;
@@ -1005,7 +1007,7 @@ input[type="range"]:focus {
 }
 
 .num-iqd {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Tajawal", "IBM Plex Sans Arabic", monospace;
   unicode-bidi: isolate;
   direction: ltr;
   display: inline-block;
@@ -1684,6 +1686,48 @@ body,
   border-radius: 999px;
   background: #34d399;
   box-shadow: 0 0 0 2px rgba(6, 19, 64, 0.9);
+}
+
+@media (max-width: 639px) {
+  .text-\[10px\] {
+    font-size: 11.5px;
+  }
+  .text-\[11px\] {
+    font-size: 12.5px;
+  }
+}
+
+/* sticky section tabs: a solid strip from the navbar down so the page never shows through */
+.vz-tabs-sticky {
+  isolation: isolate;
+}
+.vz-tabs-sticky::before {
+  content: "";
+  position: absolute;
+  inset: -16px -16px -10px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(4, 14, 51, 0.97) 0%, rgba(4, 14, 51, 0.94) 72%, rgba(4, 14, 51, 0) 100%);
+}
+.vz-tabs-sticky .vz-segmented {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(12, 30, 92, 0.96);
+}
+@media (max-width: 639px) {
+  .vz-segmented {
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .vz-segmented::-webkit-scrollbar {
+    display: none;
+  }
+  .vz-segment {
+    flex: 1 0 auto;
+    min-height: 44px;
+    padding: 0 5px;
+    font-size: 13px;
+  }
 }
 
 @property --vz-fade-top {

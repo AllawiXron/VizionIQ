@@ -295,7 +295,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
                   value={passwordInput}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="اكتب رمز الدخول هنا"
-                  className="vz-field w-full h-12 sm:h-[52px] pr-4 pl-12 rounded-2xl text-white text-center text-base sm:text-lg font-mono tracking-wider min-h-[44px]"
+                  className="vz-field w-full h-12 sm:h-[52px] pr-4 pl-12 rounded-2xl text-white text-center text-base sm:text-lg font-mono tracking-wider placeholder:font-sans min-h-[44px]"
                   disabled={isLoading || isSuccess}
                 />
                 

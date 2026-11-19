@@ -212,7 +212,7 @@ export default function AdvancedCalculatorSuite() {
             }`}>
               <span className="text-xs font-bold block">صافي الربح باليوم بعد خصم كل المصاريف</span>
               <span className="text-3xl font-mono font-black tracking-tight">
-                {netProfitIQD.toLocaleString()} د.ع
+                <span dir="ltr" className="inline-block">{netProfitIQD.toLocaleString()}</span> د.ع
               </span>
               <span className="text-[10px] block opacity-80 dir-rtl">
                 {netProfitIQD >= 0 ? "الحملة رابحة حسب هالأرقام" : "الحملة خسرانة: كلفة الإعلان عالية أو هامش الربح قليل"}
@@ -330,7 +330,7 @@ export default function AdvancedCalculatorSuite() {
             </div>
             <div className={`border p-4 rounded-2xl text-center ${scaledProfitIQD >= 0 ? "bg-emerald-950/40 border-emerald-500/40" : "bg-red-950/40 border-red-500/40"}`}>
               <span className="text-[10px] text-white/60 block font-bold">صافي الربح اليومي</span>
-              <span className="text-2xl font-mono font-black text-white">{scaledProfitIQD.toLocaleString()} د.ع</span>
+              <span className="text-2xl font-mono font-black text-white"><span dir="ltr" className="inline-block">{scaledProfitIQD.toLocaleString()}</span> د.ع</span>
             </div>
           </div>
         </div>
@@ -432,7 +432,7 @@ export default function AdvancedCalculatorSuite() {
 
             <div className="bg-emerald-950/40 border border-emerald-500/30 p-5 rounded-2xl text-center">
               <span className="text-xs font-bold text-emerald-300 block mb-1">20% صافي ربحك</span>
-              <span className="text-2xl font-mono font-black text-emerald-400">{targetNetProfit.toLocaleString()} د.ع</span>
+              <span className="text-2xl font-mono font-black text-emerald-400"><span dir="ltr" className="inline-block">{targetNetProfit.toLocaleString()}</span> د.ع</span>
             </div>
           </div>
         </div>

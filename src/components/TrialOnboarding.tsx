@@ -392,7 +392,7 @@ function Working() {
     <div className="min-h-[60vh] sm:min-h-[360px] flex flex-col items-center justify-center gap-6 text-center">
       <span className="w-12 h-12 border-[3px] border-white/20 border-t-white rounded-full animate-spin" aria-hidden="true" />
       <div className="space-y-2.5" role="status">
-        <p className="text-lg font-black">دا نحسب ربحك الفعلي...</p>
+        <p className="text-lg font-black">نحسب ربحك الفعلي...</p>
         {lines.map((l, i) => (
           <motion.p
             key={l}
@@ -460,7 +460,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         </div>
         <h2 className="text-xl sm:text-2xl font-black leading-snug">
           {losing
-            ? <>كل طلب دا يسببلك خسارة <span className="text-red-300 font-mono">{iqd(-d.real)}</span> دينار، حتى لو تبيع بكميات كبيرة.</>
+            ? <>كل طلب يسببلك خسارة <span className="text-red-300 font-mono">{iqd(-d.real)}</span> دينار، حتى لو تبيع بكميات كبيرة.</>
             : thin
               ? <>من كل <span className="font-mono">{iqd(d.thinks)}</span> تحسبه ربح، ما يبقالك غير <span className="text-amber-200 font-mono">{iqd(d.real)}</span>.</>
               : <>مشروعك يربح من كل طلب. الخطوة الجاية تكبر شغلك بدون ما تخسر هالربح.</>}
@@ -542,7 +542,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
 
       <section className="glass-subtle rounded-3xl p-5 space-y-2">
         <p className="text-[11px] font-bold text-white/45">رسالة من واحد من {STUDENT_COUNT} مشترك</p>
-        <p className="text-base sm:text-lg font-black leading-snug">أستاذ والله دا أمشي حسب الخطة بالضبط</p>
+        <p className="text-base sm:text-lg font-black leading-snug">أستاذ والله أمشي حسب الخطة بالضبط</p>
         <p className="text-sm text-white/65 leading-relaxed">صرف 70$ على الإعلان، وحقق مبيعات بمليون و475 ألف.</p>
       </section>
 
