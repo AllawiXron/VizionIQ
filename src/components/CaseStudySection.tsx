@@ -36,14 +36,14 @@ export default function CaseStudySection() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <Award className="w-3.5 h-3.5" />
-            <span>تفكيك التجارب الناجحة، 5-10 Case Studies عراقية</span>
+            <span>تحليل تجارب مشاريع ناجحة، من 5 إلى 10 دراسات حالة عراقية</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
-            دراسات حالة تفصيلية من سوق العراق الفعلي
+            دراسات حالة مفصلة من واقع السوق العراقي
           </h3>
         </div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 no-scrollbar">
+        <div className="flex flex-wrap items-center gap-1.5 max-w-full pb-1">
           {cities.map((city) => (
             <button               key={city}
               onClick={() => setSelectedCity(city)}
@@ -101,7 +101,7 @@ export default function CaseStudySection() {
                         <Crown className="w-6 h-6" />
                       </div>
                       <div className="space-y-1 max-w-md mx-auto">
-                        <h4 className="text-base sm:text-lg font-black text-white">تفاصيل دراسة الحالة والأرقام التنفيذية مغلقة</h4>
+                        <h4 className="text-base sm:text-lg font-black text-white">تفاصيل دراسة الحالة والأرقام العملية مو متاحة بالتجربة</h4>
                         <p className="text-xs text-white/70 leading-relaxed font-light">
                           قصة {cs.businessName} بـ {cs.city}: بداية الإعلان اللي اشتغلت، ورسالة الواتساب اللي رفعت الطلبات. تنفتح ويا الاشتراك الكامل.
                         </p>
@@ -110,7 +110,7 @@ export default function CaseStudySection() {
                         className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
                         <Lock className="w-4 h-4 text-white" />
-                        <span>فتح دراسة الحالة كاملة مع السكريبتات</span>
+                        <span>افتح دراسة الحالة كاملة ويا السكريبتات</span>
                       </button>
                     </div>
                   ) : (
@@ -129,13 +129,13 @@ export default function CaseStudySection() {
                     </div>
 
                     <div>
-                      <span className="text-[10px] text-white/70 block font-bold">نسبة المرتجع الراجع</span>
+                      <span className="text-[10px] text-white/70 block font-bold">نسبة الطلبات الراجعة</span>
                       <span className="text-xs text-red-400 line-through font-mono ml-1">{cs.beforeMetrics.returnRate}</span>
                       <span className="text-sm text-emerald-400 font-bold font-mono">{cs.afterMetrics.returnRate}</span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] text-white/70 block font-bold">الطلبات اليومية</span>
+                      <span className="text-[10px] text-white/70 block font-bold">عدد الطلبات باليوم</span>
                       <span className="text-xs text-red-400 line-through font-mono ml-1">{cs.beforeMetrics.dailyOrders}</span>
                       <span className="text-sm text-emerald-400 font-bold font-mono">{cs.afterMetrics.dailyOrders}</span>
                     </div>
@@ -143,18 +143,18 @@ export default function CaseStudySection() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-red-950/20 border border-red-500/20 p-4 rounded-2xl space-y-1">
-                      <span className="text-xs font-bold text-red-400 block">التحدي والمشكلة السابقة:</span>
+                      <span className="text-xs font-bold text-red-400 block">المشكلة اللي كان يواجهها المشروع:</span>
                       <p className="text-xs text-white/80 leading-relaxed">{cs.theProblem}</p>
                     </div>
 
                     <div className="bg-emerald-950/20 border border-emerald-500/20 p-4 rounded-2xl space-y-1">
-                      <span className="text-xs font-bold text-emerald-400 block">السيكولوجية والحل المطبق:</span>
+                      <span className="text-xs font-bold text-emerald-400 block">سلوك الزبون والحل اللي تم تطبيقه:</span>
                       <p className="text-xs text-white/80 leading-relaxed">{cs.thePsychology}</p>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <span className="text-xs font-bold text-vz-accent">حزمة العرض المركب (Offer Stack):</span>
+                    <span className="text-xs font-bold text-vz-accent">العرض المركب (Offer Stack):</span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {cs.theOfferStack.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-2 bg-white/5 p-2.5 rounded-xl border border-white/5 text-xs text-white/90">
@@ -166,7 +166,7 @@ export default function CaseStudySection() {
                   </div>
 
                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-1">
-                    <span className="text-xs font-bold text-vz-accent block">الخطاف الإعلاني الفائز (Hook):</span>
+                    <span className="text-xs font-bold text-vz-accent block">الخطاف الإعلاني الناجح (Hook):</span>
                     <p className="text-xs text-white/80 font-mono leading-relaxed">{cs.adCreativeHook}</p>
                   </div>
 
@@ -174,7 +174,7 @@ export default function CaseStudySection() {
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
                         <MessageSquare className="w-3.5 h-3.5" />
-                        <span>مقتطف سكريبت الواتساب الحقيقي:</span>
+                        <span>جزء من محادثة واتساب حقيقية:</span>
                       </span>
 
                       <button                         onClick={() => handleCopy(cs.whatsappScriptSnippet, cs.id)}
@@ -183,7 +183,7 @@ export default function CaseStudySection() {
                         {copiedScript === cs.id ? (
                           <>
                             <Check className="w-3.5 h-3.5" />
-                            <span>انتسخت</span>
+                            <span>تم النسخ</span>
                           </>
                         ) : (
                           <>
@@ -197,7 +197,7 @@ export default function CaseStudySection() {
                   </div>
 
                   <div className="space-y-2 pt-2 border-t border-white/10">
-                    <span className="text-xs font-bold text-white block">أهم الدروس المستفادة:</span>
+                    <span className="text-xs font-bold text-white block">أهم الدروس اللي نكدر نستفاد منها:</span>
                     <ul className="list-disc list-inside text-xs text-white/70 space-y-1">
                       {cs.keyLearnings.map((item, idx) => (
                         <li key={idx}>{item}</li>

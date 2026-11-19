@@ -21,8 +21,8 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
   onClose,
   userCode,
   onUpgradeSuccess,
-  title = "افتح الكورس كامل، وطبقه على مشروعك",
-  subtitle = "إنت هسه بالنسخة التجريبية. بالاشتراك الكامل ينفتحلك كلشي: الفصول، الحلول، الأدوات والمستشار."
+  title = "افتح الكورس كامل وطبق الخطوات على مشروعك",
+  subtitle = "إنت حاليا تستخدم النسخة التجريبية. ويا الاشتراك الكامل ينفتحلك كلشي: الفصول والحلول والأدوات والمستشار."
 }) => {
   const [inputCode, setInputCode] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +35,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
 
     const trimmed = inputCode.trim();
     if (!trimmed) {
-      setError("اكتب الرمز اللي استلمته بعد الاشتراك.");
+      setError("اكتب رمز الدخول اللي استلمته بعد الاشتراك.");
       return;
     }
 
@@ -43,15 +43,15 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
     const validCodes = getAllValidCodes();
 
     if (validCodes.includes(normalized) && !isFreeTrialUser(normalized)) {
-      setSuccess("الرمز صحيح، دا ينفتح الكورس كامل...");
+      setSuccess("الرمز صحيح، جاري فتح الكورس الكامل...");
       setTimeout(() => {
         onUpgradeSuccess(trimmed);
         onClose();
       }, 1200);
     } else if (isFreeTrialUser(normalized)) {
-      setError("هذا رمز التجربة. اكتب رمز الاشتراك الكامل.");
+      setError("هذا رمز النسخة التجريبية. اكتب رمز الاشتراك الكامل.");
     } else {
-      setError("الرمز غلط أو مو مفعل. تأكد منه، أو راسلنا عالواتساب.");
+      setError("الرمز غلط أو مو مفعل. تأكد منه أو راسلنا على الواتساب.");
     }
   };
 
@@ -76,7 +76,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                 <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-wider block truncate">
                   الاشتراك الكامل
                 </span>
-                <span className="text-xs sm:text-sm font-bold text-white truncate block">كلشي مفتوح، مدى الحياة</span>
+                <span className="text-xs sm:text-sm font-bold text-white truncate block">كلشي مفتوح إلك مدى الحياة</span>
               </div>
             </div>
 
@@ -106,7 +106,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 border-b border-white/14 pb-4">
                 <div>
                   <span className="text-[10px] bg-white/10 text-vz-accent font-bold px-2 py-0.5 rounded-full block w-fit mb-1.5 border border-white/18">
-                    اشتراك واحد، كلشي مفتوح
+                    اشتراك واحد وكلشي يصير متاح
                   </span>
                   <h4 className="text-lg sm:text-xl font-black text-white">الاشتراك الكامل</h4>
                 </div>
@@ -125,7 +125,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               <div className="space-y-2 pt-1">
                 <SubscribeButton />
                 <p className="text-[11px] text-center text-white/55 leading-relaxed">
-                  تنفتح محادثة واتساب ويا رسالة جاهزة. ندزلك طريقة الدفع، ومن توصل الحوالة ندزلك رمز الدخول مالتك.
+                  راح تنفتح محادثة واتساب ويا رسالة جاهزة. ندزلك تفاصيل الدفع، ومن توصل الحوالة ندزلك رمز الدخول الخاص بيك.
                 </p>
               </div>
             </div>
@@ -134,9 +134,9 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
               <div className="space-y-1 text-right">
                 <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                   <KeyRound className="w-4 h-4 text-vz-accent" />
-                  <span>اشتركت وعندك الرمز؟ اكتبه هنا:</span>
+                  <span>مشترك وعندك رمز الدخول؟ اكتبه هنا:</span>
                 </label>
-                <p className="text-[11px] text-white/70">ينفتح كلشي فورا، بدون ما تطلع وترجع تسجل.</p>
+                <p className="text-[11px] text-white/70">كلشي ينفتح مباشرة، بدون ما تحتاج تطلع وترجع تسجل دخول.</p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2">

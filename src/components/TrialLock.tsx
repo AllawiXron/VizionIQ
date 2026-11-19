@@ -60,7 +60,7 @@ export function TrialLock({
   );
 }
 
-export function LockChip({ label = "بالاشتراك الكامل" }: { label?: string }) {
+export function LockChip({ label = "ضمن الاشتراك الكامل" }: { label?: string }) {
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.1] text-[10px] sm:text-[11px] font-bold text-white/55">
       <Lock className="w-3 h-3" />

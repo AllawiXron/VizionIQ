@@ -162,7 +162,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
             exit={{ opacity: 0, y: 16, transition: { duration: 0.22, ease: EASE_OUT } }}
             role="dialog"
             aria-modal="true"
-            aria-label="شوف مشروعك بدقيقة"
+            aria-label="شوف وضع مشروعك بدقيقة"
             className="relative z-[202] w-full sm:max-w-lg h-[100dvh] sm:h-auto sm:max-h-[92vh] glass-elevated glass-edge sm:rounded-4xl overflow-hidden text-white flex flex-col"
           >
             <div aria-hidden="true" className="absolute top-0 inset-x-0 h-40 bg-[radial-gradient(ellipse_at_top,rgba(72,128,255,0.25)_0%,transparent_75%)] pointer-events-none" />
@@ -203,16 +203,16 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                     <div className="space-y-6 pt-4">
                       <div className="space-y-3">
                         <p className="text-sm font-bold text-vz-accent">أهلا بيك بـ viZion</p>
-                        <h2 className="text-[1.7rem] sm:text-4xl font-black leading-tight">قبل لا تبدي، خلي نشوف مشروعك بدقيقة وحدة</h2>
+                        <h2 className="text-[1.7rem] sm:text-4xl font-black leading-tight">قبل لا تبدي، خل نشوف وضع مشروعك بدقيقة وحدة</h2>
                         <p className="text-sm sm:text-base text-white/65 leading-relaxed">
-                          هنا مو فيديوهات طويلة ولا قناة تلكرام. تكتب أرقامك، وتعرف بالضبط وين تروح فلوسك وشنو تسوي بعدين.
+                          هنا مو فيديوهات طويلة ولا قناة تلكرام. تدخل أرقامك، وتعرف بالضبط وين تروح فلوسك وشنو الخطوة الجاية.
                         </p>
                         <p className="text-xs text-white/45">{STUDENT_COUNT} مشترك يستخدمون المنصة لحد هسه.</p>
                       </div>
                       <ul className="space-y-2.5">
                         {[
-                          { icon: Calculator, text: "تعرف ربحك الحقيقي من كل طلب، بعد التوصيل والإعلان والراجع" },
-                          { icon: TrendingUp, text: "تشوف شكد يفرق وياك لو صلحت الردود والراجع" },
+                          { icon: Calculator, text: "تعرف شكد ربحك الحقيقي من كل طلب، بعد حساب التوصيل والإعلان والطلبات الراجعة" },
+                          { icon: TrendingUp, text: "تشوف شكد تكدر تربح أكثر إذا حسنت الردود وقللت الطلبات الراجعة" },
                           { icon: LifeBuoy, text: "توصل للحل الجاهز لمشكلتك إنت، خطوة بخطوة" },
                         ].map(({ icon: Icon, text }, i) => (
                           <motion.li
@@ -250,7 +250,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                         ))}
                       </div>
                       <div className="space-y-2.5">
-                        <p className="text-base font-black">ووين وصلت؟</p>
+                        <p className="text-base font-black">وشكد وصلت بمشروعك؟</p>
                         <div className="grid gap-2">
                           {TRIAL_STAGES.map((s) => (
                             <Chip key={s.id} selected={stage === s.id} onClick={() => setStage(s.id)}>{s.label}</Chip>
@@ -272,7 +272,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                     <div className="space-y-5 pt-2">
                       <div className="space-y-1.5">
                         <h2 className="text-2xl sm:text-3xl font-black leading-tight">شنو أكبر مشكلة تواجهك هسه؟</h2>
-                        <p className="text-sm text-white/55">اختار وحدة، الأقرب لحالتك.</p>
+                        <p className="text-sm text-white/55">اختار وحدة، الأقرب لوضعك.</p>
                       </div>
                       <div className="grid gap-2.5">
                         {TRIAL_PROBLEMS.map((p) => (
@@ -301,14 +301,14 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                       <div className="space-y-1.5">
                         <h2 className="text-2xl sm:text-3xl font-black leading-tight">هسه أرقامك</h2>
                         <p className="text-sm text-white/55">
-                          {stage === "idea" ? "حتى لو بعده فكرة: اكتب السعر اللي ناوي تبيع بيه." : "تقريبية تكفي. اللي ما تعرفه، اختار ما أعرف ونحسبه بالمعدل."}
+                          {stage === "idea" ? "حتى لو بعدك بمرحلة الفكرة، اكتب السعر اللي ناوي تبيع بيه." : "الأرقام التقريبية تكفي. إذا أكو شي ما تعرفه، اختار ما أعرف ونحسبه بالمعدل."}
                         </p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
                         {[
-                          { label: stage === "idea" ? "ناوي تبيعه بكم؟" : "تبيعه للزبون بكم؟", value: priceText, set: setPriceText, ph: "35000" },
-                          { label: "يكلفك إنت بكم؟", value: costText, set: setCostText, ph: "12000" },
+                          { label: stage === "idea" ? "بكم ناوي تبيعه؟" : "بكم تبيع المنتج للزبون؟", value: priceText, set: setPriceText, ph: "35000" },
+                          { label: "شكد تكلفك القطعة؟", value: costText, set: setCostText, ph: "12000" },
                         ].map((f) => (
                           <label key={f.label} className="block space-y-1.5">
                             <span className="text-sm font-black text-white">{f.label}</span>
@@ -328,30 +328,30 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                         ))}
                       </div>
                       {price !== null && cost !== null && cost >= price && (
-                        <p className="-mt-3 text-xs text-amber-200">الكلفة أكبر من سعر البيع؟ تأكد من الأرقام.</p>
+                        <p className="-mt-3 text-xs text-amber-200">الكلفة أعلى من سعر البيع؟ راجع أرقامك.</p>
                       )}
 
                       <ChipRow
-                        label="كروة التوصيل"
+                        label="كلفة التوصيل"
                         options={[4000, 5000, 6000, 7000].map((v) => ({ value: v, label: iqd(v) }))}
                         value={delivery}
                         onChange={setDelivery}
                       />
                       <ChipRow
-                        label="شكد تكلفك الرسالة من الإعلان؟"
-                        hint="بالدينار، من مدير الإعلانات"
+                        label="شكد تكلفك الرسالة الواحدة من الإعلان؟"
+                        hint="بالدينار، حسب أرقام مدير الإعلانات"
                         options={[...[500, 1000, 1500, 2500].map((v) => ({ value: v, label: iqd(v) })), { value: 0, label: "ما أعرف" }]}
                         value={messageCost === -1 ? null : messageCost}
                         onChange={setMessageCost}
                       />
                       <ChipRow
-                        label="من كل 10 ناس يراسلوك، كم واحد يطلب فعلا؟"
+                        label="من كل 10 أشخاص يراسلونك، شكد واحد منهم يطلب فعلا؟"
                         options={[...[1, 2, 3, 5].map((v) => ({ value: v, label: String(v) })), { value: 0, label: "ما أعرف" }]}
                         value={closeOf10 === -1 ? null : closeOf10}
                         onChange={setCloseOf10}
                       />
                       <ChipRow
-                        label="ومن كل 10 طلبات، كم وحدة ترجع؟"
+                        label="ومن كل 10 طلبات، شكد طلب يرجع؟"
                         options={[...[0, 1, 2, 3].map((v) => ({ value: v, label: String(v) })), { value: -2, label: "ما أعرف" }]}
                         value={returnsOf10 === -1 ? null : returnsOf10}
                         onChange={setReturnsOf10}
@@ -364,10 +364,10 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                           className={`btn btn-primary w-full min-h-[54px] rounded-full text-base gap-2 disabled:opacity-40 disabled:pointer-events-none ${focusRing}`}
                         >
                           <Sparkles className="w-4 h-4" />
-                          <span>طلعلي النتيجة</span>
+                          <span>احسبلي النتيجة</span>
                         </button>
                         <button onClick={() => finish(true)} className={`btn btn-ghost w-full min-h-[44px] rounded-full text-sm text-white/60 ${focusRing}`}>
-                          ما عندي أرقام بعد، وريني على مثال
+                          بعد ما عندي أرقام، وريني بمثال
                         </button>
                       </div>
                     </div>
@@ -387,12 +387,12 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
 }
 
 function Working() {
-  const lines = ["كلفة المنتج والتوصيل", "كلفة الإعلان على كل طلب", "الطلبات اللي ترجع"];
+  const lines = ["كلفة المنتج والتوصيل", "كلفة الإعلان لكل طلب", "الطلبات الراجعة"];
   return (
     <div className="min-h-[60vh] sm:min-h-[360px] flex flex-col items-center justify-center gap-6 text-center">
       <span className="w-12 h-12 border-[3px] border-white/20 border-t-white rounded-full animate-spin" aria-hidden="true" />
       <div className="space-y-2.5" role="status">
-        <p className="text-lg font-black">دا نحسب ربحك الحقيقي...</p>
+        <p className="text-lg font-black">دا نحسب ربحك الفعلي...</p>
         {lines.map((l, i) => (
           <motion.p
             key={l}
@@ -425,13 +425,13 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
     { label: "كلفة المنتج", value: -profile.cost, estimated: est("cost") },
     { label: "التوصيل", value: -profile.delivery },
     {
-      label: "الإعلان على كل طلب",
+      label: "كلفة الإعلان لكل طلب",
       value: -d.cpa,
       hint: `الرسالة ${iqd(profile.messageCost)}، ويطلب ${profile.closeOf10} من كل 10`,
       estimated: est("messageCost") || est("closeOf10"),
     },
     {
-      label: "الطلبات اللي ترجع",
+      label: "الطلبات الراجعة",
       value: -d.returnLoss,
       hint: `${profile.returnPct / 10} من كل 10 ترجع: ربحها يروح، وتوصيلها وإعلانها مدفوعين`,
       estimated: est("returnPct"),
@@ -448,22 +448,22 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
           <div className="glass-subtle rounded-2xl p-4 space-y-1">
             <p className="text-xs font-bold text-white/55">الربح اللي تحسبه</p>
             <p className="text-xl sm:text-2xl font-black font-mono text-white/45 line-through decoration-white/40">{iqd(d.thinks)}</p>
-            <p className="text-[11px] text-white/40">سعر البيع − الكلفة</p>
+            <p className="text-[11px] text-white/40">سعر البيع ناقص الكلفة</p>
           </div>
           <div className="glass rounded-2xl p-4 space-y-1 border border-white/15">
-            <p className="text-xs font-bold text-white/70">ربحك الحقيقي بالطلب</p>
+            <p className="text-xs font-bold text-white/70">ربحك الفعلي من كل طلب</p>
             <p className={`text-2xl sm:text-3xl font-black font-mono ${tone}`}>
               <CountTo from={d.thinks} to={d.real} />
             </p>
-            <p className="text-[11px] text-white/45">دينار، بعد كلشي</p>
+            <p className="text-[11px] text-white/45">دينار، بعد حساب كل التكاليف</p>
           </div>
         </div>
         <h2 className="text-xl sm:text-2xl font-black leading-snug">
           {losing
-            ? <>كل طلب دا يخسرك <span className="text-red-300 font-mono">{iqd(-d.real)}</span> دينار، حتى لو تبيع هواية.</>
+            ? <>كل طلب دا يسببلك خسارة <span className="text-red-300 font-mono">{iqd(-d.real)}</span> دينار، حتى لو تبيع بكميات كبيرة.</>
             : thin
-              ? <>من كل <span className="font-mono">{iqd(d.thinks)}</span> تحسبها ربح، يبقالك بس <span className="text-amber-200 font-mono">{iqd(d.real)}</span>.</>
-              : <>مشروعك رابح بالطلب. الشغل الجاي إنك تكبر بدون ما يضيع هالربح.</>}
+              ? <>من كل <span className="font-mono">{iqd(d.thinks)}</span> تحسبه ربح، ما يبقالك غير <span className="text-amber-200 font-mono">{iqd(d.real)}</span>.</>
+              : <>مشروعك يربح من كل طلب. الخطوة الجاية تكبر شغلك بدون ما تخسر هالربح.</>}
         </h2>
       </section>
 
@@ -500,10 +500,10 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
             <span className="text-emerald-300 font-mono">{iqd(d.better)}</span>
           </p>
           <p className="text-sm text-white/70">
-            على كل 100 طلب، هذا <span className="font-black text-white font-mono">{iqd(gain * 100)}</span> دينار زيادة بجيبك.
+            من كل 100 طلب، هذا <span className="font-black text-white font-mono">{iqd(gain * 100)}</span> دينار زيادة تبقى بجيبك.
           </p>
           <p className="text-xs text-white/50 leading-relaxed">
-            مو وعد، حسبة على أرقامك. الرد اللي يقفل البيعة بالفصل 7، وتأكيد الطلب قبل لا يطلع بالفصل 8.
+            مو وعد، هاي حسبة حسب أرقامك. شوف الرد اللي يقفل البيعة بالفصل 7، وتأكيد الطلب قبل ما يطلع بالفصل 8.
           </p>
         </section>
       )}
@@ -535,20 +535,20 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
           </div>
         )}
         <button onClick={() => onGo({ view: "solution", id: pb.id })} className={`btn btn-glass w-full min-h-[48px] rounded-full text-sm gap-2 ${focusRing}`}>
-          <span>شوف التشخيص الكامل لمشكلتك</span>
+          <span>شوف التشخيص الكامل للمشكلة</span>
           <ArrowLeft className="w-4 h-4" />
         </button>
       </section>
 
       <section className="glass-subtle rounded-3xl p-5 space-y-2">
         <p className="text-[11px] font-bold text-white/45">رسالة من واحد من {STUDENT_COUNT} مشترك</p>
-        <p className="text-base sm:text-lg font-black leading-snug">استاذ والله دامشي حسب الخطة بالضبط</p>
-        <p className="text-sm text-white/65 leading-relaxed">صرف 70$ على الإعلان، وباع بمليون و475 ألف.</p>
+        <p className="text-base sm:text-lg font-black leading-snug">أستاذ والله دا أمشي حسب الخطة بالضبط</p>
+        <p className="text-sm text-white/65 leading-relaxed">صرف 70$ على الإعلان، وحقق مبيعات بمليون و475 ألف.</p>
       </section>
 
       <section className="glass-elevated glass-edge rounded-3xl p-5 sm:p-6 space-y-4">
         <div className="space-y-1">
-          <h3 className="text-lg sm:text-xl font-black">افتح الحل كامل، وطبقه من اليوم</h3>
+          <h3 className="text-lg sm:text-xl font-black">افتح الحل بالتفصيل وطبقه من اليوم</h3>
           <p className="text-xs sm:text-sm text-white/60">اشتراك واحد يفتح كلشي، مو بس هالحل. وياك {STUDENT_COUNT} مشترك لحد هسه.</p>
         </div>
         <OfferPrice size="md" />
@@ -562,7 +562,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         </ul>
         <div className="space-y-2">
           <SubscribeButton label="أريد أشترك، دزلي طريقة الدفع" />
-          <p className="text-[11px] text-center text-white/50">تنفتح واتساب والرسالة مكتوبة بيها نتيجتك، بس دوس إرسال.</p>
+          <p className="text-[11px] text-center text-white/50">راح ينفتح واتساب والرسالة بيها نتيجتك جاهزة، بس دوس إرسال.</p>
         </div>
         <button onClick={() => onGo({ view: "chapter", id: "chapter1" })} className={`btn btn-ghost w-full min-h-[44px] rounded-full text-sm text-white/65 ${focusRing}`}>
           كمل التجربة المجانية من الفصل الأول
@@ -571,7 +571,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
 
       <div className="flex items-center justify-center gap-2">
         <button onClick={onRedo} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/50 ${focusRing}`}>
-          عيدها بأرقام ثانية
+          جرب مرة ثانية بأرقام غير
         </button>
         <button onClick={onClose} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/50 ${focusRing}`}>
           ارجع للمنصة

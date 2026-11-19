@@ -6,7 +6,7 @@ describe("Iraqi Advisor Fallback Generator", () => {
     const result = generateIraqiAdvisorFallback("الزبون يقول السعر غالي بالواتساب شلون اقنعه؟");
     expect(result).toContain("الواتساب");
     expect(result).toContain("بصمة صوت");
-    expect(result).toContain("سعر البيع");
+    expect(result).toContain("سعر العرض الخاص");
     expect(result).toContain("[SUGGESTIONS:");
   });
 

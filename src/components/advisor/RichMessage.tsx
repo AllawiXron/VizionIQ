@@ -29,7 +29,7 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
       <div className="flex items-center justify-between px-4 pt-3">
         <span className="flex items-center gap-1.5 text-[12px] font-black text-emerald-300">
           <span className="w-2 h-2 rounded-full bg-[#25d366]" />
-          رسالة جاهزة للإرسال
+          رسالة جاهزة حتى تدزها
         </span>
       </div>
       <div className="px-4 pt-2 pb-3">
@@ -48,7 +48,7 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
             }`}
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            {copied ? "انتسخت" : "نسخ"}
+            {copied ? "تم النسخ" : "نسخ"}
           </button>
           <a
             href={`https://wa.me/?text=${encodeURIComponent(text)}`}
@@ -99,11 +99,11 @@ function RichMessageImpl({ text, streaming, onCopy, onSaveProfile, onChapter, on
 export const RichMessage = memo(RichMessageImpl);
 
 const THINKING_STAGES: [number, string][] = [
-  [0, "دا أقرا سؤالك…"],
-  [2500, "دا أراجع ملف مشروعك ومحتوى الكورس…"],
-  [7000, "دا أحسب الأرقام وأرتب الجواب…"],
-  [14000, "جواب دسم، ثواني ويبدي…"],
-  [26000, "الخوادم عليها ضغط، دا أجرب طريق أسرع…"],
+  [0, "دا أراجع سؤالك..."],
+  [2500, "دا أراجع ملف مشروعك ومحتوى الكورس..."],
+  [7000, "دا أحسب الأرقام وأرتبلك الإجابة..."],
+  [14000, "الإجابة تحتاج شوية وقت، ثواني وتكون جاهزة..."],
+  [26000, "الخوادم عليها ضغط، دا أجرب طريقة أسرع..."],
 ];
 
 export function ThinkingDots({ label }: { label?: string }) {

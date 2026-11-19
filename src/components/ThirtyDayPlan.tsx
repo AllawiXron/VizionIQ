@@ -43,7 +43,7 @@ export default function ThirtyDayPlan() {
   };
 
   const handleReset = () => {
-    if (window.confirm("متأكد تريد تمسح تقدمك بالخطة وتبدي من جديد؟")) {
+    if (window.confirm("متأكد تريد تمسح تقدمك بالخطة وتبدي من البداية؟")) {
       const resetTasks = tasks.map(t => ({ ...t, completed: false }));
       setTasks(resetTasks);
       localStorage.setItem("sales_guide_30day_progress", JSON.stringify(resetTasks));
@@ -75,8 +75,8 @@ export default function ThirtyDayPlan() {
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base sm:text-lg md:text-xl font-black text-white">خطة 30 يوم لأول 100 طلب</h3>
-            <p className="text-[10px] sm:text-xs text-white/70 mt-1">كل يوم مهمة وحدة واضحة. علم اليوم من تخلصه، وتقدمك ينحفظ.</p>
+            <h3 className="text-base sm:text-lg md:text-xl font-black text-white">خطة 30 يوم حتى توصل لأول 100 طلب</h3>
+            <p className="text-[10px] sm:text-xs text-white/70 mt-1">كل يوم عندك مهمة واضحة وحدة. علم على اليوم من تخلصه، وتقدمك ينحفظ.</p>
           </div>
         </div>
 
@@ -116,27 +116,27 @@ export default function ThirtyDayPlan() {
             <span className="text-xs font-bold text-white block">وين وصلت:</span>
             <span className="text-[11px] text-vz-accent font-medium block">
               {progressPercent === 100
-                ? "خلصت الخطة كلها"
+                ? "كملت الخطة كلها"
                 : progressPercent >= 70
-                ? "مرحلة التكبير"
+                ? "مرحلة التوسع"
                 : progressPercent >= 30
-                ? "مرحلة الإعلان والتأكيد"
+                ? "مرحلة الإعلان وتأكيد الطلبات"
                 : "مرحلة التأسيس"}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-start gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar border-b border-white/5">
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 pb-4 mb-6 border-b border-white/5">
         {[1, 2, 3, 4].map(w => (
           <button             key={w}
             onClick={() => setActiveWeek(w)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all motion-reduce:transition-none motion-reduce:transform-none whitespace-nowrap cursor-pointer ${ activeWeek === w ? "bg-vz-blue text-white shadow-md md:shadow-black/40 shadow-xl/25" : "bg-white/5 border border-white/5 hover:bg-white/10 text-white/80" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
+            className={`px-4 py-2 rounded-xl text-xs font-bold leading-snug text-right sm:whitespace-nowrap transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer ${ activeWeek === w ? "bg-vz-blue text-white shadow-md md:shadow-black/40 shadow-xl/25" : "bg-white/5 border border-white/5 hover:bg-white/10 text-white/80" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
-            {w === 1 && "الأسبوع الأول: التأسيس والدراسة"}
-            {w === 2 && "الأسبوع الثاني: الإعلانات والتأكيد"}
-            {w === 3 && "الأسبوع الثالث: التوصيل والثقة"}
-            {w === 4 && "الأسبوع الرابع: التكبير والربح الصافي"}
+            {w === 1 && "الأسبوع الأول: التأسيس ودراسة السوق"}
+            {w === 2 && "الأسبوع الثاني: الإعلانات وتأكيد الطلبات"}
+            {w === 3 && "الأسبوع الثالث: التوصيل وبناء الثقة"}
+            {w === 4 && "الأسبوع الرابع: التوسع وزيادة صافي الربح"}
           </button>
         ))}
       </div>
@@ -144,7 +144,7 @@ export default function ThirtyDayPlan() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <div className="lg:col-span-7 space-y-4">
-          <span className="text-xs font-semibold text-white/60 block mr-1">اضغط على اليوم حتى تشوف مهمته:</span>
+          <span className="text-xs font-semibold text-white/60 block mr-1">اضغط على اليوم حتى تشوف شنو المطلوب منك:</span>
           
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {filteredTasks.map(t => {
@@ -207,7 +207,7 @@ export default function ThirtyDayPlan() {
                   <button                     onClick={() => handleToggleComplete(selectedTask.day)}
                     className={`px-3 py-1 text-xs rounded-lg font-bold border transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-1 ${ selectedTask.completed ? "bg-emerald-500/10 border-emerald-500 text-emerald-400" : "bg-white/5 border-white/10 hover:bg-white/10 text-white/70" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    {selectedTask.completed ? "خلصته" : "علم إنه خلص"}
+                    {selectedTask.completed ? "كملته" : "علم عليه كمكتمل"}
                   </button>
                 </div>
 
@@ -230,12 +230,12 @@ export default function ThirtyDayPlan() {
 
               <div className="border-t border-white/5 pt-3 flex items-center gap-2 text-[11px] text-white/60 mt-4">
                 <Zap className="w-4 h-4 text-vz-accent shrink-0" />
-                <span>مهمة وحدة باليوم تكفي. المهم ما توكف.</span>
+                <span>مهمة وحدة باليوم تكفي. المهم تستمر وما توقف.</span>
               </div>
             </div>
           ) : (
             <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-8 flex items-center justify-center text-center h-full">
-              <span className="text-xs text-white/60">اختار يوم من الجدول حتى تشوف مهمته.</span>
+              <span className="text-xs text-white/60">اختار يوم من الجدول حتى تشوف شنو مهمته.</span>
             </div>
           )}
         </div>

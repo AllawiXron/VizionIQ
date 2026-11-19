@@ -17,7 +17,7 @@ export function OfferPrice({ size = "md", className = "" }: { size?: "sm" | "md"
           <span className="text-base sm:text-lg font-bold text-white/40 font-mono line-through decoration-red-400/80 decoration-2 pb-0.5">{iqd(FULL_PRICE)}</span>
         )}
       </div>
-      <p className="text-xs text-white/60">تدفع مرة وحدة، والحساب يبقى الك مدى الحياة. بدون اشتراك شهري.</p>
+      <p className="text-xs text-white/60">تدفع مرة وحدة، ويبقى حسابك وياك مدى الحياة. بدون اشتراك شهري.</p>
       {state.active && (
         <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/[0.12] border border-red-400/30 text-red-200 text-xs font-bold">
           <Clock className="w-3.5 h-3.5" />

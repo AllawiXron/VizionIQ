@@ -100,7 +100,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
     setSuccessMessage("");
 
     if (!newBuyerName.trim()) {
-      setErrorMessage("رجاء إدخال اسم المشتري أو الجهة المستفيدة.");
+      setErrorMessage("يرجى إدخال اسم المشتري أو الجهة المستفيدة.");
       return;
     }
 
@@ -182,7 +182,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
         <div className="flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 vz-sheet-header">
           <div className="flex items-center gap-2 text-vz-accent min-w-0">
             <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-vz-accent shrink-0" />
-            <span className="font-extrabold text-xs sm:text-base md:text-lg truncate">بوابة التحكم بالأعضاء والأكواد</span>
+            <span className="font-extrabold text-xs sm:text-base md:text-lg truncate">لوحة التحكم بالأعضاء والأكواد</span>
           </div>
           <button             onClick={onClose}
             aria-label="إغلاق"
@@ -194,7 +194,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
         <div className="grid grid-cols-3 gap-1.5 sm:gap-3 px-3 sm:px-6 py-3 sm:py-4 border-b border-white/[0.06] text-center">
           <div className="glass-subtle rounded-2xl py-2 sm:py-2.5 px-1 sm:px-3">
-            <span className="text-[8px] sm:text-[10px] text-white/70 block font-semibold truncate">إجمالي الأكواد</span>
+            <span className="text-[8px] sm:text-[10px] text-white/70 block font-semibold truncate">مجموع الأكواد</span>
             <span className="text-sm sm:text-lg font-bold text-white block mt-0.5">{totalCodes}</span>
           </div>
           <div className="bg-emerald-400/[0.06] border border-emerald-400/15 rounded-2xl py-2 sm:py-2.5 px-1 sm:px-3">
@@ -202,7 +202,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             <span className="text-sm sm:text-lg font-bold text-emerald-400 block mt-0.5">{activeCodes}</span>
           </div>
           <div className="bg-red-400/[0.06] border border-red-400/15 rounded-2xl py-2 sm:py-2.5 px-1 sm:px-3">
-            <span className="text-[8px] sm:text-[10px] text-red-400 block font-semibold truncate">الملغية والموقوفة</span>
+            <span className="text-[8px] sm:text-[10px] text-red-400 block font-semibold truncate">الأكواد الملغية والمتوقفة</span>
             <span className="text-sm sm:text-lg font-bold text-red-400 block mt-0.5">{revokedCodes}</span>
           </div>
         </div>
@@ -218,7 +218,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
             className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "add" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {activeTab === "add" && <motion.span layoutId="admin-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />}
-            <span className="relative">إضافة مشتر</span>
+            <span className="relative">إضافة مشترك</span>
           </button>
           <button             onClick={() => {
               setActiveTab("analytics_eval");
@@ -241,10 +241,10 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 <div className="space-y-0.5 text-right w-full sm:w-auto">
                   <h4 className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                     <FileSpreadsheet className="w-4 h-4 text-slate-200" />
-                    <span>تصدير كافة نصوص ومحتوى الموقع بالكامل (JSON)</span>
+                    <span>تنزيل كل نصوص ومحتوى الموقع (JSON)</span>
                   </h4>
                   <p className="text-[10px] text-white/60">
-                    تكدر تنزيل ملف شامل لجميع الفصول، الدروس، الدراسات، وسكريبتات السوايب لتعديل الصياغة أو اللهجة.
+                    تكدر تنزل ملف بيه كل الفصول والدروس والدراسات ونصوص السحب، حتى تعدل الصياغة أو اللهجة.
                   </p>
                 </div>
                 <a                   href="/all_website_texts.json"
@@ -252,18 +252,18 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   className="btn btn-primary px-4 py-2 text-white font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shrink-0 min-h-[44px] flex items-center justify-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 >
                   <FileSpreadsheet className="w-3.5 h-3.5" />
-                  <span>تحميل ملف JSON كامل</span>
+                  <span>تنزيل ملف JSON كامل</span>
                 </a>
               </div>
 
               <div className="flex justify-between items-center text-[10px] sm:text-xs text-white/70 pb-1">
-                <span>سجل الأكواد الصالحة والملغاة</span>
+                <span>سجل الأكواد الفعالة والملغاة</span>
                 <span>الأحدث أولا</span>
               </div>
 
               {codes.length === 0 ? (
                 <div className="py-12 text-center text-white/60 text-xs">
-                  ماكو أكواد دخول حالية مسجلة بالنظام. رجاء إضافة كود جديد.
+                  ماكو أكواد دخول مسجلة بالنظام حاليا. يرجى إضافة كود جديد.
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -286,7 +286,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                           <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${
                             item.isRevoked ? "bg-red-950/80 text-red-400" : "bg-emerald-950/80 text-emerald-400"
                           }`}>
-                            {item.isRevoked ? "ملغي" : "نشط"}
+                            {item.isRevoked ? "ملغي" : "فعال"}
                           </span>
                         </div>
                         <div className="text-[10px] sm:text-[11px] text-white/60 flex items-center gap-1 flex-wrap">
@@ -298,7 +298,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                       <div className="flex items-center gap-1.5 w-full sm:w-auto justify-end border-t sm:border-0 border-white/5 pt-2 sm:pt-0">
                         <button                           onClick={() => handleToggleRevoke(item.code)}
                           className={`px-2.5 py-1.5 rounded-lg border transition-all motion-reduce:transition-none motion-reduce:transform-none text-xs cursor-pointer flex items-center gap-1 ${ item.isRevoked ? "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400" : "bg-red-500/10 hover:bg-red-500/20 border-red-500/30 text-red-400" } min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
-                          title={item.isRevoked ? "تفعيل الكود مجددا" : "تعطيل الكود وإلغاء الدخول"}
+                          title={item.isRevoked ? "إعادة تفعيل الكود" : "تعطيل الكود وإيقاف الدخول"}
                         >
                           {item.isRevoked ? <Check className="w-3.5 h-3.5" /> : <Ban className="w-3.5 h-3.5" />}
                           <span>{item.isRevoked ? "تفعيل" : "إلغاء"}</span>
@@ -320,7 +320,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
           {activeTab === "add" && (
             <form onSubmit={handleCreateCode} className="space-y-4 animate-fade-in">
               <div className="p-4 bg-white/3 border border-white/9 rounded-xl mb-2 text-xs text-vz-accent leading-relaxed">
-                تكدر تسوي كود دخول ذهبي للمشتركين اللي اشتروا الدليل يدويا، أو للي تريد تنطيهم دخول خاص.
+                تكدر تسوي كود دخول خاص للمشتركين اللي اشتروا الدليل بشكل مباشر، أو لأي شخص تريد تمنحه دخول خاص.
               </div>
 
               <div className="space-y-1.5">
@@ -334,11 +334,11 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs text-white/70 font-semibold block">رمز كود الوصول الاختياري (أو اتركه فارغا لتوليد كود تلقائي):</label>
+                <label className="text-xs text-white/70 font-semibold block">رمز كود الدخول إذا تريده (أو اتركه فارغ حتى ننشئ كود تلقائي):</label>
                 <input                   type="text"
                   value={customCode}
                   onChange={(e) => setCustomCode(e.target.value)}
-                  placeholder="مثال: ali#gold (بس أحرف إنجليزية وأرقام)"
+                  placeholder="مثال: ali#gold (أحرف إنجليزية وأرقام فقط)"
                   className="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-white/35 min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 />
               </div>
@@ -359,7 +359,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                 className="w-full py-3 rounded-xl gold-gradient-bg text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] transition-transform shadow-lg md:shadow-black/40 shadow-xl/25 min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <Plus className="w-4 h-4" />
-                <span>إنشاء وتوثيق كود الوصول الجديد</span>
+                <span>إنشاء وحفظ كود الدخول الجديد</span>
               </button>
             </form>
           )}
@@ -369,16 +369,16 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
               <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl flex items-start gap-2.5 text-xs text-emerald-300">
                 <Shield className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <p className="font-bold">نظام تحليلات وتقييم يحترم الخصوصية 100%</p>
+                  <p className="font-bold">نظام تحليلات وتقييم يحافظ على الخصوصية 100%</p>
                   <p className="text-[11px] text-emerald-200/80 leading-relaxed">
-                    نسجل بس الحركات العامة، بدون نصوص الرسائل الخاصة أو أرقام الزبائن أو مفاتيح API.
+                    نسجل بس التفاعلات العامة، وما نحفظ نصوص الرسائل الخاصة أو أرقام الزبائن أو مفاتيح API.
                   </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-center">
-                  <span className="text-[10px] text-white/70 block font-semibold">إجمالي التفاعلات المسجلة</span>
+                  <span className="text-[10px] text-white/70 block font-semibold">مجموع التفاعلات المسجلة</span>
                   <span className="text-lg font-extrabold text-white block mt-0.5">
                     {analytics?.totalEvents || 0}
                   </span>
@@ -415,7 +415,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
               {analytics && Object.keys(analytics.feedback.reasonsBreakdown).length > 0 && (
                 <div className="p-3 bg-rose-950/20 border border-rose-500/20 rounded-xl space-y-2">
                   <span className="text-xs font-bold text-rose-300 block">
-                    ملاحظات عدم الرضا الشائعة:
+                    أكثر الملاحظات المتكررة:
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(analytics.feedback.reasonsBreakdown).map(([reason, count]) => (
@@ -429,7 +429,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
               <div className="space-y-2">
                 <h4 className="text-xs font-bold text-white/80 flex items-center justify-between">
-                  <span>سجل استخدام مسارات المنصة:</span>
+                  <span>سجل استخدام أدوات المنصة:</span>
                   <button                     onClick={() => {
                       clearAnalyticsData();
                       loadAnalytics();
@@ -437,13 +437,13 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                     className="text-[10px] text-rose-400 hover:text-rose-300 flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
                     <Trash2 className="w-3 h-3" />
-                    <span>تصفير السجل</span>
+                    <span>مسح السجل</span>
                   </button>
                 </h4>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">زيارة المنصة:</span>
+                    <span className="text-white/60 text-[11px]">زيارات المنصة:</span>
                     <span className="font-bold text-white font-mono">{analytics?.eventsByType.landing_viewed || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
@@ -455,15 +455,15 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                     <span className="font-bold text-emerald-400 font-mono">{analytics?.eventsByType.diagnosis_completed || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">فصول مفتوحة:</span>
+                    <span className="text-white/60 text-[11px]">الفصول اللي تم فتحها:</span>
                     <span className="font-bold text-white font-mono">{analytics?.eventsByType.chapter_opened || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">أدوات نمو مفتوحة:</span>
+                    <span className="text-white/60 text-[11px]">أدوات النمو اللي تم فتحها:</span>
                     <span className="font-bold text-white font-mono">{analytics?.eventsByType.tool_opened || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">تمارين منجزة:</span>
+                    <span className="text-white/60 text-[11px]">التمارين المكتملة:</span>
                     <span className="font-bold text-vz-accent font-mono">{analytics?.eventsByType.exercise_completed || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
@@ -471,23 +471,23 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                     <span className="font-bold text-vz-accent font-mono">{analytics?.eventsByType.advisor_prompt_submitted || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">إجابات مكتملة:</span>
+                    <span className="text-white/60 text-[11px]">الإجابات المكتملة:</span>
                     <span className="font-bold text-white font-mono">{analytics?.eventsByType.advisor_answer_completed || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">إجابات منسوخة:</span>
+                    <span className="text-white/60 text-[11px]">الإجابات المنسوخة:</span>
                     <span className="font-bold text-emerald-300 font-mono">{analytics?.eventsByType.advisor_answer_copied || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">توصيات مفتوحة:</span>
+                    <span className="text-white/60 text-[11px]">التوصيات اللي تم فتحها:</span>
                     <span className="font-bold text-white font-mono">{analytics?.eventsByType.advisor_recommendation_opened || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">مهام الخطة المنجزة:</span>
+                    <span className="text-white/60 text-[11px]">مهام الخطة المكتملة:</span>
                     <span className="font-bold text-emerald-400 font-mono">{analytics?.eventsByType.plan_step_completed || 0}</span>
                   </div>
                   <div className="p-2.5 bg-black/40 border border-white/5 rounded-xl flex items-center justify-between">
-                    <span className="text-white/60 text-[11px]">خطط مكتملة 100%:</span>
+                    <span className="text-white/60 text-[11px]">الخطط المكتملة 100%:</span>
                     <span className="font-bold text-vz-accent font-mono">{analytics?.eventsByType.plan_completed || 0}</span>
                   </div>
                 </div>
@@ -498,10 +498,10 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                   <div className="space-y-0.5">
                     <h4 className="text-sm font-bold text-vz-accent flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-vz-accent" />
-                      <span>مجموعة التقييم المعياري لجودة المستشار (8 حالات & 6 معايير)</span>
+                      <span>مجموعة الاختبار المعياري لجودة المستشار (8 حالات و6 معايير)</span>
                     </h4>
                     <p className="text-[10px] text-white/60">
-                      فحص آلي يشمل: التسعير، ضعف التحويل، المرتجع، كفاءة الإعلانات، صفحة الهبوط، سكريبتات الواتساب، الأسئلة الغامضة، وعزل السياقات المتتالية.
+                      فحص آلي يشمل: التسعير، ضعف المبيعات، الطلبات الراجعة، كفاءة الإعلانات، صفحة الهبوط، نصوص الواتساب، الأسئلة غير الواضحة، والتأكد من عدم تداخل السياقات المتتالية.
                     </p>
                   </div>
 
@@ -517,7 +517,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                     ) : (
                       <>
                         <Play className="w-3.5 h-3.5 fill-current" />
-                        <span>تشغيل فحص الجودة الآلي</span>
+                        <span>بدء فحص الجودة الآلي</span>
                       </>
                     )}
                   </button>
@@ -532,7 +532,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                         </div>
                         <div>
                           <span className="text-xs font-bold text-white block">
-                            معدل الجودة والامتثال الكلي
+                            معدل الجودة والالتزام الكلي
                           </span>
                           <span className="text-[11px] text-emerald-300 font-semibold">
                             نجاح {evalResult.passedTests} من أصل {evalResult.totalTests} حالات فحص معيارية ({Math.round((evalResult.passedTests / evalResult.totalTests) * 100)}%)
@@ -599,7 +599,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
                                   <div className="p-2 rounded-lg bg-white/5 border border-white/5">
                                     <div className="flex items-center justify-between mb-1">
-                                      <span className="font-bold text-white/80">1. صلة الموضوع:</span>
+                                      <span className="font-bold text-white/80">1. مدى ارتباط الإجابة بالموضوع:</span>
                                       <span className="text-emerald-400 font-bold">{report.criteria.topicRelevance.score}%</span>
                                     </div>
                                     <p className="text-white/60 text-[10px]">{report.criteria.topicRelevance.feedbackAr}</p>
@@ -607,7 +607,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
                                   <div className="p-2 rounded-lg bg-white/5 border border-white/5">
                                     <div className="flex items-center justify-between mb-1">
-                                      <span className="font-bold text-white/80">2. عزل السياق والتلوث:</span>
+                                      <span className="font-bold text-white/80">2. فصل السياقات ومنع التداخل:</span>
                                       <span className="text-emerald-400 font-bold">{report.criteria.noContextContamination.score}%</span>
                                     </div>
                                     <p className="text-white/60 text-[10px]">{report.criteria.noContextContamination.feedbackAr}</p>
@@ -615,7 +615,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
                                   <div className="p-2 rounded-lg bg-white/5 border border-white/5">
                                     <div className="flex items-center justify-between mb-1">
-                                      <span className="font-bold text-white/80">3. الخطوة الإجرائية الواضحة:</span>
+                                      <span className="font-bold text-white/80">3. وضوح الخطوة العملية:</span>
                                       <span className="text-emerald-400 font-bold">{report.criteria.concreteNextAction.score}%</span>
                                     </div>
                                     <p className="text-white/60 text-[10px]">{report.criteria.concreteNextAction.feedbackAr}</p>
@@ -623,7 +623,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
                                   <div className="p-2 rounded-lg bg-white/5 border border-white/5">
                                     <div className="flex items-center justify-between mb-1">
-                                      <span className="font-bold text-white/80">4. صحة الحسابات والأرقام:</span>
+                                      <span className="font-bold text-white/80">4. دقة الحسابات والأرقام:</span>
                                       <span className="text-emerald-400 font-bold">{report.criteria.correctCalculations.score}%</span>
                                     </div>
                                     <p className="text-white/60 text-[10px]">{report.criteria.correctCalculations.feedbackAr}</p>
@@ -631,7 +631,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
                                   <div className="p-2 rounded-lg bg-white/5 border border-white/5">
                                     <div className="flex items-center justify-between mb-1">
-                                      <span className="font-bold text-white/80">5. قياس الغموض والاستفسار:</span>
+                                      <span className="font-bold text-white/80">5. تحديد الغموض والحاجة للاستفسار:</span>
                                       <span className="text-emerald-400 font-bold">{report.criteria.appropriateUncertainty.score}%</span>
                                     </div>
                                     <p className="text-white/60 text-[10px]">{report.criteria.appropriateUncertainty.feedbackAr}</p>
@@ -660,7 +660,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
         </div>
 
         <div className="px-6 py-4 border-t border-white/[0.06] bg-black/20 text-center text-[10px] text-white/45">
-          تذكر: كل الأكواد تنحفظ بالمتصفح نفسه وما تنرسل لأي سيرفر، حتى تبقى الخصوصية كاملة.
+          تذكر: كل الأكواد تنحفظ بنفس المتصفح وما تنرسل لأي سيرفر، حتى تبقى خصوصيتك محفوظة بالكامل.
         </div>
 
           </motion.div>

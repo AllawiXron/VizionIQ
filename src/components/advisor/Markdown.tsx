@@ -6,19 +6,19 @@ import { guideModules } from "../../data/iraqGuideData";
 
 
 export const TOOL_LABELS: Record<string, string> = {
-  diagnostics: "فحص مشروعك",
-  "sales-blocker": "ليش ماكو مبيعات؟",
-  "customer-types": "دليل أنواع الزبائن",
-  competitors: "محلل المنافسين",
-  "pricing-calculator": "حاسبة التسعير والربح",
-  "profit-leak": "كاشف تسرب الأرباح",
-  forecaster: "متوقع الأرباح",
-  "budget-planner": "مخطط الميزانية",
-  "campaign-advisor": "مستشار الحملات",
-  "message-diagnoser": "جودة الرسائل",
+  diagnostics: "افحص مشروعك",
+  "sales-blocker": "ليش ما دتبيع؟",
+  "customer-types": "دليل أنواع الزباين",
+  competitors: "حلل المنافسين",
+  "pricing-calculator": "حاسبة السعر والربح",
+  "profit-leak": "كاشف خسائر الأرباح",
+  forecaster: "توقع الأرباح",
+  "budget-planner": "خطط ميزانيتك",
+  "campaign-advisor": "مستشار الإعلانات",
+  "message-diagnoser": "قيم جودة رسائلك",
   "product-evaluator": "تقييم المنتج",
   "ads-library": "مكتبة الإعلانات",
-  roadmap: "مخطط الـ 100 طلب",
+  roadmap: "خطة أول 100 طلب",
 };
 const TOOL_CATEGORY: Record<string, string> = {
   diagnostics: "understand",
@@ -197,7 +197,7 @@ function TaskItem({ text, done, actions }: { key?: React.Key; text: string; done
           aria-label="ضيف هاي الخطوة لخطتي"
         >
           {added ? <Check className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
-          {added ? "بالخطة" : "خطتي"}
+          {added ? "موجودة بالخطة" : "خطتي"}
         </button>
       )}
     </li>

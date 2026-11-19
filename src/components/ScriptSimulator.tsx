@@ -24,7 +24,7 @@ export default function ScriptSimulator() {
         <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           مكالمات جاهزة حسب نوع الزبون
         </h3>
-        <p className="text-xs text-white/70 mt-1">اختار نوع الزبون، واقرا المكالمة كاملة: شلون تبدي، شنو تكول، وشلون تثبت الطلب.</p>
+        <p className="text-xs text-white/70 mt-1">اختار نوع الزبون، واقرا المكالمة من البداية للنهاية: شلون تبدي، شنو تكول، وشلون تأكد الطلب.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -53,7 +53,7 @@ export default function ScriptSimulator() {
               قاعدة الدفع عند الاستلام:
             </span>
             <p className="text-[11px] text-white/70 leading-relaxed">
-              اتصل بالزبون خلال 30 دقيقة من الطلب. كل ما تأخرت، زاد احتمال يرفض الطلب.
+              اتصل بالزبون خلال 30 دقيقة من الطلب. كل ما تتأخر، تزيد فرصة إنه يرفض الطلب.
             </p>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function ScriptSimulator() {
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-300">انتسخت</span>
+                  <span className="text-emerald-300">تم النسخ</span>
                 </>
               ) : (
                 <>

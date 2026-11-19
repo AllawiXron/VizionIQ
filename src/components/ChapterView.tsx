@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { EASE_OUT } from "../lib/motion";
-import { motion } from "motion/react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { EASE_OUT, allowBlur } from "../lib/motion";
+import { AnimatePresence, motion, type Variants } from "motion/react";
+import { Segmented } from "./ui/Segmented";
 import {
   AlertTriangle, ArrowLeft, ArrowRight, BookOpen, Check, CheckCircle2, Clock, ClipboardList,
   FileText, HelpCircle, Lightbulb, Lock, Play, RotateCcw, Target, TrendingUp, Wrench, X,
@@ -35,28 +36,60 @@ interface ChapterViewProps {
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
 const CHAPTER_TOOL: Record<string, { label: string; render: () => React.ReactNode }> = {
-  chapter1: { label: "حاسبة الحملة التجريبية", render: () => <RoiCalculator /> },
-  chapter2: { label: "شكد يزيد البيع بدون ما تزيد الإعلان", render: () => <PlaybookCalculator kind={"sales-levers" as CalculatorKind} /> },
-  chapter3: { label: "حاسبات التسعير والربح", render: () => <AdvancedCalculatorSuite /> },
-  chapter4: { label: "شكد أكدر أدفع على الرسالة", render: () => <PlaybookCalculator kind={"max-message-cost" as CalculatorKind} /> },
-  chapter5: { label: "شوف شكل إعلانك قبل لا تنزله", render: () => <AdSimulator /> },
-  chapter7: { label: "شكد يزيد البيع لو صلحت الردود", render: () => <PlaybookCalculator kind={"sales-levers" as CalculatorKind} /> },
+  chapter1: { label: "حاسبة تجربة الحملة الإعلانية", render: () => <RoiCalculator /> },
+  chapter2: { label: "شكد تزيد مبيعاتك بدون ما تزيد ميزانية الإعلان", render: () => <PlaybookCalculator kind={"sales-levers" as CalculatorKind} /> },
+  chapter3: { label: "حاسبات التسعير والأرباح", render: () => <AdvancedCalculatorSuite /> },
+  chapter4: { label: "شكد تكدر تدفع على الرسالة", render: () => <PlaybookCalculator kind={"max-message-cost" as CalculatorKind} /> },
+  chapter5: { label: "شوف إعلانك شلون راح يطلع قبل لا تنشره", render: () => <AdSimulator /> },
+  chapter7: { label: "شكد تزيد مبيعاتك إذا حسنت ردودك", render: () => <PlaybookCalculator kind={"sales-levers" as CalculatorKind} /> },
   chapter8: { label: "مكالمات جاهزة حسب نوع الزبون", render: () => <ScriptSimulator /> },
-  chapter9: { label: "شكد يكلفك الراجع", render: () => <PlaybookCalculator kind={"returns-cost" as CalculatorKind} /> },
-  chapter10: { label: "حاسبات الأرقام والقرارات", render: () => <AdvancedCalculatorSuite /> },
-  chapter11: { label: "خطة 30 يوم لأول 100 طلب", render: () => <ThirtyDayPlan /> },
+  chapter9: { label: "شكد تكلفك الطلبات الراجعة", render: () => <PlaybookCalculator kind={"returns-cost" as CalculatorKind} /> },
+  chapter10: { label: "حاسبات الأرقام واتخاذ القرارات", render: () => <AdvancedCalculatorSuite /> },
+  chapter11: { label: "خطة 30 يوم حتى توصل لأول 100 طلب", render: () => <ThirtyDayPlan /> },
 };
 
 const minutesLabel = (n: number) => `${n} ${n <= 10 ? "دقايق" : "دقيقة"}`;
 
-const SECTIONS = [
-  { id: "ch-lessons", label: "الدروس" },
-  { id: "ch-practice", label: "طبق" },
-  { id: "ch-templates", label: "جاهز للنسخ" },
-  { id: "ch-example", label: "مثال بالأرقام" },
-  { id: "ch-mistakes", label: "أغلاط" },
-  { id: "ch-quiz", label: "اختبر نفسك" },
-];
+const TABS = [
+  { id: "lessons", label: "الدروس", title: "الدروس" },
+  { id: "practice", label: "تطبيق", title: "طبق على مشروعك" },
+  { id: "templates", label: "قوالب", title: "رسائل وقوالب جاهزة" },
+  { id: "example", label: "مثال", title: "مثال بالأرقام" },
+  { id: "mistakes", label: "أخطاء", title: "أخطاء انتبه لا توقع بيها" },
+  { id: "quiz", label: "اختبار", title: "اختبر نفسك" },
+] as const;
+type Tab = (typeof TABS)[number]["id"];
+
+const BLUR = allowBlur();
+const PANEL_SPRING = { type: "spring", stiffness: 340, damping: 34, mass: 0.85 } as const;
+const panelMotion: Variants = {
+  enter: (d: number) => ({ opacity: 0, x: d > 0 ? -28 : 28, ...(BLUR ? { filter: "blur(6px)" } : {}) }),
+  center: {
+    opacity: 1,
+    x: 0,
+    ...(BLUR ? { filter: "blur(0px)", transitionEnd: { filter: "none" } } : {}),
+    transition: { x: PANEL_SPRING, opacity: { duration: 0.28, ease: EASE_OUT }, filter: { duration: 0.32, ease: EASE_OUT } },
+  },
+  exit: (d: number) => ({ opacity: 0, x: d > 0 ? 20 : -20, ...(BLUR ? { filter: "blur(4px)" } : {}), transition: { duration: 0.16, ease: EASE_OUT } }),
+};
+
+function NextTab({ to, onGo }: { to: Tab; onGo: (t: Tab) => void }) {
+  const t = TABS.find((x) => x.id === to)!;
+  return (
+    <button
+      onClick={() => onGo(to)}
+      className={`group mt-8 w-full flex items-center justify-between gap-3 p-4 sm:p-5 rounded-3xl glass text-right cursor-pointer active:scale-[0.985] transition-transform duration-200 ${focusRing}`}
+    >
+      <span className="min-w-0">
+        <span className="block text-xs font-bold text-white/50">الدرس الجاي بهذا الفصل</span>
+        <span className="block text-base sm:text-lg font-black text-white mt-0.5">{t.title}</span>
+      </span>
+      <span className="w-10 h-10 shrink-0 rounded-full bg-white/[0.07] border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:-translate-x-1">
+        <ArrowLeft className="w-4 h-4 text-white" />
+      </span>
+    </button>
+  );
+}
 
 function SectionTitle({ id, icon: Icon, children, sub }: { id: string; icon: React.ComponentType<{ className?: string }>; children: React.ReactNode; sub?: string }) {
   return (
@@ -192,7 +225,7 @@ function Quiz({ chapter }: { chapter: CourseChapter }) {
       <div className="glass-elevated glass-edge rounded-3xl p-6 sm:p-8 text-center">
         <p className="text-sm font-bold text-white/55 mb-2">نتيجتك</p>
         <p className="text-6xl sm:text-7xl font-black text-white mb-3" dir="ltr">{right}/{total}</p>
-        <p className="text-base text-white/75 mb-6">{right === total ? "فاهم الفصل كله. كمل للفصل الجاي." : "راجع الدروس اللي غلطت بيها، وعيد الاختبار."}</p>
+        <p className="text-base text-white/75 mb-6">{right === total ? "فاهم الفصل كله. كمل للفصل الجاي." : "راجع الدروس اللي جاوبت بيها غلط، وجرب الاختبار مرة ثانية."}</p>
         <button onClick={() => { setPicked({}); setAt(0); }} className={`btn btn-glass min-h-[48px] px-6 rounded-2xl text-sm ${focusRing}`}>عيد الاختبار</button>
       </div>
     );
@@ -261,11 +294,11 @@ function MistakeCard({ m }: { key?: React.Key; m: CourseChapter["mistakes"][numb
       </p>
       {open ? (
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-4 space-y-3 pr-11">
-          <p className="text-sm sm:text-base text-white/65 leading-relaxed"><span className="font-black text-white/80">ليش غلط: </span>{m.why}</p>
-          <p className="text-sm sm:text-base text-emerald-100 leading-relaxed flex items-start gap-2"><Check className="w-4 h-4 shrink-0 mt-1 text-emerald-300" strokeWidth={3} /><span><span className="font-black">الصح: </span>{m.fix}</span></p>
+          <p className="text-sm sm:text-base text-white/65 leading-relaxed"><span className="font-black text-white/80">سبب الإجابة الغلط: </span>{m.why}</p>
+          <p className="text-sm sm:text-base text-emerald-100 leading-relaxed flex items-start gap-2"><Check className="w-4 h-4 shrink-0 mt-1 text-emerald-300" strokeWidth={3} /><span><span className="font-black">الإجابة الصحيحة: </span>{m.fix}</span></p>
         </motion.div>
       ) : (
-        <button onClick={() => setOpen(true)} className={`mt-4 mr-11 btn btn-glass min-h-[40px] px-4 rounded-xl text-sm ${focusRing}`}>شنو الصح؟</button>
+        <button onClick={() => setOpen(true)} className={`mt-4 mr-11 btn btn-glass min-h-[40px] px-4 rounded-xl text-sm ${focusRing}`}>شنو الإجابة الصحيحة؟</button>
       )}
     </li>
   );
@@ -307,10 +340,39 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   const closePlayer = useCallback(() => setPlaying(null), []);
   const markLessonDone = useCallback((i: number) => setLessonDone(userCode, chapter.id, i), [userCode, chapter.id]);
 
+  const [tab, setTab] = useState<Tab>("lessons");
+  const [tabDir, setTabDir] = useState(1);
+  const tabsTop = useRef<HTMLDivElement>(null);
+  const tabIndex = TABS.findIndex((t) => t.id === tab);
+
+  const openTab = (next: Tab) => {
+    if (next === tab) return;
+    setTabDir(TABS.findIndex((t) => t.id === next) > tabIndex ? 1 : -1);
+    setTab(next);
+    const el = tabsTop.current;
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 84;
+    if (window.scrollY > top + 2) window.scrollTo({ top, behavior: "smooth" });
+  };
+
   const jump = (sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 130, behavior: "smooth" });
   };
+
+  const outcomesBox = (
+    <div className="glass rounded-3xl p-5 sm:p-6 space-y-3">
+      <p className="text-sm font-black text-white flex items-center gap-2"><Target className="w-4 h-4 text-vz-accent" /> بنهاية هذا الفصل</p>
+      <ul className="space-y-2">
+        {course.outcomes.map((o) => (
+          <li key={o} className="flex items-start gap-2.5 text-sm text-white/80 leading-relaxed">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <span>{o}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 
   const finishAndContinue = () => {
     setChapterDone(userCode, chapter.id, true);
@@ -324,7 +386,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           <ArrowRight className="w-4 h-4" />
           <span>كل الفصول</span>
         </button>
-        <span className="text-xs text-white/50 font-mono">{chapterIndex + 1} / {chaptersList.length}</span>
+        <span dir="ltr" className="text-xs text-white/50 font-mono">{chapterIndex + 1} / {chaptersList.length}</span>
       </div>
 
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
@@ -333,7 +395,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           {stage && <><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
           <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{minutesLabel(minutes)}</span>
           <span>{course.lessons.length} دروس</span>
-          {trialLocked && <LockChip label="بالتجربة تشوف المحتوى بس" />}
+          {trialLocked && <LockChip label="بالتجربة تكدر تشوف المحتوى بس" />}
           {isDone && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-[11px]">
               <Check className="w-3 h-3" strokeWidth={3} /> مكتمل
@@ -352,7 +414,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               className={`btn btn-primary min-h-[52px] px-7 rounded-2xl text-base gap-2 ${focusRing}`}
             >
               {nextLesson >= 0 ? <Play className="w-4 h-4" /> : <RotateCcw className="w-4 h-4" />}
-              <span>{nextLesson < 0 ? "عيد الفصل من أوله" : nextLesson === 0 ? "ابدأ الدرس الأول" : `كمل، الدرس ${nextLesson + 1}`}</span>
+              <span>{nextLesson < 0 ? "عيد الفصل من البداية" : nextLesson === 0 ? "ابدأ بالدرس الأول" : `كمل، الدرس ${nextLesson + 1}`}</span>
             </button>
             <span className="text-sm font-bold text-white/55">
               خلصت {doneLessons.size} من {course.lessons.length} دروس
@@ -361,20 +423,9 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         )}
       </motion.header>
 
-      <div className="glass rounded-3xl p-5 sm:p-6 mb-8 sm:mb-10 space-y-3">
-        <p className="text-sm font-black text-white flex items-center gap-2"><Target className="w-4 h-4 text-vz-accent" /> بنهاية هذا الفصل</p>
-        <ul className="space-y-2">
-          {course.outcomes.map((o) => (
-            <li key={o} className="flex items-start gap-2.5 text-sm text-white/80 leading-relaxed">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <span>{o}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
       {trialLocked ? (
         <div className="space-y-4">
+          {outcomesBox}
           <div className="glass rounded-3xl overflow-hidden">
             <p className="px-5 py-3.5 text-sm font-black text-white border-b border-white/[0.07]">دروس الفصل</p>
             <ol className="divide-y divide-white/[0.06]">
@@ -389,207 +440,248 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
             </ol>
           </div>
           <TrialLock
-            title="هذا الفصل ينفتح ويا الاشتراك الكامل"
+            title="هذا الفصل متاح ويا الاشتراك الكامل"
             desc={`${course.lessons.length} دروس مفصلة، ${course.practice.tasks.length} مهام تطبقها على مشروعك، ${course.templates.length} رسائل وقوالب جاهزة، مثال بالأرقام، واختبار قصير.`}
             cta="افتح الكورس كامل"
           />
         </div>
       ) : (
         <>
-          <nav aria-label="أقسام الفصل" className="sticky top-[4.5rem] sm:top-[4.75rem] z-20 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 sm:mb-10">
-            <div className="flex items-center gap-1 p-1 rounded-full glass-floating overflow-x-auto no-scrollbar w-full sm:w-fit">
-              {SECTIONS.map((s) => (
-                <button
-                  key={s.id}
-                  onClick={() => jump(s.id)}
-                  className="px-3.5 sm:px-4 min-h-[38px] rounded-full text-xs sm:text-sm font-bold whitespace-nowrap text-white/65 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
+          <div ref={tabsTop} aria-hidden="true" />
+          <nav aria-label="أقسام الفصل" className="sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-6 sm:mb-8">
+            <Segmented
+              items={TABS.map((t) => ({
+                id: t.id,
+                label: t.label,
+                done:
+                  (t.id === "lessons" && doneLessons.size === course.lessons.length) ||
+                  (t.id === "practice" && ticked.size === course.practice.tasks.length),
+              }))}
+              active={tab}
+              onChange={(id) => openTab(id as Tab)}
+              layoutId={`chapter-tab-${chapter.id}`}
+              label="أقسام الفصل"
+            />
           </nav>
 
-          <div className="space-y-14 sm:space-y-20">
-            <section>
-              <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس تمشي بيه خطوة خطوة: تفهم الفكرة، تشوفها بالرسم والأرقام، تجربها بإيدك، وبالأخير تطبقها على منتجك. اضغط على الدرس وابدي.">الدروس</SectionTitle>
-              <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس المكتملة">
-                <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((doneLessons.size / course.lessons.length) * 100)}%` }} />
-              </div>
-              <ol className="relative space-y-3">
-                {course.lessons.map((l, i) => {
-                  const locked = i >= openLessons;
-                  const done = doneLessons.has(i);
-                  const isNext = i === nextLesson;
-                  return (
-                    <li key={l.title} className="relative">
-                      {i < course.lessons.length - 1 && (
-                        <span aria-hidden="true" className={`absolute right-[35px] sm:right-[43px] top-16 sm:top-[4.5rem] bottom-[-12px] w-0.5 ${done ? "bg-emerald-400/50" : "bg-white/10"}`} />
-                      )}
-                      <button
-                        onClick={() => (locked ? jump("ch-lessons-locked") : setPlaying(i))}
-                        className={`relative w-full flex items-center gap-4 p-3 sm:p-4 rounded-3xl text-right cursor-pointer transition-colors duration-300 ${
-                          isNext ? "glass-elevated glass-edge" : "hover:bg-white/[0.04]"
-                        } ${focusRing}`}
-                      >
-                        <span
-                          className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-black ${
-                            done
-                              ? "bg-emerald-400/15 border border-emerald-400/40 text-emerald-300"
-                              : isNext
-                                ? "bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_24px_-10px_rgba(47,107,255,0.7)]"
-                                : locked
-                                  ? "bg-white/[0.03] border border-white/[0.08] text-white/35"
-                                  : "bg-white/[0.06] border border-white/10 text-white/80"
-                          }`}
-                        >
-                          {done ? <Check className="w-6 h-6" strokeWidth={3} /> : locked ? <Lock className="w-5 h-5" /> : isNext ? <Play className="w-5 h-5" /> : i + 1}
-                        </span>
-                        <span className="flex-1 min-w-0">
-                          <span className="block text-xs sm:text-sm font-bold text-white/50">الدرس {i + 1}، {minutesLabel(lessonMinutes(l))}</span>
-                          <span className={`block text-base sm:text-lg font-black leading-snug mt-0.5 ${locked ? "text-white/45" : "text-white"}`}>{l.title}</span>
-                        </span>
-                        {!locked && (
-                          <span className={`hidden sm:inline-flex items-center gap-1.5 text-sm font-black shrink-0 ${isNext ? "text-white" : "text-white/55"}`}>
-                            {done ? "عيده" : isNext ? "ابدي" : "افتح"}
-                            <ArrowLeft className="w-4 h-4" />
-                          </span>
-                        )}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ol>
-              {openLessons < course.lessons.length && (
-                <div className="mt-6">
-                  <TrialLock
-                    id="ch-lessons-locked"
-                    title="باقي الدروس تنفتح ويا الاشتراك"
-                    desc="جربت أول درس. الدروس الباقية بنفس الطريقة، خطوة خطوة، ويا رسوم وأمثلة وأسئلة."
-                    items={course.lessons.slice(openLessons).map((l, i) => `الدرس ${openLessons + i + 1}: ${l.title}`)}
-                    cta="افتح الكورس كامل"
-                  />
-                </div>
-              )}
-            </section>
-
-            <section>
-              <SectionTitle id="ch-practice" icon={ClipboardList} sub={course.practice.intro}>طبق على مشروعك</SectionTitle>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex-1 h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={course.practice.tasks.length} aria-valuenow={ticked.size} aria-label="تقدم التطبيق">
-                  <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((ticked.size / course.practice.tasks.length) * 100)}%` }} />
-                </div>
-                <span className="text-xs font-bold text-white/70 font-mono">{ticked.size}/{course.practice.tasks.length}</span>
-              </div>
-              <ul className="space-y-2.5">
-                {course.practice.tasks.map((task, i) => {
-                  const done = ticked.has(i);
-                  return (
-                    <li key={task.title}>
-                      <button
-                        onClick={() => togglePlanDay(userCode, practiceKey, i)}
-                        aria-pressed={done}
-                        className={`w-full flex items-start gap-3 p-4 rounded-2xl text-right cursor-pointer transition-colors duration-300 ${done ? "bg-emerald-400/[0.08] border border-emerald-400/25" : "bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06]"} ${focusRing}`}
-                      >
-                        <span className={`w-6 h-6 shrink-0 mt-0.5 rounded-lg border flex items-center justify-center ${done ? "bg-emerald-400 border-emerald-300 text-[#062018]" : "border-white/25"}`}>
-                          {done && <Check className="w-4 h-4" strokeWidth={3} />}
-                        </span>
-                        <span className="min-w-0 space-y-1">
-                          <span className={`block text-sm sm:text-base font-black ${done ? "text-white/60" : "text-white"}`}>{task.title}</span>
-                          <span className="block text-sm text-white/70 leading-relaxed">{task.detail}</span>
-                          <span className="block text-xs text-emerald-200/80 leading-relaxed"><span className="font-bold">تطلع بـ: </span>{task.output}</span>
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              {tool && (
-                <div className="mt-8 space-y-4">
-                  <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2"><Wrench className="w-4 h-4 text-vz-accent" /> الأداة: {tool.label}</h3>
-                  <React.Suspense fallback={<div className="p-4 text-center text-white/60 text-sm">دا يحمل...</div>}>{tool.render()}</React.Suspense>
-                </div>
-              )}
-            </section>
-
-            <section>
-              <SectionTitle id="ch-templates" icon={FileText} sub="انسخها، غير اللي بين القوسين [ ] لمشروعك، واستخدمها.">جاهز للنسخ</SectionTitle>
-              <div className="grid grid-cols-1 gap-3 sm:gap-4">
-                {course.templates.slice(0, openTemplates).map((t) => (
-                  <div key={t.title} className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-5 space-y-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <h3 className="text-sm sm:text-base font-black text-white">{t.title}</h3>
-                        <p className="text-xs text-white/55 mt-0.5 leading-relaxed"><span className="font-bold text-white/65">متى: </span>{t.when}</p>
-                      </div>
-                      <CopyButton text={t.text} />
-                    </div>
-                    <pre className="whitespace-pre-wrap font-sans text-sm text-white/90 leading-relaxed p-3.5 rounded-xl bg-black/25 border border-white/[0.06]">{t.text}</pre>
-                    {t.note && <p className="text-xs text-white/60 leading-relaxed pr-3 border-r-2 border-white/15">{t.note}</p>}
+          <AnimatePresence mode="wait" initial={false} custom={tabDir}>
+            <motion.div key={tab} custom={tabDir} variants={panelMotion} initial="enter" animate="center" exit="exit" role="tabpanel" aria-label={TABS[tabIndex].title}>
+              {tab === "lessons" && (
+                <section>
+                  <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس تمشي بيه خطوة خطوة: تفهم الفكرة، تشوفها بالرسوم والأرقام، تجربها بنفسك، وبالأخير تطبقها على منتجك.">الدروس</SectionTitle>
+                  <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس اللي كملتها">
+                    <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((doneLessons.size / course.lessons.length) * 100)}%` }} />
                   </div>
-                ))}
-                {openTemplates < course.templates.length && (
-                  <TrialLock
-                    title="باقي القوالب تنفتح ويا الاشتراك"
-                    items={course.templates.slice(openTemplates).map((t) => t.title)}
-                    cta="افتح كل القوالب"
-                  />
-                )}
-              </div>
-            </section>
-
-            <section>
-              <SectionTitle id="ch-example" icon={TrendingUp} sub={isFreeTrial ? undefined : course.example.setup}>{`مثال بالأرقام: ${course.example.title}`}</SectionTitle>
-              {isFreeTrial ? (
-                <TrialLock title="المثال بالأرقام ينفتح ويا الاشتراك" desc="مثال محسوب خطوة بخطوة: الأرقام قبل وبعد، وشنو تغير بالضبط." cta="افتح الكورس كامل" />
-              ) : (
-                <div className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {course.example.rows.map((r, ri) => {
-                      const last = ri === course.example.rows.length - 1;
+                  <ol className="relative space-y-3">
+                    {course.lessons.map((l, i) => {
+                      const locked = i >= openLessons;
+                      const done = doneLessons.has(i);
+                      const isNext = i === nextLesson;
                       return (
-                        <div key={r.label} className={`${last ? "glass-elevated glass-edge sm:col-span-2" : "glass"} rounded-3xl p-5`}>
-                          <p className="text-sm font-black text-white/65 mb-3">{r.label}</p>
-                          <div className="flex items-center gap-3 flex-wrap">
-                            <span className="text-base sm:text-lg text-red-300/90 line-through decoration-red-400/60">{r.before}</span>
-                            <ArrowLeft className="w-5 h-5 text-white/40 shrink-0" />
-                            <span className={`${last ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"} font-black text-emerald-300`}>{r.after}</span>
-                          </div>
-                        </div>
+                        <motion.li
+                          key={l.title}
+                          className="relative"
+                          initial={{ opacity: 0, y: 14 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.45, delay: 0.04 + i * 0.05, ease: EASE_OUT }}
+                        >
+                          {i < course.lessons.length - 1 && (
+                            <span aria-hidden="true" className={`absolute right-[35px] sm:right-[43px] top-16 sm:top-[4.5rem] bottom-[-12px] w-0.5 ${done ? "bg-emerald-400/50" : "bg-white/10"}`} />
+                          )}
+                          <button
+                            onClick={() => (locked ? jump("ch-lessons-locked") : setPlaying(i))}
+                            className={`relative w-full flex items-center gap-4 p-3 sm:p-4 rounded-3xl text-right cursor-pointer active:scale-[0.985] transition-[transform,background-color] duration-200 ${
+                              isNext ? "glass-elevated glass-edge" : "hover:bg-white/[0.04] active:bg-white/[0.04]"
+                            } ${focusRing}`}
+                          >
+                            <span
+                              className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-black ${
+                                done
+                                  ? "bg-emerald-400/15 border border-emerald-400/40 text-emerald-300"
+                                  : isNext
+                                    ? "bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_24px_-10px_rgba(47,107,255,0.7)]"
+                                    : locked
+                                      ? "bg-white/[0.03] border border-white/[0.08] text-white/35"
+                                      : "bg-white/[0.06] border border-white/10 text-white/80"
+                              }`}
+                            >
+                              {done ? <Check className="w-6 h-6" strokeWidth={3} /> : locked ? <Lock className="w-5 h-5" /> : isNext ? <Play className="w-5 h-5" /> : i + 1}
+                            </span>
+                            <span className="flex-1 min-w-0">
+                              <span className="block text-xs sm:text-sm font-bold text-white/50">الدرس {i + 1}، {minutesLabel(lessonMinutes(l))}</span>
+                              <span className={`block text-base sm:text-lg font-black leading-snug mt-0.5 ${locked ? "text-white/45" : "text-white"}`}>{l.title}</span>
+                            </span>
+                            {!locked && (
+                              <span className={`inline-flex items-center gap-1.5 text-sm font-black shrink-0 ${isNext ? "text-white" : "text-white/55"}`}>
+                                <span className="hidden sm:inline">{done ? "إعادة الدرس" : isNext ? "ابدأ" : "افتح"}</span>
+                                <ArrowLeft className="w-4 h-4" />
+                              </span>
+                            )}
+                          </button>
+                        </motion.li>
                       );
                     })}
+                  </ol>
+                  {openLessons < course.lessons.length && (
+                    <div className="mt-6">
+                      <TrialLock
+                        id="ch-lessons-locked"
+                        title="باقي الدروس متاحة ويا الاشتراك"
+                        desc="جربت الدرس الأول. باقي الدروس بنفس الطريقة، خطوة خطوة، ويا رسوم وأمثلة وأسئلة."
+                        items={course.lessons.slice(openLessons).map((l, i) => `الدرس ${openLessons + i + 1}: ${l.title}`)}
+                        cta="افتح الكورس كامل"
+                      />
+                    </div>
+                  )}
+                  <div className="mt-8">{outcomesBox}</div>
+                  <NextTab to="practice" onGo={openTab} />
+                </section>
+              )}
+
+              {tab === "practice" && (
+                <section>
+                  <SectionTitle id="ch-practice" icon={ClipboardList} sub={course.practice.intro}>طبق على مشروعك</SectionTitle>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="flex-1 h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={course.practice.tasks.length} aria-valuenow={ticked.size} aria-label="تقدمك بالتطبيق">
+                      <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((ticked.size / course.practice.tasks.length) * 100)}%` }} />
+                    </div>
+                    <span className="text-xs font-bold text-white/70 font-mono">{ticked.size}/{course.practice.tasks.length}</span>
                   </div>
-                  <ul className="space-y-2">
-                    {course.example.whatChanged.map((w) => (
-                      <li key={w} className="flex items-start gap-2.5 text-sm text-white/80 leading-relaxed">
-                        <span className="w-1.5 h-1.5 rounded-full bg-vz-accent shrink-0 mt-2" aria-hidden="true" />
-                        <span>{w}</span>
-                      </li>
+                  <ul className="space-y-2.5">
+                    {course.practice.tasks.map((task, i) => {
+                      const done = ticked.has(i);
+                      return (
+                        <li key={task.title}>
+                          <button
+                            onClick={() => togglePlanDay(userCode, practiceKey, i)}
+                            aria-pressed={done}
+                            className={`w-full flex items-start gap-3 p-4 rounded-2xl text-right cursor-pointer active:scale-[0.985] transition-[transform,background-color,border-color] duration-300 ${done ? "bg-emerald-400/[0.08] border border-emerald-400/25" : "bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06]"} ${focusRing}`}
+                          >
+                            <span className={`w-6 h-6 shrink-0 mt-0.5 rounded-lg border flex items-center justify-center transition-colors duration-300 ${done ? "bg-emerald-400 border-emerald-300 text-[#062018]" : "border-white/25"}`}>
+                              <AnimatePresence initial={false}>
+                                {done && (
+                                  <motion.span initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.3, opacity: 0 }} transition={{ type: "spring", stiffness: 600, damping: 26 }} className="flex">
+                                    <Check className="w-4 h-4" strokeWidth={3} />
+                                  </motion.span>
+                                )}
+                              </AnimatePresence>
+                            </span>
+                            <span className="min-w-0 space-y-1">
+                              <span className={`block text-sm sm:text-base font-black ${done ? "text-white/60" : "text-white"}`}>{task.title}</span>
+                              <span className="block text-sm text-white/70 leading-relaxed">{task.detail}</span>
+                              <span className="block text-xs text-emerald-200/80 leading-relaxed"><span className="font-bold">راح تطلع بـ: </span>{task.output}</span>
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  {tool && (
+                    <div className="mt-8 space-y-4">
+                      <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2"><Wrench className="w-4 h-4 text-vz-accent" /> الأداة: {tool.label}</h3>
+                      <React.Suspense fallback={<div className="p-4 text-center text-white/60 text-sm">جاري التحميل...</div>}>{tool.render()}</React.Suspense>
+                    </div>
+                  )}
+                  <NextTab to="templates" onGo={openTab} />
+                </section>
+              )}
+
+              {tab === "templates" && (
+                <section>
+                  <SectionTitle id="ch-templates" icon={FileText} sub="انسخها، وبدل الكلام اللي بين الأقواس [ ] بتفاصيل مشروعك، واستخدمها.">رسائل وقوالب جاهزة</SectionTitle>
+                  <div className="grid grid-cols-1 gap-3 sm:gap-4">
+                    {course.templates.slice(0, openTemplates).map((t) => (
+                      <div key={t.title} className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-5 space-y-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <h3 className="text-sm sm:text-base font-black text-white">{t.title}</h3>
+                            <p className="text-xs text-white/55 mt-0.5 leading-relaxed"><span className="font-bold text-white/65">متى تستخدمها: </span>{t.when}</p>
+                          </div>
+                          <CopyButton text={t.text} />
+                        </div>
+                        <pre className="whitespace-pre-wrap font-sans text-sm text-white/90 leading-relaxed p-3.5 rounded-xl bg-black/25 border border-white/[0.06]">{t.text}</pre>
+                        {t.note && <p className="text-xs text-white/60 leading-relaxed pr-3 border-r-2 border-white/15">{t.note}</p>}
+                      </div>
+                    ))}
+                    {openTemplates < course.templates.length && (
+                      <TrialLock
+                        title="باقي القوالب متاحة ويا الاشتراك"
+                        items={course.templates.slice(openTemplates).map((t) => t.title)}
+                        cta="افتح كل القوالب"
+                      />
+                    )}
+                  </div>
+                  <NextTab to="example" onGo={openTab} />
+                </section>
+              )}
+
+              {tab === "example" && (
+                <section>
+                  <SectionTitle id="ch-example" icon={TrendingUp} sub={isFreeTrial ? undefined : course.example.setup}>{`مثال بالأرقام: ${course.example.title}`}</SectionTitle>
+                  {isFreeTrial ? (
+                    <TrialLock title="المثال بالأرقام متاح ويا الاشتراك" desc="مثال محسوب خطوة بخطوة: الأرقام قبل وبعد، وشنو اللي تغير بالضبط." cta="افتح الكورس كامل" />
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {course.example.rows.map((r, ri) => {
+                          const last = ri === course.example.rows.length - 1;
+                          return (
+                            <motion.div
+                              key={r.label}
+                              initial={{ opacity: 0, y: 12 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.45, delay: 0.05 + ri * 0.06, ease: EASE_OUT }}
+                              className={`${last ? "glass-elevated glass-edge sm:col-span-2" : "glass"} rounded-3xl p-5`}
+                            >
+                              <p className="text-sm font-black text-white/65 mb-3">{r.label}</p>
+                              <div className="flex items-center gap-3 flex-wrap">
+                                <span className="text-base sm:text-lg text-red-300/90 line-through decoration-red-400/60">{r.before}</span>
+                                <ArrowLeft className="w-5 h-5 text-white/40 shrink-0" />
+                                <span className={`${last ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"} font-black text-emerald-300`}>{r.after}</span>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                      <ul className="space-y-2">
+                        {course.example.whatChanged.map((w) => (
+                          <li key={w} className="flex items-start gap-2.5 text-sm text-white/80 leading-relaxed">
+                            <span className="w-1.5 h-1.5 rounded-full bg-vz-accent shrink-0 mt-2" aria-hidden="true" />
+                            <span>{w}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="text-sm sm:text-base text-white/85 leading-relaxed"><span className="font-black text-vz-accent">الدرس: </span>{course.example.lesson}</p>
+                    </div>
+                  )}
+                  <NextTab to="mistakes" onGo={openTab} />
+                </section>
+              )}
+
+              {tab === "mistakes" && (
+                <section>
+                  <SectionTitle id="ch-mistakes" icon={AlertTriangle}>أخطاء انتبه لا توقع بيها</SectionTitle>
+                  <ul className="space-y-3">
+                    {course.mistakes.slice(0, openMistakes).map((m) => (
+                      <MistakeCard key={m.mistake} m={m} />
                     ))}
                   </ul>
-                  <p className="text-sm sm:text-base text-white/85 leading-relaxed"><span className="font-black text-vz-accent">الدرس: </span>{course.example.lesson}</p>
-                </div>
+                  {openMistakes < course.mistakes.length && (
+                    <p className="mt-3 text-xs text-white/50 inline-flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> {course.mistakes.length - openMistakes} أغلاط ثانية تنفتح ويا الاشتراك</p>
+                  )}
+                  <NextTab to="quiz" onGo={openTab} />
+                </section>
               )}
-            </section>
 
-            <section>
-              <SectionTitle id="ch-mistakes" icon={AlertTriangle}>أغلاط لا توكع بيها</SectionTitle>
-              <ul className="space-y-3">
-                {course.mistakes.slice(0, openMistakes).map((m) => (
-                  <MistakeCard key={m.mistake} m={m} />
-                ))}
-              </ul>
-              {openMistakes < course.mistakes.length && (
-                <p className="mt-3 text-xs text-white/50 inline-flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> {course.mistakes.length - openMistakes} أغلاط ثانية تنفتح ويا الاشتراك</p>
+              {tab === "quiz" && (
+                <section>
+                  <SectionTitle id="ch-quiz" icon={HelpCircle} sub="أسئلة قصيرة حتى تتأكد من فهمك للفصل.">اختبر نفسك</SectionTitle>
+                  <Quiz chapter={course} />
+                </section>
               )}
-            </section>
-
-            <section>
-              <SectionTitle id="ch-quiz" icon={HelpCircle} sub="أسئلة قصيرة تتأكد بيها إنك فهمت الفصل.">اختبر نفسك</SectionTitle>
-              <Quiz chapter={course} />
-            </section>
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </>
       )}
 
@@ -600,7 +692,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         >
           <TopicIcon kind="playbook" id={playbook.id} size="lg" />
           <span className="flex-1 min-w-0 space-y-1">
-            <span className="block text-xs sm:text-sm font-bold text-vz-accent">إذا هاي مشكلتك هسه</span>
+            <span className="block text-xs sm:text-sm font-bold text-vz-accent">إذا هاي هي مشكلتك حاليا</span>
             <span className="block text-base sm:text-xl font-black text-white leading-snug">{playbook.title}</span>
             <span className="block text-xs sm:text-sm text-white/55">{playbook.steps.length} خطوات، {playbook.scripts.length} رسائل جاهزة، وخطة 7 أيام</span>
           </span>
@@ -610,7 +702,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
       <div className="mt-4 sm:mt-5 glass rounded-3xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
         <div className="flex-1 min-w-0">
-          <p className="text-base sm:text-lg font-black text-white">{isDone ? "خلصت هذا الفصل" : "خلصت الفصل؟"}</p>
+          <p className="text-base sm:text-lg font-black text-white">{isDone ? "أنهيت هذا الفصل" : "كملت الفصل؟"}</p>
           <p className="text-xs sm:text-sm text-white/55 mt-1">{nextChapter ? <>الجاي: {nextChapter.title}</> : "هذا آخر فصل بالكورس."}</p>
         </div>
         <div className="flex flex-col-reverse sm:flex-row gap-2.5 shrink-0">
@@ -622,24 +714,27 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           )}
           <button onClick={finishAndContinue} className={`btn btn-primary min-h-[48px] px-6 rounded-full text-sm gap-2 ${focusRing}`}>
             {!isDone && <Check className="w-4 h-4" strokeWidth={3} />}
-            <span>{nextChapter ? (isDone ? "الفصل الجاي" : "خلصت، الفصل الجاي") : "خلصت الكورس"}</span>
+            <span>{nextChapter ? (isDone ? "الفصل الجاي" : "كملت، انتقل للفصل الجاي") : "كملت الكورس"}</span>
             {nextChapter && <ArrowLeft className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
-      {playing !== null && (
-        <LessonPlayer
-          chapterId={course.id}
-          chapterLabel={chapter.number}
-          lessons={course.lessons}
-          index={playing}
-          openLessons={openLessons}
-          onOpenLesson={setPlaying}
-          onDone={markLessonDone}
-          onClose={closePlayer}
-        />
-      )}
+      <AnimatePresence>
+        {playing !== null && (
+          <LessonPlayer
+            key="lesson-player"
+            chapterId={course.id}
+            chapterLabel={chapter.number}
+            lessons={course.lessons}
+            index={playing}
+            openLessons={openLessons}
+            onOpenLesson={setPlaying}
+            onDone={markLessonDone}
+            onClose={closePlayer}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -3,7 +3,7 @@ import { Check, Copy } from "lucide-react";
 
 const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
 
-export function CopyButton({ text, label = "انسخ" }: { text: string; label?: string }) {
+export function CopyButton({ text, label = "نسخ" }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
@@ -22,7 +22,7 @@ export function CopyButton({ text, label = "انسخ" }: { text: string; label?:
   return (
     <button onClick={copy} className={`btn btn-glass px-3.5 min-h-[36px] rounded-full text-xs gap-1.5 shrink-0 ${focusRing}`} aria-live="polite">
       {copied ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
-      <span>{copied ? "انتسخت" : label}</span>
+      <span>{copied ? "تم النسخ" : label}</span>
     </button>
   );
 }

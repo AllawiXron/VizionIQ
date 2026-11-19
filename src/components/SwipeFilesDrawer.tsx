@@ -19,7 +19,7 @@ export default function SwipeFilesDrawer() {
   const categories = [
     { id: "all", label: "كل الملفات" },
     { id: "ad_copy", label: "نصوص الإعلانات (Ad Copy)" },
-    { id: "whatsapp_script", label: "سكريبتات الواتساب" },
+    { id: "whatsapp_script", label: "سكربتات الواتساب" },
     { id: "confirmation_call", label: "مكالمة تأكيد الطلب" },
     { id: "product_page", label: "قوالب صفحات المنتجات" },
     { id: "checklist", label: "قوائم الفحص والخطط" }
@@ -54,16 +54,16 @@ export default function SwipeFilesDrawer() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <FolderDown className="w-3.5 h-3.5" />
-            <span>خزانة الموارد وسوايب فايلز، Swipe Files & Templates</span>
+            <span>خزانة الموارد وملفات Swipe Files & Templates</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
-            ملفات السوايب الجاهزة للنسخ والاستخدام الفوري
+            ملفات جاهزة تاخذ منها أفكار وتنسخها وتستخدمها مباشرة
           </h3>
         </div>
 
         <div className="relative w-full md:w-64">
           <input             type="text"
-            placeholder="دور بالسكريبتات والنصوص..."
+            placeholder="دور بالسكربتات والنصوص..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-white/5 border border-white/10 focus:border-white/35 rounded-xl px-4 py-2 pr-9 text-xs text-white placeholder-white/40 outline-none transition-all motion-reduce:transition-none motion-reduce:transform-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -72,7 +72,7 @@ export default function SwipeFilesDrawer() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+      <div className="flex flex-wrap items-center gap-2 pb-2">
         {categories.map((cat) => (
           <button             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
@@ -121,7 +121,7 @@ export default function SwipeFilesDrawer() {
                       {sf.content}
                     </p>
                     <div className="pt-1">
-                      <span className="text-xs font-black text-vz-accent block mb-2">سكريبت سوايب مدفوع ومحمي بالكامل</span>
+                      <span className="text-xs font-black text-vz-accent block mb-2">سكربت سوايب مدفوع ومحمي بالكامل</span>
                       <button                         onClick={triggerUpgradeModal}
                         className="btn btn-primary px-4 py-2 rounded-xl text-white font-black text-xs inline-flex items-center gap-1.5 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       >
@@ -141,12 +141,12 @@ export default function SwipeFilesDrawer() {
                     {copiedId === sf.id ? (
                       <>
                         <Check className="w-4 h-4" />
-                        <span>انتسخت</span>
+                        <span>تم النسخ</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-4 h-4" />
-                        <span>نسخ النص للذاكرة</span>
+                        <span>نسخ النص</span>
                       </>
                     )}
                   </button>

@@ -5,18 +5,18 @@ type PlatformType = "facebook" | "instagram" | "tiktok";
 
 export default function AdSimulator() {
   const [platform, setPlatform] = useState<PlatformType>("facebook");
-  const [adText, setAdText] = useState("شباك سيارتك يلم تراب والحر يحرق الكشنات؟ الحل الأسرع بالعراق وصل! مظلة السيارة العازلة للحرارة والأشعة فوق البنفسجية.\n\nتحمي سيارتك وتبرد الكابينة بـ ٣ دقائق بس.\nتوصيل سريع لجميع المحافظات والدفع عند الاستلام!\n\nاطلبها هسة بخصم ٢٥٪ لفترة محدودة!");
-  const [headline, setHeadline] = useState("مظلة السيارة العازلة للحرارة، فحص قبل الدفع");
-  const [cta, setCta] = useState("اطلب الآن - توصيل سريع");
+  const [adText, setAdText] = useState("شباك سيارتك يتغبر والحر يحرق الكشنات؟ الحل وصل مظلة السيارة العازلة للحرارة والأشعة فوق البنفسجية.\n\nتحمي سيارتك وتخفف الحرارة داخلها بـ ٣ دقائق بس.\nتوصيل سريع لكل المحافظات والدفع عند الاستلام\n\nاطلبها هسه بخصم ٢٥٪ ولفترة محدودة");
+  const [headline, setHeadline] = useState("مظلة السيارة العازلة للحرارة، افحصها قبل لا تدفع");
+  const [cta, setCta] = useState("اطلب هسه - توصيل سريع");
 
   return (
     <div className="w-full glass rounded-3xl sm:rounded-4xl glass-edge border p-3.5 sm:p-6 md:p-8 relative" id="ad-simulator">
 
       <div className="border-b border-white/10 pb-4 mb-6">
         <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-          جرب إعلانك وشوف شكله وتأثيره قبل لا تصرف أي دينار على الترويج
+          جرب إعلانك وشوف شلون راح يطلع ويأثر على الناس قبل لا تصرف ولا دينار على الترويج
         </h3>
-        <p className="text-xs text-white/70 mt-1">اختبر مظهر إعلانك على فيسبوك، انستغرام وتيك توك محليا وتأكد من جاذبيته للجمهور العراقي</p>
+        <p className="text-xs text-white/70 mt-1">شوف إعلانك شلون يطلع على فيسبوك وإنستغرام وتيك توك، وتأكد من جاذبيته للجمهور العراقي</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -25,32 +25,32 @@ export default function AdSimulator() {
           <span className="text-xs font-semibold text-vz-accent block">خيارات الإعلان والتعديل</span>
 
           <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/5">
-            <span className="text-[10px] text-vz-accent font-bold block">صيغ كتابة إعلانية عراقية ناجحة (اضغط للتجربة):</span>
+            <span className="text-[10px] text-vz-accent font-bold block">نماذج إعلانات عراقية ناجحة (اضغط وجرب):</span>
             <div className="grid grid-cols-3 gap-1.5">
               <button                 onClick={() => {
-                  setHeadline("مقاوم لتراب وعواصف بغداد والجنوب!");
-                  setAdText("تعبت من غسيل سيارتك كل يوم والتراب يغطيها الصبح؟ عواصف تراب العراق ما ترحم، والحل صار بيدك! غلاف السيارة النانو عازل للغبار والمطر بنسبة 100%.\n\nيحمي الصبغ من الخدوش وأشعة الشمس الحارقة.\nتفصال خاص لكل موديل سيارة (صالون، جيب، بيك اب).\n\nاطلب الحين وافحص خامته وجودته بنفسك قبل ما تدفع للمندوب!");
-                  setCta("اطلب الآن - توصيل سريع");
+                  setHeadline("تتحمل غبار وعواصف بغداد والجنوب");
+                  setAdText("تعبت من غسل سيارتك كل يوم وبالصبح تلكاها متغطية بالتراب؟ عواصف التراب بالعراق ما ترحم، بس الحل صار يمك غلاف السيارة النانو يحميها من الغبار والمطر بنسبة 100%.\n\nيحافظ على صبغ السيارة من الخدوش وأشعة الشمس القوية.\nتفصيل خاص حسب موديل سيارتك (صالون، جيب، بيك اب).\n\nاطلب هسه وافحص الخامة والجودة بنفسك قبل لا تدفع للمندوب");
+                  setCta("اطلب هسه - توصيل سريع");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                title="صيغة حل مشكلة الغبار العراقي"
+                title="صيغة حل مشكلة الغبار بالعراق"
               >
                 مشكلة الغبار
               </button>
               <button                 onClick={() => {
-                  setHeadline("من اليوم ماكو كشخة تخرب بسبب الكشنات!");
-                  setAdText("تخيل طالع لموعد أو دوام رسمي وتكتشف ملابسك تملت غبار الكشنات؟ عيني الغالي، لا تخرب كشختك! مع المكنسة اللاسلكية الذكية بقوة سحب خارقة 9000Pa.\n\nحجمها صغير ومثالية لكشنات وزوايا السيارة.\nتعبئة USB يدوم لأسابيع.\nالتوصيل لباب بيتك مجاني هذا الأسبوع!\n\nدوس 'اطلب الآن' وخذها بخصم خاص اليوم!");
-                  setCta("تسوق الآن");
+                  setHeadline("من اليوم غبار الكشنات ما يخرب كشختك");
+                  setAdText("تخيل طالع لموعد أو للدوام الرسمي، وفجأة تكتشف ملابسك كلها متغبرة من الكشنات؟ عيني الغالي، لا تخلي الغبار يخرب كشختك ويا المكنسة اللاسلكية الذكية بقوة سحب 9000Pa.\n\nحجمها صغير وتوصل لكشنات وزوايا السيارة.\nتشتغل بشحن USB ويدوم شحنها لأسابيع.\nالتوصيل لباب بيتك مجاني هذا الأسبوع\n\nاضغط على اطلب هسه وخذها بخصم خاص اليوم");
+                  setCta("تسوق هسه");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                title="صيغة الكشخة وتفادي الغبار"
+                title="صيغة الكشخة والتخلص من الغبار"
               >
                 كشخة الملابس
               </button>
               <button                 onClick={() => {
-                  setHeadline("اشتري وحدة الك والثانية لبيت أبوك مجانا!");
-                  setAdText("العراقيين أهل الكرم والهدية الطيبة! لهذا سوينا لكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي العازل للماء بسعر قطعة واحدة!\n\nيشتغل من شمس الصيف الحارة ويشتغل تلقائيا بالليل.\nخامة قوية ومقاومة للأمطار وعواصف الغبار.\nتوصيل سريع لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف بس!\n\nالعرض ساري حتى نفاد الكمية، اضغط واطلب هسة!");
-                  setCta("اشتري قطعتين والتوصيل مجاني");
+                  setHeadline("اشتري وحدة إلك والثانية هدية لبيت أبوك");
+                  setAdText("العراقيين أهل الكرم والذوق بالهدايا ولهذا سوينا إلكم أقوى عرض عائلي بالعراق: قطعتين من مصباح الحديقة الشمسي المقاوم للماء بسعر قطعة وحدة\n\nيشتغل بطاقة الشمس حتى بأيام الصيف الحارة، وينور وحده بالليل.\nخامة قوية وتتحمل المطر وعواصف الغبار.\nالتوصيل لبغداد بـ 3 آلاف والمحافظات بـ 5 آلاف بس\n\nالعرض مستمر لحد ما تخلص الكمية، اضغط واطلب هسه");
+                  setCta("اشتري قطعتين والتوصيل علينا");
                 }}
                 className="py-1.5 px-1 bg-white/5 hover:bg-white/5 border border-white/5 rounded-lg text-[9px] text-white font-medium truncate text-center cursor-pointer transition-colors min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                 title="صيغة عرض الكرم العراقي"
@@ -81,7 +81,7 @@ export default function AdSimulator() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs text-white/60 block">نص الإعلان الترويجي (Ad Copy):</label>
+            <label className="text-xs text-white/60 block">نص الإعلان (Ad Copy):</label>
             <textarea               value={adText}
               onChange={(e) => setAdText(e.target.value)}
               rows={4}
@@ -90,7 +90,7 @@ export default function AdSimulator() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs text-white/60 block">عنوان الإعلان الأساسي (Headline):</label>
+            <label className="text-xs text-white/60 block">عنوان الإعلان (Headline):</label>
             <input               type="text"
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
@@ -104,10 +104,10 @@ export default function AdSimulator() {
               onChange={(e) => setCta(e.target.value)}
               className="w-full text-xs p-3 bg-black/30 border border-white/10 rounded-xl text-white focus:outline-none focus:border-white/35 appearance-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              <option value="اطلب الآن - توصيل سريع">اطلب الآن - توصيل سريع</option>
-              <option value="تسوق الآن">تسوق الآن</option>
-              <option value="اشتري قطعتين والتوصيل مجاني">اشتري قطعتين والتوصيل مجاني</option>
-              <option value="أرسل رسالة">أرسل رسالة بالواتساب</option>
+              <option value="اطلب هسه - توصيل سريع">اطلب هسه - توصيل سريع</option>
+              <option value="تسوق هسه">تسوق هسه</option>
+              <option value="اشتري قطعتين والتوصيل علينا">اشتري قطعتين والتوصيل علينا</option>
+              <option value="راسلنا">راسلنا على الواتساب</option>
             </select>
           </div>
         </div>
@@ -119,14 +119,14 @@ export default function AdSimulator() {
               <div className="p-3 flex justify-between items-center border-b border-white/5">
                 <div className="flex items-center gap-2">
                   <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-vz-blue-light to-vz-blue-deep flex items-center justify-center font-bold text-white text-xs">
-                    عراق
+                    العراق
                   </div>
                   <div>
                     <h5 className="font-bold text-white flex items-center gap-1 text-[13px]">
                       سوق الرافدين الإلكتروني
-                      <span className="text-[#1877F2] text-[10px]">● ممول</span>
+                      <span className="text-[#1877F2] text-[10px]">● إعلان ممول</span>
                     </h5>
-                    <span className="text-[10px] text-white/70">الآن ·</span>
+                    <span className="text-[10px] text-white/70">هسه ·</span>
                   </div>
                 </div>
                 <button className="text-white/60 hover:text-white min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
@@ -160,7 +160,7 @@ export default function AdSimulator() {
               <div className="p-3 flex justify-around items-center border-t border-white/5 text-white/60">
                 <button className="flex items-center gap-1.5 hover:text-[#1877F2] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   <ThumbsUp className="w-4 h-4" />
-                  <span>أعجبني</span>
+                  <span>إعجاب</span>
                 </button>
                 <button className="flex items-center gap-1.5 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
                   <MessageCircle className="w-4 h-4" />
@@ -198,7 +198,7 @@ export default function AdSimulator() {
                 
                 <div className="z-10 text-center p-6 space-y-3">
                   <h6 className="text-base font-black text-white">{headline}</h6>
-                  <p className="text-xs text-vz-accent font-bold">التوصيل متوفر لكافة المحافظات العراقية</p>
+                  <p className="text-xs text-vz-accent font-bold">التوصيل متوفر لكل المحافظات العراقية</p>
                 </div>
 
                 <div className="absolute bottom-0 inset-x-0 h-10 bg-[#3897f0] hover:bg-[#1372d0] flex justify-between items-center px-4 transition-colors z-10 cursor-pointer">

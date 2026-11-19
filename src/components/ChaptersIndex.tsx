@@ -30,7 +30,7 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><BookOpen className="w-4 h-4" /> فصول الكورس</>}
-        title="اقرأها بالترتيب"
+        title="اقرأها وحدة ورا الثانية"
         subtitle={`${chaptersList.length} فصل مقسمة على 4 مراحل. كل فصل يبني على اللي قبله. خلصت ${doneCount} من ${chaptersList.length}.`}
       />
 
@@ -79,11 +79,11 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
                           <span className="text-sm sm:text-base font-black text-white leading-snug">{chapter.title}</span>
                           {isNext && (
                             <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full bg-vz-blue/25 border border-vz-blue-light/40 text-white">
-                              {progress.last === id ? "وكفت هنا" : "الجاي"}
+                              {progress.last === id ? "وقفت هنا" : "التالي"}
                             </span>
                           )}
                           {isTrial && (isTrialChapter(id) ? (
-                            <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300">مفتوح بالتجربة</span>
+                            <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300">متاح بالتجربة</span>
                           ) : (
                             <LockChip />
                           ))}

@@ -4,10 +4,10 @@ import { PROFILE_FIELDS, profileFilledCount, sanitizeProfile, type BusinessProfi
 
 
 const GROUPS: { id: ProfileField["group"]; title: string; hint: string }[] = [
-  { id: "shop", title: "المشروع", hint: "شنو تبيع ووين" },
-  { id: "numbers", title: "أرقام الطلب", hint: "حتى نحسب ربحك الصافي بالضبط" },
-  { id: "ads", title: "الإعلانات والمبيعات", hint: "حتى نشخص كلفة الرسالة والإغلاق" },
-  { id: "goals", title: "المشكلة والهدف", hint: "حتى يكون كل جواب موجه إلك" },
+  { id: "shop", title: "المشروع", hint: "شنو تبيع ووين تبيع" },
+  { id: "numbers", title: "أرقام الطلبيات", hint: "حتى نحسب صافي ربحك بالضبط" },
+  { id: "ads", title: "الإعلانات والمبيعات", hint: "حتى نعرف كلفة الرسالة ونسبة تحويلها لطلب" },
+  { id: "goals", title: "المشكلة والهدف", hint: "حتى تكون كل إجابة مناسبة إلك" },
 ];
 
 const UNIT: Partial<Record<ProfileField["kind"], string>> = { iqd: "د.ع", usd: "$", percent: "%" };
@@ -67,7 +67,7 @@ export function BusinessProfilePanel({
               ملف مشروعي
             </div>
             <p className="text-xs sm:text-sm text-white/65 leading-relaxed mt-0.5">
-              المستشار يقرا هالملف ويه كل سؤال، فيجاوبك على منتجك وأرقامك إنت مو حجي عام. يتحدث تلقائيا من تذكر معلومة بالمحادثة.
+              المستشار يراجع هذا الملف ويا كل سؤال تسأله، حتى يجاوبك حسب منتجك وأرقامك، مو بكلام عام. والملف يتحدث تلقائيا كلما تذكر معلومة جديدة بالمحادثة.
             </p>
           </div>
         </div>
@@ -124,20 +124,20 @@ export function BusinessProfilePanel({
               type="button"
               onClick={() => {
                 save();
-                onAskAdvisor("اقرا ملف مشروعي وگلي وين أكبر خلل بالأرقام، احسبلي ربحي الصافي للطلب، وشنو أول 3 خطوات أسويها هالأسبوع؟");
+                onAskAdvisor("اقرأ ملف مشروعي وكلي وين أكبر مشكلة بأرقامي، واحسبلي صافي ربحي من كل طلب، وشنو أول 3 خطوات أسويها هالأسبوع؟");
               }}
               disabled={filled < 3}
               className="btn btn-glass min-h-[46px] rounded-2xl px-4 text-sm font-black disabled:opacity-40"
               title={filled < 3 ? "عبي 3 معلومات على الأقل" : undefined}
             >
               <Sparkles className="w-4 h-4" />
-              شخص مشروعي
+              حلل مشروعي
             </button>
             {filled > 0 && (
               <button
                 type="button"
                 onClick={() => {
-                  if (confirm("تريد تمسح كل معلومات ملف مشروعك؟")) {
+                  if (confirm("تريد تمسح كل المعلومات الموجودة بملف مشروعك؟")) {
                     setDraft({});
                     onSave({});
                   }

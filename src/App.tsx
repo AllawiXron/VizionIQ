@@ -238,9 +238,9 @@ export default function App() {
           key={routeKey}
           id="main-content"
           tabIndex={-1}
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: EASE_OUT }}
+          transition={{ y: { type: "spring", stiffness: 300, damping: 32, mass: 0.9 }, opacity: { duration: 0.35, ease: EASE_OUT } }}
           className="w-full outline-none min-h-[70vh]"
         >
           {screen}
@@ -251,7 +251,7 @@ export default function App() {
             <div className="vz-hairline mb-6" aria-hidden="true" />
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-white/40 text-center">
               <span>© 2026 فيزيون viZion</span>
-              <span>كورس عملي للتجارة الإلكترونية بالعراق</span>
+              <span>كورس عملي بالتجارة الإلكترونية بالعراق</span>
             </div>
           </div>
         </footer>
@@ -425,7 +425,7 @@ function BackToTop({ className }: { className: string }) {
           animate={{ opacity: 1, y: 0, scale: 1, transition: SPRING_SNAPPY }}
           exit={{ opacity: 0, y: 12, scale: 0.85, transition: { duration: 0.2, ease: EASE_OUT } }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="الرجوع إلى أعلى الصفحة"
+          aria-label="الرجوع لأعلى الصفحة"
           className={`btn glass-floating fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5.5rem)] left-3 sm:left-4 lg:bottom-6 lg:left-6 z-40 w-11 h-11 !min-h-0 rounded-full text-white/85 ${className}`}
           title="الرجوع للبداية"
         >

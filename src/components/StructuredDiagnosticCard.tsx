@@ -58,7 +58,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
     navigator.clipboard.writeText(script);
     setCopiedScript(true);
     if (onShowToast) {
-      onShowToast("copy", "انتسخ السكربت", "هسه تكدر تدزه للزبون.");
+      onShowToast("copy", "تم نسخ السكربت", "هسه تكدر تدزه للزبون.");
     }
     setTimeout(() => setCopiedScript(false), 2000);
   };
@@ -70,7 +70,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         <div className="p-3 sm:p-4 rounded-xl glass-subtle border sm:border-white/14">
           <div className="flex items-center gap-1.5 mb-1.5 text-vz-accent font-bold text-xs sm:text-sm">
             <Sparkles className="w-4 h-4 text-vz-accent shrink-0" />
-            <span>1. التشخيص الشامل لواقع المشروع:</span>
+            <span>1. تشخيص شامل لوضع المشروع:</span>
           </div>
           <p className="text-white/90 leading-relaxed text-xs sm:text-sm whitespace-pre-line">
             {data.diagnosis}
@@ -82,7 +82,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center gap-1.5 mb-1.5 text-slate-300 font-bold text-xs sm:text-sm">
             <TrendingUp className="w-4 h-4 text-slate-300 shrink-0" />
-            <span>2. قراءة الأرقام والمؤشرات الحيوية:</span>
+            <span>2. تحليل الأرقام والمؤشرات المهمة:</span>
           </div>
           <p className="text-white/80 leading-relaxed text-xs whitespace-pre-line">
             {data.keyMetrics}
@@ -94,7 +94,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         <div className="p-3 sm:p-3.5 rounded-xl glass-subtle border">
           <div className="flex items-center gap-1.5 mb-1.5 text-rose-400 font-bold text-xs sm:text-sm">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span>3. الأسباب الجذرية المحتملة:</span>
+            <span>3. الأسباب المحتملة من الجذور:</span>
           </div>
           <ul className="space-y-1 text-xs text-white/80">
             {data.probableCauses.map((cause, idx) => (
@@ -111,7 +111,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         <div className="p-3.5 rounded-xl bg-slate-900/90 border border-emerald-500/30 bg-emerald-950/10">
           <div className="flex items-center gap-2 mb-2 text-emerald-400 font-bold text-xs sm:text-sm">
             <Clock className="w-4 h-4 text-emerald-400" />
-            <span>4. أول 3 خطوات للبدء خلال 48 ساعة:</span>
+            <span>4. أول 3 خطوات تبدي بيها خلال 48 ساعة:</span>
           </div>
           <div className="space-y-2">
             {data.next48HoursSteps.map((step, idx) => (
@@ -143,7 +143,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
               {copiedScript ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">انتسخ</span>
+                  <span className="text-emerald-400">تم النسخ</span>
                 </>
               ) : (
                 <>
@@ -164,7 +164,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
           <div className="p-3 rounded-xl glass-subtle border">
             <div className="flex items-center gap-1.5 text-slate-200 font-bold text-xs mb-1">
               <BarChart3 className="w-4 h-4 text-slate-300" />
-              <span>6. المقياس الواجب متابعته:</span>
+              <span>6. المؤشر اللي لازم تتابعه:</span>
             </div>
             <p className="text-[14px] text-slate-300 leading-[1.75]">
               {data.metricToTrack}
@@ -176,7 +176,7 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
           <div className="p-3 rounded-xl glass-subtle border">
             <div className="flex items-center gap-1.5 text-vz-accent font-bold text-xs mb-1">
               <BookOpen className="w-4 h-4" />
-              <span>7. الفصل المقترح:</span>
+              <span>7. الفصل اللي ننصحك بيه:</span>
             </div>
             <p className="text-[14px] text-slate-300 leading-[1.75]">
               {data.recommendedChapterOrTool.chapterTitle}
@@ -207,15 +207,15 @@ export const StructuredDiagnosticCard: React.FC<StructuredDiagnosticCardProps> =
         followUpActions={[
           {
             label: "حولها لخطة 7 أيام",
-            prompt: "حول هذا التشخيص لخطة يومية مفصلة 7 أيام، يوم ورا يوم.",
+            prompt: "حول هذا التشخيص لخطة عمل يومية مفصلة لمدة 7 أيام، يوم ورا يوم.",
           },
           {
-            label: "اكتبلي السكربت العراقي",
-            prompt: "اكتبلي سكريبت محادثة واتساب كامل وموسع للرد على الزبون العراقي لهذه الحالة بالتحديد.",
+            label: "اكتبلي السكربت باللهجة العراقية",
+            prompt: "اكتبلي سكربت محادثة واتساب كامل ومفصل للرد على الزبون العراقي بهالحالة بالتحديد.",
           },
           {
             label: "احسب صافي الربح",
-            prompt: "احسبلي صافي الأرباح بالتفصيل بعد خصم كلفة التوصيل 5000 بغداد و7000 محافظات وكلفة الإعلانات ونسبة راجع 15%.",
+            prompt: "احسبلي صافي الربح بالتفصيل بعد خصم كلفة التوصيل 5000 بغداد و7000 محافظات، وكلفة الإعلانات، ونسبة الطلبات الراجعة 15%.",
           },
         ]}
         onExecutePrompt={onActionClick}

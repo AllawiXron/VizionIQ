@@ -78,10 +78,10 @@ export default function ScenarioQuizModal() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
             <div className="bg-white/5 p-3 rounded-xl border border-white/5 text-xs text-white/70 font-mono">
-              <strong>الميزانية المتاحة:</strong> {currentScenario.budget}
+              <strong>الميزانية المتوفرة:</strong> {currentScenario.budget}
             </div>
             <div className="bg-white/5 p-3 rounded-xl border border-white/5 text-xs text-white/70 font-mono">
-              <strong>المقاييس الحالية:</strong> {currentScenario.metricsGiven}
+              <strong>المؤشرات الحالية:</strong> {currentScenario.metricsGiven}
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function ScenarioQuizModal() {
           <button             onClick={handleNext}
             className="btn btn-primary w-full py-3.5 text-white font-black rounded-2xl text-xs md:text-sm flex items-center justify-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           >
-            <span>التحدي التالي</span>
+            <span>التحدي الجاي</span>
             <ArrowRight className="w-4 h-4 rotate-180" />
           </button>
         )}

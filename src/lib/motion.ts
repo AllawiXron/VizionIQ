@@ -88,7 +88,7 @@ export const collapseMotion = {
 
 export const viewSwapMotion = {
   initial: { opacity: 0, y: 14, scale: 0.985, ...blurOf(6) },
-  animate: { opacity: 1, y: 0, scale: 1, ...blurOf(0), transition: { ...SPRING, opacity: { duration: 0.35, ease: EASE_OUT }, filter: { duration: 0.35, ease: EASE_OUT } } },
+  animate: { opacity: 1, y: 0, scale: 1, ...blurOf(0), transition: { type: "spring", stiffness: 300, damping: 32, mass: 0.9, opacity: { duration: 0.35, ease: EASE_OUT }, filter: { duration: 0.35, ease: EASE_OUT } } },
   exit: { opacity: 0, y: -6, scale: 0.99, ...blurOf(4), transition: { duration: 0.18, ease: EASE_OUT } },
 };
 

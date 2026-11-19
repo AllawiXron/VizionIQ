@@ -8,8 +8,8 @@ const ease = { duration: 0.45, ease: EASE_OUT };
 type Act = "pass" | "stop" | "msg" | "save";
 
 const ACT_STYLE: Record<Act, { label: string; cls: string }> = {
-  pass: { label: "عبر", cls: "bg-white/[0.06] text-white/45 border-white/10" },
-  stop: { label: "وكف", cls: "bg-emerald-400/15 text-emerald-200 border-emerald-300/35" },
+  pass: { label: "تجاوز", cls: "bg-white/[0.06] text-white/45 border-white/10" },
+  stop: { label: "توقف", cls: "bg-emerald-400/15 text-emerald-200 border-emerald-300/35" },
   msg: { label: "راسل", cls: "bg-vz-blue/30 text-white border-vz-blue-light/50" },
   save: { label: "حفظ", cls: "bg-amber-300/15 text-amber-100 border-amber-200/35" },
 };
@@ -39,14 +39,14 @@ export function FeedPost({
         <Avatar name={page} tone="bg-vz-blue/35 text-white" />
         <div className="min-w-0">
           <p className="text-[15px] font-black text-white leading-tight truncate">{page}</p>
-          <p className="text-[12px] font-bold text-white/45">ممول</p>
+          <p className="text-[12px] font-bold text-white/45">إعلان ممول</p>
         </div>
       </div>
       <div className="relative">{creative}</div>
       <div className="px-4 pt-3 pb-2 text-[15px] text-white/85 leading-[1.75]">{caption}</div>
       <div className="flex items-center justify-between gap-2 px-4 py-2.5 border-t border-white/[0.07] text-[13px] font-bold text-white/45">
         <span className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5"><ThumbsUp className="w-4 h-4" /> أعجبني</span>
+          <span className="flex items-center gap-1.5"><ThumbsUp className="w-4 h-4" /> إعجاب</span>
           <span className="flex items-center gap-1.5"><MessageCircle className="w-4 h-4" /> تعليق</span>
         </span>
         <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.08] text-white/80"><Send className="w-3.5 h-3.5" /> راسلنا</span>
@@ -118,20 +118,20 @@ const ZONES: Record<string, Zone> = {
 
 const PASSERS: Record<"generic" | "target", { name: string; role: string; act: Act; note: string }[]> = {
   generic: [
-    { name: "مصطفى", role: "طالب جامعة", act: "pass", note: "عبر بنص ثانية" },
-    { name: "حسين", role: "موظف بالدائرة", act: "pass", note: "عنده نفس المشكلة، بس ما حس الإعلان موجه إله" },
-    { name: "أم زهراء", role: "ربة بيت", act: "pass", note: "عبرت" },
-    { name: "كرار", role: "سايق تكسي", act: "pass", note: "عبر" },
-    { name: "نور", role: "موظفة بالوزارة", act: "pass", note: "عبرت" },
-    { name: "أبو علي", role: "متقاعد", act: "stop", note: "وكف ثانيتين وكمل يتفرج" },
+    { name: "مصطفى", role: "طالب جامعة", act: "pass", note: "تجاوز الإعلان بنص ثانية" },
+    { name: "حسين", role: "موظف بدائرة حكومية", act: "pass", note: "عنده نفس المشكلة، بس ما حس إن الإعلان يحچي وياه" },
+    { name: "أم زهراء", role: "ربة بيت", act: "pass", note: "تجاوزت الإعلان" },
+    { name: "كرار", role: "سايق تكسي", act: "pass", note: "تجاوز" },
+    { name: "نور", role: "موظفة بالوزارة", act: "pass", note: "تجاوزت الإعلان" },
+    { name: "أبو علي", role: "متقاعد", act: "stop", note: "وقف ثانيتين وكمل يتفرج" },
   ],
   target: [
-    { name: "حسين", role: "موظف بالدائرة", act: "msg", note: "شاف الفيديو كله وراسل: تصير لسيارة يارس؟" },
-    { name: "كرار", role: "سايق تكسي", act: "stop", note: "وكف 9 ثواني وعلق: بيش؟" },
-    { name: "نور", role: "موظفة بالوزارة", act: "stop", note: "وكفت وذكرت زوجها بالتعليقات" },
-    { name: "أبو علي", role: "متقاعد", act: "save", note: "حفظ المنشور حتى يرجعله بعدين" },
-    { name: "مصطفى", role: "طالب جامعة", act: "pass", note: "عبر، لأن ما عنده سيارة" },
-    { name: "أم زهراء", role: "ربة بيت", act: "pass", note: "عبرت" },
+    { name: "حسين", role: "موظف بدائرة حكومية", act: "msg", note: "شاف الفيديو كله وراسل: تنفع لسيارة يارس؟" },
+    { name: "كرار", role: "سايق تكسي", act: "stop", note: "وقف 9 ثواني وعلق: بيش؟" },
+    { name: "نور", role: "موظفة بالوزارة", act: "stop", note: "وقفت وذكرت زوجها بالتعليقات" },
+    { name: "أبو علي", role: "متقاعد", act: "save", note: "حفظت المنشور حتى ترجعله بعدين" },
+    { name: "مصطفى", role: "طالب جامعة", act: "pass", note: "تجاوز الإعلان، لأن ما عنده سيارة" },
+    { name: "أم زهراء", role: "ربة بيت", act: "pass", note: "تجاوزت الإعلان" },
   ],
 };
 
@@ -160,7 +160,7 @@ function Crowd({ which }: { which: "generic" | "target" }) {
         })}
       </div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...ease, delay: 1.3 }} className="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1">
-        <span className="text-[15px] text-white/60">من 40 شخص مرروا:</span>
+        <span className="text-[15px] text-white/60">من أصل 40 شخص مروا على الإعلان:</span>
         <span className="text-[17px] font-black text-emerald-200">وكف {stop}</span>
         <span className="text-[17px] font-black text-white">راسل {msg}</span>
       </motion.div>
@@ -210,9 +210,9 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
         />
         <ol className="space-y-2.5">
           {[
-            ["اللقطة", "موقف يعرفه: سيارته بالشمس، والساعة 2 الظهر. شاف نفسه باللقطة قبل لا يقرا أي شي."],
-            ["الجملة", "بكلامه هو: فرن. مو حرارة المقصورة ولا جودة عالية."],
-            ["الطمأنة", "جاوبنا على خوفه اللي يخليه يأجل الطلب بسطر واحد: يفحصها قبل لا يدفع."],
+            ["اللقطة", "موقف يعرفه: سيارته واقفة بالشمس، والساعة 2 الظهر. شاف نفسه بالمشهد قبل لا يقرا أي شي."],
+            ["الجملة", "استخدمنا كلمته هو: فرن. مو حرارة المقصورة ولا جودة عالية."],
+            ["الطمأنة", "جاوبناه على الشي اللي مخليه يأجل الطلب بسطر واحد: يفحصها قبل لا يدفع."],
           ].map(([k, v], i) => (
             <motion.li key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ ...ease, delay: 0.5 + i * 0.15 }} className="flex items-start gap-3">
               <span className="w-8 h-8 rounded-full bg-white text-[#040e33] text-[15px] font-black flex items-center justify-center shrink-0">{i + 1}</span>
@@ -222,8 +222,8 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
         </ol>
         <div className="grid grid-cols-2 gap-3">
           {[
-            ["الإعلان العام", "وكف 1، راسل 0", "text-white/60"],
-            ["إعلان الموظف", "وكف 11، راسل 4", "text-emerald-200"],
+            ["الإعلان العام", "وقف 1، راسل 0", "text-white/60"],
+            ["إعلان الموظف", "وقف 11، راسل 4", "text-emerald-200"],
           ].map(([k, v, c]) => (
             <div key={k} className="rounded-2xl bg-white/[0.04] border border-white/[0.08] p-3.5">
               <p className="text-[13px] font-bold text-white/50">{k}</p>
@@ -231,18 +231,18 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
             </div>
           ))}
         </div>
-        <p className="text-[13px] text-white/40">محاكاة توضيحية لـ 40 شخص، حتى تشوف الفرق بعينك.</p>
+        <p className="text-[13px] text-white/40">محاكاة توضيحية لـ 40 شخص، حتى تلاحظ الفرق بنفسك.</p>
       </div>
     );
   }
   return (
     <div className="grid gap-4 sm:grid-cols-2 sm:items-start">
       <motion.div key={which} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={ease}>
-        <p className="text-[14px] font-black text-white/55 mb-2">{which === "generic" ? "الإعلان الأول: مكتوب للكل" : "الإعلان الثاني: مكتوب لشخص واحد"}</p>
+        <p className="text-[14px] font-black text-white/55 mb-2">{which === "generic" ? "الإعلان الأول: يحچي ويا الكل" : "الإعلان الثاني: يحچي ويا شخص محدد"}</p>
         {which === "generic" ? (
           <FeedPost
             page="مظلات بغداد"
-            creative={<PostImage src="/lesson/sunshade-generic.webp" alt="منشور مظلات بغداد: صورة المظلة على خلفية بيضاء، مظلة سيارة لكل أنواع السيارات، جودة عالية وسعر مناسب، 25 ألف" />}
+            creative={<PostImage src="/lesson/sunshade-generic.webp" alt="منشور مظلات بغداد: صورة المظلة على خلفية بيضاء، مظلة سيارة تناسب كل أنواع السيارات، جودة عالية وسعر مناسب، 25 ألف" />}
             caption="متوفرة بكل القياسات، للطلب راسلونا."
           />
         ) : (
@@ -250,7 +250,7 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
         )}
       </motion.div>
       <div className="space-y-3">
-        <p className="text-[14px] font-black text-white/55">شنو سووا الناس</p>
+        <p className="text-[14px] font-black text-white/55">شنو كان رد فعل الناس</p>
         <Passers which={which} />
         <Crowd which={which} />
       </div>
@@ -261,22 +261,22 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
 const RINGS = [
   { label: "الشخص اللي تحچي وياه", people: [["حسين", "موظف ببغداد، يركن سيارته بالشمس من 8 لـ 2"]] },
   {
-    label: "عدهم نفس المشكلة، فيشوفون نفسهم بالكلام",
+    label: "عندهم نفس المشكلة، ولهذا يحسون إن الكلام يحچي عنهم",
     people: [
-      ["كرار", "سايق تكسي، سيارته طول اليوم بالشارع"],
+      ["كرار", "سايق تكسي، سيارته تبقى بالشارع طول اليوم"],
       ["نور", "موظفة، تركن سيارتها بموقف الوزارة المكشوف"],
-      ["علي", "مندوب مبيعات، ينزل ويصعد بالظهر"],
+      ["علي", "مندوب مبيعات، يظل ينزل ويصعد من السيارة بنص الظهر"],
       ["أبو مريم", "أب يوصل جهاله من المدرسة الساعة 1"],
     ],
   },
   {
-    label: "يشترون المنتج لغيرهم",
+    label: "يشترون المنتج حتى يهدوه لغيرهم",
     people: [
       ["أم حسين", "شافت الإعلان وطلبته لابنها"],
       ["زميل حسين", "شاف تعليقها وطلب وحدة إله"],
     ],
   },
-  { label: "مو زبونك، وهذا شي عادي", people: [["مصطفى", "طالب، ما عنده سيارة"]] },
+  { label: "مو زبونك، وهذا شي طبيعي", people: [["مصطفى", "طالب، ما عنده سيارة"]] },
 ];
 
 function Ring({ level, shown, children }: { level: number; shown: number; children?: React.ReactNode }) {
@@ -330,7 +330,7 @@ export function Ripple({ shown = 1 }: { shown?: number }) {
           <p className="text-[22px] font-black text-white">شخص واحد</p>
         </div>
         <div className="rounded-2xl bg-emerald-400/[0.08] border border-emerald-300/25 p-3.5">
-          <p className="text-[13px] font-bold text-white/50">الناس اللي ممكن يشترون</p>
+          <p className="text-[13px] font-bold text-white/50">الناس المحتمل يشترون</p>
           <motion.p key={buyers} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="text-[22px] font-black text-emerald-200">
             {buyers}
           </motion.p>
@@ -345,36 +345,36 @@ const SLOTS = [
     q: "منو هو؟",
     lead: "زبوني هو",
     options: [
-      { t: "أي واحد عنده سيارة", ok: false, why: "هذا يشمل الكل. ما تكدر تكتب جملة وحدة توصل لكل شخص عنده سيارة." },
-      { t: "موظف ببغداد يركن سيارته بالشمس من 8 لـ 2", ok: true, why: "تكدر تتخيله: وين يشتغل، وين يركن سيارته، وشوكت يرجعلها وهي حارة." },
-      { t: "رجال من 25 لـ 45 سنة", ok: false, why: "هذا عمر وجنس، يفيدك بالاستهداف، بس ما يوضحلك شلون يمشي يومه." },
+      { t: "أي شخص عنده سيارة", ok: false, why: "هذا يشمل الكل. ما تكدر تكتب جملة وحدة توصل لكل شخص عنده سيارة." },
+      { t: "موظف ببغداد يركن سيارته بالشمس من 8 لـ 2", ok: true, why: "تكدر تتصوره: وين يشتغل، وين يركن سيارته، وشوكت يرجعلها ويلكاها حارة." },
+      { t: "رجال أعمارهم من 25 لـ 45 سنة", ok: false, why: "هذا يحدد العمر والجنس، ويفيدك بالاستهداف، بس ما يوضحلك شلون يقضي يومه." },
     ],
   },
   {
-    q: "شنو مشكلته بكلامه هو؟",
+    q: "شنو المشكلة بكلامه هو؟",
     lead: "مشكلته إنه",
     options: [
-      { t: "يحتاج مظلة سيارة", ok: false, why: "هذا اسم المنتج مو المشكلة. محد يصحى الصبح ويحس إنه محتاج مظلة." },
-      { t: "حرارة المقصورة عالية", ok: false, why: "هذا كلامك إنت كبياع، هو ما يحچي بهالطريقة." },
-      { t: "السيارة تصير فرن والستيرن ما ينلزم", ok: true, why: "هاي نفس الكلمات اللي يكولها، ومن يقراها يعرف إنك تحچي عنه." },
+      { t: "يحتاج مظلة للسيارة", ok: false, why: "هذا اسم المنتج، مو المشكلة. محد يصحى الصبح ويحس إنه محتاج مظلة." },
+      { t: "حرارة السيارة عالية", ok: false, why: "هذا وصفك إنت كبياع، هو ما يحچي بهالطريقة." },
+      { t: "السيارة تصير فرن والستيرن ما ينلزم", ok: true, why: "هاي نفس الكلمات اللي يستخدمها، ومن يقراها يعرف إنك تحچي عن مشكلته." },
     ],
   },
   {
-    q: "شنو يريد يوصل؟",
+    q: "شنو يريد بالنتيجة؟",
     lead: "يريد",
     options: [
-      { t: "يصعد للسيارة الظهر وما يحترك", ok: true, why: "هاي النتيجة اللي يتخيلها، وهي اللقطة اللي لازم يشوفها بالفيديو." },
-      { t: "مظلة بجودة عالية", ok: false, why: "هاي صفة بالمنتج، مو الشي اللي يتمناه الزبون." },
-      { t: "سعر رخيص", ok: false, why: "السعر مهم، بس مو هو النتيجة اللي يحلم بيها. هو يريد سيارة ما تحرك." },
+      { t: "يركب سيارته بنص الظهر بدون لا يحترك", ok: true, why: "هاي النتيجة اللي يتخيلها، وهي المشهد اللي لازم يشوفه بالفيديو." },
+      { t: "مظلة جودتها عالية", ok: false, why: "هاي صفة بالمنتج، مو الشي اللي يتمناه الزبون." },
+      { t: "سعر رخيص", ok: false, why: "السعر مهم، بس مو النتيجة اللي يحلم بيها. هو يريد سيارته ما تصير حارة." },
     ],
   },
   {
-    q: "شنو يخاف منه؟",
+    q: "شنو الشي اللي يخاف منه؟",
     lead: "بس خايف",
     options: [
-      { t: "ما عنده أي خوف، يريد يشتري", ok: false, why: "كل زبون يشتري أونلاين عنده مخاوف، وإذا ما جاوبت عليها راح يأجل الطلب وينسى." },
-      { t: "يخاف من الإعلانات", ok: false, why: "مو من الإعلان نفسه، يخاف على فلوسه ومن المنتج اللي راح يشتريه." },
-      { t: "تطلع نوعيتها تعبانة وتتكسر بعد شهر", ok: true, why: "هذا الخوف اللي يخليه يتردد، وتكدر تطمنه بالفحص كدام المندوب." },
+      { t: "ما عنده أي خوف، يريد يشتري", ok: false, why: "كل زبون يشتري أونلاين عنده مخاوف، وإذا ما جاوبت على مخاوفه ممكن يأجل الطلب وينساه." },
+      { t: "يخاف من الإعلانات", ok: false, why: "مو خايف من الإعلان نفسه، خايف على فلوسه ومن المنتج اللي راح يشتريه." },
+      { t: "تطلع نوعيتها تعبانة وتنكسر بعد شهر", ok: true, why: "هذا الخوف اللي يخليه يتردد، وتكدر تطمنه وتخليه يفحصها كدام المندوب." },
     ],
   },
 ];
@@ -459,7 +459,7 @@ export function SentenceBuilder() {
       ) : (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-5 rounded-2xl bg-emerald-400/[0.08] border border-emerald-300/25 p-4">
           <p className="text-[18px] font-black text-emerald-200 mb-1">الجملة كاملة. جاوبت صح من أول مرة {firstTry} من 4.</p>
-          <p className="text-[16px] text-white/75 leading-relaxed">هسه كل جزء من جملة الزبون راح يتحول لجزء من الإعلان. بالخطوة الجاية راح تشوف شلون.</p>
+          <p className="text-[16px] text-white/75 leading-relaxed">هسه كل جزء من كلام الزبون راح يصير جزء من إعلانك. بالخطوة الجاية راح تشوف شلون.</p>
         </motion.div>
       )}
     </div>
@@ -467,10 +467,10 @@ export function SentenceBuilder() {
 }
 
 const MAP = [
-  { part: "موظف ببغداد يركن سيارته بالشمس من 8 لـ 2", becomes: "أول لقطة", detail: "سيارة بموقف مكشوف، والساعة 2 الظهر. يشوف نفسه باللقطة قبل لا يقرا أي كلمة." },
-  { part: "السيارة تصير فرن والستيرن ما ينلزم", becomes: "أول جملة", detail: "سيارتك تصير فرن من تطلع من الدوام؟ نفس كلامه، بس على شكل سؤال." },
-  { part: "يصعد للسيارة الظهر وما يحترك", becomes: "اللقطة الثانية", detail: "يفتح المظلة بثانية، ومن يرجع من الدوام يمسك الستيرن بشكل طبيعي." },
-  { part: "تطلع نوعيتها تعبانة وتتكسر بعد شهر", becomes: "آخر سطر", detail: "تفحصها كدام المندوب قبل لا تدفع. جاوبنا على خوفه قبل لا يسأل." },
+  { part: "موظف ببغداد يركن سيارته بالشمس من 8 لـ 2", becomes: "أول لقطة", detail: "سيارة بموقف مكشوف، والساعة 2 الظهر. يشوف نفسه بالمشهد قبل لا يقرا أي كلمة." },
+  { part: "السيارة تصير فرن والستيرن ما ينلزم", becomes: "أول جملة", detail: "سيارتك تصير فرن من تطلع من الدوام؟ نفس كلامه، بس بصيغة سؤال." },
+  { part: "يركب سيارته بنص الظهر بدون لا يحترك", becomes: "اللقطة الثانية", detail: "يفتح المظلة بثانية، ومن يرجع من الدوام يمسك الستيرن بشكل طبيعي." },
+  { part: "تطلع نوعيتها تعبانة وتنكسر بعد شهر", becomes: "آخر سطر", detail: "تفحصها كدام المندوب قبل لا تدفع. طمناه على مخاوفه قبل لا يسأل." },
 ];
 
 export function SentenceToAd({ shown = 1 }: { shown?: number }) {
@@ -510,7 +510,7 @@ export function SentenceToAd({ shown = 1 }: { shown?: number }) {
         caption={
           <>
             <span className="grid grid-cols-3 gap-2 mb-3">
-              {frame(1, "السيارة بالشمس")}
+              {frame(1, "السيارة واقفة بالشمس")}
               {frame(2, "تنفتح بثانية")}
               {frame(3, "يمسك الستيرن")}
             </span>
@@ -538,32 +538,32 @@ export function BeforeAfterPost({ shown = 1 }: { shown?: number }) {
         {after ? (
           <FeedPost
             page="رتبها"
-            creative={<PostImage src="/lesson/organizer-strong.webp" alt="إعلان رتبها: نفس الجرار نصه مرتب بالمنظم ونصه متروس، الساعة 7:20 و7:21، ومكتوب كل صبح تدورين على الروج؟" />}
-            caption="إذا المكياج مالتج متروس بالجرار وكل صبح تدورين على الروج، هذا المنظم يخلي كلشي كدامج ومرتب بمكانه."
-            comments={["والله هذا آني، كل صبح أعاني من هالسالفة", "يجي بلون أبيض؟ ويوصل للنجف؟", "شوفي، هذا بالضبط اللي كتلج عليه"]}
+            creative={<PostImage src="/lesson/organizer-strong.webp" alt="إعلان رتبها: نفس الجرار، نصه مرتب بالمنظم ونصه متروس، الساعة 7:20 و7:21، ومكتوب كل صبح تدورين على الروج؟" />}
+            caption="إذا مكياجج متروس بالجرار وكل صبح تتعبين وإنت تدورين على الروج، هذا المنظم يخلي كلشي كدامج ومرتب بمكانه."
+            comments={["والله هذا آني، كل صبح أعاني من هاي السالفة", "يجي باللون الأبيض؟ ويوصل للنجف؟", "شوفي، هذا بالضبط اللي حكيتلج عنه"]}
           />
         ) : (
           <FeedPost
             page="رتبها"
-            creative={<PostImage src="/lesson/organizer-generic.webp" alt="منشور رتبها: صورة المنظم على خلفية بيضاء، منظم مكياج أنيق ويناسب كل البيوت، السعر بالخاص" />}
-            caption="منظم مكياج أنيق يناسب كل البيوت. متوفر بعدة ألوان، والسعر بالخاص."
+            creative={<PostImage src="/lesson/organizer-generic.webp" alt="منشور رتبها: صورة المنظم على خلفية بيضاء، منظم مكياج أنيق يناسب كل بيت، السعر بالخاص" />}
+            caption="منظم مكياج أنيق يناسب كل بيت. متوفر بأكثر من لون، والسعر بالخاص."
             comments={["بيش؟", "السعر"]}
           />
         )}
       </motion.div>
       <p className="text-[16px] sm:text-[17px] text-white/75 leading-relaxed">
         {after
-          ? "هسه الناس بدت تحچي عن نفسها وتكول: هذا آني. وأسئلتهم صارت عن اللون والتوصيل، يعني بدوا يفكرون بالطلب."
-          : "التعليقات كلها تسأل عن السعر وبس. محد حچى عن نفسه، لأن المنشور ما كان موجه لأي شخص بالتحديد."}
+          ? "هسه الناس بدت تحچي عن نفسها وتكول: هذا آني. وأسئلتهم صارت عن اللون والتوصيل، يعني بدوا يفكرون يشترون."
+          : "التعليقات كلها تسأل عن السعر وبس. محد حچى عن نفسه، لأن المنشور ما كان موجه لشخص معين."}
       </p>
     </div>
   );
 }
 
 const THREE = [
-  { id: "emp", who: "الموظف", day: "يركن سيارته بالشمس من 8 لـ 2", line: "سيارتك تصير فرن من تطلع من الدوام؟", where: "بغداد، وقت الدوام وبعده" },
-  { id: "mom", who: "الأم", day: "توصل جهالها من المدرسة الظهر", line: "ولدج يصعد للسيارة ويحترك من الكرسي؟", where: "قبل الدوام المدرسي وبعده" },
-  { id: "taxi", who: "سايق التكسي", day: "سيارته طول اليوم بالشارع", line: "الراكب يصعد ويكلك شغل المبردة فول؟", where: "بأوقات الذروة، بكل المحافظات" },
+  { id: "emp", who: "الموظف", day: "يركن سيارته بالشمس من 8 لـ 2", line: "سيارتك تصير فرن من تطلع من الدوام؟", where: "ببغداد، بوقت الدوام وبعده" },
+  { id: "mom", who: "الأم", day: "توصل جهالها من المدرسة بنص الظهر", line: "ابنج يصعد للسيارة ويحترك من الكرسي؟", where: "قبل الدوام المدرسي وبعده" },
+  { id: "taxi", who: "سايق التكسي", day: "سيارته بالشارع طول اليوم", line: "الراكب يصعد ويكلك شغل المبردة على أعلى شي؟", where: "بأوقات الزحمة، بكل المحافظات" },
 ];
 
 const toWho = (w: string) => (w.startsWith("ال") ? `لل${w.slice(2)}` : `ل${w}`);
@@ -599,25 +599,25 @@ export function ThreeCustomers() {
       {chosen ? (
         <motion.div key={chosen.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-4 rounded-2xl bg-white/[0.04] border border-white/[0.09] p-4 space-y-2">
           <p className="text-[16px] text-white/85 leading-relaxed"><span className="font-black text-emerald-200">الإعلان الأول: </span>{chosen.who}، وكل الكلام إله.</p>
-          <p className="text-[16px] text-white/70 leading-relaxed"><span className="font-black text-white">بعد ما يمشي: </span>إعلان ثاني {toWho(rest[0].who)}، وثالث {toWho(rest[1].who)}. نفس المظلة، بس كل إعلان بجملته.</p>
-          <p className="text-[14px] text-white/45 leading-relaxed">ماكو اختيار غلط هنا. الغلط الوحيد إنك تحاول تحچي ويا الثلاثة بنفس الإعلان.</p>
+          <p className="text-[16px] text-white/70 leading-relaxed"><span className="font-black text-white">بعد ما يمر عليه: </span>إعلان ثاني {toWho(rest[0].who)}، وثالث {toWho(rest[1].who)}. نفس المظلة، بس كل إعلان بجملته.</p>
+          <p className="text-[14px] text-white/45 leading-relaxed">ماكو اختيار غلط هنا. الغلط الوحيد إنك تحاول تحچي ويا الثلاثة بإعلان واحد.</p>
         </motion.div>
       ) : (
-        <p className="mt-4 text-[15px] text-white/55">اختار واحد تبدي بيه.</p>
+        <p className="mt-4 text-[15px] text-white/55">اختار شخص واحد وتبدي بيه.</p>
       )}
     </div>
   );
 }
 
 const COMMENTS = [
-  { t: "بيش؟", tag: null, why: "سؤال عن السعر، ما يكلك أي شي عن مشكلته." },
-  { t: "آني موظفة وسيارتي من الصبح للظهر تبقى بالشمس، من أصعد ما أكدر ألزم الستيرن", tag: "مشكلة", take: "أصعد ما أكدر ألزم الستيرن" },
+  { t: "بيش؟", tag: null, why: "سؤال عن السعر، ما يكشفلك أي شي عن مشكلته." },
+  { t: "آني موظفة وسيارتي من الصبح للظهر تبقى بالشمس، من أصعد ما أكدر أمسك الستيرن", tag: "مشكلة", take: "أصعد وما أكدر أمسك الستيرن" },
   { t: "تتحمل شمس البصرة لو تذوب؟", tag: "خوف", take: "تتحمل لو تذوب؟" },
-  { t: "شوف هاي حيدر", tag: null, why: "منشن لصديق. يفرحه، بس ما يفيدك تعرف شي عن الزبون." },
+  { t: "شوف هاي حيدر", tag: null, why: "منشن لصديق. يفرحه، بس ما يفيدك تعرف أي شي عن الزبون." },
   { t: "اشتريت وحدة قبل من بيج ثاني وانكسرت بالشهر الثاني", tag: "خوف", take: "انكسرت بالشهر الثاني" },
-  { t: "تصير لسيارة توسان؟", tag: "سؤال", take: "تصير لسيارتي؟" },
-  { t: "الله يرزقكم", tag: null, why: "دعوة حلوة، بس ما تكشفلك شي عن الزبون." },
-  { t: "الجهال يحترقون من الحزام بالصيف", tag: "مشكلة", take: "الجهال يحترقون من الحزام" },
+  { t: "تنفع لسيارة توسان؟", tag: "سؤال", take: "تنفع لسيارتي؟" },
+  { t: "الله يرزقكم", tag: null, why: "دعوة حلوة، بس ما تكشفلك أي شي عن الزبون." },
+  { t: "الجهال يحترقون من حزام الأمان بالصيف", tag: "مشكلة", take: "الجهال يحترقون من الحزام" },
 ];
 const NEED = COMMENTS.filter((c) => c.tag).length;
 
@@ -677,7 +677,7 @@ export function CommentsMine() {
         </div>
         {done && (
           <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-3 text-[15px] text-emerald-200 font-bold leading-relaxed">
-            هاي جمل تكدر تستخدمها بإعلانك، مكتوبة بكلام الزبون نفسه. وانتبه: تعليق الجهال يفتحلك نوع زبون ثاني، وهو الأم.
+            هاي جمل تكدر تستخدمها بإعلانك، ومكتوبة بنفس كلام الزبون. وانتبه: تعليق الجهال يفتحلك فئة ثانية من الزباين، وهي الأمهات.
           </motion.p>
         )}
       </div>

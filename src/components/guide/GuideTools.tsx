@@ -66,19 +66,19 @@ function LandedCost() {
   const markup = goods > 0 ? ((totalUsd - goods) / goods) * 100 : 0;
 
   return (
-    <Shell icon={Calculator} title="احسب: كلفة القطعة الواصلة لمخزنك" note="الكمرك هنا محسوب تقريبا على قيمة البضاعة والشحن. النسبة والرسوم الدقيقة يحددها المخلص الكمركي حسب البند.">
+    <Shell icon={Calculator} title="احسب كلفة القطعة لحد ما توصل لمخزنك" note="الكمرك هنا محسوب بشكل تقريبي على قيمة البضاعة والشحن. النسبة والرسوم الفعلية يحددها المخلص الكمركي حسب نوع البضاعة والبند الكمركي.">
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         <Field label="سعر القطعة من المورد" value={unitPrice} onChange={setUnitPrice} suffix="$" step={0.1} />
         <Field label="عدد القطع" value={units} onChange={setUnits} suffix="قطعة" step={10} />
-        <Field label="الشحن الكلي" value={freight} onChange={setFreight} suffix="$" step={10} />
+        <Field label="مجموع كلفة الشحن" value={freight} onChange={setFreight} suffix="$" step={10} />
         <Field label="نسبة الكمرك" value={customsPct} onChange={setCustomsPct} suffix="%" />
-        <Field label="تخليص ونقل ورسوم ثانية" value={fees} onChange={setFees} suffix="$" step={10} />
-        <Field label="سعر الدولار اللي تدفع بيه" value={rate} onChange={setRate} suffix="د.ع" step={10} />
+        <Field label="التخليص والنقل والرسوم الثانية" value={fees} onChange={setFees} suffix="$" step={10} />
+        <Field label="سعر الدولار اللي تحاسب عليه" value={rate} onChange={setRate} suffix="د.ع" step={10} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Result label="كلفة القطعة الواصلة" value={`${fmt(perUnitIqd)} د.ع`} tone="bad" hint="هذا رقمك الحقيقي، مو سعر المورد" />
-        <Result label="الزيادة فوك سعر البضاعة" value={`+${Math.round(markup)}%`} hint="شحن + كمرك + رسوم" />
-        <Result label="سعر بيع مبدئي (× 3)" value={`${fmt(perUnitIqd * 3)} د.ع`} tone="good" hint="بالدفع عند الاستلام والإعلان، أقل من ×2.5 صعب يربح" />
+        <Result label="كلفة القطعة بعد ما توصل" value={`${fmt(perUnitIqd)} د.ع`} tone="bad" hint="هاي كلفتها الحقيقية، مو سعر المورد" />
+        <Result label="الزيادة على سعر البضاعة" value={`+${Math.round(markup)}%`} hint="شحن + كمرك + رسوم" />
+        <Result label="سعر البيع المبدئي (× 3)" value={`${fmt(perUnitIqd * 3)} د.ع`} tone="good" hint="بالبيع عند الاستلام والإعلانات، إذا السعر أقل من ×2.5 يصير تحقيق الربح صعب" />
       </div>
     </Shell>
   );
@@ -103,20 +103,20 @@ function DeliveryCost() {
   const cashStuck = (delivered / 30) * aov * remitDays;
 
   return (
-    <Shell icon={Truck} title="احسب: كلفة التوصيل الحقيقية وفلوسك العالقة" note="الأرقام الافتراضية من نطاقات 2026 الشائعة. غيرها لأرقام شركتك.">
+    <Shell icon={Truck} title="احسب كلفة التوصيل الحقيقية وفلوسك اللي بعدها عند الشركة" note="الأرقام الافتراضية مبنية على المعدلات الشائعة بسنة 2026. غيرها حسب أرقام شركة التوصيل اللي تتعامل وياها.">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Field label="طلبات تطلع بالشهر" value={orders} onChange={setOrders} suffix="طلب" step={10} />
+        <Field label="عدد الطلبيات بالشهر" value={orders} onChange={setOrders} suffix="طلب" step={10} />
         <Field label="متوسط قيمة الطلب" value={aov} onChange={setAov} suffix="د.ع" step={1000} />
-        <Field label="كروة التوصيل" value={fee} onChange={setFee} suffix="د.ع" step={500} />
-        <Field label="عمولة استلام الكاش" value={codPct} onChange={setCodPct} suffix="%" step={0.5} />
-        <Field label="نسبة الرفض" value={refusalPct} onChange={setRefusalPct} suffix="%" />
-        <Field label="تدفع على المرفوض (% من الكروة)" value={refusedFeePct} onChange={setRefusedFeePct} suffix="%" step={5} />
-        <Field label="كل كم يوم يسلمونك" value={remitDays} onChange={setRemitDays} suffix="يوم" />
+        <Field label="كلفة التوصيل" value={fee} onChange={setFee} suffix="د.ع" step={500} />
+        <Field label="عمولة استلام الفلوس" value={codPct} onChange={setCodPct} suffix="%" step={0.5} />
+        <Field label="نسبة رفض الاستلام" value={refusalPct} onChange={setRefusalPct} suffix="%" />
+        <Field label="المبلغ اللي تدفعه على الطلبات المرفوضة (% من كلفة التوصيل)" value={refusedFeePct} onChange={setRefusedFeePct} suffix="%" step={5} />
+        <Field label="كل شكد يوم يحولولك الفلوس" value={remitDays} onChange={setRemitDays} suffix="يوم" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Result label="كلفة التوصيل بالشهر" value={`${fmt(monthly)} د.ع`} hint="كروة + عمولة كاش + مرفوض" />
-        <Result label="الكلفة الحقيقية لكل طلب واصل" value={`${fmt(perDelivered)} د.ع`} tone="bad" hint={`مو ${fmt(fee)} مثل ما تتوقع`} />
-        <Result label="فلوسك العالقة عند الشركة" value={`${fmt(cashStuck)} د.ع`} hint="فلوس انباعت بس ما وصلتك بعد" />
+        <Result label="مجموع كلفة التوصيل بالشهر" value={`${fmt(monthly)} د.ع`} hint="توصيل + عمولة استلام الفلوس + الطلبات المرفوضة" />
+        <Result label="الكلفة الحقيقية لكل طلب مستلم" value={`${fmt(perDelivered)} د.ع`} tone="bad" hint={`مو ${fmt(fee)} مثل ما تتوقع`} />
+        <Result label="فلوسك اللي بعدها بذمة شركة التوصيل" value={`${fmt(cashStuck)} د.ع`} hint="فلوس طلبيات انباعت بس لحد هسه ما استلمتها" />
       </div>
     </Shell>
   );
@@ -124,9 +124,9 @@ function DeliveryCost() {
 
 const KIND_STYLE: Record<SeasonEvent["kind"], { label: string; cls: string }> = {
   sales: { label: "موسم بيع", cls: "bg-emerald-400/15 border-emerald-400/30 text-emerald-200" },
-  respect: { label: "احترام المناسبة", cls: "bg-white/[0.07] border-white/15 text-white/80" },
+  respect: { label: "مناسبة اجتماعية", cls: "bg-white/[0.07] border-white/15 text-white/80" },
   holiday: { label: "عطلة رسمية", cls: "bg-amber-300/10 border-amber-300/25 text-amber-100" },
-  weather: { label: "موسم طقس", cls: "bg-sky-400/10 border-sky-300/25 text-sky-100" },
+  weather: { label: "موسم حسب الطقس", cls: "bg-sky-400/10 border-sky-300/25 text-sky-100" },
 };
 
 const DAY_MS = 86_400_000;
@@ -147,7 +147,7 @@ function SeasonCalendar() {
   const [showAll, setShowAll] = useState(false);
   const events = useMemo(() => upcomingSeasons(new Date(), showAll ? 50 : 6), [showAll]);
   return (
-    <Shell icon={CalendarDays} title="المواسم الجاية من اليوم" note="التواريخ الهجرية متوقعة وممكن تتغير يوم أو يومين حسب رؤية الهلال.">
+    <Shell icon={CalendarDays} title="المواسم الجاية من اليوم" note="التواريخ الهجرية تقديرية وممكن تتغير يوم أو يومين حسب رؤية الهلال.">
       <ol className="space-y-2.5">
         {events.map((e) => {
           const style = KIND_STYLE[e.kind];
@@ -162,7 +162,7 @@ function SeasonCalendar() {
                   <span className="text-sm sm:text-base font-black text-white">{e.title}</span>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${style.cls}`}>{style.label}</span>
                 </div>
-                <p className="text-[11px] text-white/45">{e.approx ? "تقريبا " : ""}{dateLabel(e.date)}</p>
+                <p className="text-[11px] text-white/45">{e.approx ? "تقريبا" : ""}{dateLabel(e.date)}</p>
                 <p className="text-xs sm:text-sm text-white/75 leading-relaxed">{e.prepare}</p>
               </div>
             </li>

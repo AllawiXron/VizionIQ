@@ -24,10 +24,10 @@ export default function DecisionTreeViewer() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/14 text-vz-accent text-xs font-bold mb-2">
             <Compass className="w-3.5 h-3.5" />
-            <span>محرك تشخيص الأعطال التفاعلي، Decision Trees</span>
+            <span>أداة تشخيص الأعطال التفاعلية، Decision Trees</span>
           </div>
           <h3 className="text-2xl md:text-3xl font-black text-white">
-            شجرة القرارات والتشخيص الجذري للاختناقات
+            شجرة القرارات والتشخيص من جذور مشاكل المشروع
           </h3>
         </div>
 
@@ -36,7 +36,7 @@ export default function DecisionTreeViewer() {
             className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center gap-2 transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            <span>إعادة التشخيص</span>
+            <span>أعد التشخيص</span>
           </button>
         )}
       </div>
@@ -85,21 +85,21 @@ export default function DecisionTreeViewer() {
             <div className="flex items-center gap-3 mb-3">
               <AlertTriangle className="w-6 h-6 text-vz-accent" />
               <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/40 border border-white/10">
-                تشخيص الخلل: {selectedResult.severity === "critical" ? "عطل حاد يتطلب تدخلا فوريا" : "عطل متوسط"}
+                تشخيص الخلل: {selectedResult.severity === "critical" ? "مشكلة خطيرة تحتاج حل فوري" : "مشكلة متوسطة"}
               </span>
             </div>
             <h4 className="text-2xl md:text-3xl font-black text-white mb-2">
               {selectedResult.title}
             </h4>
             <p className="text-xs md:text-sm leading-relaxed text-white/80">
-              <strong className="text-vz-accent">السبب الجذري:</strong> {selectedResult.rootCause}
+              <strong className="text-vz-accent">السبب الأساسي للمشكلة:</strong> {selectedResult.rootCause}
             </p>
           </div>
 
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
             <h5 className="text-base font-bold text-white flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-              <span>الخطة العلاجية الدقيقة (Step-by-step Fix):</span>
+              <span>خطة الحل بالتفصيل (خطوة بخطوة):</span>
             </h5>
 
             <div className="space-y-3">
@@ -117,7 +117,7 @@ export default function DecisionTreeViewer() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-gradient-to-r from-white/8 to-transparent border border-white/14 p-4 rounded-2xl flex items-center justify-between">
               <div className="space-y-0.5">
-                <span className="text-[10px] text-white/60 block font-bold">الأداة اللي ننصحك بيها:</span>
+                <span className="text-[10px] text-white/60 block font-bold">الأداة اللي ننصحك تستخدمها:</span>
                 <span className="text-xs font-bold text-vz-accent">{selectedResult.recommendedTool}</span>
               </div>
               <Wrench className="w-5 h-5 text-vz-accent" />

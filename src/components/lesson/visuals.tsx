@@ -36,7 +36,7 @@ export function OnePerson() {
   const tc = TARGET % COLS;
   return (
     <div>
-      <Toggle value={mode} onChange={setMode} options={[{ id: "all", label: "إعلان للكل" }, { id: "one", label: "إعلان لشخص واحد" }]} />
+      <Toggle value={mode} onChange={setMode} options={[{ id: "all", label: "إعلان موجه للكل" }, { id: "one", label: "إعلان موجه لشخص محدد" }]} />
       <div className="glass rounded-3xl p-4 sm:p-6 grid grid-cols-10 gap-x-1 gap-y-3 sm:gap-y-4 justify-items-center">
         {Array.from({ length: COLS * ROWS }, (_, i) => {
           const d = Math.max(Math.abs(Math.floor(i / COLS) - tr), Math.abs((i % COLS) - tc));
@@ -57,13 +57,13 @@ export function OnePerson() {
       <motion.div key={mode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-5">
         {focus ? (
           <>
-            <p className="text-[19px] sm:text-[22px] font-black text-white leading-relaxed">موظف ببغداد، يركن سيارته بالشمس من 8 لـ 2</p>
-            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">هو يحس الإعلان إله ويوكف. واللي يشبهونه يوكفون هم.</p>
+            <p className="text-[19px] sm:text-[22px] font-black text-white leading-relaxed">موظف ببغداد، يركن سيارته بالشمس من 8 للـ 2</p>
+            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">هو يحس الإعلان يحچي عنه فيوكف عليه، واللي نفس وضعه هم يوكفون</p>
           </>
         ) : (
           <>
-            <p className="text-[19px] sm:text-[22px] font-black text-white leading-relaxed">مظلة سيارة لكل أنواع السيارات</p>
-            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">الكل يشوفه، ومحد يحس إنه إله. يعبرون بثانية.</p>
+            <p className="text-[19px] sm:text-[22px] font-black text-white leading-relaxed">مظلة سيارة تناسب كل أنواع السيارات</p>
+            <p className="text-[16px] sm:text-[18px] text-white/70 leading-relaxed mt-1">الكل يشوفه، بس محد يحس الإعلان يخصه. يعبرون عنه بثانية</p>
           </>
         )}
       </motion.div>
@@ -72,10 +72,10 @@ export function OnePerson() {
 }
 
 const SENTENCE = [
-  { tag: "منو هو", text: "موظف ببغداد يركن سيارته بالشمس من 8 لـ 2", before: "زبوني هو ", tone: "bg-vz-blue/25 border-vz-blue-light/50 text-white" },
-  { tag: "مشكلته بكلامه", text: "السيارة تصير فرن والستيرن ما ينلزم", before: "، مشكلته إنه ", tone: "bg-rose-500/20 border-rose-400/45 text-white" },
-  { tag: "شنو يريد", text: "يصعد للسيارة الظهر وما يحترك", before: "، يريد ", tone: "bg-emerald-500/20 border-emerald-400/45 text-white" },
-  { tag: "شنو يخاف", text: "تطلع نوعيتها تعبانة وتتكسر بعد شهر", before: "، بس خايف ", tone: "bg-amber-400/20 border-amber-300/45 text-white" },
+  { tag: "منو هو", text: "موظف ببغداد يركن سيارته بالشمس من 8 لـ 2", before: "زبوني هو", tone: "bg-vz-blue/25 border-vz-blue-light/50 text-white" },
+  { tag: "مشكلته بكلامه", text: "السيارة تصير فرن والستيرن ما ينلزم", before: "، مشكلته إنه", tone: "bg-rose-500/20 border-rose-400/45 text-white" },
+  { tag: "شنو يريد", text: "يصعد للسيارة بنص الظهر وما يحترك", before: "، يريد", tone: "bg-emerald-500/20 border-emerald-400/45 text-white" },
+  { tag: "شنو يخاف منه", text: "تطلع نوعيتها تعبانة وتنكسر بعد شهر", before: "، بس خايف", tone: "bg-amber-400/20 border-amber-300/45 text-white" },
 ];
 
 export function CustomerSentence({ shown = SENTENCE.length }: { shown?: number }) {
@@ -116,9 +116,9 @@ export function CustomerSentence({ shown = SENTENCE.length }: { shown?: number }
 }
 
 const STAIRS = [
-  { id: "watcher", name: "المتفرج", people: 30, mind: "ما يحس إن عنده مشكلة، أو متعود عليها", see: "المشكلة نفسها بشكل يعرفه", content: "فيديو يبدي بالمشكلة، بدون سعر بالبداية" },
-  { id: "interested", name: "المهتم", people: 14, mind: "يعرف المشكلة، بس يخاف ينغش", see: "دليل إن المنتج يشتغل: تجربة، آراء زبائن، مقارنة", content: "فيديو تجربة حقيقية، فتح طرد، رأي زبون" },
-  { id: "ready", name: "الجاهز", people: 4, mind: "يريد يشتري، يقارن بينك وبين غيرك", see: "السعر، العرض، التوصيل، الفحص كدام المندوب", content: "بوست أو فيديو عرض واضح ويا طريقة الطلب" },
+  { id: "watcher", name: "الشخص اللي يتفرج", people: 30, mind: "ما يحس عنده مشكلة، أو متعود عليها", see: "اعرض المشكلة نفسها بطريقة يعرفها ويحس بيها", content: "فيديو يبدي بالمشكلة، بدون ما تذكر السعر بالبداية" },
+  { id: "interested", name: "المهتم", people: 14, mind: "يعرف المشكلة، بس خايف ينغش", see: "دليل يثبت إن المنتج يشتغل: تجربة، آراء زباين، مقارنة", content: "فيديو تجربة حقيقية، فتح كارتونة، ورأي زبون" },
+  { id: "ready", name: "الجاهز للشراء", people: 4, mind: "يريد يشتري، بس دا يقارن بينك وبين غيرك", see: "السعر، العرض، التوصيل، والفحص كدام المندوب", content: "منشور أو فيديو بيه عرض واضح وطريقة الطلب" },
 ];
 
 export function AwarenessStairs() {
@@ -164,28 +164,28 @@ export function AwarenessStairs() {
         ))}
       </div>
       <div className="flex items-center justify-between gap-3 mt-3 text-[13px] font-bold text-white/50">
-        <span>ناس هواية، بعيدين عن الشراء</span>
-        <span>قلة، والكل يتعارك عليهم</span>
+        <span>ناس هواية، بس مو قريبين من قرار الشراء</span>
+        <span>عدد قليل، والكل يتنافس عليهم</span>
       </div>
       <motion.div key={pick} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="glass-elevated rounded-3xl p-5 sm:p-6 mt-5 space-y-3">
         <p className="text-[20px] font-black text-white">{s.name}</p>
-        <p className="text-[16px] text-white/80 leading-relaxed"><span className="font-black text-vz-accent">بباله: </span>{s.mind}</p>
+        <p className="text-[16px] text-white/80 leading-relaxed"><span className="font-black text-vz-accent">يفكر بـ: </span>{s.mind}</p>
         <p className="text-[16px] text-white/80 leading-relaxed"><span className="font-black text-vz-accent">لازم يشوف: </span>{s.see}</p>
         <p className="text-[16px] text-white/80 leading-relaxed"><span className="font-black text-vz-accent">المحتوى: </span>{s.content}</p>
       </motion.div>
       <button type="button" onClick={startWalk} className="mt-4 btn btn-glass min-h-[48px] px-5 rounded-2xl text-[15px]">
-        {walk < 0 ? "شوف شلون ينتقل نفس الزبون" : walk === 0 ? "اليوم: شاف فيديو المشكلة" : walk === 1 ? "باجر: شاف التجربة" : "بعد أسبوع: شاف العرض وطلب"}
+        {walk < 0 ? "شوف شلون نفس الزبون ينتقل من مرحلة للثانية" : walk === 0 ? "اليوم: شاف فيديو يوضح المشكلة" : walk === 1 ? "باچر: شاف تجربة المنتج" : "بعد أسبوع: شاف العرض وطلب"}
       </button>
     </div>
   );
 }
 
 const FEARS = [
-  { fear: "أخاف أدفع وما يوصل شي", fix: "الدفع عند الاستلام، والفحص كدام المندوب" },
-  { fear: "الصورة شي والواقع شي", fix: "فيديو حقيقي مصور بيدك" },
-  { fear: "أصلي لو صيني؟ يتكسر؟", fix: "المادة والقياس بصراحة، وضمان واضح" },
-  { fear: "إذا ما عجبني شنو أسوي؟", fix: "سياسة استبدال مكتوبة وبسيطة" },
-  { fear: "هاي البيج أول مرة أشوفها", fix: "آراء زبائن حقيقيين، ورقم واتساب يرد" },
+  { fear: "أخاف أدفع وما توصلني الطلبية", fix: "الدفع عند الاستلام، وتفحص المنتج كدام المندوب" },
+  { fear: "الصورة شي والواقع يطلع شي ثاني", fix: "فيديو حقيقي مصوره بنفسك" },
+  { fear: "أصلي لو صيني؟ يتكسر لو لا؟", fix: "وضح نوع المادة والقياس بصراحة، وخلي الضمان واضح" },
+  { fear: "إذا ما عجبني، شنو أسوي؟", fix: "سياسة استبدال واضحة وسهلة" },
+  { fear: "هاي البيج أول مرة أشوفها", fix: "آراء زباين حقيقيين، ورقم واتساب أحد يرد عليه" },
 ];
 
 export function TrustScale() {
@@ -205,12 +205,12 @@ export function TrustScale() {
           <p className="text-[34px] font-black text-white leading-none">{FEARS.length - n}</p>
         </motion.div>
         <motion.div animate={{ y: -lift }} transition={{ duration: 0.6, ease: EASE_OUT }} className="absolute left-[2%] top-[84px] w-[42%] text-center">
-          <p className="text-[14px] font-black text-emerald-300 mb-1">الطمأنة</p>
+          <p className="text-[14px] font-black text-emerald-300 mb-1">شلون تطمنه</p>
           <p className="text-[34px] font-black text-white leading-none">{n}</p>
         </motion.div>
       </div>
       <p className={`text-center text-[18px] sm:text-[20px] font-black mb-5 ${tipped ? "text-emerald-300" : "text-white/70"}`}>
-        {tipped ? "هسه الكفة مالت، والزبون يطلب" : "اضغط على كل خوف وشوف شلون تطمنه"}
+        {tipped ? "هسه الزبون اطمأن وصار مستعد يطلب" : "اضغط على كل خوف وشوف شلون تكدر تطمن الزبون"}
       </p>
       <div className="grid gap-2.5">
         {FEARS.map((f, i) => {
@@ -239,9 +239,9 @@ export function TrustScale() {
 }
 
 const RIVALS = [
-  { name: "منافس 1", offer: "35 ألف، توصيل مجاني", reply: "ساعتين", replyPct: 70, replyTone: "bg-amber-300", complaint: "تأخير التوصيل", chance: "توصيل أسرع وتأكيد بنفس اليوم" },
-  { name: "منافس 2", offer: "29 ألف، بدون عرض", reply: "ما رد", replyPct: 100, replyTone: "bg-red-400", complaint: "الصور مو حقيقية", chance: "فيديو حقيقي بيدك" },
-  { name: "منافس 3", offer: "40 ألف، ويا هدية", reply: "10 دقايق", replyPct: 12, replyTone: "bg-emerald-400", complaint: "ما يتبدل", chance: "سياسة استبدال واضحة" },
+  { name: "المنافس 1", offer: "35 ألف، والتوصيل مجاني", reply: "ساعتين", replyPct: 70, replyTone: "bg-amber-300", complaint: "تأخير بالتوصيل", chance: "توصيل أسرع وتأكيد الطلب بنفس اليوم" },
+  { name: "المنافس 2", offer: "29 ألف، بدون أي عرض", reply: "ما رد", replyPct: 100, replyTone: "bg-red-400", complaint: "الصور مو حقيقية", chance: "فيديو حقيقي مصوره بنفسك" },
+  { name: "المنافس 3", offer: "40 ألف، وياها هدية", reply: "10 دقايق", replyPct: 12, replyTone: "bg-emerald-400", complaint: "ما يقبل الاستبدال", chance: "سياسة استبدال واضحة" },
 ];
 
 export function CompetitorBoard() {
@@ -274,7 +274,7 @@ export function CompetitorBoard() {
               </motion.p>
             ) : (
               <button type="button" onClick={() => setOpen((o) => [...o, i])} className="btn btn-glass min-h-[44px] px-4 rounded-xl text-[15px]">
-                شنو فرصتك هنا؟
+                شنو فرصتك بهالمجال؟
               </button>
             )}
           </div>
@@ -290,7 +290,7 @@ export function SalaryMonth() {
   const [mode, setMode] = useState("demand");
   return (
     <div>
-      <Toggle value={mode} onChange={setMode} options={[{ id: "demand", label: "قوة الشراء" }, { id: "budget", label: "شلون توزع الصرف" }]} />
+      <Toggle value={mode} onChange={setMode} options={[{ id: "demand", label: "قوة الشراء" }, { id: "budget", label: "شلون توزع ميزانية الإعلان" }]} />
       <div className="glass rounded-3xl p-4 sm:p-6">
         <div className="grid grid-cols-10 gap-1.5 sm:gap-2">
           {Array.from({ length: 30 }, (_, k) => {
@@ -307,24 +307,24 @@ export function SalaryMonth() {
           })}
         </div>
         <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-[14px] font-bold text-white/75">
-          <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-emerald-400" />بعد الراتب: الطلب أسهل</span>
-          <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-vz-blue-light/70" />نص الشهر</span>
-          <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-white/15" />قبل الراتب: أصعب</span>
+          <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-emerald-400" />بعد الراتب: الشراء يصير أسهل</span>
+          <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-vz-blue-light/70" />بنص الشهر</span>
+          <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-white/15" />قبل الراتب: الشراء أصعب</span>
         </div>
       </div>
       <p className="mt-4 text-[16px] sm:text-[18px] text-white/75 leading-relaxed">
         {mode === "demand"
-          ? "هذا شكل تقريبي. الرواتب تنزل بأواخر الشهر أو بدايته، والمواعيد تتغير. سجل طلباتك شهرين وشوف شكل شهرك."
-          : "الصرف الأقوى بعد الراتب، وتخفف قبله بدل ما تطفي الإعلان بالمرة. واحكم على أسبوع كامل، مو يوم أو يومين."}
+          ? "هذا توزيع تقريبي. الرواتب تنزل بنهاية الشهر أو ببدايته، والمواعيد تختلف. تابع طلبياتك لمدة شهرين وشوف شلون يتغير الطلب خلال الشهر."
+          : "زود الصرف بعد الراتب، وخففه قبل الراتب بدل لا تطفي الإعلان نهائيا. وقيم النتائج على مدار أسبوع كامل، مو يوم أو يومين."}
       </p>
     </div>
   );
 }
 
 const ZONES = [
-  { name: "داخل بغداد", days: "يوم أو يومين", pct: 30, risk: 1 },
-  { name: "المحافظات", days: "يومين لثلاث", pct: 60, risk: 2 },
-  { name: "الأقضية البعيدة", days: "أكثر، وكروة أعلى", pct: 100, risk: 3 },
+  { name: "داخل بغداد", days: "يوم إلى يومين", pct: 30, risk: 1 },
+  { name: "المحافظات", days: "يومين إلى ثلاثة", pct: 60, risk: 2 },
+  { name: "الأقضية البعيدة", days: "وقت أطول، وكلفة توصيل أعلى", pct: 100, risk: 3 },
 ];
 
 export function DeliveryDistance() {
@@ -343,7 +343,7 @@ export function DeliveryDistance() {
             </motion.span>
           </div>
           <p className="mt-1.5 text-[13px] font-bold text-white/55">
-            احتمال الراجع: <span className={["text-emerald-300", "text-amber-200", "text-red-300"][z.risk - 1]}>{["أقل", "أعلى", "الأعلى"][z.risk - 1]}</span>
+            نسبة الطلبات الراجعة: <span className={["text-emerald-300", "text-amber-200", "text-red-300"][z.risk - 1]}>{["أقل", "أعلى", "الأعلى"][z.risk - 1]}</span>
           </p>
         </div>
       ))}
@@ -353,11 +353,11 @@ export function DeliveryDistance() {
 
 const PRICE = 39000;
 const COSTS = [
-  { label: "كلفة القطعة الواصلة", v: 17500 },
+  { label: "كلفة القطعة بعد الوصول", v: 17500 },
   { label: "التوصيل", v: 5000 },
-  { label: "عمولة الاستلام 2%", v: 780 },
-  { label: "الإعلان لكل طلب واصل", v: 10000 },
-  { label: "خسارة الراجع", v: 1500 },
+  { label: "عمولة استلام الفلوس 2%", v: 780 },
+  { label: "كلفة الإعلان لكل طلب مستلم", v: 10000 },
+  { label: "خسارة الطلبات الراجعة", v: 1500 },
 ];
 const fmt = (n: number) => n.toLocaleString("en-US");
 
@@ -396,7 +396,7 @@ export function OrderWaterfall({ shown = COSTS.length + 2 }: { shown?: number })
       {shown > COSTS.length + 1 && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="glass-elevated rounded-3xl p-5 mt-4">
           <div className="flex items-baseline justify-between gap-3 mb-3">
-            <span className="text-[17px] font-black text-white">يبقالك من كل طلب واصل</span>
+            <span className="text-[17px] font-black text-white">الربح اللي يبقالك من كل طلب يوصل</span>
             <span className="text-[34px] sm:text-[42px] font-black text-emerald-300 leading-none">{fmt(profit)}</span>
           </div>
           <div className="relative h-9 rounded-xl bg-white/[0.05] overflow-hidden">
@@ -405,7 +405,7 @@ export function OrderWaterfall({ shown = COSTS.length + 2 }: { shown?: number })
           </div>
           <p className="mt-3 text-[15px] font-bold text-amber-100 flex items-center gap-2">
             <X className="w-4 h-4 shrink-0" />
-            الخط المنقط هو اللي كنت تتصوره بالحساب السريع: 28,500
+            الخط المنقط يوضح الرقم اللي كنت متوقعه بالحساب السريع: 28,500
           </p>
         </motion.div>
       )}
@@ -424,7 +424,7 @@ export function PriceSlider() {
   const max = 26000;
   return (
     <div className="glass rounded-3xl p-5 sm:p-6">
-      <p className="text-[16px] font-black text-white/80 mb-2">حرك السعر وشوف شنو يصير</p>
+      <p className="text-[16px] font-black text-white/80 mb-2">غير السعر وشوف شنو يتغير</p>
       <p className="text-[52px] sm:text-[64px] font-black text-white leading-none mb-4" dir="ltr">{fmt(price)}</p>
       <input type="range" dir="ltr" min={0} max={PRICES.length - 1} step={1} value={i} onChange={(e) => setI(Number(e.target.value))} className="w-full" aria-label="السعر" />
       <div className="flex justify-between text-[12px] font-bold text-white/45 mt-1" dir="ltr">
@@ -433,24 +433,24 @@ export function PriceSlider() {
       <div className="mt-6 space-y-4">
         <div>
           <div className="flex items-baseline justify-between mb-1.5">
-            <span className="text-[15px] font-bold text-white/80">حد الخسارة (أعلى إعلان تتحمله للطلب)</span>
+            <span className="text-[15px] font-bold text-white/80">حد الخسارة (أعلى كلفة إعلان تكدر تتحملها للطلب)</span>
             <span className="text-[17px] font-black text-vz-accent">{fmt(limit)}</span>
           </div>
           <div className="h-8 rounded-xl bg-white/[0.05] overflow-hidden relative">
             <motion.div animate={{ width: `${(Math.max(0, limit) / max) * 100}%` }} transition={{ duration: 0.4, ease: EASE_OUT }} className="h-full rounded-xl bg-gradient-to-l from-vz-blue-light to-vz-blue-deep" />
             <span className="absolute inset-y-0 border-r-2 border-dashed border-amber-200" style={{ right: `${(10000 / max) * 100}%` }} />
           </div>
-          <p className="mt-1 text-[13px] font-bold text-amber-200">الخط المنقط: إعلانك هسه 10,000 للطلب الواصل</p>
+          <p className="mt-1 text-[13px] font-bold text-amber-200">الخط المنقط: كلفة إعلانك هسه 10,000 للطلب الواصل</p>
         </div>
         <div className="flex items-baseline justify-between gap-3 rounded-2xl p-4 bg-white/[0.04] border border-white/10">
-          <span className="text-[17px] font-black text-white">يبقالك من كل طلب</span>
+          <span className="text-[17px] font-black text-white">الربح اللي يبقالك من كل طلب</span>
           <span className={`text-[34px] font-black leading-none ${profit >= 0 ? "text-emerald-300" : "text-red-300"}`} dir="ltr">
             {profit < 0 ? "−" : ""}
             {fmt(Math.abs(profit))}
           </span>
         </div>
         <p className="text-[15px] text-white/70 leading-relaxed">
-          {profit < 0 ? "على هالسعر كل طلب يخسرك، حتى لو الإعلان زين." : limit < 15000 ? "تربح بس المسافة ضيقة: أي غلاء بالإعلان يقلبها خسارة." : "عندك مسافة: الإعلان يكدر يغلى شوية وتبقى رابح."}
+          {profit < 0 ? "بهالسعر كل طلب يسببلك خسارة، حتى لو إعلانك ناجح." : limit < 15000 ? "تربح، بس هامش الربح قليل: أي زيادة بكلفة الإعلان ممكن تحولك للخسارة." : "عندك هامش ربح زين: تكدر تتحمل زيادة بسيطة بكلفة الإعلان وتبقى رابح."}
         </p>
       </div>
     </div>
@@ -463,7 +463,7 @@ export function ScrollStop() {
   const cards = ["", "", "mine", "", "", "", "mine", ""];
   return (
     <div>
-      <Toggle value={mode} onChange={setMode} options={[{ id: "weak", label: "بداية ضعيفة" }, { id: "strong", label: "بداية قوية" }]} />
+      <Toggle value={mode} onChange={setMode} options={[{ id: "weak", label: "بداية مو موفقة" }, { id: "strong", label: "بداية قوية" }]} />
       <div className="relative mx-auto w-[230px] sm:w-[260px] h-[380px] rounded-[36px] border-4 border-white/15 bg-black/40 overflow-hidden">
         <motion.div
           key={mode}
@@ -476,7 +476,7 @@ export function ScrollStop() {
             <div key={i} className={`h-[110px] rounded-2xl p-3 flex items-end ${c === "mine" ? (strong ? "bg-gradient-to-b from-vz-blue/60 to-vz-blue/20 border border-vz-blue-light/60" : "bg-white/15") : "bg-white/[0.07]"}`}>
               {c === "mine" && (
                 <p className={`text-[13px] font-black leading-snug ${strong ? "text-white" : "text-white/60"}`}>
-                  {strong ? "بقعة الشاي؟ شوف شلون تروح بثانيتين" : "السلام عليكم، اليوم جبنالكم منتج جديد ومميز"}
+                  {strong ? "بقعة الشاي؟ شوف شلون تختفي بثانيتين" : "هلا بيكم، اليوم عدنا إلكم منتج جديد ومميز"}
                 </p>
               )}
             </div>
@@ -484,7 +484,7 @@ export function ScrollStop() {
         </motion.div>
       </div>
       <p className={`mt-5 text-center text-[18px] font-black ${strong ? "text-emerald-300" : "text-red-300"}`}>
-        {strong ? "الإصبع وكف: المشكلة بانت من أول فريم" : "الإعلان مالتك عبر ويا الباقي، محد وكف عليه"}
+        {strong ? "الإصبع والكف: المشكلة واضحة من أول فريم" : "إعلانك دا يعبر مثل باقي الإعلانات، ومحد منتبه إله"}
       </p>
     </div>
   );

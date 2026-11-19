@@ -49,7 +49,7 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
         {!muted ? (
           <>
             <Volume2 className="w-4 h-4" />
-            <span>الصوت مفعل</span>
+            <span>الصوت شغال</span>
           </>
         ) : (
           <>

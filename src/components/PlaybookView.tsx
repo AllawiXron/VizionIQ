@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import {
   AlertTriangle, ArrowRight, BookOpen, Bot, Check, CheckCircle2, Clock, Copy,
@@ -15,6 +15,7 @@ import { isFreeTrialUser } from "./LockScreen";
 import { TrialLock } from "./TrialLock";
 import { TopicGlyph } from "./ui/TopicIcon";
 import { CopyButton } from "./ui/CopyButton";
+import { Segmented } from "./ui/Segmented";
 
 interface PlaybookViewProps {
   key?: string;
@@ -37,9 +38,9 @@ const SECTIONS = [
   { id: "pb-numbers", label: "الأرقام", icon: Gauge },
   { id: "pb-causes", label: "الأسباب", icon: Search },
   { id: "pb-steps", label: "الخطوات", icon: ListChecks },
-  { id: "pb-scripts", label: "رسائل جاهزة", icon: MessageSquareText },
+  { id: "pb-scripts", label: "الرسائل", icon: MessageSquareText },
   { id: "pb-example", label: "مثال", icon: TrendingUp },
-  { id: "pb-plan", label: "خطة 7 أيام", icon: CheckCircle2 },
+  { id: "pb-plan", label: "الخطة", icon: CheckCircle2 },
 ];
 
 function SectionTitle({ id, icon: Icon, children, sub }: { id: string; icon: React.ComponentType<{ className?: string }>; children: React.ReactNode; sub?: string }) {
@@ -62,9 +63,44 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
   const isTrial = isFreeTrialUser(userCode);
   const sections = isTrial ? TRIAL_SECTIONS : SECTIONS;
 
+  const [current, setCurrent] = useState(sections[0].id);
+  const holdUntil = useRef(0);
+
+  useEffect(() => {
+    let raf = 0;
+    const read = () => {
+      const now = performance.now();
+      if (now < holdUntil.current) {
+        holdUntil.current = now + 180;
+        return;
+      }
+      const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8;
+      let id = sections[0].id;
+      for (const s of sections) {
+        const el = document.getElementById(s.id);
+        if (el && el.getBoundingClientRect().top <= 160) id = s.id;
+      }
+      if (atEnd) id = sections[sections.length - 1].id;
+      setCurrent(id);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(read);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    read();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [sections]);
+
   const jump = (sectionId: string) => {
     const el = document.getElementById(sectionId);
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 130, behavior: "smooth" });
+    if (!el) return;
+    setCurrent(sectionId);
+    holdUntil.current = performance.now() + 900;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 140, behavior: "smooth" });
   };
 
   return (
@@ -90,23 +126,20 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         )}
       </motion.header>
 
-      <nav aria-label="أقسام الحل" className="sticky top-[4.5rem] sm:top-[4.75rem] z-20 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 sm:mb-10">
-        <div className="flex items-center gap-1 p-1 rounded-full glass-floating overflow-x-auto no-scrollbar w-full sm:w-fit">
-          {sections.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => jump(s.id)}
-              className="px-3.5 sm:px-4 min-h-[38px] rounded-full text-xs sm:text-sm font-bold whitespace-nowrap text-white/65 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
+      <nav aria-label="أقسام الحل" className="sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-8 sm:mb-10">
+        <Segmented
+          items={sections.map((x) => ({ id: x.id, label: x.label, done: x.id === "pb-plan" && ticked.size === pb.plan.length }))}
+          active={current}
+          onChange={jump}
+          layoutId={`playbook-nav-${pb.id}`}
+          label="أقسام الحل"
+          tabs={false}
+        />
       </nav>
 
       <div className="space-y-12 sm:space-y-16">
         <section>
-          <SectionTitle id="pb-numbers" icon={Gauge} sub={pb.metrics.intro}>شلون تعرف إن هاي مشكلتك؟</SectionTitle>
+          <SectionTitle id="pb-numbers" icon={Gauge} sub={pb.metrics.intro}>شلون تعرف إذا هاي هي مشكلتك؟</SectionTitle>
           <div className="glass rounded-2xl sm:rounded-3xl overflow-hidden">
             <div className="hidden sm:grid grid-cols-[1.6fr_1fr_1fr_1fr] gap-3 px-5 py-3 text-xs font-bold text-white/50 border-b border-white/[0.07]">
               <span>الرقم</span>
@@ -134,7 +167,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         </section>
 
         <section>
-          <SectionTitle id="pb-causes" icon={Search} sub="لكل سبب: شلون تعرف إنه هو، وشنو الحل.">ليش يصير هذا؟</SectionTitle>
+          <SectionTitle id="pb-causes" icon={Search} sub="لكل سبب: شلون تكتشفه، وشنو الحل.">ليش تصير هاي المشكلة؟</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {pb.causes.map((c, i) => (
               <div key={c.cause} className="glass-subtle rounded-2xl p-4 sm:p-5 space-y-2.5">
@@ -144,7 +177,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
                 </h3>
                 <p className="text-xs sm:text-sm text-white/60 leading-relaxed"><span className="font-bold text-white/75">العلامة: </span>{c.signs}</p>
                 {isTrial ? (
-                  <p className="text-xs sm:text-sm text-white/45 leading-relaxed pr-3 border-r-2 border-white/15 inline-flex items-center gap-1.5"><span className="font-bold text-white/60">الحل:</span> مقفول بالتجربة</p>
+                  <p className="text-xs sm:text-sm text-white/45 leading-relaxed pr-3 border-r-2 border-white/15 inline-flex items-center gap-1.5"><span className="font-bold text-white/60">الحل:</span> مقفل بالتجربة المجانية</p>
                 ) : (
                   <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed pr-3 border-r-2 border-emerald-400/60"><span className="font-bold text-emerald-300">الحل: </span>{c.fix}</p>
                 )}
@@ -161,13 +194,13 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
             items={[
               ...pb.steps.map((st, i) => `خطوة ${i + 1}: ${st.title}`),
               ...pb.scripts.slice(0, 3).map((sc) => (sc.title.startsWith("رسالة") ? sc.title : `رسالة جاهزة: ${sc.title}`)),
-              "خطة 7 أيام تعلم عليها كل يوم",
+              "خطة 7 أيام، كل يوم تتعلم بيها شي",
             ]}
           />
         ) : (
         <>
         <section>
-          <SectionTitle id="pb-steps" icon={ListChecks} sub="طبقها بالترتيب. كل خطوة تبني على اللي قبلها.">الحل خطوة بخطوة</SectionTitle>
+          <SectionTitle id="pb-steps" icon={ListChecks} sub="طبق الخطوات بالترتيب. كل خطوة تعتمد على اللي قبلها.">الحل خطوة بخطوة</SectionTitle>
           <ol className="relative space-y-4 sm:space-y-5 before:absolute before:top-2 before:bottom-2 before:right-[1.2rem] sm:before:right-[1.45rem] before:w-px before:bg-white/[0.1]">
             {pb.steps.map((step, i) => (
               <li key={step.title} className="relative pr-12 sm:pr-16">
@@ -198,7 +231,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         </section>
 
         <section>
-          <SectionTitle id="pb-scripts" icon={MessageSquareText} sub="انسخها، غير اللي بين الأقواس [ ] لمنتجك، وحطها ردود سريعة بواتساب بزنس.">رسائل جاهزة تنسخها</SectionTitle>
+          <SectionTitle id="pb-scripts" icon={MessageSquareText} sub="انسخها، وبدل اللي بين الأقواس [ ] بمعلومات منتجك، وخليها ردود سريعة بواتساب بزنس.">رسائل جاهزة تنسخها</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {pb.scripts.map((s) => (
               <div key={s.title} className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col gap-3">
@@ -237,7 +270,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         </section>
 
         <section>
-          <SectionTitle id="pb-mistakes" icon={AlertTriangle}>أغلاط لا توكع بيها</SectionTitle>
+          <SectionTitle id="pb-mistakes" icon={AlertTriangle}>أغلاط لا توقع بيها</SectionTitle>
           <ul className="space-y-2.5">
             {pb.mistakes.map((m) => (
               <li key={m.mistake} className="glass-subtle rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm">
@@ -249,10 +282,10 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         </section>
 
         <section>
-          <SectionTitle id="pb-plan" icon={CheckCircle2} sub="علم كل يوم تخلصه. تقدمك ينحفظ.">خطة 7 أيام</SectionTitle>
+          <SectionTitle id="pb-plan" icon={CheckCircle2} sub="علم على كل يوم من تخلصه. تقدمك ينحفظ.">خطة 7 أيام</SectionTitle>
           <div className="glass-elevated glass-edge rounded-3xl p-4 sm:p-6 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={pb.plan.length} aria-valuenow={ticked.size} aria-label="تقدم الخطة">
+              <div className="flex-1 h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={pb.plan.length} aria-valuenow={ticked.size} aria-label="تقدمك بالخطة">
                 <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${planPercent}%` }} />
               </div>
               <span className="text-xs font-bold text-white/70 font-mono">{ticked.size}/{pb.plan.length}</span>
@@ -316,7 +349,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
             })}
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-4 border-t border-white/[0.07]">
-            <p className="flex-1 text-sm text-white/65">عندك حالة خاصة؟ اكتب أرقامك للمستشار ويطبق هذا الحل على مشروعك.</p>
+            <p className="flex-1 text-sm text-white/65">عندك حالة خاصة؟ اكتب أرقام مشروعك للمستشار، وهو يطبق الحل عليها.</p>
             <button onClick={onOpenAdvisor} className={`btn btn-primary min-h-[48px] px-6 rounded-full text-sm gap-2 ${focusRing}`}>
               <Bot className="w-4 h-4" />
               اسأل المستشار

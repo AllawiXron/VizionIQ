@@ -65,13 +65,13 @@ function MaxMessageCost() {
       </div>
       {losing ? (
         <p className="p-4 rounded-2xl bg-red-500/10 border border-red-500/25 text-sm text-red-200 leading-relaxed">
-          بهاي الأرقام كل طلب خسران حتى قبل الإعلان. ارفع السعر، نزل الكلفة، أو نزل الراجع أول (شوف حل الراجع).
+          بهالأرقام، كل طلب يخسرك حتى قبل لا تحسب الإعلان. ارفع السعر، قلل الكلفة، أو عالج مشكلة الراجع أول شي (شوف حل الراجع).
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <Result label="حد الخسارة لكل طلب" value={`${fmt(breakEvenCpa)} د.ع`} hint="فوك هذا الرقم كل طلب يخسرك" />
-          <Result label="أعلى تكلفة رسالة" value={`${fmt(maxMessage)} د.ع`} tone="bad" hint="إذا الرسالة أغلى من هذا، تخسر" />
-          <Result label="الهدف الصحي للرسالة" value={`${fmt(targetMessage)} د.ع`} tone="good" hint="تحت هذا يبقالك ربح يستاهل (70%)" />
+          <Result label="حد الخسارة لكل طلب" value={`${fmt(breakEvenCpa)} د.ع`} hint="إذا تتجاوز هذا الرقم، كل طلب راح يخسرك" />
+          <Result label="أعلى كلفة للرسالة" value={`${fmt(maxMessage)} د.ع`} tone="bad" hint="إذا كلفة الرسالة أعلى من هذا الرقم، راح تخسر" />
+          <Result label="الكلفة المناسبة للرسالة" value={`${fmt(targetMessage)} د.ع`} tone="good" hint="إذا تبقى كلفة الرسالة أقل من هذا الرقم، يبقالك ربح زين (70%)" />
         </div>
       )}
       {!losing && c > 0 && (
@@ -99,19 +99,19 @@ function SalesLevers() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Field label="رسائل بالشهر" value={messages} onChange={setMessages} suffix="رسالة" step={100} />
+        <Field label="عدد الرسائل بالشهر" value={messages} onChange={setMessages} suffix="رسالة" step={100} />
         <Field label="من الرسائل للطلبات" value={close} onChange={setClose} suffix="%" step={1} />
         <Field label="متوسط قيمة الطلب" value={aov} onChange={setAov} suffix="د.ع" />
-        <Field label="زبائن يرجعون يشترون" value={repeat} onChange={setRepeat} suffix="%" step={1} />
+        <Field label="زبائن يرجعون يشترون منك" value={repeat} onChange={setRepeat} suffix="%" step={1} />
       </div>
       <label className="block space-y-2">
         <span className="text-xs font-bold text-white/65">لو حسنت التحويل وقيمة الطلب والرجوع كل وحدة بـ {lift}%</span>
         <input type="range" min={5} max={50} step={5} value={lift} onChange={(e) => setLift(Number(e.target.value))} className="w-full accent-[#4f8cff]" />
       </label>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Result label="مبيعاتك هسه بالشهر" value={`${fmt(now)} د.ع`} />
-        <Result label="بعد التحسين (نفس الإعلان)" value={`${fmt(after)} د.ع`} tone="good" />
-        <Result label="الزيادة" value={`+${Math.round(growth)}%`} tone="good" hint="بدون دينار إعلان زيادة" />
+        <Result label="مبيعاتك الحالية بالشهر" value={`${fmt(now)} د.ع`} />
+        <Result label="بعد التحسين (بنفس الإعلان)" value={`${fmt(after)} د.ع`} tone="good" />
+        <Result label="الزيادة" value={`+${Math.round(growth)}%`} tone="good" hint="بدون ما تزيد دينار واحد على الإعلان" />
       </div>
     </>
   );
@@ -131,15 +131,15 @@ function ReturnsCost() {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Field label="طلبات تطلع بالشهر" value={orders} onChange={setOrders} suffix="طلب" step={10} />
+        <Field label="عدد الطلبات بالشهر" value={orders} onChange={setOrders} suffix="طلب" step={10} />
         <Field label="نسبة الراجع" value={returns} onChange={setReturns} suffix="%" step={1} />
         <Field label="كلفة التوصيل" value={delivery} onChange={setDelivery} suffix="د.ع" step={500} />
-        <Field label="كلفة الإعلان للطلب" value={cpa} onChange={setCpa} suffix="د.ع" step={500} />
+        <Field label="كلفة الإعلان لكل طلب" value={cpa} onChange={setCpa} suffix="د.ع" step={500} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Result label="خسارة الراجع بالشهر" value={`${fmt(monthly)} د.ع`} tone="bad" hint="توصيل + إعلان على طلبات ما انباعت" />
-        <Result label="لو نزل الراجع لـ 10%" value={`${fmt(atTen)} د.ع`} />
-        <Result label="توفر بالشهر" value={`${fmt(saving)} د.ع`} tone="good" hint="ربح صافي يرجع لجيبك" />
+        <Result label="خسارة الطلبات الراجعة بالشهر" value={`${fmt(monthly)} د.ع`} tone="bad" hint="توصيل وإعلان على طلبات ما انباعت" />
+        <Result label="إذا نزلت نسبة الراجع لـ 10%" value={`${fmt(atTen)} د.ع`} />
+        <Result label="المبلغ اللي توفره بالشهر" value={`${fmt(saving)} د.ع`} tone="good" hint="ربح صافي يبقى بجيبك" />
       </div>
     </>
   );
@@ -147,8 +147,8 @@ function ReturnsCost() {
 
 const TITLES: Record<CalculatorKind, string> = {
   "max-message-cost": "احسب: شكد أكدر أدفع على الرسالة؟",
-  "sales-levers": "احسب: شكد تزيد مبيعاتي بدون إعلان زيادة؟",
-  "returns-cost": "احسب: شكد يخسرني الراجع بالشهر؟",
+  "sales-levers": "احسب: شكد أكدر أزيد مبيعاتي بدون ما أزيد ميزانية الإعلان؟",
+  "returns-cost": "احسب: شكد تكلفني الطلبات الراجعة بالشهر؟",
 };
 
 export function PlaybookCalculator({ kind }: { kind: CalculatorKind }) {
@@ -161,7 +161,7 @@ export function PlaybookCalculator({ kind }: { kind: CalculatorKind }) {
       {kind === "max-message-cost" && <MaxMessageCost />}
       {kind === "sales-levers" && <SalesLevers />}
       {kind === "returns-cost" && <ReturnsCost />}
-      <p className="text-[11px] text-white/40">غير الأرقام لأرقام مشروعك. الحساب يصير على جهازك وما ينحفظ.</p>
+      <p className="text-[11px] text-white/40">بدل الأرقام وخليها حسب مشروعك. الحساب يصير على جهازك وما ينحفظ.</p>
     </div>
   );
 }

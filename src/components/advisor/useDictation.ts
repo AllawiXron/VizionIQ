@@ -48,7 +48,7 @@ export function useDictation(onFinal: (text: string) => void, onInterim?: (text:
       }
       interimRef.current?.(interim);
     };
-    rec.onerror = (e) => setError(e.error === "not-allowed" ? "اسمح للمايك من إعدادات المتصفح." : "ما گدرت أسمعك، جرب مرة ثانية.");
+    rec.onerror = (e) => setError(e.error === "not-allowed" ? "اسمح باستخدام المايك من إعدادات المتصفح." : "ما كدرت أسمعك، جرب مرة ثانية.");
     rec.onend = () => {
       setListening(false);
       interimRef.current?.("");

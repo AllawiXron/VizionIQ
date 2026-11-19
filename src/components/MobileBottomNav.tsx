@@ -72,7 +72,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     {
       key: "advisor",
       label: "المستشار",
-      aria: "فتح مستشار فيزيون الذكي",
+      aria: "افتح مستشار فيزيون الذكي",
       icon: Bot,
       active: false,
       accent: true,
@@ -134,7 +134,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Wrench className="w-4 h-4 text-white/85" /></span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-black text-white">الأدوات والحاسبات</span>
-                    <span className="block text-[11px] text-white/55 truncate">13 أداة تحسب أرقامك بالدينار</span>
+                    <span className="block text-[11px] text-white/55 truncate">13 أداة تحسبلك أرقامك بالدينار</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>
@@ -157,7 +157,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Crown className="w-4 h-4 text-white" /></span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-black text-white">افتح الكورس كامل</span>
-                    <span className="block text-[11px] text-white/55 truncate">إنت بالتجربة المجانية</span>
+                    <span className="block text-[11px] text-white/55 truncate">إنت حاليا بالتجربة المجانية</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>
@@ -169,7 +169,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 >
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Sparkles className="w-4 h-4 text-vz-accent" /></span>
                   <span className="flex-1 min-w-0">
-                    <span className="block text-sm font-black text-white">شلون أستخدم الموقع؟</span>
+                    <span className="block text-sm font-black text-white">شلون تستخدم الموقع؟</span>
                     <span className="block text-[11px] text-white/55 truncate">شرح سريع بثلاث خطوات</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
@@ -201,7 +201,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
       <motion.nav
         role="navigation"
-        aria-label="شريط التنقل السفلي المخصص للجوال"
+        aria-label="شريط التنقل السفلي للموبايل"
         initial={{ y: 96, opacity: 0 }}
         animate={{ y: 0, opacity: 1, transition: { ...SPRING, delay: 0.35 } }}
         exit={{ y: 96, opacity: 0, transition: { duration: 0.25, ease: EASE_OUT } }}
@@ -231,7 +231,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 <motion.span
                   className="relative flex"
                   initial={false}
-                  animate={item.active ? { scale: [1, 1.24, 0.94, 1], y: [0, -3, 0, 0] } : { scale: 1, y: 0 }}
+                  animate={item.active ? { scale: [1, 1.14, 0.97, 1], y: [0, -2, 0, 0] } : { scale: 1, y: 0 }}
                   transition={{ duration: 0.55, times: [0, 0.35, 0.7, 1], ease: EASE_OUT }}
                   whileTap={{ scale: 0.82 }}
                 >

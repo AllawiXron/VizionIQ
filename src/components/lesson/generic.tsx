@@ -3,6 +3,9 @@ import { motion } from "motion/react";
 import { Check, ShieldCheck, User } from "lucide-react";
 import { EASE_OUT } from "../../lib/motion";
 import { KIT } from "./kit";
+import { KIT2 } from "./kit2";
+import { KIT3 } from "./kit3";
+import { KIT4 } from "./kit4";
 
 const ease = { duration: 0.5, ease: EASE_OUT };
 const fmt = (n: number) => n.toLocaleString("en-US");
@@ -544,7 +547,7 @@ export function Pick({ d }: { d: PickData }) {
           {o.text && <p className="text-[16px] text-white/80 leading-relaxed mt-2">{o.text}</p>}
         </motion.div>
       ) : (
-        <p className="text-[15px] font-bold text-white/45">اختار وحدة وشوف الجواب</p>
+        <p className="text-[15px] font-bold text-white/45">اختار وحدة وشوف الرد</p>
       )}
     </div>
   );
@@ -566,4 +569,7 @@ export const GENERIC: Record<string, { render: (data: any, shown: number) => Rea
   versus: { render: (d, s) => <Versus d={d} shown={s} />, steps: (d: VersusData) => d.rows.length },
   pick: { render: (d) => <Pick d={d} /> },
   ...KIT,
+  ...KIT2,
+  ...KIT3,
+  ...KIT4,
 };

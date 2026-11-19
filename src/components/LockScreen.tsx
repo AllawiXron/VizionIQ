@@ -140,7 +140,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     const hardcodedAccessCodes = HARDCODED_CODES.map(code => ({
       code,
       isRevoked: false,
-      buyerName: code === "iraq#gold" ? "مشتري متميز" :
+      buyerName: code === "iraq#gold" ? "مشترك مميز" :
                  code === "premium2026" ? "أكاديمية التسويق" :
                  code === "admin#1" ? "المدير العام" :
                  code === "ali#1" ? "علي الرافدين" : "رمز مضاف من الكود المصدري",
@@ -294,7 +294,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
                   type={showPassword ? "text" : "password"}
                   value={passwordInput}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="اكتب رمزك هنا"
+                  placeholder="اكتب رمز الدخول هنا"
                   className="vz-field w-full h-12 sm:h-[52px] pr-4 pl-12 rounded-2xl text-white text-center text-base sm:text-lg font-mono tracking-wider min-h-[44px]"
                   disabled={isLoading || isSuccess}
                 />
@@ -339,12 +339,12 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               {isLoading ? (
                 <motion.div key="loading" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <span className="w-4 h-4 border-2 border-[#040e33] border-t-transparent rounded-full animate-spin" />
-                  <span>دا نتأكد من الرمز...</span>
+                  <span>جاري التأكد من الرمز...</span>
                 </motion.div>
               ) : isSuccess ? (
                 <motion.div key="success" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-white" />
-                  <span>تمام، دا تنفتح المنصة...</span>
+                  <span>تمام، جاري فتح المنصة...</span>
                 </motion.div>
               ) : (
                 <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
@@ -360,7 +360,7 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
           <motion.div {...rise(0.55)} className="pt-4 text-center space-y-3">
             <div className="flex items-center gap-3 text-[11px] text-white/40" aria-hidden="true">
               <span className="flex-1 h-px bg-white/10" />
-              <span>ما عندك رمز؟</span>
+              <span>ما عندك رمز دخول؟</span>
               <span className="flex-1 h-px bg-white/10" />
             </div>
             <button
@@ -375,11 +375,11 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
               <Sparkles className="w-4 h-4 text-emerald-300" />
               <span>جرب الكورس المجاني</span>
             </button>
-            <p className="text-[11px] text-white/45 leading-relaxed">بدون رمز: تقرا أول درس، وتعرف ربحك الحقيقي من كل طلب.</p>
+            <p className="text-[11px] text-white/45 leading-relaxed">بدون رمز: اقرا أول درس، واعرف ربحك الحقيقي من كل طلب.</p>
 
             <div className="glass-subtle rounded-2xl p-3.5 text-right flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <span className="block text-[11px] font-bold text-white/60">الكورس كامل، تدفع مرة وحدة ويبقى الك</span>
+                <span className="block text-[11px] font-bold text-white/60">الكورس كامل، تدفع مرة وحدة ويبقى إلك</span>
                 <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار، {STUDENT_COUNT} مشترك</span>
               </div>
               <div className="text-left shrink-0">

@@ -43,7 +43,7 @@ export default function RoiCalculator() {
         </span>
         <div className="space-y-1">
           <h3 className="text-base sm:text-xl font-black text-white leading-snug">حاسبة الحملة التجريبية</h3>
-          <p className="text-xs sm:text-sm text-white/60 leading-relaxed">قبل لا تصرف على إعلان، حط أرقامك وشوف الحملة تطلع رابحة لو خسرانة، ووين تروح الفلوس.</p>
+          <p className="text-xs sm:text-sm text-white/60 leading-relaxed">قبل لا تصرف فلوس على إعلان، دخل أرقامك وشوف الحملة راح تطلع رابحة لو خسرانة، واعرف وين تروح فلوسك.</p>
         </div>
       </div>
 
@@ -57,7 +57,7 @@ export default function RoiCalculator() {
               <NumberField label="كلفة الألف ظهور" unit="$" value={cpm} onChange={setCpm} step={0.1} hint="CPM من مدير الإعلانات" />
               <NumberField label="نسبة النقر" unit="%" value={ctr} onChange={setCtr} max={100} step={0.1} hint="CTR" />
             </div>
-            <NumberField label="من كل 100 واحد يدوس عالإعلان، كم يطلب؟" unit="%" value={orderPct} onChange={setOrderPct} max={100} step={0.5} />
+            <NumberField label="من كل 100 واحد يدوس على الإعلان، شكد واحد يطلب؟" unit="%" value={orderPct} onChange={setOrderPct} max={100} step={0.5} />
           </section>
 
           <section className="glass-subtle rounded-2xl p-4 space-y-4">
@@ -68,7 +68,7 @@ export default function RoiCalculator() {
               <NumberField label="التوصيل" unit="د.ع" value={delivery} onChange={setDelivery} step={500} />
               <NumberField label="كلفة الطلب الراجع" unit="د.ع" value={returnFee} onChange={setReturnFee} step={500} />
             </div>
-            <NumberField label="من كل 100 طلب، كم يستلم الزبون فعلا؟" unit="%" value={deliveredPct} onChange={setDeliveredPct} max={100} step={1} />
+            <NumberField label="من كل 100 طلب، شكد طلب يوصل للزبون فعلا؟" unit="%" value={deliveredPct} onChange={setDeliveredPct} max={100} step={1} />
           </section>
         </div>
 
@@ -76,7 +76,7 @@ export default function RoiCalculator() {
           <div className={`rounded-2xl p-5 sm:p-6 border ${winning ? "bg-emerald-400/[0.06] border-emerald-400/25" : "bg-red-500/[0.07] border-red-400/25"}`}>
             <div className="flex items-start justify-between gap-3 flex-wrap">
               <div className="space-y-1">
-                <p className="text-xs sm:text-sm font-bold text-white/70">صافي الحملة بعد كل المصاريف</p>
+                <p className="text-xs sm:text-sm font-bold text-white/70">صافي ربح الحملة بعد كل المصاريف</p>
                 <p className={`text-3xl sm:text-5xl font-black font-mono tracking-tight ${winning ? "text-emerald-300" : "text-red-300"}`}>
                   {fmt(r.net)} <span className="text-sm sm:text-base font-sans font-bold text-white/60">د.ع</span>
                 </p>
@@ -88,12 +88,12 @@ export default function RoiCalculator() {
             </div>
             <p className="text-xs sm:text-sm text-white/65 leading-relaxed mt-3">
               {r.orders < 1
-                ? "بهالأرقام الحملة ما تجيب ولا طلب. زيد الميزانية أو حسن نسبة النقر."
+                ? "بهالأرقام الحملة ما راح تجيبلك أي طلب. زيد الميزانية أو حسن نسبة النقر."
                 : r.cpa <= r.maxCpa
                   ? <>كل طلب يكلفك إعلان <span className="font-mono font-bold text-white">{fmt(r.cpa)}</span> د.ع، وتكدر تتحمل لحد <span className="font-mono font-bold text-white">{fmt(r.maxCpa)}</span> د.ع وتبقى رابح.</>
                   : r.maxCpa <= 0
-                    ? "حتى لو الإعلان ببلاش، هالسعر ما يغطي الكلفة والتوصيل والراجع. ارفع السعر أو قلل الكلفة قبل لا تعلن."
-                    : <>كل طلب يكلفك إعلان <span className="font-mono font-bold text-white">{fmt(r.cpa)}</span> د.ع، والحد اللي تتحمله <span className="font-mono font-bold text-white">{fmt(r.maxCpa)}</span> د.ع. لازم ترفع نسبة الطلب أو تقلل الراجع.</>}
+                    ? "حتى لو الإعلان ببلاش، هالسعر ما يغطي كلفة المنتج والتوصيل والطلبات الراجعة. ارفع السعر أو قلل الكلفة قبل لا تعلن."
+                    : <>كل طلب يكلفك إعلان <span className="font-mono font-bold text-white">{fmt(r.cpa)}</span> د.ع، والحد اللي تكدر تتحمله <span className="font-mono font-bold text-white">{fmt(r.maxCpa)}</span> د.ع. لازم ترفع نسبة الطلبات أو تقلل الطلبات الراجعة.</>}
             </p>
           </div>
 
@@ -117,7 +117,7 @@ export default function RoiCalculator() {
               {[
                 { label: `الفلوس اللي تدخل (${fmt(r.delivered)} طلب واصل)`, value: r.revenue, plus: true },
                 { label: `الإعلان (${fmt(budgetUsd)}$)`, value: -r.spend },
-                { label: "كلفة البضاعة الواصلة", value: -r.goods },
+                { label: "كلفة البضاعة اللي وصلت", value: -r.goods },
                 { label: "توصيل الطلبات الواصلة", value: -r.shipping },
                 { label: `الطلبات الراجعة (${fmt(r.returned)})`, value: -r.returns },
               ].map((row) => (

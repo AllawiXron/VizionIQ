@@ -112,11 +112,11 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
 
         {isTrial ? (
           <TrialLock
-            title="باقي الوحدة مقفول بالتجربة"
-            desc={`قريت أول جزء. الباقي فيه التفاصيل والجداول${m.tool ? "، أداة تحسبلك بأرقامك" : ""}، و${m.checklist.length} خطوات تطبقها هالأسبوع.`}
+            title="باقي الوحدة مو متاح بالتجربة"
+            desc={`قريت أول جزء. الباقي فيه التفاصيل والجداول${m.tool ? "، أداة تحسبلك حسب أرقام مشروعك" : ""}، و${m.checklist.length} خطوات تطبقها هالأسبوع.`}
             items={[
               ...m.sections.slice(1).map((sec) => sec.heading),
-              ...(m.tool ? ["أداة الحساب مال هالوحدة"] : []),
+              ...(m.tool ? ["أداة الحساب الخاصة بهالوحدة"] : []),
               `طبقها هالأسبوع: ${m.checklist.length} خطوات`,
             ]}
             cta="افتح الدليل كامل"
@@ -128,7 +128,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
         <section className="space-y-4">
           <h2 className="text-lg sm:text-2xl font-black text-white flex items-center gap-2.5">
             <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-vz-accent" />
-            طبقها هالأسبوع
+            طبقها خلال هالأسبوع
             <span className="text-sm font-bold text-white/50 font-mono">{ticked.size}/{m.checklist.length}</span>
           </h2>
           <ul className="space-y-2">

@@ -11,9 +11,9 @@ interface WelcomeIntroModalProps {
 }
 
 const STEPS = [
-  { icon: BookOpen, title: "اقرأ فصل", desc: "11 فصل بالترتيب، كل واحد يشرح خطوة وحدة." },
-  { icon: Calculator, title: "طبق بالأدوات", desc: "احسب ربحك وتكلفة الرسالة بأرقامك." },
-  { icon: Bot, title: "اسأل المستشار", desc: "اكتبله مشكلتك ويجاوبك على مشروعك." },
+  { icon: BookOpen, title: "اقرأ فصل", desc: "11 فصل مرتبة بالتسلسل، كل فصل يشرحلك خطوة وحدة." },
+  { icon: Calculator, title: "طبق باستخدام الأدوات", desc: "احسب ربحك وكلفة الرسالة حسب أرقام شغلك." },
+  { icon: Bot, title: "اسأل المستشار", desc: "اكتب مشكلتك وهو يساعدك بحلها حسب وضع مشروعك." },
 ];
 
 export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({ isOpen, onClose, onStart }) => {
@@ -44,9 +44,9 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({ isOpen, on
 
             <div className="relative p-6 sm:p-8 space-y-6 text-right">
               <div className="space-y-2 pt-2">
-                <p className="text-sm font-bold text-vz-accent">أهلا بيك بـ فيزيون</p>
-                <h2 id="welcome-title" className="text-2xl sm:text-3xl font-black leading-tight">الطريقة بسيطة</h2>
-                <p className="text-sm text-white/60 leading-relaxed">ثلاث خطوات، وكرر عليها لكل فصل:</p>
+                <p className="text-sm font-bold text-vz-accent">هلا بيك في فيزيون</p>
+                <h2 id="welcome-title" className="text-2xl sm:text-3xl font-black leading-tight">الموضوع بسيط</h2>
+                <p className="text-sm text-white/60 leading-relaxed">ثلاث خطوات، وكررها ويا كل فصل:</p>
               </div>
 
               <ol className="space-y-2.5">
@@ -85,7 +85,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({ isOpen, on
                   onClick={onClose}
                   className="btn btn-ghost w-full min-h-[44px] rounded-full text-sm text-white/65 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
-                  أتصفح بنفسي
+                  أتصفح وحدي
                 </button>
               </div>
             </div>

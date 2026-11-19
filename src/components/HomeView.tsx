@@ -47,15 +47,15 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
       n: 1,
       icon: BookOpen,
       title: "اقرأ الفصل",
-      desc: "كل فصل يشرح خطوة وحدة بأمثلة من السوق العراقي.",
+      desc: "كل فصل يشرحلك خطوة وحدة، ويا أمثلة من السوق العراقي.",
       cta: "الفصول",
       onClick: () => onNavigate({ view: "chapters" }),
     },
     {
       n: 2,
       icon: Calculator,
-      title: "طبق بالأدوات",
-      desc: "احسب ربحك وتكلفة الرسالة بالدينار قبل لا تصرف.",
+      title: "طبق باستخدام الأدوات",
+      desc: "احسب ربحك وكلفة الرسالة بالدينار قبل لا تصرف فلوسك.",
       cta: "الأدوات",
       onClick: () => onNavigate({ view: "tools" }),
     },
@@ -63,7 +63,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
       n: 3,
       icon: Bot,
       title: "اسأل المستشار",
-      desc: "اكتب مشكلتك ويجاوبك حسب أرقام مشروعك.",
+      desc: "اكتب مشكلتك، والمستشار يجاوبك حسب أرقام مشروعك.",
       cta: "المستشار",
       onClick: onOpenAdvisor,
     },
@@ -72,9 +72,9 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-10 sm:space-y-14 text-right">
       <motion.div {...rise(0.05)} className="space-y-2 sm:space-y-3">
-        <p className="text-sm sm:text-base font-bold text-vz-accent">{started ? "هلا بيك مرة ثانية" : "أهلا بيك بـ فيزيون"}</p>
+        <p className="text-sm sm:text-base font-bold text-vz-accent">{started ? "هلا بيك من جديد" : "أهلا بيك بمنصة فيزيون"}</p>
         <h1 className="text-[1.75rem] sm:text-5xl font-black text-white tracking-tight leading-tight">
-          {finished ? "خلصت الكورس كله، عاشت إيدك" : started ? "كمل من وين ما وكفت" : "ابدأ من هنا، خطوة وحدة كل مرة"}
+          {finished ? "كملت الكورس كله، عاشت إيدك" : started ? "كمل من المكان اللي وقفت بيه" : "ابدأ من هنا، خطوة وحدة بكل مرة"}
         </h1>
         <p className="text-sm sm:text-lg text-white/60 max-w-2xl leading-relaxed">
           {total} فصل قصير، أدوات تحسبلك أرقامك، ومستشار يجاوبك على مشروعك.
@@ -129,7 +129,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
             ) : (
               <div className="space-y-4">
                 <h2 className="text-xl sm:text-3xl font-black text-white leading-snug">خلصت كل الفصول الـ {total}</h2>
-                <p className="text-sm sm:text-base text-white/60">هسة استخدم الأدوات والمستشار على مشروعك كل أسبوع.</p>
+                <p className="text-sm sm:text-base text-white/60">هسه تكدر تستخدم الأدوات والمستشار على مشروعك كل أسبوع.</p>
                 <button onClick={() => onNavigate({ view: "chapters" })} className={`btn btn-glass min-h-[50px] px-6 rounded-full text-sm ${focusRing}`}>
                   كل الفصول
                 </button>
@@ -139,10 +139,10 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
 
           <div className="hidden md:block md:w-56 shrink-0 glass-subtle rounded-3xl p-5 space-y-3">
             <div className="flex items-baseline justify-between">
-              <span className="text-xs sm:text-sm font-bold text-white/60">تقدمك</span>
+              <span className="text-xs sm:text-sm font-bold text-white/60">نسبة تقدمك</span>
               <span className="text-lg sm:text-2xl font-black text-white font-mono">{percent}%</span>
             </div>
-            <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={doneCount} aria-label="الفصول المكتملة">
+            <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={doneCount} aria-label="عدد الفصول المكتملة">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${percent}%` }}
@@ -161,8 +161,8 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
       <motion.section {...rise(0.22)} aria-labelledby="home-solutions" className="space-y-4 sm:space-y-5">
         <div className="flex items-end justify-between gap-3">
           <div className="space-y-1">
-            <h2 id="home-solutions" className="text-lg sm:text-2xl font-black text-white">عندك مشكلة هسه؟</h2>
-            <p className="text-xs sm:text-sm text-white/55">حلول كاملة خطوة بخطوة، ويا رسائل جاهزة تنسخها.</p>
+            <h2 id="home-solutions" className="text-lg sm:text-2xl font-black text-white">عندك مشكلة حاليا؟</h2>
+            <p className="text-xs sm:text-sm text-white/55">حلول كاملة خطوة بخطوة، ويا رسائل جاهزة تكدر تنسخها وتستخدمها.</p>
           </div>
           <button onClick={() => onNavigate({ view: "solutions" })} className={`btn btn-ghost px-3 rounded-full text-xs sm:text-sm gap-1 shrink-0 ${focusRing}`}>
             كل الحلول
@@ -230,9 +230,9 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
             <Compass className="w-5 h-5" />
           </span>
           <span className="flex-1 min-w-0">
-            <span className="block text-sm sm:text-base font-black text-white">الدليل العراقي: السوق، الدفع، التوصيل، الكمرك والقانون</span>
+            <span className="block text-sm sm:text-base font-black text-white">الدليل العراقي: السوق والدفع والتوصيل والكمرك والقانون</span>
             <span className="block text-xs text-white/55 mt-0.5">
-              {nextSeason ? <>الموسم الجاي: {nextSeason.title} بعد {nextSeason.days} يوم. شوف شنو تجهز.</> : "معلومات مبنية على بحث ومصادر عن البيع بالعراق."}
+              {nextSeason ? <>الموسم الجاي: {nextSeason.title} بعد {nextSeason.days} يوم. شوف شنو تجهز.</> : "معلومات مبنية على أبحاث ومصادر عن البيع بالعراق."}
             </span>
           </span>
           <ArrowLeft className="w-4 h-4 text-white/50 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
@@ -274,8 +274,8 @@ function TrialHomeCard() {
           <Sparkles className="w-5 h-5" />
         </span>
         <span className="flex-1 min-w-0 space-y-1">
-          <span className="block text-base sm:text-xl font-black text-white">اعرف ربحك الحقيقي من كل طلب، بدقيقة</span>
-          <span className="block text-xs sm:text-sm text-white/60">تكتب سعرك وكلفتك، ونطلعلك وين تروح فلوسك وحل مشكلتك.</span>
+          <span className="block text-base sm:text-xl font-black text-white">اعرف ربحك الحقيقي من كل طلب بدقيقة</span>
+          <span className="block text-xs sm:text-sm text-white/60">اكتب سعر البيع والكلفة، ونحسبلك وين تروح فلوسك وشلون تحل المشكلة.</span>
         </span>
         <ArrowLeft className="w-5 h-5 text-white/60 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
       </motion.button>
@@ -293,20 +293,20 @@ function TrialHomeCard() {
         <div className="flex-1 min-w-0 space-y-1.5">
           <p className="text-xs sm:text-sm font-bold text-vz-accent">نتيجة مشروعك{problem ? `، ${problem.label}` : ""}</p>
           <p className="text-sm text-white/65">
-            تحسب ربحك <span className="font-mono line-through text-white/45">{iqd(d.thinks)}</span>، بس اللي يبقالك من كل طلب:
+            احسب ربحك <span className="font-mono line-through text-white/45">{iqd(d.thinks)}</span>، هذا المبلغ اللي يبقالك من كل طلب:
           </p>
           <p className={`text-3xl sm:text-4xl font-black font-mono ${tone}`}>{iqd(d.real)} <span className="text-sm text-white/55 font-sans font-bold">دينار</span></p>
           {pb && <p className="text-xs sm:text-sm text-white/60">حلك جاهز: {pb.title}</p>}
         </div>
         <div className="sm:w-72 shrink-0 space-y-2">
-          <SubscribeButton label="افتح الحل كامل" />
+          <SubscribeButton label="افتح الحل بالكامل" />
           <p className="text-[11px] text-center text-white/50">
             {offer.active ? `${thousands(offer.price)} بدل ${thousands(FULL_PRICE)}، ${deadlineLabel(offer)}` : `${thousands(offer.price)}، مدى الحياة`}
           </p>
         </div>
       </div>
       <button onClick={openCheck} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 text-white/70 ${focusRing}`}>
-        شوف النتيجة كاملة، وشكد يفرق وياك لو صلحتها
+        شوف النتيجة كاملة، وشكد راح يفرق وياك إذا حليت المشكلة
         <ArrowLeft className="w-3.5 h-3.5" />
       </button>
     </motion.section>

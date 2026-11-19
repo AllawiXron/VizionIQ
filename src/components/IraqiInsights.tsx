@@ -118,7 +118,7 @@ export default function IraqiInsights() {
       <PageHeader
         eyebrow={<><Lightbulb className="w-4 h-4" /> أسرار السوق</>}
         title="دروس من تجارب التجار بالعراق"
-        subtitle="كل بطاقة درس قصير. اضغط عليها حتى تشوف الحل العملي، أو ابحث عن موضوع يهمك."
+        subtitle="كل بطاقة بيها درس قصير. اضغط عليها حتى تشوف الحل العملي، أو ابحث عن الموضوع اللي يهمك."
       >
         <button
           onClick={handleRandomize}
@@ -135,7 +135,7 @@ export default function IraqiInsights() {
           <div className="relative w-full md:max-w-xl">
             <Search className="absolute right-3.5 top-3 w-4 h-4 text-white/60" />
             <input               type="text"
-              placeholder="ابحث عن حقيقة، خطأ شائع، أو كلمة تسويقية..."
+              placeholder="ابحث عن معلومة أو خطأ شائع أو مصطلح تسويقي..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="vz-field w-full pl-4 pr-10 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm text-white transition-all motion-reduce:transition-none motion-reduce:transform-none text-right shadow-inner min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -150,11 +150,11 @@ export default function IraqiInsights() {
           </div>
 
           <span className="text-xs sm:text-sm text-white/55 font-bold glass-subtle px-4 py-2 sm:px-5 sm:py-2.5 rounded-full w-full md:w-auto text-center">
-            حقائق: <CountUp value={filteredInsights.length} className="text-white font-mono font-black text-sm sm:text-lg mx-1 inline-block" /> من أصل <span className="font-mono text-white mx-1">{insightsList.length}</span>
+            حقائق: <CountUp value={filteredInsights.length} className="text-white font-mono font-black text-sm sm:text-lg mx-1 inline-block" /> من مجموع <span className="font-mono text-white mx-1">{insightsList.length}</span>
           </span>
         </div>
 
-        <div className="flex overflow-x-auto gap-2 pt-1 pb-1 no-scrollbar justify-start">
+        <div className="flex flex-wrap gap-2 pt-1 pb-1 justify-start">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             const count = cat.id === "all" 
@@ -211,7 +211,7 @@ export default function IraqiInsights() {
                   </span>
 
                   <div className="flex items-center gap-1.5 bg-white/[0.03] px-2.5 py-1 rounded-full border border-white/[0.06]">
-                    <span className="text-[10px] sm:text-[11px] text-white/60 font-mono">الصعوبة:</span>
+                    <span className="text-[10px] sm:text-[11px] text-white/60 font-mono">مستوى الصعوبة:</span>
                     <span className={`text-[10px] sm:text-[11px] font-black ${
                       insight.difficulty === "بسيط" ? "text-emerald-400" :
                       insight.difficulty === "متوسط" ? "text-vz-accent" :
@@ -238,7 +238,7 @@ export default function IraqiInsights() {
                         {insight.lesson}
                       </p>
                       <div className="pt-1">
-                        <span className="text-xs font-black text-vz-accent block mb-2">الحل والخطوات العملية المحمية لهذا الموقف</span>
+                        <span className="text-xs font-black text-vz-accent block mb-2">الحل والخطوات العملية الخاصة بهالحالة</span>
                         <button                           onClick={(e) => {
                             e.stopPropagation();
                             triggerUpgradeModal();
@@ -253,7 +253,7 @@ export default function IraqiInsights() {
                   ) : (
                     <div className="pt-4 border-t border-white/10 space-y-4 text-right animate-fade-in">
                       <div className="space-y-1.5">
-                        <span className="text-[11px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-vz-accent"/> تحليل الخلل:</span>
+                        <span className="text-[11px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-vz-accent"/> تحليل المشكلة:</span>
                         <p className="fluid-prose text-white/80 font-light pr-3 border-r border-white/10">
                           {insight.lesson}
                         </p>
@@ -280,14 +280,14 @@ export default function IraqiInsights() {
                   title="إي، صارت وياي بمشروعي"
                 >
                   <ThumbsUp className="w-3.5 h-3.5 text-vz-accent" />
-                  <span className="text-xs">والله هاي صارت وياي</span>
+                  <span className="text-xs">والله صارت وياي</span>
                   <span className="font-mono text-[11px] text-emerald-400 font-black bg-black/40 px-2 py-0.5 rounded-full border border-white/5">
                     {voteCount}
                   </span>
                 </button>
 
                 <span className="text-[11px] font-bold text-vz-accent/80 group-hover:text-vz-accent transition-colors flex items-center justify-center sm:justify-end gap-1.5 py-1">
-                  <span className="drop-shadow-sm">{isExpanded ? "اضغط للإغلاق" : "كشف الحل العملي"}</span>
+                  <span className="drop-shadow-sm">{isExpanded ? "اضغط حتى تغلق" : "اعرف الحل العملي"}</span>
                   <span className={`transform transition-transform duration-300 text-[10px] ${isExpanded ? "rotate-180" : ""}`}>▼</span>
                 </span>
               </div>
@@ -311,15 +311,15 @@ export default function IraqiInsights() {
 
       {filteredInsights.length === 0 && (
         <div className="text-center py-20 glass to-black/40 border rounded-4xl space-y-4">
-          <h4 className="text-lg font-black text-white">ما لكينا شي يطابق بحثك</h4>
+          <h4 className="text-lg font-black text-white">ما لكينا نتائج تطابق بحثك</h4>
           <p className="text-sm text-white/70 max-w-sm mx-auto leading-relaxed">
-            جرب كلمات ثانية مثل 'إعلان' أو 'سعر' أو 'راجع'، أو اختار تصنيف ثاني من فوك.
+            جرب كلمات ثانية مثل 'إعلان' أو 'سعر' أو 'راجع'، أو اختار تصنيف ثاني من الأعلى.
           </p>
           <button             onClick={() => { setSearchTerm(""); setSelectedCategory("all"); }}
             className="text-sm text-vz-accent font-black hover:text-white transition-colors cursor-pointer mt-4 inline-flex items-center gap-2 border-b border-white/14 hover:border-vz-blue-light pb-1 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
           >
             <Shuffle className="w-4 h-4" />
-            إعادة تعيين البحث والتصنيف
+            مسح البحث وإعادة التصنيف
           </button>
         </div>
       )}
@@ -354,7 +354,7 @@ export default function IraqiInsights() {
               </button>
               <div className="flex items-center gap-3 text-vz-accent">
                 <Sparkles className="w-6 h-6 animate-pulse-slow" />
-                <span className="text-base font-black tracking-wide drop-shadow-md">حقيقة عشوائية مميزة من واقع السوق</span>
+                <span className="text-base font-black tracking-wide drop-shadow-md">معلومة عشوائية مهمة من واقع السوق</span>
               </div>
             </div>
 
@@ -371,14 +371,14 @@ export default function IraqiInsights() {
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <span className="text-[12px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-4 h-4"/> المشكلة والخلل الخفي:</span>
+                  <span className="text-[12px] font-black text-white/70 block flex items-center gap-1.5"><HelpCircle className="w-4 h-4"/> المشكلة والسبب الخفي:</span>
                   <p className="text-sm md:text-base text-white/80 leading-relaxed font-light border-r-2 border-white/10 pr-4">
                     {randomInsight.lesson}
                   </p>
                 </div>
 
                 <div className="space-y-2 bg-gradient-to-br from-emerald-500/10 to-transparent border border-emerald-500/30 p-6 rounded-2xl shadow-inner">
-                  <span className="text-[12px] font-black text-emerald-400 block flex items-center gap-1.5"><CheckCircle className="w-4 h-4"/> الحل التكتيكي الفوري:</span>
+                  <span className="text-[12px] font-black text-emerald-400 block flex items-center gap-1.5"><CheckCircle className="w-4 h-4"/> الحل العملي اللي تكدر تطبقه فورا:</span>
                   <p className="text-sm md:text-base text-white/95 leading-relaxed font-bold">
                     {randomInsight.practicalAction}
                   </p>
@@ -391,7 +391,7 @@ export default function IraqiInsights() {
                 className="px-5 py-3 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-white/15 text-vz-accent border border-white/18 transition-all motion-reduce:transition-none motion-reduce:transform-none font-bold text-sm flex items-center gap-2 cursor-pointer shadow-lg hover:-translate-y-0.5 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <ThumbsUp className="w-4 h-4" />
-                <span>والله هاي صارت وياي</span>
+                <span>والله صارت وياي</span>
                 <span className="font-mono bg-black/40 px-2 py-0.5 rounded-full text-[12px] border border-white/9">
                   {votes[randomInsight.id] || 0}
                 </span>
@@ -401,7 +401,7 @@ export default function IraqiInsights() {
                 className="px-5 py-3 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-white/20 text-white font-bold text-sm transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer flex items-center gap-2 shadow-lg hover:-translate-y-0.5 border border-white/10 hover:border-white/30 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               >
                 <Shuffle className="w-4 h-4 text-white/80" />
-                <span>عشوائي آخر</span>
+                <span>معلومة عشوائية ثانية</span>
               </button>
             </div>
 

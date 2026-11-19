@@ -120,142 +120,142 @@ interface DiagnosticCategory {
 const DIAGNOSTIC_CATEGORIES: DiagnosticCategory[] = [
   {
     id: "ads",
-    title: "ضعف الإعلانات وهدر الميزانية",
+    title: "ضعف الإعلانات وضياع الميزانية",
     icon: "",
-    description: "حلول مشاكل فيسبوك وتيك توك وانستغرام آدز بالسوق العراقي",
+    description: "حل مشاكل إعلانات فيسبوك وتيك توك وإنستغرام بالسوق العراقي",
     options: [
       {
         topicId: "topic_ads_low_conversion",
-        label: "رسائل هواية على الإعلان بس محد يشتري",
-        subtext: "جودة الزبائن ضعيفة والرسائل غير جادة",
-        prompt: "إعلاناتي تجيب رسائل واستفسارات هواية وبسعر مقبول، بس تقريبا محد يطلب فعليا. شنو التشخيص حسب طريقة فيزيون، وشلون أحل المشكلة بسرعة؟",
+        label: "تجيني رسائل هواية على الإعلان بس محد يشتري",
+        subtext: "الزبائن اللي تجيني مو جديين ورسائلهم ما تتحول لطلبات",
+        prompt: "إعلاناتي تجيب رسائل واستفسارات هواية وبكلفة مقبولة، بس تقريبا محد يطلب فعليا. شنو التشخيص حسب طريقة فيزيون، وشلون أحل المشكلة بأسرع وقت؟",
         defaultSuggestions: [
-          "شلون أعدل محتوى الإعلان وأفلتر الزبائن؟",
-          "انطيني سكريبت يحول اللي يسأل لزبون يطلب بالواتساب",
+          "شلون أعدل محتوى الإعلان وأختار الزبائن الجديين؟",
+          "انطيني سكريبت يحول اللي يستفسر إلى زبون يطلب عن طريق واتساب",
           "أرفع السعر لو أغير الاستهداف؟"
         ]
       },
       {
         topicId: "topic_ads_high_cpa",
         label: "كلفة الرسالة كلش عالية (CPA/CPR)",
-        subtext: "صرف الميزانية بدون الحصول على عدد استفسارات كاف",
-        prompt: "كلفة الرسالة بإعلانات الفيسبوك والانستغرام كلش عالية وتاكل كل الربح. شلون أنزل كلفة الرسالة بالسوق العراقي وأحسن الـ CTR؟",
+        subtext: "الميزانية دا تنصرف بدون ما تجيني استفسارات كافية",
+        prompt: "كلفة الرسالة بإعلانات فيسبوك وإنستغرام كلش عالية ودا تاكل من الربح. شلون أنزل كلفة الرسالة بالسوق العراقي وأحسن الـ CTR؟",
         defaultSuggestions: [
-          "شلون أسوي أول لقطة بالإعلان (Hook) توكف الناس؟",
-          "شنو أحسن استهداف للمحافظات؟",
-          "شلون أعرف إذا المنتج نفسه هو المشكلة؟"
+          "شلون أسوي أول لقطة بالإعلان (Hook) حتى أوقف المشاهد؟",
+          "شنو أفضل استهداف لكل محافظة؟",
+          "شلون أعرف إذا المشكلة من المنتج نفسه؟"
         ]
       },
       {
         topicId: "topic_ad_fatigue",
-        label: "الحملة تمشي يومين وبعدين تطيح فجأة (Ad Fatigue)",
-        subtext: "تذبذب النتائج وتوقف الطلبات بعد البداية القوية",
-        prompt: "الحملة تبدي قوية أول 48 ساعة، وبعدين النتائج تنزل والكلفة تصعد فجأة. شلون أتعامل ويا احتراق الإعلان وأوسع الجمهور العراقي؟",
+        label: "الحملة تشتغل يومين وبعدين نتائجها تضعف فجأة (Ad Fatigue)",
+        subtext: "النتائج تتذبذب والطلبات توقف بعد بداية قوية",
+        prompt: "الحملة تبدي قوية بأول 48 ساعة، وبعدها النتائج تضعف والكلفة ترتفع فجأة. شلون أتعامل ويا احتراق الإعلان وأوصل لجمهور عراقي أكبر؟",
         defaultSuggestions: [
-          "شلون أطلع زوايا إعلانية (Angles) جديدة لنفس المنتج؟",
+          "شلون أطلع أفكار وزوايا إعلانية (Angles) جديدة لنفس المنتج؟",
           "شوكت أزيد الميزانية (Scaling)؟",
-          "شلون أقارن محتوى تيك توك ويا انستغرام؟"
+          "شلون أقارن أداء محتوى تيك توك بإنستغرام؟"
         ]
       }
     ]
   },
   {
     id: "whatsapp_sales",
-    title: "اعتراضات المبيعات وإغلاق الصفقات",
+    title: "اعتراضات الزبائن وإتمام البيع",
     icon: "",
     description: "سكريبتات الردود وإقناع الزبون العراقي المتردد",
     options: [
       {
         topicId: "topic_sales_price_objection",
-        label: "الزبون يقول: 'السعر غالي ومبالغ بيه'",
-        subtext: "مقارنة السعر بصفحات أخرى أو شعور بعدم الاستحقاق",
-        prompt: "الزبون بالواتساب يقول: 'السعر غالي ومبالغ بيه، شفته بغير مكان أرخص'. اعطيني سكريبت الرد الذهبي لإقناعه بالقيمة دون حرق السعر.",
+        label: "الزبون يكول: 'السعر غالي ومبالغ بيه'",
+        subtext: "الزبون يقارن السعر بصفحات ثانية أو ما يشوف إن المنتج يستاهل هالسعر",
+        prompt: "الزبون بالواتساب يكول: 'السعر غالي ومبالغ بيه، شفته بغير مكان أرخص'. انطيني أفضل سكريبت أقنعه بقيمة المنتج بدون ما أنزل السعر.",
         defaultSuggestions: [
-          "شلون أضيف هدية أو عرض بدون ما تغلى الكلفة؟",
+          "شلون أضيف هدية أو عرض بدون ما تزيد الكلفة علي؟",
           "شسوي إذا الزبون أصر على الخصم؟",
-          "سكريبت تثبيت الضمان وخدمة ما بعد البيع"
+          "سكريبت توضيح الضمان وخدمة ما بعد البيع"
         ]
       },
       {
         topicId: "topic_sales_hesitation",
-        label: "الزبون يقول: 'بعدين أردلك خبر / استشير'",
-        subtext: "الزبون يأجل ويختفي بعد ما يعرف السعر والمواصفات",
-        prompt: "الزبائن يقرون التفاصيل ويكتبون 'بعدين أردلك خبر' أو 'أشاور أهلي' ويختفون. شلون أتعامل ويا التأجيل وأسكر الطلب بنفس اللحظة؟",
+        label: "الزبون يكول: 'بعدين أردلك خبر / أستشير'",
+        subtext: "الزبون يأجل الطلب ويختفي من يعرف السعر والمواصفات",
+        prompt: "الزبائن يقرون التفاصيل ويكتبون 'بعدين أردلك خبر' أو 'أشاور أهلي' وبعدها يختفون. شلون أتعامل ويا التأجيل وأخلي الزبون يكمل الطلب بنفس اللحظة؟",
         defaultSuggestions: [
-          "سكريبت إعادة المتابعة بعد 24 ساعة (Follow-up)",
-          "شلون أخلي الزبون يستعجل (Urgency) بصدق وبدون كذب؟",
-          "طريقة السؤال الختامي البديل (Alternative Choice Close)"
+          "سكريبت متابعة الزبون بعد 24 ساعة (Follow-up)",
+          "شلون أخلي الزبون يبادر بالطلب بسرعة، بصدق وبدون مبالغة؟",
+          "طريقة السؤال الختامي بخيارين (Alternative Choice Close)"
         ]
       },
       {
         topicId: "topic_sales_discount",
-        label: "الزبون يطلب خصم أو توصيل مجاني بإصرار",
-        subtext: "المساومة على كروة التوصيل والربح",
-        prompt: "الزبائن بالعراق دايما يطلبون 'توصيل مجاني' أو 'نزلي السعر'. شلون أحافظ على ربحي وبنفس الوقت أرضي الزبون اللي يريد خصم؟",
+        label: "الزبون يصر على الخصم أو التوصيل المجاني",
+        subtext: "المساومة على أجور التوصيل وتأثيرها على الربح",
+        prompt: "الزبائن بالعراق غالبا يطلبون 'توصيل مجاني' أو 'نزللي السعر'. شلون أحافظ على ربحي وبنفس الوقت أرضي الزبون اللي يريد خصم؟",
         defaultSuggestions: [
           "شلون أكتب عروض البكجات (مثل 1+1 مجانا)؟",
           "سكريبت الرد على طلب التوصيل المجاني",
-          "شلون أدخل كلفة التوصيل بالسعر بطريقة ذكية؟"
+          "شلون أضيف كلفة التوصيل للسعر بطريقة ذكية؟"
         ]
       }
     ]
   },
   {
     id: "delivery_returns",
-    title: "تقليل الراجع ومشاكل التوصيل",
+    title: "تقليل الطلبات الراجعة ومشاكل التوصيل",
     icon: "",
-    description: "تنزيل الراجع لأقل من 10% وتأكيد الطلبات",
+    description: "نزل نسبة الطلبات الراجعة لأقل من 10% وأكد الطلبات قبل الشحن",
     options: [
       {
         topicId: "topic_delivery_returns",
-        label: "الزبون يرفض الاستلام أو يكنسل عند اتصال المندوب",
-        subtext: "ضياع أجور التوصيل والجهد وهدر المنتجات بالراجع",
-        prompt: "الراجع عندي بالمحافظات فوك 25%، والزبائن يرفضون الاستلام من يتصل بيهم المندوب. شنو الخطة العملية بطريقة فيزيون حتى أنزل الراجع لأقل من 10%؟",
+        label: "الزبون يرفض يستلم الطلب أو يلغي من يتصل بيه المندوب",
+        subtext: "خسارة أجور التوصيل والوقت وضياع المنتجات بسبب الطلبات الراجعة",
+        prompt: "نسبة الطلبات الراجعة عندي بالمحافظات أكثر من 25%، والزبائن يرفضون يستلمون الطلب من يتصل بيهم المندوب. شنو الخطة العملية حسب طريقة فيزيون حتى أنزل نسبة الراجع لأقل من 10%؟",
         defaultSuggestions: [
-          "اعطيني سكريبت مكالمة تأكيد الطلب قبل التوصيل",
+          "انطيني سكريبت مكالمة لتأكيد الطلب قبل التوصيل",
           "شلون أتعامل ويا تأخير شركات التوصيل؟",
-          "شلون أوكف الطلبات الوهمية واللي مو جديين؟"
+          "شلون أوقف الطلبات الوهمية والزبائن اللي مو جديين؟"
         ]
       },
       {
         topicId: "topic_delivery_driver",
-        label: "المندوب يتأخر والزبون يفقد الحماس",
-        subtext: "بطء التوصيل 4-6 أيام يؤدي لإلغاء الطلب",
-        prompt: "التوصيل للمحافظات يتأخر 4 لـ 6 أيام، فالزبون يشتري من السوك ويلغي الطلب. شلون أخلي الزبون متحمس لحد ما يوصله الطلب؟",
+        label: "المندوب يتأخر والزبون يفقد رغبته بالطلب",
+        subtext: "تأخر التوصيل من 4 إلى 6 أيام يخلي الزبون يلغي الطلب",
+        prompt: "التوصيل للمحافظات يتأخر من 4 إلى 6 أيام، وخلال هالفترة الزبون يشتري من السوق ويلغي طلبه. شلون أحافظ على حماسه لحد ما يستلم الطلب؟",
         defaultSuggestions: [
           "سكريبت رسائل متابعة بالواتساب لحد ما يوصل الطلب",
-          "شلون أختار شركة توصيل أعتمد عليها بالعراق؟",
-          "نظام الحوافز للمناديب والزبائن"
+          "شلون أختار شركة توصيل أكدر أعتمد عليها بالعراق؟",
+          "نظام حوافز للمناديب والزبائن"
         ]
       }
     ]
   },
   {
     id: "pricing_finance",
-    title: "التسعير وحساب الهيكل المالي",
+    title: "التسعير وحساب التكاليف والأرباح",
     icon: "",
-    description: "معادلات حساب الكلف والأرباح الصافية بالدينار العراقي",
+    description: "معادلات حساب التكاليف وصافي الأرباح بالدينار العراقي",
     options: [
       {
         topicId: "topic_pricing_profit",
-        label: "شلون أسعر منتج كلفته 10,000 لـ 15,000 دينار حتى أضمن ربح صافي؟",
-        subtext: "حساب كلفة الشراء + الإعلانات + التوصيل والراجع",
-        prompt: "عندي منتج أشتريه بالجملة بـ 12,000 دينار، والتوصيل 5,000. شلون أسعره بسعر يجذب الزبون ويبقيلي ربح صافي بعد الإعلان والراجع؟",
+        label: "شلون أسعر منتج كلفته من 10,000 إلى 15,000 دينار حتى أضمن ربح صافي؟",
+        subtext: "حساب كلفة الشراء والإعلانات والتوصيل والطلبات الراجعة",
+        prompt: "عندي منتج أشتريه بالجملة بـ 12,000 دينار، وأجور التوصيل 5,000. شلون أحدد سعر يجذب الزبون ويبقيلي ربح صافي بعد كلفة الإعلان والطلبات الراجعة؟",
         defaultSuggestions: [
-          "احسب لي نقطة التعادل (Break-Even ROAS)",
+          "احسبلي نقطة التعادل (Break-Even ROAS)",
           "شكد هامش الربح المناسب للمنتجات اليومية؟",
           "شلون أسعر القطعة الثانية والثالثة (Upsell)؟"
         ]
       },
       {
         topicId: "topic_budget_planning",
-        label: "الأرباح تختفي بآخر الشهر وما أعرف وين تروح",
-        subtext: "إيرادات عالية بدون سيولة نقدية صافية",
-        prompt: "صفحتي تبيع زين والمبيعات محترمة، بس بآخر الشهر ما ألكى ربح كاش بإيدي. شنو الثغرات المخفية اللي تاكل الربح بالبيع أونلاين بالعراق؟",
+        label: "الأرباح تختفي بنهاية الشهر وما أعرف وين تروح",
+        subtext: "مبيعات عالية بس ماكو سيولة نقدية صافية",
+        prompt: "صفحتي تبيع زين ومبيعاتي جيدة، بس بنهاية الشهر ما يبقى بإيدي ربح كاش. شنو المصاريف والثغرات المخفية اللي دا تاكل أرباح البيع أونلاين بالعراق؟",
         defaultSuggestions: [
-          "قائمة التدقيق المالي للمصاريف الخفية (Leak Checklist)",
-          "شلون أحسب كلفة الراجع على كل قطعة أبيعها؟",
-          "إدارة دورة رأس المال والتحصيل من شركات التوصيل"
+          "قائمة مراجعة المصاريف اللي تاكل الربح بدون ما تنتبه إلها (Leak Checklist)",
+          "شلون أحسب كلفة الطلبات الراجعة على كل قطعة أبيعها؟",
+          "إدارة رأس المال ومتابعة مستحقاتك من شركات التوصيل"
         ]
       }
     ]
@@ -273,30 +273,30 @@ const SCRIPT_OBJECTIONS = [
     id: "think_later",
     label: "بعدين أردلك خبر",
     icon: "",
-    promptContext: "الزبون يراح ويقول استشير أو أردلك خبر لاحقا"
+    promptContext: "الزبون يكول أستشير أو أردلك خبر بعدين"
   },
   {
     id: "cheaper_elsewhere",
     label: "شفته أرخص بصفحة ثانية",
     icon: "",
-    promptContext: "الزبون يقارن بصفحة أخرى تبيع منتجا مشابها أو مقلدا بسعر أقل"
+    promptContext: "الزبون يقارن منتجك بمنتج مشابه أو تقليد ينباع بصفحة ثانية بسعر أقل"
   },
   {
     id: "quality_fear",
     label: "خايف من الجودة والتوصيل",
     icon: "",
-    promptContext: "الزبون يخاف البضاعة تطلع مو مثل الصورة أو نوعيتها تعبانة"
+    promptContext: "الزبون خايف المنتج يطلع مو مثل الصورة أو جودته مو زينة"
   },
   {
     id: "confirm_call",
     label: "مكالمة تأكيد قبل التوصيل",
     icon: "",
-    promptContext: "مكالمة سريعة لتأكيد العنوان والجدية قبل تسليم الطلب لشركة التوصيل"
+    promptContext: "مكالمة سريعة لتأكيد العنوان والتأكد من جدية الزبون قبل تسليم الطلب لشركة التوصيل"
   }
 ];
 
 const SCRIPT_NICHES = [
-  { id: "general", label: "عام / استهلاكي", icon: "" },
+  { id: "general", label: "منتجات عامة واستهلاكية", icon: "" },
   { id: "fashion", label: "أزياء وملابس", icon: "" },
   { id: "beauty", label: "تجميل وعناية", icon: "" },
   { id: "electronics", label: "إلكترونيات وأجهزة", icon: "" },
@@ -336,12 +336,12 @@ const getProfileStorageKey = (code?: string): string => {
 const EXAMPLE_QUESTIONS = [
   {
     id: "ex_no_sales",
-    label: "عندي رسائل بس ماكو شراء",
+    label: "تجيني رسائل بس ماكو طلبات",
     topicId: "topic_ad_messages_no_sales",
     suggestions: [
-      "شنو أخطاء الرد السريع على الزبون؟",
-      "اعطيني سكريبت فحص جدية الزبون",
-      "شلون أقنع الزبون يطلب هسه؟"
+      "شنو الأخطاء بالرد السريع على الزبون؟",
+      "انطيني سكريبت أتأكد بيه من جدية الزبون",
+      "شلون أقنع الزبون يكمل الطلب هسه؟"
     ]
   },
   {
@@ -349,29 +349,29 @@ const EXAMPLE_QUESTIONS = [
     label: "الزبون يكول السعر غالي",
     topicId: "topic_sales_price_objection",
     suggestions: [
-      "اعطيني سكريبت رد على 'السعر غالي'",
-      "طريقة صياغة عروض البكجات 1+1",
-      "شلون أبين قيمة المنتج؟"
+      "انطيني سكريبت للرد على 'السعر غالي'",
+      "شلون أصيغ عروض البكجات 1+1؟",
+      "شلون أوضح قيمة المنتج للزبون؟"
     ]
   },
   {
     id: "ex_returns",
-    label: "نسبة الراجع عندي عالية",
+    label: "نسبة الطلبات الراجعة عندي عالية",
     topicId: "topic_delivery_returns",
     suggestions: [
       "سكريبت مكالمة تأكيد الطلب قبل التوصيل",
       "شلون أتعامل ويا تأخير شركة التوصيل؟",
-      "نصائح لاختيار شركة توصيل موثوقة"
+      "نصائح لاختيار شركة توصيل تكدر تعتمد عليها"
     ]
   },
   {
     id: "ex_followup",
-    label: "أريد سكريبت متابعة للزبون",
+    label: "أريد سكريبت لمتابعة الزبون",
     topicId: "topic_sales_hesitation",
     suggestions: [
       "رسالة متابعة بعد 24 ساعة",
-      "طريقة تقديم عرض خصم مؤقت",
-      "سكريبت إنعاش الزبائن المترددين"
+      "شلون أقدم عرض خصم لفترة محدودة؟",
+      "سكريبت لإرجاع الزبائن المترددين"
     ]
   }
 ];
@@ -379,14 +379,14 @@ const EXAMPLE_QUESTIONS = [
 const DEFAULT_WELCOME_MESSAGE: Message = {
   id: "welcome-1",
   role: "assistant",
-  text: "هلا بيك يا غالي. أني مستشار فيزيون التكتيكي لمساعدتك بقرارات البيع، التسويق، التسعير بالدينار، وإدارة التوصيل وتقليل الراجع بالسوق العراقي.\n\nتكدر تختار موضوع جاهز أو تطرح سؤالك الميداني مباشرة، ونحسبها وياك ورقة وقلم.",
+  text: "هلا بيك. أني مستشارك التكتيكي من فيزيون، أساعدك تاخذ قرارات صح بالبيع والتسويق والتسعير بالدينار، وتنظيم التوصيل وتقليل الطلبات الراجعة بالسوق العراقي.\n\nتكدر تختار موضوع من المواضيع الجاهزة أو تكتبلي مشكلتك بالشغل مباشرة، ونحسبها وياك خطوة بخطوة.",
   timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
   suggestions: [
     "ابدأ تشخيص مشروعي (4 خطوات)",
-    "شلون أقلل نسبة الراجع بالمحافظات؟",
-    "اكتبلي سكريبت رد على اعتراض 'السعر غالي'",
-    "إعلاني يجيب رسائل بس ماكو مبيعات، شنو الحل؟",
-    "شلون أسعر منتجي وأحسب الربح الصافي بالدينار؟"
+    "شلون أقلل نسبة الطلبات الراجعة بالمحافظات؟",
+    "اكتبلي سكريبت للرد على اعتراض 'السعر غالي'",
+    "إعلاني يجيب رسائل بس ماكو طلبات، شنو الحل؟",
+    "شلون أسعر منتجي وأحسب صافي الربح بالدينار؟"
   ]
 };
 
@@ -500,7 +500,7 @@ function ChatInputForm({
         >
           <div className="flex items-center gap-2" role="alert" aria-live="assertive">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span className="font-bold text-xs sm:text-sm">{lastFailedPrompt.errorText || "صار خلل بسيط. جرب مرة ثانية."}</span>
+            <span className="font-bold text-xs sm:text-sm">{lastFailedPrompt.errorText || "صار خلل بسيط، جرب مرة ثانية."}</span>
           </div>
 
           <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end">
@@ -521,7 +521,7 @@ function ChatInputForm({
                 }
               }}
               className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-rose-100 font-semibold text-xs flex items-center justify-center gap-1 min-h-[44px] cursor-pointer active:scale-[0.97] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-              title="استرجاع النص للتعديل عليه"
+              title="رجع النص حتى أعدله"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>تعديل السؤال</span>
@@ -580,13 +580,13 @@ function ChatInputForm({
                 type="button"
                 onClick={() => onRemoveAttachment?.(i)}
                 className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-black/80 border border-white/30 text-white flex items-center justify-center"
-                aria-label="شيل الصورة"
+                aria-label="إزالة الصورة"
               >
                 <X className="w-3 h-3" />
               </button>
             </div>
           ))}
-          <span className="text-[11px] text-white/55 font-bold">المستشار راح يقرا الصورة ويشخصها</span>
+          <span className="text-[11px] text-white/55 font-bold">المستشار راح يقرا الصورة ويحللها</span>
         </div>
       )}
       {dictation.error && <div className="px-2 text-[11px] font-bold text-rose-300">{dictation.error}</div>}
@@ -605,7 +605,7 @@ function ChatInputForm({
 
       <form onSubmit={handleSubmit} dir="rtl" className="flex items-end gap-1.5 sm:gap-2 relative w-full">
         <div aria-live="polite" className="sr-only">
-          {isLoading ? "جاري المعالجة، رجاء الانتظار..." : ""}
+          {isLoading ? "دا نعالج الطلب، انتظر شوي..." : ""}
         </div>
 
         <button 
@@ -625,7 +625,7 @@ function ChatInputForm({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={isLoading || attachments.length >= 3}
-            title="أرفق صورة (لقطة من مدير الإعلانات، إعلان، محادثة…)"
+            title="أرفق صورة (لقطة من مدير الإعلانات، إعلان، محادثة...)"
             aria-label="أرفق صورة"
             className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-xl border border-white/12 bg-white/[0.04] hover:bg-white/[0.08] text-vz-accent flex items-center justify-center disabled:opacity-40 transition-colors"
           >
@@ -648,7 +648,7 @@ function ChatInputForm({
                 onAttach(files);
               }
             }}
-            placeholder={dictation.listening ? interim || "دا أسمعك… احچي" : attachments.length ? "اكتب شنو تريد أشوف بالصورة (اختياري)" : "اكتب سؤالك هنا..."}
+            placeholder={dictation.listening ? interim || "دا أسمعك... احچي" : attachments.length ? "اكتبلي شنو تريد أفحص بالصورة (اختياري)" : "اكتب سؤالك هنا..."}
             aria-label="اكتب سؤالك هنا..."
             disabled={isLoading}
             dir="rtl"
@@ -658,8 +658,8 @@ function ChatInputForm({
             <button
               type="button"
               onClick={() => (dictation.listening ? dictation.stop() : dictation.start())}
-              aria-label={dictation.listening ? "وقف التسجيل" : "احچي بدل الكتابة"}
-              title={dictation.listening ? "وقف التسجيل" : "احچي بدل الكتابة"}
+              aria-label={dictation.listening ? "إيقاف التسجيل" : "احچي بدل ما تكتب"}
+              title={dictation.listening ? "إيقاف التسجيل" : "احچي بدل ما تكتب"}
               className={`absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                 dictation.listening ? "bg-rose-500 text-white animate-pulse" : "text-white/55 hover:text-white hover:bg-white/10"
               }`}
@@ -673,12 +673,12 @@ function ChatInputForm({
           <button
             type="button"
             onClick={onStop}
-            aria-label="وقف الجواب"
-            title="وقف الجواب"
+            aria-label="إيقاف الجواب"
+            title="إيقاف الجواب"
             className="btn btn-glass px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shrink-0 min-h-[44px]"
           >
             <Square className="w-3.5 h-3.5 fill-current" />
-            <span className="hidden sm:inline font-bold whitespace-nowrap">وقف</span>
+            <span className="hidden sm:inline font-bold whitespace-nowrap">إيقاف</span>
           </button>
         ) : (
           <button
@@ -841,7 +841,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       localStorage.setItem(planKey, JSON.stringify(updated));
       const target = updated.find((t) => t.id === taskId);
       if (target?.completed) {
-        showToast("success", "عاشت إيدك، خلصت هاي المهمة", target.task);
+        showToast("success", "عاشت إيدك، كملت هالمهمة", target.task);
       }
     } catch (e) {
       console.warn("Failed to update plan task:", e);
@@ -1001,7 +1001,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
     trackEvent("advisor_feedback_submitted", {
       rating,
-      reason: reason || (rating === "helpful" ? "إجابة مفيدة ومناسبة لواقع السوق العراقي" : undefined),
+      reason: reason || (rating === "helpful" ? "إجابة مفيدة وتناسب واقع السوق العراقي" : undefined),
       customNote,
       messageId,
       topicId: currentTopicRef.current,
@@ -1011,8 +1011,8 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
       showToast(
         "success",
         rating === "helpful"
-          ? "شكرا لتقييمك سعداء بأن الإجابة أفادتك بالسوق العراقي"
-          : "شكرا لملاحظتك سنعمل على تطوير الإجابات لواقع التجارة بالعراق"
+          ? "شكرا على تقييمك، يسعدنا إن الإجابة فادتك بشغلك بالسوق العراقي"
+          : "شكرا على ملاحظتك، راح نشتغل على تطوير الإجابات حتى تناسب واقع التجارة بالعراق"
       );
     }
   };
@@ -1194,9 +1194,9 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     return {
       cleanText: rawText,
       suggestions: [
-        "اعطيني سكريبت عملي قابل للنسخ",
-        "شلون أطبق هذا بحملتي؟",
-        "شنو الغلط اللي الكل يوكع بيه هنا؟"
+        "انطيني سكريبت عملي أكدر أنسخه وأستخدمه",
+        "شلون أطبق هالشي بحملتي؟",
+        "شنو الغلط الشائع اللي الكل يوكع بيه بهالحالة؟"
       ]
     };
   };
@@ -1214,7 +1214,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
 
     const normalizedInput = normalizeCode(trimmed);
     if (!normalizedInput.includes("#ai")) {
-      setUpgradeError("هذا الرمز ما بيه صلاحية المستشار الذكي (لازم يكون بيه #ai).");
+      setUpgradeError("هذا الرمز ما يتضمن صلاحية المستشار الذكي (لازم يحتوي على #ai).");
       return;
     }
 
@@ -1222,7 +1222,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const isValid = validCodes.includes(normalizedInput);
 
     if (isValid) {
-      setUpgradeSuccessMsg("تفعل اشتراك المستشار الذكي. دا ينفتح المستشار");
+      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي. دا نفتح المستشار");
       localStorage.setItem("sales_guide_user_code", trimmed);
       setTimeout(() => {
         if (onUpgradeSuccess) {
@@ -1230,7 +1230,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         }
       }, 1000);
     } else {
-      setUpgradeError("الرمز المدخل غير صحيح أو غير مفعل.");
+      setUpgradeError("الرمز اللي دخلته غير صحيح أو مو مفعل.");
     }
   };
 
@@ -1254,15 +1254,15 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const newTopicMessage: Message = {
       id: `topic_${Date.now()}`,
       role: "assistant",
-      text: "بدأنا موضوع جديد. اكتب سؤالك هسه.",
+      text: "بدينا موضوع جديد. اكتب سؤالك هسه.",
       timestamp: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
       isDivider: true,
       topicId: newTopicId,
       suggestions: [
         "تشخيص ضعف نتائج الإعلانات",
         "سكريبت الرد على 'السعر غالي'",
-        "خطة تقليل نسبة الراجع للمحافظات",
-        "معادلة تسعير المنتج لضمان الأرباح"
+        "خطة لتقليل الطلبات الراجعة بالمحافظات",
+        "معادلة تسعير المنتج حتى تضمن ربحك"
       ]
     };
 
@@ -1270,7 +1270,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     setLastFailedPrompt(null);
     setIsSuggestionsOpen(false);
     setActiveTab("chat");
-    showToast("success", "بدأنا موضوع جديد. اكتب سؤالك هسه.");
+    showToast("success", "بدينا موضوع جديد. اكتب سؤالك هسه.");
   };
 
   const handleCancelRequest = () => {
@@ -1289,10 +1289,10 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     handleSendMessage(
       prompt,
       [
-        "حولها لخطة 7 أيام",
-        "اكتبلي السكربت العراقي",
-        "احسب صافي الربح",
-        "افتح الفصل المرتبط"
+        "حولها إلى خطة لمدة 7 أيام",
+        "اكتبلي السكريبت باللهجة العراقية",
+        "احسبلي صافي الربح",
+        "افتح الفصل المرتبط بالمشكلة"
       ],
       {
         topicContext: `تشخيص مشروع: ${profile.productOrService || profile.businessType}`,
@@ -1312,13 +1312,13 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     }
   ) => {
     const pendingImages = attachments;
-    const text = textToSend?.trim() || (pendingImages.length ? "حلل هذي الصورة وشخصلي على ضوء مشروعي." : "");
+    const text = textToSend?.trim() || (pendingImages.length ? "حلل هالصورة وشخص المشكلة حسب وضع مشروعي." : "");
 
     if (!text || isLoadingRef.current) return;
 
     setIsSuggestionsOpen(false);
 
-    if (text.includes("ابدأ تشخيص مشروعي") || text.includes("شخص مشروعي")) {
+    if (text.includes("ابدأ تشخيص مشروعي") || text.includes("شخصلي مشروعي")) {
       setActiveTab("business_diagnostic");
       return;
     }
@@ -1428,7 +1428,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
           outcome = { ...more, requestId: outcome.requestId };
         } catch (e) {
           if (controller.signal.aborted) throw e;
-          outcome = { ...outcome, error: "انقطع الرد بالنص. اضغط 'جواب جديد' حتى أعيده كامل." };
+          outcome = { ...outcome, error: "انقطع الجواب بالنص. اضغط 'جواب جديد' حتى أعيده إلك كامل." };
           break;
         }
       }
@@ -1444,9 +1444,9 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         requestId: outcome.requestId || clientRequestId,
         suggestions: presetSuggestions || (suggestions.length > 0 ? suggestions : undefined),
         profileUpdate: learnedSummary.length ? learnedSummary : undefined,
-        partialError: outcome.error || (outcome.truncated || outcome.cut ? "الجواب طويل وانقطع بالنص. اضغط 'جواب جديد' أو اسألني 'كمل'." : undefined),
+        partialError: outcome.error || (outcome.truncated || outcome.cut ? "الجواب طويل وانقطع بالنص. اضغط 'جواب جديد' أو اكتبلي 'كمل'." : undefined),
       });
-      if (learnedSummary.length) showToast("saved", "حدثت ملف مشروعك", learnedSummary.join("، "));
+      if (learnedSummary.length) showToast("saved", "تم تحديث ملف مشروعك", learnedSummary.join("، "));
       setLastFailedPrompt(null);
       trackEvent("advisor_answer_completed", { topicId, requestId: outcome.requestId || clientRequestId });
     } catch (err: any) {
@@ -1459,18 +1459,18 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         return;
       }
       if (partial.trim()) {
-        finalize({ text: partial, partialError: "انقطع الرد بالنص. اضغط 'جواب جديد' حتى أعيده كامل." });
+        finalize({ text: partial, partialError: "انقطع الجواب بالنص. اضغط 'جواب جديد' حتى أعيده إلك كامل." });
         return;
       }
 
       console.error("AI Advisor error:", err);
-      let errorText = "صار خلل بسيط. جرب مرة ثانية.";
+      let errorText = "صار خلل بسيط، جرب مرة ثانية.";
       if (err?.name === "AbortError") {
-        errorText = "الرد طول أكثر من العادة بسبب ضغط الخوادم. اضغط 'إعادة المحاولة'.";
+        errorText = "الجواب أخذ وقت أطول من المعتاد بسبب ضغط السيرفرات. اضغط 'إعادة المحاولة'.";
       } else if (err instanceof AdvisorHttpError || (err?.message && typeof err.message === "string" && err.message.length > 3 && !err.message.includes("Failed to fetch"))) {
         errorText = err.message;
       } else if (err?.message?.includes("Failed to fetch")) {
-        errorText = "تعذر الاتصال بالسيرفر. تأكد من الإنترنت وجرب مرة ثانية.";
+        errorText = "ما كدرنا نتصل بالسيرفر. تأكد من اتصال الإنترنت وجرب مرة ثانية.";
       }
 
       const errorMessage: Message = {
@@ -1481,7 +1481,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         topicId,
         isError: true,
         failedPrompt: { text, presetSuggestions },
-        suggestions: ["تشخيص ضعف إعلاناتي", "خطة تقليل الراجع بالمحافظات", "سكريبت مبيعات الواتساب"],
+        suggestions: ["شخصلي ضعف إعلاناتي", "خطة لتقليل الطلبات الراجعة بالمحافظات", "سكريبتات مبيعات الواتساب"],
       };
       setMessages((prev) => prev.map((m) => (m.id === botId ? errorMessage : m)));
       setLastFailedPrompt({ text, presetSuggestions, errorText });
@@ -1503,7 +1503,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     () => ({
       onChapter: (chId: string) => answerDepsRef.current.onNavigateToSection?.(chId),
       onTool: (tId: string, cat?: string) => answerDepsRef.current.onNavigateTool?.(tId, cat),
-      onCopy: () => answerDepsRef.current.showToast("copy", "انتسخت الرسالة", "الصقها للزبون بالواتساب"),
+      onCopy: () => answerDepsRef.current.showToast("copy", "تم نسخ الرسالة", "الصقها للزبون مباشرة بالواتساب"),
       onSaveProfile: (p: BusinessProfile) => {
         answerDepsRef.current.mergeBusinessProfile(p);
         answerDepsRef.current.showToast("saved", "انحفظت الأرقام بملف مشروعك");
@@ -1530,7 +1530,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
   const handleAddTaskToPlan = (task: string, topicId?: string) => {
     const result = addRecommendationTo7DayPlanStorage({ title: task.slice(0, 90), details: task, topicId }, userCode);
     if (result.success) {
-      showToast("plan", "انضافت لخطتك", "تلگاها بتبويب 'خطتي'");
+      showToast("plan", "انضافت إلى خطتك", "تلكاها بتبويب 'خطتي'");
       refreshSavedData();
       return true;
     }
@@ -1544,7 +1544,7 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         const prepared = await prepareImage(file);
         setAttachments((prev) => (prev.length >= 3 ? prev : [...prev, prepared]));
       } catch (e: any) {
-        showToast("success", e?.message || "ما گدرت أضيف الصورة");
+        showToast("success", e?.message || "ما كدرنا نضيف الصورة");
       }
     }
   };
@@ -1569,8 +1569,8 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
     handleSendMessage(
       prompt,
       [
-        "اعطني خيار رد بديل لنفس الاعتراض",
-        "شلون أضيف عرض بكج يقنع؟",
+        "انطيني رد ثاني لنفس اعتراض الزبون",
+        "شلون أضيف عرض باكج يخلي الزبون يقتنع؟",
         "سكريبت متابعة إذا الزبون ما رد"
       ],
       topicId
@@ -1578,7 +1578,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
   };
 
   const handleClearHistory = () => {
-    if (confirm("متأكد تريد تمسح محادثة المستشار المحفوظة على هذا الجهاز؟")) {
+    if (confirm("متأكد تريد تمسح محادثة المستشار المحفوظة على هالجهاز؟")) {
       setMessages([]);
       if (typeof window !== "undefined") {
         try {
@@ -1644,7 +1644,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     )}
                   </div>
                   <p className="text-[10px] sm:text-xs text-white/60 font-normal truncate hidden sm:block">
-                    مستشارك الرقمي المباشر لتحليل وتطوير مشروعك
+                    مستشارك الرقمي حتى يحلل مشروعك ويساعدك تطوره
                   </p>
                 </div>
               </div>
@@ -1654,7 +1654,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   <>
                     <button 
                       onClick={handleStartNewTopic}
-                      title="بدء موضوع استشارة جديد"
+                      title="بدء استشارة بموضوع جديد"
                       aria-label="موضوع جديد"
                       className="btn btn-glass px-3 sm:px-3.5 rounded-full text-xs sm:text-sm font-bold gap-1.5 shrink-0 !min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                     >
@@ -1686,21 +1686,21 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
             </div>
 
             {!isVip && isFreeTrialUser(userCode) ? (
-              <div role="region" aria-label="المستشار ويا الاشتراك الكامل" className="flex-1 overflow-y-auto p-4 sm:p-8 text-right">
+              <div role="region" aria-label="المستشار متوفر ويا الاشتراك الكامل" className="flex-1 overflow-y-auto p-4 sm:p-8 text-right">
                 <div className="max-w-xl mx-auto space-y-5">
                   <div className="text-center space-y-3">
                     <div className="vz-eyebrow text-xs sm:text-sm">
                       <Sparkles className="w-4 h-4 text-vz-accent" />
-                      <span>المستشار ينفتح ويا الاشتراك الكامل</span>
+                      <span>المستشار متوفر ويا الاشتراك الكامل</span>
                     </div>
-                    <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">اكتبله مشكلتك، ويجاوبك على أرقام مشروعك إنت</h3>
-                    <p className="text-xs sm:text-sm text-white/70 leading-relaxed">مو جواب عام: يسألك عن سعرك وكلفتك وإعلانك، ويطلعلك وين الخلل وشنو الخطوة الجاية.</p>
+                    <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">اكتبله مشكلتك، وراح يجاوبك حسب أرقام مشروعك</h3>
+                    <p className="text-xs sm:text-sm text-white/70 leading-relaxed">مو مجرد جواب عام: يسألك عن سعر منتجك وكلفته وإعلانك، ويحددلك وين المشكلة وشنو الخطوة الجاية.</p>
                   </div>
                   <ul className="glass rounded-3xl p-5 space-y-2.5 text-xs sm:text-sm text-white/90">
                     {[
-                      "دزله صورة إعلانك أو المحادثة اللي ضاع بيها الزبون، ويكلك وين الغلط والرد الصح",
-                      "يحسبلك السعر وحد الخسارة بالدينار قبل لا تصرف",
-                      "يربطك بالفصل والحل المناسب لمشكلتك بالضبط",
+                      "دزله صورة إعلانك أو محادثة ما كدرت تكمل بيها البيعة، وهو يوضحلك وين الغلط وشنو الرد المناسب",
+                      "يحسبلك سعر البيع وحد الخسارة بالدينار قبل لا تصرف فلوسك",
+                      "يدلك على الفصل والحل اللي يناسب مشكلتك بالضبط",
                     ].map((line) => (
                       <li key={line} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -1718,7 +1718,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       className="btn btn-ghost w-full min-h-[44px] rounded-2xl text-xs text-white/70 gap-1.5"
                     >
                       <KeyRound className="w-4 h-4" />
-                      اشتركت وعندك الرمز؟ افتح حسابك
+                      مشترك وعندك الرمز؟ افتح حسابك
                     </button>
                   </div>
                 </div>
@@ -1732,7 +1732,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                 <div className="max-w-xl mx-auto text-center space-y-3">
                   <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-white/10 via-white/10 to-white/10 border border-white/22 text-xs sm:text-sm font-black text-vz-accent shadow-md">
                     <Sparkles className="w-4 h-4 text-vz-accent animate-pulse" />
-                    <span>مستشارك الشخصي للتجارة الإلكترونية بالسوق العراقي</span>
+                    <span>مستشارك الشخصي بالتجارة الإلكترونية بالسوق العراقي</span>
                   </div>
 
                   <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
@@ -1740,14 +1740,14 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   </h3>
                   
                   <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
-                    خبير إعلانات ومبيعات بموبايلك 24 ساعة، يشخص حملاتك ويكتبلك سكريبتات تسكر البيعة بالواتساب.
+                    خبير بالإعلانات والمبيعات بموبايلك على مدار 24 ساعة، يحلل حملاتك ويكتبلك سكريبتات تساعدك تكمل البيعة بالواتساب.
                   </p>
                 </div>
 
                 <div className="max-w-xl mx-auto glass border-2 rounded-3xl p-5 sm:p-7 space-y-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 bg-gradient-to-r from-vz-blue-light to-vz-blue text-white font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
                     <Flame className="w-3.5 h-3.5 fill-white" />
-                    <span>عرض الاشتراك الشهري الفوري</span>
+                    <span>اشترك هسه وفعل اشتراكك الشهري</span>
                   </div>
 
                   <div className="flex items-center justify-between border-b border-white/14 pb-4 pt-3">
@@ -1761,44 +1761,44 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                     <div className="text-left shrink-0">
                       <div className="text-2xl sm:text-4xl font-black text-vz-accent font-mono tracking-tight">14,000</div>
-                      <div className="text-xs font-bold text-vz-accent">د.ع / شهريا</div>
+                      <div className="text-xs font-bold text-vz-accent">دينار عراقي / شهريا</div>
                     </div>
                   </div>
 
                   <div className="bg-black/30 border border-white/14 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
                     <div className="flex items-center gap-2 text-vz-accent font-bold text-xs sm:text-sm">
                       <TrendingDown className="w-4 h-4 text-emerald-400" />
-                      <span>حسبة بسيطة: ليش هذا الاشتراك يوفر عليك ثروة؟</span>
+                      <span>حسبة بسيطة: شلون هالاشتراك يوفر عليك هواية فلوس؟</span>
                     </div>
                     <p className="text-[11px] sm:text-xs text-white/75 leading-relaxed">
-                      حملة إعلانية واحدة فاشلة بالفيسبوك تضيع عليك <strong className="text-rose-400">50,000 لـ 100,000 دينار</strong>. المستشار الذكي يحميك من الخسارة بحسبة تسعير واحدة أو سكريبت رد واحد بالواتساب ويرجعلك المبلغ أضعاف من أول يوم
+                      حملة إعلانية وحدة فاشلة بالفيسبوك ممكن تخسرك <strong className="text-rose-400">من 50,000 إلى 100,000 دينار</strong>. المستشار الذكي يساعدك تتجنب هالخسارة من خلال حسبة تسعير وحدة أو سكريبت رد واحد بالواتساب، وممكن يوفرلك أضعاف قيمة الاشتراك من أول يوم
                     </p>
                   </div>
 
                   <div className="space-y-2.5">
                     <span className="text-xs font-black text-white/90 block border-b border-white/10 pb-1.5">
-                      شنو ينفتحلك فورا بعد الاشتراك؟
+                      شنو راح تحصل عليه مباشرة بعد الاشتراك؟
                     </span>
                     <ul className="space-y-2 text-xs sm:text-sm text-white/90">
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تشخيص <strong className="text-rose-400">الخلل الحقيقي</strong> (سعر، منتج، استهداف، لو محادثة) قبل لا تغير إعلانك للمرة العاشرة.</span>
+                        <span>تشخيص <strong className="text-rose-400">المشكلة الحقيقية</strong> (السعر، المنتج، الاستهداف، لو المحادثة) قبل لا تغير إعلانك للمرة العاشرة.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تحليل <strong className="text-white">المحادثات الفاشلة</strong>، دخل المحادثة للمستشار وراح يكشفلك أخطاءك وينطيك الرد الصح.</span>
+                        <span>تحليل <strong className="text-white">محادثات ما كملت بيها البيعة</strong>، دخل المحادثة للمستشار وراح يحددلك أخطاءك ويكتبلك الرد المناسب.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>حل مشكلة <strong className="text-white">الزبون الي يسأل ويختفي</strong>، وسكريبتات تخلي المتردد يشتري فورا.</span>
+                        <span>حل مشكلة <strong className="text-white">الزبون اللي يستفسر ويختفي</strong>، وسكريبتات تساعدك تحول الزبون المتردد إلى مشتري.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تكتشف <strong className="text-vz-accent">وين تضيع ميزانيتك</strong>، وتفهم شلون الإعلان والمنتج والزبون مرتبطين ببعض.</span>
+                        <span>اكتشف <strong className="text-vz-accent">وين دا تضيع ميزانيتك</strong>، وافهم شلون الإعلان والمنتج والزبون يأثرون على بعض.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span><strong className="text-white">خبير بصفك 24 ساعة</strong>، مو بس تتعلم تسويق، تتعلم شلون تفهم مشروعك وتحل مشاكله.</span>
+                        <span><strong className="text-white">خبير وياك 24 ساعة</strong>، مو بس تتعلم التسويق، تتعلم شلون تفهم مشروعك وتتعامل ويا مشاكله.</span>
                       </li>
                     </ul>
                   </div>
@@ -1811,10 +1811,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-[0.97] transition cursor-pointer min-h-[50px]"
                     >
                       <Sparkles className="w-5 h-5 text-vz-accent animate-pulse" />
-                      <span>اشترك بالواتساب (14,000 دينار بالشهر)</span>
+                      <span>اشترك عن طريق الواتساب (14,000 دينار بالشهر)</span>
                     </a>
                     <p className="text-[11px] text-center text-white/60">
-                      راسل الدعم مباشرة بالواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
+                      راسل فريق الدعم مباشرة بالواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
                     </p>
                   </div>
                 </div>
@@ -1823,9 +1823,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                   <div className="space-y-1">
                     <label htmlFor="vip-code-input" className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                       <KeyRound className="w-4 h-4 text-vz-accent" />
-                      <span>عندك رمز تفعيل الاشتراك؟ أدخله هنا:</span>
+                      <span>عندك رمز تفعيل الاشتراك؟ دخله هنا:</span>
                     </label>
-                    <p className="text-[11px] text-white/60">اكتب الرمز اللي وصلك بالواتساب حتى يتفعل فورا.</p>
+                    <p className="text-[11px] text-white/60">اكتب الرمز اللي وصلك بالواتساب حتى يتفعل اشتراكك مباشرة.</p>
                   </div>
 
                   <form onSubmit={handleVipUpgrade} className="flex flex-col sm:flex-row gap-2">
@@ -1876,7 +1876,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     >
                       {activeTab === "chat" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
                       <MessageSquare className="relative w-4 h-4 shrink-0" />
-                      <span className="relative">المحادثة الحرة</span>
+                      <span className="relative">المحادثة المفتوحة</span>
                     </button>
 
                     <button
@@ -1915,7 +1915,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     >
                       {activeTab === "diagnostic" && <motion.span layoutId="advisor-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_6px_18px_-8px_rgba(47,107,255,0.6)]" />}
                       <Compass className="relative w-4 h-4 shrink-0" />
-                      <span className="relative">مشخص المشاكل</span>
+                      <span className="relative">تشخيص المشاكل</span>
                     </button>
 
                     <button
@@ -1954,7 +1954,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     profile={businessProfile}
                     onSave={(p) => {
                       saveBusinessProfile(p);
-                      showToast("saved", "انحفظ ملف مشروعك", "المستشار راح يستعمله بكل جواب");
+                      showToast("saved", "انحفظ ملف مشروعك", "المستشار راح يعتمد عليه بكل جواب يقدمه إلك");
                     }}
                     onAskAdvisor={(prompt) => {
                       setActiveTab("chat");
@@ -1979,11 +1979,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <Compass className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
-                          اختار المشكلة اللي تواجه مشروعك هسه:
+                          اختار المشكلة اللي تواجه مشروعك حاليا:
                         </h4>
                       </div>
                       <p className="text-xs text-white/70">
-                        حدد القسم والمشكلة المحددة وسيقوم مستشار فيزيون بتحليل السبب وتقديم الحلول والسكريبتات فورا.
+                        حدد القسم والمشكلة اللي تواجهك، ومستشار فيزيون يحلل السبب ويقدم إلك الحلول والسكريبتات مباشرة.
                       </p>
                     </div>
 
@@ -2002,7 +2002,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-vz-accent flex items-center gap-1">
-                          <span>اختار وضع مشروعك بالضبط:</span>
+                          <span>حدد وضع مشروعك بالضبط:</span>
                         </span>
                         <span className="text-[11px] text-white/70 font-mono">
                           {currentDiag.options.length} خيارات متاحة
@@ -2029,7 +2029,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                             <div className="flex items-center gap-1.5 shrink-0 pr-3">
                               <span className="text-[11px] font-bold text-slate-200 group-hover:underline hidden sm:inline">
-                                تحليل فوري
+                                تحليل مباشر
                               </span>
                               <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/18 flex items-center justify-center text-vz-accent group-hover:scale-[1.04] transition-transform">
                                 <ArrowLeft className="w-4 h-4" />
@@ -2048,18 +2048,18 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       <div className="flex items-center gap-2 mb-2 text-vz-accent">
                         <FileText className="w-5 h-5" />
                         <h4 className="text-sm sm:text-base font-black text-white">
-                          مولد سكريبتات إغلاق الصفقات بالسوق العراقي
+                          مولد سكريبتات إتمام البيع بالسوق العراقي
                         </h4>
                       </div>
                       <p className="text-xs text-white/70">
-                        اختار نوع الاعتراض ومجال المنتج، والمستشار يكتبلك سكريبت جاهز تنسخه وتدزه للزبون بالواتساب أو تحجيه بالمكالمة.
+                        اختار نوع اعتراض الزبون ومجال منتجك، والمستشار يكتبلك سكريبت جاهز تنسخه وتدزه للزبون بالواتساب أو تستخدمه بالمكالمة.
                       </p>
                     </div>
 
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
                         <span className="w-5 h-5 rounded-full bg-white/10 border border-white/18 flex items-center justify-center text-[10px] text-vz-accent">1</span>
-                        <span>شنو اعتراض الزبون اللي تريد تتجاوزه؟</span>
+                        <span>شنو الاعتراض اللي تريد ترد عليه؟</span>
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {SCRIPT_OBJECTIONS.map((obj) => (
@@ -2101,7 +2101,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         type="text"
                         value={customProductNote}
                         onChange={(e) => setCustomProductNote(e.target.value)}
-                        placeholder="اكتب اسم المنتج أو السعر إذا أردت تخصيص السكريبت بدقة..."
+                        placeholder="اكتب اسم المنتج أو سعره إذا تريد أخلي السكريبت مناسب إلك أكثر..."
                         className="w-full px-4 py-2.5 rounded-xl bg-black/35 border border-white/15 focus:border-white/35 text-white text-xs placeholder-white/30 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                       />
                     </div>
@@ -2132,7 +2132,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                       <div className="p-4 rounded-2xl glass-subtle border flex items-center justify-between">
                         <div className="space-y-1">
-                          <span className="text-xs text-white/60">مهام خطة الـ 7 أيام المنجزة</span>
+                          <span className="text-xs text-white/60">المهام المنجزة من خطة الـ 7 أيام</span>
                           <h4 className="text-xl font-black text-emerald-400">
                             {planTasks.filter((t) => t.completed).length} / {planTasks.length} مكتملة
                           </h4>
@@ -2148,7 +2148,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                         <div className="flex items-center gap-2">
                           <Calendar className="w-5 h-5 text-vz-accent" />
                           <h3 className="text-sm sm:text-base font-black text-white">
-                            خطة الـ 7 أيام التنفيذية
+                            خطة العمل لمدة 7 أيام
                           </h3>
                         </div>
                         <span className="text-xs text-white/70 font-mono">
@@ -2159,9 +2159,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       {planTasks.length === 0 ? (
                         <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Calendar className="w-8 h-8 text-white/60 mx-auto" />
-                          <p className="text-xs text-white/70 font-semibold">بعدك ما ضفت ولا توصية لخطة الـ 7 أيام</p>
+                          <p className="text-xs text-white/70 font-semibold">لحد هسه ما ضفت أي توصية لخطة الـ 7 أيام</p>
                           <p className="text-[11px] text-white/60">
-                            من تسأل المستشار، اضغط على زر <strong className="text-vz-accent">"إضافة للخطة 7 أيام"</strong> ببطاقة الإجراءات وترتب خطواتك هنا.
+                            من تسأل المستشار، اضغط على زر <strong className="text-vz-accent">"إضافة إلى خطة الـ 7 أيام"</strong> الموجود ببطاقة الإجراءات، ورتب خطوات شغلك هنا.
                           </p>
                         </div>
                       ) : (
@@ -2250,9 +2250,9 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       {savedRecommendations.length === 0 ? (
                         <div className="p-6 rounded-2xl glass-subtle border text-center space-y-2">
                           <Bookmark className="w-8 h-8 text-white/60 mx-auto" />
-                          <p className="text-xs text-white/70 font-semibold">ماكو توصيات محفوظة لحد هسه</p>
+                          <p className="text-xs text-white/70 font-semibold">لحد هسه ما عندك توصيات محفوظة</p>
                           <p className="text-[11px] text-white/60">
-                            اضغط على زر <strong className="text-vz-accent">"حفظ التوصية"</strong> بأي رد أو سكريبت، وتلكاه محفوظ هنا ترجعله بأي وقت.
+                            اضغط على زر <strong className="text-vz-accent">"حفظ التوصية"</strong> بأي جواب أو سكريبت يعجبك، وراح تلكاه محفوظ هنا وتكدر ترجعله بأي وقت.
                           </p>
                         </div>
                       ) : (
@@ -2290,11 +2290,11 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               {rec.scriptText && (
                                 <div className="p-3 rounded-lg bg-black/30 border border-white/14 text-white/90 text-xs space-y-2">
                                   <div className="flex items-center justify-between text-[10px] text-vz-accent font-bold">
-                                    <span>نص السكريبت الجاهز للزبون:</span>
+                                    <span>نص السكريبت الجاهز حتى تدزه للزبون:</span>
                                     <button 
                                       onClick={() => {
                                         navigator.clipboard.writeText(rec.scriptText || "");
-                                        showToast("copy", "انتسخ السكريبت", "تكدر تلصقه بمحادثة الواتساب مباشرة");
+                                        showToast("copy", "تم نسخ السكريبت", "تكدر تلصقه مباشرة بمحادثة الواتساب");
                                       }}
                                       className="px-2 py-0.5 rounded bg-white/10 hover:bg-vz-blue text-vz-accent hover:text-white transition-colors flex items-center gap-1 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                                     >
@@ -2355,7 +2355,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               شنو المشكلة اللي تريد نحلها؟
                             </h3>
                             <p className="text-xs sm:text-sm text-white/70 max-w-md mx-auto leading-relaxed">
-                              اكتب مشكلتك بالتجارة، وأنا أرتبلك التشخيص والخطوة الجاية.
+                              اكتبلي مشكلتك بالتجارة، وأنا أرتبلك التشخيص وأحددلك الخطوة الجاية.
                             </p>
                           </div>
 
@@ -2368,18 +2368,18 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                               <Brain className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
                               <span>
                                 <span className="block text-xs sm:text-sm font-black text-white">
-                                  {profileFilledCount(businessProfile) >= 3 ? "أعرف مشروعك ✓" : "عرفني على مشروعك"}
+                                  {profileFilledCount(businessProfile) >= 3 ? "أعرف تفاصيل مشروعك ✓" : "عرفني على مشروعك"}
                                 </span>
                                 <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">
-                                  {profileFilledCount(businessProfile) >= 3 ? "كل جواب راح يكون على منتجك وأرقامك" : "منتجك وأسعارك وكلفة رسالتك، حتى أحسبلك ربحك بالضبط"}
+                                  {profileFilledCount(businessProfile) >= 3 ? "كل جواب راح يكون حسب منتجك وأرقامك" : "منتجك وأسعارك وكلفة رسالتك، حتى أحسبلك الربح بشكل دقيق"}
                                 </span>
                               </span>
                             </button>
                             <div className="text-right p-3 rounded-2xl border border-white/10 bg-white/[0.03] flex items-start gap-2.5">
                               <ImagePlus className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
                               <span>
-                                <span className="block text-xs sm:text-sm font-black text-white">صورلي إعلانك</span>
-                                <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">ارفع لقطة من مدير الإعلانات أو محادثة زبون، أو احچيلي بالمايك</span>
+                                <span className="block text-xs sm:text-sm font-black text-white">دزلي صورة إعلانك</span>
+                                <span className="block text-[11px] sm:text-xs text-white/60 leading-relaxed">ارفع لقطة من مدير الإعلانات أو محادثة ويا زبون، أو احچيلي بالمايك</span>
                               </span>
                             </div>
                           </div>
@@ -2441,7 +2441,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                 <div className="flex-shrink-0">
                                   {isUser ? (
                                     <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-vz-blue text-white font-bold text-[10px] sm:text-[11px] flex items-center justify-center shrink-0 mt-1 select-none">
-                                      أنت
+                                      إنت
                                     </div>
                                   ) : (
                                     <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full ${msg.isError ? "bg-rose-950/80 border border-rose-500/40 text-rose-300" : "glass-subtle border border-white/15 text-vz-accent"} flex items-center justify-center shrink-0 mt-1 select-none`}>
@@ -2468,7 +2468,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                       >
                                         <div className="flex items-start gap-2 text-rose-300 font-bold text-sm sm:text-base">
                                           <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-                                          <span className="leading-relaxed">{msg.text || "صار خلل بسيط. جرب مرة ثانية."}</span>
+                                          <span className="leading-relaxed">{msg.text || "صار خلل بسيط، جرب مرة ثانية."}</span>
                                         </div>
 
                                         {msg.failedPrompt?.text && (
@@ -2493,10 +2493,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                               type="button"
                                               onClick={() => {
                                                 setRestoredText(msg.failedPrompt!.text);
-                                                showToast("copy", "رجعنالك السؤال حتى تعدله");
+                                                showToast("copy", "رجعنالك السؤال حتى تكدر تعدله");
                                               }}
                                               className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-rose-100 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.97] transition min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-                                              title="استرجاع السؤال للتعديل عليه"
+                                              title="رجع السؤال حتى أعدله"
                                             >
                                               <Edit3 className="w-3.5 h-3.5" />
                                               <span>تعديل السؤال</span>
@@ -2526,14 +2526,14 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           >
                                             <Brain className="w-4 h-4 shrink-0 mt-0.5" />
                                             <span className="leading-relaxed">
-                                              <span className="font-black text-white">حفظت بملف مشروعك: </span>
+                                              <span className="font-black text-white">انحفظ بملف مشروعك: </span>
                                               {msg.profileUpdate.join("، ")}
                                             </span>
                                           </button>
                                         )}
                                         {(msg.stopped || msg.partialError) && (
                                           <div className="mt-3 rounded-xl border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-xs font-bold text-amber-200">
-                                            {msg.partialError || "وقفت الجواب بنص الطريق."}
+                                            {msg.partialError || "توقف الجواب بنص الطريق."}
                                           </div>
                                         )}
                                         {!msg.streaming && !isLoading && msg.id === lastAssistantId && canRegenerate && (
@@ -2563,7 +2563,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                               }}
                                               onCopyFull={() => {
                                                 handleCopy(msg.id, msg.text);
-                                                showToast("copy", "انتسخ الرد كامل");
+                                                showToast("copy", "تم نسخ الرد بالكامل");
                                               }}
                                               isFullCopied={copiedId === msg.id}
                                             />
@@ -2596,7 +2596,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                                           onClearFeedback={() => handleClearFeedback(msg.id)}
                                           onCopy={() => {
                                             handleCopy(msg.id, msg.text);
-                                            showToast("copy", "انتسخ الرد كامل");
+                                            showToast("copy", "تم نسخ الرد بالكامل");
                                           }}
                                           isCopied={copiedId === msg.id}
                                           timestamp={msg.timestamp}
@@ -2625,7 +2625,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                             </div>
                             <div className="p-3 sm:p-3.5 rounded-2xl glass-subtle border text-vz-accent rounded-tl-xs flex flex-wrap items-center justify-between gap-3 flex-1">
                               <div className="flex items-center gap-2">
-                                <span className="text-[13px] sm:text-[14px] text-vz-accent font-bold">دا أرتبلك الجواب...</span>
+                                <span className="text-[13px] sm:text-[14px] text-vz-accent font-bold">دا أجهزلك الجواب...</span>
                                 <div className="flex gap-1.5 items-center mr-1">
                                   <span className="w-2 h-2 rounded-full bg-vz-blue animate-pulse" />
                                   <span className="w-2 h-2 rounded-full bg-vz-blue animate-pulse delay-150" />
@@ -2701,10 +2701,10 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
 
                       <div className="mt-1.5 hidden sm:flex flex-wrap justify-between items-center px-1 text-[9px] sm:text-[10px] text-white/60 gap-1">
                         <span className="flex items-center gap-1">
-                          <ShieldCheck className="w-3 h-3 text-slate-200" /> مخصص ومبرمج للتجارة الإلكترونية بالسوق العراقي
+                          <ShieldCheck className="w-3 h-3 text-slate-200" /> مصمم ومجهز خصيصا للتجارة الإلكترونية بالسوق العراقي
                         </span>
                         <span className="flex items-center gap-1 text-emerald-300/80 bg-emerald-400/[0.06] px-2 py-0.5 rounded-full border border-emerald-400/15 font-sans">
-                          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> محفوظ على هاتفك تلقائيا
+                          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> ينحفظ تلقائيا على تلفونك
                         </span>
                       </div>
                     </div>

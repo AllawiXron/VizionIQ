@@ -23,7 +23,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
         <div className="text-center space-y-3 sm:space-y-4">
           <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="vz-eyebrow text-xs sm:text-sm">
             <Sparkles className="w-4 h-4 opacity-80" />
-            <span>تدفع مرة وحدة بس، والكورس يبقى الك مدى الحياة</span>
+            <span>تدفع مرة وحدة بس، والكورس يبقى إلك مدى الحياة</span>
           </motion.div>
           <WordsReveal
             delay={0.1}
@@ -31,7 +31,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
             segments={["افتح كلشي، و", { text: "طبقه على مشروعك", className: "vz-silver-text" }]}
           />
           <p className="text-xs sm:text-base text-white/55 leading-relaxed px-2">
-            مو فيديوهات طويلة ولا قناة تلكرام: منصة تقرا بيها خطوة، تحسب أرقامك، وتنسخ الرسائل الجاهزة لمشروعك.
+            مو فيديوهات طويلة ولا قناة تلكرام: منصة تقرا بيها خطوة بخطوة، تحسب أرقامك، وتنسخ الرسائل الجاهزة لمشروعك.
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
           <div className="glass-subtle rounded-2xl p-4 flex items-start gap-3">
             <TrendingUp className="w-5 h-5 text-vz-accent shrink-0 mt-0.5" />
             <p className="text-xs sm:text-sm text-white/75 leading-relaxed">
-              إعلان واحد بدون خطة، ويا كروة الطلبات الراجعة، ممكن يكلفك أكثر من سعر الاشتراك كله. الفرق إنك هنا تتعلمها مرة وحدة وتبقى وياك.
+              إعلان واحد بدون خطة، ويا كلفة الطلبات الراجعة، ممكن يكلفك أكثر من سعر الاشتراك كله. الفرق إنك تتعلم الطريقة هنا مرة وحدة وتبقى وياك.
             </p>
           </div>
 
@@ -89,7 +89,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
           </span>
           <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
             <Clock className="w-4 h-4 text-vz-accent" />
-            <span>الحساب يبقى الك، وكل التحديثات الجاية ببلاش</span>
+            <span>الحساب يبقى إلك، وكل التحديثات الجاية مجانية</span>
           </span>
         </div>
       </div>

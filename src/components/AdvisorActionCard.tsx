@@ -25,11 +25,11 @@ import {
 } from "../utils/advisorActionMapper";
 
 export const ADVISOR_FEEDBACK_REASONS = [
-  "عام وغير مخصص للسوق العراقي",
-  "الحسبة بالدينار أو كروة التوصيل غير دقيقة",
-  "السكريبت غير مقنع للزبون العراقي",
-  "أريد خطوات وتفاصيل عملية أكثر",
-  "مو مرتبط بسؤالي المباشر",
+  "الإجابة عامة وما تراعي خصوصية السوق العراقي",
+  "الحساب بالدينار أو كلفة التوصيل مو دقيق",
+  "نص المحادثة مو مقنع للزبون العراقي",
+  "أحتاج خطوات وتفاصيل عملية أكثر",
+  "الإجابة مو مرتبطة بسؤالي بشكل مباشر",
 ];
 
 export interface AdvisorActionCardProps {
@@ -95,20 +95,20 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
   const effectiveChapterId = (recommendedChapterId && isValidChapterId(recommendedChapterId))
     ? recommendedChapterId
     : actionConfig.chapterId;
-  const effectiveChapterTitle = recommendedChapterTitle || actionConfig.chapterTitleAr || "الفصل الموصى به";
+  const effectiveChapterTitle = recommendedChapterTitle || actionConfig.chapterTitleAr || "الفصل المقترح";
   const hasValidChapter = isValidChapterId(effectiveChapterId);
 
   const effectiveToolId = (recommendedToolId && isValidToolId(recommendedToolId))
     ? recommendedToolId
     : actionConfig.toolId;
-  const effectiveToolTitle = recommendedToolTitle || actionConfig.toolTitleAr || "الأداة الموصى بها";
+  const effectiveToolTitle = recommendedToolTitle || actionConfig.toolTitleAr || "الأداة المقترحة";
   const hasValidTool = isValidToolId(effectiveToolId);
 
   const hasScript = Boolean(
     scriptText ||
     responseText.includes("") ||
     responseText.includes("") ||
-    responseText.includes("السكربت") ||
+    responseText.includes("نص جاهز") ||
     responseText.includes("السكريبت")
   );
 
@@ -125,8 +125,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "انتسخ السكريبت",
-        "هسه تكدر تلصقه وتدزه للزبون."
+        "نسخ السكريبت",
+        "هسه تكدر تنسخه وتدزه للزبون مباشرة."
       );
     }
     setTimeout(() => setCopiedScript(false), 2500);
@@ -144,8 +144,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "copy",
-        "انتسخ الجواب كامل",
-        "التوصية انتسخت."
+        "نسخ الإجابة كاملة",
+        "تم نسخ التوصية."
       );
     }
     setTimeout(() => setCopiedFullLocal(false), 2500);
@@ -154,7 +154,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
   const isFullCopiedState = isFullCopied || copiedFullLocal;
 
   const handleSaveRecommendation = () => {
-    const title = actionConfig.topicNameAr || "توصية من مستشار فيزيون";
+    const title = actionConfig.topicNameAr || "توصية مستشار فيزيون";
     const res = saveRecommendationToStorage(
       {
         title,
@@ -177,8 +177,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       if (onShowToast) {
         onShowToast(
           "saved",
-          "انحفظت التوصية",
-          "ضفناها لتوصياتك المحفوظة، ترجعلها بأي وقت."
+          "تم حفظ التوصية",
+          "ضفناها لتوصياتك المحفوظة، وتكدر ترجع إلها بأي وقت."
         );
       }
     }
@@ -188,7 +188,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     const title = actionConfig.topicNameAr || "توصية المستشار الذكي";
     const details =
       actionConfig.defaultTaskForPlan ||
-      (responseText ? responseText.slice(0, 140) + "..." : "تطبيق توصية مستشار فيزيون الذكي.");
+      (responseText ? responseText.slice(0, 140) + "..." : "طبق توصية مستشار فيزيون الذكي.");
 
     const res = addRecommendationTo7DayPlanStorage(
       {
@@ -208,8 +208,8 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       if (onShowToast) {
         onShowToast(
           "plan",
-          "انضافت لخطة 7 أيام",
-          "تلكى هاي المهمة بخطة الأسبوع حتى تتابعها."
+          "انضافت لخطة الـ 7 أيام",
+          "تلكى هاي المهمة ضمن خطة الأسبوع حتى تتابع تنفيذها."
         );
       }
     }
@@ -223,7 +223,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       onShowToast(
         "navigate",
         `جاري فتح ${effectiveToolTitle}`,
-        "انحفظت جلسة المستشار، وتكدر ترجعلها بأي وقت."
+        "انحفظت جلسة المستشار، وتكدر ترجع إلها بأي وقت."
       );
     }
 
@@ -240,7 +240,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
       onShowToast(
         "navigate",
         `جاري فتح ${effectiveChapterTitle}`,
-        "محادثتك ويا المستشار تنحفظ وحدها."
+        "محادثتك ويا المستشار تنحفظ تلقائيا."
       );
     }
 
@@ -268,7 +268,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
         <div className="space-y-1">
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-vz-accent">
             <Sparkles className="w-3.5 h-3.5 text-vz-accent shrink-0" />
-            <span>الخطوة التالية الموصى بها:</span>
+            <span>الخطوة الجاية المقترحة:</span>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed font-medium">
             {relevanceLabel}
@@ -313,7 +313,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
           >
             <span className="flex items-center gap-2 text-right">
               {copiedScript ? <Check className="w-4 h-4 text-white shrink-0" /> : <Copy className="w-4 h-4 text-white shrink-0" />}
-              <span>{copiedScript ? "انتسخ السكريبت ✓" : "انسخ السكريبت الجاهز للتطبيق"}</span>
+              <span>{copiedScript ? "تم نسخ السكريبت ✓" : "انسخ السكريبت الجاهز للتطبيق"}</span>
             </span>
             <ArrowLeft className="w-4 h-4 text-white shrink-0" />
           </button>
@@ -323,11 +323,11 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
           <button             type="button"
             onClick={handleAddToPlan}
             className="btn btn-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-white text-xs sm:text-sm font-bold min-h-[44px] focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            title="أضفها لخطة 7 أيام"
+            title="أضفها لخطة الـ 7 أيام"
           >
             <span className="flex items-center gap-2 text-right">
               {addedToPlan ? <CheckCircle2 className="w-4 h-4 text-white shrink-0" /> : <Calendar className="w-4 h-4 text-white shrink-0" />}
-              <span>{addedToPlan ? "مضافة لخطة 7 أيام ✓" : "أضفها لخطة 7 أيام"}</span>
+              <span>{addedToPlan ? "انضافت لخطة الـ 7 أيام ✓" : "أضفها لخطة الـ 7 أيام"}</span>
             </span>
             <ArrowLeft className="w-4 h-4 text-white shrink-0" />
           </button>
@@ -403,7 +403,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                     ) : (
                       <Calendar className="w-4 h-4 text-emerald-400 shrink-0" />
                     )}
-                    <span>{addedToPlan ? "مضافة لخطة 7 أيام ✓" : "أضفها لخطة 7 أيام"}</span>
+                    <span>{addedToPlan ? "انضافت لخطة الـ 7 أيام ✓" : "أضفها لخطة الـ 7 أيام"}</span>
                   </span>
                   <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 </button>
@@ -419,7 +419,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                   ) : (
                     <Copy className="w-4 h-4 text-slate-400 shrink-0" />
                   )}
-                  <span>{isFullCopiedState ? "انتسخ الجواب ✓" : "نسخ نص الإجابة كاملا"}</span>
+                  <span>{isFullCopiedState ? "تم نسخ الإجابة ✓" : "نسخ نص الإجابة بالكامل"}</span>
                 </span>
                 <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </button>
@@ -435,7 +435,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                     ) : (
                       <Copy className="w-4 h-4 text-vz-accent shrink-0" />
                     )}
-                    <span>{copiedScript ? "انتسخ السكريبت ✓" : "نسخ السكريبت الجاهز للتطبيق"}</span>
+                    <span>{copiedScript ? "تم نسخ السكريبت ✓" : "نسخ السكريبت الجاهز للتطبيق"}</span>
                   </span>
                   <ArrowLeft className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 </button>
@@ -443,7 +443,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
 
               {followUpActions && followUpActions.length > 0 && (
                 <div className="pt-2 border-t border-white/5 space-y-1.5">
-                  <span className="text-[11px] text-slate-400 block font-medium">متابعات وأسئلة سريعة:</span>
+                  <span className="text-[11px] text-slate-400 block font-medium">أسئلة ومتابعات سريعة:</span>
                   <div className="flex flex-col gap-1.5">
                     {followUpActions.map((action, idx) => (
                       <button                         key={idx}
@@ -461,14 +461,14 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
 
               {feedback && feedback.onRate && (
                 <div className="pt-2 border-t border-white/5 space-y-2">
-                  <span className="text-[11px] text-slate-400 block font-medium">تقييم جودة الإجابة:</span>
+                  <span className="text-[11px] text-slate-400 block font-medium">قيم جودة الإجابة:</span>
                   <div className="grid grid-cols-2 gap-2">
                     <button                       type="button"
                       onClick={() => feedback.onRate?.("helpful")}
                       className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ feedback.rating === "helpful" ? "bg-emerald-950/50 border-emerald-500/50 text-emerald-300 font-bold" : "bg-white/5 hover:bg-emerald-500/10 border-white/10 text-slate-300 hover:text-emerald-300" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       <ThumbsUp className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span>إجابة مفيدة</span>
+                      <span>الإجابة مفيدة</span>
                     </button>
 
                     <button                       type="button"
@@ -476,14 +476,14 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
                       className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border text-xs sm:text-sm font-medium transition cursor-pointer min-h-[44px] ${ feedback.rating === "unhelpful" ? "bg-rose-950/50 border-rose-500/50 text-rose-300 font-bold" : "bg-white/5 hover:bg-rose-500/10 border-white/10 text-slate-300 hover:text-rose-300" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                     >
                       <ThumbsDown className="w-4 h-4 text-rose-400 shrink-0" />
-                      <span>إجابة غير مفيدة</span>
+                      <span>الإجابة مو مفيدة</span>
                     </button>
                   </div>
 
                   {feedback.rating === "unhelpful" && (
                     <div className="p-2.5 bg-rose-950/30 border border-rose-500/20 rounded-lg space-y-1.5 animate-in fade-in">
                       <span className="text-[11px] text-rose-300 font-bold block">
-                        {feedback.reason ? `السبب المسجل: ${feedback.reason}` : "شنو الناقص بالجواب حتى نحسنه؟"}
+                        {feedback.reason ? `السبب المسجل: ${feedback.reason}` : "شنو اللي ناقص بالإجابة حتى نكدر نحسنها؟"}
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {ADVISOR_FEEDBACK_REASONS.map((reason) => (

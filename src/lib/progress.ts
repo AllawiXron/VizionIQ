@@ -72,10 +72,10 @@ export function nextChapterId(progress: CourseProgress): string | null {
 }
 
 export const CHAPTER_STAGES = [
-  { id: "foundation", label: "التأسيس والسوق", chapters: ["chapter1", "chapter2", "chapter3"] },
-  { id: "marketing", label: "الإعلانات والمحتوى", chapters: ["chapter4", "chapter5", "chapter6"] },
+  { id: "foundation", label: "التأسيس وفهم السوق", chapters: ["chapter1", "chapter2", "chapter3"] },
+  { id: "marketing", label: "الإعلانات وصناعة المحتوى", chapters: ["chapter4", "chapter5", "chapter6"] },
   { id: "sales", label: "المبيعات والتوصيل", chapters: ["chapter7", "chapter8", "chapter9"] },
-  { id: "scaling", label: "التحليل والتوسع", chapters: ["chapter10", "chapter11"] },
+  { id: "scaling", label: "التحليل وتوسيع المشروع", chapters: ["chapter10", "chapter11"] },
 ] as const;
 
 export function stageOf(chapterId: string) {

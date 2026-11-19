@@ -136,29 +136,29 @@ export default function VizionGrowthSuite() {
 
   const toolCategories = [
     { id: "all" as const, label: "كل الأدوات", icon: "" },
-    { id: "understand" as const, label: "١. افهم", icon: "", subtitle: "تشخيص واقع المشروع والمنافسين" },
-    { id: "calculate" as const, label: "٢. احسب", icon: "", subtitle: "حاسبات الأرباح، التسعير، والميزانيات" },
-    { id: "optimize" as const, label: "٣. حسن", icon: "", subtitle: "تحسين الإعلانات، المحادثات، والمنتج" },
-    { id: "execute" as const, label: "٤. نفذ", icon: "", subtitle: "خطط العمل والتشغيل اليومي" },
+    { id: "understand" as const, label: "١. افهم", icon: "", subtitle: "افهم وضع مشروعك ومنافسيك" },
+    { id: "calculate" as const, label: "٢. احسب", icon: "", subtitle: "حاسبات الأرباح والتسعير والميزانية" },
+    { id: "optimize" as const, label: "٣. طور", icon: "", subtitle: "طور إعلاناتك ومحادثاتك ومنتجك" },
+    { id: "execute" as const, label: "٤. نفذ", icon: "", subtitle: "خطط شغل واضحة ومتابعة يومية" },
   ];
 
   const toolTabs = [
-    { id: "diagnostics", category: "understand" as const, label: "فحص مشروعك", desc: "افحص صحة وربحية شغلك" },
-    { id: "sales-blocker", category: "understand" as const, label: "ليش ماكو مبيعات؟", desc: "اعرف الخلل وين بمشروعك" },
-    { id: "customer-types", category: "understand" as const, label: "دليل أنواع الزبائن", desc: "ردود جاهزة ومقنعة لغلق الطلبات" },
-    { id: "competitors", category: "understand" as const, label: "محلل المنافسين", desc: "شيك صفحات ومحتوى اللي ينافسوك" },
+    { id: "diagnostics", category: "understand" as const, label: "افحص مشروعك", desc: "تأكد من وضع مشروعك وربحيته" },
+    { id: "sales-blocker", category: "understand" as const, label: "ليش ماكو مبيعات؟", desc: "اكتشف وين الخلل بمشروعك" },
+    { id: "customer-types", category: "understand" as const, label: "دليل أنواع الزبائن", desc: "ردود جاهزة ومقنعة حتى تكمل الطلب" },
+    { id: "competitors", category: "understand" as const, label: "محلل المنافسين", desc: "راجع صفحات ومحتوى منافسيك" },
 
-    { id: "pricing-calculator", category: "calculate" as const, label: "حاسبة التسعير والربح", desc: "احسب أسعارك وأرباحك بالضبط" },
-    { id: "profit-leak", category: "calculate" as const, label: "كاشف تسرب الأرباح", desc: "احسب فلوسك الضايعة من الراجع" },
-    { id: "forecaster", category: "calculate" as const, label: "متوقع الأرباح", desc: "توقع مبيعاتك قبل لا تشغل الإعلان" },
-    { id: "budget-planner", category: "calculate" as const, label: "مخطط الميزانية", desc: "خطط ميزانيتك حتى توصل لهدفك" },
+    { id: "pricing-calculator", category: "calculate" as const, label: "حاسبة التسعير والربح", desc: "احسب أسعارك وأرباحك بدقة" },
+    { id: "profit-leak", category: "calculate" as const, label: "كاشف تسرب الأرباح", desc: "احسب شكد تخسر بسبب الطلبات الراجعة" },
+    { id: "forecaster", category: "calculate" as const, label: "توقع الأرباح", desc: "توقع مبيعاتك قبل لا تطلق الإعلان" },
+    { id: "budget-planner", category: "calculate" as const, label: "مخطط الميزانية", desc: "رتب ميزانيتك حتى توصل لهدفك" },
 
-    { id: "campaign-advisor", category: "optimize" as const, label: "مستشار الحملات", desc: "شيك أداء حملاتك الإعلانية" },
-    { id: "message-diagnoser", category: "optimize" as const, label: "جودة الرسائل", desc: "وين دي يضيع زبونك بالخاص؟" },
-    { id: "product-evaluator", category: "optimize" as const, label: "تقييم المنتج", desc: "افحص المنتج قبل لا تصرف عليه" },
-    { id: "ads-library", category: "optimize" as const, label: "مكتبة الإعلانات", desc: "شلون تشتغل الإعلانات الناجحة" },
+    { id: "campaign-advisor", category: "optimize" as const, label: "مستشار الحملات", desc: "افحص أداء حملاتك الإعلانية" },
+    { id: "message-diagnoser", category: "optimize" as const, label: "جودة الرسائل", desc: "وين دا تخسر الزبون بالمحادثة؟" },
+    { id: "product-evaluator", category: "optimize" as const, label: "تقييم المنتج", desc: "افحص منتجك قبل لا تصرف عليه" },
+    { id: "ads-library", category: "optimize" as const, label: "مكتبة الإعلانات", desc: "تعلم شلون تشتغل الإعلانات الناجحة" },
 
-    { id: "roadmap", category: "execute" as const, label: "مخطط الـ 100 طلب", desc: "خطة يومية حتى تبدي شغلك صح" },
+    { id: "roadmap", category: "execute" as const, label: "مخطط الـ 100 طلب", desc: "خطة يومية حتى تبدي شغلك بطريقة صحيحة" },
   ];
 
   const filteredToolTabs = selectedCategory === "all" 
@@ -203,33 +203,33 @@ export default function VizionGrowthSuite() {
     let recommendations: string[] = [];
 
     if (costPerMsg > 3500) {
-      warning = "سعر الرسالة مالتك كارثي وغالي كلش (أكثر من 3,500 دينار).";
-      recommendations.push("إعلانك ممل أو ما يوكف تصفح الزبون. غير البداية (أول 3 ثواني) بفيديو حقيقي وعفوي.");
-      recommendations.push("استخدم عبارات قوية مثل: 'إذا محتار بالهدية..' أو 'لا تشتري عطور رخيصة قبل لا تشوف هذا..'.");
+      warning = "كلفة الرسالة عندك كلش عالية ومكلفة (أكثر من 3,500 دينار).";
+      recommendations.push("إعلانك ما يشد الانتباه وما يخلي الزبون يوقف التصفح. غير بداية الإعلان (أول 3 ثواني) وخليها بفيديو حقيقي وعفوي.");
+      recommendations.push("استخدم عبارات تشد الانتباه مثل: 'إذا محتار بالهدية..' أو 'لا تشتري عطور رخيصة قبل لا تشوف هذا..'.");
     } else {
-      recommendations.push("سعر الرسالة ممتاز ومناسب للسوك مالتنا.");
+      recommendations.push("كلفة الرسالة عندك ممتازة ومناسبة للسوق العراقي.");
     }
 
     if (convRate < 5) {
-      verdict = "الحملة دي تحرق ميزانيتك عالخالي والخلل بالردود.";
-      recommendations.push("نسبة تحويل الرسائل للطلبات ضعيفة كلش (" + convRate + "%). ردودك لو بطيئة لو آلية وناشفة.");
-      recommendations.push("لا تدز رسالة السعر وتسكت. سولف ويا الزبون كأنه صديقك واستخدم بصمة صوت دافية عالواتساب.");
+      verdict = "الحملة دا تصرف ميزانيتك بدون فايدة، والمشكلة غالبا بالردود.";
+      recommendations.push("نسبة تحويل الرسائل إلى طلبات ضعيفة كلش (" + convRate + "%). ردودك يا إما بطيئة أو آلية وما بيها تفاعل.");
+      recommendations.push("لا تدز السعر للزبون وتسكت. احچي وياه بشكل طبيعي وكأنه شخص تعرفه، واستخدم رسالة صوتية بنبرة مريحة بالواتساب.");
     } else if (convRate >= 5 && convRate < 15) {
-      verdict = "شغلك متوسط وتكدر تحسنه بتعديلات بسيطة بالرد.";
-      recommendations.push("حاول تخير الزبون بين لونين أو قياسين بدل ما تسأله 'تريد لو لا؟' حتى تقفل الطلب بسرعة.");
+      verdict = "أداءك متوسط، وتكدر تحسنه بتغييرات بسيطة بطريقة الرد.";
+      recommendations.push("خلي الزبون يختار بين لونين أو قياسين بدل ما تسأله 'تريد لو لا؟' حتى تسهل عليه إكمال الطلب.");
     } else {
-      verdict = "الردود والتحويل كلش ممتازة ومحترفة";
+      verdict = "ردودك ونسبة تحويل الرسائل إلى طلبات كلش ممتازة ومحترفة";
     }
 
     if (deliveryRate < 70) {
-      warning += " ونسبة استلام الطلبات مالتك تعبانة (" + deliveryRate + "%).";
-      recommendations.push("المناديب ديواجهون صعوبة يحصلون الزبون أو الزباين ديبطلون لأن التوصيل يتأخر.");
-      recommendations.push("خابر الزبائن خلال نص ساعة من يدزون الرسالة حتى تأكد الطلب تلفونيا ولا تطلع أي طلب بدون تأكيد.");
-      recommendations.push("دز فيديو للتعبئة للزبون عالواتساب قبل لا تدز الطلب حتى يحس بمسؤولية ويستلم.");
+      warning += "بس نسبة استلام الطلبات عندك ضعيفة (" + deliveryRate + "%).";
+      recommendations.push("المناديب يواجهون صعوبة بالوصول للزبائن، أو الزبائن يلغون الطلبات بسبب تأخر التوصيل.");
+      recommendations.push("اتصل بالزبائن خلال نص ساعة من يرسلون رسالتهم حتى تأكد الطلب بالتلفون، ولا تسلم أي طلب لشركة التوصيل بدون تأكيد.");
+      recommendations.push("دز للزبون فيديو لتجهيز طلبيته بالواتساب قبل الشحن، حتى يتأكد من طلبه ويكون مستعد يستلمه.");
     }
 
     if (recommendations.length === 0) {
-      recommendations.push("الحملة ممتازة، ضاعف ميزانيتها فورا بدون تردد");
+      recommendations.push("الحملة أداؤها ممتاز، زيد ميزانيتها فورا وبشكل تدريجي");
     }
 
     return { costPerMsg, convRate, deliveryRate, verdict, warning, recommendations };
@@ -239,27 +239,27 @@ export default function VizionGrowthSuite() {
     switch (t3Niche) {
       case "clothing":
         return {
-          weakness: "أغلب بيجات الملابس ينشرون صور أجنبية جاهزة أو قياسات ما مفهومة وينتظرون الزبون عالخاص.",
-          opportunity: "صور الملابس بفيديو حقيقي على الموديل أو ملكانة بكاميرا تلفون طبيعية ووضح الألوان والخامة بصوتك.",
-          hook: "شلون تختار القياس الصح بدون ما تدوخ بالراجع؟ افحص خامة القطعة كدام المندوب قبل الدفع"
+          weakness: "أغلب صفحات الملابس تنشر صور جاهزة من مواقع أجنبية أو قياسات مو واضحة، وتنتظر الزبون يراسلها.",
+          opportunity: "صور الملابس بفيديو حقيقي على شخص يلبسها أو على مانيكان، بكاميرا تلفونك وبإضاءة طبيعية، ووضح الألوان والخامة بصوتك.",
+          hook: "شلون تختار القياس المناسب وتقلل الطلبات الراجعة؟ وخلي الزبون يفحص خامة القطعة كدام المندوب قبل الدفع."
         };
       case "perfumes":
         return {
-          weakness: "يركزون على شكل العلبة ويبيعون بأسعار خيالية بدون ما يوضحون الثباتية الحقيقية للعطر.",
-          opportunity: "ركز إعلانك عالثباتية والفوحان بيوميات الزبون (بالشغل، بالحر، بالعرس). وانطي ضمان حقيقي (إذا ما عجبك العطر رجعه للمندوب وادفع بس التوصيل).",
-          hook: "عطر فواح يثبت بالهدوم حتى ورا الغسل.. جربه بنفسك وإذا مو صدك لا تستلم!"
+          weakness: "يركزون على شكل علبة العطر ويبيعون بأسعار مبالغ بيها، بدون ما يوضحون شكد يدوم العطر فعليا.",
+          opportunity: "ركز بإعلانك على ثبات العطر وفوحانه بحياة الزبون اليومية (بالشغل، بالحر، بالعرس). وقدم ضمان حقيقي (إذا ما عجبك العطر رجعه ويا المندوب وادفع أجور التوصيل بس).",
+          hook: "عطر فواح وتثبت ريحته بالملابس حتى بعد الغسل.. جربه بنفسك وإذا ما عجبك لا تستلمه"
         };
       case "electronics":
         return {
-          weakness: "يبيعون أجهزة صينية رخيصة بدون كفالة حقيقية، والزبون يخاف من نصب البيجات الوهمية.",
-          opportunity: "قدم كفالة حقيقية 6 أشهر أو سنة ويا ورقة كفالة مطبوعة داخل الكارتون. صور فيديو تفتح بي الكارتون وتشغل المنتج بيدك.",
-          hook: "جهاز كفالته حقيقية سنة كاملة ويا ضمان استرجاع فوري.. لا تشتري رخيص بدون كفالة وتندم!"
+          weakness: "يبيعون أجهزة صينية رخيصة بدون كفالة حقيقية، والزبون يخاف ينضحك عليه من صفحات وهمية.",
+          opportunity: "قدم كفالة حقيقية لمدة 6 أشهر أو سنة، وياها ورقة كفالة مطبوعة داخل الكارتون. وصور فيديو تفتح بيه الكارتون وتشغل المنتج بنفسك.",
+          hook: "جهاز بكفالة حقيقية لمدة سنة كاملة ويا ضمان استرجاع فوري.. لا تشتري جهاز رخيص بدون كفالة وتندم"
         };
       default:
         return {
-          weakness: "بيجات عشوائية، ردود بطيئة ومحتوى ماخوذ من غير صفحات.",
-          opportunity: "سوي ترتيب حلو لصفحتك، صور تجهيز الطلبات باسم الزبون، انشر محادثات زبائن حقيقيين يحجون براحتهم.",
-          hook: "فيديو تجهيز طلب لزبوننا من البصرة.. شوف التغليف المرتب والأمان!"
+          weakness: "صفحات بدون ترتيب، ردودها بطيئة ومحتواها منسوخ من صفحات ثانية.",
+          opportunity: "رتب صفحتك بشكل احترافي، وصور تجهيز الطلبيات باسم الزبون، وانشر آراء ومحادثات زبائن حقيقيين بعد موافقتهم.",
+          hook: "فيديو تجهيز طلبية لزبوننا من البصرة.. شوف التغليف المرتب وشلون نحافظ على الطلبية"
         };
     }
   };
@@ -267,56 +267,56 @@ export default function VizionGrowthSuite() {
   const roadmapData = [
     {
       week: 1,
-      title: "الأسبوع الأول: الأساس المضبوط والجدوى المالية",
+      title: "الأسبوع الأول: تأسيس الشغل وحساب الجدوى المالية",
       days: [
-        { day: 1, title: "اختيار وتصفية فكرة المنتج وحساب الأرباح الصافية بالأرقام." },
-        { day: 2, title: "فحص جودة المنتج زين وهل يتحمل توصيل لمحافظات بعيدة." },
-        { day: 3, title: "التواصل ويا شركتين توصيل ومقارنة أسعارهم ونسبة الراجع عدهم." },
-        { day: 4, title: "تجهيز السعر النهائي وتحديد ميزانية الحملة التجريبية بالضبط." },
-        { day: 5, title: "تأسيس بيجات الانستغرام والفيسبوك بترتيب بسيط وحلو." },
-        { day: 6, title: "كتابة سكريبت الردود وتجهيز الردود السريعة بلهجة حلوة." },
-        { day: 7, title: "مراجعة شاملة للخطوات والتأكد ماكو أي مشكلة تقنية." }
+        { day: 1, title: "اختيار المنتج المناسب والتأكد من جدواه وحساب صافي الأرباح بالأرقام." },
+        { day: 2, title: "فحص جودة المنتج والتأكد من تحمله للتوصيل للمحافظات البعيدة." },
+        { day: 3, title: "التواصل ويا شركتين توصيل ومقارنة أجورهم ونسبة الطلبات الراجعة عندهم." },
+        { day: 4, title: "تحديد سعر البيع النهائي وضبط ميزانية الحملة التجريبية بدقة." },
+        { day: 5, title: "إنشاء صفحات الإنستغرام والفيسبوك وترتيبها بشكل بسيط ومرتب." },
+        { day: 6, title: "كتابة سكريبتات الردود وتجهيز الردود السريعة باللهجة المناسبة." },
+        { day: 7, title: "مراجعة كل الخطوات والتأكد من أن كلشي شغال بدون مشاكل تقنية." }
       ]
     },
     {
       week: 2,
-      title: "الأسبوع الثاني: تجهيز المحتوى وبداية الإعلان",
+      title: "الأسبوع الثاني: تجهيز المحتوى وبداية الإعلانات",
       days: [
-        { day: 8, title: "تصوير 3 فيديوهات حقيقية للمنتج بكاميرا موبايل وإضاءة زينة." },
-        { day: 9, title: "ترتيب الفيديوهات والتركيز على أول 3 ثواني (الخطاف القوي)." },
-        { day: 10, title: "ترتيب 3 عروض قوية (عرض توفير، قطعتين، أو توصيل مجاني)." },
-        { day: 11, title: "نشر البوستات وتثبيت المهم منها حتى تنطي ثقة للزبون." },
-        { day: 12, title: "ترتيب حساب الإعلانات وربط وسيلة الدفع (زين كاش أو غيرها)." },
-        { day: 13, title: "تشغيل أول حملة تجريبية حتى تختبر تفاعل الناس وسعر الرسالة." },
+        { day: 8, title: "تصوير 3 فيديوهات حقيقية للمنتج بكاميرا الموبايل وبإضاءة زينة." },
+        { day: 9, title: "تعديل الفيديوهات والتركيز على أول 3 ثواني حتى تشد انتباه الزبون." },
+        { day: 10, title: "تجهيز 3 عروض قوية (عرض توفير، قطعتين، أو توصيل مجاني)." },
+        { day: 11, title: "نشر المنشورات وتثبيت أهمها حتى تعطي الزبون ثقة بالصفحة." },
+        { day: 12, title: "تجهيز حساب الإعلانات وربط طريقة الدفع (زين كاش أو غيرها)." },
+        { day: 13, title: "إطلاق أول حملة تجريبية حتى تختبر تفاعل الناس وكلفة الرسالة." },
         { day: 14, title: "مراجعة نتائج أول يوم من الإعلان وتعديل النصوص إذا احتاجت." }
       ]
     },
     {
       week: 3,
-      title: "الأسبوع الثالث: قفل البيعات وتأكيد الطلبات",
+      title: "الأسبوع الثالث: إتمام البيعات وتأكيد الطلبيات",
       days: [
-        { day: 15, title: "استخدام طريقة 'البصمة الصوتية الدافية' ويا كل زبون يستفسر." },
-        { day: 16, title: "فرز الزبائن الجادين عن الفضوليين باستخدام طريقة 'قفل البيعة بالخيارات'." },
-        { day: 17, title: "تأكيد أول 10 طلبات بالتلفون وتسجيل عنوان الزبون بدقة." },
-        { day: 18, title: "تصوير وإرسال 'فيديو التجهيز' للزبائن عالواتساب." },
-        { day: 19, title: "تسليم أول وجبة طلبات لمندوب التوصيل ومتابعتها بالنظام." },
-        { day: 20, title: "شلون تتعامل ويا الزبون اللي يكول 'أفكر وأرجعلك' أو 'غالي'." },
-        { day: 21, title: "حساب نسبة الناس اللي اشترت فعليا من الرسايل وتسجيل الملاحظات." }
+        { day: 15, title: "استخدم أسلوب 'الرسالة الصوتية الدافية' ويا كل زبون يستفسر." },
+        { day: 16, title: "ميز الزبائن الجديين عن اللي بس يستفسرون، باستخدام طريقة 'إتمام البيعة بالخيارات'." },
+        { day: 17, title: "تأكيد أول 10 طلبيات بالتلفون وتسجيل عناوين الزبائن بدقة." },
+        { day: 18, title: "صور فيديو تجهيز الطلبية ودزه للزبون بالواتساب." },
+        { day: 19, title: "سلم أول مجموعة طلبيات لمندوب التوصيل وتابع حركتها بالنظام." },
+        { day: 20, title: "تعلم شلون تتعامل ويا الزبون اللي يكول 'أفكر وأرجعلك' أو 'غالي'." },
+        { day: 21, title: "احسب نسبة الزبائن اللي اشتروا فعليا من مجموع الرسائل وسجل ملاحظاتك." }
       ]
     },
     {
       week: 4,
-      title: "الأسبوع الرابع: مكافحة الراجع واستلام الأرباح",
+      title: "الأسبوع الرابع: تقليل الطلبات الراجعة واستلام الأرباح",
       days: [
-        { day: 22, title: "متابعة كشف المندوب اليومي وتأكيد وصول الطلبات للمحافظات." },
-        { day: 23, title: "مخابرة الزبائن المترددين من يوصل المندوب يم بيتهم." },
-        { day: 24, title: "ترتيب علاقة زينة ويا المناديب بالمحافظات الصعبة حتى يزيدون الاستلام." },
-        { day: 25, title: "استلام أول كشف حساب كأرباح صافية من شركة التوصيل." },
-        { day: 26, title: "تحليل المشاكل وعلاج الأماكن اللي ضاعت بيها الفلوس." },
-        { day: 27, title: "استلام الطلبات الراجعة وإعادة تغليفها فورا حتى تطلع لغير زبائن." },
-        { day: 28, title: "معرفة المنتجات الناجحة وتصعيد ميزانية إعلانها بنسبة 50%." },
-        { day: 29, title: "تجهيز عروض خاصة لزبائنك القدامى حتى يشترون مرة ثانية مجانا." },
-        { day: 30, title: "وصولك لـ 100 طلب الأولى وبداية ترتيب الشغل حتى يمشي تلقائيا." }
+        { day: 22, title: "راجع كشف المندوب اليومي وتأكد من وصول الطلبيات للمحافظات." },
+        { day: 23, title: "اتصل بالزبائن المترددين من يوصل المندوب لمنطقتهم." },
+        { day: 24, title: "كون علاقة زينة ويا مناديب المناطق الصعبة حتى تساعد على زيادة نسبة استلام الطلبيات." },
+        { day: 25, title: "استلم أول كشف حساب يوضح صافي أرباحك من شركة التوصيل." },
+        { day: 26, title: "حلل المشاكل وحدد الأماكن اللي دا تخسر بيها فلوسك واشتغل على حلها." },
+        { day: 27, title: "استلم الطلبيات الراجعة وأعد تغليفها مباشرة حتى تجهزها لزبائن غيرهم." },
+        { day: 28, title: "حدد المنتجات اللي حققت أفضل نتائج وزيد ميزانية إعلاناتها بنسبة 50%." },
+        { day: 29, title: "جهز عروض خاصة لزبائنك السابقين حتى تشجعهم يشترون مرة ثانية." },
+        { day: 30, title: "وصلت لأول 100 طلب، وهسه ابدي رتب شغلك حتى يصير يمشي بنظام واضح." }
       ]
     }
   ];
@@ -338,20 +338,20 @@ export default function VizionGrowthSuite() {
         <PageHeader
           eyebrow={<><Sparkles className="w-4 h-4" /> الأدوات</>}
           title="احسب أرقامك قبل لا تصرف"
-          subtitle="13 أداة بالدينار العراقي. اختار الأداة من القائمة، دخل أرقامك، وتطلعلك النتيجة فورا."
+          subtitle="13 أداة تحسبلك كلشي بالدينار العراقي. اختار الأداة من القائمة، دخل أرقامك، وتطلعلك النتيجة مباشرة."
         />
 
         {isFreeTrial && (
           <div className="glass-elevated glass-edge p-5 sm:p-7 rounded-3xl sm:rounded-4xl space-y-3 text-center relative overflow-hidden my-4 z-20 animate-fade-in">
             <div className="vz-eyebrow text-xs sm:text-sm">
               <Lock className="w-4 h-4 text-vz-accent" />
-              <span>إنت بالتجربة المجانية</span>
+              <span>إنت هسه بالتجربة المجانية</span>
             </div>
             <h3 className="text-lg sm:text-2xl font-black text-white leading-tight">
               الأدوات تنفتح ويا الاشتراك الكامل
             </h3>
             <p className="text-xs sm:text-sm text-white/80 max-w-2xl mx-auto font-light leading-relaxed">
-              بالتجربة تشوف شنو تسوي كل أداة. بالاشتراك تدخل أرقامك وتطلعلك النتيجة.
+              بالتجربة تتعرف على شغل كل أداة. بالاشتراك تدخل أرقامك وتحصل على النتيجة.
             </p>
             <button               onClick={triggerUpgradeModal}
               className="btn btn-primary px-6 py-3 rounded-xl text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -363,7 +363,7 @@ export default function VizionGrowthSuite() {
         )}
       </div>
 
-      <div className="vizion-tool-categories flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
+      <div className="vizion-tool-categories flex flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
         {toolCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           const count = cat.id === "all" ? toolTabs.length : toolTabs.filter(t => t.category === cat.id).length;
@@ -530,7 +530,7 @@ export default function VizionGrowthSuite() {
                 <div className="w-20 h-20 rounded-[26px] glass-elevated glass-edge flex items-center justify-center relative group">
                   <Lock className="w-10 h-10 text-vz-accent" />
                   <div className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-[0_4px_12px_-4px_rgba(239,68,68,0.6)]">
-                    مقفول
+                    مقفل
                   </div>
                 </div>
 
@@ -551,12 +551,12 @@ export default function VizionGrowthSuite() {
 
                 <div className="w-full max-w-md glass-subtle rounded-3xl p-5 space-y-3 text-right">
                   <span className="text-xs font-black text-vz-accent block border-b border-white/10 pb-2">
-                    من الأدوات:
+                    من ضمن الأدوات:
                   </span>
                   <div className="grid grid-cols-1 gap-y-5 gap-2.5 text-xs text-white/80">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
-                      <span>فحص مشروعك</span>
+                      <span>افحص مشروعك</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
@@ -568,7 +568,7 @@ export default function VizionGrowthSuite() {
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
-                      <span>متوقع أرباح الإعلان قبل ما تشغله</span>
+                      <span>اعرف أرباح إعلانك المتوقعة قبل لا تشغله</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
@@ -576,7 +576,7 @@ export default function VizionGrowthSuite() {
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-slate-200 shrink-0" />
-                      <span>خسارة الطلبات الراجعة</span>
+                      <span>خسائر الطلبات الراجعة</span>
                     </div>
                   </div>
                 </div>
@@ -595,13 +595,13 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">ربحك ووين تضيع فلوسك</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">فحص مشروعك</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">أرباحك ووين تروح فلوسك</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">افحص مشروعك</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  دخل أرقام مشروعك الحالية حتى نكشفلك فورا نقاط قوتك ووين كاعد تضيع فلوسك ويقل ربحك بدون ما تحس.
+                  دخل أرقام مشروعك الحالية حتى نكشفلك بسرعة نقاط القوة، ووين دا تضيع فلوسك ويقل ربحك بدون ما تنتبه.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
@@ -618,7 +618,7 @@ export default function VizionGrowthSuite() {
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة</label>
+                    <label className="text-xs font-bold text-white/80 block">بشكد شاري القطعة</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t1ProductCost} onChange={(v) => setT1ProductCost(v)} unit="د.ع" step={500} />
 </div>
@@ -630,7 +630,7 @@ export default function VizionGrowthSuite() {
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">نسبة الراجع المتوقعة</label>
+                    <label className="text-xs font-bold text-white/80 block">نسبة الطلبات الراجعة المتوقعة</label>
                     <div className="w-full">
                       <div className="w-full">
   <NumberField className="w-full" value={t1ReturnRate} onChange={(v) => setT1ReturnRate(v)} unit="%" min={0} max={80} step={1} />
@@ -638,7 +638,7 @@ export default function VizionGrowthSuite() {
                     </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد من الرسايل تصير طلبات</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد من الرسائل تتحول إلى طلبات</label>
                     <div className="w-full">
                       <div className="w-full">
   <NumberField className="w-full" value={t1ConversionRate} onChange={(v) => setT1ConversionRate(v)} unit="%" min={1} max={50} step={1} />
@@ -651,7 +651,7 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setT1ShowReport(true)}
                     className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
-                    <span>افحص مشروعي وشوفني التقرير</span>
+                    <span>افحص مشروعي ووريني التقرير</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
                   </button>
                 </div>
@@ -664,10 +664,10 @@ export default function VizionGrowthSuite() {
 الإيرادات: ${diagResult.totalRevenue.toLocaleString()} د.ع
 الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`);
           alert('انتسخ');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة</button>
+        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">انسخ النتيجة</button>
       </div>
                     <h4 className="text-sm font-black text-vz-accent flex items-center gap-2 border-b border-white/5 pb-2">
-                      <span>تقرير فحص الأداء والربح:</span>
+                      <span>تقرير فحص الأداء والأرباح:</span>
                     </h4>
                     
                     <div className="grid grid-cols-1 gap-y-5 md:grid-cols-4 gap-3 text-center">
@@ -696,29 +696,29 @@ export default function VizionGrowthSuite() {
                       <ul className="space-y-1.5 text-[11px] text-white/70 leading-relaxed">
                         {t1ReturnRate > 20 && (
                           <li className="flex items-start gap-1.5 text-red-300">
-                            <span><strong>الراجع دياكل أرباحك:</strong> نسبة المرتجع عندك ({t1ReturnRate}%) عالية وتخسرك أجور التوصيل وفلوس إعلانات. لازم تأكد طلباتك بالتلفون وتدز فيديوهات للزبون.</span>
+                            <span><strong>الطلبات الراجعة دا تاكل أرباحك:</strong> نسبة المرتجع عندك ({t1ReturnRate}%) عالية وتخسرك أجور التوصيل وفلوس إعلانات. لازم تأكد طلباتك بالتلفون وتدز فيديوهات للزبون.</span>
                           </li>
                         )}
                         {t1ConversionRate < 10 && (
                           <li className="flex items-start gap-1.5 text-red-300">
-                            <span><strong>الرد عالخاص ضعيف:</strong> بس ({t1ConversionRate}%) يشترون من الرسايل. هذا معناه إعلانك يجذب ناس بس تتفرج أو ردك عالخاص يحتاج تعديل سريع.</span>
+                            <span><strong>الرد على الخاص ضعيف:</strong> بس ({t1ConversionRate}%) يشترون من الرسايل. هذا معناه إعلانك يجذب ناس بس تتفرج أو ردك عالخاص يحتاج تعديل سريع.</span>
                           </li>
                         )}
                         {t1SellingPrice - t1ProductCost < 15000 && (
                           <li className="flex items-start gap-1.5 text-red-300">
-                            <span><strong>الربح قليل:</strong> الفرق بين سعر الشراء والبيع قليل وما يغطي كروة التوصيل والإعلانات.</span>
+                            <span><strong>الربح قليل:</strong> الفرق بين سعر الشراء والبيع قليل، وما يغطي أجور التوصيل والإعلانات.</span>
                           </li>
                         )}
                         {t1ReturnRate <= 20 && t1ConversionRate >= 10 && t1SellingPrice - t1ProductCost >= 15000 && (
                           <li className="flex items-start gap-1.5 text-emerald-300">
-                            <span><strong>شغلك ممتاز:</strong> الأرقام دتكول مشروعك قوي. ركز هسه على زيادة فلوس الإعلان شوية شوية حتى تضاعف مبيعاتك.</span>
+                            <span><strong>شغلك ممتاز:</strong> الأرقام تبين إن مشروعك قوي. ركز هسه على زيادة ميزانية الإعلان شوي شوي حتى تضاعف مبيعاتك.</span>
                           </li>
                         )}
                       </ul>
                     </div>
 
                     <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
-                      <strong>فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت الراجع لـ <strong>10%</strong> وصعدت قفل الطلبات لـ <strong>15%</strong>، راح يطفر ربحك الصافي من <span className="font-mono text-white underline">{Math.round(diagResult.netProfit).toLocaleString()} دينار</span> لـ <strong className="text-emerald-400 font-mono underline">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>! وهيج تزيد أرباحك بدون ما تصرف إعلانات أكثر.
+                      <strong>عندك فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت نسبة الراجع إلى <strong>10%</strong> ورفعت نسبة تأكيد الطلبات إلى <strong>15%</strong>، راح يرتفع صافي ربحك من <span className="font-mono text-white underline">{Math.round(diagResult.netProfit).toLocaleString()} دينار</span> لـ <strong className="text-emerald-400 font-mono underline">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>وبهالشكل تزيد أرباحك بدون ما تصرف أكثر على الإعلانات.
                     </div>
                   </div>
                 )}
@@ -735,28 +735,28 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  دخل أرقام حملتك الإعلانية اللي مشغلها هسه، والنظام راح يحللها ويكشفلك الخلل وين بالضبط وينطيك الحل بسرعة.
+                  دخل أرقام حملتك الإعلانية اللي مشغلها هسه، والنظام راح يحلل النتائج ويحددلك مكان الخلل بالضبط، ويعطيك الحل بسرعة.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد صارف عالإعلان</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد صارف على الإعلان</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t2Spend} onChange={(v) => setT2Spend(v)} unit="د.ع" step={5000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد رسايل اجتك</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد رسالة وصلتك</label>
                     <NumberField className="w-full" value={t2Messages} onChange={(v) => setT2Messages(v)} unit="رسالة" step={10} />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد طلب أكدته</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t2Confirmed} onChange={(v) => setT2Confirmed(v)} unit="طلب" step={1} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">الطلبات اللي استلموها الزبائن فعليا</label>
+                    <label className="text-xs font-bold text-white/80 block">الطلبات اللي استلمها الزبائن فعليا</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t2Delivered} onChange={(v) => setT2Delivered(v)} unit="طلب" step={1} />
 </div>
@@ -767,7 +767,7 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setT2ShowAnalysis(true)}
                     className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
-                    <span>حلل نتائج الإعلان هسة</span>
+                    <span>حلل نتائج الإعلان هسه</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
                   </button>
                 </div>
@@ -785,7 +785,7 @@ export default function VizionGrowthSuite() {
 
                     {getAdAnalysis().warning && (
                       <p className="text-xs text-red-300 bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                        <strong>ملاحظة هامة:</strong> {getAdAnalysis().warning}
+                        <strong>ملاحظة مهمة:</strong> {getAdAnalysis().warning}
                       </p>
                     )}
 
@@ -808,27 +808,27 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">افهم السوك وحلل اللي ينافسوك</span>
+                    <span className="text-[10px] text-vz-accent font-bold">افهم السوق وحلل منافسينك</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">محلل استراتيجية المنافسين</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  اكتب اسم أو مجال أي بيج ينافسك ويبيع نفس منتجاتك، وراح نكشفلك طريقتهم بالنشر ونقاط ضعفهم اللي تكدر تستغلها حتى تتغلب عليهم.
+                  اكتب اسم أي صفحة تنافسك أو مجالها وتبيع نفس منتجاتك، وراح نكشفلك طريقة نشرهم ونقاط ضعفهم اللي تكدر تستغلها حتى تتفوق عليهم.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">اسم بيج المنافس (اختياري)</label>
+                    <label className="text-xs font-bold text-white/80 block">اسم صفحة المنافس (اختياري)</label>
                     <input                       type="text"
-                      placeholder="مثال: بيج الهدايا الفخمة"
+                      placeholder="مثال: صفحة هدايا فخمة"
                       value={t3Name}
                       onChange={(e) => setT3Name(e.target.value)}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs text-right focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">مجال أو فئة بضاعته</label>
+                    <label className="text-xs font-bold text-white/80 block">مجال أو نوع بضاعته</label>
                     <select                       value={t3Niche}
                       onChange={(e) => setT3Niche(e.target.value)}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -845,7 +845,7 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setT3ShowAnalysis(true)}
                     className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
-                    <span>حلل شغله واعرضلي الفرص</span>
+                    <span>حلل شغلهم ووريني الفرص</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
                   </button>
                 </div>
@@ -853,7 +853,7 @@ export default function VizionGrowthSuite() {
                 {t3ShowAnalysis && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
                     <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">
-                      خطة التغلب على {t3Name || "هذا البيج"}:
+                      خطة التغلب على {t3Name || "هذي الصفحة"}:
                     </h4>
 
                     <div className="space-y-3 text-xs text-white/80">
@@ -868,7 +868,7 @@ export default function VizionGrowthSuite() {
                       </div>
 
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                        <strong className="text-vz-accent">البداية (الخطاف) المقترحة لإعلانك الجاي:</strong>
+                        <strong className="text-vz-accent">بداية الإعلان المقترحة (الخطاف):</strong>
                         <p className="mt-1 text-white/90 italic leading-relaxed font-bold">"{getCompetitorTactics().hook}"</p>
                       </div>
                     </div>
@@ -881,22 +881,22 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">تجيك رسايل هواي وماكو طلبات؟</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">محلل جودة ونسبة الرسايل</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">تجيك رسائل هواي وماكو طلبات؟</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">محلل جودة الرسائل ونسبتها</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  إذا دتعاني من كثرة الأسئلة وماكو ناس تشتري، دخل أرقام الرسايل والطلبات حتى تعرف المشكلة وين بالضبط.
+                  إذا دتعاني من كثرة الأسئلة وماكو ناس تشتري، دخل عدد الرسائل والطلبات حتى تعرف وين المشكلة بالضبط.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تجيك رسايل بالمجموع</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد رسالة توصلك بالمجموع</label>
                     <NumberField className="w-full" value={t4Messages} onChange={(v) => setT4Messages(v)} unit="رسالة" step={10} />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد طلبات أكدتها بنجاح</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد طلب أكدت بنجاح</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t4Orders} onChange={(v) => setT4Orders(v)} unit="طلب" step={1} />
 </div>
@@ -907,7 +907,7 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setT4ShowReport(true)}
                     className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
-                    <span>حلل الرسايل واكشف الخلل</span>
+                    <span>حلل الرسائل واكشف الخلل</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
                   </button>
                 </div>
@@ -920,41 +920,41 @@ export default function VizionGrowthSuite() {
 معدل الإغلاق: ${((t4Orders / t4Messages) * 100).toFixed(1)}%
 `);
           alert('انتسخ');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">نسخ النتيجة</button>
+        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">انسخ النتيجة</button>
       </div>
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                      <h4 className="text-sm font-black text-vz-accent">نتيجة غلق الصفقات:</h4>
+                      <h4 className="text-sm font-black text-vz-accent">نتيجة إتمام البيعات:</h4>
                       <span className="text-xs text-white/70 font-mono">نسبة التحويل: {((t4Orders / t4Messages) * 100).toFixed(1)}%</span>
                     </div>
 
                     {((t4Orders / t4Messages) * 100) < 5 ? (
                       <div className="space-y-3">
                         <div className="p-3.5 rounded-xl bg-red-500/5 border border-red-500/10 text-xs text-red-300">
-                          <strong>وضع كلش تعبان:</strong> نسبة التحويل أقل من 5%. الزبائن يدخلون ويطلعون بدون ما تبيع شي.
+                          <strong>وضعك كلش ضعيف:</strong> نسبة التحويل أقل من 5%. الزبائن يدخلون ويسألون وبعدين يطلعون بدون ما يشترون.
                         </div>
                         <ul className="space-y-2 text-xs text-white/80">
                           <li className="flex items-start gap-1.5">
-                            <span><strong>إعلانك بي مبالغة:</strong> يجوز الإعلان مبين بي سعر رخيص كلش أو منتج غير شكل، ومن يطب الزبون وينصدم بالسعر الحقيقي يشرد.</span>
+                            <span><strong>إعلانك بيه مبالغة:</strong> يمكن الإعلان موضح سعر رخيص كلش أو منتج بمواصفات غير حقيقية، ومن يدخل الزبون ويشوف السعر الحقيقي ينصدم ويطلع.</span>
                           </li>
                           <li className="flex items-start gap-1.5">
-                            <span><strong>الرد الآلي والناشف:</strong> تدز كليشة جاهزة شطولها للزبون. سولف وياهم بأسلوب حلو ورتب الحجي.</span>
+                            <span><strong>ردودك الآلية والناشفة:</strong> تدز للزبون رد جاهز وطويل. سولف وياه بأسلوب حلو وخلي كلامك مرتب وواضح.</span>
                           </li>
                         </ul>
                       </div>
                     ) : ((t4Orders / t4Messages) * 100) < 12 ? (
                       <div className="space-y-3">
                         <div className="p-3.5 rounded-xl bg-white/3 border border-white/5 text-xs text-vz-accent">
-                          <strong>أداءك متوسط:</strong> اكو ناس مهتمة صدك، بس دتطير نص البيعات لأن ما دتتابع الزبون عدل لو تتردد بالعرض.
+                          <strong>أداءك متوسط:</strong> أكو ناس مهتمة فعلا، بس دا تخسر نص البيعات لأن ما تتابع الزبون بالشكل الصحيح أو تتردد بتقديم العرض.
                         </div>
                         <ul className="space-y-2 text-xs text-white/80">
                           <li className="flex items-start gap-1.5">
-                            <span><strong>شغل البصمة الصوتية:</strong> جرب دز بصمة دافية وقصيرة تشرح بيها التوصيل. هذا راح يحول الزبون المتردد لمشتري أكيد.</span>
+                            <span><strong>استخدم البصمة الصوتية:</strong> جرب تدز بصمة صوتية قصيرة وودودة تشرح بيها تفاصيل التوصيل. هذا ممكن يقنع الزبون المتردد ويخليه يشتري.</span>
                           </li>
                         </ul>
                       </div>
                     ) : (
                       <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
-                        <strong>شغلك فول وممتاز</strong> نسبة قفل الطلبات عابرة الـ 12% وهاي من أحسن النسب بالسوك. ركز هسة تزيد ميزانية إعلانك حتى تجيب رسايل أكثر وتضاعف شغلك.
+                        <strong>شغلك ممتاز وعلى مستوى</strong> نسبة تأكيد الطلبات تتجاوز الـ 12%، وهاي من أحسن النسب بالسوق. ركز هسه على زيادة ميزانية إعلانك حتى تجيب رسائل أكثر وتضاعف شغلك.
                       </div>
                     )}
                   </div>
@@ -972,22 +972,22 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  أغلبية البيجات تخسر لأن ما يحسبون كلفة الراجع الضايعة. احسب أسعارك وأرباحك وشكد لازم تبيع حتى ما تخسر ولا دينار.
+                  أغلب الصفحات تخسر لأن ما تحسب كلفة الطلبات الراجعة. احسب أسعارك وأرباحك وشكد لازم تبيع حتى ما تخسر ولا دينار.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">بيش مشتري القطعة</label>
+                    <label className="text-xs font-bold text-white/80 block">بشكد شاري القطعة</label>
                     <NumberField className="w-full" value={t5Cost} onChange={(v) => setT5Cost(v)} unit="د.ع" step={500} />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد ناوي تبيعها للزبون</label>
+                    <label className="text-xs font-bold text-white/80 block">بشكد ناوي تبيع القطعة للزبون</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t5Price} onChange={(v) => setT5Price(v)} unit="د.ع" step={1000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد كروة التوصيل</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد أجور التوصيل</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t5Shipping} onChange={(v) => setT5Shipping(v)} unit="د.ع" step={500} />
 </div>
@@ -999,7 +999,7 @@ export default function VizionGrowthSuite() {
 </div>
                   </div>
                   <div className="space-y-1.5 sm:col-span-2">
-                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع نسبة الراجع</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع نسبة الطلبات الراجعة</label>
                     <div className="w-full">
                       <div className="w-full">
   <NumberField className="w-full" value={t5ReturnRate} onChange={(v) => setT5ReturnRate(v)} unit="%" min={0} max={80} step={1} />
@@ -1009,7 +1009,7 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                  <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">حساب الأرباح والخسائر للقطعة:</h4>
+                  <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">حساب الأرباح والخسائر لكل قطعة:</h4>
 
                   {(() => {
                     const returnDec = t5ReturnRate / 100;
@@ -1027,30 +1027,30 @@ export default function VizionGrowthSuite() {
                       <div className="space-y-3 text-xs">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <span className="text-[10px] text-white/70 block">صافي ربحك الحقيقي لكل طلب</span>
+                            <span className="text-[10px] text-white/70 block">صافي ربحك الحقيقي من كل طلب</span>
                             <span className={`text-base font-black font-mono ${netProfitReal > 0 ? "text-emerald-400" : "text-red-400"}`}>
                               {Math.round(netProfitReal).toLocaleString()} دينار
                             </span>
                           </div>
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <span className="text-[10px] text-white/70 block">أقل سعر تبيع بي حتى ما تخسر</span>
+                            <span className="text-[10px] text-white/70 block">أقل سعر تكدر تبيع بيه بدون خسارة</span>
                             <span className="text-base font-black text-vz-accent font-mono">{minSafePrice.toLocaleString()} دينار</span>
                           </div>
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <span className="text-[10px] text-white/70 block">طلبات تحتاجها لتربح (١.٥ مليون)</span>
+                            <span className="text-[10px] text-white/70 block">عدد الطلبات اللي تحتاجها حتى تربح (١.٥ مليون)</span>
                             <span className="text-base font-black text-white font-mono">
-                              {ordersToTarget > 0 && ordersToTarget < 10000 ? ordersToTarget : "شغلة صعبة"} طلب
+                              {ordersToTarget > 0 && ordersToTarget < 10000 ? ordersToTarget : "مهمة صعبة"} طلب
                             </span>
                           </div>
                         </div>
 
                         {netProfitReal <= 0 ? (
                           <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-[11px] text-red-300">
-                            <strong>تنبيه، دتخسر</strong> بهالأسعار ونسبة الراجع مالتك، إنت دتخسر فعليا من كل طلب دزه. صعد سعرك أو نزل كلفة الإعلان والراجع بسرعة.
+                            <strong>تنبيه، إنت دا تخسر</strong> بهالأسعار ونسبة الطلبات الراجعة عندك، إنت فعليا دا تخسر من كل طلب تدزه. ارفع سعرك أو قلل كلفة الإعلان والطلبات الراجعة بسرعة.
                           </div>
                         ) : (
                           <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-[11px] text-emerald-300">
-                            <strong>تسعيرك بطل وآمن</strong> أرباحك الصافية زينة بعد ما شلنا كل الخسائر والراجع. مشروعك هسة جاهز يكبر ويصعد.
+                            <strong>تسعيرك ممتاز وآمن</strong> أرباحك الصافية زينة بعد ما حسبنا كل التكاليف وخسائر الطلبات الراجعة. مشروعك هسه جاهز يكبر ويتطور.
                           </div>
                         )}
                       </div>
@@ -1064,20 +1064,20 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">ردود جاهزة تضمنلك البيعة</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">أنواع الزبائن وشلون ترد عليهم</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">ردود جاهزة تساعدك تكمل البيعة</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">أنواع الزبائن وشلون تتعامل وياهم</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  اعرف أشهر 5 أنواع من الزبائن اللي يراسلون بيجك، واكتشف شلون تفكر وشنو الرد اللي يقنعهم يشترون مباشرة.
+                  تعرف على أشهر 5 أنواع من الزبائن اللي يراسلون صفحتك، وافهم شلون يفكرون وشنو الرد اللي يقنعهم يشترون مباشرة.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 sm:grid-cols-5 gap-2">
                   <button                     onClick={() => setActiveCustomer("ghoster")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "ghoster" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    يسأل (ببيش؟) ويختفي
+                    يسأل (بشكد؟) وبعدين يختفي
                   </button>
                   <button                     onClick={() => setActiveCustomer("bargainer")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "bargainer" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
@@ -1097,7 +1097,7 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setActiveCustomer("comparer")}
                     className={`p-3 rounded-xl border text-center transition-all motion-reduce:transition-none motion-reduce:transform-none cursor-pointer text-[11px] font-bold ${activeCustomer === "comparer" ? "bg-white/10 border-white/35 text-white" : "bg-white/5 border-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
                   >
-                    يقارن ويا البقية
+                    يقارن ويا غيرك
                   </button>
                 </div>
 
@@ -1105,16 +1105,16 @@ export default function VizionGrowthSuite() {
                   {activeCustomer === "ghoster" && (
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
-                        <span className="text-red-400 font-bold block">اللي يسأل عن السعر ويشرد:</span>
-                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحس ردك آلي ومجرد فضول ديدور.</p>
+                        <span className="text-red-400 font-bold block">اللي يسأل عن السعر ويختفي:</span>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش يسوي هيج؟ يحس إن ردك آلي، ويمكن هو بس دا يستفسر من باب الفضول.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-vz-accent">شلون تحلها:</strong> لا تنطي السعر وتسكت. اشرح قيمة العرض، وكوله تكدر تفحص المنتج عند الباب حتى يرتاح ويطمئن.
+                        <strong className="text-vz-accent">شلون تتعامل وياه:</strong> لا تكتفي بذكر السعر وتسكت. وضحله شنو اللي يميز العرض، وكله يكدر يفحص المنتج عند الباب حتى يرتاح ويطمن.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخه وعدله):</span>
                         <p className="text-white/90">
-                          "يا هلا بيك عيني الغالي.. بخصوص العطر، سعره ويا التوصيل والضمان هو 35 ألف بس. والميزة يمنا: المندوب من يوصلك تكدر تفتح الطلب وتفحص وتتأكد بنفسك، وإذا ما عجبك ترجعه بدون ما تدفع أي شي! كم قطعة حاب نثبتلك عيني؟"
+                          "يا هلا بيك عيني الغالي.. بخصوص العطر، سعره ويا التوصيل والضمان 35 ألف بس. والميزة عدنا إن من يوصلك المندوب، تكدر تفتح الطلبية وتفحصها وتتأكد بنفسك، وإذا ما عجبتك ترجعها بدون ما تدفع أي شي. شكد قطعة تحب نثبتلك عيني؟"
                         </p>
                       </div>
                     </div>
@@ -1124,15 +1124,15 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">اللي يكول (أكو خصم عيني؟ أريده أرخص):</span>
-                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحب يحس نفسه حصل شغلة زينة وبسعر أرخص.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش يسوي هيج؟ يحب يحس إنه حصل على عرض زين وبسعر أقل.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-vz-accent">شلون تحلها:</strong> لا تكوله "لا" قبل. انطيه عرض ثاني أو هدية (مثل توصيل مجاني للقطعتين) بدل ما تنزل سعر المنتج.
+                        <strong className="text-vz-accent">شلون تتعامل وياه:</strong> لا تكوله "لا" قبل. انطيه عرض ثاني أو هدية (مثل توصيل مجاني للقطعتين) بدل ما تنزل سعر المنتج.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخه وعدله):</span>
                         <p className="text-white/90">
-                          "عيني فدوة لكلبك السعر قفل لأن البضاعة أصلية ومكفولة، بس لعيونك.. إذا تاخذ قطعتين اليوم، راح نلغي كروة التوصيل ويصير التوصيل مجاني! أو نهديك هدية حلوة وياها. تحب العرض الذهبي؟"
+                          "عيني فدوة لكلبك، السعر ثابت لأن البضاعة أصلية ومكفولة، بس لعيونك.. إذا تاخذ قطعتين اليوم، نلغي أجور التوصيل ويصير التوصيل مجاني، أو نهديك هدية حلوة وياها. تحب تختار العرض الذهبي؟"
                         </p>
                       </div>
                     </div>
@@ -1142,15 +1142,15 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">الزبون المتردد / يخاف من النصب:</span>
-                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ مضروب بوري قبل من بيجات وهمية وميأمن.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش يسوي هيج؟ سبق وانضحك عليه من صفحات وهمية، ولهذا ما يثق بسهولة.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-vz-accent">شلون تحلها:</strong> شيل الخوف منه من تنطيه كفالة وتخليه يفحص كدام المندوب قبل ما يستلم.
+                        <strong className="text-vz-accent">شلون تتعامل وياه:</strong> طمنه من خلال ما توفرله ضمان وتخليه يفحص المنتج كدام المندوب قبل لا يستلمه.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخه وعدله):</span>
                         <p className="text-white/90">
-                          "حقك عيني تخاف السوك هاليومين يخوف.. لهذا إحنا وفرنا ميزة الفحص. تفتح الكارتون وتجرب بيدك، وبضمان 6 أشهر من متجرنا. حاب نسجلك حجز اليوم عيني؟"
+                          "من حقك عيني تخاف، السوق هالأيام بيه هواي شغلات مو مضمونة.. ولهذا وفرنالك ميزة الفحص. تفتح الكارتونة وتجرب المنتج بنفسك، وعليه ضمان 6 أشهر من متجرنا. تحب نسجلك حجز اليوم عيني؟"
                         </p>
                       </div>
                     </div>
@@ -1160,15 +1160,15 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">اللي يكول (أفكر وأرجعلك / من أستلم الراتب):</span>
-                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يحتاج حافز قوي حتى يبطل تردد ويقرر يشتري.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش يتصرف هيج؟ يحتاج سبب قوي يشجعه يحسم قراره ويشتري بدل ما يبقى متردد.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-vz-accent">شلون تحلها:</strong> حسسه إن الكمية حتخلص أو انطيه عرض إنو تدز الطلب يوم راتبه.
+                        <strong className="text-vz-accent">شلون تتعامل وياه:</strong> وضحله إن الكمية قربت تخلص، أو قدم له عرض يخليه يطلب هسه وتدزله الطلبية بيوم الراتب.
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخه وعدله):</span>
                         <p className="text-white/90">
-                          "خذ راحتك عيني الغالي.. بس حتى ما يفوتك العرض، بقت عدنا آخر 3 قطع، إذا حاب نحجزلك قطعة ونخلي التوصيل يوم راتبك الجاي حتى تستلمها براحتك، تآمرنا أمر؟"
+                          "خذ راحتك عيني الغالي.. بس حتى ما يفوتك العرض، بقت عدنا آخر 3 قطع. إذا تحب، نحجزلك قطعة ونخلي التوصيل بموعد راتبك الجاي حتى تستلمها براحتك. شرايك عيني؟"
                         </p>
                       </div>
                     </div>
@@ -1178,15 +1178,15 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">اللي يقارن (شفت بيج ثاني يبيعه أرخص):</span>
-                        <p className="text-white/70 text-[10px] mt-0.5">ليش هيج يسوي؟ يريد يبرر فرق السعر حتى يرتاح نفسيا.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش يتصرف هيج؟ يريد يعرف سبب فرق السعر حتى يقتنع إن السعر الأعلى يستاهل.</p>
                       </div>
                       <p className="text-white/80">
-                        <strong className="text-vz-accent">شلون تحلها:</strong> لا تهاجم المنافسين. بس وضحله ليش إنت أغلى (جودة خامة، ضمان، خدمات ما بعد البيع).
+                        <strong className="text-vz-accent">شلون تتعامل وياه:</strong> لا تحچي بسوء عن المنافسين. وضحله شنو اللي يخلي سعرك أعلى (جودة الخامة، الضمان، وخدمات ما بعد البيع).
                       </p>
                       <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-1.5 font-mono text-[11px]">
-                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخ وعدل):</span>
+                        <span className="text-emerald-400 font-bold">الرد المقترح (انسخه وعدله):</span>
                         <p className="text-white/90">
-                          "أهلا بيك أخي.. فعلا تلكه أنواع أرخص بالإنترنت، بس الفرق عيني بالخامة والضمان. البضاعة الرخيصة تسويلك مشاكل ومحد يجاوبك بعدين. ويانا إنت تشتري راحة بالك وضمان حقيقي، وتجربة فحص براحتك. يسوى تجرب الأصلي لو لا عيني؟"
+                          "أهلا بيك أخي.. صحيح تلكه أنواع أرخص بالإنترنت، بس الفرق عيني بالجودة والضمان. البضاعة الرخيصة ممكن تسببلك مشاكل، وبعدها ما تلكه أحد يجاوبك. ويانا إنت تشتري راحة بالك وضمان حقيقي، وتكدر تفحص المنتج براحتك. ما تسوى تجرب الأصلي عيني؟"
                         </p>
                       </div>
                     </div>
@@ -1199,43 +1199,43 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">إعلانات محلية جابت مبيعات قوية</span>
+                    <span className="text-[10px] text-vz-accent font-bold">إعلانات عراقية جابت مبيعات قوية</span>
                     <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مكتبة الإعلانات الناجحة</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  شوف 3 نماذج لإعلانات حقيقية ناجحة، وافتهم السر ورا نجاحها حتى تطبقه بشغلك اليوم.
+                  شوف 3 نماذج لإعلانات حقيقية ناجحة، وتعرف شنو السر ورا نجاحها حتى تستفاد منها بشغلك اليوم.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <h4 className="text-xs font-black text-white">١. إعلان ملابس (بداية قوية)</h4>
+                    <h4 className="text-xs font-black text-white">١. إعلان ملابس (بداية تشد الانتباه)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
-                      فيديو يبدي بشخص يلزم قميص ويصب عليه مي حتى يثبت للناس إن القميص ما يتبكع.
+                      فيديو يبدي بشخص ماسك قميص ويصب عليه مي حتى يثبت للناس إن القميص ما يتبقع.
                     </p>
                     <div className="text-[10px] bg-white/[0.02] p-2.5 rounded-xl border border-white/5">
-                      <strong className="text-vz-accent block">سر نجاحه:</strong> يخلي الزبون يوكف تصفح بأول ثانيتين بحركة غريبة، ويثبتله الجودة كدام عينه.
+                      <strong className="text-vz-accent block">سر نجاحه:</strong> يخلي الزبون يوقف التصفح بأول ثانيتين بحركة مو متوقعة، ويخليه يشوف جودة المنتج بعينه.
                     </div>
                   </div>
 
                   <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <h4 className="text-xs font-black text-white">٢. إعلان عطور (تجربة حقيقية)</h4>
+                    <h4 className="text-xs font-black text-white">٢. إعلان عطور (تجربة من الواقع)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
-                      تصوير عادي لشخص يفوت للمكتب وأصدقائه يسألوه متفاجئين من ريحة عطره الطيبة.
+                      تصوير عفوي لشخص يدخل للمكتب، وأصدقاؤه يسألونه باستغراب عن ريحة عطره الحلوة.
                     </p>
                     <div className="text-[10px] bg-white/[0.02] p-2.5 rounded-xl border border-white/5">
-                      <strong className="text-vz-accent block">سر نجاحه:</strong> ما يبين إعلان ديبيعلك شي. يبين كأنه فيديو عادي ومنتشر، وهالشي يصعد الثقة حيل.
+                      <strong className="text-vz-accent block">سر نجاحه:</strong> ما يبين كأنه إعلان يريد يبيعك شي. يبين فيديو عادي ومتداول بين الناس، وهذا يزيد ثقة الزبون بيه بشكل كبير.
                     </div>
                   </div>
 
                   <div className="p-4 bg-white/5 border border-white/5 hover:border-white/14 rounded-2xl space-y-3 transition-all motion-reduce:transition-none motion-reduce:transform-none motion-reduce:transition-none motion-reduce:transform-none">
-                    <h4 className="text-xs font-black text-white">٣. إعلان هدايا (يلعب عالعاطفة)</h4>
+                    <h4 className="text-xs font-black text-white">٣. إعلان هدايا (يلمس المشاعر)</h4>
                     <p className="text-[11px] text-white/60 leading-relaxed font-light">
-                      فيديو مرتب لإيدين تفتح علبة خشبية فخمة محفور عليها اسم بأسلوب مريح وتصوير حلو.
+                      فيديو مصور بطريقة مرتبة، يبين إيدين تفتح علبة خشبية فخمة، منقوش عليها اسم، بتصوير مريح وجذاب.
                     </p>
                     <div className="text-[10px] bg-white/[0.02] p-2.5 rounded-xl border border-white/5">
-                      <strong className="text-vz-accent block">سر نجاحه:</strong> يركز عالمشاعر وإحساس الفخر من تنطي هدية مرتبة، ويقنع الزبون يشتري بنهاية الفيديو.
+                      <strong className="text-vz-accent block">سر نجاحه:</strong> يركز على المشاعر وإحساس الفخر من تقدم هدية مرتبة، ويشجع الزبون يشتري بنهاية الفيديو.
                     </div>
                   </div>
                 </div>
@@ -1246,18 +1246,18 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">لا تروج لمنتج يفشل بعدين</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مقيم المنتجات قبل ما تشغل إعلان</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">لا تروج لمنتج يسببلك خسارة بعدين</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">قيم منتجك قبل لا تشغل الإعلان</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  جاوب بصدق على هاي الـ 6 أسئلة حتى نعطيك تقييم دقيق يوضحلك إذا منتجك راح ينجح وينباع زين بالإعلانات.
+                  جاوب بصراحة على هاي الـ 6 أسئلة حتى نعطيك تقييم دقيق يوضحلك إذا منتجك عنده فرصة ينجح وينباع زين من خلال الإعلانات.
                 </p>
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                    <span className="text-xs text-white font-bold">ربحك بالقطعة يعبر الـ 15,000 دينار؟</span>
+                    <span className="text-xs text-white font-bold">ربحك من القطعة أكثر من 15,000 دينار؟</span>
                     <div className="flex gap-2">
                       <button onClick={() => setT8Margin(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Margin ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
                       <button onClick={() => setT8Margin(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Margin ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
@@ -1265,7 +1265,7 @@ export default function VizionGrowthSuite() {
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                    <span className="text-xs text-white font-bold">تكدر تشرح فائدته وتلزم انتباه الزبون بأول 3 ثواني؟</span>
+                    <span className="text-xs text-white font-bold">تكدر تشرح فائدة المنتج وتجذب انتباه الزبون بأول 3 ثواني؟</span>
                     <div className="flex gap-2">
                       <button onClick={() => setT8Benefit(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Benefit ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
                       <button onClick={() => setT8Benefit(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Benefit ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
@@ -1273,7 +1273,7 @@ export default function VizionGrowthSuite() {
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                    <span className="text-xs text-white font-bold">موجود بكل مكان بالسوك (مثل الشورجة أو الكرادة) ومتروس؟</span>
+                    <span className="text-xs text-white font-bold">المنتج متوفر بكل مكان بالسوق (مثل الشورجة أو الكرادة) والناس شايفته بكل مكان؟</span>
                     <div className="flex gap-2">
                       <button onClick={() => setT8Problem(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Problem ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
                       <button onClick={() => setT8Problem(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Problem ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
@@ -1281,7 +1281,7 @@ export default function VizionGrowthSuite() {
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                    <span className="text-xs text-white font-bold">المنتج وزنه خفيف وسهل التغليف والتوصيل بدون ما ينكسر؟</span>
+                    <span className="text-xs text-white font-bold">المنتج خفيف وسهل التغليف والتوصيل وما ينكسر بسهولة؟</span>
                     <div className="flex gap-2">
                       <button onClick={() => setT8Ship(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Ship ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
                       <button onClick={() => setT8Ship(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Ship ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
@@ -1289,7 +1289,7 @@ export default function VizionGrowthSuite() {
                   </div>
 
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                    <span className="text-xs text-white font-bold">عندك فيديوهات إنت مصورها بيدك للمنتج (مو مسروقة)؟</span>
+                    <span className="text-xs text-white font-bold">عندك فيديوهات مصورها بنفسك للمنتج (مو مسروقة)؟</span>
                     <div className="flex gap-2">
                       <button onClick={() => setT8Video(true)} className={`px-3 py-1 rounded-lg text-xs font-bold ${t8Video ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>إي</button>
                       <button onClick={() => setT8Video(false)} className={`px-3 py-1 rounded-lg text-xs font-bold ${!t8Video ? "bg-vz-blue text-white" : "bg-white/5 text-white/60"} min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}>لا</button>
@@ -1301,7 +1301,7 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setT8ShowScore(true)}
                     className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
-                    <span>احسب نتيجة المنتج هسة</span>
+                    <span>احسب تقييم منتجك هسه</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
                   </button>
                 </div>
@@ -1319,21 +1319,21 @@ export default function VizionGrowthSuite() {
                       return (
                         <div className="space-y-2 text-xs">
                           <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                            <span className="font-black text-white">شكد المنتج مالتك جاهز ينباع:</span>
+                            <span className="font-black text-white">شكد منتجك جاهز للبيع:</span>
                             <span className="font-mono text-base font-black text-vz-accent">{score} / 100</span>
                           </div>
 
                           {score >= 75 ? (
                             <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-emerald-300 leading-relaxed font-light">
-                              <strong>منتجك بطل وجاهز</strong> بي كل الشغلات اللي تنجحه بسرعة. نصيحة ابدي صور فيديوهاتك وشغل حملتك فورا ولا تتردد.
+                              <strong>منتجك قوي وجاهز للبيع</strong> متوفر بيه كلشي يساعده ينجح بسرعة. نصيحتنا تبدي تصور فيديوهاتك وتشغل حملتك الإعلانية بدون تردد.
                             </div>
                           ) : score >= 50 ? (
                             <div className="p-3 bg-white/3 rounded-xl border border-white/5 text-vz-accent leading-relaxed font-light">
-                              <strong>جاهزية نص ونص:</strong> المنتج زين بس بي شوية مشاكل (مثل ربحه قليل أو متروس بالسوك). حاول ترتب سعرك أو تسوي عرض مميز حتى تتجنب الخسارة.
+                              <strong>جاهزيته متوسطة:</strong> المنتج زين، بس بيه شوية مشاكل (مثل الربح القليل أو إنه متوفر بكل مكان بالسوق). حاول تراجع سعرك أو تقدم عرض مميز حتى تتجنب الخسارة.
                             </div>
                           ) : (
                             <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-red-300 leading-relaxed font-light">
-                              <strong>مخاطرة جبيرة</strong> هذا المنتج ممكن يطير ميزانيتك لأن ربحه قليل أو صعب تتوصيله. لا تصرف فلوس إعلان عليه إلا إذا حليت هاي المشاكل وصورت فيديوهاتك بيدك.
+                              <strong>مخاطرة عالية</strong> هذا المنتج ممكن يضيع ميزانيتك لأن ربحه قليل أو توصيله صعب. لا تصرف عليه فلوس بالإعلانات إلا بعد ما تحل هاي المشاكل وتصوره بفيديوهات من تصويرك.
                             </div>
                           )}
                         </div>
@@ -1348,30 +1348,30 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">وين دتطير فلوسك؟</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">كاشف تسرب الأرباح</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">وين دتروح فلوسك؟</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">كاشف خسائر الأرباح</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  هواية أصحاب بيجات ما يدرون شكد ديخسرون من كروة الراجع وغرامات التوصيل. احسب خسارتك من الراجع هسة حتى توكف النزيف.
+                  هواية أصحاب البيجات ما يعرفون شكد يخسرون من كلفة الطلبات الراجعة وغرامات التوصيل. احسب خسارتك من الطلبات الراجعة هسه حتى تلحق توقف هالخسارة.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">الطلبات الكلية اللي تدزها بالشهر</label>
+                    <label className="text-xs font-bold text-white/80 block">مجموع الطلبيات اللي تدزها بالشهر</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t9Orders} onChange={(v) => setT9Orders(v)} unit="طلب" step={10} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">كروة التوصيل للراجع</label>
+                    <label className="text-xs font-bold text-white/80 block">كلفة توصيل الطلبية الراجعة</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t9ReturnFee} onChange={(v) => setT9ReturnFee(v)} unit="د.ع" step={500} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع الراجع</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع نسبة الطلبات الراجعة</label>
                     <div className="w-full">
                       <div className="w-full">
   <NumberField className="w-full" value={t9ReturnRate} onChange={(v) => setT9ReturnRate(v)} unit="%" min={0} max={80} step={1} />
@@ -1387,25 +1387,25 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-red-400 border-b border-white/5 pb-2">حجم تسرب الفلوس من مبيعاتك:</h4>
+                      <h4 className="text-xs font-black text-red-400 border-b border-white/5 pb-2">شكد الفلوس اللي تخسرها من مبيعاتك:</h4>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/60 block">الطرود اللي دترجعلك</span>
+                          <span className="text-[10px] text-white/60 block">عدد الطلبيات اللي ترجعلك</span>
                           <span className="text-sm font-black text-red-400 font-mono">{numReturned} طلب بالشهر</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/60 block">خسارة كروة الراجع</span>
+                          <span className="text-[10px] text-white/60 block">خسارتك من كلفة توصيل الطلبات الراجعة</span>
                           <span className="text-sm font-black text-red-400 font-mono">{(directLossWasted).toLocaleString()} دينار</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/60 block">إجمالي فلوسك اللي تطير بالهوى</span>
+                          <span className="text-[10px] text-white/60 block">مجموع الفلوس اللي تخسرها بدون ما تحس</span>
                           <span className="text-sm font-black text-vz-accent font-mono">{(totalWastedWithAds).toLocaleString()} دينار</span>
                         </div>
                       </div>
 
                       <p className="text-[11px] text-white/60 leading-relaxed font-light">
-                        * فكر بيها زين: ميزانية بقيمة <strong className="text-red-400 font-mono">{(totalWastedWithAds).toLocaleString()} دينار</strong> تروح شهريا عالفاضي لأن ما تتابع الزبون وما تأكد الطلبات زين. من تطبق الحلول مالتنا راح توكف هذا النزيف وترجع الفلوس لصافي جيبك فورا.
+                        * فكر بيها زين: مبلغ بحدود <strong className="text-red-400 font-mono">{(totalWastedWithAds).toLocaleString()} دينار</strong> يروح من عندك كل شهر بدون فايدة، لأن ما تتابع الزبون وما تأكد الطلبيات بشكل صحيح. من تطبق حلولنا، تكدر توقف هالخسارة وترجع هالفلوس لصافي ربحك مباشرة.
                       </p>
                     </div>
                   );
@@ -1417,13 +1417,13 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">ابني شغلك خطوة بخطوة</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مخطط شلون توصل لأول 100 طلب</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">ابني مشروعك خطوة بخطوة</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">خطة توصل بيها لأول 100 طلب</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  خطة مرتبة تمشي بيها يوم بيومه. اختار الأسبوع وتابع مهامك اليومية واضغط عالمهمة من تخلصها حتى تشوف مشروعك شلون يتقدم.
+                  خطة واضحة تمشي عليها يوم بيوم. اختار الأسبوع وتابع مهامك اليومية، وكلما تخلص مهمة اضغط عليها حتى تتابع شكد مشروعك ديتقدم.
                 </p>
 
                 <div className="flex justify-between border-b border-white/10 pb-2">
@@ -1461,7 +1461,7 @@ export default function VizionGrowthSuite() {
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 flex justify-between items-center text-xs">
-                  <span className="text-white/60 font-light">معدل التقدم بمشروعك:</span>
+                  <span className="text-white/60 font-light">نسبة إنجاز مشروعك:</span>
                   <strong className="text-vz-accent font-mono">{Math.round((t10CheckedDays.length / 30) * 100)}% ({t10CheckedDays.length} / 30 يوم)</strong>
                 </div>
               </div>
@@ -1471,46 +1471,46 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">اعرف وين الخلل بـ 5 دقايق</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">ليش ما دتجيني مبيعات زينة؟</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">اكتشف وين المشكلة خلال 5 دقايق</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">ليش مبيعاتي مو بالمستوى المطلوب؟</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  جاوب بصدق على هاي الأسئلة الأربعة عن أرقامك هسة، وراح نكشفلك بالضبط الخلل وين صاير بشغلك وشلون تحله فورا.
+                  جاوب بصراحة على هاي الأسئلة الأربعة عن أرقام شغلك هسه، وراح نحددلك بالضبط وين المشكلة وشلون تكدر تحلها مباشرة.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4 text-xs text-right">
                   <div className="space-y-1.5">
-                    <label className="text-white/80 font-bold block">١. شكد نسبة النقر عالفيديو مالتك؟</label>
+                    <label className="text-white/80 font-bold block">١. شكد نسبة النقر على الفيديو مالك؟</label>
                     <select value={t11CTR} onChange={(e) => setT11CTR(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
-                      <option value="low">ضعيفة (أقل من 1% - الزباين يعبرون الفيديو)</option>
-                      <option value="medium">متوسطة (1% لـ 2%)</option>
-                      <option value="high">قوية (أكثر من 2% - التفاعل عالي)</option>
+                      <option value="low">ضعيفة (أقل من 1%، أغلب الناس يتجاوزون الفيديو)</option>
+                      <option value="medium">متوسطة (من 1% إلى 2%)</option>
+                      <option value="high">قوية (أكثر من 2%، التفاعل عالي)</option>
                     </select>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-white/80 font-bold block">٢. شلون الرسايل اللي تجيك للبيج؟</label>
+                    <label className="text-white/80 font-bold block">٢. شلون وضع الرسائل اللي توصلك على البيج؟</label>
                     <select value={t11Messages} onChange={(e) => setT11Messages(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
-                      <option value="low">قليلة كلش وميتة</option>
-                      <option value="high">رسايل هواية ومستمرة يومية</option>
+                      <option value="low">قليلة كلش، وماكو تفاعل</option>
+                      <option value="high">رسائل هواية وتوصل بشكل يومي</option>
                     </select>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-white/80 font-bold block">٣. شلون سرعتك وطريقتك بالرد عالخاص؟</label>
+                    <label className="text-white/80 font-bold block">٣. شكد سرعتك وشلون أسلوبك بالرد على الخاص؟</label>
                     <select value={t11Speed} onChange={(e) => setT11Speed(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
-                      <option value="slow">بطيء (أكثر من ساعتين) أو أرد رد جاهز وناشف</option>
-                      <option value="fast">كلش سريع (أقل من 15 دقيقة) وبأسلوب حلو</option>
+                      <option value="slow">بطيء (أكثر من ساعتين) أو أستخدم ردود جاهزة وباردة</option>
+                      <option value="fast">سريع كلش (أقل من 15 دقيقة) وأرد بأسلوب حلو</option>
                     </select>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-white/80 font-bold block">٤. شكد نسبة استلام طلباتك من تطلع توصيل؟</label>
+                    <label className="text-white/80 font-bold block">٤. شكد نسبة الزباين اللي يستلمون طلبياتهم من تطلع للتوصيل؟</label>
                     <select value={t11Delivery} onChange={(e) => setT11Delivery(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:border-white/35 outline-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">
-                      <option value="low">تعبانة (أقل من 70% راجع هواية)</option>
-                      <option value="high">ممتازة (أكثر من 70% الناس تستلم)</option>
+                      <option value="low">ضعيفة (أقل من 70%، والطلبات الراجعة هواية)</option>
+                      <option value="high">ممتازة (أكثر من 70% من الزباين يستلمون)</option>
                     </select>
                   </div>
                 </div>
@@ -1519,47 +1519,47 @@ export default function VizionGrowthSuite() {
                   <button                     onClick={() => setT11ShowResult(true)}
                     className="btn btn-primary w-full py-3 text-white font-black text-sm py-3.5 rounded-xl flex justify-center items-center gap-2 min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
                   >
-                    <span>اعرف المشكلة وعالجها فورا</span>
+                    <span>اعرف المشكلة وحلها مباشرة</span>
                     <ArrowRight className="w-4 h-4 transform rotate-180" />
                   </button>
                 </div>
 
                 {t11ShowResult && (
                   <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down text-xs">
-                    <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">تقرير الخلل وين صاير بمشروعك:</h4>
+                    <h4 className="text-sm font-black text-vz-accent border-b border-white/5 pb-2">تقرير يوضحلك وين المشكلة بمشروعك:</h4>
 
                     {t11CTR === "low" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
-                        <strong>الخلل الأول: إعلانك ممل وما بي بداية قوية</strong>
-                        <p className="text-white/70 leading-relaxed font-light">الفيديو مالتك تعبان وكلفة الرسالة راح تكون غالية لأن الناس تعبر إعلانك وما تباوعله. الحل: ارجع صور المنتج بيدك بكاميرا تلفون وبين فائدته بأول 3 ثواني.</p>
+                        <strong>المشكلة الأولى: إعلانك ممل وما بيه بداية تشد الانتباه</strong>
+                        <p className="text-white/70 leading-relaxed font-light">الفيديو مالك مو جذاب، ولهذا كلفة الرسالة راح تكون عالية، لأن الناس تتجاوز إعلانك وما تهتم تشوفه. الحل: ارجع صور المنتج بنفسك بكاميرا تلفونك، ووضح فائدته بأول 3 ثواني.</p>
                       </div>
                     )}
 
                     {t11Messages === "low" && t11CTR !== "low" && (
                       <div className="p-3 bg-white/3 rounded-xl border border-white/5 space-y-1 text-vz-accent">
-                        <strong>الخلل الثاني: الاستهداف غلط أو الفلوس قليلة</strong>
-                        <p className="text-white/70 leading-relaxed font-light">المشكلة مو بالفيديو، المشكلة بفلوس الإعلان قليلة أو دتستهدف غلط بمدير الإعلانات. الحل: شغل حملة رسائل مفتوحة وبدون ما تحدد اهتمامات معقدة وخلي الفيسبوك يدورلك عالزباين.</p>
+                        <strong>المشكلة الثانية: الاستهداف مو صحيح أو ميزانية الإعلان قليلة</strong>
+                        <p className="text-white/70 leading-relaxed font-light">المشكلة مو بالفيديو، المشكلة يا إما ميزانية الإعلان قليلة أو الاستهداف مو مضبوط بمدير الإعلانات. الحل: شغل حملة رسائل باستهداف مفتوح، وبدون تحديد اهتمامات معقدة، وخلي فيسبوك يوصل للزباين المناسبين.</p>
                       </div>
                     )}
 
                     {t11Speed === "slow" && t11Messages === "high" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
-                        <strong>الخلل الثالث: دتأخر بالرد وأسلوبك ناشف</strong>
-                        <p className="text-white/70 leading-relaxed font-light">دتخسر 80% من مبيعاتك لأنك تعوف الزبون ينتظر ساعات لحد ما يطير واهسه. الحل: استخدم 'البصمة الصوتية الدافية' وجاوب خلال 15 دقيقة كحد أقصى.</p>
+                        <strong>المشكلة الثالثة: تتأخر بالرد وأسلوبك مو مشجع</strong>
+                        <p className="text-white/70 leading-relaxed font-light">ممكن تخسر 80% من مبيعاتك لأنك تخلي الزبون ينتظر بالساعات لحد ما يغير رأيه ويشتري من غيرك. الحل: استخدم أسلوب الرد الصوتي الدافي، وجاوب خلال 15 دقيقة كحد أقصى.</p>
                       </div>
                     )}
 
                     {t11Delivery === "low" && (
                       <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 space-y-1 text-red-300">
-                        <strong>الخلل الرابع: ما دتأكد الطلبات زين</strong>
-                        <p className="text-white/70 leading-relaxed font-light">إنت دتطلع طلبيات عشوائية وبدون ما تخابرهم وتأكد عليهم، فهالشي يخلي المندوب يسجلها راجع وتخسر كروة. الحل: خابر أكد الطلب فورا ودز فيديو للواتساب يبين تجهيز طلبهم.</p>
+                        <strong>المشكلة الرابعة: ما تأكد الطلبيات بشكل صحيح</strong>
+                        <p className="text-white/70 leading-relaxed font-light">إنت تطلع طلبيات بدون ما تتواصل ويا الزباين وتتأكد من طلباتهم، وهذا يخلي المندوب يسجلها راجعة وتخسر كلفة التوصيل. الحل: اتصل بالزبون وأكد الطلب مباشرة، ودزله فيديو على الواتساب يبين شلون دتجهز طلبيته.</p>
                       </div>
                     )}
 
                     {t11CTR === "high" && t11Messages === "high" && t11Speed === "fast" && t11Delivery === "high" && (
                       <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 space-y-1 text-emerald-300">
-                        <strong>مشروعك لوز وشغلك مضبوط!</strong>
-                        <p className="text-white/70 leading-relaxed font-light">كل الشغل ديشتغل تمام. ننصحك هسه تزيد ميزانية الإعلان شوية شوية وتجيب منتجات جديدة حتى تضاعف أرباحك.</p>
+                        <strong>مشروعك تمام وشغلك مضبوط</strong>
+                        <p className="text-white/70 leading-relaxed font-light">كلشي بشغلك ديمشي بشكل صحيح. ننصحك هسه تزيد ميزانية الإعلان بالتدريج وتضيف منتجات جديدة حتى تضاعف أرباحك.</p>
                       </div>
                     )}
                   </div>
@@ -1571,30 +1571,30 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">توقع النتائج قبل لا تصرف وتخسر</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">متوقع المبيعات والأرباح الإعلانية</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">توقع النتائج قبل لا تصرف فلوسك</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">توقع المبيعات والأرباح من الإعلانات</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  قبل لا تشغل أي حملة ترويجية عالفيس أو الانستا، دخل الميزانية اللي ناوي تصرفها حتى تشوف شكد تتوقع مبيعات وطلبات وصافي فلوس راح تجيك.
+                  قبل لا تشغل أي حملة إعلانية على فيسبوك أو إنستغرام، دخل الميزانية اللي ناوي تصرفها حتى تعرف شكد ممكن تجيك مبيعات وطلبيات وشكد يبقى عندك ربح صافي.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد ناوي تصرف عالحملة</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد ميزانية الحملة اللي ناوي تصرفها</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t12Budget} onChange={(v) => setT12Budget(v)} unit="د.ع" step={10000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع سعر الرسالة</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع كلفة الرسالة الواحدة</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t12MsgCost} onChange={(v) => setT12MsgCost(v)} unit="د.ع" step={250} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">شكد نسبة الرسايل اللي تصير طلبات</label>
+                    <label className="text-xs font-bold text-white/80 block">شكد تتوقع نسبة الرسائل اللي تتحول إلى طلبيات</label>
                     <div className="flex items-center gap-2">
                       <div className="w-full">
   <NumberField className="w-full" value={t12ConvRate} onChange={(v) => setT12ConvRate(v)} unit="%" min={1} max={100} step={1} />
@@ -1611,15 +1611,15 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">نتائج توقع أرباح الحملة:</h4>
+                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">النتائج المتوقعة للحملة الإعلانية:</h4>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/60 block">الرسايل اللي راح تجيك متوقعة</span>
+                          <span className="text-[10px] text-white/60 block">عدد الرسائل المتوقع توصلك</span>
                           <span className="text-sm font-black text-white font-mono">{expectedMessages} رسالة</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/60 block">الطلبات المؤكدة اللي راح تطلعها</span>
+                          <span className="text-[10px] text-white/60 block">عدد الطلبيات المؤكد تطلعها</span>
                           <span className="text-sm font-black text-emerald-400 font-mono">{expectedOrders} طلب</span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
@@ -1637,24 +1637,24 @@ export default function VizionGrowthSuite() {
               <div className="space-y-6 text-right animate-fade-in">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[10px] text-vz-accent font-bold">لا تصرف فلوسك مخربط</span>
-                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">مخطط ميزانية الإعلان والفلوس</h3>
+                    <span className="text-[10px] text-vz-accent font-bold">لا تصرف ميزانيتك بدون تخطيط</span>
+                    <h3 className="text-xl md:text-2xl font-black text-white mt-0.5">خطط ميزانية إعلاناتك وأرباحك</h3>
                   </div>
                 </div>
 
                 <p className="text-xs text-white/60 leading-relaxed font-light">
-                  حدد الأرباح الصافية اللي تريد توصللها بالشهر وهامش ربح منتجك الصافي، والنظام راح يخططلك الميزانية الإعلانية التقريبية اللي تحتاجها حتى توصل لهدفك.
+                  حدد صافي الربح اللي تريد تحققه بالشهر، وهامش الربح الصافي من منتجك، والنظام راح يحسبلك ميزانية الإعلانات التقريبية اللي تحتاجها حتى توصل لهدفك.
                 </p>
 
                 <div className="grid grid-cols-1 gap-y-5 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">صافي الربح اللي تريد تطلعه بالشهر</label>
+                    <label className="text-xs font-bold text-white/80 block">صافي الربح اللي تريد تحققه بالشهر</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t13TargetProfit} onChange={(v) => setT13TargetProfit(v)} unit="د.ع" step={50000} />
 </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-white/80 block">هامش ربح القطعة الصافي (قبل لا تحسب الإعلان)</label>
+                    <label className="text-xs font-bold text-white/80 block">صافي ربح القطعة (قبل حساب مصاريف الإعلان)</label>
                     <div className="w-full">
   <NumberField className="w-full" value={t13ProfitMargin} onChange={(v) => setT13ProfitMargin(v)} unit="د.ع" step={500} />
 </div>
@@ -1667,17 +1667,17 @@ export default function VizionGrowthSuite() {
 
                   return (
                     <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">الخطة المالية المقترحة لهدفك:</h4>
+                      <h4 className="text-xs font-black text-vz-accent border-b border-white/5 pb-2">الخطة المالية المقترحة حتى تحقق هدفك:</h4>
                       
                       <div className="grid grid-cols-1 gap-y-5 gap-3 text-center text-xs">
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/60 block">الطلبات اللي لازم تبيعها بالشهر</span>
+                          <span className="text-[10px] text-white/60 block">عدد الطلبيات اللي لازم تبيعها بالشهر</span>
                           <span className="text-sm font-black text-emerald-400 font-mono">
                             {requiredOrders > 0 && requiredOrders < 100000 ? requiredOrders : "هامش ربحك قليل كلش"} طلب
                           </span>
                         </div>
                         <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                          <span className="text-[10px] text-white/60 block">ميزانية الإعلان التقريبية اللي تحتاجها</span>
+                          <span className="text-[10px] text-white/60 block">ميزانية الإعلانات التقريبية اللي تحتاجها</span>
                           <span className="text-sm font-black text-vz-accent font-mono">
                             {estimatedBudgetRequired > 0 && estimatedBudgetRequired < 1000000000 ? (estimatedBudgetRequired).toLocaleString() : 0} دينار
                           </span>
@@ -1685,7 +1685,7 @@ export default function VizionGrowthSuite() {
                       </div>
 
                       <p className="text-[10px] text-white/60 text-center leading-relaxed">
-                        * الأرقام الفوك تقريبية وتعتمد على جودة استهدافك وتصميم إعلانك وشلون تتعامل ويا المناديب والتوصيل.
+                        * الأرقام المذكورة تقريبية، وتعتمد على دقة الاستهداف، وجودة تصميم الإعلان، وطريقة تعاملك ويا المندوبين وشركات التوصيل.
                       </p>
                     </div>
                   );

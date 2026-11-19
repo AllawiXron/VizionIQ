@@ -9,25 +9,25 @@ type Key = "price" | "productCost" | "delivery" | "cpa" | "costPerMessage" | "cl
 const FIELDS: { key: Key; label: string; unit: string; step: number }[] = [
   { key: "price", label: "سعر البيع", unit: "د.ع", step: 1000 },
   { key: "productCost", label: "كلفة المنتج", unit: "د.ع", step: 500 },
-  { key: "delivery", label: "كروة التوصيل", unit: "د.ع", step: 500 },
+  { key: "delivery", label: "كلفة التوصيل", unit: "د.ع", step: 500 },
   { key: "returnRate", label: "نسبة الراجع", unit: "%", step: 1 },
 ];
 const AD_BY_MESSAGE: typeof FIELDS = [
   { key: "costPerMessage", label: "كلفة الرسالة", unit: "$", step: 0.1 },
-  { key: "closeRate", label: "نسبة الإغلاق", unit: "%", step: 1 },
+  { key: "closeRate", label: "نسبة تحويل الرسائل لطلبات", unit: "%", step: 1 },
 ];
-const AD_BY_CPA: typeof FIELDS = [{ key: "cpa", label: "كلفة الإعلان للطلب", unit: "د.ع", step: 500 }];
+const AD_BY_CPA: typeof FIELDS = [{ key: "cpa", label: "كلفة الإعلان لكل طلب", unit: "د.ع", step: 500 }];
 
 export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initial: CalcInput; onSaveToProfile?: (p: BusinessProfile) => void }) {
   const [v, setV] = useState<CalcInput>(initial);
   const [saved, setSaved] = useState(false);
   const byMessage = initial.cpa === undefined && (initial.costPerMessage !== undefined || initial.closeRate !== undefined);
   const r = useMemo(() => computeUnitEconomics(v), [v]);
-  const fields = [...FIELDS, ...(byMessage ? AD_BY_MESSAGE : AD_BY_CPA), { key: "ordersPerDay" as Key, label: "طلبات باليوم", unit: "", step: 1 }];
+  const fields = [...FIELDS, ...(byMessage ? AD_BY_MESSAGE : AD_BY_CPA), { key: "ordersPerDay" as Key, label: "عدد الطلبيات باليوم", unit: "", step: 1 }];
 
   const tone = r.verdict === "profit" ? "text-emerald-300" : r.verdict === "thin" ? "text-amber-300" : "text-rose-300";
   const ring = r.verdict === "profit" ? "border-emerald-400/30 bg-emerald-400/[0.07]" : r.verdict === "thin" ? "border-amber-400/30 bg-amber-400/[0.07]" : "border-rose-400/30 bg-rose-400/[0.07]";
-  const verdictText = r.verdict === "profit" ? "الحسبة رابحة" : r.verdict === "thin" ? "ربح ضعيف، أي تذبذب يقلبه خسارة" : "الحسبة خسرانة بهالأرقام";
+  const verdictText = r.verdict === "profit" ? "البيع مربح" : r.verdict === "thin" ? "الربح قليل، وأي تغير بسيط ممكن يحولك للخسارة" : "بهالأرقام إنت دتخسر";
 
   return (
     <div className="my-1 rounded-3xl border border-white/12 bg-gradient-to-b from-white/[0.07] to-white/[0.02] overflow-hidden" dir="rtl">
@@ -36,15 +36,15 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
           <span className="w-7 h-7 rounded-xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center">
             <Calculator className="w-4 h-4 text-white" />
           </span>
-          حسبة الطلب الواحد
+          حسابات الطلب الواحد
         </div>
-        <span className="text-[11px] text-white/50 font-bold">غير أي رقم وتتحدث فورا</span>
+        <span className="text-[11px] text-white/50 font-bold">غير أي رقم وشوف النتيجة مباشرة</span>
       </div>
 
       <div className={`mx-3 mt-3 rounded-2xl border px-4 py-3 ${ring}`}>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-[12px] font-bold text-white/60">الربح الصافي لكل طلب واصل</div>
+            <div className="text-[12px] font-bold text-white/60">صافي الربح من كل طلب مستلم</div>
             <div className={`text-2xl sm:text-3xl font-black tabular-nums ${tone}`}>
               <span dir="ltr" style={{ unicodeBidi: "isolate" }}>
                 {r.net >= 0 ? "+" : "−"}
@@ -61,17 +61,17 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
       </div>
 
       <div className="grid grid-cols-2 gap-2 p-3">
-        <Stat label="أعلى كلفة إعلان للطلب (حد التعادل)" value={r.breakEvenCpa > 0 ? formatIqd(r.breakEvenCpa) : "ماكو، المنتج خسران حتى بدون إعلان"} />
-        {r.breakEvenCostPerMessage !== undefined && <Stat label="أعلى كلفة رسالة تتحملها" value={`$${r.breakEvenCostPerMessage.toFixed(2)}`} highlight />}
-        {r.breakEvenCloseRate !== undefined && <Stat label="أقل نسبة إغلاق تحتاجها" value={`${r.breakEvenCloseRate.toFixed(1)}%`} />}
-        <Stat label="كلفة الإعلان للطلب هسة" value={formatIqd(r.cpa)} />
-        <Stat label="حصة الراجع على كل طلب" value={formatIqd(r.returnShare)} />
-        {r.monthlyNet !== undefined && <Stat label="الصافي الشهري المتوقع" value={formatIqd(r.monthlyNet)} highlight />}
+        <Stat label="أعلى كلفة إعلان للطلب (حد التعادل)" value={r.breakEvenCpa > 0 ? formatIqd(r.breakEvenCpa) : "ماكو، المنتج خسران حتى بدون إعلانات"} />
+        {r.breakEvenCostPerMessage !== undefined && <Stat label="أعلى كلفة رسالة تكدر تتحملها" value={`$${r.breakEvenCostPerMessage.toFixed(2)}`} highlight />}
+        {r.breakEvenCloseRate !== undefined && <Stat label="أقل نسبة تحويل لطلبات تحتاجها" value={`${r.breakEvenCloseRate.toFixed(1)}%`} />}
+        <Stat label="كلفة الإعلان لكل طلب حاليا" value={formatIqd(r.cpa)} />
+        <Stat label="نصيب كل طلب من خسائر الطلبات الراجعة" value={formatIqd(r.returnShare)} />
+        {r.monthlyNet !== undefined && <Stat label="صافي الربح الشهري المتوقع" value={formatIqd(r.monthlyNet)} highlight />}
       </div>
 
       <details className="group border-t border-white/10">
         <summary className="list-none cursor-pointer px-4 py-2.5 text-xs font-bold text-vz-accent flex items-center justify-between">
-          <span>عدل الأرقام</span>
+          <span>تعديل الأرقام</span>
           <span className="transition-transform group-open:rotate-180">⌄</span>
         </summary>
         <div className="grid grid-cols-2 gap-2 px-3 pb-3">
@@ -121,7 +121,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
             }`}
           >
             {saved ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
-            {saved ? "انحفظت بملف مشروعك" : "احفظ هالأرقام بملف مشروعي"}
+            {saved ? "انحفظت المعلومات بملف مشروعك" : "احفظ هاي الأرقام بملف مشروعي"}
           </button>
         </div>
       )}

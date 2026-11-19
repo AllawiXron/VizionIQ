@@ -68,7 +68,7 @@ function Sorter({ d }: { d: { prompt: string; buckets: { id: string; label: stri
               </div>
               {p !== undefined && (
                 <motion.p initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`mt-2 text-[14px] font-bold leading-relaxed ${ok ? "text-emerald-200" : "text-red-200"}`}>
-                  {ok ? it.why : "مو هنا، جرب مرة ثانية."}
+                  {ok ? it.why : "مو هذا المكان، جرب مرة ثانية."}
                 </motion.p>
               )}
             </div>
@@ -133,7 +133,7 @@ function Flip({ d }: { d: { prompt: string; cards: { product: string; says: stri
                 <RotateCcw className="w-4 h-4 text-white/40 shrink-0" />
               </span>
               <motion.span key={o ? "r" : "s"} initial={{ opacity: 0, rotateX: -60 }} animate={{ opacity: 1, rotateX: 0 }} transition={ease} className="block">
-                <span className={`block text-[12px] font-black mb-1 ${o ? "text-emerald-200" : "text-white/45"}`}>{o ? "ليش يشتريها فعلا" : "شنو تكتب الصفحة"}</span>
+                <span className={`block text-[12px] font-black mb-1 ${o ? "text-emerald-200" : "text-white/45"}`}>{o ? "ليش يشتريها فعلا" : "شنو تكتب بالصفحة"}</span>
                 <span className="block text-[15px] sm:text-[16px] text-white/90 leading-relaxed">{o ? c.real : c.says}</span>
               </motion.span>
             </button>
@@ -223,7 +223,7 @@ function AdLibrary({ d, shown }: { d: { query: string; ads: LibAd[]; sortedNote:
       </div>
       <div className="mt-2 flex items-center justify-between text-[13px] font-bold text-white/55">
         <span>{d.ads.length} إعلانات شغالة</span>
-        <span className={sorted ? "text-white" : ""}>{sorted ? "مرتبة من الأقدم" : "ترتيب عشوائي"}</span>
+        <span className={sorted ? "text-white" : ""}>{sorted ? "مرتبة من الأقدم للأحدث" : "ترتيب عشوائي"}</span>
       </div>
       <div className="mt-3 space-y-3">
         {list.map((a, i) => (
@@ -343,7 +343,7 @@ function Budget({ d }: { d: { total: number; salaryDay: number; note: string } }
           <p className="text-[20px] font-black text-white">{Math.round(even)} طلب</p>
         </div>
         <div className="rounded-2xl bg-emerald-400/[0.08] border border-emerald-300/25 p-3.5">
-          <p className="text-[13px] font-bold text-white/50">بتوزيعك</p>
+          <p className="text-[13px] font-bold text-white/50">حسب توزيعك</p>
           <motion.p key={Math.round(orders)} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="text-[20px] font-black text-emerald-200">{Math.round(orders)} طلب</motion.p>
         </div>
       </div>
@@ -359,7 +359,7 @@ function Seasons({ d }: { d: { seasons: Season[]; rule: string } }) {
   const s = d.seasons[i];
   return (
     <div>
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex flex-wrap gap-2 pb-1">
         {d.seasons.map((x, j) => (
           <button key={x.name} type="button" onClick={() => setI(j)} className={`shrink-0 min-h-[44px] px-4 rounded-xl text-[15px] font-black border transition-colors duration-200 ${j === i ? "bg-white text-[#040e33] border-white" : "bg-white/[0.04] border-white/12 text-white/80"}`}>
             {x.name}
@@ -369,7 +369,7 @@ function Seasons({ d }: { d: { seasons: Season[]; rule: string } }) {
       <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`mt-4 ${card} p-4 space-y-3`}>
         <p className="text-[13px] font-black text-vz-accent">{s.when}</p>
         <div>
-          <p className="text-[13px] font-bold text-white/50">شنو يزيد عليه الطلب</p>
+          <p className="text-[13px] font-bold text-white/50">شنو يزيد الطلب عليه</p>
           <p className="text-[16px] text-white leading-relaxed">{s.sells}</p>
         </div>
         <div>
@@ -394,7 +394,7 @@ function Provinces({ d }: { d: { rows: Prov[]; start: number; note: string } }) 
   return (
     <div>
       <div className="flex gap-2 mb-3">
-        {([["ret", "رتب حسب الراجع"], ["fee", "رتب حسب الكروة"]] as const).map(([k, l]) => (
+        {([["ret", "رتب حسب عدد الطلبات الراجعة"], ["fee", "رتب حسب كلفة التوصيل"]] as const).map(([k, l]) => (
           <button key={k} type="button" onClick={() => setBy(k)} className={`min-h-[40px] px-3.5 rounded-xl text-[14px] font-black border ${by === k ? "bg-white text-[#040e33] border-white" : "bg-white/[0.04] border-white/12 text-white/80"}`}>{l}</button>
         ))}
       </div>

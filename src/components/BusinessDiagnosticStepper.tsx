@@ -30,66 +30,66 @@ interface BusinessDiagnosticStepperProps {
 
 const BUSINESS_TYPES = [
   { id: "fashion", label: "ملابس وأزياء وأحذية", icon: "" },
-  { id: "cosmetics", label: "تجميل، عناية وعطور", icon: "" },
-  { id: "electronics", label: "إلكترونيات واكسسوارات", icon: "" },
-  { id: "home", label: "منزل، مطبخ وديكور", icon: "" },
+  { id: "cosmetics", label: "تجميل وعناية وعطور", icon: "" },
+  { id: "electronics", label: "إلكترونيات وإكسسوارات", icon: "" },
+  { id: "home", label: "منزل ومطبخ وديكور", icon: "" },
   { id: "supplements", label: "مكملات وصحة ولياقة", icon: "" },
-  { id: "watches_accessories", label: "ساعات وهدايا واكسسوارات", icon: "" },
-  { id: "services", label: "خدمات / دورات / رقمية", icon: "" },
-  { id: "other", label: "مجال تجاري آخر", icon: "" },
+  { id: "watches_accessories", label: "ساعات وهدايا وإكسسوارات", icon: "" },
+  { id: "services", label: "خدمات / دورات / منتجات رقمية", icon: "" },
+  { id: "other", label: "مجال تجاري ثاني", icon: "" },
 ];
 
 const SALES_CHANNELS = [
-  { id: "instagram", label: "انستغرام ديركت (Instagram)", icon: "" },
-  { id: "facebook", label: "فيسبوك ماسنجر (Facebook)", icon: "" },
+  { id: "instagram", label: "رسائل إنستغرام (Instagram)", icon: "" },
+  { id: "facebook", label: "ماسنجر فيسبوك (Facebook)", icon: "" },
   { id: "whatsapp", label: "واتساب بزنس (WhatsApp)", icon: "" },
   { id: "website", label: "متجر إلكتروني / صفحة هبوط", icon: "" },
-  { id: "multi", label: "قنوات متعددة بالتوازي", icon: "" },
+  { id: "multi", label: "أكثر من قناة بيع بنفس الوقت", icon: "" },
 ];
 
 const DELIVERY_AREAS = [
   { id: "all_iraq", label: "كل محافظات العراق (بغداد + 17 محافظة)" },
-  { id: "baghdad_only", label: "بس بغداد وأطرافها" },
+  { id: "baghdad_only", label: "بغداد وأطرافها فقط" },
   { id: "baghdad_and_center", label: "بغداد والفرات الأوسط" },
-  { id: "kurdistan", label: "بس إقليم كردستان" },
-  { id: "south", label: "بس المحافظات الجنوبية" },
+  { id: "kurdistan", label: "إقليم كردستان فقط" },
+  { id: "south", label: "المحافظات الجنوبية فقط" },
 ];
 
 const MAIN_PROBLEMS = [
   {
     id: "high_cpa",
-    title: "رسائل هواية بس ماكو مبيعات (ضعف الإغلاق)",
-    desc: "الزبائن يستفسرون عن السعر ويختفون دون تأكيد الطلب.",
+    title: "رسائل هواية بس المبيعات قليلة (ضعف تحويل الزبائن)",
+    desc: "الزبائن يسألون عن السعر وبعدين يختفون بدون ما يأكدون الطلب.",
     icon: "",
   },
   {
     id: "ad_cost",
-    title: "كلفة الرسالة بالإعلانات كلش عالية (CPA)",
-    desc: "الإعلانات تستهلك الميزانية بدون نتائج كافية.",
+    title: "كلفة الرسالة من الإعلانات عالية كلش (CPA)",
+    desc: "الإعلانات تصرف الميزانية بدون ما تجيب نتائج كافية.",
     icon: "",
   },
   {
     id: "high_returns",
-    title: "نسبة المرتجعات والراجع عالية بالمحافظات",
-    desc: "الطلبات تخرج وتعود راجعة بنسبة تتجاوز 20%-30%.",
+    title: "نسبة الطلبات الراجعة عالية بالمحافظات",
+    desc: "الطلبات تطلع للتوصيل وترجع بنسبة تتجاوز 20%-30%.",
     icon: "",
   },
   {
     id: "low_margin",
-    title: "هامش الربح ضعيف بعد خصم التوصيل والإعلانات",
-    desc: "اكو مبيعات، بس الربح الصافي بآخر الشهر قليل.",
+    title: "هامش الربح قليل بعد خصم التوصيل والإعلانات",
+    desc: "أكو مبيعات، بس صافي الربح بنهاية الشهر قليل.",
     icon: "",
   },
   {
     id: "scaling",
-    title: "صعوبة التوسع وزيادة الميزانية الإعلانية",
-    desc: "كلما أرفع الميزانية تخرب النتائج وترتفع التكلفة.",
+    title: "صعوبة بالتوسع وزيادة ميزانية الإعلانات",
+    desc: "كلما أزيد الميزانية، النتائج تضعف والكلفة ترتفع.",
     icon: "",
   },
   {
     id: "other_problem",
-    title: "تحدي آخر يحتاج استشارة مخصصة",
-    desc: "أريد تشخيصا شاملا لجميع أجزاء مشروعي.",
+    title: "مشكلة ثانية تحتاج استشارة خاصة",
+    desc: "أريد تشخيص كامل لكل جوانب مشروعي.",
     icon: "",
   },
 ];
@@ -122,10 +122,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
     initialProfile?.returnRate ? String(initialProfile.returnRate) : ""
   );
   const [deliveryAreas, setDeliveryAreas] = useState<string>(
-    initialProfile?.deliveryAreas || "كل محافظات العراق (بغداد + 17 محافظة)"
-  );
-  const [mainProblem, setMainProblem] = useState<string>(
-    initialProfile?.mainProblem || "رسائل هواية بس ماكو مبيعات (ضعف الإغلاق)"
+ initialProfile?.deliveryAreas || "كل محافظات العراق (بغداد + 17 محافظة)"
+ );
+ const [mainProblem, setMainProblem] = useState<string>(
+    initialProfile?.mainProblem || "رسائل هواية بس المبيعات قليلة (ضعف تحويل الزبائن)"
   );
   const [notes, setNotes] = useState<string>(initialProfile?.notes || "");
 
@@ -169,22 +169,22 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
     if (step === 1) {
       if (!productOrService.trim()) {
-        errors.productOrService = "رجاء كتابة اسم المنتج أو الخدمة باختصار (مثال: حقائب نسائية، ساعات رجالية).";
+        errors.productOrService = "يرجى كتابة اسم المنتج أو الخدمة باختصار (مثال: حقائب نسائية، ساعات رجالية).";
       }
     } else if (step === 2) {
       const priceVal = validateDiagnosticNumericInput(sellingPriceStr, "سعر البيع", { min: 1000 });
       if (!priceVal.isValid) {
-        errors.sellingPrice = priceVal.error || "رجاء إدخال سعر بيع صحيح بالدينار.";
+        errors.sellingPrice = priceVal.error || "يرجى إدخال سعر بيع صحيح بالدينار.";
       }
 
       const costVal = validateDiagnosticNumericInput(productCostStr, "كلفة المنتج", { min: 0 });
       if (!costVal.isValid) {
-        errors.productCost = costVal.error || "رجاء إدخال كلفة صحيحة للمنتج بالدينار.";
+        errors.productCost = costVal.error || "يرجى إدخال كلفة صحيحة للمنتج بالدينار.";
       }
 
       if (priceVal.isValid && costVal.isValid && priceVal.value !== null && costVal.value !== null) {
         if (costVal.value >= priceVal.value) {
-          errors.productCost = "كلفة المنتج لازم تكون أقل من سعر البيع حتى يبقى ربح.";
+          errors.productCost = "لازم تكون كلفة المنتج أقل من سعر البيع حتى يبقى عندك ربح.";
         }
       }
     } else if (step === 3) {
@@ -197,7 +197,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
         if (!orderVal.isValid) errors.dailyOrders = orderVal.error!;
       }
       if (returnRateStr.trim()) {
-        const retVal = validateDiagnosticNumericInput(returnRateStr, "نسبة المرتجعات", { min: 0, max: 100 });
+        const retVal = validateDiagnosticNumericInput(returnRateStr, "نسبة الطلبات الراجعة", { min: 0, max: 100 });
         if (!retVal.isValid) errors.returnRate = retVal.error!;
       }
     }
@@ -258,10 +258,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-bold text-vz-accent">
-                شخص مشروعك مع مستشار فيزيون
+                شخص مشروعك ويا مستشار فيزيون
               </h2>
               <p className="text-xs text-slate-400">
-                تشخيص ذكي مبني على أرقام وسيكولوجية السوق العراقي
+                تشخيص ذكي يعتمد على الأرقام وفهم سلوك الزبون العراقي
               </p>
             </div>
           </div>
@@ -269,7 +269,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             <button               onClick={onCancel}
               className="text-xs text-slate-400 hover:text-slate-200 px-2.5 py-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-800 transition min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
-              إلغاء والعودة للمحادثة
+              إلغاء والرجوع للمحادثة
             </button>
           )}
         </div>
@@ -278,10 +278,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           <div className="flex justify-between text-xs text-slate-400 font-medium">
             <span>الخطوة {currentStep} من 4</span>
             <span>
-              {currentStep === 1 && "هوية المشروع وقناة البيع"}
-              {currentStep === 2 && "الأسعار والتكلفة بالدينار"}
+              {currentStep === 1 && "معلومات المشروع وقناة البيع"}
+              {currentStep === 2 && "الأسعار والتكاليف بالدينار"}
               {currentStep === 3 && "الرسائل والطلبات والتوصيل"}
-              {currentStep === 4 && "التحدي الأساسي للتشخيص"}
+              {currentStep === 4 && "المشكلة الأساسية اللي نريد نشخصها"}
             </span>
             <span className="text-vz-accent font-bold">{progressPercentage}%</span>
           </div>
@@ -324,14 +324,14 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             <div>
               <label htmlFor="diag-product-service" className="block text-sm font-semibold text-slate-200 mb-1.5">
-                2. شنو المنتج أو الخدمة اللي تبيعها هسه؟ <span className="text-vz-accent">*</span>
+                2. شنو المنتج أو الخدمة اللي تبيعها حاليا؟ <span className="text-vz-accent">*</span>
               </label>
               <input                 
                 id="diag-product-service"
                 type="text"
                 value={productOrService}
                 onChange={(e) => setProductOrService(e.target.value)}
-                placeholder="مثال: فساتين نسائية تركية، ساعات يد ضد الماء، كوزمتك عناية بالبشرة..."
+                placeholder="مثال: فساتين نسائية تركية، ساعات يد ضد الماء، مستحضرات عناية بالبشرة..."
                 aria-describedby={validationErrors.productOrService ? "diag-error-product" : undefined}
                 aria-invalid={!!validationErrors.productOrService}
                 className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -346,7 +346,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
             <div>
               <label className="block text-sm font-semibold text-slate-200 mb-2">
-                3. منين تبيع وتستقبل زبائنك بالأساس؟
+                3. وين تبيع وتستقبل طلبات زبائنك بالأساس؟
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {SALES_CHANNELS.map((ch) => {
@@ -375,10 +375,10 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           <div className="space-y-4 animate-fadeIn">
             <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
               <span className="font-bold text-vz-accent flex items-center gap-1">
-                <DollarSign className="w-4 h-4" /> التسعير بالدينار العراقي:
+                <DollarSign className="w-4 h-4" /> الأسعار بالدينار العراقي:
               </span>
               <p>
-                اكتب الأرقام بالدينار (تكدر تكتب 25000 أو 25 ألف)، ونحسبلك ربح القطعة فورا.
+                اكتب الأسعار بالدينار (تكدر تكتب 25000 أو 25 ألف)، ونحسبلك ربح القطعة مباشرة.
               </p>
             </div>
 
@@ -443,14 +443,14 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
                     <TrendingUp className="w-4 h-4 text-vz-accent" />
-                    الهامش الإجمالي الأولي للقطعة (Gross Profit):
+                    الربح الأولي من القطعة (Gross Profit):
                   </span>
                   <span className="text-base font-bold text-vz-accent">
                     {formatIQD(currentMetrics.grossMargin)} ({currentMetrics.grossMarginPercent}%)
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400 leading-relaxed">
-                  <strong>ملاحظة وفرضيات الحساب:</strong> هذا الهامش الإجمالي قبل خصم أجور التوصيل (5K-7K د.ع)، كلفة الإعلانات (CPA)، ونسبة المرتجعات.
+                  <strong>ملاحظة وتفاصيل الحسبة:</strong> هذا الربح قبل خصم أجور التوصيل (5K-7K د.ع)، وكلفة الإعلان (CPA)، ونسبة الطلبات الراجعة.
                 </p>
               </div>
             )}
@@ -462,14 +462,14 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="diag-daily-messages" className="block text-sm font-semibold text-slate-200 mb-1.5">
-                  كم رسالة أو استفسار يوصلك يوميا؟
+                  كم رسالة أو استفسار يوصلك باليوم؟
                 </label>
                 <input                   
                   id="diag-daily-messages"
                   type="text"
                   value={dailyMessagesStr}
                   onChange={(e) => setDailyMessagesStr(e.target.value)}
-                  placeholder="مثال: 30 رسالة/يوم"
+                  placeholder="مثال: 30 رسالة باليوم"
                   aria-describedby={validationErrors.dailyMessages ? "diag-error-daily-messages" : undefined}
                   aria-invalid={!!validationErrors.dailyMessages}
                   className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -481,14 +481,14 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
               <div>
                 <label htmlFor="diag-daily-orders" className="block text-sm font-semibold text-slate-200 mb-1.5">
-                  كم طلب مؤكد ومغلق يوميا تقريبا؟
+                  تقريبا، كم طلب يتأكد وينغلق باليوم؟
                 </label>
                 <input                   
                   id="diag-daily-orders"
                   type="text"
                   value={dailyOrdersStr}
                   onChange={(e) => setDailyOrdersStr(e.target.value)}
-                  placeholder="مثال: 3 طلبات/يوم"
+                  placeholder="مثال: 3 طلبات باليوم"
                   aria-describedby={validationErrors.dailyOrders ? "diag-error-daily-orders" : undefined}
                   aria-invalid={!!validationErrors.dailyOrders}
                   className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl px-3.5 py-2.5 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
@@ -502,7 +502,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             {currentMetrics.conversionRate !== null && (
               <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-slate-400 block">شكد من الرسائل تصير طلبات:</span>
+                  <span className="text-xs text-slate-400 block">نسبة الرسائل اللي تتحول إلى طلبات:</span>
                   <span className="text-xs text-vz-accent font-semibold">{currentMetrics.conversionRateLabel}</span>
                 </div>
                 <span className="text-lg font-bold text-vz-accent">
@@ -515,7 +515,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               <div>
                 <div className="flex justify-between items-center mb-1.5">
                   <label htmlFor="diag-return-rate" className="text-sm font-semibold text-slate-200">
-                    نسبة الراجع (إذا تعرفها)
+                    نسبة الطلبات الراجعة (إذا تعرفها)
                   </label>
                   <span className="text-[11px] text-slate-500">اختياري</span>
                 </div>
@@ -536,7 +536,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
 
               <div>
                 <label className="block text-sm font-semibold text-slate-200 mb-1.5">
-                  نطاق التوصيل الجغرافي
+                  المناطق والمحافظات اللي توصل إلها
                 </label>
                 <select                   value={deliveryAreas}
                   onChange={(e) => setDeliveryAreas(e.target.value)}
@@ -557,7 +557,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
           <div className="space-y-4 animate-fadeIn">
             <div>
               <label className="block text-sm font-semibold text-slate-200 mb-2">
-                شنو أكبر مشكلة تريد تحلها هسه؟
+                شنو أكبر مشكلة تريد تحلها حاليا؟
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {MAIN_PROBLEMS.map((prob) => (
@@ -578,14 +578,14 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             <div>
               <div className="flex justify-between items-center mb-1.5">
                 <label className="text-sm font-semibold text-slate-200">
-                  أي تفاصيل أو ملاحظات إضافية تود إخبار المستشار بها؟
+                  عندك أي تفاصيل أو ملاحظات إضافية تحب توصلها للمستشار؟
                 </label>
                 <span className="text-[11px] text-slate-500">اختياري</span>
               </div>
               <textarea                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
-                placeholder="مثال: أصرف 15$ يوميا إعلانات فيسبوك، والتوصيل مع شركة الأمانة، والزبائن أكثرهم من البصرة والنجف..."
+                placeholder="مثال: أصرف 15$ باليوم على إعلانات فيسبوك، والتوصيل ويا شركة الأمانة، وأكثر زبائني من البصرة والنجف..."
                 className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 w-full bg-slate-900/80 border border-slate-700 focus:border-white/35 rounded-xl p-3 text-sm text-vz-accent placeholder-slate-500 focus:outline-none transition resize-none min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
               />
             </div>
@@ -593,7 +593,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
             <div className="p-3.5 bg-gradient-to-r from-white/5 via-slate-900 to-white/5 border border-white/9 rounded-xl flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-slate-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>جاهز لإرسال الملف واستخراج خطة الـ 48 ساعة وسكريبت الإغلاق العراقي.</span>
+                <span>جاهز ترسل بيانات مشروعك حتى نطلعلك خطة الـ 48 ساعة وسكريبت إقناع الزبون العراقي بالطلب.</span>
               </div>
                         <span className="text-vz-accent font-bold hidden sm:inline">مستشار فيزيون جاهز</span>
             </div>
@@ -629,7 +629,7 @@ export const BusinessDiagnosticStepper: React.FC<BusinessDiagnosticStepperProps>
               className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-vz-blue-light via-vz-blue to-vz-blue-deep hover:from-vz-blue-light hover:to-vz-blue text-slate-950 text-xs font-bold shadow-lg shadow-black/40 transition transform hover:scale-[1.02] min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <Zap className="w-4 h-4 text-slate-950 fill-current" />
-              شخص مشروعي
+              تشخيص مشروعي
             </button>
           )}
         </div>

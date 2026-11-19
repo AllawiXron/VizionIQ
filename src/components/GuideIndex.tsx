@@ -27,7 +27,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><Compass className="w-4 h-4" /> الدليل العراقي</>}
-        title="شلون يشتغل البيع أونلاين بالعراق فعلا"
+        title="شلون البيع أونلاين يشتغل فعليا بالعراق"
         subtitle={`مبني على بحث ومصادر: أرقام المنصات، الدفع، التوصيل، الاستيراد والكمرك، المواسم، والقانون الجديد. آخر تحديث: ${GUIDE_RESEARCHED}.`}
       />
 
@@ -67,7 +67,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
                   <TopicIcon kind="guide" id={m.id} />
                   <div className="min-w-0 space-y-1.5">
                     <h2 className="text-base sm:text-lg font-black text-white leading-snug">{m.title}</h2>
-                    {isTrial && <LockChip label="بالتجربة: أول جزء بس" />}
+                    {isTrial && <LockChip label="بالتجربة: الجزء الأول فقط" />}
                     <p className="text-xs sm:text-sm text-white/55 leading-relaxed line-clamp-2">{m.subtitle}</p>
                   </div>
                 </div>
@@ -77,7 +77,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
                     <span>{m.sources.length} مصادر</span>
                   </span>
                   <span className="inline-flex items-center gap-1 font-bold text-white/75 group-hover:text-white transition-colors">
-                    {done > 0 ? `${done}/${m.checklist.length} منجز` : "اقرا"}
+                    {done > 0 ? `${done}/${m.checklist.length} منجز` : "اقرأ"}
                     <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
                   </span>
                 </div>
@@ -94,7 +94,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
               <Lightbulb className="w-5 h-5" />
             </span>
             <span className="flex-1 min-w-0">
-              <span className="block text-base font-black text-white">أسرار السوق: دروس من التجار</span>
+              <span className="block text-base font-black text-white">أسرار السوق: دروس من تجارب التجار</span>
               <span className="block text-xs sm:text-sm text-white/55 mt-0.5">أكثر من 50 درس قصير من تجارب السوق العراقي.</span>
             </span>
             <ArrowLeft className="w-4 h-4 text-white/50 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
