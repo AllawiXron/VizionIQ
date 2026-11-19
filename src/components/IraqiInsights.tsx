@@ -149,7 +149,7 @@ export default function IraqiInsights() {
             )}
           </div>
 
-          <span className="text-xs sm:text-sm text-white/70 font-bold w-full md:w-auto text-right md:text-center md:bg-white/[0.04] md:border md:border-white/10 md:px-5 md:py-2.5 md:rounded-full">
+          <span className="text-xs sm:text-sm text-white/55 font-bold w-full md:w-auto text-right md:text-center md:bg-white/[0.04] md:border md:border-white/10 md:px-5 md:py-2.5 md:rounded-full">
             حقائق: <CountUp value={filteredInsights.length} className="text-white font-mono font-black text-sm sm:text-lg mx-1 inline-block" /> من مجموع <span className="font-mono text-white mx-1">{insightsList.length}</span>
           </span>
         </div>

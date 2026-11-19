@@ -71,7 +71,7 @@ export function SoundToggleButton({ className = "", variant = "compact" }: Sound
       className={`w-9 h-9 flex items-center justify-center rounded-full border transition-colors duration-300 cursor-pointer ${
         !muted
           ? "bg-white/[0.12] border-white/20 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
-          : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] text-white/70 hover:text-white"
+          : "bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] text-white/55 hover:text-white"
       } ${className}`}
       title={muted ? "تشغيل المؤثرات الصوتية" : "كتم المؤثرات الصوتية"}
     >

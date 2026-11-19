@@ -35,22 +35,22 @@ function CardRate({ d }: { d: { usd: number; charged: number; official: number; 
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className={`${card} p-3.5`}>
-          <p className="text-[12px] font-bold text-white/70">سعر الدولار عليك</p>
+          <p className="text-[12px] font-bold text-white/55">سعر الدولار عليك</p>
           <p className="text-[22px] font-black text-white">{fmt(rate)}</p>
-          <p className="text-[12px] text-white/60">الرسمي {fmt(d.official)}</p>
+          <p className="text-[12px] text-white/45">الرسمي {fmt(d.official)}</p>
         </div>
         <div className="rounded-2xl bg-amber-300/[0.07] border border-amber-200/25 p-3.5">
-          <p className="text-[12px] font-bold text-white/70">إعلان بـ {d.daily} دولار باليوم</p>
+          <p className="text-[12px] font-bold text-white/55">إعلان بـ {d.daily} دولار باليوم</p>
           <motion.p key={Math.round(day / 100)} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={ease} className="text-[22px] font-black text-amber-100">
             {fmt(day)}
           </motion.p>
-          <p className="text-[12px] text-white/60">مو {fmt(dayOfficial)}</p>
+          <p className="text-[12px] text-white/45">مو {fmt(dayOfficial)}</p>
         </div>
       </div>
       <p className="text-[15px] text-white/85 leading-relaxed">
         بالشهر يطلع {fmt(day * 30)} بدل {fmt(dayOfficial * 30)}، يعني {fmt((day - dayOfficial) * 30)} ما كانت بحسابك.
       </p>
-      <p className="text-[14px] text-white/70 leading-relaxed">{d.note}</p>
+      <p className="text-[14px] text-white/55 leading-relaxed">{d.note}</p>
     </div>
   );
 }
@@ -166,7 +166,7 @@ function Audience({ d }: { d: { provinces: Prov[]; interests: string[]; note: st
         </div>
       </div>
       <div className={`rounded-2xl border p-4 ${tooSmall ? "bg-red-500/[0.07] border-red-400/30" : "bg-emerald-400/[0.07] border-emerald-300/25"}`}>
-        <p className="text-[13px] font-bold text-white/70 flex items-center gap-1.5"><Users className="w-4 h-4" /> حجم الجمهور المتوقع</p>
+        <p className="text-[13px] font-bold text-white/55 flex items-center gap-1.5"><Users className="w-4 h-4" /> حجم الجمهور المتوقع</p>
         <motion.p key={label} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={ease} className={`text-[24px] font-black ${tooSmall ? "text-red-200" : "text-emerald-200"}`}>
           {label}
         </motion.p>
@@ -175,7 +175,7 @@ function Audience({ d }: { d: { provinces: Prov[]; interests: string[]; note: st
         </p>
         {far.length > 0 && <p className="text-[14px] font-bold text-amber-200 mt-2">{far.map((p) => p.name).join("، ")}: مندوبك ما يوصلها. لا تدفع على ناس ما تكدر توصلهم.</p>}
       </div>
-      <p className="text-[13px] text-white/60 leading-relaxed">{d.note}</p>
+      <p className="text-[13px] text-white/45 leading-relaxed">{d.note}</p>
     </div>
   );
 }
@@ -258,14 +258,14 @@ function Limits({ d }: { d: { before: number; keep: number; conv: number; note: 
           ["أعلى كلفة للرسالة تقبل بيها", msg, "text-emerald-200"],
         ].map(([l, v, t]) => (
           <div key={String(l)} className={`${card} p-3.5`}>
-            <p className="text-[12px] font-bold text-white/70">{String(l)}</p>
+            <p className="text-[12px] font-bold text-white/55">{String(l)}</p>
             <motion.p key={Math.round(Number(v))} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={ease} className={`text-[21px] font-black ${t}`}>
               {fmt(Number(v))}
             </motion.p>
           </div>
         ))}
       </div>
-      <p className="text-[14px] text-white/70 leading-relaxed">{d.note}</p>
+      <p className="text-[14px] text-white/55 leading-relaxed">{d.note}</p>
     </div>
   );
 }

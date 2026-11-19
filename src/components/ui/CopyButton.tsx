@@ -22,7 +22,7 @@ export function CopyButton({ text, label = "نسخ" }: { text: string; label?: s
   return (
     <button onClick={copy} className={`btn btn-glass px-3.5 min-h-[36px] rounded-full text-xs gap-1.5 shrink-0 ${focusRing}`} aria-live="polite">
       {copied ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
-      <span>{copied ? "انتسخ" : label}</span>
+      <span>{copied ? "تم النسخ" : label}</span>
     </button>
   );
 }

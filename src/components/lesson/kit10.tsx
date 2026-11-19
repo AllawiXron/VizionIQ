@@ -108,7 +108,7 @@ function LiveSheet({ d }: { d: SheetData }) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {d.fixed.map((k) => (
             <label key={k} className="block">
-              <span className="block text-[11px] font-bold text-white/65 mb-1">{d.labels[k]}</span>
+              <span className="block text-[11px] font-bold text-white/50 mb-1">{d.labels[k]}</span>
               {num(f[k], (n) => setF((o) => ({ ...o, [k]: n })), d.labels[k])}
             </label>
           ))}
@@ -119,7 +119,7 @@ function LiveSheet({ d }: { d: SheetData }) {
         <div className="grid grid-cols-3 gap-2">
           {([["spend", "3. الصرف $"], ["msgs", "5. الرسائل"], ["reg", "7. المسجلة"], ["sent", "8. المرسلة"], ["delivered", "9. الواصلة"], ["returned", "10. الراجعة"]] as const).map(([k, l]) => (
             <label key={k} className="block">
-              <span className="block text-[11px] font-bold text-white/65 mb-1">{l}</span>
+              <span className="block text-[11px] font-bold text-white/50 mb-1">{l}</span>
               {num(day[k], (n) => setDay((o) => ({ ...o, [k]: n })), l)}
             </label>
           ))}
@@ -182,7 +182,7 @@ function PerOrder({ d }: { d: PerData }) {
           ["الشهر بعد المصاريف الثابتة", fmt(month), month > 0 ? "text-emerald-200" : "text-red-200"],
         ].map(([k, v, c]) => (
           <div key={k} className={`${card} p-3`}>
-            <p className="text-[11px] sm:text-[12px] font-bold text-white/70 leading-snug">{k}</p>
+            <p className="text-[11px] sm:text-[12px] font-bold text-white/55 leading-snug">{k}</p>
             <motion.p key={v} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`mt-1 text-[15px] sm:text-[18px] font-black ${c}`}>{v}</motion.p>
           </div>
         ))}
@@ -212,7 +212,7 @@ function AdCalls({ d }: { d: { rate: number; reach: number; target: number; limi
           <div key={a.name} className={`${card} p-3.5 space-y-2.5`}>
             <div className="flex items-center justify-between gap-2">
               <p className="text-[15px] font-black text-white">{a.name}</p>
-              <p className="text-[12px] font-bold text-white/65">{a.days === 1 ? "أول يوم" : `${a.days} أيام`}</p>
+              <p className="text-[12px] font-bold text-white/50">{a.days === 1 ? "أول يوم" : `${a.days} أيام`}</p>
             </div>
             <div className="grid grid-cols-3 gap-2 text-[12px]">
               <p className="text-white/60">صرف<span className="block text-[14px] font-black text-white">{a.usd}$ = {fmt(spend)}</span></p>

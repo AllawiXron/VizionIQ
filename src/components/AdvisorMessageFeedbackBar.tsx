@@ -82,7 +82,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
     <div className="mt-2.5 pt-2 border-t border-white/10 text-xs dir-rtl select-none" data-testid={`feedback-bar-${messageId}`}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <span className="text-[11px] text-white/65 hidden sm:inline ml-1 font-medium">
+          <span className="text-[11px] text-white/50 hidden sm:inline ml-1 font-medium">
             الجواب فادك؟
           </span>
 
@@ -130,7 +130,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             {isCopied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-vz-accent" />
-                <span className="text-vz-accent font-bold">انتسخ</span>
+                <span className="text-vz-accent font-bold">تم النسخ</span>
               </>
             ) : (
               <>
@@ -247,7 +247,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
 
           {currentCustomNote && (
             <div className="p-2 rounded-lg bg-black/40 border border-white/10 text-[11px] text-white/80">
-              <span className="text-white/65 block text-[10px]">ملاحظتك:</span>
+              <span className="text-white/50 block text-[10px]">ملاحظتك:</span>
               <p className="italic">{currentCustomNote}</p>
             </div>
           )}

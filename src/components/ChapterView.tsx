@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { EASE_OUT, allowBlur } from "../lib/motion";
 import { AnimatePresence, motion, type Variants } from "motion/react";
 import { Segmented } from "./ui/Segmented";
-import { SubpageHeader } from "./ui/SubpageHeader";
 import {
-  AlertTriangle, ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, CheckCircle2, Clock, ClipboardList,
+  AlertTriangle, ArrowLeft, ArrowRight, BookOpen, Check, CheckCircle2, Clock, ClipboardList,
   FileText, HelpCircle, Lightbulb, Lock, Play, RotateCcw, Target, TrendingUp, Wrench, X,
 } from "lucide-react";
 import LessonPlayer from "./LessonPlayer";
@@ -55,7 +54,8 @@ const TABS = [
   { id: "lessons", label: "الدروس", title: "الدروس" },
   { id: "practice", label: "تطبيق", title: "طبق على مشروعك" },
   { id: "templates", label: "قوالب", title: "رسائل وقوالب جاهزة" },
-  { id: "example", label: "مثال وأخطاء", title: "مثال بالأرقام، وأخطاء انتبهلها" },
+  { id: "example", label: "مثال", title: "مثال بالأرقام" },
+  { id: "mistakes", label: "أخطاء", title: "أخطاء انتبه لا توقع بيها" },
   { id: "quiz", label: "اختبار", title: "اختبر نفسك" },
 ] as const;
 type Tab = (typeof TABS)[number]["id"];
@@ -78,10 +78,10 @@ function NextTab({ to, onGo }: { to: Tab; onGo: (t: Tab) => void }) {
   return (
     <button
       onClick={() => onGo(to)}
-      className={`group mt-8 w-full flex items-center justify-between gap-3 py-3.5 border-y border-white/10 text-right cursor-pointer transition-colors duration-200 hover:bg-white/[0.03] ${focusRing}`}
+      className={`group mt-8 w-full flex items-center justify-between gap-3 p-4 sm:p-5 rounded-3xl glass text-right cursor-pointer active:scale-[0.985] transition-transform duration-200 ${focusRing}`}
     >
       <span className="min-w-0">
-        <span className="block text-[13px] font-bold text-white/70">الجاي بهذا الفصل</span>
+        <span className="block text-xs font-bold text-white/50">الدرس الجاي بهذا الفصل</span>
         <span className="block text-base sm:text-lg font-black text-white mt-0.5">{t.title}</span>
       </span>
       <span className="w-10 h-10 shrink-0 rounded-full bg-white/[0.07] border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:-translate-x-1">
@@ -98,7 +98,7 @@ function SectionTitle({ id, icon: Icon, children, sub }: { id: string; icon: Rea
         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-vz-accent shrink-0" />
         {children}
       </h2>
-      {sub && <p className="text-[15px] text-white/70 leading-relaxed">{sub}</p>}
+      {sub && <p className="text-sm text-white/55 leading-relaxed">{sub}</p>}
     </div>
   );
 }
@@ -163,23 +163,10 @@ function LessonBlock({ block }: { key?: React.Key; block: Block }) {
       return (
         <div className="space-y-2.5">
           {block.title && <h4 className="text-sm sm:text-base font-black text-white">{block.title}</h4>}
-          <div className="sm:hidden divide-y divide-white/10 border-y border-white/10">
-            {block.rows.map((row) => (
-              <div key={row.join("|")} className="py-3 space-y-1.5">
-                <p className="text-[15px] font-black text-white leading-snug">{row[0]}</p>
-                {row.slice(1).map((cell, ci) => (
-                  <p key={ci} className="text-[14px] text-white/80 leading-relaxed">
-                    <span className="text-white/60 font-bold">{block.head[ci + 1]}: </span>
-                    {cell}
-                  </p>
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="hidden sm:block glass rounded-2xl overflow-x-auto">
+          <div className="glass rounded-2xl overflow-x-auto">
             <table className="w-full text-sm min-w-[520px]">
               <thead>
-                <tr className="text-xs text-white/70 border-b border-white/[0.07]">
+                <tr className="text-xs text-white/50 border-b border-white/[0.07]">
                   {block.head.map((h) => <th key={h} className="text-right font-bold px-4 py-3">{h}</th>)}
                 </tr>
               </thead>
@@ -204,7 +191,7 @@ function LessonBlock({ block }: { key?: React.Key; block: Block }) {
       return (
         <figure className="space-y-2">
           <img src={block.src} alt={block.alt ?? block.caption} className="w-full h-auto rounded-2xl" />
-          <figcaption className="text-xs text-white/70">{block.caption}</figcaption>
+          <figcaption className="text-xs text-white/55">{block.caption}</figcaption>
         </figure>
       );
     case "compare":
@@ -236,7 +223,7 @@ function Quiz({ chapter }: { chapter: CourseChapter }) {
   if (finished) {
     return (
       <div className="glass-elevated glass-edge rounded-3xl p-6 sm:p-8 text-center">
-        <p className="text-sm font-bold text-white/70 mb-2">نتيجتك</p>
+        <p className="text-sm font-bold text-white/55 mb-2">نتيجتك</p>
         <p className="text-6xl sm:text-7xl font-black text-white mb-3" dir="ltr">{right}/{total}</p>
         <p className="text-base text-white/75 mb-6">{right === total ? "فاهم الفصل كله. كمل للفصل الجاي." : "راجع الدروس اللي جاوبت بيها غلط، وجرب الاختبار مرة ثانية."}</p>
         <button onClick={() => { setPicked({}); setAt(0); }} className={`btn btn-glass min-h-[48px] px-6 rounded-2xl text-sm ${focusRing}`}>عيد الاختبار</button>
@@ -270,7 +257,7 @@ function Quiz({ chapter }: { chapter: CourseChapter }) {
               className={`w-full text-right flex items-center gap-3 p-4 rounded-2xl border text-base leading-relaxed transition-colors min-h-[56px] ${focusRing} ${
                 state === "right" ? "bg-emerald-400/[0.12] border-emerald-400/45 text-white"
                   : state === "wrong" ? "bg-red-500/[0.1] border-red-400/40 text-white"
-                    : done ? "bg-white/[0.02] border-white/[0.06] text-white/60"
+                    : done ? "bg-white/[0.02] border-white/[0.06] text-white/45"
                       : "bg-white/[0.04] border-white/12 text-white/90 hover:bg-white/[0.08] cursor-pointer"
               }`}
             >
@@ -365,7 +352,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
     setTab(next);
     const el = tabsTop.current;
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - (window.matchMedia("(min-width: 1024px)").matches ? 84 : 48);
+    const top = el.getBoundingClientRect().top + window.scrollY - 84;
     if (window.scrollY > top + 2) window.scrollTo({ top, behavior: "smooth" });
   };
 
@@ -375,7 +362,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   };
 
   const outcomesBox = (
-    <div className="space-y-3">
+    <div className="glass rounded-3xl p-5 sm:p-6 space-y-3">
       <p className="text-sm font-black text-white flex items-center gap-2"><Target className="w-4 h-4 text-vz-accent" /> بنهاية هذا الفصل</p>
       <ul className="space-y-2">
         {course.outcomes.map((o) => (
@@ -394,31 +381,26 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   };
 
   return (
-    <section id={chapter.id} className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-0 lg:pt-28 pb-10 relative text-right">
-      <SubpageHeader
-        backLabel="كل الفصول"
-        onBack={() => onNavigate({ view: "chapters" })}
-        meta={<>الفصل <span dir="ltr">{chapterIndex + 1} / {chaptersList.length}</span>، {course.lessons.length} دروس</>}
-      />
-      <div className="hidden lg:flex items-center justify-between gap-3 mb-5 sm:mb-6">
+    <section id={chapter.id} className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 relative text-right">
+      <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
         <button onClick={() => onNavigate({ view: "chapters" })} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}>
           <ArrowRight className="w-4 h-4" />
           <span>كل الفصول</span>
         </button>
-        <span dir="ltr" className="text-xs text-white/65 font-mono">{chapterIndex + 1} / {chaptersList.length}</span>
+        <span dir="ltr" className="text-xs text-white/50 font-mono">{chapterIndex + 1} / {chaptersList.length}</span>
       </div>
 
-      <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-3 sm:space-y-4 mb-4 sm:mb-8">
-        <div className="flex items-center gap-2 flex-wrap text-[13px] sm:text-sm font-bold text-white/70">
+      <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
+        <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm font-bold text-white/55">
           <span className="text-vz-accent">{chapter.number}</span>
-          {stage && <span className="hidden sm:inline">المرحلة {stage.index + 1}: {stage.stage.label}</span>}
+          {stage && <><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
           <span className="inline-flex items-center gap-2 whitespace-nowrap">
             <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{minutesLabel(minutes)}</span>
             <span>{course.lessons.length} دروس</span>
           </span>
           {trialLocked && <LockChip label="بالتجربة تكدر تشوف المحتوى بس" />}
           {isDone && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-[12px]">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-[11px]">
               <Check className="w-3 h-3" strokeWidth={3} /> مكتمل
             </span>
           )}
@@ -427,36 +409,16 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           <TopicIcon kind="chapter" id={chapter.id} size="lg" className="mt-0.5" />
           <span>{chapter.title}</span>
         </h1>
-        <div className="border-y border-white/10">
-          <button
-            type="button"
-            onClick={() => setGoalOpen((o) => !o)}
-            aria-expanded={goalOpen}
-            className={`w-full min-h-[48px] flex items-center justify-between gap-3 text-right text-[15px] font-bold text-white/85 ${focusRing}`}
-          >
-            <span>عن الفصل والأهداف</span>
-            <ChevronDown className={`w-4 h-4 text-white/60 transition-transform duration-300 ${goalOpen ? "rotate-180" : ""}`} />
-          </button>
-          <AnimatePresence initial={false}>
-            {goalOpen && (
-              <motion.div
-                key="about"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: EASE_OUT }}
-                className="overflow-hidden"
-              >
-                <div className="pb-4 space-y-4">
-                  <p className="text-[15px] sm:text-lg text-white/75 leading-relaxed">{course.goal}</p>
-                  {outcomesBox}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div>
+          <p className={`text-[15px] sm:text-lg text-white/65 leading-relaxed ${goalOpen ? "" : "line-clamp-3 sm:line-clamp-none"}`}>{course.goal}</p>
+          {!goalOpen && (
+            <button type="button" onClick={() => setGoalOpen(true)} className={`sm:hidden mt-1 min-h-[36px] text-[14px] font-bold text-vz-accent ${focusRing}`}>
+              اقرا هدف الفصل كامل
+            </button>
+          )}
         </div>
         {!trialLocked && (
-          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 pt-1">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
             <button
               onClick={() => setPlaying(nextLesson >= 0 ? nextLesson : 0)}
               className={`btn btn-primary w-full sm:w-auto min-h-[52px] px-7 rounded-2xl text-base gap-2 ${focusRing}`}
@@ -464,7 +426,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               {nextLesson >= 0 ? <Play className="w-4 h-4" /> : <RotateCcw className="w-4 h-4" />}
               <span>{nextLesson < 0 ? "عيد الفصل من البداية" : nextLesson === 0 ? "ابدأ بالدرس الأول" : `كمل، الدرس ${nextLesson + 1}`}</span>
             </button>
-            <span className="text-[13px] sm:text-sm font-bold text-white/70">
+            <span className="text-sm font-bold text-white/55">
               خلصت {doneLessons.size} من {course.lessons.length} دروس
             </span>
           </div>
@@ -473,6 +435,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
       {trialLocked ? (
         <div className="space-y-4">
+          {outcomesBox}
           <div className="glass rounded-3xl overflow-hidden">
             <p className="px-5 py-3.5 text-sm font-black text-white border-b border-white/[0.07]">دروس الفصل</p>
             <ol className="divide-y divide-white/[0.06]">
@@ -495,7 +458,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
       ) : (
         <>
           <div ref={tabsTop} aria-hidden="true" />
-          <nav aria-label="أقسام الفصل" className="vz-tabs-sticky sticky top-[calc(3rem+env(safe-area-inset-top,0px))] lg:top-[4.9rem] z-20 mb-4 sm:mb-8">
+          <nav aria-label="أقسام الفصل" className="vz-tabs-sticky sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-6 sm:mb-8">
             <Segmented
               items={TABS.map((t) => ({
                 id: t.id,
@@ -515,10 +478,11 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
             <motion.div key={tab} custom={tabDir} variants={panelMotion} initial="enter" animate="center" exit="exit" role="tabpanel" aria-label={TABS[tabIndex].title}>
               {tab === "lessons" && (
                 <section>
-                  <div id="ch-lessons" className="scroll-mt-36 h-1.5 rounded-full bg-white/[0.08] overflow-hidden mb-3 sm:mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس اللي كملتها">
+                  <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس تمشي بيه خطوة خطوة: تفهم الفكرة، تشوفها بالرسوم والأرقام، تجربها بنفسك، وبالأخير تطبقها على منتجك.">الدروس</SectionTitle>
+                  <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس اللي كملتها">
                     <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((doneLessons.size / course.lessons.length) * 100)}%` }} />
                   </div>
-                  <ol className="relative space-y-1.5 sm:space-y-3">
+                  <ol className="relative space-y-3">
                     {course.lessons.map((l, i) => {
                       const locked = i >= openLessons;
                       const done = doneLessons.has(i);
@@ -532,16 +496,16 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                           transition={{ duration: 0.45, delay: 0.04 + i * 0.05, ease: EASE_OUT }}
                         >
                           {i < course.lessons.length - 1 && (
-                            <span aria-hidden="true" className={`absolute right-[32px] sm:right-[43px] top-14 sm:top-[4.5rem] bottom-[-8px] w-0.5 ${done ? "bg-emerald-400/50" : "bg-white/10"}`} />
+                            <span aria-hidden="true" className={`absolute right-[35px] sm:right-[43px] top-16 sm:top-[4.5rem] bottom-[-12px] w-0.5 ${done ? "bg-emerald-400/50" : "bg-white/10"}`} />
                           )}
                           <button
                             onClick={() => (locked ? jump("ch-lessons-locked") : setPlaying(i))}
-                            className={`relative w-full flex items-center gap-3 sm:gap-4 p-2.5 sm:p-4 rounded-2xl sm:rounded-3xl text-right cursor-pointer active:scale-[0.985] transition-[transform,background-color] duration-200 ${
+                            className={`relative w-full flex items-center gap-4 p-3 sm:p-4 rounded-3xl text-right cursor-pointer active:scale-[0.985] transition-[transform,background-color] duration-200 ${
                               isNext ? "glass-elevated glass-edge" : "hover:bg-white/[0.04] active:bg-white/[0.04]"
                             } ${focusRing}`}
                           >
                             <span
-                              className={`w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-black ${
+                              className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-black ${
                                 done
                                   ? "bg-emerald-400/15 border border-emerald-400/40 text-emerald-300"
                                   : isNext
@@ -554,11 +518,11 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                               {done ? <Check className="w-6 h-6" strokeWidth={3} /> : locked ? <Lock className="w-5 h-5" /> : isNext ? <Play className="w-5 h-5" /> : i + 1}
                             </span>
                             <span className="flex-1 min-w-0">
-                              <span className="block text-[12px] sm:text-sm font-bold text-white/65">الدرس {i + 1}، {minutesLabel(lessonMinutes(l))}</span>
-                              <span className={`block text-[15px] sm:text-lg font-black leading-snug mt-0.5 ${locked ? "text-white/70" : "text-white"}`}>{l.title}</span>
+                              <span className="block text-xs sm:text-sm font-bold text-white/50">الدرس {i + 1}، {minutesLabel(lessonMinutes(l))}</span>
+                              <span className={`block text-base sm:text-lg font-black leading-snug mt-0.5 ${locked ? "text-white/45" : "text-white"}`}>{l.title}</span>
                             </span>
                             {!locked && (
-                              <span className={`inline-flex items-center gap-1.5 text-sm font-black shrink-0 ${isNext ? "text-white" : "text-white/70"}`}>
+                              <span className={`inline-flex items-center gap-1.5 text-sm font-black shrink-0 ${isNext ? "text-white" : "text-white/55"}`}>
                                 <span className="hidden sm:inline">{done ? "إعادة الدرس" : isNext ? "ابدأ" : "افتح"}</span>
                                 <ArrowLeft className="w-4 h-4" />
                               </span>
@@ -579,6 +543,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                       />
                     </div>
                   )}
+                  <div className="mt-8">{outcomesBox}</div>
                   <NextTab to="practice" onGo={openTab} />
                 </section>
               )}
@@ -641,7 +606,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <h3 className="text-sm sm:text-base font-black text-white">{t.title}</h3>
-                            <p className="text-xs text-white/70 mt-0.5 leading-relaxed"><span className="font-bold text-white/65">متى تستخدمها: </span>{t.when}</p>
+                            <p className="text-xs text-white/55 mt-0.5 leading-relaxed"><span className="font-bold text-white/65">متى تستخدمها: </span>{t.when}</p>
                           </div>
                           <CopyButton text={t.text} />
                         </div>
@@ -700,7 +665,12 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                       <p className="text-sm sm:text-base text-white/85 leading-relaxed"><span className="font-black text-vz-accent">الدرس: </span>{course.example.lesson}</p>
                     </div>
                   )}
-                  <div className="mt-10">
+                  <NextTab to="mistakes" onGo={openTab} />
+                </section>
+              )}
+
+              {tab === "mistakes" && (
+                <section>
                   <SectionTitle id="ch-mistakes" icon={AlertTriangle}>أخطاء انتبه لا توقع بيها</SectionTitle>
                   <ul className="space-y-3">
                     {course.mistakes.slice(0, openMistakes).map((m) => (
@@ -708,9 +678,8 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                     ))}
                   </ul>
                   {openMistakes < course.mistakes.length && (
-                    <p className="mt-3 text-[13px] text-white/65 inline-flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> {course.mistakes.length - openMistakes} أغلاط ثانية تنفتح ويا الاشتراك</p>
+                    <p className="mt-3 text-xs text-white/50 inline-flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> {course.mistakes.length - openMistakes} أغلاط ثانية تنفتح ويا الاشتراك</p>
                   )}
-                  </div>
                   <NextTab to="quiz" onGo={openTab} />
                 </section>
               )}
@@ -719,19 +688,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
                 <section>
                   <SectionTitle id="ch-quiz" icon={HelpCircle} sub="أسئلة قصيرة حتى تتأكد من فهمك للفصل.">اختبر نفسك</SectionTitle>
                   <Quiz chapter={course} />
-                  {playbook && (
-                    <button
-                      onClick={() => onNavigate({ view: "solution", id: playbook.id })}
-                      className={`group mt-8 w-full min-h-[64px] py-3 border-y border-white/10 text-right flex items-center gap-3 cursor-pointer transition-colors duration-200 hover:bg-white/[0.03] ${focusRing}`}
-                    >
-                      <TopicIcon kind="playbook" id={playbook.id} size="sm" />
-                      <span className="flex-1 min-w-0">
-                        <span className="block text-[13px] font-bold text-vz-accent">إذا هاي هي مشكلتك حاليا</span>
-                        <span className="block text-[15px] sm:text-lg font-black text-white leading-snug">{playbook.title}</span>
-                      </span>
-                      <ArrowLeft className="w-4 h-4 text-white/60 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
-                    </button>
-                  )}
                 </section>
               )}
             </motion.div>
@@ -739,10 +695,25 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         </>
       )}
 
-      <div className="mt-10 sm:mt-14 pt-5 border-t border-white/10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+      {playbook && (
+        <button
+          onClick={() => onNavigate({ view: "solution", id: playbook.id })}
+          className={`group mt-12 sm:mt-16 w-full text-right glass-elevated glass-edge rounded-3xl p-5 sm:p-7 flex items-center gap-4 cursor-pointer ${focusRing}`}
+        >
+          <TopicIcon kind="playbook" id={playbook.id} size="lg" />
+          <span className="flex-1 min-w-0 space-y-1">
+            <span className="block text-xs sm:text-sm font-bold text-vz-accent">إذا هاي هي مشكلتك حاليا</span>
+            <span className="block text-base sm:text-xl font-black text-white leading-snug">{playbook.title}</span>
+            <span className="block text-xs sm:text-sm text-white/55">{playbook.steps.length} خطوات، {playbook.scripts.length} رسائل جاهزة، وخطة 7 أيام</span>
+          </span>
+          <ArrowLeft className="w-5 h-5 text-white/60 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
+        </button>
+      )}
+
+      <div className="mt-4 sm:mt-5 glass rounded-3xl p-5 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
         <div className="flex-1 min-w-0">
           <p className="text-base sm:text-lg font-black text-white">{isDone ? "أنهيت هذا الفصل" : "كملت الفصل؟"}</p>
-          <p className="text-[13px] sm:text-sm text-white/70 mt-1">{nextChapter ? <>الجاي: {nextChapter.title}</> : "هذا آخر فصل بالكورس."}</p>
+          <p className="text-xs sm:text-sm text-white/55 mt-1">{nextChapter ? <>الجاي: {nextChapter.title}</> : "هذا آخر فصل بالكورس."}</p>
         </div>
         <div className="flex flex-col-reverse sm:flex-row gap-2.5 shrink-0">
           {prevChapter && (
@@ -751,7 +722,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
               <span>الفصل السابق</span>
             </button>
           )}
-          <button onClick={finishAndContinue} className={`btn btn-primary w-full sm:w-auto min-h-[50px] px-6 rounded-2xl sm:rounded-full text-sm gap-2 ${focusRing}`}>
+          <button onClick={finishAndContinue} className={`btn btn-primary min-h-[48px] px-6 rounded-full text-sm gap-2 ${focusRing}`}>
             {!isDone && <Check className="w-4 h-4" strokeWidth={3} />}
             <span>{nextChapter ? (isDone ? "الفصل الجاي" : "كملت، انتقل للفصل الجاي") : "كملت الكورس"}</span>
             {nextChapter && <ArrowLeft className="w-4 h-4" />}

@@ -24,7 +24,7 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
   const next = upcomingSeasons(new Date(), 2);
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-[4.5rem] lg:pt-32 pb-10 space-y-8 sm:space-y-10">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><Compass className="w-4 h-4" /> الدليل العراقي</>}
         title="شلون البيع أونلاين يشتغل فعليا بالعراق"
@@ -46,11 +46,11 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
             <span className="block text-xs font-bold text-vz-accent">الموسم الجاي</span>
             <span className="block text-base sm:text-lg font-black text-white">
               {next[0].title} بعد {next[0].days} يوم
-              {next[1] && <span className="text-white/65 font-bold text-sm">، وبعده {next[1].title} ({next[1].days} يوم)</span>}
+              {next[1] && <span className="text-white/50 font-bold text-sm">، وبعده {next[1].title} ({next[1].days} يوم)</span>}
             </span>
             <span className="block text-xs sm:text-sm text-white/60 line-clamp-2">{next[0].prepare}</span>
           </span>
-          <ArrowLeft className="w-4 h-4 text-white/65 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
+          <ArrowLeft className="w-4 h-4 text-white/50 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
         </motion.button>
       )}
 
@@ -68,10 +68,10 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
                   <div className="min-w-0 space-y-1.5">
                     <h2 className="text-base sm:text-lg font-black text-white leading-snug">{m.title}</h2>
                     {isTrial && <LockChip label="بالتجربة: الجزء الأول فقط" />}
-                    <p className="text-xs sm:text-sm text-white/70 leading-relaxed line-clamp-2">{m.subtitle}</p>
+                    <p className="text-xs sm:text-sm text-white/55 leading-relaxed line-clamp-2">{m.subtitle}</p>
                   </div>
                 </div>
-                <div className="mt-auto pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs text-white/65">
+                <div className="mt-auto pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs text-white/50">
                   <span className="inline-flex items-center gap-3">
                     <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{m.minutes} دقيقة</span>
                     <span>{m.sources.length} مصادر</span>
@@ -95,9 +95,9 @@ export default function GuideIndex({ userCode, onNavigate }: GuideIndexProps) {
             </span>
             <span className="flex-1 min-w-0">
               <span className="block text-base font-black text-white">أسرار السوق: دروس من تجارب التجار</span>
-              <span className="block text-xs sm:text-sm text-white/70 mt-0.5">أكثر من 50 درس قصير من تجارب السوق العراقي.</span>
+              <span className="block text-xs sm:text-sm text-white/55 mt-0.5">أكثر من 50 درس قصير من تجارب السوق العراقي.</span>
             </span>
-            <ArrowLeft className="w-4 h-4 text-white/65 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
+            <ArrowLeft className="w-4 h-4 text-white/50 shrink-0 transition-transform duration-300 group-hover:-translate-x-1" />
           </button>
         </motion.li>
       </ul>

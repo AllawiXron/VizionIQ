@@ -92,7 +92,7 @@ export function CustomerSentence({ shown = SENTENCE.length }: { shown?: number }
       <div className="glass-elevated rounded-3xl p-5 sm:p-7 space-y-3 min-h-[240px]">
         {SENTENCE.slice(0, shown).map((s) => (
           <motion.p key={s.tag} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={ease} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="text-[17px] sm:text-[20px] font-bold text-white/70 shrink-0">{s.before.replace(/^،\s*/, "")}</span>
+            <span className="text-[17px] sm:text-[20px] font-bold text-white/55 shrink-0">{s.before.replace(/^،\s*/, "")}</span>
             <span className={`px-3 py-1 rounded-xl border text-[19px] sm:text-[23px] font-black leading-[1.6] ${s.tone}`}>{s.text}</span>
           </motion.p>
         ))}
@@ -163,7 +163,7 @@ export function AwarenessStairs() {
           </button>
         ))}
       </div>
-      <div className="flex items-center justify-between gap-3 mt-3 text-[13px] font-bold text-white/65">
+      <div className="flex items-center justify-between gap-3 mt-3 text-[13px] font-bold text-white/50">
         <span>ناس هواية، بس مو قريبين من قرار الشراء</span>
         <span>عدد قليل، والكل يتنافس عليهم</span>
       </div>
@@ -223,7 +223,7 @@ export function TrustScale() {
               onClick={() => setFixed((x) => [...x, i])}
               className={`w-full text-right rounded-2xl p-4 border transition-colors duration-300 ${ok ? "bg-emerald-400/[0.1] border-emerald-400/40" : "bg-red-500/[0.07] border-red-400/25 hover:bg-red-500/[0.12] cursor-pointer"}`}
             >
-              <span className={`block text-[16px] font-black ${ok ? "text-white/65 line-through decoration-red-300/60" : "text-white"}`}>{f.fear}</span>
+              <span className={`block text-[16px] font-black ${ok ? "text-white/50 line-through decoration-red-300/60" : "text-white"}`}>{f.fear}</span>
               {ok && (
                 <motion.span initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="mt-1.5 flex items-start gap-2 text-[16px] font-bold text-emerald-200">
                   <ShieldCheck className="w-5 h-5 shrink-0 mt-0.5" />
@@ -257,7 +257,7 @@ export function CompetitorBoard() {
               <p className="text-[15px] font-bold text-white/70">{r.offer}</p>
             </div>
             <div className="flex items-center gap-3 mb-3">
-              <Clock className="w-4 h-4 text-white/65 shrink-0" />
+              <Clock className="w-4 h-4 text-white/50 shrink-0" />
               <div className="flex-1 h-3 rounded-full bg-white/[0.08] overflow-hidden">
                 <motion.div initial={{ width: 0 }} whileInView={{ width: `${r.replyPct}%` }} viewport={{ once: true }} transition={{ duration: 0.9, ease: EASE_OUT, delay: i * 0.15 }} className={`h-full rounded-full ${r.replyTone}`} />
               </div>
@@ -301,7 +301,7 @@ export function SalaryMonth() {
             return (
               <div key={d} className="flex flex-col items-center justify-end h-[60px]">
                 <motion.div animate={{ height: h }} transition={{ duration: 0.5, ease: EASE_OUT, delay: (d % 10) * 0.02 }} className={`w-full rounded-lg ${bg}`} />
-                <span className="text-[11px] sm:text-[12px] font-bold text-white/65 mt-1">{d}</span>
+                <span className="text-[11px] sm:text-[12px] font-bold text-white/50 mt-1">{d}</span>
               </div>
             );
           })}
@@ -342,7 +342,7 @@ export function DeliveryDistance() {
               <Truck className="w-7 h-7 -scale-x-100" />
             </motion.span>
           </div>
-          <p className="mt-1.5 text-[13px] font-bold text-white/70">
+          <p className="mt-1.5 text-[13px] font-bold text-white/55">
             نسبة الطلبات الراجعة: <span className={["text-emerald-300", "text-amber-200", "text-red-300"][z.risk - 1]}>{["أقل", "أعلى", "الأعلى"][z.risk - 1]}</span>
           </p>
         </div>
@@ -427,7 +427,7 @@ export function PriceSlider() {
       <p className="text-[16px] font-black text-white/80 mb-2">غير السعر وشوف شنو يتغير</p>
       <p className="text-[52px] sm:text-[64px] font-black text-white leading-none mb-4" dir="ltr">{fmt(price)}</p>
       <input type="range" dir="ltr" min={0} max={PRICES.length - 1} step={1} value={i} onChange={(e) => setI(Number(e.target.value))} className="w-full" aria-label="السعر" />
-      <div className="flex justify-between text-[12px] font-bold text-white/60 mt-1" dir="ltr">
+      <div className="flex justify-between text-[12px] font-bold text-white/45 mt-1" dir="ltr">
         {PRICES.map((p) => <span key={p}>{p / 1000}</span>)}
       </div>
       <div className="mt-6 space-y-4">

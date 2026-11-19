@@ -586,7 +586,7 @@ function ChatInputForm({
               </button>
             </div>
           ))}
-          <span className="text-[11px] text-white/70 font-bold">المستشار راح يقرا الصورة ويحللها</span>
+          <span className="text-[11px] text-white/55 font-bold">المستشار راح يقرا الصورة ويحللها</span>
         </div>
       )}
       {dictation.error && <div className="px-2 text-[11px] font-bold text-rose-300">{dictation.error}</div>}
@@ -661,7 +661,7 @@ function ChatInputForm({
               aria-label={dictation.listening ? "إيقاف التسجيل" : "احچي بدل ما تكتب"}
               title={dictation.listening ? "إيقاف التسجيل" : "احچي بدل ما تكتب"}
               className={`absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                dictation.listening ? "bg-rose-500 text-white animate-pulse" : "text-white/70 hover:text-white hover:bg-white/10"
+                dictation.listening ? "bg-rose-500 text-white animate-pulse" : "text-white/55 hover:text-white hover:bg-white/10"
               }`}
             >
               <Mic className="w-4 h-4" />

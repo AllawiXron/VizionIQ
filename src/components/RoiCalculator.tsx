@@ -106,7 +106,7 @@ export default function RoiCalculator() {
             ].map((s) => (
               <div key={s.label} className="glass-subtle rounded-2xl p-3.5 text-center space-y-0.5">
                 <p className="text-lg sm:text-xl font-black font-mono text-white">{fmt(s.value)}</p>
-                <p className="text-[11px] sm:text-xs text-white/70">{s.label}</p>
+                <p className="text-[11px] sm:text-xs text-white/55">{s.label}</p>
               </div>
             ))}
           </div>

@@ -72,7 +72,7 @@ export default function ScriptSimulator() {
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-300">انتسخ</span>
+                  <span className="text-emerald-300">تم النسخ</span>
                 </>
               ) : (
                 <>

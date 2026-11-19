@@ -49,16 +49,16 @@ function ReplyLog({ d }: { d: { cost: number; before: LogSide; after: LogSide } 
           ["رسائل دافع عليها وتأخرت أكثر من نص ساعة", `${fmt(late * d.cost)} د.ع`],
         ].map(([k, v]) => (
           <div key={k} className={`${card} p-3`}>
-            <p className="text-[12px] font-bold text-white/70 leading-snug">{k}</p>
+            <p className="text-[12px] font-bold text-white/55 leading-snug">{k}</p>
             <motion.p key={v + after} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-1 text-[18px] sm:text-[20px] font-black text-white">{v}</motion.p>
           </div>
         ))}
       </div>
       <div className={`${card} p-3.5 space-y-1`}>
-        <p className="text-[13px] font-bold text-white/70 mb-2">آخر 20 محادثة. اضغط على أي وحدة حتى تشوف وقت الرد</p>
+        <p className="text-[13px] font-bold text-white/55 mb-2">آخر 20 محادثة. اضغط على أي وحدة حتى تشوف وقت الرد</p>
         {s.waits.map((w, i) => (
           <button key={i} type="button" onClick={() => setOpen(i)} className="w-full flex items-center gap-2 min-h-[22px]" aria-label={`محادثة ${i + 1}: ${wait(w)}`}>
-            <span className="w-6 text-[11px] font-bold text-white/60 shrink-0">{i + 1}</span>
+            <span className="w-6 text-[11px] font-bold text-white/45 shrink-0">{i + 1}</span>
             <span className="flex-1 h-3 rounded-full bg-white/[0.05] overflow-hidden">
               <motion.span
                 className={`block h-full rounded-full ${w <= 5 ? "bg-emerald-300" : w <= 30 ? "bg-sky-300/80" : "bg-red-300/80"}`}
@@ -67,10 +67,10 @@ function ReplyLog({ d }: { d: { cost: number; before: LogSide; after: LogSide } 
                 transition={{ ...ease, delay: i * 0.02 }}
               />
             </span>
-            <span className={`w-20 text-left text-[11px] font-bold shrink-0 ${open === i ? "text-white" : "text-white/60"}`}>{open === i ? wait(w) : ""}</span>
+            <span className={`w-20 text-left text-[11px] font-bold shrink-0 ${open === i ? "text-white" : "text-white/45"}`}>{open === i ? wait(w) : ""}</span>
           </button>
         ))}
-        <p className="pt-2 text-[12px] text-white/65">الأخضر خلال 5 دقايق، الأزرق لحد نص ساعة، والأحمر أكثر من نص ساعة</p>
+        <p className="pt-2 text-[12px] text-white/50">الأخضر خلال 5 دقايق، الأزرق لحد نص ساعة، والأحمر أكثر من نص ساعة</p>
       </div>
       <motion.p key={String(after)} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`text-[16px] font-bold leading-relaxed ${after ? "text-emerald-200" : "text-red-200"}`}>
         {s.say}
@@ -182,7 +182,7 @@ function SaleChat({ d }: { d: { stages: string[]; steps: CStep[]; done: string }
         {miss && miss.step === at && (
           <>
             <Bubble from="seller">{d.steps[at].options[miss.i].text}</Bubble>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...ease, delay: 0.5 }} className="text-[12px] text-white/60">شافت الرسالة وما ردت</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...ease, delay: 0.5 }} className="text-[12px] text-white/45">شافت الرسالة وما ردت</motion.p>
           </>
         )}
       </div>
@@ -225,7 +225,7 @@ function Objections({ d }: { d: { rounds: Round[]; done: string } }) {
         const o = g !== undefined ? r.options[g] : null;
         return (
           <div key={r.says} className={`${card} p-3.5 space-y-2.5`}>
-            <p className="text-[12px] font-bold text-white/65">{r.product}</p>
+            <p className="text-[12px] font-bold text-white/50">{r.product}</p>
             <Bubble from="customer">{r.says}</Bubble>
             {o === null ? (
               <div className="space-y-2">
@@ -243,7 +243,7 @@ function Objections({ d }: { d: { rounds: Round[]; done: string } }) {
                   {o.kind === "good" ? <Check className="w-4 h-4 mt-1 shrink-0" aria-hidden="true" /> : <X className="w-4 h-4 mt-1 shrink-0" aria-hidden="true" />}
                   {o.say}
                 </motion.p>
-                <button type="button" onClick={() => setGot((s) => { const c = { ...s }; delete c[i]; return c; })} className="text-[13px] font-bold text-white/70 min-h-[32px]">
+                <button type="button" onClick={() => setGot((s) => { const c = { ...s }; delete c[i]; return c; })} className="text-[13px] font-bold text-white/55 min-h-[32px]">
                   جرب رد ثاني
                 </button>
               </>
@@ -284,7 +284,7 @@ function FollowPlan({ d }: { d: { silent: string; msgs: FMsg[]; okSay: string } 
       <div className="space-y-2">
         {d.msgs.map((m, i) => (
           <button key={m.text} type="button" onClick={() => setOn((o) => ({ ...o, [i]: !o[i] }))} className={pick(!!on[i])}>
-            <span className={`block text-[12px] font-black ${on[i] ? "text-[#040e33]/60" : "text-white/65"}`}>{m.when}</span>
+            <span className={`block text-[12px] font-black ${on[i] ? "text-[#040e33]/60" : "text-white/50"}`}>{m.when}</span>
             {m.text}
           </button>
         ))}

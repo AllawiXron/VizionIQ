@@ -76,12 +76,12 @@ export function BusinessProfilePanel({
           <section key={g.id} className="rounded-3xl glass-subtle border p-4">
             <div className="mb-3">
               <h3 className="text-sm font-black text-white">{g.title}</h3>
-              <p className="text-[11px] text-white/65">{g.hint}</p>
+              <p className="text-[11px] text-white/50">{g.hint}</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {PROFILE_FIELDS.filter((f) => f.group === g.id).map((f) => (
                 <label key={f.key} className={`flex flex-col gap-1 rounded-2xl bg-black/25 border px-3 py-2 ${draft[f.key] ? "border-vz-blue/35" : "border-white/10"} ${f.kind === "text" && f.group === "goals" ? "sm:col-span-2" : ""}`}>
-                  <span className="text-[11px] font-bold text-white/70">{f.label}</span>
+                  <span className="text-[11px] font-bold text-white/55">{f.label}</span>
                   {f.kind === "choice" ? (
                     <div className="flex flex-wrap gap-1.5 pt-0.5">
                       {f.options!.map((o) => (
@@ -105,7 +105,7 @@ export function BusinessProfilePanel({
                         dir={f.kind === "text" ? "rtl" : "ltr"}
                         className="w-full bg-transparent text-white text-sm font-bold outline-none placeholder:text-white/25"
                       />
-                      {UNIT[f.kind] && <span className="text-[11px] text-white/60 shrink-0">{UNIT[f.kind]}</span>}
+                      {UNIT[f.kind] && <span className="text-[11px] text-white/45 shrink-0">{UNIT[f.kind]}</span>}
                     </span>
                   )}
                 </label>

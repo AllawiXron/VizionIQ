@@ -27,7 +27,7 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
   const isTrial = isFreeTrialUser(userCode);
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-[4.5rem] lg:pt-32 pb-10 space-y-8 sm:space-y-10">
+    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><BookOpen className="w-4 h-4" /> فصول الكورس</>}
         title="اقرأها وحدة ورا الثانية"
@@ -88,9 +88,9 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
                             <LockChip />
                           ))}
                         </span>
-                        <span className="block text-xs sm:text-sm text-white/65 mt-1 line-clamp-1">{chapter.subtitle}</span>
+                        <span className="block text-xs sm:text-sm text-white/50 mt-1 line-clamp-1">{chapter.subtitle}</span>
                       </span>
-                      <span className="hidden sm:flex items-center gap-1 text-[11px] text-white/60 font-mono shrink-0">
+                      <span className="hidden sm:flex items-center gap-1 text-[11px] text-white/45 font-mono shrink-0">
                         <Clock className="w-3.5 h-3.5" />
                         {courseChapters[chapter.id] ? `${chapterMinutes(courseChapters[chapter.id])} دقيقة` : ""}
                       </span>

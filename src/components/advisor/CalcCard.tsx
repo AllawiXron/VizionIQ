@@ -38,7 +38,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
           </span>
           حسابات الطلب الواحد
         </div>
-        <span className="text-[11px] text-white/65 font-bold">غير أي رقم وشوف النتيجة مباشرة</span>
+        <span className="text-[11px] text-white/50 font-bold">غير أي رقم وشوف النتيجة مباشرة</span>
       </div>
 
       <div className={`mx-3 mt-3 rounded-2xl border px-4 py-3 ${ring}`}>
@@ -77,7 +77,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
         <div className="grid grid-cols-2 gap-2 px-3 pb-3">
           {fields.map((f) => (
             <label key={f.key} className="flex flex-col gap-1 rounded-xl bg-black/25 border border-white/10 px-3 py-2">
-              <span className="text-[11px] font-bold text-white/70">{f.label}</span>
+              <span className="text-[11px] font-bold text-white/55">{f.label}</span>
               <span className="flex items-center gap-1.5">
                 <input
                   type="number"
@@ -93,7 +93,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
                   className="w-full bg-transparent text-white font-black text-sm outline-none tabular-nums"
                   dir="ltr"
                 />
-                <span className="text-[11px] text-white/60 shrink-0">{f.unit}</span>
+                <span className="text-[11px] text-white/45 shrink-0">{f.unit}</span>
               </span>
             </label>
           ))}
@@ -132,7 +132,7 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
 function Stat({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div className={`rounded-2xl px-3 py-2.5 border ${highlight ? "border-vz-blue/40 bg-vz-blue/10" : "border-white/10 bg-white/[0.03]"}`}>
-      <div className="text-[11px] font-bold text-white/70 leading-snug">{label}</div>
+      <div className="text-[11px] font-bold text-white/55 leading-snug">{label}</div>
       <div className="mt-0.5 text-[14px] sm:text-[15px] font-black text-white tabular-nums">{value}</div>
     </div>
   );

@@ -48,7 +48,7 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
             }`}
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            {copied ? "انتسخ" : "نسخ"}
+            {copied ? "تم النسخ" : "نسخ"}
           </button>
           <a
             href={`https://wa.me/?text=${encodeURIComponent(text)}`}

@@ -30,7 +30,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onOpenUpgradeMod
             className="text-xl sm:text-4xl font-black text-white leading-tight tracking-tight px-2"
             segments={["افتح كلشي، و", { text: "طبقه على مشروعك", className: "vz-silver-text" }]}
           />
-          <p className="text-xs sm:text-base text-white/70 leading-relaxed px-2">
+          <p className="text-xs sm:text-base text-white/55 leading-relaxed px-2">
             مو فيديوهات طويلة ولا قناة تلكرام: منصة تقرا بيها خطوة بخطوة، تحسب أرقامك، وتنسخ الرسائل الجاهزة لمشروعك.
           </p>
         </div>

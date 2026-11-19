@@ -66,7 +66,7 @@ export const WelcomeIntroModal: React.FC<WelcomeIntroModalProps> = ({ isOpen, on
                       </span>
                       <span className="min-w-0">
                         <span className="block text-sm font-black">{step.title}</span>
-                        <span className="block text-xs text-white/70 leading-relaxed">{step.desc}</span>
+                        <span className="block text-xs text-white/55 leading-relaxed">{step.desc}</span>
                       </span>
                     </motion.li>
                   );

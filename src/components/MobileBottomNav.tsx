@@ -134,7 +134,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Wrench className="w-4 h-4 text-white/85" /></span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-black text-white">الأدوات والحاسبات</span>
-                    <span className="block text-[11px] text-white/70 truncate">13 أداة تحسبلك أرقامك بالدينار</span>
+                    <span className="block text-[11px] text-white/55 truncate">13 أداة تحسبلك أرقامك بالدينار</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>
@@ -145,7 +145,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Lightbulb className="w-4 h-4 text-amber-200" /></span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-black text-white">الدليل العراقي</span>
-                    <span className="block text-[11px] text-white/70 truncate">السوق، الدفع، التوصيل، الكمرك، المواسم والقانون</span>
+                    <span className="block text-[11px] text-white/55 truncate">السوق، الدفع، التوصيل، الكمرك، المواسم والقانون</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>
@@ -157,7 +157,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Crown className="w-4 h-4 text-white" /></span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-black text-white">افتح الكورس كامل</span>
-                    <span className="block text-[11px] text-white/70 truncate">إنت حاليا بالتجربة المجانية</span>
+                    <span className="block text-[11px] text-white/55 truncate">إنت حاليا بالتجربة المجانية</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>
@@ -170,7 +170,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   <span className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0"><Sparkles className="w-4 h-4 text-vz-accent" /></span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-black text-white">شلون تستخدم الموقع؟</span>
-                    <span className="block text-[11px] text-white/70 truncate">شرح سريع بثلاث خطوات</span>
+                    <span className="block text-[11px] text-white/55 truncate">شرح سريع بثلاث خطوات</span>
                   </span>
                   <ChevronLeft className="w-4 h-4 text-white/40 shrink-0" />
                 </button>
@@ -202,12 +202,12 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       <motion.nav
         role="navigation"
         aria-label="شريط التنقل السفلي للموبايل"
-        initial={{ y: 64, opacity: 0 }}
-        animate={{ y: 0, opacity: 1, transition: { ...SPRING, delay: 0.2 } }}
-        exit={{ y: 64, opacity: 0, transition: { duration: 0.22, ease: EASE_OUT } }}
-        className="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-[45] border-t border-white/10 bg-[#051038]/95 backdrop-blur-md pb-[env(safe-area-inset-bottom,0px)] dir-rtl"
+        initial={{ y: 96, opacity: 0 }}
+        animate={{ y: 0, opacity: 1, transition: { ...SPRING, delay: 0.35 } }}
+        exit={{ y: 96, opacity: 0, transition: { duration: 0.25, ease: EASE_OUT } }}
+        className="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-[45] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] px-3 sm:px-4 pointer-events-none dir-rtl"
       >
-        <div className="max-w-md mx-auto h-14 flex items-stretch">
+        <div className="pointer-events-auto max-w-md mx-auto glass-floating glass-edge rounded-[26px] p-1.5 flex items-center justify-between gap-1">
           {dockItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -217,22 +217,28 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                 aria-label={item.aria}
                 aria-current={item.active && !item.expanded ? "page" : undefined}
                 aria-expanded={item.expanded}
-                className={`flex-1 flex flex-col items-center justify-center gap-1 cursor-pointer relative transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/60 ${
-                  item.active ? "text-white" : item.accent ? "text-white/90" : "text-white/60"
+                className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-[20px] cursor-pointer min-h-[52px] relative transition-[color,scale] duration-300 active:scale-[0.94] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+                  item.active ? "text-white" : item.accent ? "text-white/90" : "text-white/50"
                 }`}
               >
                 {item.active && (
                   <motion.span
                     layoutId="dock-active"
                     transition={SPRING_SNAPPY}
-                    className="absolute top-0 inset-x-4 h-[2px] rounded-full bg-vz-accent"
+                    className="absolute inset-0 rounded-[20px] bg-gradient-to-b from-white/[0.14] to-white/[0.05] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]"
                   />
                 )}
-                <span className="relative flex">
+                <motion.span
+                  className="relative flex"
+                  initial={false}
+                  animate={item.active ? { scale: [1, 1.14, 0.97, 1], y: [0, -2, 0, 0] } : { scale: 1, y: 0 }}
+                  transition={{ duration: 0.55, times: [0, 0.35, 0.7, 1], ease: EASE_OUT }}
+                  whileTap={{ scale: 0.82 }}
+                >
                   <Icon className="w-5 h-5" strokeWidth={item.active ? 2.4 : 2} />
-                  {item.accent && <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#051038]" />}
-                </span>
-                <span className={`relative text-[12px] leading-none ${item.active || item.accent ? "font-black" : "font-bold"}`}>
+                  {item.accent && <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#0c1a4a]" />}
+                </motion.span>
+                <span className={`relative text-[10px] sm:text-[11px] mt-1 leading-none tracking-tight ${item.active || item.accent ? "font-black" : "font-bold"}`}>
                   {item.label}
                 </span>
               </button>
