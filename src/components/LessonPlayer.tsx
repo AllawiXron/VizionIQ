@@ -628,7 +628,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       : screen.kind === "takeaway" ? "كملت الدرس"
         : screen.kind === "block" && screen.block.kind === "compare" && choices[at] === undefined ? "شوف الإجابة"
           : screen.kind === "block" && screen.block.kind === "check" && answers[at] === undefined ? "شوف الإجابة"
-          : screen.kind === "block" && screen.block.kind === "apply" ? "تم الحفظ، كمل"
+          : screen.kind === "block" && screen.block.kind === "apply" ? "انحفظ، كمل"
           : shown < revealCount(screen) ? (screen.kind === "block" && screen.block.kind === "visual" ? "كمل" : "الخطوة الجاية")
             : "التالي";
   const primaryLabel = more ? "انزل لجوه، بعد أكو محتوى" : nextLabel;
