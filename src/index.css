@@ -1688,11 +1688,14 @@ body,
   box-shadow: 0 0 0 2px rgba(6, 19, 64, 0.9);
 }
 
+/* 12px floor for small labels on phones */
 @media (max-width: 639px) {
-  .text-\[10px\] {
-    font-size: 11.5px;
-  }
+  .text-\[9px\],
+  .text-\[10px\],
   .text-\[11px\] {
+    font-size: 12px;
+  }
+  .text-\[11\.5px\] {
     font-size: 12.5px;
   }
 }
@@ -1712,21 +1715,73 @@ body,
 .vz-tabs-sticky .vz-segmented {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(12, 30, 92, 0.96);
 }
-@media (max-width: 639px) {
-  .vz-segmented {
+/* phones and tablets: flush underline tabs instead of a pill bar */
+@media (max-width: 1023px) {
+  .vz-tabs-sticky {
+    margin-inline: -16px;
+  }
+  .vz-tabs-sticky::before {
+    inset: -1px 0 0;
+    background: rgba(4, 14, 51, 0.97);
+  }
+  .vz-tabs-sticky .vz-segmented {
     gap: 0;
+    padding: 0 8px;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     overflow-x: auto;
     scrollbar-width: none;
     overscroll-behavior-x: contain;
   }
-  .vz-segmented::-webkit-scrollbar {
+  .vz-tabs-sticky .vz-segmented::before,
+  .vz-tabs-sticky .vz-segmented::after {
     display: none;
   }
-  .vz-segment {
+  .vz-tabs-sticky .vz-segmented::-webkit-scrollbar {
+    display: none;
+  }
+  .vz-tabs-sticky .vz-segment {
     flex: 1 0 auto;
-    min-height: 44px;
-    padding: 0 5px;
-    font-size: 13px;
+    min-height: 48px;
+    padding: 0 9px;
+    border-radius: 0;
+    font-size: 14px;
+    color: rgba(225, 233, 255, 0.7);
+  }
+  .vz-tabs-sticky .vz-segment[data-active="true"] {
+    color: #ffffff;
+  }
+  .vz-tabs-sticky .vz-segment-thumb {
+    inset: auto 9px 0;
+    height: 2px;
+    border: 0;
+    border-radius: 2px;
+    background: #34d399;
+    box-shadow: none;
+  }
+  .vz-tabs-sticky .vz-segment-dot {
+    top: 9px;
+    left: 1px;
+  }
+}
+@media (max-width: 1023px) {
+  /* six tabs scroll on narrow phones: fade the far edge so the hidden tab reads as more */
+  .vz-tabs-scroll .vz-segmented {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 28px);
+    mask-image: linear-gradient(to right, transparent 0, #000 28px);
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .vz-tabs-sticky {
+    margin-inline: -24px;
+  }
+  .vz-tabs-sticky .vz-segmented {
+    padding: 0 16px;
   }
 }
 

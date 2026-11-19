@@ -8,7 +8,7 @@ const ease = { duration: 0.45, ease: EASE_OUT };
 type Act = "pass" | "stop" | "msg" | "save";
 
 const ACT_STYLE: Record<Act, { label: string; cls: string }> = {
-  pass: { label: "تجاوز", cls: "bg-white/[0.06] text-white/45 border-white/10" },
+  pass: { label: "تجاوز", cls: "bg-white/[0.06] text-white/60 border-white/10" },
   stop: { label: "توقف", cls: "bg-emerald-400/15 text-emerald-200 border-emerald-300/35" },
   msg: { label: "راسل", cls: "bg-vz-blue/30 text-white border-vz-blue-light/50" },
   save: { label: "حفظ", cls: "bg-amber-300/15 text-amber-100 border-amber-200/35" },
@@ -39,12 +39,12 @@ export function FeedPost({
         <Avatar name={page} tone="bg-vz-blue/35 text-white" />
         <div className="min-w-0">
           <p className="text-[15px] font-black text-white leading-tight truncate">{page}</p>
-          <p className="text-[12px] font-bold text-white/45">إعلان ممول</p>
+          <p className="text-[12px] font-bold text-white/60">إعلان ممول</p>
         </div>
       </div>
       <div className="relative">{creative}</div>
       <div className="px-4 pt-3 pb-2 text-[15px] text-white/85 leading-[1.75]">{caption}</div>
-      <div className="flex items-center justify-between gap-2 px-4 py-2.5 border-t border-white/[0.07] text-[13px] font-bold text-white/45">
+      <div className="flex items-center justify-between gap-2 px-4 py-2.5 border-t border-white/[0.07] text-[13px] font-bold text-white/60">
         <span className="flex items-center gap-4">
           <span className="flex items-center gap-1.5"><ThumbsUp className="w-4 h-4" /> إعجاب</span>
           <span className="flex items-center gap-1.5"><MessageCircle className="w-4 h-4" /> تعليق</span>
@@ -181,7 +181,7 @@ function Passers({ which }: { which: "generic" | "target" }) {
         >
           <Avatar name={p.name} />
           <span className="flex-1 min-w-0">
-            <span className="block text-[14px] font-black text-white leading-tight">{p.name}، <span className="font-bold text-white/55">{p.role}</span></span>
+            <span className="block text-[14px] font-black text-white leading-tight">{p.name}، <span className="font-bold text-white/70">{p.role}</span></span>
             <span className={`block text-[13px] leading-snug mt-0.5 ${p.act === "pass" ? "text-white/40" : "text-white/75"}`}>{p.note}</span>
           </span>
           <span className={`shrink-0 px-2.5 py-1 rounded-lg border text-[12px] font-black ${ACT_STYLE[p.act].cls}`}>{ACT_STYLE[p.act].label}</span>
@@ -226,7 +226,7 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
             ["إعلان الموظف", "وقف 11، راسل 4", "text-emerald-200"],
           ].map(([k, v, c]) => (
             <div key={k} className="rounded-2xl bg-white/[0.04] border border-white/[0.08] p-3.5">
-              <p className="text-[13px] font-bold text-white/50">{k}</p>
+              <p className="text-[13px] font-bold text-white/65">{k}</p>
               <p className={`text-[17px] font-black ${c}`}>{v}</p>
             </div>
           ))}
@@ -238,7 +238,7 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 sm:items-start">
       <motion.div key={which} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={ease}>
-        <p className="text-[14px] font-black text-white/55 mb-2">{which === "generic" ? "الإعلان الأول: يحچي ويا الكل" : "الإعلان الثاني: يحچي ويا شخص محدد"}</p>
+        <p className="text-[14px] font-black text-white/70 mb-2">{which === "generic" ? "الإعلان الأول: يحچي ويا الكل" : "الإعلان الثاني: يحچي ويا شخص محدد"}</p>
         {which === "generic" ? (
           <FeedPost
             page="مظلات بغداد"
@@ -250,7 +250,7 @@ export function FeedTest({ shown = 1 }: { shown?: number }) {
         )}
       </motion.div>
       <div className="space-y-3">
-        <p className="text-[14px] font-black text-white/55">شنو كان رد فعل الناس</p>
+        <p className="text-[14px] font-black text-white/70">شنو كان رد فعل الناس</p>
         <Passers which={which} />
         <Crowd which={which} />
       </div>
@@ -326,11 +326,11 @@ export function Ripple({ shown = 1 }: { shown?: number }) {
       </Ring>
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-white/[0.04] border border-white/[0.08] p-3.5">
-          <p className="text-[13px] font-bold text-white/50">الإعلان يحچي ويا</p>
+          <p className="text-[13px] font-bold text-white/65">الإعلان يحچي ويا</p>
           <p className="text-[22px] font-black text-white">شخص واحد</p>
         </div>
         <div className="rounded-2xl bg-emerald-400/[0.08] border border-emerald-300/25 p-3.5">
-          <p className="text-[13px] font-bold text-white/50">الناس المحتمل يشترون</p>
+          <p className="text-[13px] font-bold text-white/65">الناس المحتمل يشترون</p>
           <motion.p key={buyers} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="text-[22px] font-black text-emerald-200">
             {buyers}
           </motion.p>
@@ -408,7 +408,7 @@ export function SentenceBuilder() {
           const current = i === slot;
           return (
             <p key={s.q} className={`flex flex-wrap items-baseline gap-x-2.5 gap-y-1 transition-opacity duration-300 ${filled || current ? "opacity-100" : "opacity-30"}`}>
-              <span className="text-[16px] sm:text-[18px] font-bold text-white/55 shrink-0">{s.lead}</span>
+              <span className="text-[16px] sm:text-[18px] font-bold text-white/70 shrink-0">{s.lead}</span>
               {filled ? (
                 <motion.span initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={ease} className="px-2.5 py-0.5 rounded-xl bg-white text-[#040e33] text-[17px] sm:text-[20px] font-black leading-[1.6]">
                   {right.t}
@@ -439,7 +439,7 @@ export function SentenceBuilder() {
                     isRight
                       ? "bg-emerald-400/15 border-emerald-300/60 text-white"
                       : isWrong
-                        ? "bg-red-500/[0.07] border-red-400/30 text-white/45 line-through decoration-red-300/50"
+                        ? "bg-red-500/[0.07] border-red-400/30 text-white/60 line-through decoration-red-300/50"
                         : "bg-white/[0.05] border-white/12 text-white hover:bg-white/[0.09]"
                   }`}
                 >
@@ -529,7 +529,7 @@ export function BeforeAfterPost({ shown = 1 }: { shown?: number }) {
     <div className="space-y-4">
       <div className="flex gap-2" aria-hidden="true">
         {["قبل", "بعد"].map((t, i) => (
-          <span key={t} className={`px-4 py-1.5 rounded-xl text-[14px] font-black border transition-colors duration-300 ${(i === 1) === after ? "bg-white text-[#040e33] border-white" : "text-white/45 border-white/12"}`}>
+          <span key={t} className={`px-4 py-1.5 rounded-xl text-[14px] font-black border transition-colors duration-300 ${(i === 1) === after ? "bg-white text-[#040e33] border-white" : "text-white/60 border-white/12"}`}>
             {t}
           </span>
         ))}
@@ -588,10 +588,10 @@ export function ThreeCustomers() {
             >
               <span className="flex items-center justify-between gap-3 mb-1.5">
                 <span className="text-[18px] sm:text-[20px] font-black text-white">{t.who}</span>
-                <span className="text-[13px] font-bold text-white/50">{t.day}</span>
+                <span className="text-[13px] font-bold text-white/65">{t.day}</span>
               </span>
               <span className="block text-[16px] sm:text-[18px] font-bold text-white/90 leading-relaxed">{t.line}</span>
-              <span className="block text-[13px] text-white/45 mt-1">يظهر: {t.where}</span>
+              <span className="block text-[13px] text-white/60 mt-1">يظهر: {t.where}</span>
             </button>
           );
         })}
@@ -600,10 +600,10 @@ export function ThreeCustomers() {
         <motion.div key={chosen.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-4 rounded-2xl bg-white/[0.04] border border-white/[0.09] p-4 space-y-2">
           <p className="text-[16px] text-white/85 leading-relaxed"><span className="font-black text-emerald-200">الإعلان الأول: </span>{chosen.who}، وكل الكلام إله.</p>
           <p className="text-[16px] text-white/70 leading-relaxed"><span className="font-black text-white">بعد ما يمر عليه: </span>إعلان ثاني {toWho(rest[0].who)}، وثالث {toWho(rest[1].who)}. نفس المظلة، بس كل إعلان بجملته.</p>
-          <p className="text-[14px] text-white/45 leading-relaxed">ماكو اختيار غلط هنا. الغلط الوحيد إنك تحاول تحچي ويا الثلاثة بإعلان واحد.</p>
+          <p className="text-[14px] text-white/60 leading-relaxed">ماكو اختيار غلط هنا. الغلط الوحيد إنك تحاول تحچي ويا الثلاثة بإعلان واحد.</p>
         </motion.div>
       ) : (
-        <p className="mt-4 text-[15px] text-white/55">اختار شخص واحد وتبدي بيه.</p>
+        <p className="mt-4 text-[15px] text-white/70">اختار شخص واحد وتبدي بيه.</p>
       )}
     </div>
   );

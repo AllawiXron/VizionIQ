@@ -73,7 +73,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
                 <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
-                <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-wider block truncate">
+                <span className="text-[10px] sm:text-xs font-bold text-white/65 uppercase tracking-wider block truncate">
                   الاشتراك الكامل
                 </span>
                 <span className="text-xs sm:text-sm font-bold text-white truncate block">كلشي مفتوح إلك مدى الحياة</span>
@@ -124,7 +124,7 @@ export const FreeTrialPaywallModal: React.FC<FreeTrialPaywallModalProps> = ({
 
               <div className="space-y-2 pt-1">
                 <SubscribeButton />
-                <p className="text-[11px] text-center text-white/55 leading-relaxed">
+                <p className="text-[11px] text-center text-white/70 leading-relaxed">
                   راح تنفتح محادثة واتساب ويا رسالة جاهزة. ندزلك تفاصيل الدفع، ومن توصل الحوالة ندزلك رمز الدخول الخاص بيك.
                 </p>
               </div>

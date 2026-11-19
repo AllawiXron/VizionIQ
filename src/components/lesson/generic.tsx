@@ -69,7 +69,7 @@ export function Stages({ d }: { d: StagesData }) {
         ))}
       </div>
       {(d.lowNote || d.highNote) && (
-        <div className="flex items-center justify-between gap-3 mt-3 text-[13px] font-bold text-white/50">
+        <div className="flex items-center justify-between gap-3 mt-3 text-[13px] font-bold text-white/65">
           <span>{d.lowNote}</span>
           <span>{d.highNote}</span>
         </div>
@@ -129,7 +129,7 @@ export function Scale({ d }: { d: ScaleData }) {
               onClick={() => setFixed((x) => [...x, i])}
               className={`w-full text-right rounded-2xl p-4 border transition-colors duration-300 ${ok ? "bg-emerald-400/[0.1] border-emerald-400/40" : "bg-red-500/[0.07] border-red-400/25 hover:bg-red-500/[0.12] cursor-pointer"}`}
             >
-              <span className={`block text-[16px] font-black ${ok ? "text-white/50 line-through decoration-red-300/60" : "text-white"}`}>{f.problem}</span>
+              <span className={`block text-[16px] font-black ${ok ? "text-white/65 line-through decoration-red-300/60" : "text-white"}`}>{f.problem}</span>
               {ok && (
                 <motion.span initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="mt-1.5 flex items-start gap-2 text-[16px] font-bold text-emerald-200">
                   <ShieldCheck className="w-5 h-5 shrink-0 mt-0.5" />
@@ -289,7 +289,7 @@ export function Bars({ d }: { d: BarsData }) {
           <div className="h-8 rounded-xl bg-white/[0.05] overflow-hidden">
             <motion.div initial={{ width: 0 }} animate={{ width: `${Math.max(3, (x.value / max) * 100)}%` }} transition={{ duration: 0.8, ease: EASE_OUT, delay: i * 0.12 }} className={`h-full rounded-xl ${TONE[x.tone ?? "blue"]}`} />
           </div>
-          {x.sub && <p className="mt-1 text-[13px] font-bold text-white/55">{x.sub}</p>}
+          {x.sub && <p className="mt-1 text-[13px] font-bold text-white/70">{x.sub}</p>}
         </div>
       ))}
       {d.note && <p className="text-[15px] text-white/70 leading-relaxed pt-1">{d.note}</p>}
@@ -411,7 +411,7 @@ export function Chat({ d, shown }: { d: ChatData; shown: number }) {
         const seller = m.from === "seller";
         return (
           <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`flex flex-col ${seller ? "items-start" : "items-end"}`}>
-            <span className={`text-[12px] font-black mb-1 flex items-center gap-1 ${seller ? "text-vz-accent" : "text-white/50"}`}>
+            <span className={`text-[12px] font-black mb-1 flex items-center gap-1 ${seller ? "text-vz-accent" : "text-white/65"}`}>
               <User className="w-3.5 h-3.5" />
               {seller ? "إنت" : "الزبون"}
             </span>
@@ -513,7 +513,7 @@ export function Versus({ d, shown }: { d: VersusData; shown: number }) {
       <div className="space-y-3">
         {d.rows.slice(0, shown).map((r) => (
           <motion.div key={r.label} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease}>
-            <p className="text-[13px] font-black text-white/55 mb-1.5 text-center">{r.label}</p>
+            <p className="text-[13px] font-black text-white/70 mb-1.5 text-center">{r.label}</p>
             <div className="grid grid-cols-2 gap-2">
               <p className={`rounded-2xl p-3 sm:p-4 text-[15px] sm:text-[16px] leading-relaxed text-white/90 border ${at === "bad" ? "bg-red-500/[0.07] border-red-400/25" : "bg-white/[0.05] border-white/10"}`}>{r.a}</p>
               <p className={`rounded-2xl p-3 sm:p-4 text-[15px] sm:text-[16px] leading-relaxed text-white border ${bt === "good" ? "bg-emerald-400/[0.09] border-emerald-400/35" : "bg-white/[0.05] border-white/10"}`}>{r.b}</p>
@@ -554,7 +554,7 @@ export function Pick({ d }: { d: PickData }) {
           {o.text && <p className="text-[16px] text-white/80 leading-relaxed mt-2">{o.text}</p>}
         </motion.div>
       ) : (
-        <p className="text-[15px] font-bold text-white/45">اختار وحدة وشوف الرد</p>
+        <p className="text-[15px] font-bold text-white/60">اختار وحدة وشوف الرد</p>
       )}
     </div>
   );

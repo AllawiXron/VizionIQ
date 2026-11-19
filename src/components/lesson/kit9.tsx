@@ -61,7 +61,7 @@ function ReturnCost({ d }: { d: CostData }) {
           <span>الطلبية الراجعة الوحدة</span>
           <span className="shrink-0">{fmt(per)} د.ع</span>
         </p>
-        <p className="text-[12px] text-white/50">{d.note}</p>
+        <p className="text-[12px] text-white/65">{d.note}</p>
       </div>
       <div className={`${card} p-3.5 space-y-4`}>
         <Slider label="طلبيات تطلع بالشهر" value={orders} min={100} max={600} step={50} show={fmt(orders)} onChange={setOrders} />
@@ -69,11 +69,11 @@ function ReturnCost({ d }: { d: CostData }) {
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div className={`${card} p-3`}>
-          <p className="text-[12px] font-bold text-white/55">ترجع بالشهر</p>
+          <p className="text-[12px] font-bold text-white/70">ترجع بالشهر</p>
           <motion.p key={back} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-1 text-[18px] font-black text-white">{back} طلبية</motion.p>
         </div>
         <div className={`${card} p-3`}>
-          <p className="text-[12px] font-bold text-white/55">خسارة الشهر</p>
+          <p className="text-[12px] font-bold text-white/70">خسارة الشهر</p>
           <motion.p key={month} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="mt-1 text-[18px] font-black text-red-200">{fmt(month)} د.ع</motion.p>
         </div>
       </div>
@@ -105,7 +105,7 @@ function ReturnLog({ d }: { d: { reasons: string[]; entries: LogEntry[]; belief:
       <p className="text-[15px] text-white/75 leading-relaxed">{d.belief}</p>
       {!finished && (
         <motion.div key={at} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`${card} p-3.5 space-y-2`}>
-          <div className="flex items-center justify-between text-[12px] font-black text-white/50">
+          <div className="flex items-center justify-between text-[12px] font-black text-white/65">
             <span>طلبية {e.no}، {e.where}</span>
             <span>{at + 1} من {d.entries.length}</span>
           </div>
@@ -141,7 +141,7 @@ function ReturnLog({ d }: { d: { reasons: string[]; entries: LogEntry[]; belief:
               <span className="w-5 text-left text-[13px] font-black text-white shrink-0">{n}</span>
             </div>
           ))}
-          <p className="pt-1 text-[12px] text-white/55">{after} من {tagged.length} رفضوا بعد الفتح، والطلبيات من {places} محافظات مختلفة</p>
+          <p className="pt-1 text-[12px] text-white/70">{after} من {tagged.length} رفضوا بعد الفتح، والطلبيات من {places} محافظات مختلفة</p>
         </div>
       )}
       {finished && (
@@ -184,7 +184,7 @@ function PreShip({ d }: { d: { cost: number; orders: ShipOrder[]; done: string }
                   {chosen.good ? <Check className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" /> : <X className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />}
                   <span><span className="text-white">{chosen.text}: </span>{chosen.say}</span>
                 </p>
-                <button type="button" onClick={() => setGot((s) => { const c = { ...s }; delete c[i]; return c; })} className="text-[13px] font-bold text-white/55 min-h-[32px]">غير قرارك</button>
+                <button type="button" onClick={() => setGot((s) => { const c = { ...s }; delete c[i]; return c; })} className="text-[13px] font-bold text-white/70 min-h-[32px]">غير قرارك</button>
               </motion.div>
             )}
           </div>
@@ -215,7 +215,7 @@ function DoorCall({ d }: { d: { cases: DoorCase[]; done: string } }) {
         const o = picked[i];
         return (
           <div key={c.customer} className={`${card} p-3.5 space-y-2.5`}>
-            <p className="text-[12px] font-bold text-white/50">{c.product}</p>
+            <p className="text-[12px] font-bold text-white/65">{c.product}</p>
             <p className="text-[14px] text-white/80 leading-relaxed"><span className="font-black text-white/60">المندوب: </span>{c.courier}</p>
             <Bubble from="customer">{c.customer}</Bubble>
             {o === null ? (
@@ -232,7 +232,7 @@ function DoorCall({ d }: { d: { cases: DoorCase[]; done: string } }) {
                   <p className={`w-fit rounded-lg px-2 py-1 text-[12px] font-black ${o.kind === "lost" || o.kind === "discount" ? "bg-red-300/15 text-red-200" : "bg-emerald-300/15 text-emerald-200"}`}>{doorLabel[o.kind]}</p>
                   <p className="text-[14px] text-white/80 leading-relaxed">{o.say}</p>
                 </motion.div>
-                <button type="button" onClick={() => setGot((s) => { const n = { ...s }; delete n[i]; return n; })} className="text-[13px] font-bold text-white/55 min-h-[32px]">جرب رد ثاني</button>
+                <button type="button" onClick={() => setGot((s) => { const n = { ...s }; delete n[i]; return n; })} className="text-[13px] font-bold text-white/70 min-h-[32px]">جرب رد ثاني</button>
               </>
             )}
           </div>
@@ -274,7 +274,7 @@ function CommentReply({ d }: { d: { page: string; complaint: string; steps: CRSt
         </div>
       </div>
       <div className={`${card} p-3.5 space-y-2.5`}>
-        <p className="text-[12px] font-bold text-white/50">التعليقات تحت إعلان {d.page}</p>
+        <p className="text-[12px] font-bold text-white/65">التعليقات تحت إعلان {d.page}</p>
         <Bubble from="customer">{d.complaint}</Bubble>
         {pub.map((s) => (
           <React.Fragment key={s.title}>
@@ -291,7 +291,7 @@ function CommentReply({ d }: { d: { page: string; complaint: string; steps: CRSt
       </div>
       {d.steps.slice(0, at).some((s) => s.where === "private") || (!finished && d.steps[at].where === "private") ? (
         <div className={`${card} p-3.5 space-y-2.5`}>
-          <p className="text-[12px] font-bold text-white/50">بالخاص</p>
+          <p className="text-[12px] font-bold text-white/65">بالخاص</p>
           {d.steps.slice(0, at).filter((s) => s.where === "private").map((s) => (
             <React.Fragment key={s.title}>
               <Bubble from="seller">{s.options.find((o) => o.good)!.text}</Bubble>

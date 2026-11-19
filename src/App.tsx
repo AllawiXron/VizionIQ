@@ -84,10 +84,7 @@ export default function App() {
       setUserCode(sessionCode);
 
       const welcomeSeen = localStorage.getItem(`sales_guide_welcome_seen_${sessionCode}`);
-      if (!welcomeSeen) {
-        if (isFreeTrialUser(sessionCode)) setIsTrialOnboardingOpen(true);
-        else setIsWelcomeModalOpen(true);
-      }
+      if (!welcomeSeen && !isFreeTrialUser(sessionCode)) setIsWelcomeModalOpen(true);
     } else {
       setIsLoggedIn(false);
       setUserCode("");
@@ -106,8 +103,7 @@ export default function App() {
     localStorage.setItem("sales_guide_user_code", validCode);
     setIsLoggedIn(true);
     setUserCode(validCode);
-    if (isFreeTrialUser(validCode)) setIsTrialOnboardingOpen(true);
-    else setIsWelcomeModalOpen(true);
+    if (!isFreeTrialUser(validCode)) setIsWelcomeModalOpen(true);
     navigate({ view: "home" });
     window.scrollTo({ top: 0 });
   };
@@ -163,7 +159,7 @@ export default function App() {
 
   const sectionFallback = (label: string) => (
     <div className="pt-40 pb-20 flex items-center justify-center">
-      <div className="glass-subtle rounded-full px-5 py-2.5 text-xs text-white/55 flex items-center gap-2.5">
+      <div className="glass-subtle rounded-full px-5 py-2.5 text-xs text-white/70 flex items-center gap-2.5">
         <span className="w-3.5 h-3.5 border-2 border-white/25 border-t-white/80 rounded-full animate-spin" />
         {label}
       </div>
@@ -202,14 +198,14 @@ export default function App() {
         break;
       case "tools":
         screen = (
-          <div className="pt-16 sm:pt-20">
+          <div className="pt-[3.25rem] lg:pt-20">
             <React.Suspense fallback={sectionFallback("جاري تحميل الأدوات...")}><VizionGrowthSuite /></React.Suspense>
           </div>
         );
         break;
       case "market":
         screen = (
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-10">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-[4.5rem] lg:pt-32 pb-10">
             <React.Suspense fallback={sectionFallback("جاري التحميل...")}><IraqiInsights /></React.Suspense>
           </div>
         );
@@ -246,7 +242,7 @@ export default function App() {
           {screen}
         </motion.main>
 
-        <footer className="relative mt-10 sm:mt-16 pb-[calc(env(safe-area-inset-bottom,0px)+6.5rem)] lg:pb-10">
+        <footer className="relative mt-10 sm:mt-16 pb-[calc(env(safe-area-inset-bottom,0px)+4.5rem)] lg:pb-10">
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
             <div className="vz-hairline mb-6" aria-hidden="true" />
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-white/40 text-center">

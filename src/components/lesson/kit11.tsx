@@ -28,7 +28,7 @@ function Slider({ label, value, min, max, step, show, onChange }: { label: strin
 function Stat({ k, v, tone = "text-white" }: { k: string; v: string; tone?: string }) {
   return (
     <div className={`${card} p-3`}>
-      <p className="text-[11px] sm:text-[12px] font-bold text-white/55 leading-snug">{k}</p>
+      <p className="text-[11px] sm:text-[12px] font-bold text-white/70 leading-snug">{k}</p>
       <motion.p key={v} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`mt-1 text-[15px] sm:text-[18px] font-black ${tone}`}>{v}</motion.p>
     </div>
   );
@@ -64,12 +64,12 @@ function DoubleTrap({ d }: { d: TrapData }) {
         <Stat k="ربح اليوم" v={fmt(r.day)} tone={r.day >= maxDay * 0.9 ? "text-emerald-200" : "text-red-200"} />
       </div>
       <div className={`${card} p-3.5 space-y-1.5`}>
-        <p className="text-[12px] font-bold text-white/55 mb-1">ربح اليوم حسب عدد الطلبات</p>
+        <p className="text-[12px] font-bold text-white/70 mb-1">ربح اليوم حسب عدد الطلبات</p>
         {steps.map((s) => {
           const x = trapAt(d, s);
           return (
             <div key={s} className="flex items-center gap-2">
-              <span className={`w-14 text-[12px] font-bold shrink-0 ${s === n ? "text-white" : "text-white/55"}`}>{s} طلب</span>
+              <span className={`w-14 text-[12px] font-bold shrink-0 ${s === n ? "text-white" : "text-white/70"}`}>{s} طلب</span>
               <span className="flex-1 h-3 rounded-full bg-white/[0.05] overflow-hidden">
                 <motion.span className={`block h-full rounded-full ${x.day >= maxDay * 0.9 ? "bg-emerald-300/80" : "bg-sky-300/60"}`} initial={false} animate={{ width: `${Math.max(2, (x.day / maxDay) * 100)}%` }} transition={ease} />
               </span>
@@ -147,9 +147,9 @@ function TeamBoard({ d }: { d: { orders: number; stages: Stage[]; pay: { text: s
           <button key={s.name} type="button" onClick={() => setHelper((h) => ({ ...h, [i]: !h[i] }))} className={`w-full text-right rounded-xl border px-3.5 py-2.5 transition-colors duration-200 ${helper[i] ? "bg-white text-[#040e33] border-white" : "bg-white/[0.04] border-white/12 text-white/85"}`}>
             <span className="flex items-center justify-between gap-2">
               <span className="text-[14px] font-black">{s.name}</span>
-              <span className={`text-[12px] font-bold ${helper[i] ? "text-[#040e33]/70" : "text-white/55"}`}>{helper[i] ? "المساعد" : "إنت"}، تقريبا {s.hours} ساعة</span>
+              <span className={`text-[12px] font-bold ${helper[i] ? "text-[#040e33]/70" : "text-white/70"}`}>{helper[i] ? "المساعد" : "إنت"}، تقريبا {s.hours} ساعة</span>
             </span>
-            <span className={`block text-[12px] ${helper[i] ? "text-[#040e33]/60" : "text-white/45"}`}>{s.when}</span>
+            <span className={`block text-[12px] ${helper[i] ? "text-[#040e33]/60" : "text-white/60"}`}>{s.when}</span>
           </button>
         ))}
       </div>

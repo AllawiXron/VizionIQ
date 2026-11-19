@@ -95,7 +95,7 @@ function Bundle({
       </div>
       <label className="block">
         <span className="block text-[15px] font-black text-white mb-1">سعر القطعتين: {fmt(two)}</span>
-        <span className="block text-[13px] text-white/55 mb-2">الزبون يوفر {fmt(save)} عن شراهن منفردات</span>
+        <span className="block text-[13px] text-white/70 mb-2">الزبون يوفر {fmt(save)} عن شراهن منفردات</span>
         <input dir="ltr" type="range" min={d.min} max={d.max} step={1000} value={two} onChange={(e) => setTwo(Number(e.target.value))} className="w-full accent-emerald-300 h-11" />
       </label>
       <button
@@ -126,11 +126,11 @@ function Bundle({
         transition={ease}
         className={`rounded-2xl border p-4 ${second > 1500 ? "bg-emerald-400/[0.08] border-emerald-300/25" : "bg-red-500/[0.07] border-red-400/30"}`}
       >
-        <p className="text-[13px] font-bold text-white/55">ربح القطعة الثانية وحدها</p>
+        <p className="text-[13px] font-bold text-white/70">ربح القطعة الثانية وحدها</p>
         <p className={`text-[22px] font-black ${second > 1500 ? "text-emerald-200" : "text-red-200"}`}>{second < 0 ? "خسارة" : ""}{fmt(Math.abs(second))}</p>
         <p className="text-[14px] text-white/75 leading-relaxed mt-1">{second > 1500 ? "الخصم محسوب، والقطعة الثانية هم تربحك." : second < 0 ? "القطعة الثانية دتنباع بأقل من كلفتها. كل بكج تطلعه يخسرك." : "الخصم كبير، والقطعة الثانية تقريبا ما تطلعلك ربح."}</p>
       </motion.div>
-      <p className="text-[14px] text-white/55 leading-relaxed">{d.note}</p>
+      <p className="text-[14px] text-white/70 leading-relaxed">{d.note}</p>
     </div>
   );
 }
@@ -174,7 +174,7 @@ function SeeMore({ d }: { d: { page: string; src: string; alt: string; lines: Li
               ) : (
                 <span className="block">
                   <span className="line-clamp-1">{l.first}</span>
-                  <button type="button" onClick={() => setOpen(true)} className="font-black text-white/55 hover:text-white">
+                  <button type="button" onClick={() => setOpen(true)} className="font-black text-white/70 hover:text-white">
                     ... المزيد
                   </button>
                 </span>
@@ -218,7 +218,7 @@ function QuickReplies({ d }: { d: { page: string; messages: Msg[]; replies: { ke
               <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="flex justify-end">
                 <div className="max-w-[85%] rounded-2xl px-3 py-2 bg-[#202c33] text-white text-[15px] leading-relaxed">
                   {m.text}
-                  <span dir="ltr" className="block text-[11px] text-white/45 mt-0.5 text-left">{m.time}</span>
+                  <span dir="ltr" className="block text-[11px] text-white/60 mt-0.5 text-left">{m.time}</span>
                 </div>
               </motion.div>
               {i < at && (

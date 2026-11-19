@@ -21,7 +21,7 @@ function Field({ label, value, onChange, suffix, step = 1 }: { label: string; va
           className="vz-field w-full rounded-xl pl-14 pr-3 py-2.5 text-sm text-white font-mono text-left min-h-[44px] focus-visible:ring-2 focus-visible:ring-white/60"
           dir="ltr"
         />
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] text-white/45 pointer-events-none">{suffix}</span>
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] text-white/60 pointer-events-none">{suffix}</span>
       </span>
     </label>
   );
@@ -31,9 +31,9 @@ function Result({ label, value, tone = "plain", hint }: { label: string; value: 
   const color = tone === "good" ? "text-emerald-300" : tone === "bad" ? "text-red-300" : "text-white";
   return (
     <div className="glass-subtle rounded-2xl p-4 space-y-1">
-      <p className="text-xs text-white/55 font-bold">{label}</p>
+      <p className="text-xs text-white/70 font-bold">{label}</p>
       <p className={`text-lg sm:text-xl font-black font-mono ${color}`}>{value}</p>
-      {hint && <p className="text-[11px] text-white/45 leading-relaxed">{hint}</p>}
+      {hint && <p className="text-[11px] text-white/60 leading-relaxed">{hint}</p>}
     </div>
   );
 }
@@ -155,14 +155,14 @@ function SeasonCalendar() {
             <li key={`${e.date}-${e.title}`} className="glass-subtle rounded-2xl p-4 flex items-start gap-4">
               <div className="w-16 shrink-0 text-center">
                 <p className="text-xl sm:text-2xl font-black text-white font-mono leading-none">{e.days}</p>
-                <p className="text-[10px] text-white/50 mt-1">{e.days === 1 ? "يوم" : "يوم باقي"}</p>
+                <p className="text-[10px] text-white/65 mt-1">{e.days === 1 ? "يوم" : "يوم باقي"}</p>
               </div>
               <div className="min-w-0 flex-1 space-y-1.5">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-sm sm:text-base font-black text-white">{e.title}</span>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${style.cls}`}>{style.label}</span>
                 </div>
-                <p className="text-[11px] text-white/45">{e.approx ? "تقريبا" : ""}{dateLabel(e.date)}</p>
+                <p className="text-[11px] text-white/60">{e.approx ? "تقريبا" : ""}{dateLabel(e.date)}</p>
                 <p className="text-xs sm:text-sm text-white/75 leading-relaxed">{e.prepare}</p>
               </div>
             </li>

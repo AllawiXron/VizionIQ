@@ -55,15 +55,47 @@ export default function Navbar({
   ];
 
   const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
+  // detail pages carry their own slim back header on phones, so the global bar steps aside there
+  const isDetail = activeView === "chapter" || activeView === "solution" || activeView === "guideModule";
+  const trial = isFreeTrialUser(userCode);
 
   return (
     <>
+      {!isDetail && (
+        <header className="lg:hidden fixed top-0 inset-x-0 z-40 safe-area-top border-b border-white/10 bg-[#040e33]/95 backdrop-blur-md">
+          <div className="h-[52px] px-4 flex items-center justify-between gap-3">
+            <button
+              onClick={() => onNavigate({ view: "home" })}
+              className={`flex items-center gap-2 min-h-[44px] rounded-xl ${focusRing}`}
+              aria-label="فيزيون، الصفحة الرئيسية"
+            >
+              <span dir="ltr" className="w-8 h-8 rounded-[10px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center text-white text-[13px] font-black shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]">
+                VZ
+              </span>
+              <span className="text-white font-black text-[16px]">فيزيون</span>
+            </button>
+            <div className="flex items-center gap-1.5">
+              {trial && onOpenUpgrade && (
+                <button
+                  onClick={onOpenUpgrade}
+                  className={`inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full border border-white/15 text-[13px] font-black text-white ${focusRing}`}
+                >
+                  <Crown className="w-3.5 h-3.5" />
+                  <span>اشترك</span>
+                </button>
+              )}
+              <SoundToggleButton variant="compact" />
+            </div>
+          </div>
+        </header>
+      )}
+
       <motion.nav
         id="main-navbar"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ ...SPRING, delay: 0.06, opacity: { duration: 0.4, delay: 0.06 } }}
-        className="fixed top-0 inset-x-0 z-40 pointer-events-none safe-area-top"
+        className="hidden lg:block fixed top-0 inset-x-0 z-40 pointer-events-none safe-area-top"
       >
         <motion.div
           style={gpuMorph ? undefined : { maxWidth: barMaxWidth, marginTop: barOffset, height: barHeight, borderRadius: barRadius }}
@@ -97,9 +129,9 @@ export default function Navbar({
             <div className="flex flex-col text-right leading-none">
               <span className="text-white font-black text-xs sm:text-sm md:text-base tracking-tight flex items-center gap-1.5">
                 <span>فيزيون</span>
-                <span className="text-white/45 text-[10px] sm:text-xs font-bold font-mono tracking-[0.18em]">VIZION</span>
+                <span className="text-white/60 text-[10px] sm:text-xs font-bold font-mono tracking-[0.18em]">VIZION</span>
               </span>
-              <span className="text-[9px] text-white/50 font-normal hidden sm:inline-block tracking-wide mt-1">
+              <span className="text-[9px] text-white/65 font-normal hidden sm:inline-block tracking-wide mt-1">
                 كورس التجارة الإلكترونية
               </span>
             </div>
@@ -112,7 +144,7 @@ export default function Navbar({
                 onClick={() => onNavigate(link.route)}
                 aria-current={link.active ? "true" : undefined}
                 className={`relative px-4 xl:px-5 min-h-[38px] rounded-full text-[13px] font-bold whitespace-nowrap cursor-pointer transition-colors duration-300 ${
-                  link.active ? "text-white" : "text-white/55 hover:text-white"
+                  link.active ? "text-white" : "text-white/70 hover:text-white"
                 } ${focusRing}`}
               >
                 {link.active && (
@@ -132,14 +164,14 @@ export default function Navbar({
 
             <button
               onClick={onLogout}
-              className={`btn btn-ghost px-2.5 xl:px-3 text-xs whitespace-nowrap text-white/55 hover:!text-red-300 ${focusRing}`}
+              className={`btn btn-ghost px-2.5 xl:px-3 text-xs whitespace-nowrap text-white/70 hover:!text-red-300 ${focusRing}`}
               title="خروج"
             >
               <LogOut className="w-4 h-4" />
               <span className="hidden xl:inline">خروج</span>
             </button>
 
-            {isFreeTrialUser(userCode) ? (
+            {trial ? (
               <button
                 onClick={onOpenUpgrade}
                 className={`btn btn-glass px-3.5 text-xs rounded-full whitespace-nowrap ${focusRing}`}

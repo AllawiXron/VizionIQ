@@ -1,4 +1,5 @@
 import React from "react";
+import { SubpageHeader } from "./ui/SubpageHeader";
 import { motion } from "motion/react";
 import { AlertTriangle, ArrowRight, BookOpen, Check, CheckCircle2, Clock, ExternalLink, LifeBuoy, Lightbulb } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
@@ -32,13 +33,14 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
   const sections = isTrial ? m.sections.slice(0, 1) : m.sections;
 
   return (
-    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 text-right">
-      <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
+    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-0 lg:pt-28 pb-10 text-right">
+      <SubpageHeader backLabel="الدليل العراقي" onBack={() => onNavigate({ view: "guide" })} meta={`${m.minutes} دقيقة`} />
+      <div className="hidden lg:flex items-center justify-between gap-3 mb-5 sm:mb-6">
         <button onClick={() => onNavigate({ view: "guide" })} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}>
           <ArrowRight className="w-4 h-4" />
           <span>الدليل العراقي</span>
         </button>
-        <span className="text-xs text-white/50 inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{m.minutes} دقيقة، محدث {GUIDE_RESEARCHED}</span>
+        <span className="text-xs text-white/65 inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{m.minutes} دقيقة، محدث {GUIDE_RESEARCHED}</span>
       </div>
 
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-3 sm:space-y-4 mb-8">
@@ -53,7 +55,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
         {m.stats.map((s) => (
           <div key={s.label} className="glass rounded-2xl p-4 space-y-1.5">
             <p className="text-lg sm:text-2xl font-black text-white leading-tight">{s.value}</p>
-            <p className="text-[11px] sm:text-xs text-white/55 leading-relaxed">{s.label}</p>
+            <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed">{s.label}</p>
           </div>
         ))}
       </motion.div>
@@ -69,7 +71,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
               <div className="glass rounded-2xl sm:rounded-3xl overflow-x-auto">
                 <table className="w-full text-sm min-w-[480px]">
                   <thead>
-                    <tr className="text-xs text-white/50 border-b border-white/[0.07]">
+                    <tr className="text-xs text-white/65 border-b border-white/[0.07]">
                       {sec.table.head.map((h) => <th key={h} className="text-right font-bold px-4 py-3">{h}</th>)}
                     </tr>
                   </thead>
@@ -129,7 +131,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
           <h2 className="text-lg sm:text-2xl font-black text-white flex items-center gap-2.5">
             <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-vz-accent" />
             طبقها خلال هالأسبوع
-            <span className="text-sm font-bold text-white/50 font-mono">{ticked.size}/{m.checklist.length}</span>
+            <span className="text-sm font-bold text-white/65 font-mono">{ticked.size}/{m.checklist.length}</span>
           </h2>
           <ul className="space-y-2">
             {m.checklist.map((task, i) => {
@@ -186,7 +188,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
         {!isTrial && (
         <section className="space-y-3">
           <h2 className="text-sm sm:text-base font-black text-white/80">المصادر</h2>
-          <p className="text-xs text-white/45 leading-relaxed">
+          <p className="text-xs text-white/60 leading-relaxed">
             جمعنا هاي المعلومات بـ {GUIDE_RESEARCHED}. الأسعار والقوانين والتعرفات تتغير، فتأكد من المصدر قبل أي قرار كبير.
           </p>
           <ol className="space-y-1.5">

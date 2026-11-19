@@ -60,7 +60,7 @@ function ChipRow<T extends string | number>({ label, hint, options, value, onCha
   return (
     <div className="space-y-2">
       <p className="text-sm font-black text-white">{label}</p>
-      {hint && <p className="text-xs text-white/50 -mt-1">{hint}</p>}
+      {hint && <p className="text-xs text-white/65 -mt-1">{hint}</p>}
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
           <Chip key={String(o.value)} selected={value === o.value} onClick={() => onChange(o.value)}>{o.label}</Chip>
@@ -135,7 +135,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
     window.setTimeout(() => {
       saveTrialProfile(profile);
       setStep("result");
-    }, 1500);
+    }, 250);
   };
 
   const formIndex = FORM_STEPS.indexOf(step);
@@ -207,7 +207,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                         <p className="text-sm sm:text-base text-white/65 leading-relaxed">
                           هنا مو فيديوهات طويلة ولا قناة تلكرام. تدخل أرقامك، وتعرف بالضبط وين تروح فلوسك وشنو الخطوة الجاية.
                         </p>
-                        <p className="text-xs text-white/45">{STUDENT_COUNT} مشترك يستخدمون المنصة لحد هسه.</p>
+                        <p className="text-xs text-white/60">{STUDENT_COUNT} مشترك يستخدمون المنصة لحد هسه.</p>
                       </div>
                       <ul className="space-y-2.5">
                         {[
@@ -272,7 +272,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                     <div className="space-y-5 pt-2">
                       <div className="space-y-1.5">
                         <h2 className="text-2xl sm:text-3xl font-black leading-tight">شنو أكبر مشكلة تواجهك هسه؟</h2>
-                        <p className="text-sm text-white/55">اختار وحدة، الأقرب لوضعك.</p>
+                        <p className="text-sm text-white/70">اختار وحدة، الأقرب لوضعك.</p>
                       </div>
                       <div className="grid gap-2.5">
                         {TRIAL_PROBLEMS.map((p) => (
@@ -300,7 +300,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                     <div className="space-y-6 pt-2">
                       <div className="space-y-1.5">
                         <h2 className="text-2xl sm:text-3xl font-black leading-tight">هسه أرقامك</h2>
-                        <p className="text-sm text-white/55">
+                        <p className="text-sm text-white/70">
                           {stage === "idea" ? "حتى لو بعدك بمرحلة الفكرة، اكتب السعر اللي ناوي تبيع بيه." : "الأرقام التقريبية تكفي. إذا أكو شي ما تعرفه، اختار ما أعرف ونحسبه بالمعدل."}
                         </p>
                       </div>
@@ -322,7 +322,7 @@ export function TrialOnboarding({ isOpen, onClose, onNavigate }: TrialOnboarding
                                 placeholder={f.ph}
                                 className="vz-field w-full rounded-2xl pl-12 pr-3 py-3 text-lg text-white font-mono text-left min-h-[52px]"
                               />
-                              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-white/45 pointer-events-none">د.ع</span>
+                              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-white/60 pointer-events-none">د.ع</span>
                             </span>
                           </label>
                         ))}
@@ -446,8 +446,8 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         </p>
         <div className="grid grid-cols-2 gap-3">
           <div className="glass-subtle rounded-2xl p-4 space-y-1">
-            <p className="text-xs font-bold text-white/55">الربح اللي تحسبه</p>
-            <p className="text-xl sm:text-2xl font-black font-mono text-white/45 line-through decoration-white/40">{iqd(d.thinks)}</p>
+            <p className="text-xs font-bold text-white/70">الربح اللي تحسبه</p>
+            <p className="text-xl sm:text-2xl font-black font-mono text-white/60 line-through decoration-white/40">{iqd(d.thinks)}</p>
             <p className="text-[11px] text-white/40">سعر البيع ناقص الكلفة</p>
           </div>
           <div className="glass rounded-2xl p-4 space-y-1 border border-white/15">
@@ -455,7 +455,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
             <p className={`text-2xl sm:text-3xl font-black font-mono ${tone}`}>
               <CountTo from={d.thinks} to={d.real} />
             </p>
-            <p className="text-[11px] text-white/45">دينار، بعد حساب كل التكاليف</p>
+            <p className="text-[11px] text-white/60">دينار، بعد حساب كل التكاليف</p>
           </div>
         </div>
         <h2 className="text-xl sm:text-2xl font-black leading-snug">
@@ -477,7 +477,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
             <li key={r.label} className="px-4 py-3 flex items-start justify-between gap-3 text-sm">
               <span className="min-w-0">
                 <span className="flex items-center gap-1.5 flex-wrap font-bold text-white/85">{r.label}{r.estimated && <EstTag />}</span>
-                {r.hint && <span className="block text-[11px] text-white/45 mt-0.5 leading-relaxed">{r.hint}</span>}
+                {r.hint && <span className="block text-[11px] text-white/60 mt-0.5 leading-relaxed">{r.hint}</span>}
               </span>
               <span className="font-mono font-bold text-red-300/90 shrink-0">{iqd(r.value)}</span>
             </li>
@@ -502,7 +502,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
           <p className="text-sm text-white/70">
             من كل 100 طلب، هذا <span className="font-black text-white font-mono">{iqd(gain * 100)}</span> دينار زيادة تبقى بجيبك.
           </p>
-          <p className="text-xs text-white/50 leading-relaxed">
+          <p className="text-xs text-white/65 leading-relaxed">
             مو وعد، هاي حسبة حسب أرقامك. شوف الرد اللي يقفل البيعة بالفصل 7، وتأكيد الطلب قبل ما يطلع بالفصل 8.
           </p>
         </section>
@@ -514,7 +514,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
           <div className="min-w-0 space-y-1">
             <p className="text-xs font-bold text-vz-accent">حل مشكلتك جاهز بالمنصة{problem ? `: ${problem.label}` : ""}</p>
             <h3 className="text-base sm:text-lg font-black leading-snug">{pb.title}</h3>
-            <p className="text-xs text-white/55">{pb.steps.length} خطوات، {pb.scripts.length} رسائل جاهزة تنسخها، وخطة 7 أيام</p>
+            <p className="text-xs text-white/70">{pb.steps.length} خطوات، {pb.scripts.length} رسائل جاهزة تنسخها، وخطة 7 أيام</p>
           </div>
         </div>
         <ul className="space-y-1.5">
@@ -541,7 +541,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
       </section>
 
       <section className="glass-subtle rounded-3xl p-5 space-y-2">
-        <p className="text-[11px] font-bold text-white/45">رسالة من واحد من {STUDENT_COUNT} مشترك</p>
+        <p className="text-[11px] font-bold text-white/60">رسالة من واحد من {STUDENT_COUNT} مشترك</p>
         <p className="text-base sm:text-lg font-black leading-snug">أستاذ والله أمشي حسب الخطة بالضبط</p>
         <p className="text-sm text-white/65 leading-relaxed">صرف 70$ على الإعلان، وحقق مبيعات بمليون و475 ألف.</p>
       </section>
@@ -562,7 +562,7 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
         </ul>
         <div className="space-y-2">
           <SubscribeButton label="أريد أشترك، دزلي طريقة الدفع" />
-          <p className="text-[11px] text-center text-white/50">راح ينفتح واتساب والرسالة بيها نتيجتك جاهزة، بس دوس إرسال.</p>
+          <p className="text-[11px] text-center text-white/65">راح ينفتح واتساب والرسالة بيها نتيجتك جاهزة، بس دوس إرسال.</p>
         </div>
         <button onClick={() => onGo({ view: "chapter", id: "chapter1" })} className={`btn btn-ghost w-full min-h-[44px] rounded-full text-sm text-white/65 ${focusRing}`}>
           كمل التجربة المجانية من الفصل الأول
@@ -570,10 +570,10 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
       </section>
 
       <div className="flex items-center justify-center gap-2">
-        <button onClick={onRedo} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/50 ${focusRing}`}>
+        <button onClick={onRedo} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/65 ${focusRing}`}>
           جرب مرة ثانية بأرقام غير
         </button>
-        <button onClick={onClose} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/50 ${focusRing}`}>
+        <button onClick={onClose} className={`btn btn-ghost min-h-[40px] px-4 rounded-full text-xs text-white/65 ${focusRing}`}>
           ارجع للمنصة
         </button>
       </div>
@@ -582,5 +582,5 @@ function Result({ profile, onGo, onClose, onRedo }: { profile: TrialProfile; onG
 }
 
 function EstTag() {
-  return <span className="shrink-0 font-sans text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/[0.07] text-white/50">تقدير</span>;
+  return <span className="shrink-0 font-sans text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/[0.07] text-white/65">تقدير</span>;
 }

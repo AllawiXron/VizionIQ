@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import { SubpageHeader } from "./ui/SubpageHeader";
 import { motion } from "motion/react";
 import {
-  AlertTriangle, ArrowRight, BookOpen, Bot, Check, CheckCircle2, Clock, Copy,
+  AlertTriangle, ArrowLeft, ArrowRight, BookOpen, Bot, Check, CheckCircle2, Clock, Copy,
   Gauge, ListChecks, MessageSquareText, Search, TrendingUp, Wrench, X,
 } from "lucide-react";
 import { chaptersList } from "../data/chaptersData";
@@ -50,7 +51,7 @@ function SectionTitle({ id, icon: Icon, children, sub }: { id: string; icon: Rea
         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-vz-accent shrink-0" />
         {children}
       </h2>
-      {sub && <p className="text-sm text-white/55 leading-relaxed">{sub}</p>}
+      {sub && <p className="text-sm text-white/70 leading-relaxed">{sub}</p>}
     </div>
   );
 }
@@ -104,13 +105,14 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
   };
 
   return (
-    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 text-right">
-      <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
+    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-0 lg:pt-28 pb-10 text-right">
+      <SubpageHeader backLabel="كل الحلول" onBack={() => onNavigate({ view: "solutions" })} meta={`${pb.minutes} دقيقة قراءة`} />
+      <div className="hidden lg:flex items-center justify-between gap-3 mb-5 sm:mb-6">
         <button onClick={() => onNavigate({ view: "solutions" })} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}>
           <ArrowRight className="w-4 h-4" />
           <span>كل الحلول</span>
         </button>
-        <span className="text-xs text-white/50 inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{pb.minutes} دقيقة قراءة</span>
+        <span className="text-xs text-white/65 inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{pb.minutes} دقيقة قراءة</span>
       </div>
 
       <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
@@ -126,7 +128,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         )}
       </motion.header>
 
-      <nav aria-label="أقسام الحل" className="vz-tabs-sticky sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-8 sm:mb-10">
+      <nav aria-label="أقسام الحل" className="vz-tabs-sticky vz-tabs-scroll sticky top-[calc(3rem+env(safe-area-inset-top,0px))] lg:top-[4.9rem] z-20 mb-6 sm:mb-10">
         <Segmented
           items={sections.map((x) => ({ id: x.id, label: x.label, done: x.id === "pb-plan" && ticked.size === pb.plan.length }))}
           active={current}
@@ -141,24 +143,24 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         <section>
           <SectionTitle id="pb-numbers" icon={Gauge} sub={pb.metrics.intro}>شلون تعرف إذا هاي هي مشكلتك؟</SectionTitle>
           <div className="glass rounded-2xl sm:rounded-3xl overflow-hidden">
-            <div className="hidden sm:grid grid-cols-[1.6fr_1fr_1fr_1fr] gap-3 px-5 py-3 text-xs font-bold text-white/50 border-b border-white/[0.07]">
+            <div className="hidden sm:grid grid-cols-[1.6fr_1fr_1fr_1fr] gap-3 px-5 py-3 text-xs font-bold text-white/65 border-b border-white/[0.07]">
               <span>الرقم</span>
               <span className="text-emerald-300/90">زين</span>
-              <span className="text-amber-200/90">انتبه</span>
+              <span className="text-sky-200/90">انتبه</span>
               <span className="text-red-300/90">مشكلة</span>
             </div>
             <ul className="divide-y divide-white/[0.06]">
               {pb.metrics.rows.map((row) => (
                 <li key={row.label} className="px-4 sm:px-5 py-3.5 grid grid-cols-3 sm:grid-cols-[1.6fr_1fr_1fr_1fr] gap-x-3 gap-y-2 items-center text-sm">
                   <span className="col-span-3 sm:col-span-1 font-bold text-white">{row.label}</span>
-                  <span className="text-emerald-300 text-xs sm:text-sm"><span className="sm:hidden text-white/40 block text-[10px]">زين</span>{row.good}</span>
-                  <span className="text-amber-200 text-xs sm:text-sm"><span className="sm:hidden text-white/40 block text-[10px]">انتبه</span>{row.warning}</span>
-                  <span className="text-red-300 text-xs sm:text-sm"><span className="sm:hidden text-white/40 block text-[10px]">مشكلة</span>{row.bad}</span>
+                  <span className="text-emerald-300 text-xs sm:text-sm"><span className="sm:hidden text-white/60 block text-[12px]">زين</span>{row.good}</span>
+                  <span className="text-sky-200 text-xs sm:text-sm"><span className="sm:hidden text-white/60 block text-[12px]">انتبه</span>{row.warning}</span>
+                  <span className="text-red-300 text-xs sm:text-sm"><span className="sm:hidden text-white/60 block text-[12px]">مشكلة</span>{row.bad}</span>
                 </li>
               ))}
             </ul>
           </div>
-          <p className="mt-3 text-xs text-white/50 leading-relaxed">{pb.metrics.note}</p>
+          <p className="mt-3 text-xs text-white/65 leading-relaxed">{pb.metrics.note}</p>
           {pb.calculator && (
             <div className="mt-6">
               <PlaybookCalculator kind={pb.calculator} />
@@ -177,7 +179,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
                 </h3>
                 <p className="text-xs sm:text-sm text-white/60 leading-relaxed"><span className="font-bold text-white/75">العلامة: </span>{c.signs}</p>
                 {isTrial ? (
-                  <p className="text-xs sm:text-sm text-white/45 leading-relaxed pr-3 border-r-2 border-white/15 inline-flex items-center gap-1.5"><span className="font-bold text-white/60">الحل:</span> مقفل بالتجربة المجانية</p>
+                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed pr-3 border-r-2 border-white/15 inline-flex items-center gap-1.5"><span className="font-bold text-white/60">الحل:</span> مقفل بالتجربة المجانية</p>
                 ) : (
                   <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed pr-3 border-r-2 border-emerald-400/60"><span className="font-bold text-emerald-300">الحل: </span>{c.fix}</p>
                 )}
@@ -201,16 +203,19 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         <>
         <section>
           <SectionTitle id="pb-steps" icon={ListChecks} sub="طبق الخطوات بالترتيب. كل خطوة تعتمد على اللي قبلها.">الحل خطوة بخطوة</SectionTitle>
-          <ol className="relative space-y-4 sm:space-y-5 before:absolute before:top-2 before:bottom-2 before:right-[1.2rem] sm:before:right-[1.45rem] before:w-px before:bg-white/[0.1]">
+          <ol className="relative space-y-3 sm:space-y-5 sm:before:absolute sm:before:top-2 sm:before:bottom-2 sm:before:right-[1.45rem] sm:before:w-px sm:before:bg-white/[0.1]">
             {pb.steps.map((step, i) => (
-              <li key={step.title} className="relative pr-12 sm:pr-16">
-                <span className="absolute right-0 top-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">{i + 1}</span>
+              <li key={step.title} className="relative pr-0 sm:pr-16">
+                <span className="hidden sm:flex absolute right-0 top-0 w-12 h-12 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white font-black items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">{i + 1}</span>
                 <div className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 space-y-3">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-base sm:text-lg font-black text-white leading-snug">{step.title}</h3>
-                    {step.time && <span className="shrink-0 text-[11px] font-bold text-white/55 px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/[0.08]">{step.time}</span>}
+                    <h3 className="text-base sm:text-lg font-black text-white leading-snug flex items-start gap-2.5">
+                      <span className="sm:hidden w-8 h-8 shrink-0 rounded-full bg-gradient-to-b from-vz-blue-light to-vz-blue-deep text-white text-[14px] font-black flex items-center justify-center">{i + 1}</span>
+                      <span className="pt-1 sm:pt-0">{step.title}</span>
+                    </h3>
+                    {step.time && <span className="shrink-0 text-[12px] font-bold text-white/70 px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/[0.08]">{step.time}</span>}
                   </div>
-                  <p className="text-sm text-white/65 leading-relaxed">{step.why}</p>
+                  <p className="text-[15px] sm:text-sm text-white/75 leading-relaxed">{step.why}</p>
                   <ul className="space-y-2">
                     {step.how.map((h) => (
                       <li key={h} className="flex items-start gap-2.5 text-sm text-white/85 leading-relaxed">
@@ -238,7 +243,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <h3 className="text-sm sm:text-base font-black text-white">{s.title}</h3>
-                    <p className="text-[11px] sm:text-xs text-white/50 mt-0.5">{s.when}</p>
+                    <p className="text-[12px] sm:text-xs text-white/70 mt-0.5">{s.when}</p>
                   </div>
                   <CopyButton text={s.text} />
                 </div>
@@ -250,8 +255,20 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
 
         <section>
           <SectionTitle id="pb-example" icon={TrendingUp} sub={pb.example.story}>{`مثال توضيحي: ${pb.example.title}`}</SectionTitle>
-          <div className="glass rounded-2xl sm:rounded-3xl overflow-hidden">
-            <div className="grid grid-cols-3 gap-3 px-4 sm:px-5 py-3 text-xs font-bold text-white/50 border-b border-white/[0.07]">
+          <ul className="sm:hidden divide-y divide-white/10 border-y border-white/10">
+            {pb.example.rows.map((r) => (
+              <li key={r.label} className="py-3 space-y-1.5">
+                <p className="text-[14px] font-bold text-white/75">{r.label}</p>
+                <p className="flex items-center gap-2.5 flex-wrap">
+                  <span className="text-[15px] text-red-300/90 line-through decoration-red-400/60">{r.before}</span>
+                  <ArrowLeft className="w-4 h-4 text-white/65 shrink-0" />
+                  <span className="text-[17px] font-black text-emerald-300">{r.after}</span>
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="hidden sm:block glass rounded-2xl sm:rounded-3xl overflow-hidden">
+            <div className="grid grid-cols-3 gap-3 px-4 sm:px-5 py-3 text-xs font-bold text-white/70 border-b border-white/[0.07]">
               <span>الرقم</span>
               <span>قبل</span>
               <span>بعد</span>
@@ -304,7 +321,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
                         {isDone && <Check className="w-4 h-4" strokeWidth={3} />}
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-xs font-bold text-white/50">{p.day}</span>
+                        <span className="block text-xs font-bold text-white/65">{p.day}</span>
                         <span className={`block text-sm leading-relaxed ${isDone ? "text-white/60 line-through decoration-white/30" : "text-white/90"}`}>{p.task}</span>
                       </span>
                     </button>

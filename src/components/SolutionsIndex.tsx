@@ -22,7 +22,7 @@ export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexP
   const isTrial = isFreeTrialUser(userCode);
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-[4.5rem] lg:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><LifeBuoy className="w-4 h-4" /> الحلول</>}
         title="شنو المشكلة اللي تواجهك هسه؟"
@@ -52,7 +52,7 @@ export default function SolutionsIndex({ userCode, onNavigate }: SolutionsIndexP
                     {isTrial && <LockChip label="الحل الكامل ضمن الاشتراك" />}
                   </div>
                 </div>
-                <div className="mt-auto pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs text-white/50">
+                <div className="mt-auto pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs text-white/65">
                   <span className="flex items-center gap-3">
                     <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{pb.minutes} دقيقة</span>
                     <span>{pb.steps.length} خطوات، {pb.scripts.length} رسائل جاهزة</span>

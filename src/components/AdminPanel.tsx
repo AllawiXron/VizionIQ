@@ -209,13 +209,13 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
         <div className="flex gap-1 mx-3 sm:mx-6 mt-3 p-1 rounded-full bg-white/[0.04] border border-white/[0.06] overflow-x-auto no-scrollbar">
           <button             onClick={() => setActiveTab("codes")}
-            className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "codes" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
+            className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "codes" ? "text-white" : "text-white/70 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {activeTab === "codes" && <motion.span layoutId="admin-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />}
             <span className="relative">الأكواد</span>
           </button>
           <button             onClick={() => setActiveTab("add")}
-            className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "add" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
+            className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer whitespace-nowrap px-2 ${ activeTab === "add" ? "text-white" : "text-white/70 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {activeTab === "add" && <motion.span layoutId="admin-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />}
             <span className="relative">إضافة مشترك</span>
@@ -224,7 +224,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
               setActiveTab("analytics_eval");
               loadAnalytics();
             }}
-            className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer flex items-center justify-center gap-1 whitespace-nowrap px-2 ${ activeTab === "analytics_eval" ? "text-white" : "text-white/55 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
+            className={`relative flex-1 min-w-[90px] py-2 text-[10px] sm:text-xs font-bold rounded-full transition-colors duration-300 cursor-pointer flex items-center justify-center gap-1 whitespace-nowrap px-2 ${ activeTab === "analytics_eval" ? "text-white" : "text-white/70 hover:text-white" } min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy`}
           >
             {activeTab === "analytics_eval" && <motion.span layoutId="admin-tab-pill" transition={SPRING_SNAPPY} className="absolute inset-0 rounded-full bg-white/[0.1] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />}
             <span className="relative flex items-center gap-1">
@@ -659,7 +659,7 @@ export default function AdminPanel({ isOpen, onClose, onCodesChange }: AdminPane
 
         </div>
 
-        <div className="px-6 py-4 border-t border-white/[0.06] bg-black/20 text-center text-[10px] text-white/45">
+        <div className="px-6 py-4 border-t border-white/[0.06] bg-black/20 text-center text-[10px] text-white/60">
           تذكر: كل الأكواد تنحفظ بنفس المتصفح وما تنرسل لأي سيرفر، حتى تبقى خصوصيتك محفوظة بالكامل.
         </div>
 

@@ -174,7 +174,7 @@ function HookRate({ d }: { d: { hooks: Hook[]; note: string } }) {
       {guess !== null && (
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="space-y-3">
           <div className={`${card} p-4 space-y-3`}>
-            <p className="text-[13px] font-bold text-white/55">من مدير الإعلانات بعد 3 أيام: مشاهدات أول 3 ثواني ÷ مرات الظهور</p>
+            <p className="text-[13px] font-bold text-white/70">من مدير الإعلانات بعد 3 أيام: مشاهدات أول 3 ثواني ÷ مرات الظهور</p>
             {d.hooks.map((h, i) => (
               <div key={h.label}>
                 <div className="flex items-center justify-between gap-2 text-[13px] mb-1">
@@ -256,7 +256,7 @@ function ScriptCut({ d }: { d: { min: number; max: number; lines: SLine[]; done:
           <span className="absolute inset-y-0 bg-emerald-300/20 border-x border-emerald-300/50" style={{ left: scale(d.min), width: scale(d.max - d.min) }} />
           <motion.span animate={{ width: scale(total) }} transition={ease} className={`absolute inset-y-0 left-0 rounded-full ${inBand ? "bg-emerald-300" : "bg-vz-blue-light/70"}`} />
         </div>
-        <p className="mt-1.5 text-[12px] text-white/50">الخط الأخضر من {d.min} لـ {d.max} ثانية</p>
+        <p className="mt-1.5 text-[12px] text-white/65">الخط الأخضر من {d.min} لـ {d.max} ثانية</p>
       </div>
       <p className="text-[14px] text-white/60 flex items-center gap-1.5">
         <Scissors className="w-4 h-4" /> اضغط على أي جملة تكدر تشيلها ويبقى الفيديو مفهوم.
@@ -279,7 +279,7 @@ function ScriptCut({ d }: { d: { min: number; max: number; lines: SLine[]; done:
                   {l.sec} ث
                 </span>
                 <span className="flex-1">
-                  <span className={`block text-[12px] font-bold ${o ? "text-white/30" : "text-white/50"}`}>{l.shot}</span>
+                  <span className={`block text-[12px] font-bold ${o ? "text-white/30" : "text-white/65"}`}>{l.shot}</span>
                   <span className={`block text-[15px] leading-relaxed ${o ? "text-white/35 line-through" : "text-white"}`}>{l.say}</span>
                 </span>
               </span>

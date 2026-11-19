@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Lock, Eye, EyeOff, ShieldAlert, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, ShieldAlert, CheckCircle } from "lucide-react";
 import { EASE_OUT, SPRING, allowBlur } from "../lib/motion";
 import { Magnetic } from "./ui/Motion";
 import { FULL_PRICE, OFFER_LAST_DAY, STUDENT_COUNT, offerState } from "../lib/offer";
@@ -198,24 +198,20 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
     setIsLoading(true);
     setError(null);
 
-    setTimeout(() => {
-      const normalizedInput = normalizeCode(password);
-      
-      const validCodes = getValidCodes();
-      const normalizedValidCodes = validCodes.map(code => normalizeCode(code));
+    const normalizedInput = normalizeCode(password);
+    const normalizedValidCodes = getValidCodes().map((code) => normalizeCode(code));
 
-      if (normalizedValidCodes.includes(normalizedInput)) {
-        setIsLoading(false);
-        setIsSuccess(true);
-        setTimeout(() => {
-          onSuccess(password.trim());
-        }, 800);
-      } else {
-        setIsLoading(false);
-        setError("الرمز غلط أو مو مفعل. تأكد منه وجرب مرة ثانية.");
-        triggerShake();
-      }
-    }, 1200);
+    if (normalizedValidCodes.includes(normalizedInput)) {
+      setIsLoading(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        onSuccess(password.trim());
+      }, 150);
+    } else {
+      setIsLoading(false);
+      setError("الرمز غلط أو مو مفعل. تأكد منه وجرب مرة ثانية.");
+      triggerShake();
+    }
   };
 
   const triggerShake = () => {
@@ -255,12 +251,12 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         id="lock-card"
       >
         <div className={shake ? "animate-shake" : undefined}>
-        <div className="glass-elevated glass-edge rounded-4xl p-6 sm:p-9 md:p-10 relative overflow-hidden dir-rtl">
+        <div className="glass-elevated glass-edge rounded-4xl p-5 sm:p-9 relative overflow-hidden dir-rtl">
 
-          <div className="flex flex-col items-center mb-7 sm:mb-9 text-center">
+          <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
             <motion.div
-              {...rise(0.25)}
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-[20px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_14px_34px_-12px_rgba(47,107,255,0.6)] mb-4 sm:mb-5"
+              {...rise(0.15)}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-[18px] bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_14px_34px_-12px_rgba(47,107,255,0.6)] mb-4"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {isSuccess ? (
@@ -268,46 +264,69 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
                     <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-white stroke-[2.5]" />
                   </motion.span>
                 ) : (
-                  <motion.span key="lock" exit={{ scale: 0.6, opacity: 0, transition: { duration: 0.15 } }} className="flex">
-                    <Lock className="w-6 h-6 sm:w-7 sm:h-7 text-white stroke-[2.5]" />
+                  <motion.span key="mark" dir="ltr" exit={{ scale: 0.6, opacity: 0, transition: { duration: 0.15 } }} className="text-white text-[20px] sm:text-[22px] font-black">
+                    VZ
                   </motion.span>
                 )}
               </AnimatePresence>
             </motion.div>
-            
-            <motion.h1 {...rise(0.32)} className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1.5">
-              فيزيون viZion
+
+            <motion.h1 {...rise(0.2)} className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-2">
+              فيزيون
             </motion.h1>
-            <motion.p {...rise(0.38)} className="text-white/55 text-xs sm:text-sm md:text-base font-medium mx-auto">
-              كورس ومنصة للتجارة الإلكترونية بالعراق
+            <motion.p {...rise(0.25)} className="text-white/75 text-[15px] sm:text-base font-medium leading-relaxed max-w-[320px]">
+              كورس عملي يعلمك تبيع أونلاين بالعراق، وتعرف ربحك الحقيقي من كل طلب.
             </motion.p>
           </div>
 
-          <motion.form {...rise(0.45)} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-            <div className="space-y-2">
-              <label className="text-xs text-white/50 font-semibold tracking-wider block mr-1">
-                رمز الدخول
-              </label>
-              
-              <div className="relative">
+          <motion.div {...rise(0.3)} className="space-y-2">
+            <button
+              type="button"
+              disabled={isLoading || isSuccess}
+              onClick={() => {
+                setPassword(TRIAL_CODE);
+                handleSubmit(undefined, TRIAL_CODE);
+              }}
+              className={`btn btn-primary w-full min-h-[56px] rounded-2xl px-4 text-base font-black gap-2 ${focusRing}`}
+            >
+              <span>جرب الدرس الأول مجانا</span>
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <p className="text-[13px] text-white/65 text-center">بدون رمز وبدون دفع، تبدي هسه.</p>
+          </motion.div>
+
+          <motion.form {...rise(0.35)} onSubmit={handleSubmit} className="mt-6 pt-5 border-t border-white/10 space-y-2.5">
+            <label htmlFor="access-code" className="text-[13px] text-white/75 font-bold block">
+              عندك رمز اشتراك؟
+            </label>
+            <div className="flex items-stretch gap-2">
+              <div className="relative flex-1 min-w-0">
                 <input
+                  id="access-code"
                   type={showPassword ? "text" : "password"}
                   value={passwordInput}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="اكتب رمز الدخول هنا"
-                  className="vz-field w-full h-12 sm:h-[52px] pr-4 pl-12 rounded-2xl text-white text-center text-base sm:text-lg font-mono tracking-wider placeholder:font-sans min-h-[44px]"
+                  placeholder="رمز الدخول"
+                  className="vz-field w-full h-12 pr-3.5 pl-11 rounded-2xl text-white text-base font-mono tracking-wider placeholder:font-sans placeholder:tracking-normal"
                   disabled={isLoading || isSuccess}
                 />
-                
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute left-1.5 top-1/2 -translate-y-1/2 rounded-xl text-white/50 hover:text-white transition-colors duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-[0.92] ${focusRing}`}
+                  aria-label={showPassword ? "اخفي الرمز" : "اظهر الرمز"}
+                  className={`absolute left-1 top-1/2 -translate-y-1/2 rounded-xl text-white/60 hover:text-white transition-colors duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center ${focusRing}`}
                   tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              <button
+                type="submit"
+                disabled={isLoading || isSuccess}
+                className={`btn btn-glass h-12 min-w-[84px] px-4 rounded-2xl text-[15px] font-black ${focusRing}`}
+              >
+                {isSuccess ? <CheckCircle className="w-5 h-5" /> : "دخول"}
+              </button>
             </div>
 
             <AnimatePresence initial={false}>
@@ -319,84 +338,27 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
                   exit={{ opacity: 0, height: 0, transition: { duration: 0.2, ease: EASE_OUT } }}
                   className="overflow-hidden"
                 >
-                  <div className="p-3 bg-red-500/[0.08] border border-red-400/20 rounded-2xl flex items-start gap-2.5 sm:gap-3">
-                    <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-300 shrink-0 mt-0.5" />
-                    <span className="text-xs text-red-200/90 font-medium leading-relaxed">
-                      {error}
-                    </span>
+                  <div className="p-3 bg-red-500/[0.08] border border-red-400/20 rounded-2xl flex items-start gap-2.5">
+                    <ShieldAlert className="w-4 h-4 text-red-300 shrink-0 mt-0.5" />
+                    <span className="text-[13px] text-red-200/90 font-medium leading-relaxed">{error}</span>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
-
-            <Magnetic strength={0.08} max={3} reach={8}>
-            <button
-              type="submit"
-              disabled={isLoading || isSuccess}
-              className={`btn btn-primary w-full h-12 sm:h-[52px] rounded-2xl text-sm sm:text-base ${focusRing}`}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-              {isLoading ? (
-                <motion.div key="loading" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-[#040e33] border-t-transparent rounded-full animate-spin" />
-                  <span>جاري التأكد من الرمز...</span>
-                </motion.div>
-              ) : isSuccess ? (
-                <motion.div key="success" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-white" />
-                  <span>تمام، جاري فتح المنصة...</span>
-                </motion.div>
-              ) : (
-                <motion.span key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2, ease: EASE_OUT }} className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-white" />
-                  دخول
-                </motion.span>
-              )}
-              </AnimatePresence>
-            </button>
-            </Magnetic>
           </motion.form>
 
-          <motion.div {...rise(0.55)} className="pt-4 text-center space-y-3">
-            <div className="flex items-center gap-3 text-[11px] text-white/40" aria-hidden="true">
-              <span className="flex-1 h-px bg-white/10" />
-              <span>ما عندك رمز دخول؟</span>
-              <span className="flex-1 h-px bg-white/10" />
-            </div>
-            <button
-              type="button"
-              disabled={isLoading || isSuccess}
-              onClick={() => {
-                setPassword(TRIAL_CODE);
-                handleSubmit(undefined, TRIAL_CODE);
-              }}
-              className={`btn btn-glass w-full min-h-[52px] rounded-2xl px-4 text-sm font-black gap-2 ${focusRing}`}
-            >
-              <Sparkles className="w-4 h-4 text-emerald-300" />
-              <span>جرب الكورس المجاني</span>
-            </button>
-            <p className="text-[11px] text-white/45 leading-relaxed">بدون رمز: اقرا أول درس، واعرف ربحك الحقيقي من كل طلب.</p>
-
-            <div className="glass-subtle rounded-2xl p-3.5 text-right flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <span className="block text-[11px] font-bold text-white/60">الكورس كامل، تدفع مرة وحدة ويبقى إلك</span>
-                <span className="block text-[11px] text-white/45 mt-0.5">الكورس + الحلول + الأدوات + المستشار، {STUDENT_COUNT} مشترك</span>
-              </div>
-              <div className="text-left shrink-0">
-                <span className="block text-base font-black text-white font-mono leading-tight">{offer.price.toLocaleString("en-US")} <span className="text-[10px] font-bold text-white/60">د.ع</span></span>
-                {offer.active && (
-                  <span className="block text-[10px] text-white/45">
-                    <span className="line-through font-mono">{FULL_PRICE.toLocaleString("en-US")}</span>، لحد {OFFER_LAST_DAY}
-                  </span>
-                )}
-              </div>
-            </div>
-          </motion.div>
+          <motion.p {...rise(0.4)} className="mt-5 pt-4 border-t border-white/10 text-[13px] text-white/70 text-center leading-relaxed">
+            الكورس كامل بـ <span dir="ltr" className="font-black text-white">{offer.price.toLocaleString("en-US")}</span> دينار، تدفع مرة وحدة
+            {offer.active && (
+              <> بدل <span dir="ltr" className="line-through">{FULL_PRICE.toLocaleString("en-US")}</span> لحد {OFFER_LAST_DAY}</>
+            )}
+            ، ويا الحلول والأدوات والمستشار. {STUDENT_COUNT} مشترك.
+          </motion.p>
         </div>
         </div>
       </motion.div>
 
-      <motion.div {...rise(0.7)} className="relative text-center z-10 text-[10px] sm:text-[11px] text-white/30 tracking-wider mt-5 sm:mt-7 pb-2 safe-area-bottom">
+      <motion.div {...rise(0.7)} className="relative text-center z-10 text-[12px] text-white/65 mt-5 sm:mt-7 pb-2 safe-area-bottom">
         © 2026 viZion
       </motion.div>
     </div>

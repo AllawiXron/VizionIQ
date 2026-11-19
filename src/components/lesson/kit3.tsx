@@ -77,7 +77,7 @@ function Landed({ d }: { d: { units: number; usd: number; official: number; rate
       <motion.p key={Math.round((real - quick) / 500)} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={ease} className="rounded-2xl bg-amber-300/[0.08] border border-amber-200/25 p-4 text-[15px] font-bold text-amber-50 leading-relaxed">
         الفرق {fmt(real - quick)} بالقطعة، يعني {fmt((real - quick) * sound)} على الشحنة كلها تطلع من جيبك إذا سعرت على الحساب السريع.
       </motion.p>
-      <p className="text-[14px] text-white/55 leading-relaxed">{d.note}</p>
+      <p className="text-[14px] text-white/70 leading-relaxed">{d.note}</p>
     </div>
   );
 }
@@ -99,18 +99,18 @@ function OrderProfit({ d }: { d: { price: number; cost: number; delivery: number
       <div className={`${card} p-4 space-y-2`}>
         <Slider label="مبلغ الإعلان بالأسبوع" value={spend} min={100000} max={400000} step={10000} onChange={setSpend} show={fmt(spend)} />
         <Slider label="نسبة الطلبيات الراجعة" value={ret} min={5} max={40} step={5} onChange={setRet} show={ret + "%"} />
-        <p className="text-[13px] text-white/55">
+        <p className="text-[13px] text-white/70">
           {d.orders} طلب مؤكد: {delivered} وصل و{returned} رجع
         </p>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-red-500/[0.06] border border-red-400/25 p-3.5">
-          <p className="text-[12px] font-bold text-white/55 leading-snug">إذا حسبت الربح على الطلبيات المؤكدة ونسيت الطلبات الراجعة</p>
+          <p className="text-[12px] font-bold text-white/70 leading-snug">إذا حسبت الربح على الطلبيات المؤكدة ونسيت الطلبات الراجعة</p>
           <p className="text-[13px] text-white/70 mt-1.5">إعلان {fmt(adWrong)} للطلب</p>
           <p className="text-[20px] font-black text-red-200 mt-0.5">{money(netWrong)}</p>
         </div>
         <div className="rounded-2xl bg-emerald-400/[0.07] border border-emerald-300/25 p-3.5">
-          <p className="text-[12px] font-bold text-white/55 leading-snug">الحسبة الصحيحة على الطلبيات المستلمة</p>
+          <p className="text-[12px] font-bold text-white/70 leading-snug">الحسبة الصحيحة على الطلبيات المستلمة</p>
           <p className="text-[13px] text-white/70 mt-1.5">إعلان {fmt(adReal)}، وراجع {fmt(retReal)}</p>
           <motion.p key={Math.round(net / 100)} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`text-[20px] font-black mt-0.5 ${net >= 0 ? "text-emerald-200" : "text-red-300"}`}>
             {money(net)}
@@ -126,7 +126,7 @@ function OrderProfit({ d }: { d: { price: number; cost: number; delivery: number
         <Row label="خسارة الطلبات الراجعة موزعة على كل طلب مستلم" value={"− " + fmt(retReal)} />
         <Row label="الصافي اللي يبقالك من كل طلب مستلم" value={money(net)} strong tone={net >= 0 ? "good" : "bad"} />
       </div>
-      <p className="text-[14px] text-white/55 leading-relaxed">{d.note}</p>
+      <p className="text-[14px] text-white/70 leading-relaxed">{d.note}</p>
     </div>
   );
 }
@@ -162,7 +162,7 @@ function RuleCheck({ d }: { d: { cases: RuleCase[] } }) {
                 </motion.div>
               ))}
             </div>
-            <p className="mt-1 text-[12px] text-white/55">
+            <p className="mt-1 text-[12px] text-white/70">
               {r.parts.map((p) => `${p.l} ${fmt(p.v)}`).join("، ")}
             </p>
           </div>
@@ -189,7 +189,7 @@ function Discount({ d }: { d: { price: number; before: number; fee: number; ad: 
     <div className="space-y-4">
       <div className={`${card} p-4`}>
         <Slider label="الخصم" value={off} min={0} max={10000} step={1000} onChange={setOff} show={off ? fmt(off) : "بدون خصم"} />
-        <p className="text-[13px] text-white/55">
+        <p className="text-[13px] text-white/70">
           الزبون يدفع {fmt(sale)} بدل {fmt(d.price)}، يعني خصم <span dir="ltr">{Math.round((off / d.price) * 100)}%</span> من السعر
         </p>
       </div>
@@ -199,11 +199,11 @@ function Discount({ d }: { d: { price: number; before: number; fee: number; ad: 
       </button>
       <div className="grid grid-cols-2 gap-3">
         <div className={`${card} p-3.5`}>
-          <p className="text-[12px] font-bold text-white/55">بدون خصم</p>
+          <p className="text-[12px] font-bold text-white/70">بدون خصم</p>
           <p className="text-[20px] font-black text-white">{money(base)}</p>
         </div>
         <motion.div key={Math.round(profit / 100) + (old ? "o" : "n")} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} transition={ease} className={`rounded-2xl border p-3.5 ${profit >= base ? "bg-emerald-400/[0.07] border-emerald-300/25" : profit >= 0 ? "bg-amber-300/[0.07] border-amber-200/25" : "bg-red-500/[0.07] border-red-400/30"}`}>
-          <p className="text-[12px] font-bold text-white/55">ويا الخصم</p>
+          <p className="text-[12px] font-bold text-white/70">ويا الخصم</p>
           <p className={`text-[20px] font-black ${profit >= base ? "text-emerald-200" : profit >= 0 ? "text-amber-100" : "text-red-200"}`}>{money(profit)}</p>
         </motion.div>
       </div>
@@ -219,7 +219,7 @@ function Discount({ d }: { d: { price: number; before: number; fee: number; ad: 
           الزبون القديم ما يكلفك إعلان، ولهذا حتى لو تعطيه خصم يبقالك ربح أكثر من الزبون الجديد اللي يشتري بالسعر الكامل.
         </motion.p>
       )}
-      <p className="text-[14px] text-white/55 leading-relaxed">{d.note}</p>
+      <p className="text-[14px] text-white/70 leading-relaxed">{d.note}</p>
     </div>
   );
 }

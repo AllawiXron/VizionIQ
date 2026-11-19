@@ -1,4 +1,5 @@
 import { NumberField } from "./ui/NumberField";
+import { CopyButton } from "./ui/CopyButton";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SPRING_SNAPPY, collapseMotion, viewSwapMotion } from "../lib/motion";
@@ -363,7 +364,7 @@ export default function VizionGrowthSuite() {
         )}
       </div>
 
-      <div className="vizion-tool-categories flex flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
+      <div className="vizion-tool-categories hidden lg:flex flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
         {toolCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           const count = cat.id === "all" ? toolTabs.length : toolTabs.filter(t => t.category === cat.id).length;
@@ -394,75 +395,46 @@ export default function VizionGrowthSuite() {
 
       <div className="vizion-tool-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         
-        <div className="vizion-tool-picker lg:hidden w-full mb-6 relative z-30">
-          <div className="glass-elevated rounded-3xl overflow-hidden">
-            <button
-              onClick={() => setIsLaunchpadOpen(!isLaunchpadOpen)}
-              aria-expanded={isLaunchpadOpen}
-              className="w-full flex items-center justify-between p-5 hover:bg-white/[0.04] transition-colors duration-300 cursor-pointer min-h-[44px] active:bg-white/[0.06] motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
-            >
-              <div className="text-right">
-                <span className="text-[11px] text-white/50 block font-bold mb-1.5">اختار أداة من القائمة ({filteredToolTabs.length})</span>
-                <span className="text-base font-black text-white flex items-center gap-2 drop-shadow-md">
-                  {toolTabs.find(t => t.id === activeTab)?.label}
-                </span>
-              </div>
-              <motion.div
-                animate={{ rotate: isLaunchpadOpen ? 180 : 0 }}
-                transition={SPRING_SNAPPY}
-                className={`w-11 h-11 shrink-0 rounded-full flex items-center justify-center transition-colors duration-300 ${isLaunchpadOpen ? 'bg-vz-blue text-white' : 'bg-white/[0.07] border border-white/10 text-white/80'}`}
-              >
-                <ChevronDown className="w-5 h-5" />
-              </motion.div>
-            </button>
-            
-            <AnimatePresence>
-              {isLaunchpadOpen && (
-                <motion.div 
-                  {...collapseMotion}
-                  className="border-t border-white/[0.07] max-h-[60vh] overflow-y-auto no-scrollbar"
+        <div className="vizion-tool-picker lg:hidden w-full mb-5 relative z-30">
+          <div
+            role="tablist"
+            aria-label="الأدوات"
+            className="-mx-4 px-4 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,transparent_0,#000_32px)]"
+          >
+            {toolTabs.map((tab) => {
+              const isActive = tab.id === activeTab;
+              return (
+                <button
+                  key={tab.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={(e) => {
+                    const el = e.currentTarget;
+                    setSelectedCategory("all");
+                    setActiveTab(tab.id);
+                    setT1ShowReport(false);
+                    setT2ShowAnalysis(false);
+                    setT3ShowAnalysis(false);
+                    setT4ShowReport(false);
+                    setT8ShowScore(false);
+                    el.scrollIntoView({ inline: "center", block: "nearest" });
+                  }}
+                  className={`shrink-0 inline-flex items-center gap-1.5 min-h-[44px] px-3.5 rounded-full border text-[14px] font-bold whitespace-nowrap transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+                    isActive ? "bg-white text-[#040e33] border-white" : "bg-white/[0.04] border-white/12 text-white/80"
+                  }`}
                 >
-                  <div className="p-4 space-y-2.5">
-                    {filteredToolTabs.map((tab) => {
-                      const isActive = tab.id === activeTab;
-                      return (
-                        <button                           key={tab.id}
-                          onClick={() => {
-                            setActiveTab(tab.id);
-                            setIsLaunchpadOpen(false);
-                            setT1ShowReport(false);
-                            setT2ShowAnalysis(false);
-                            setT3ShowAnalysis(false);
-                            setT4ShowReport(false);
-                            setT8ShowScore(false);
-                          }}
-                          className={`w-full flex items-center justify-between p-4 rounded-2xl transition-colors duration-300 cursor-pointer border min-h-[44px] active:scale-[0.98] ${ isActive ? "bg-white/[0.08] border-white/[0.14] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" : "bg-white/[0.02] border-white/[0.05] text-white/70 hover:bg-white/[0.05]" } focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60`}
-                        >
-                          <div className="text-right flex-1">
-                            <div className={`text-sm font-black mb-1.5 flex items-center justify-between ${isActive ? "text-vz-accent" : "text-white"}`}>
-                              <span>{tab.label}</span>
-                              {isFreeTrial && <Lock className="w-3.5 h-3.5 text-vz-accent shrink-0" />}
-                            </div>
-                            <div className="text-[11px] text-white/70 leading-relaxed font-light">{tab.desc}</div>
-                          </div>
-                          {isActive && (
-                            <div className="w-8 h-8 rounded-full bg-vz-blue flex items-center justify-center shrink-0 ml-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
-                              <CheckCircle2 className="w-5 h-5 text-white" />
-                            </div>
-                          )}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  <span>{tab.label}</span>
+                  {isFreeTrial && <Lock className="w-3.5 h-3.5 opacity-70" />}
+                </button>
+              );
+            })}
           </div>
+          <p className="mt-2 text-[13px] text-white/70 leading-relaxed">{toolTabs.find((t) => t.id === activeTab)?.desc}</p>
         </div>
 
         <div className="hidden lg:flex lg:col-span-4 glass glass-edge rounded-4xl p-5 md:p-6 flex-col space-y-4 h-[750px] overflow-hidden relative">
                     <div className="flex items-center justify-between border-b border-white/[0.07] pb-4 px-1">
-            <span className="text-[12px] font-bold text-white/55 uppercase tracking-widest">
+            <span className="text-[12px] font-bold text-white/70 uppercase tracking-widest">
               الأدوات ({filteredToolTabs.length}):
             </span>
             {selectedCategory !== "all" && (
@@ -604,7 +576,7 @@ export default function VizionGrowthSuite() {
                   دخل أرقام مشروعك الحالية حتى نكشفلك بسرعة نقاط القوة، ووين تضيع فلوسك ويقل ربحك بدون ما تنتبه.
                 </p>
 
-                <div className="grid grid-cols-1 gap-y-5 gap-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-4 items-end gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">عدد الطلبات بالشهر (اللي تدزها)</label>
                     <div className="w-full">
@@ -659,12 +631,9 @@ export default function VizionGrowthSuite() {
                 {t1ShowReport && (
                   <div id="t1-report" className="scroll-mt-24 p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
       <div className="flex justify-end">
-        <button onClick={() => {
-          navigator.clipboard.writeText(`تقرير التشخيص:
+        <CopyButton text={`تقرير التشخيص:
 الإيرادات: ${diagResult.totalRevenue.toLocaleString()} د.ع
-الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`);
-          alert('انتسخ');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">انسخ النتيجة</button>
+الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`} label="انسخ النتيجة" />
       </div>
                     <h4 className="text-sm font-black text-vz-accent flex items-center gap-2 border-b border-white/5 pb-2">
                       <span>تقرير فحص الأداء والأرباح:</span>
@@ -738,7 +707,7 @@ export default function VizionGrowthSuite() {
                   دخل أرقام حملتك الإعلانية اللي مشغلها هسه، والنظام راح يحلل النتائج ويحددلك مكان الخلل بالضبط، ويعطيك الحل بسرعة.
                 </p>
 
-                <div className="grid grid-cols-1 gap-y-5 gap-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-4 items-end gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد صارف على الإعلان</label>
                     <div className="w-full">
@@ -890,7 +859,7 @@ export default function VizionGrowthSuite() {
                   إذا دتعاني من كثرة الأسئلة وماكو ناس تشتري، دخل عدد الرسائل والطلبات حتى تعرف وين المشكلة بالضبط.
                 </p>
 
-                <div className="grid grid-cols-1 gap-y-5 gap-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-4 items-end gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد رسالة توصلك بالمجموع</label>
                     <NumberField className="w-full" value={t4Messages} onChange={(v) => setT4Messages(v)} unit="رسالة" step={10} />
@@ -915,12 +884,9 @@ export default function VizionGrowthSuite() {
                 {t4ShowReport && (
                   <div id="t4-report" className="scroll-mt-24 p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
       <div className="flex justify-end">
-        <button onClick={() => {
-          navigator.clipboard.writeText(`تقرير المحادثات:
+        <CopyButton text={`تقرير المحادثات:
 معدل الإغلاق: ${((t4Orders / t4Messages) * 100).toFixed(1)}%
-`);
-          alert('انتسخ');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">انسخ النتيجة</button>
+`} label="انسخ النتيجة" />
       </div>
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <h4 className="text-sm font-black text-vz-accent">نتيجة إتمام البيعات:</h4>
@@ -975,7 +941,7 @@ export default function VizionGrowthSuite() {
                   أغلب الصفحات تخسر لأن ما تحسب كلفة الطلبات الراجعة. احسب أسعارك وأرباحك وشكد لازم تبيع حتى ما تخسر ولا دينار.
                 </p>
 
-                <div className="grid grid-cols-1 gap-y-5 gap-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-4 items-end gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">بشكد شاري القطعة</label>
                     <NumberField className="w-full" value={t5Cost} onChange={(v) => setT5Cost(v)} unit="د.ع" step={500} />
@@ -1357,7 +1323,7 @@ export default function VizionGrowthSuite() {
                   هواية أصحاب البيجات ما يعرفون شكد يخسرون من كلفة الطلبات الراجعة وغرامات التوصيل. احسب خسارتك من الطلبات الراجعة هسه حتى تلحق توقف هالخسارة.
                 </p>
 
-                <div className="grid grid-cols-1 gap-y-5 gap-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-4 items-end gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">مجموع الطلبيات اللي تدزها بالشهر</label>
                     <div className="w-full">
@@ -1580,7 +1546,7 @@ export default function VizionGrowthSuite() {
                   قبل لا تشغل أي حملة إعلانية على فيسبوك أو إنستغرام، دخل الميزانية اللي ناوي تصرفها حتى تعرف شكد ممكن تجيك مبيعات وطلبيات وشكد يبقى عندك ربح صافي.
                 </p>
 
-                <div className="grid grid-cols-1 gap-y-5 gap-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-4 items-end gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">شكد ميزانية الحملة اللي ناوي تصرفها</label>
                     <div className="w-full">
@@ -1646,7 +1612,7 @@ export default function VizionGrowthSuite() {
                   حدد صافي الربح اللي تريد تحققه بالشهر، وهامش الربح الصافي من منتجك، والنظام راح يحسبلك ميزانية الإعلانات التقريبية اللي تحتاجها حتى توصل لهدفك.
                 </p>
 
-                <div className="grid grid-cols-1 gap-y-5 gap-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-4 items-end gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-white/80 block">صافي الربح اللي تريد تحققه بالشهر</label>
                     <div className="w-full">

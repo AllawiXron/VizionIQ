@@ -56,7 +56,7 @@ export function NumberField({
       )}
       <div className="flex items-stretch rounded-xl border border-white/10 bg-white/[0.05] focus-within:border-white/35 focus-within:ring-2 focus-within:ring-white/25 transition-colors min-h-[46px] overflow-hidden" dir="ltr">
         {unit && (
-          <span className="shrink-0 flex items-center px-3 text-xs font-bold text-white/55 border-r border-white/10 bg-white/[0.03] whitespace-nowrap">
+          <span className="shrink-0 flex items-center px-3 text-xs font-bold text-white/70 border-r border-white/10 bg-white/[0.03] whitespace-nowrap">
             {unit}
           </span>
         )}
@@ -87,7 +87,7 @@ export function NumberField({
           className="flex-1 min-w-0 bg-transparent px-3.5 py-2.5 text-base sm:text-sm text-white font-mono text-left outline-none"
         />
       </div>
-      {hint && <p className="text-[11px] text-white/45 leading-relaxed">{hint}</p>}
+      {hint && <p className="text-[11px] text-white/60 leading-relaxed">{hint}</p>}
     </div>
   );
 }

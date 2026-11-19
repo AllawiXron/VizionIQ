@@ -93,11 +93,11 @@ function Kicker({ children, tone = "accent" }: { children: React.ReactNode; tone
 
 function TextScreen({ texts }: { texts: string[] }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {texts.map((t, i) => (
         <p
           key={i}
-          className={i === 0 ? "text-[22px] sm:text-[28px] font-bold text-white leading-[1.75]" : "text-[18px] sm:text-[21px] text-white/75 leading-[1.9]"}
+          className={i === 0 ? "text-[18px] sm:text-[28px] font-bold text-white leading-[1.75]" : "text-[16px] sm:text-[21px] text-white/80 leading-[1.75] sm:leading-[1.9]"}
         >
           <Rich text={t} />
         </p>
@@ -133,7 +133,7 @@ function StepsScreen({ block, shown }: { block: Extract<Block, { kind: "steps" }
               transition={{ duration: 0.35, ease: EASE_OUT }}
               className={current ? "glass-elevated rounded-3xl p-5 sm:p-6" : "rounded-2xl px-4 py-3 bg-white/[0.03] border border-white/[0.06]"}
             >
-              <p className={current ? "text-[20px] sm:text-[24px] font-black text-white leading-snug mb-2" : "text-[15px] font-bold text-white/60 flex items-center gap-2"}>
+              <p className={current ? "text-[18px] sm:text-[24px] font-black text-white leading-snug mb-2" : "text-[15px] font-bold text-white/60 flex items-center gap-2"}>
                 {!current && <Check className="w-4 h-4 text-emerald-400 shrink-0" strokeWidth={3} />}
                 {step.title}
               </p>
@@ -189,7 +189,7 @@ function CompareScreen({
   return (
     <div>
       <Kicker>{block.title ?? "قارن"}</Kicker>
-      <h3 className="text-[22px] sm:text-[28px] font-black text-white leading-snug mb-6">برأيك، أي وحدة أصح؟</h3>
+      <h3 className="text-[19px] sm:text-[28px] font-black text-white leading-snug mb-4 sm:mb-6">برأيك، أي وحدة أصح؟</h3>
       <div className="grid gap-3">
         {options.map((side, i) => {
           const data = block[side];
@@ -210,7 +210,7 @@ function CompareScreen({
               } ${picked ? "ring-2 ring-white/40" : ""}`}
             >
               <span className="flex items-center justify-between gap-3 mb-2">
-                <span className={`text-sm font-black ${state === "good" ? "text-emerald-300" : state === "bad" ? "text-red-300" : "text-white/45"}`}>
+                <span className={`text-sm font-black ${state === "good" ? "text-emerald-300" : state === "bad" ? "text-red-300" : "text-white/60"}`}>
                   {state === "idle" ? (i === 0 ? "الخيار الأول" : "الخيار الثاني") : data.label}
                 </span>
                 {state === "good" && <CheckCircle2 className="w-5 h-5 text-emerald-300" />}
@@ -237,7 +237,7 @@ function ExampleScreen({ block }: { block: Extract<Block, { kind: "example" }> }
     <div>
       <Kicker>مثال من السوق العراقي</Kicker>
       <div className="glass-elevated rounded-3xl p-6 sm:p-8">
-        <h3 className="text-[21px] sm:text-[26px] font-black text-white leading-snug mb-4">{block.title}</h3>
+        <h3 className="text-[19px] sm:text-[26px] font-black text-white leading-snug mb-4">{block.title}</h3>
         <p className="text-[17px] sm:text-[20px] text-white/85 leading-[1.9]">
           <Rich text={block.text} />
         </p>
@@ -255,7 +255,7 @@ function NoteScreen({ block }: { block: Extract<Block, { kind: "tip" | "warning"
         <Icon className="w-7 h-7" />
       </span>
       <Kicker tone={tip ? "amber" : "red"}>{tip ? "نصيحة" : "انتبه"}</Kicker>
-      <p className="text-[20px] sm:text-[24px] font-bold text-white leading-[1.75]">
+      <p className="text-[17px] sm:text-[24px] font-bold text-white leading-[1.75]">
         <Rich text={block.text} />
       </p>
     </div>
@@ -293,7 +293,7 @@ function CheckScreen({ block, choice, onChoose }: { block: Extract<Block, { kind
   return (
     <div>
       <Kicker>سؤال سريع</Kicker>
-      <h3 className="text-[21px] sm:text-[26px] font-black text-white leading-[1.6] mb-6">
+      <h3 className="text-[19px] sm:text-[26px] font-black text-white leading-[1.6] mb-4 sm:mb-6">
         <Rich text={block.question} />
       </h3>
       <div className="grid gap-3">
@@ -377,7 +377,7 @@ function ApplyScreen({ block, storageKey }: { block: Extract<Block, { kind: "app
   return (
     <div>
       <Kicker tone="green">طبقها على منتجك</Kicker>
-      <h3 className="text-[22px] sm:text-[28px] font-black text-white leading-snug mb-2">{block.title}</h3>
+      <h3 className="text-[19px] sm:text-[28px] font-black text-white leading-snug mb-2">{block.title}</h3>
       <p className="text-[16px] sm:text-[18px] text-white/70 leading-[1.8] mb-5">{block.intro}</p>
       <div className="space-y-4">
         {block.fields.map((f) => (
@@ -404,11 +404,11 @@ function ApplyScreen({ block, storageKey }: { block: Extract<Block, { kind: "app
         </div>
       )}
       <div className={`mt-5 rounded-3xl p-5 border transition-colors duration-300 ${filled ? "bg-emerald-400/[0.08] border-emerald-300/35" : "bg-white/[0.03] border-white/[0.08]"}`}>
-        <p className="text-[13px] font-black text-white/50 mb-2">جملتك</p>
+        <p className="text-[13px] font-black text-white/65 mb-2">جملتك</p>
         <p className="text-[18px] sm:text-[21px] font-bold text-white leading-[1.8]">{sentence}</p>
         {filled && (
           <button type="button" onClick={copy} className="mt-3 btn btn-glass min-h-[44px] px-4 rounded-xl text-[15px]">
-            {copied ? "تم النسخ" : "انسخ الجملة"}
+            {copied ? "انتسخ" : "انسخ الجملة"}
           </button>
         )}
       </div>
@@ -498,6 +498,10 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   const lastStep = screens.length - 2;
   const scroller = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
+  const current = useRef<HTMLDivElement | null>(null);
+  const lastReadTop = useRef<number | null>(null);
+  // on touch screens a sideways swipe fights vertical scrolling, so the buttons do the paging there
+  const [coarse] = useState(() => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches);
   const followUntil = useRef(0);
   const lastHeight = useRef(0);
   const reduce = useReducedMotion();
@@ -513,22 +517,68 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
     return c;
   }, [lesson]);
 
+  // what is left below the current screen only: the screen leaving the stage is still in the DOM for a moment
+  // and would otherwise make the page look longer than it is
+  const remaining = useCallback(() => {
+    const el = scroller.current;
+    const inner = content.current;
+    const cur = current.current;
+    if (!el || !inner) return 0;
+    if (!cur || !cur.isConnected) return el.scrollHeight - el.scrollTop - el.clientHeight;
+    const pad = parseFloat(getComputedStyle(inner).paddingBottom) || 0;
+    const bottom = inner.offsetTop + cur.offsetTop + cur.offsetHeight + pad;
+    return Math.min(bottom, el.scrollHeight) - (el.scrollTop + el.clientHeight);
+  }, []);
+
   const measure = useCallback(() => {
     const el = scroller.current;
     if (!el) return;
-    setMore(el.scrollHeight - el.scrollTop - el.clientHeight > 24);
+    setMore(remaining() > 24);
     setScrolled(el.scrollTop > 4);
-  }, []);
+  }, [remaining]);
 
   // a tap that reveals something below keeps it in view for a moment
   const follow = useCallback(() => {
     followUntil.current = performance.now() + 900;
   }, []);
 
+  // our own eased scroll: the browser's smooth scroll gets cancelled by animating content on some phones
+  const glideRaf = useRef(0);
+  const glide = useCallback(
+    (to: number) => {
+      const el = scroller.current;
+      if (!el) return;
+      cancelAnimationFrame(glideRaf.current);
+      const from = el.scrollTop;
+      const target = Math.max(0, Math.min(to, el.scrollHeight - el.clientHeight));
+      if (reduce || Math.abs(target - from) < 2) {
+        el.scrollTop = target;
+        measure();
+        return;
+      }
+      const start = performance.now();
+      const dur = 420;
+      const step = (t: number) => {
+        const p = Math.min(1, (t - start) / dur);
+        el.scrollTop = from + (target - from) * (1 - Math.pow(1 - p, 3));
+        if (p < 1) glideRaf.current = requestAnimationFrame(step);
+        else measure();
+      };
+      glideRaf.current = requestAnimationFrame(step);
+    },
+    [reduce, measure],
+  );
+  useEffect(() => () => cancelAnimationFrame(glideRaf.current), []);
+
   useLayoutEffect(() => {
     followUntil.current = 0;
+    lastReadTop.current = null;
+    cancelAnimationFrame(glideRaf.current);
     scroller.current?.scrollTo({ top: 0 });
-  }, [index, at]);
+    // measure again once the old screen has left and images have settled
+    const timers = [60, 450, 1000].map((ms) => window.setTimeout(measure, ms));
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, [index, at, measure]);
 
   useEffect(() => {
     const el = scroller.current;
@@ -545,7 +595,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       const grew = h > lastHeight.current + 8;
       lastHeight.current = h;
       if (grew && performance.now() < followUntil.current) {
-        el.scrollTo({ top: el.scrollHeight - el.clientHeight, behavior: reduce ? "auto" : "smooth" });
+        glide(el.scrollHeight - el.clientHeight);
       }
       measure();
     });
@@ -557,7 +607,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       ro.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [measure, reduce]);
+  }, [measure, glide]);
 
   useEffect(() => {
     if (screen.kind === "done") onDone(index);
@@ -610,8 +660,25 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   const readOn = useCallback(() => {
     const el = scroller.current;
     if (!el) return;
-    el.scrollBy({ top: Math.round(el.clientHeight * 0.72), behavior: reduce ? "auto" : "smooth" });
-  }, [reduce]);
+    glide(el.scrollTop + Math.round(Math.min(remaining(), el.clientHeight * 0.72)));
+  }, [glide, remaining]);
+
+  // the main button never dead-ends: it scrolls while there is more of this screen, otherwise it moves on
+  const primary = useCallback(() => {
+    const el = scroller.current;
+    const left = remaining();
+    const canScroll = !!el && el.scrollHeight - el.clientHeight - el.scrollTop > 2;
+    // if the last scroll tap did not move the page, this tap moves on instead of trying again
+    const stuck = !!el && lastReadTop.current !== null && Math.abs(el.scrollTop - lastReadTop.current) < 2;
+    if (left > 24 && canScroll && !stuck) {
+      lastReadTop.current = el ? el.scrollTop : null;
+      readOn();
+    } else {
+      lastReadTop.current = null;
+      setMore(false);
+      next();
+    }
+  }, [remaining, readOn, next]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -662,15 +729,26 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
             <X className="w-5 h-5" />
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-bold text-white/55 truncate">{chapterLabel}، الدرس {index + 1} من {lessons.length}</p>
-            <div className="mt-1.5 flex gap-1" aria-hidden="true">
-              {screens.slice(0, -1).map((_, i) => (
-                <span
-                  key={i}
-                  style={{ flexGrow: i === at ? 3 : 1 }}
-                  className={`vz-seg h-1.5 rounded-full ${i < at ? "bg-vz-blue-light" : i === at ? "bg-white" : "bg-white/12"}`}
-                />
-              ))}
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[13px] font-bold text-white/70 truncate">{chapterLabel}، الدرس {index + 1} من {lessons.length}</p>
+              <span dir="ltr" className="text-[13px] font-bold text-white/70 shrink-0 tabular-nums">
+                {Math.min(at + 1, screens.length - 1)} / {screens.length - 1}
+              </span>
+            </div>
+            <div
+              className="mt-1.5 h-1.5 rounded-full bg-white/[0.12] overflow-hidden"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={screens.length - 1}
+              aria-valuenow={Math.min(at + 1, screens.length - 1)}
+              aria-label="تقدمك بالدرس"
+            >
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400"
+                initial={false}
+                animate={{ width: `${(Math.min(at + 1, screens.length - 1) / Math.max(1, screens.length - 1)) * 100}%` }}
+                transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 260, damping: 32 }}
+              />
             </div>
           </div>
         </div>
@@ -684,7 +762,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       >
         <div
           ref={content}
-          className={`relative w-full max-w-2xl mx-auto px-5 py-8 sm:py-12 min-h-full flex flex-col ${centered ? "justify-center" : "justify-start sm:justify-center"}`}
+          className={`relative w-full max-w-2xl mx-auto px-5 py-5 sm:py-12 min-h-full flex flex-col ${centered ? "justify-center" : "justify-start sm:justify-center"}`}
         >
           <AnimatePresence mode="popLayout" initial={false} custom={dir} onExitComplete={measure}>
             <motion.div
@@ -694,12 +772,17 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
               initial="enter"
               animate="center"
               exit="exit"
-              drag={screen.kind === "done" || (screen.kind === "block" && (screen.block.kind === "visual" || screen.block.kind === "apply")) ? false : "x"}
+              drag={coarse || screen.kind === "done" || (screen.kind === "block" && (screen.block.kind === "visual" || screen.block.kind === "apply")) ? false : "x"}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.18}
               onDragEnd={(_, info) => {
                 if (info.offset.x < -70) next();
                 else if (info.offset.x > 70) back();
+              }}
+            >
+            <div
+              ref={(el) => {
+                if (el) current.current = el;
               }}
             >
             <ScreenGuard onSkip={next}>
@@ -710,7 +793,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                   <motion.p variants={rise} className="text-[18px] sm:text-[21px] text-white/75 leading-[1.85] mb-6">
                     <Rich text={lesson.intro} />
                   </motion.p>
-                  <motion.p variants={rise} className="inline-flex items-center gap-2 text-[14px] font-bold text-white/50">
+                  <motion.p variants={rise} className="inline-flex items-center gap-2 text-[14px] font-bold text-white/65">
                     <Clock className="w-4 h-4" />
                     {[
                       `${lessonMinutes(lesson)} دقايق`,
@@ -745,7 +828,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                       <CheckCircle2 className="w-5 h-5" /> الخلاصة
                     </Kicker>
                   </motion.div>
-                  <motion.p variants={rise} className="text-[24px] sm:text-[32px] font-black text-white leading-[1.6]">
+                  <motion.p variants={rise} className="text-[21px] sm:text-[32px] font-black text-white leading-[1.6]">
                     <Rich text={lesson.takeaway} />
                   </motion.p>
                 </motion.div>
@@ -781,6 +864,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                 </motion.div>
               )}
             </ScreenGuard>
+            </div>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -792,7 +876,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
             <ArrowRight className="w-5 h-5" />
           </button>
           <button
-            onClick={more ? readOn : next}
+            onClick={primary}
             className="btn btn-primary flex-1 h-14 rounded-2xl text-[17px] overflow-hidden"
           >
             <AnimatePresence mode="popLayout" initial={false}>

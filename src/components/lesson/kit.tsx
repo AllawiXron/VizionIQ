@@ -133,7 +133,7 @@ function Flip({ d }: { d: { prompt: string; cards: { product: string; says: stri
                 <RotateCcw className="w-4 h-4 text-white/40 shrink-0" />
               </span>
               <motion.span key={o ? "r" : "s"} initial={{ opacity: 0, rotateX: -60 }} animate={{ opacity: 1, rotateX: 0 }} transition={ease} className="block">
-                <span className={`block text-[12px] font-black mb-1 ${o ? "text-emerald-200" : "text-white/45"}`}>{o ? "ليش يشتريها فعلا" : "شنو تكتب بالصفحة"}</span>
+                <span className={`block text-[12px] font-black mb-1 ${o ? "text-emerald-200" : "text-white/60"}`}>{o ? "ليش يشتريها فعلا" : "شنو تكتب بالصفحة"}</span>
                 <span className="block text-[15px] sm:text-[16px] text-white/90 leading-relaxed">{o ? c.real : c.says}</span>
               </motion.span>
             </button>
@@ -156,7 +156,7 @@ function Checklist({ d }: { d: { page: string; items: CheckItem[]; bio: string; 
           <span className="w-14 h-14 rounded-full bg-vz-blue/40 flex items-center justify-center text-[20px] font-black text-white shrink-0">{d.page.charAt(0)}</span>
           <div className="min-w-0">
             <p className="text-[17px] font-black text-white truncate">{d.page}</p>
-            <p className="text-[13px] text-white/50">صفحة جديدة</p>
+            <p className="text-[13px] text-white/65">صفحة جديدة</p>
           </div>
           <span className={`mr-auto px-2.5 py-1 rounded-lg text-[12px] font-black border transition-colors duration-300 ${n >= d.items.length ? "bg-emerald-400/15 text-emerald-200 border-emerald-300/40" : "text-white/40 border-white/10"}`}>ثقة {n} من {d.items.length}</span>
         </div>
@@ -221,7 +221,7 @@ function AdLibrary({ d, shown }: { d: { query: string; ads: LibAd[]; sortedNote:
         <span className="text-[15px] font-bold flex-1">{d.query}</span>
         <span className="text-[12px] font-bold text-[#65676b] px-2 py-1 rounded-md bg-[#f0f2f5]">العراق</span>
       </div>
-      <div className="mt-2 flex items-center justify-between text-[13px] font-bold text-white/55">
+      <div className="mt-2 flex items-center justify-between text-[13px] font-bold text-white/70">
         <span>{d.ads.length} إعلانات شغالة</span>
         <span className={sorted ? "text-white" : ""}>{sorted ? "مرتبة من الأقدم للأحدث" : "ترتيب عشوائي"}</span>
       </div>
@@ -277,7 +277,7 @@ function ChatAudit({ d }: { d: { page: string; messages: AuditMsg[]; done: strin
                   className={`max-w-[85%] text-right rounded-2xl px-3 py-2 text-[15px] leading-relaxed ${me ? "bg-[#005c4b] text-white" : "bg-[#202c33] text-white"} ${m.flag && !hit ? "ring-2 ring-amber-300/60" : ""}`}
                 >
                   <span className="block">{m.text}</span>
-                  <span dir="ltr" className="block text-[11px] text-white/45 mt-0.5 text-left">{m.time}</span>
+                  <span dir="ltr" className="block text-[11px] text-white/60 mt-0.5 text-left">{m.time}</span>
                   {hit && m.flag && (
                     <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="block mt-1.5 pt-1.5 border-t border-white/15 text-[13px] text-amber-100">
                       <span className="font-black">{m.flag.label}: </span>
@@ -328,7 +328,7 @@ function Budget({ d }: { d: { total: number; salaryDay: number; note: string } }
             );
           })}
         </div>
-        <div className="mt-1.5 flex justify-between text-[11px] text-white/45 font-mono" dir="ltr">
+        <div className="mt-1.5 flex justify-between text-[11px] text-white/60 font-mono" dir="ltr">
           <span>1</span><span>10</span><span>20</span><span>30</span>
         </div>
         <p className="mt-2 text-[13px] text-white/60"><span className="inline-block w-3 h-3 rounded-sm bg-emerald-300 align-middle ml-1" />الأيام الثمانية بعد نزول الرواتب (يوم {d.salaryDay})</p>
@@ -339,15 +339,15 @@ function Budget({ d }: { d: { total: number; salaryDay: number; note: string } }
       </label>
       <div className="mt-2 grid grid-cols-2 gap-3">
         <div className={`${card} p-3.5`}>
-          <p className="text-[13px] font-bold text-white/50">نفس الصرف كل يوم</p>
+          <p className="text-[13px] font-bold text-white/65">نفس الصرف كل يوم</p>
           <p className="text-[20px] font-black text-white">{Math.round(even)} طلب</p>
         </div>
         <div className="rounded-2xl bg-emerald-400/[0.08] border border-emerald-300/25 p-3.5">
-          <p className="text-[13px] font-bold text-white/50">حسب توزيعك</p>
+          <p className="text-[13px] font-bold text-white/65">حسب توزيعك</p>
           <motion.p key={Math.round(orders)} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className="text-[20px] font-black text-emerald-200">{Math.round(orders)} طلب</motion.p>
         </div>
       </div>
-      <p className="mt-3 text-[14px] text-white/55 leading-relaxed">{d.note}</p>
+      <p className="mt-3 text-[14px] text-white/70 leading-relaxed">{d.note}</p>
     </div>
   );
 }
@@ -369,11 +369,11 @@ function Seasons({ d }: { d: { seasons: Season[]; rule: string } }) {
       <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`mt-4 ${card} p-4 space-y-3`}>
         <p className="text-[13px] font-black text-vz-accent">{s.when}</p>
         <div>
-          <p className="text-[13px] font-bold text-white/50">شنو يزيد الطلب عليه</p>
+          <p className="text-[13px] font-bold text-white/65">شنو يزيد الطلب عليه</p>
           <p className="text-[16px] text-white leading-relaxed">{s.sells}</p>
         </div>
         <div>
-          <p className="text-[13px] font-bold text-white/50">شنو تجهز</p>
+          <p className="text-[13px] font-bold text-white/65">شنو تجهز</p>
           <p className="text-[16px] text-white leading-relaxed">{s.prepare}</p>
         </div>
         <div className="flex items-center gap-2 rounded-xl bg-amber-300/[0.08] border border-amber-200/25 px-3 py-2">

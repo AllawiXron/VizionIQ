@@ -48,11 +48,11 @@ function CodTrip({ d }: { d: TripData }) {
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div className={`${card} p-3`}>
-          <p className="text-[12px] font-bold text-white/55">بجدولك</p>
+          <p className="text-[12px] font-bold text-white/70">بجدولك</p>
           <p className="mt-1 text-[16px] font-black text-white">{stopped ? "طلب ما انباع" : "طلب واحد مسجل"}</p>
         </div>
         <div className={`${card} p-3`}>
-          <p className="text-[12px] font-bold text-white/55">الفلوس اللي بإيدك</p>
+          <p className="text-[12px] font-bold text-white/70">الفلوس اللي بإيدك</p>
           <motion.p key={inHand} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`mt-1 text-[18px] font-black ${inHand ? "text-emerald-200" : "text-white"}`}>
             {fmt(inHand)} د.ع
           </motion.p>
@@ -155,7 +155,7 @@ function CourierCalc({ d }: { d: { orders: number; ad: number; a: Co; b: Co; aWi
                 <p className="flex justify-between gap-2"><span>إعلان راح على {r.refused} مرفوض</span><span className="font-bold text-white">{fmt(r.ad)}</span></p>
               </div>
               <div className="border-t border-white/10 pt-2">
-                <p className="text-[12px] font-bold text-white/55">الكلفة لكل طلب مستلم</p>
+                <p className="text-[12px] font-bold text-white/70">الكلفة لكل طلب مستلم</p>
                 <motion.p key={round(r.per)} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`text-[22px] font-black ${best ? "text-emerald-200" : "text-white"}`}>
                   تقريبا {fmt(round(r.per))} د.ع
                 </motion.p>
@@ -203,7 +203,7 @@ function ConfirmCall({ d }: { d: { order: string; fields: Field[]; steps: CallSt
             const changed = v && f.value && v !== f.value;
             return (
               <div key={f.id} className="min-w-0">
-                <p className="text-[11px] font-bold text-white/45">{f.label}</p>
+                <p className="text-[11px] font-bold text-white/60">{f.label}</p>
                 <motion.p key={v ?? "none"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={ease} className={`text-[13px] font-bold leading-snug ${!v ? "text-red-200/80" : changed ? "text-emerald-200" : "text-white"}`}>
                   {v ?? "ناقص"}
                 </motion.p>
@@ -220,7 +220,7 @@ function ConfirmCall({ d }: { d: { order: string; fields: Field[]; steps: CallSt
           </React.Fragment>
         ))}
         {!finished && miss !== null && <Bubble from="seller">{d.steps[at].options[miss].text}</Bubble>}
-        {at === 0 && miss === null && <p className="text-[13px] text-white/50">الزبونة رفعت الخط. شنو أول شي تكوله؟</p>}
+        {at === 0 && miss === null && <p className="text-[13px] text-white/65">الزبونة رفعت الخط. شنو أول شي تكوله؟</p>}
       </div>
       {!finished ? (
         <div className="space-y-2">
@@ -258,7 +258,7 @@ function WaybillCheck({ d }: { d: { rows: BillRow[]; ship: string; done: string 
     <div className="space-y-4">
       <p className="text-[15px] text-white/75 leading-relaxed">على اليمين اللي اتفقت عليه بالمكالمة، وعلى اليسار اللي انكتب بالوصل. اضغط على أي سطر تشوفه غلط قبل لا تسد الكارتون.</p>
       <div className={`${card} overflow-hidden`}>
-        <div className="grid grid-cols-[1fr_1fr] gap-2 px-3.5 py-2 text-[12px] font-black text-white/50 border-b border-white/10">
+        <div className="grid grid-cols-[1fr_1fr] gap-2 px-3.5 py-2 text-[12px] font-black text-white/65 border-b border-white/10">
           <span>بالمكالمة</span>
           <span>بالوصل</span>
         </div>
@@ -266,7 +266,7 @@ function WaybillCheck({ d }: { d: { rows: BillRow[]; ship: string; done: string 
           const open = seen[i];
           return (
             <button key={r.label} type="button" onClick={() => { setSeen((s) => ({ ...s, [i]: true })); setShipped(false); }} className="w-full text-right px-3.5 py-2.5 border-b border-white/[0.06] last:border-0">
-              <span className="block text-[11px] font-bold text-white/45">{r.label}</span>
+              <span className="block text-[11px] font-bold text-white/60">{r.label}</span>
               <span className="grid grid-cols-[1fr_1fr] gap-2 text-[14px] leading-snug">
                 <span className="text-white/85">{r.agreed}</span>
                 <span className={`font-bold ${open ? (r.wrong ? "text-red-200 line-through decoration-red-300/70" : "text-emerald-200") : "text-white"}`}>{r.written}</span>
@@ -309,7 +309,7 @@ function Statement({ d }: { d: { deal: string; expected: number; got: number; ro
   return (
     <div className="space-y-4">
       <div className={`${card} p-3.5`}>
-        <p className="text-[12px] font-bold text-white/55">الاتفاق ويا الشركة</p>
+        <p className="text-[12px] font-bold text-white/70">الاتفاق ويا الشركة</p>
         <p className="mt-1 text-[14px] text-white/85 leading-relaxed">{d.deal}</p>
       </div>
       <div className="grid grid-cols-3 gap-2">
@@ -319,13 +319,13 @@ function Statement({ d }: { d: { deal: string; expected: number; got: number; ro
           ["الفرق اللي انعرف سببه", `${fmt(explained)} من ${fmt(gap)}`, explained === gap ? "text-emerald-200" : "text-red-200"],
         ].map(([k, v, c]) => (
           <div key={k} className={`${card} p-3`}>
-            <p className="text-[11px] sm:text-[12px] font-bold text-white/55 leading-snug">{k}</p>
+            <p className="text-[11px] sm:text-[12px] font-bold text-white/70 leading-snug">{k}</p>
             <motion.p key={v} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`mt-1 text-[14px] sm:text-[17px] font-black ${c}`}>{v}</motion.p>
           </div>
         ))}
       </div>
       <div className={`${card} overflow-hidden`}>
-        <div className="grid grid-cols-[3.2rem_1fr_3.6rem_3.4rem_3rem] gap-1.5 px-3 py-2 text-[11px] font-black text-white/50 border-b border-white/10">
+        <div className="grid grid-cols-[3.2rem_1fr_3.6rem_3.4rem_3rem] gap-1.5 px-3 py-2 text-[11px] font-black text-white/65 border-b border-white/10">
           <span>الوصل</span><span>المحافظة والحالة</span><span>المبلغ</span><span>الكروة</span><span>العمولة</span>
         </div>
         {d.rows.map((r, i) => {
@@ -341,7 +341,7 @@ function Statement({ d }: { d: { deal: string; expected: number; got: number; ro
             </button>
           );
         })}
-        <p className="px-3 py-2 text-[12px] text-white/50">{d.rest}</p>
+        <p className="px-3 py-2 text-[12px] text-white/65">{d.rest}</p>
       </div>
       {lastOpen && explained < gap && (
         <motion.p key={lastOpen.i} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={ease} className={`flex items-start gap-2 text-[15px] font-bold leading-relaxed ${lastOpen.r.diff ? "text-red-200" : "text-emerald-200/90"}`}>
