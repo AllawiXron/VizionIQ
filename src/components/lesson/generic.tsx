@@ -6,6 +6,7 @@ import { KIT } from "./kit";
 import { KIT2 } from "./kit2";
 import { KIT3 } from "./kit3";
 import { KIT4 } from "./kit4";
+import { KIT5 } from "./kit5";
 
 const ease = { duration: 0.5, ease: EASE_OUT };
 const fmt = (n: number) => n.toLocaleString("en-US");
@@ -572,4 +573,5 @@ export const GENERIC: Record<string, { render: (data: any, shown: number) => Rea
   ...KIT2,
   ...KIT3,
   ...KIT4,
+  ...KIT5,
 };
