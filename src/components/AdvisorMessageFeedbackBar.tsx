@@ -7,8 +7,7 @@ import {
   Sparkles,
   MessageSquareHeart,
   Send,
-  X,
-  RotateCcw
+  X
 } from "lucide-react";
 
 export const IRAQI_MARKET_FEEDBACK_REASONS = [
@@ -79,86 +78,42 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
   };
 
   return (
-    <div className="mt-2.5 pt-2 border-t border-white/10 text-xs dir-rtl select-none" data-testid={`feedback-bar-${messageId}`}>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <span className="text-[11px] text-white/50 hidden sm:inline ml-1 font-medium">
-            الجواب فادك؟
-          </span>
-
-          <button
-            type="button"
-            onClick={handleThumbsUp}
-            title="إجابة مفيدة وعملية وتناسب السوق العراقي"
-            aria-label="الإجابة مفيدة"
-            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
-              currentRating === "helpful"
-                ? "bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-sm ring-1 ring-emerald-400/40"
-                : "bg-white/5 hover:bg-emerald-500/15 border-white/10 text-white/70 hover:text-emerald-300"
-            }`}
-          >
-            <ThumbsUp className={`w-3.5 h-3.5 ${currentRating === "helpful" ? "fill-emerald-400 text-emerald-400" : ""}`} />
-            <span>مفيد</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleThumbsDown}
-            title="تحتاج تعديل أو بيها معلومات مو دقيقة"
-            aria-label="تحتاج تعديل"
-            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 ${
-              currentRating === "unhelpful"
-                ? "bg-rose-500/25 border-rose-400 text-rose-300 shadow-sm ring-1 ring-rose-400/40"
-                : "bg-white/5 hover:bg-rose-500/15 border-white/10 text-white/70 hover:text-rose-300"
-            }`}
-          >
-            <ThumbsDown className={`w-3.5 h-3.5 ${currentRating === "unhelpful" ? "fill-rose-400 text-rose-400" : ""}`} />
-            <span>يحتاج تعديل</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={onCopy}
-            title="نسخ نص الإجابة بالكامل"
-            aria-label="نسخ الرد"
-            className={`px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer min-h-[32px] sm:min-h-[34px] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
-              isCopied
-                ? "bg-white/10 border-white/35 text-vz-accent"
-                : "bg-white/5 hover:bg-white/10 border-white/10 text-white/70 hover:text-white"
-            }`}
-          >
-            {isCopied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-vz-accent" />
-                <span className="text-vz-accent font-bold">انتسخ</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5 text-white/60" />
-                <span>نسخ الرد</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        <div className="flex items-center gap-2 mr-auto text-white/40 font-mono text-[10px]">
-          {currentRating && (
-            <button
-              type="button"
-              onClick={() => {
-                onClearFeedback?.();
-                setIsPickerExpanded(false);
-                setShowCustomInput(false);
-              }}
-              title="إعادة ضبط التقييم"
-              className="text-white/40 hover:text-white/80 transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span>تعديل</span>
-            </button>
-          )}
-          {timestamp && <span>{timestamp}</span>}
-        </div>
+    <div className="mt-2 text-xs dir-rtl select-none" data-testid={`feedback-bar-${messageId}`}>
+      {/* three quiet icons under the answer, no labels to read */}
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          onClick={handleThumbsUp}
+          title="الجواب فادني"
+          aria-label="الجواب فادني"
+          className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
+            currentRating === "helpful" ? "text-emerald-300 bg-emerald-500/15" : "text-white/45 hover:text-emerald-300 hover:bg-white/[0.06]"
+          }`}
+        >
+          <ThumbsUp className={`w-4 h-4 ${currentRating === "helpful" ? "fill-emerald-400" : ""}`} />
+        </button>
+        <button
+          type="button"
+          onClick={handleThumbsDown}
+          title="الجواب يحتاج تعديل"
+          aria-label="الجواب يحتاج تعديل"
+          className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 ${
+            currentRating === "unhelpful" ? "text-rose-300 bg-rose-500/15" : "text-white/45 hover:text-rose-300 hover:bg-white/[0.06]"
+          }`}
+        >
+          <ThumbsDown className={`w-4 h-4 ${currentRating === "unhelpful" ? "fill-rose-400" : ""}`} />
+        </button>
+        <button
+          type="button"
+          onClick={onCopy}
+          title={isCopied ? "انتسخ" : "انسخ الجواب"}
+          aria-label={isCopied ? "انتسخ" : "انسخ الجواب"}
+          className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+            isCopied ? "text-vz-accent bg-white/10" : "text-white/45 hover:text-white hover:bg-white/[0.06]"
+          }`}
+        >
+          {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+        </button>
       </div>
 
       {currentRating === "helpful" && (

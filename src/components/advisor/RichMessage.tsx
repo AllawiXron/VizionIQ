@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
-import { Check, Copy, MessageCircle } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { parseRichBlocks } from "../../lib/advisor/blocks";
 import { parseCalcBlock } from "../../lib/advisor/calc";
 import { stripAdvisorTags, type BusinessProfile } from "../../lib/advisor/profile";
@@ -29,7 +29,7 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
       <div className="flex items-center justify-between px-4 pt-3">
         <span className="flex items-center gap-1.5 text-[12px] font-black text-emerald-300">
           <span className="w-2 h-2 rounded-full bg-[#25d366]" />
-          رسالة جاهزة حتى تدزها
+          رسالة جاهزة
         </span>
       </div>
       <div className="px-4 pt-2 pb-3">
@@ -39,26 +39,17 @@ function ScriptBubble({ text, open, onCopy }: { key?: React.Key; text: string; o
         </div>
       </div>
       {!open && (
-        <div className="grid grid-cols-2 gap-2 px-3 pb-3">
+        <div className="px-3 pb-3">
           <button
             type="button"
             onClick={copy}
-            className={`min-h-[42px] rounded-xl text-xs font-black flex items-center justify-center gap-1.5 border transition-colors ${
-              copied ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-200" : "border-white/12 bg-white/[0.05] text-white hover:bg-white/10"
+            className={`w-full min-h-[44px] rounded-xl text-sm font-black flex items-center justify-center gap-1.5 border transition-colors ${
+              copied ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-200" : "border-emerald-300/30 bg-[#25d366] text-[#052e1a] hover:brightness-110"
             }`}
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            {copied ? "انتسخ" : "نسخ"}
+            {copied ? "انتسخ" : "انسخ الرسالة"}
           </button>
-          <a
-            href={`https://wa.me/?text=${encodeURIComponent(text)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="min-h-[42px] rounded-xl text-xs font-black flex items-center justify-center gap-1.5 bg-[#25d366] text-[#052e1a] hover:brightness-110"
-          >
-            <MessageCircle className="w-4 h-4" />
-            افتح بالواتساب
-          </a>
         </div>
       )}
     </div>
@@ -101,7 +92,7 @@ export const RichMessage = memo(RichMessageImpl);
 const THINKING_STAGES: [number, string][] = [
   [0, "أراجع سؤالك..."],
   [2500, "أراجع ملف مشروعك ومحتوى الكورس..."],
-  [7000, "أحسب الأرقام وأرتبلك الإجابة..."],
+  [7000, "أحسب الأرقام وأرتبلك الجواب..."],
   [14000, "الإجابة تحتاج شوية وقت، ثواني وتكون جاهزة..."],
   [26000, "الخوادم عليها ضغط، أجرب طريقة أسرع..."],
 ];

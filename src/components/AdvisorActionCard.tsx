@@ -9,7 +9,6 @@ import {
   ArrowLeft,
   CheckCircle2,
   ChevronDown,
-  Sparkles,
   ThumbsUp,
   ThumbsDown,
 } from "lucide-react";
@@ -222,7 +221,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "navigate",
-        `جاري فتح ${effectiveToolTitle}`,
+        `نفتحلك ${effectiveToolTitle}`,
         "انحفظت جلسة المستشار، وتكدر ترجع إلها بأي وقت."
       );
     }
@@ -239,7 +238,7 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
     if (onShowToast) {
       onShowToast(
         "navigate",
-        `جاري فتح ${effectiveChapterTitle}`,
+        `نفتحلك ${effectiveChapterTitle}`,
         "محادثتك ويا المستشار تنحفظ تلقائيا."
       );
     }
@@ -261,22 +260,10 @@ export const AdvisorActionCard: React.FC<AdvisorActionCardProps> = ({
 
   return (
     <div
-      className={`rounded-2xl bg-[#081436] border border-white/10 p-3.5 sm:p-4 text-vz-accent dir-rtl space-y-3 ${className}`}
+      className={`rounded-2xl bg-[#081436] border border-white/10 p-2.5 sm:p-3.5 text-vz-accent dir-rtl space-y-2 ${className}`}
       data-testid="advisor-action-card"
     >
-      {relevanceLabel && (
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-vz-accent">
-            <Sparkles className="w-3.5 h-3.5 text-vz-accent shrink-0" />
-            <span>الخطوة الجاية المقترحة:</span>
-          </div>
-          <p className="text-xs text-slate-300 leading-relaxed font-medium">
-            {relevanceLabel}
-          </p>
-        </div>
-      )}
-
-      <div className="pt-0.5">
+      <div>
         {primaryType === "tool" && (
           <button             type="button"
             onClick={handleOpenTool}

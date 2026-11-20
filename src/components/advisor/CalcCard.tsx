@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Calculator, Check, Save, TrendingDown, TrendingUp } from "lucide-react";
+import { Check, Save, TrendingDown, TrendingUp } from "lucide-react";
 import { computeUnitEconomics, formatIqd, type CalcInput } from "../../lib/advisor/calc";
 import type { BusinessProfile } from "../../lib/advisor/profile";
 
@@ -21,6 +21,7 @@ const AD_BY_CPA: typeof FIELDS = [{ key: "cpa", label: "كلفة الإعلان 
 export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initial: CalcInput; onSaveToProfile?: (p: BusinessProfile) => void }) {
   const [v, setV] = useState<CalcInput>(initial);
   const [saved, setSaved] = useState(false);
+  const [open, setOpen] = useState(false);
   const byMessage = initial.cpa === undefined && (initial.costPerMessage !== undefined || initial.closeRate !== undefined);
   const r = useMemo(() => computeUnitEconomics(v), [v]);
   const fields = [...FIELDS, ...(byMessage ? AD_BY_MESSAGE : AD_BY_CPA), { key: "ordersPerDay" as Key, label: "عدد الطلبيات باليوم", unit: "", step: 1 }];
@@ -30,21 +31,12 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
   const verdictText = r.verdict === "profit" ? "البيع مربح" : r.verdict === "thin" ? "الربح قليل، وأي تغير بسيط ممكن يحولك للخسارة" : "بهالأرقام إنت دتخسر";
 
   return (
-    <div className="my-1 rounded-3xl border border-white/12 bg-gradient-to-b from-white/[0.07] to-white/[0.02] overflow-hidden" dir="rtl">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-        <div className="flex items-center gap-2 text-sm font-black text-white">
-          <span className="w-7 h-7 rounded-xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center">
-            <Calculator className="w-4 h-4 text-white" />
-          </span>
-          حسابات الطلب الواحد
-        </div>
-        <span className="text-[11px] text-white/50 font-bold">غير أي رقم وشوف النتيجة مباشرة</span>
-      </div>
-
-      <div className={`mx-3 mt-3 rounded-2xl border px-4 py-3 ${ring}`}>
+    // one coloured block: the number, what it means, and the full sum behind one tap
+    <div className={`my-1 rounded-2xl border overflow-hidden ${ring}`} dir="rtl">
+      <div className="px-4 pt-3 pb-1">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-[12px] font-bold text-white/60">صافي الربح من كل طلب مستلم</div>
+            <div className="text-[13px] font-bold text-white/70">ربحك من كل طلب يوصل</div>
             <div className={`text-2xl sm:text-3xl font-black tabular-nums ${tone}`}>
               <span dir="ltr" style={{ unicodeBidi: "isolate" }}>
                 {r.net >= 0 ? "+" : "−"}
@@ -53,14 +45,26 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
               <span className="text-base">د.ع</span>
             </div>
           </div>
-          {r.net > 0 ? <TrendingUp className={`w-9 h-9 ${tone}`} /> : <TrendingDown className={`w-9 h-9 ${tone}`} />}
+          {r.net > 0 ? <TrendingUp className={`w-7 h-7 ${tone}`} /> : <TrendingDown className={`w-7 h-7 ${tone}`} />}
         </div>
         <div className={`mt-1 text-xs font-bold ${tone}`}>
           {verdictText}، هامش {r.marginPct.toFixed(0)}%
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 p-3">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="w-full min-h-[40px] px-4 pb-2 text-[13px] font-bold text-white/75 flex items-center justify-start gap-1.5"
+      >
+        {open ? "سكر الحسبة" : "شوف الحسبة كاملة"}
+        <span className={`transition-transform ${open ? "rotate-180" : ""}`}>⌄</span>
+      </button>
+
+      {open && (
+      <>
+      <div className="grid grid-cols-2 gap-2 px-3 pb-3 pt-1 border-t border-white/10">
         <Stat label="أعلى كلفة إعلان للطلب (حد التعادل)" value={r.breakEvenCpa > 0 ? formatIqd(r.breakEvenCpa) : "ماكو، المنتج خسران حتى بدون إعلانات"} />
         {r.breakEvenCostPerMessage !== undefined && <Stat label="أعلى كلفة رسالة تكدر تتحملها" value={`$${r.breakEvenCostPerMessage.toFixed(2)}`} highlight />}
         {r.breakEvenCloseRate !== undefined && <Stat label="أقل نسبة تحويل لطلبات تحتاجها" value={`${r.breakEvenCloseRate.toFixed(1)}%`} />}
@@ -124,6 +128,8 @@ export function CalcCard({ initial, onSaveToProfile }: { key?: React.Key; initia
             {saved ? "انحفظت المعلومات بملف مشروعك" : "احفظ هاي الأرقام بملف مشروعي"}
           </button>
         </div>
+      )}
+      </>
       )}
     </div>
   );

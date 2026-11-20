@@ -212,7 +212,7 @@ export default function VizionGrowthSuite() {
     }
 
     if (convRate < 5) {
-      verdict = "الحملة تصرف ميزانيتك بدون فايدة، والمشكلة غالبا بالردود.";
+      verdict = "الحملة تصرف ميزانيتك بدون نتيجة، والمشكلة غالبا بطريقة الرد على الزبائن.";
       recommendations.push("نسبة تحويل الرسائل إلى طلبات ضعيفة كلش (" + convRate + "%). ردودك يا إما بطيئة أو آلية وما بيها تفاعل.");
       recommendations.push("لا تدز السعر للزبون وتسكت. احچي وياه بشكل طبيعي وكأنه شخص تعرفه، واستخدم رسالة صوتية بنبرة مريحة بالواتساب.");
     } else if (convRate >= 5 && convRate < 15) {
@@ -313,7 +313,7 @@ export default function VizionGrowthSuite() {
         { day: 23, title: "اتصل بالزبائن المترددين من يوصل المندوب لمنطقتهم." },
         { day: 24, title: "كون علاقة زينة ويا مناديب المناطق الصعبة حتى تساعد على زيادة نسبة استلام الطلبيات." },
         { day: 25, title: "استلم أول كشف حساب يوضح صافي أرباحك من شركة التوصيل." },
-        { day: 26, title: "حلل المشاكل وحدد الأماكن اللي تخسر بيها فلوسك واشتغل على حلها." },
+        { day: 26, title: "حلل المشاكل وحدد وين تخسر فلوسك، واشتغل على حلها." },
         { day: 27, title: "استلم الطلبيات الراجعة وأعد تغليفها مباشرة حتى تجهزها لزبائن غيرهم." },
         { day: 28, title: "حدد المنتجات اللي حققت أفضل نتائج وزيد ميزانية إعلاناتها بنسبة 50%." },
         { day: 29, title: "جهز عروض خاصة لزبائنك السابقين حتى تشجعهم يشترون مرة ثانية." },
@@ -694,7 +694,7 @@ export default function VizionGrowthSuite() {
                       <ul className="space-y-1.5 text-[11px] text-white/70 leading-relaxed">
                         {t1ReturnRate > 20 && (
                           <li className="flex items-start gap-1.5 text-red-300">
-                            <span><strong>الطلبات الراجعة تاكل أرباحك:</strong> نسبة المرتجع عندك ({t1ReturnRate}%) عالية وتخسرك أجور التوصيل وفلوس إعلانات. لازم تأكد طلباتك بالتلفون وتدز فيديوهات للزبون.</span>
+                            <span><strong>الطلبات الراجعة تاكل من أرباحك:</strong> نسبة المرتجع عندك ({t1ReturnRate}%) عالية وتخسرك أجور التوصيل وفلوس إعلانات. لازم تأكد طلباتك بالتلفون وتدز فيديوهات للزبون.</span>
                           </li>
                         )}
                         {t1ConversionRate < 10 && (
@@ -716,7 +716,7 @@ export default function VizionGrowthSuite() {
                     </div>
 
                     <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-xs text-emerald-300">
-                      <strong>عندك فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت نسبة الراجع إلى <strong>10%</strong> ورفعت نسبة تأكيد الطلبات إلى <strong>15%</strong>، راح يرتفع صافي ربحك من <span className="font-mono text-white"><span dir="ltr" className="inline-block">{Math.round(diagResult.netProfit).toLocaleString()}</span> دينار</span> لـ <strong className="text-emerald-400 font-mono">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>، وبهالشكل تزيد أرباحك بدون ما تصرف أكثر على الإعلانات.
+                      <strong>عندك فرصة تزيد أرباحك:</strong> إذا رتبت شغلك ونزلت نسبة الراجع إلى <strong>10%</strong> ورفعت نسبة تأكيد الطلبات إلى <strong>15%</strong>، راح يرتفع صافي ربحك من <span className="font-mono text-white"><span dir="ltr" className="inline-block">{Math.round(diagResult.netProfit).toLocaleString()}</span> دينار</span> لـ <strong className="text-emerald-400 font-mono">{Math.round((t1MonthlyOrders * 0.9 * t1SellingPrice) - (t1MonthlyOrders * t1ProductCost) - (t1MonthlyOrders * 5000) - (Math.round(t1MonthlyOrders / 0.15) * t1MessageCost)).toLocaleString()} دينار</strong>، وبهالشكل تزيد أرباحك بدون ما تزيد صرفك على الإعلانات.
                     </div>
                   </div>
                 )}
@@ -939,7 +939,7 @@ export default function VizionGrowthSuite() {
                     ) : ((t4Orders / t4Messages) * 100) < 12 ? (
                       <div className="space-y-3">
                         <div className="p-3.5 rounded-xl bg-white/3 border border-white/5 text-xs text-vz-accent">
-                          <strong>أداءك متوسط:</strong> أكو ناس مهتمة فعلا، بس تخسر نص البيعات لأن ما تتابع الزبون بالشكل الصحيح أو تتردد بتقديم العرض.
+                          <strong>أداءك متوسط:</strong> أكو زبائن مهتمين فعلا، بس تخسر نص البيعات لأن ما تتابع وياهم بالطريقة الصحيحة أو تتردد بتقديم العرض.
                         </div>
                         <ul className="space-y-2 text-xs text-white/80">
                           <li className="flex items-start gap-1.5">
@@ -1034,14 +1034,14 @@ export default function VizionGrowthSuite() {
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                             <span className="text-[10px] text-white/70 block">عدد الطلبات اللي تحتاجها حتى تربح (١.٥ مليون)</span>
                             <span className="text-base font-black text-white font-mono">
-                              {ordersToTarget > 0 && ordersToTarget < 10000 ? `${ordersToTarget.toLocaleString("en-US")} طلب` : "مهمة صعبة بهالأرقام"}
+                              {ordersToTarget > 0 && ordersToTarget < 10000 ? `${ordersToTarget.toLocaleString("en-US")} طلب` : "ما توصله بهالأرقام"}
                             </span>
                           </div>
                         </div>
 
                         {netProfitReal <= 0 ? (
                           <div className="p-3 bg-red-500/5 rounded-xl border border-red-500/10 text-[11px] text-red-300">
-                            <strong>تنبيه، إنت تخسر</strong> بهالأسعار ونسبة الطلبات الراجعة عندك، إنت فعليا تخسر من كل طلب تدزه. ارفع سعرك أو قلل كلفة الإعلان والطلبات الراجعة بسرعة.
+                            <strong>انتبه، إنت تخسر</strong> بهالأسعار ونسبة الطلبات الراجعة عندك، إنت فعليا تخسر من كل طلبية توصلها. ارفع سعرك أو قلل كلفة الإعلان والطلبات الراجعة بأسرع وقت.
                           </div>
                         ) : (
                           <div className="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10 text-[11px] text-emerald-300">
@@ -1101,7 +1101,7 @@ export default function VizionGrowthSuite() {
                     <div className="space-y-3 text-xs leading-relaxed text-right">
                       <div className="border-b border-white/5 pb-2">
                         <span className="text-red-400 font-bold block">اللي يسأل عن السعر ويختفي:</span>
-                        <p className="text-white/70 text-[10px] mt-0.5">ليش يسوي هيج؟ يحس إن ردك آلي، ويمكن هو بس يستفسر من باب الفضول.</p>
+                        <p className="text-white/70 text-[10px] mt-0.5">ليش يسوي هيج؟ لأنه يحس إن ردك آلي، ويمكن هو أصلا بس يستفسر من باب الفضول.</p>
                       </div>
                       <p className="text-white/80">
                         <strong className="text-vz-accent">شلون تتعامل وياه:</strong> لا تكتفي بذكر السعر وتسكت. وضحله شنو اللي يميز العرض، وكله يكدر يفحص المنتج عند الباب حتى يرتاح ويطمن.

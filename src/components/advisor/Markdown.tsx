@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { BookOpen, Check, Compass, LifeBuoy, Plus, Wrench } from "lucide-react";
+import { ArrowLeft, BookOpen, Check, Compass, LifeBuoy, Wrench } from "lucide-react";
 import { chaptersList } from "../../data/chaptersData";
 import { playbooksList } from "../../data/playbooksData";
 import { guideModules } from "../../data/iraqGuideData";
@@ -87,6 +87,56 @@ function CourseChip({ token, actions }: { key?: React.Key; token: string; action
     </button>
   );
 }
+
+// a line that only points into the course becomes a clear button that says it opens the course
+const COURSE_TOKEN = /\[\[[^\]\n]+\]\]/g;
+const FILLER = /^(شوف|راجع|اقرا|اقرأ|و|،|,|:|\.|\s)*$/;
+
+function courseTarget(token: string): { kicker: string; title: string; icon: React.ElementType; open: (a: MarkdownActions) => void } | null {
+  const id = token.slice(2, -2).trim();
+  if (id.startsWith("tool:")) {
+    const toolId = id.slice(5);
+    const label = TOOL_LABELS[toolId];
+    return label ? { kicker: "افتح الأداة", title: label, icon: Wrench, open: (a) => a.onTool?.(toolId, TOOL_CATEGORY[toolId]) } : null;
+  }
+  if (id.startsWith("solution:")) {
+    const pb = playbooksList.find((p) => p.id === id.slice(9));
+    return pb ? { kicker: "افتح الحل بالكورس، خطوة بخطوة", title: pb.title, icon: LifeBuoy, open: (a) => a.onChapter?.(id) } : null;
+  }
+  if (id.startsWith("guide:")) {
+    const gm = guideModules.find((g) => g.id === id.slice(6));
+    return gm ? { kicker: "افتح بالدليل العراقي", title: gm.title.split(":")[0], icon: Compass, open: (a) => a.onChapter?.(id) } : null;
+  }
+  const ch = chaptersList.find((c) => c.id === id);
+  return ch ? { kicker: `افتح ${ch.number} بالكورس`, title: ch.title, icon: BookOpen, open: (a) => a.onChapter?.(ch.id) } : null;
+}
+
+function CourseLinks({ text, actions }: { text: string; actions: MarkdownActions }) {
+  const targets = (text.match(COURSE_TOKEN) ?? []).map(courseTarget).filter(Boolean) as NonNullable<ReturnType<typeof courseTarget>>[];
+  return (
+    <div className="space-y-2 pt-1">
+      {targets.map(({ kicker, title, icon: Icon, open }) => (
+        <button
+          key={kicker + title}
+          type="button"
+          onClick={() => open(actions)}
+          className="w-full min-h-[58px] px-3.5 py-2.5 rounded-2xl bg-vz-blue/20 border border-vz-blue-light/35 flex items-center gap-3 text-right hover:bg-vz-blue/30 active:scale-[0.99] transition"
+        >
+          <span className="w-9 h-9 rounded-xl bg-gradient-to-b from-vz-blue-light to-vz-blue-deep flex items-center justify-center shrink-0">
+            <Icon className="w-[18px] h-[18px] text-white" />
+          </span>
+          <span className="flex-1 min-w-0">
+            <span className="block text-[11.5px] font-bold text-vz-accent">{kicker}</span>
+            <span className="block text-[14px] font-black text-white leading-snug">{title}</span>
+          </span>
+          <ArrowLeft className="w-5 h-5 text-white/80 shrink-0" />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+const onlyCourseLinks = (text: string) => /\[\[[^\]\n]+\]\]/.test(text) && FILLER.test(text.replace(COURSE_TOKEN, ""));
 
 export function Inline({ text, actions }: { text: string; actions: MarkdownActions }) {
   const parts = text.split(INLINE_RE);
@@ -178,28 +228,21 @@ function TaskItem({ text, done, actions }: { key?: React.Key; text: string; done
   const [added, setAdded] = useState(false);
   return (
     <li className="flex items-start gap-2.5 py-1.5">
-      <span className={`mt-1 w-[18px] h-[18px] rounded-md border flex items-center justify-center shrink-0 ${done || added ? "bg-vz-blue border-vz-blue" : "border-white/30"}`}>
-        {(done || added) && <Check className="w-3 h-3 text-white" />}
-      </span>
+      {/* the box itself puts the step in the plan, so there is no second button */}
+      <button
+        type="button"
+        disabled={!actions.onAddTask || added || done}
+        onClick={() => {
+          if (actions.onAddTask?.(text.replace(/\*\*/g, "")) !== false) setAdded(true);
+        }}
+        aria-label={added ? "موجودة بخطتي" : "ضيفها لخطتي"}
+        className={`mt-0.5 w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${done || added ? "bg-vz-blue border-vz-blue" : "border-white/35"}`}
+      >
+        {(done || added) && <Check className="w-3.5 h-3.5 text-white" />}
+      </button>
       <span className="flex-1 min-w-0">
         <Inline text={text} actions={actions} />
       </span>
-      {actions.onAddTask && (
-        <button
-          type="button"
-          disabled={added}
-          onClick={() => {
-            if (actions.onAddTask?.(text.replace(/\*\*/g, "")) !== false) setAdded(true);
-          }}
-          className={`shrink-0 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold border transition-colors ${
-            added ? "border-emerald-400/40 text-emerald-300 bg-emerald-400/10" : "border-white/15 text-vz-accent hover:bg-white/10"
-          }`}
-          aria-label="ضيف هاي الخطوة لخطتي"
-        >
-          {added ? <Check className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
-          {added ? "موجودة بالخطة" : "خطتي"}
-        </button>
-      )}
     </li>
   );
 }
@@ -240,6 +283,7 @@ function renderBlock(b: MdBlock, actions: MarkdownActions): React.ReactElement {
         </h4>
       );
     case "p":
+      if (onlyCourseLinks(b.text)) return <CourseLinks text={b.text} actions={actions} />;
       return (
         <p className="whitespace-pre-line">
           <Inline text={b.text} actions={actions} />
@@ -273,7 +317,7 @@ function renderBlock(b: MdBlock, actions: MarkdownActions): React.ReactElement {
       );
     case "tasks":
       return (
-        <ul className="rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-1.5 divide-y divide-white/[0.06]">
+        <ul className="space-y-0.5">
           {b.items.map((it, j) => (
             <TaskItem key={j} text={it.text} done={it.done} actions={actions} />
           ))}
