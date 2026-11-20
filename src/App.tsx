@@ -5,8 +5,9 @@ import { EASE_OUT, SPRING_SNAPPY } from "./lib/motion";
 import { takeOrigin } from "./lib/origin";
 import { routeForSection, routeToHash, useRoute, type Route } from "./lib/route";
 import { requestTool, type ToolCategory } from "./lib/toolRequest";
+import { requestLesson } from "./lib/lessonRequest";
 
-import LockScreen, { isFreeTrialUser, isAiUser } from "./components/LockScreen";
+import LockScreen, { isFreeTrialUser, isPaidUser } from "./components/LockScreen";
 import Navbar from "./components/Navbar";
 import HomeView from "./components/HomeView";
 import ChaptersIndex from "./components/ChaptersIndex";
@@ -85,7 +86,7 @@ export default function App() {
 
       const welcomeSeen = localStorage.getItem(`sales_guide_welcome_seen_${sessionCode}`);
       if (!welcomeSeen) {
-        if (isFreeTrialUser(sessionCode)) setIsTrialOnboardingOpen(true);
+        if (isFreeTrialUser(sessionCode)) startFreeLesson(sessionCode);
         else setIsWelcomeModalOpen(true);
       }
     } else {
@@ -106,11 +107,25 @@ export default function App() {
     localStorage.setItem("sales_guide_user_code", validCode);
     setIsLoggedIn(true);
     setUserCode(validCode);
-    if (isFreeTrialUser(validCode)) setIsTrialOnboardingOpen(true);
-    else setIsWelcomeModalOpen(true);
-    navigate({ view: "home" });
     window.scrollTo({ top: 0 });
+    if (isFreeTrialUser(validCode)) {
+      startFreeLesson(validCode);
+      return;
+    }
+    setIsWelcomeModalOpen(true);
+    navigate({ view: "home" });
   };
+
+  // a free visitor starts inside the first lesson, not in a form or the advisor
+  function startFreeLesson(code: string) {
+    try {
+      localStorage.setItem(`sales_guide_welcome_seen_${code}`, "true");
+    } catch {
+      /* storage blocked: the lesson still opens */
+    }
+    requestLesson("chapter1", 0);
+    navigate({ view: "chapter", id: "chapter1" });
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("sales_guide_user_token");
@@ -280,7 +295,7 @@ export default function App() {
           setIsAdvisorOpen(false);
           openTool(toolId, category);
         }}
-        isVip={isAiUser(userCode)}
+        isVip={isPaidUser(userCode)}
         userCode={userCode}
         onUpgradeSuccess={(newVipCode) => {
           setUserCode(newVipCode);

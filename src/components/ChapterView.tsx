@@ -9,6 +9,7 @@ import {
 import LessonPlayer from "./LessonPlayer";
 import { isFreeTrialUser } from "./LockScreen";
 import { isTrialChapter } from "../lib/trial";
+import { takeLesson } from "../lib/lessonRequest";
 import { LockChip, TrialLock } from "./TrialLock";
 import { TopicIcon } from "./ui/TopicIcon";
 import { CopyButton } from "./ui/CopyButton";
@@ -336,7 +337,10 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
     lessonsDone.filter((x) => x.startsWith(`${chapter.id}:`)).map((x) => Number(x.split(":")[1])),
   );
   const nextLesson = course.lessons.findIndex((_, i) => i < openLessons && !doneLessons.has(i));
-  const [playing, setPlaying] = useState<number | null>(null);
+  const [playing, setPlaying] = useState<number | null>(() => {
+    const asked = takeLesson(chapter.id);
+    return asked !== null && asked < openLessons && !trialLocked ? asked : null;
+  });
   const closePlayer = useCallback(() => setPlaying(null), []);
   const markLessonDone = useCallback((i: number) => setLessonDone(userCode, chapter.id, i), [userCode, chapter.id]);
 
