@@ -19,6 +19,10 @@ const SLIDE = { type: "spring", stiffness: 360, damping: 36, mass: 0.85 } as con
 // slides move with one transform string so the browser runs them off the main thread and a busy tap can't freeze them
 const slide = (x: number, s = 1) => `translateX(${x}px) scale(${s})`;
 const lift = (y: number) => `translateY(${y}px)`;
+// at rest the layer carries no transform, so text fields and fixed layers inside behave as on a plain page
+const settleTransform = (el: HTMLElement | null) => {
+  if (el) el.style.transform = "none";
+};
 
 const screenMotion: Variants = {
   enter: (d: number) => ({ opacity: 0, transform: slide(d > 0 ? -32 : 32, 0.985), ...soft(8) }),
@@ -528,6 +532,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
     setAnswers({});
   }
   const safeAt = Math.min(at, screens.length - 1);
+  const slideKey = `${index}-${safeAt}`;
   const screen = screens[safeAt];
   const lastStep = screens.length - 2;
   const scroller = useRef<HTMLDivElement>(null);
@@ -644,6 +649,16 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       // while a field is being typed in, the keyboard changes the stage: leave the pages alone
       const typing = document.activeElement;
       if (typing && cur.contains(typing) && /^(TEXTAREA|INPUT|SELECT)$/.test(typing.tagName)) return;
+      // a write-your-own form stays in one piece: every box and the sentence it builds can be reached by scrolling
+      if (kind === "apply") {
+        clearPages(cur);
+        plan.current = null;
+        lastChunks.current = [];
+        pageNow.current = 0;
+        setPageCount(1);
+        setPage(0);
+        return;
+      }
       const floor = kind === "check" || kind === "compare" ? 0.72 : 0.86;
       const pl = planPages(cur, Math.floor(space * 0.97), floor);
       plan.current = pl;
@@ -734,6 +749,8 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   // once the lesson fills the screen, the page under it stops painting; it comes back as soon as the lesson starts to leave
   const present = useIsPresent();
   const [covering, setCovering] = useState(false);
+  const playerEl = useRef<HTMLDivElement>(null);
+  const slideEls = useRef(new Map<string, HTMLDivElement>());
   useLayoutEffect(() => {
     if (!present || !covering) return;
     const root = document.documentElement;
@@ -843,7 +860,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
 
   return createPortal(
     <motion.div
-      className="fixed inset-0 z-[95] flex flex-col bg-[#040e33] text-right"
+      className="vz-lesson-player fixed inset-0 z-[95] flex flex-col bg-[#040e33] text-right"
       role="dialog"
       aria-modal="true"
       aria-label={lesson.title}
@@ -856,8 +873,11 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
         transition: { type: "spring", stiffness: 300, damping: 32, mass: 0.9, opacity: { duration: 0.28, ease: EASE_OUT }, filter: { duration: 0.35 } },
       }}
       exit={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(14px) scale(0.975)", ...soft(8), transition: { duration: 0.24, ease: EASE_OUT } }}
+      ref={playerEl}
       onAnimationComplete={() => {
-        if (present) setCovering(true);
+        if (!present) return;
+        settleTransform(playerEl.current);
+        setCovering(true);
       }}
     >
       <div className="vz-atmosphere" aria-hidden="true" />
@@ -900,12 +920,16 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
               initial="enter"
               animate="center"
               exit="exit"
+              ref={(el: HTMLDivElement | null) => {
+                if (el) slideEls.current.set(slideKey, el);
+                else slideEls.current.delete(slideKey);
+              }}
+              onAnimationComplete={(def) => {
+                if (def === "center") settleTransform(slideEls.current.get(slideKey) ?? null);
+              }}
             >
             <motion.div
-              ref={(el: HTMLDivElement | null) => {
-                if (el) current.current = el;
-              }}
-              data-screen={screen.kind === "block" ? (screen.block.kind === "visual" ? `visual:${screen.block.name}` : screen.block.kind) : screen.kind}
+              className="flow-root"
               drag={screen.kind === "done" || (screen.kind === "block" && (screen.block.kind === "visual" || screen.block.kind === "apply")) ? false : "x"}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.18}
@@ -914,6 +938,12 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                   if (!forward()) next();
                 } else if (info.offset.x > 70) backward();
               }}
+            >
+            <div
+              ref={(el) => {
+                if (el) current.current = el;
+              }}
+              data-screen={screen.kind === "block" ? (screen.block.kind === "visual" ? `visual:${screen.block.name}` : screen.block.kind) : screen.kind}
             >
             <ScreenGuard onSkip={next}>
               {screen.kind === "intro" && (
@@ -982,7 +1012,13 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                       </button>
                     )}
                     {hasNextLesson && nextLocked && (
-                      <button onClick={() => window.dispatchEvent(new CustomEvent("open-upgrade-modal"))} className="btn btn-primary min-h-[56px] px-6 rounded-2xl text-[16px] gap-2">
+                      <button
+                        onClick={() => {
+                          // the subscribe window lives on the page, so the lesson steps aside first
+                          close();
+                          window.setTimeout(() => window.dispatchEvent(new CustomEvent("open-upgrade-modal")), 260);
+                        }}
+                        className="btn btn-primary min-h-[56px] px-6 rounded-2xl text-[16px] gap-2">
                         <Lock className="w-5 h-5" />
                         <span>باقي الدروس متاحة ويا الاشتراك</span>
                       </button>
@@ -994,6 +1030,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                 </motion.div>
               )}
             </ScreenGuard>
+            </div>
             </motion.div>
             </motion.div>
           </AnimatePresence>

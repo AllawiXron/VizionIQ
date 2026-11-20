@@ -14,6 +14,7 @@ export function useMobileKeyboard() {
 
     let lastKeyboard = -1;
     let lastViewport = -1;
+    let lastTop = -1;
     let syncFrame = 0;
     const writeViewport = () => {
       syncFrame = 0;
@@ -27,6 +28,11 @@ export function useMobileKeyboard() {
       if (height !== lastViewport) {
         lastViewport = height;
         root.style.setProperty("--visual-viewport-height", `${height}px`);
+      }
+      const top = Math.round(Math.max(0, viewport.offsetTop));
+      if (top !== lastTop) {
+        lastTop = top;
+        root.style.setProperty("--visual-viewport-top", `${top}px`);
       }
     };
     const syncViewport = () => {
@@ -80,6 +86,7 @@ export function useMobileKeyboard() {
       body.classList.remove("keyboard-is-open");
       root.style.removeProperty("--keyboard-height");
       root.style.removeProperty("--visual-viewport-height");
+      root.style.removeProperty("--visual-viewport-top");
     };
   }, []);
 }

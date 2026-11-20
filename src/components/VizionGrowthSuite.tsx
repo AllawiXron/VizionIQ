@@ -1034,7 +1034,7 @@ export default function VizionGrowthSuite() {
                           <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl">
                             <span className="text-[10px] text-white/70 block">عدد الطلبات اللي تحتاجها حتى تربح (١.٥ مليون)</span>
                             <span className="text-base font-black text-white font-mono">
-                              {ordersToTarget > 0 && ordersToTarget < 10000 ? ordersToTarget : "مهمة صعبة"} طلب
+                              {ordersToTarget > 0 && ordersToTarget < 10000 ? `${ordersToTarget.toLocaleString("en-US")} طلب` : "مهمة صعبة بهالأرقام"}
                             </span>
                           </div>
                         </div>

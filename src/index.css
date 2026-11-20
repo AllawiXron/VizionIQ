@@ -711,6 +711,8 @@ select option {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
+  /* the bar stays thin, but a thumb needs room to grab it */
+  min-height: 36px;
   background: transparent;
   accent-color: #2f6bff;
   cursor: pointer;
@@ -1846,6 +1848,13 @@ body,
 /* a full-screen lesson hides the page under it, so the phone stops drawing what nobody can see */
 html[data-vz-covered="true"] #root {
   visibility: hidden;
+}
+
+/* while typing, the lesson fits the part of the screen the keyboard leaves free */
+body.keyboard-is-open .vz-lesson-player {
+  top: var(--visual-viewport-top, 0px);
+  bottom: auto;
+  height: var(--visual-viewport-height, 100%);
 }
 
 /* lesson pages: blocks that belong to another page of the same screen */

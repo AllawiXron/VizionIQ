@@ -82,17 +82,17 @@ function ReelFeed({ d }: { d: { page: string; feed: string[]; weak: Frame; stron
     setT(0);
     if (!strong) return;
     let v = 0;
-    const start = setTimeout(() => {
-      const id = setInterval(() => {
+    let tick = 0;
+    const start = window.setTimeout(() => {
+      tick = window.setInterval(() => {
         v += 0.1;
         setT(Math.min(4.2, v));
-        if (v >= 4.2) clearInterval(id);
+        if (v >= 4.2) window.clearInterval(tick);
       }, 100);
-      (start as any).id = id;
     }, 1700);
     return () => {
-      clearTimeout(start);
-      if ((start as any).id) clearInterval((start as any).id);
+      window.clearTimeout(start);
+      window.clearInterval(tick);
     };
   }, [strong]);
   return (
