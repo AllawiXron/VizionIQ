@@ -7,6 +7,7 @@ import { lessonMinutes } from "../data/course";
 import { VISUALS } from "./lesson/visuals";
 import { GENERIC } from "./lesson/generic";
 import { EASE_OUT, SPRING_BOUNCY, allowBlur } from "../lib/motion";
+import { clearPages, pageOfNew, planPages, showPage, type PagePlan } from "../lib/fitPages";
 
 const BLUR = allowBlur();
 const soft = (px: number) => (BLUR ? { filter: `blur(${px}px)` } : {});
@@ -91,17 +92,36 @@ function Kicker({ children, tone = "accent" }: { children: React.ReactNode; tone
   return <p className={`text-sm sm:text-base font-black mb-3 flex items-center gap-2 ${cls}`}>{children}</p>;
 }
 
+// long paragraphs break at sentence ends into short ones, so a phone can page through them instead of shrinking them
+function sentenceGroups(text: string, max = 190): string[] {
+  const parts = text.split(/(?<=[.؟!])\s+/);
+  const out: string[] = [];
+  for (const p of parts) {
+    const last = out[out.length - 1];
+    if (last && last.length + p.length + 1 <= max) out[out.length - 1] = `${last} ${p}`;
+    else out.push(p);
+  }
+  return out;
+}
+
 function TextScreen({ texts }: { texts: string[] }) {
   return (
     <div className="space-y-6">
-      {texts.map((t, i) => (
-        <p
-          key={i}
-          className={i === 0 ? "text-[22px] sm:text-[28px] font-bold text-white leading-[1.75]" : "text-[18px] sm:text-[21px] text-white/75 leading-[1.9]"}
-        >
-          <Rich text={t} />
-        </p>
-      ))}
+      {texts.map((t, i) => {
+        const groups = sentenceGroups(t, i === 0 ? 170 : 210);
+        return (
+          <div key={i} className="space-y-3">
+            {groups.map((g, gi) => (
+              <p
+                key={gi}
+                className={i === 0 && gi === 0 ? "text-[22px] sm:text-[28px] font-bold text-white leading-[1.75]" : i === 0 ? "text-[19px] sm:text-[24px] font-bold text-white/90 leading-[1.8]" : "text-[18px] sm:text-[21px] text-white/75 leading-[1.9]"}
+              >
+                <Rich text={g} />
+              </p>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -238,9 +258,13 @@ function ExampleScreen({ block }: { block: Extract<Block, { kind: "example" }> }
       <Kicker>مثال من السوق العراقي</Kicker>
       <div className="glass-elevated rounded-3xl p-6 sm:p-8">
         <h3 className="text-[21px] sm:text-[26px] font-black text-white leading-snug mb-4">{block.title}</h3>
-        <p className="text-[17px] sm:text-[20px] text-white/85 leading-[1.9]">
-          <Rich text={block.text} />
-        </p>
+        <div className="space-y-3">
+          {sentenceGroups(block.text, 220).map((g, i) => (
+            <p key={i} className="text-[17px] sm:text-[20px] text-white/85 leading-[1.9]">
+              <Rich text={g} />
+            </p>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -250,14 +274,21 @@ function NoteScreen({ block }: { block: Extract<Block, { kind: "tip" | "warning"
   const tip = block.kind === "tip";
   const Icon = tip ? Lightbulb : AlertTriangle;
   return (
-    <div className={`rounded-3xl p-6 sm:p-8 border ${tip ? "bg-amber-300/[0.06] border-amber-200/25" : "bg-red-500/[0.07] border-red-400/25"}`}>
-      <span className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 ${tip ? "bg-amber-300/15 text-amber-200" : "bg-red-500/15 text-red-300"}`}>
+    <div className={`rounded-3xl p-5 sm:p-8 border ${tip ? "bg-amber-300/[0.06] border-amber-200/25" : "bg-red-500/[0.07] border-red-400/25"}`}>
+      <span className={`hidden sm:flex w-14 h-14 rounded-2xl items-center justify-center mb-5 ${tip ? "bg-amber-300/15 text-amber-200" : "bg-red-500/15 text-red-300"}`}>
         <Icon className="w-7 h-7" />
       </span>
-      <Kicker tone={tip ? "amber" : "red"}>{tip ? "نصيحة" : "انتبه"}</Kicker>
-      <p className="text-[20px] sm:text-[24px] font-bold text-white leading-[1.75]">
-        <Rich text={block.text} />
-      </p>
+      <Kicker tone={tip ? "amber" : "red"}>
+        <Icon className="w-5 h-5 sm:hidden" />
+        {tip ? "نصيحة" : "انتبه"}
+      </Kicker>
+      <div className="space-y-3">
+        {sentenceGroups(block.text, 200).map((g, i) => (
+          <p key={i} className="text-[20px] sm:text-[24px] font-bold text-white leading-[1.75]">
+            <Rich text={g} />
+          </p>
+        ))}
+      </div>
     </div>
   );
 }
@@ -505,6 +536,13 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   const reduce = useReducedMotion();
   const [more, setMore] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // a screen taller than the stage is shown as pages that each fit, so the phone never scrolls
+  const [page, setPage] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
+  const plan = useRef<PagePlan | null>(null);
+  const pageNow = useRef(0);
+  const lastChunks = useRef<HTMLElement[]>([]);
+  const lastScreen = useRef("");
   const counts = useMemo(() => {
     const c = { checks: 0, visuals: 0, apply: false };
     for (const b of lesson.blocks) {
@@ -568,6 +606,61 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   );
   useEffect(() => () => cancelAnimationFrame(glideRaf.current), []);
 
+  const room = useCallback(() => {
+    const el = scroller.current;
+    const inner = content.current;
+    if (!el || !inner) return 0;
+    const cs = getComputedStyle(inner);
+    return el.clientHeight - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0);
+  }, []);
+
+  const turnTo = useCallback(
+    (p: number, animate: number) => {
+      const cur = current.current;
+      const pl = plan.current;
+      if (!cur || !pl) return;
+      const target = Math.max(0, Math.min(p, pl.pages.length - 1));
+      pageNow.current = target;
+      setPage(target);
+      showPage(cur, pl, target, Math.floor(room() * 0.97));
+      scroller.current?.scrollTo({ top: 0 });
+      if (animate && !reduce) {
+        cur.animate([{ opacity: 0, translate: `${animate > 0 ? -16 : 16}px 0` }, { opacity: 1, translate: "0 0" }], { duration: 280, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+      }
+    },
+    [room, reduce],
+  );
+
+  // mode: "first" for a new screen, "new" after something was revealed, "keep" when the size changed
+  const paginate = useCallback(
+    (mode: "first" | "new" | "keep") => {
+      const cur = current.current;
+      const space = room();
+      if (!cur || !cur.isConnected || space < 160) return;
+      const kind = cur.dataset.screen ?? "";
+      // while a field is being typed in, the keyboard changes the stage: leave the pages alone
+      const typing = document.activeElement;
+      if (typing && cur.contains(typing) && /^(TEXTAREA|INPUT|SELECT)$/.test(typing.tagName)) return;
+      const floor = kind === "check" || kind === "compare" ? 0.72 : 0.86;
+      const pl = planPages(cur, Math.floor(space * 0.97), floor);
+      plan.current = pl;
+      if (!pl) {
+        lastChunks.current = [];
+        pageNow.current = 0;
+        setPageCount(1);
+        setPage(0);
+        return;
+      }
+      let target = pageNow.current;
+      if (mode === "first") target = 0;
+      else if (mode === "new") target = pageOfNew(pl, lastChunks.current) ?? pageNow.current;
+      lastChunks.current = pl.chunks;
+      setPageCount(pl.pages.length);
+      turnTo(target, 0);
+    },
+    [room, turnTo],
+  );
+
   useLayoutEffect(() => {
     followUntil.current = 0;
     lastReadTop.current = null;
@@ -577,6 +670,17 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
     const timers = [60, 450, 1000].map((ms) => window.setTimeout(measure, ms));
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [index, at, measure]);
+
+  useLayoutEffect(() => {
+    const key = `${index}-${safeAt}`;
+    const fresh = key !== lastScreen.current;
+    lastScreen.current = key;
+    if (fresh) {
+      pageNow.current = 0;
+      lastChunks.current = [];
+    }
+    paginate(fresh ? "first" : "new");
+  }, [index, safeAt, shown, choices, answers, paginate]);
 
   useEffect(() => {
     const el = scroller.current;
@@ -589,6 +693,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
     };
     el.addEventListener("scroll", onScroll, { passive: true });
     const ro = new ResizeObserver(() => {
+      paginate("keep");
       const h = inner.offsetHeight;
       const grew = h > lastHeight.current + 8;
       lastHeight.current = h;
@@ -605,7 +710,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       ro.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [measure, glide]);
+  }, [measure, glide, paginate]);
 
   useEffect(() => {
     if (screen.kind === "done") onDone(index);
@@ -662,7 +767,24 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   }, [glide, remaining]);
 
   // the main button never dead-ends: it scrolls while there is more of this screen, otherwise it moves on
+  const forward = useCallback(() => {
+    if (plan.current && pageNow.current < plan.current.pages.length - 1) {
+      turnTo(pageNow.current + 1, 1);
+      return true;
+    }
+    return false;
+  }, [turnTo]);
+
+  const backward = useCallback(() => {
+    if (plan.current && pageNow.current > 0) {
+      turnTo(pageNow.current - 1, -1);
+      return;
+    }
+    back();
+  }, [turnTo, back]);
+
   const primary = useCallback(() => {
+    if (forward()) return;
     const el = scroller.current;
     const left = remaining();
     const canScroll = !!el && el.scrollHeight - el.clientHeight - el.scrollTop > 2;
@@ -676,17 +798,18 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       setMore(false);
       next();
     }
-  }, [remaining, readOn, next]);
+  }, [remaining, readOn, next, forward]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") next();
-      else if (e.key === "ArrowRight") back();
+      if (e.key === "ArrowLeft") {
+        if (!forward()) next();
+      } else if (e.key === "ArrowRight") backward();
       else if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [next, back, close]);
+  }, [next, forward, backward, close]);
 
   const nextLabel =
     screen.kind === "intro" ? "يلا نبدأ"
@@ -696,7 +819,8 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
           : screen.kind === "block" && screen.block.kind === "apply" ? "انحفظ، كمل"
           : shown < revealCount(screen) ? (screen.kind === "block" && screen.block.kind === "visual" ? "كمل" : "الخطوة الجاية")
             : "التالي";
-  const primaryLabel = more ? "انزل لجوه، بعد أكو محتوى" : nextLabel;
+  const morePages = pageCount > 1 && page < pageCount - 1;
+  const primaryLabel = morePages ? "كمل" : more ? "انزل لجوه، بعد أكو محتوى" : nextLabel;
 
   const hasNextLesson = index + 1 < lessons.length;
   const nextLocked = index + 1 >= openLessons;
@@ -749,7 +873,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       >
         <div
           ref={content}
-          className={`relative w-full max-w-2xl mx-auto px-5 py-6 sm:py-12 min-h-full flex flex-col ${centered ? "justify-center" : "justify-start sm:justify-center"}`}
+          className={`relative w-full max-w-2xl mx-auto px-5 py-4 sm:py-12 min-h-full flex flex-col ${centered ? "justify-center" : "justify-start sm:justify-center"}`}
         >
           <AnimatePresence mode="popLayout" initial={false} custom={dir} onExitComplete={measure}>
             <motion.div
@@ -763,14 +887,16 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.18}
               onDragEnd={(_, info) => {
-                if (info.offset.x < -70) next();
-                else if (info.offset.x > 70) back();
+                if (info.offset.x < -70) {
+                  if (!forward()) next();
+                } else if (info.offset.x > 70) backward();
               }}
             >
             <div
               ref={(el) => {
                 if (el) current.current = el;
               }}
+              data-screen={screen.kind === "block" ? (screen.block.kind === "visual" ? `visual:${screen.block.name}` : screen.block.kind) : screen.kind}
             >
             <ScreenGuard onSkip={next}>
               {screen.kind === "intro" && (
@@ -859,7 +985,14 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
 
       {screen.kind !== "done" && (
         <div className="relative z-10 w-full max-w-2xl mx-auto px-5 pb-5 pt-3 safe-area-bottom flex items-center gap-3">
-          <button onClick={back} disabled={at === 0} className="btn btn-glass w-14 h-14 rounded-2xl shrink-0" aria-label="رجوع">
+          {pageCount > 1 && (
+            <span className="absolute -top-2 inset-x-0 flex justify-center gap-1.5 pointer-events-none" aria-hidden="true">
+              {Array.from({ length: pageCount }, (_, i) => (
+                <span key={i} className={`h-1.5 rounded-full transition-[width,background-color] duration-300 ${i === page ? "w-4 bg-white" : "w-1.5 bg-white/25"}`} />
+              ))}
+            </span>
+          )}
+          <button onClick={backward} disabled={at === 0 && page === 0} className="btn btn-glass w-14 h-14 rounded-2xl shrink-0" aria-label="رجوع">
             <ArrowRight className="w-5 h-5" />
           </button>
           <button
@@ -876,7 +1009,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                 className="inline-flex items-center justify-center gap-2"
               >
                 <span>{primaryLabel}</span>
-                {more ? <ArrowDown className="w-5 h-5" /> : <ArrowLeft className="w-5 h-5" />}
+                {more && !morePages ? <ArrowDown className="w-5 h-5" /> : <ArrowLeft className="w-5 h-5" />}
               </motion.span>
             </AnimatePresence>
           </button>

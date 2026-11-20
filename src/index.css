@@ -1824,3 +1824,21 @@ body,
     backdrop-filter: blur(0.5px) saturate(190%) brightness(1.18);
   }
 }
+
+/* section tabs: the resting drop and the pressed lens live on the strip, not inside a tab */
+.vz-segment-drop {
+  inset: 4px auto 4px 0;
+  pointer-events: none;
+}
+.vz-segment-lens {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* lesson pages: blocks that belong to another page of the same screen */
+[data-vz-off] {
+  display: none !important;
+}
