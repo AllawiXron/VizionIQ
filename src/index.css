@@ -933,6 +933,11 @@ input[type="range"]:focus {
     -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     backdrop-filter: blur(16px) saturate(160%) !important;
   }
+  /* the sticky tab strip already sits on a solid strip, so its blur had nothing to show */
+  .vz-tabs-sticky .vz-segmented {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
 
     .vz-atmosphere::after {
     mix-blend-mode: normal;
@@ -1836,6 +1841,11 @@ body,
   bottom: 0;
   border-radius: 999px;
   pointer-events: none;
+}
+
+/* a full-screen lesson hides the page under it, so the phone stops drawing what nobody can see */
+html[data-vz-covered="true"] #root {
+  visibility: hidden;
 }
 
 /* lesson pages: blocks that belong to another page of the same screen */

@@ -47,6 +47,19 @@ const getDefs = (): SVGDefsElement => {
   return defs;
 };
 
+// a lens that slides between tabs of different widths meets the same sizes again and again
+const maps = new Map<string, string>();
+const mapFor = (w: number, h: number, r: number, bezel: number, magnify: number): string => {
+  const key = `${w}x${h}r${r}b${bezel}m${magnify}`;
+  let map = maps.get(key);
+  if (map === undefined) {
+    map = drawMap(w, h, r, bezel, magnify);
+    if (maps.size > 60) maps.delete(maps.keys().next().value as string);
+    maps.set(key, map);
+  }
+  return map;
+};
+
 // red = horizontal pull, green = vertical pull, 128 = none
 const drawMap = (w: number, h: number, r: number, bezel: number, magnify: number): string => {
   const canvas = document.createElement("canvas");
@@ -153,7 +166,7 @@ export function useLiquidGlass<T extends HTMLElement>(ref: RefObject<T | null>, 
       filter.setAttribute("y", "0");
       filter.setAttribute("width", String(w));
       filter.setAttribute("height", String(h));
-      const map = drawMap(w, h, radius, Math.min(bezel, Math.min(w, h) / 2), magnify);
+      const map = mapFor(w, h, radius, Math.min(bezel, Math.min(w, h) / 2), magnify);
       filter.innerHTML = filterMarkup(w, h, map, strength, dispersion);
       const value = `url(#${id}) ${extra}`.trim();
       el.style.setProperty("backdrop-filter", value, "important");

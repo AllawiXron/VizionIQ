@@ -20,6 +20,20 @@ interface SegmentedProps {
 
 const GLIDE = { stiffness: 480, damping: 38, mass: 0.75 };
 
+// a resting lens is invisible but its refraction still runs every frame, so it leaves the page once it has faded out
+export function useLensOn(pressed: boolean): boolean {
+  const [linger, setLinger] = useState(false);
+  useEffect(() => {
+    if (pressed) {
+      setLinger(true);
+      return;
+    }
+    const t = window.setTimeout(() => setLinger(false), 650);
+    return () => window.clearTimeout(t);
+  }, [pressed]);
+  return pressed || linger;
+}
+
 // the current tab is a glass drop; pressing turns it into a lens, and sliding along the strip picks another tab
 export function Segmented({ items, active, onChange, label, tabs = true }: SegmentedProps) {
   const wrap = useRef<HTMLDivElement>(null);
@@ -40,6 +54,7 @@ export function Segmented({ items, active, onChange, label, tabs = true }: Segme
   const lensWidth = useTransform(springW, (w) => w * 1.18);
 
   useLiquidGlass(lensRef, { bezel: 10, strength: 14, magnify: 0.18, dispersion: true, extra: "saturate(190%) brightness(1.16)" });
+  const lensOn = useLensOn(pressed);
 
   const placeOn = (i: number) => {
     const b = btns.current[i];
@@ -179,7 +194,7 @@ export function Segmented({ items, active, onChange, label, tabs = true }: Segme
       <motion.span
         ref={lensRef}
         aria-hidden="true"
-        style={{ left: lensLeft, width: lensWidth }}
+        style={{ left: lensLeft, width: lensWidth, visibility: lensOn ? "visible" : "hidden" }}
         initial={false}
         animate={
           pressed

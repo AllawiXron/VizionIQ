@@ -26,8 +26,8 @@ export function Reveal({ delay = 0, y = 24, scale = 0.97, amount = 0.15, transit
   const blur = allowBlur();
   return (
     <motion.div
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y, scale, filter: blur ? "blur(8px)" : "blur(0px)" }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y, scale, ...(blur ? { filter: "blur(8px)" } : {}) }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, ...(blur ? { filter: "blur(0px)" } : {}) }}
       viewport={{ once: true, amount, margin: "0px 0px -8% 0px" }}
       transition={transition ?? { duration: reduce ? 0.2 : 0.75, delay, ease: EASE_OUT }}
       {...rest}
@@ -144,12 +144,12 @@ export function WordsReveal({ segments, as = "h2", className, trigger = "view", 
   const label = segments.map((seg) => (typeof seg === "string" ? seg : "text" in seg ? seg.text : " ")).join("");
 
   const word = {
-    hidden: reduce ? { opacity: 0 } : { opacity: 0, y: "0.5em", scale: 0.96, filter: blur ? "blur(10px)" : "blur(0px)" },
+    hidden: reduce ? { opacity: 0 } : { opacity: 0, y: "0.5em", scale: 0.96, ...(blur ? { filter: "blur(10px)" } : {}) },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      filter: "blur(0px)",
+      ...(blur ? { filter: "blur(0px)" } : {}),
       transition: { type: "spring", stiffness: 240, damping: 20, mass: 0.9, opacity: { duration: 0.45, ease: EASE_OUT }, filter: { duration: 0.5, ease: EASE_OUT } },
     },
   };

@@ -20,6 +20,7 @@ import { useOriginSheet } from "../lib/origin";
 import { isFreeTrialUser } from "./LockScreen";
 import type { Route } from "../lib/route";
 import { SoundToggleButton } from "./SoundToggleButton";
+import { useLensOn } from "./ui/Segmented";
 
 export interface MobileBottomNavProps {
   activeView: Route["view"];
@@ -132,6 +133,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
   useLiquidGlass(barRef, { bezel: 14, strength: 28, extra: "blur(3.5px) saturate(180%) brightness(1.04)" });
   useLiquidGlass(lensRef, { bezel: 12, strength: 16, magnify: 0.2, dispersion: true, extra: "saturate(190%) brightness(1.16)" });
+  const lensOn = useLensOn(pressed);
 
   const placeOn = (i: number) => {
     const b = itemRefs.current[i];
@@ -395,7 +397,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           <motion.span
             ref={lensRef}
             aria-hidden="true"
-            style={{ left: lensLeft, width: lensWidth }}
+            style={{ left: lensLeft, width: lensWidth, visibility: lensOn ? "visible" : "hidden" }}
             initial={false}
             animate={
               pressed

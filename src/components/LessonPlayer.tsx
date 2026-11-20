@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react";
+import { AnimatePresence, motion, useIsPresent, useReducedMotion, type Variants } from "motion/react";
 import { AlertTriangle, ArrowDown, ArrowLeft, ArrowRight, Check, CheckCircle2, Clock, Lightbulb, Lock, X } from "lucide-react";
 import type { Block, Lesson } from "../data/course";
 import { lessonMinutes } from "../data/course";
@@ -16,23 +16,26 @@ const settle = BLUR ? { transitionEnd: { filter: "none" } } : {};
 
 const SLIDE = { type: "spring", stiffness: 360, damping: 36, mass: 0.85 } as const;
 
+// slides move with one transform string so the browser runs them off the main thread and a busy tap can't freeze them
+const slide = (x: number, s = 1) => `translateX(${x}px) scale(${s})`;
+const lift = (y: number) => `translateY(${y}px)`;
+
 const screenMotion: Variants = {
-  enter: (d: number) => ({ opacity: 0, x: d > 0 ? -32 : 32, scale: 0.985, ...soft(8) }),
+  enter: (d: number) => ({ opacity: 0, transform: slide(d > 0 ? -32 : 32, 0.985), ...soft(8) }),
   center: {
     opacity: 1,
-    x: 0,
-    scale: 1,
+    transform: slide(0),
     ...soft(0),
     ...settle,
-    transition: { x: SLIDE, scale: SLIDE, opacity: { duration: 0.3, ease: EASE_OUT }, filter: { duration: 0.35, ease: EASE_OUT } },
+    transition: { transform: SLIDE, opacity: { duration: 0.3, ease: EASE_OUT }, filter: { duration: 0.35, ease: EASE_OUT } },
   },
-  exit: (d: number) => ({ opacity: 0, x: d > 0 ? 24 : -24, scale: 0.985, ...soft(6), transition: { duration: 0.2, ease: EASE_OUT } }),
+  exit: (d: number) => ({ opacity: 0, transform: slide(d > 0 ? 24 : -24, 0.985), ...soft(6), transition: { duration: 0.2, ease: EASE_OUT } }),
 };
 
 const riseGroup: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.06 } } };
 const rise: Variants = {
-  hidden: { opacity: 0, y: 14, ...soft(6) },
-  show: { opacity: 1, y: 0, ...soft(0), ...settle, transition: { duration: 0.5, ease: EASE_OUT } },
+  hidden: { opacity: 0, transform: lift(14), ...soft(6) },
+  show: { opacity: 1, transform: lift(0), ...soft(0), ...settle, transition: { duration: 0.5, ease: EASE_OUT } },
 };
 
 type Screen =
@@ -148,8 +151,8 @@ function StepsScreen({ block, shown }: { block: Extract<Block, { kind: "steps" }
           return (
             <motion.li
               key={step.title}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, transform: lift(14) }}
+              animate={{ opacity: 1, transform: lift(0) }}
               transition={{ duration: 0.35, ease: EASE_OUT }}
               className={current ? "glass-elevated rounded-3xl p-5 sm:p-6" : "rounded-2xl px-4 py-3 bg-white/[0.03] border border-white/[0.06]"}
             >
@@ -178,8 +181,8 @@ function PointsScreen({ block, shown }: { block: Extract<Block, { kind: "points"
         {block.items.slice(0, shown).map((item, i) => (
           <motion.li
             key={item}
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, transform: slide(-16) }}
+            animate={{ opacity: 1, transform: slide(0) }}
             transition={{ duration: 0.3, ease: EASE_OUT }}
             className="flex items-start gap-4 glass rounded-2xl p-4 sm:p-5"
           >
@@ -728,6 +731,18 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
     };
   }, [onClose]);
 
+  // once the lesson fills the screen, the page under it stops painting; it comes back as soon as the lesson starts to leave
+  const present = useIsPresent();
+  const [covering, setCovering] = useState(false);
+  useLayoutEffect(() => {
+    if (!present || !covering) return;
+    const root = document.documentElement;
+    root.dataset.vzCovered = "true";
+    return () => {
+      delete root.dataset.vzCovered;
+    };
+  }, [present, covering]);
+
   const close = useCallback(() => window.history.back(), []);
 
   const next = useCallback(() => {
@@ -832,16 +847,18 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       role="dialog"
       aria-modal="true"
       aria-label={lesson.title}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.965, y: 18, ...soft(10) }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(18px) scale(0.965)", ...soft(10) }}
       animate={{
         opacity: 1,
-        scale: 1,
-        y: 0,
+        ...(reduce ? {} : { transform: "translateY(0px) scale(1)" }),
         ...soft(0),
         ...settle,
         transition: { type: "spring", stiffness: 300, damping: 32, mass: 0.9, opacity: { duration: 0.28, ease: EASE_OUT }, filter: { duration: 0.35 } },
       }}
-      exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.975, y: 14, ...soft(8), transition: { duration: 0.24, ease: EASE_OUT } }}
+      exit={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(14px) scale(0.975)", ...soft(8), transition: { duration: 0.24, ease: EASE_OUT } }}
+      onAnimationComplete={() => {
+        if (present) setCovering(true);
+      }}
     >
       <div className="vz-atmosphere" aria-hidden="true" />
 
@@ -883,6 +900,12 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
               initial="enter"
               animate="center"
               exit="exit"
+            >
+            <motion.div
+              ref={(el: HTMLDivElement | null) => {
+                if (el) current.current = el;
+              }}
+              data-screen={screen.kind === "block" ? (screen.block.kind === "visual" ? `visual:${screen.block.name}` : screen.block.kind) : screen.kind}
               drag={screen.kind === "done" || (screen.kind === "block" && (screen.block.kind === "visual" || screen.block.kind === "apply")) ? false : "x"}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.18}
@@ -891,12 +914,6 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                   if (!forward()) next();
                 } else if (info.offset.x > 70) backward();
               }}
-            >
-            <div
-              ref={(el) => {
-                if (el) current.current = el;
-              }}
-              data-screen={screen.kind === "block" ? (screen.block.kind === "visual" ? `visual:${screen.block.name}` : screen.block.kind) : screen.kind}
             >
             <ScreenGuard onSkip={next}>
               {screen.kind === "intro" && (
@@ -977,7 +994,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
                 </motion.div>
               )}
             </ScreenGuard>
-            </div>
+            </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -1003,7 +1020,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
               <motion.span
                 key={primaryLabel}
                 initial={{ opacity: 0, y: more ? -14 : 14, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
                 exit={{ opacity: 0, y: more ? 14 : -14, filter: "blur(4px)" }}
                 transition={{ type: "spring", stiffness: 420, damping: 34, opacity: { duration: 0.18 } }}
                 className="inline-flex items-center justify-center gap-2"

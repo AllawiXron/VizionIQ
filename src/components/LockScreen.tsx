@@ -231,8 +231,8 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
   const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy";
   const blur = allowBlur();
   const rise = (delay: number) => ({
-    initial: { opacity: 0, y: 14, filter: blur ? "blur(8px)" : "blur(0px)" },
-    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+    initial: { opacity: 0, y: 14, ...(blur ? { filter: "blur(8px)" } : {}) },
+    animate: { opacity: 1, y: 0, ...(blur ? { filter: "blur(0px)", transitionEnd: { filter: "none" } } : {}) },
     transition: { duration: 0.65, delay, ease: EASE_OUT },
   });
 
