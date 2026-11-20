@@ -1766,3 +1766,61 @@ body,
 [data-motion-pop-id] {
   pointer-events: none;
 }
+
+/* liquid glass: clear material with a bright bending rim (dock, top bar) */
+@layer components {
+  .lg-glass {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.025) 46%, rgba(255, 255, 255, 0.06) 100%),
+      rgba(9, 24, 78, 0.4);
+    box-shadow:
+      inset 0 1px 0.5px rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0.5px rgba(200, 220, 255, 0.14),
+      inset 0 0 16px rgba(150, 188, 255, 0.07),
+      0 1px 1px rgba(1, 6, 24, 0.25),
+      0 14px 34px -12px rgba(1, 6, 24, 0.7);
+    -webkit-backdrop-filter: blur(12px) saturate(180%) brightness(1.04);
+    backdrop-filter: blur(12px) saturate(180%) brightness(1.04);
+  }
+  /* with real refraction the frost drops away, so the tint carries the label contrast */
+  .lg-glass[data-refraction="on"] {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.025) 46%, rgba(255, 255, 255, 0.06) 100%),
+      rgba(9, 24, 78, 0.55);
+  }
+  .lg-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.62) 0%, rgba(210, 226, 255, 0.12) 22%, rgba(180, 205, 255, 0.03) 50%, rgba(210, 226, 255, 0.12) 78%, rgba(255, 255, 255, 0.42) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+
+  /* resting tab: a soft tinted drop under the icon */
+  .lg-pill {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.17) 0%, rgba(255, 255, 255, 0.07) 100%);
+    box-shadow:
+      inset 0 1px 0.5px rgba(255, 255, 255, 0.34),
+      inset 0 -1px 0.5px rgba(255, 255, 255, 0.08),
+      0 4px 12px -6px rgba(1, 6, 24, 0.5);
+  }
+
+  /* pressed tab: a clear lens that rises out of the bar and magnifies what it slides over */
+  .lg-lens {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.07) 100%);
+    box-shadow:
+      inset 0 1.5px 1px rgba(255, 255, 255, 0.6),
+      inset 0 -1.5px 1px rgba(255, 255, 255, 0.28),
+      inset 0 0 0 0.5px rgba(255, 255, 255, 0.4),
+      inset 0 0 14px rgba(255, 255, 255, 0.1),
+      0 10px 24px -8px rgba(1, 6, 24, 0.55);
+    -webkit-backdrop-filter: blur(0.5px) saturate(190%) brightness(1.18);
+    backdrop-filter: blur(0.5px) saturate(190%) brightness(1.18);
+  }
+}

@@ -70,7 +70,7 @@ export default function HomeView({ userCode, onNavigate, onOpenAdvisor, onOpenUp
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-10 sm:space-y-14 text-right">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-20 sm:pt-32 pb-10 space-y-10 sm:space-y-14 text-right">
       <motion.div {...rise(0.05)} className="space-y-2 sm:space-y-3">
         <p className="text-sm sm:text-base font-bold text-vz-accent">{started ? "هلا بيك من جديد" : "أهلا بيك بمنصة فيزيون"}</p>
         <h1 className="text-[1.75rem] sm:text-5xl font-black text-white tracking-tight leading-tight">

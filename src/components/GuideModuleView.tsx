@@ -32,7 +32,7 @@ export default function GuideModuleView({ id, userCode, onNavigate }: GuideModul
   const sections = isTrial ? m.sections.slice(0, 1) : m.sections;
 
   return (
-    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 text-right">
+    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-20 sm:pt-28 pb-10 text-right">
       <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
         <button onClick={() => onNavigate({ view: "guide" })} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}>
           <ArrowRight className="w-4 h-4" />

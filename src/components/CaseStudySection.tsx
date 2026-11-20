@@ -183,7 +183,7 @@ export default function CaseStudySection() {
                         {copiedScript === cs.id ? (
                           <>
                             <Check className="w-3.5 h-3.5" />
-                            <span>تم النسخ</span>
+                            <span>انتسخ</span>
                           </>
                         ) : (
                           <>

@@ -27,7 +27,7 @@ export default function ChaptersIndex({ userCode, onNavigate }: ChaptersIndexPro
   const isTrial = isFreeTrialUser(userCode);
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
+    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-20 sm:pt-32 pb-10 space-y-8 sm:space-y-10">
       <PageHeader
         eyebrow={<><BookOpen className="w-4 h-4" /> فصول الكورس</>}
         title="اقرأها وحدة ورا الثانية"

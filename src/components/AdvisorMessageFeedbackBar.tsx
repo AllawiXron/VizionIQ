@@ -130,7 +130,7 @@ export const AdvisorMessageFeedbackBar: React.FC<AdvisorMessageFeedbackBarProps>
             {isCopied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-vz-accent" />
-                <span className="text-vz-accent font-bold">تم النسخ</span>
+                <span className="text-vz-accent font-bold">انتسخ</span>
               </>
             ) : (
               <>

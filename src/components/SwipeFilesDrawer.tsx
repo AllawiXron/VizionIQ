@@ -141,7 +141,7 @@ export default function SwipeFilesDrawer() {
                     {copiedId === sf.id ? (
                       <>
                         <Check className="w-4 h-4" />
-                        <span>تم النسخ</span>
+                        <span>انتسخ</span>
                       </>
                     ) : (
                       <>

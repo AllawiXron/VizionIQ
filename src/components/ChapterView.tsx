@@ -337,7 +337,6 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   );
   const nextLesson = course.lessons.findIndex((_, i) => i < openLessons && !doneLessons.has(i));
   const [playing, setPlaying] = useState<number | null>(null);
-  const [goalOpen, setGoalOpen] = useState(false);
   const closePlayer = useCallback(() => setPlaying(null), []);
   const markLessonDone = useCallback((i: number) => setLessonDone(userCode, chapter.id, i), [userCode, chapter.id]);
 
@@ -363,6 +362,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
 
   const outcomesBox = (
     <div className="glass rounded-3xl p-5 sm:p-6 space-y-3">
+      <p className="sm:hidden text-[15px] text-white/75 leading-relaxed">{course.goal}</p>
       <p className="text-sm font-black text-white flex items-center gap-2"><Target className="w-4 h-4 text-vz-accent" /> بنهاية هذا الفصل</p>
       <ul className="space-y-2">
         {course.outcomes.map((o) => (
@@ -381,7 +381,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
   };
 
   return (
-    <section id={chapter.id} className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 relative text-right">
+    <section id={chapter.id} className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-20 sm:pt-28 pb-10 relative text-right">
       <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
         <button onClick={() => onNavigate({ view: "chapters" })} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}>
           <ArrowRight className="w-4 h-4" />
@@ -390,7 +390,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
         <span dir="ltr" className="text-xs text-white/50 font-mono">{chapterIndex + 1} / {chaptersList.length}</span>
       </div>
 
-      <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-4 mb-6 sm:mb-8">
+      <motion.header initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE_OUT }} className="space-y-3 sm:space-y-4 mb-5 sm:mb-8">
         <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm font-bold text-white/55">
           <span className="text-vz-accent">{chapter.number}</span>
           {stage && <><span>المرحلة {stage.index + 1}: {stage.stage.label}</span></>}
@@ -409,14 +409,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
           <TopicIcon kind="chapter" id={chapter.id} size="lg" className="mt-0.5" />
           <span>{chapter.title}</span>
         </h1>
-        <div>
-          <p className={`text-[15px] sm:text-lg text-white/65 leading-relaxed ${goalOpen ? "" : "line-clamp-3 sm:line-clamp-none"}`}>{course.goal}</p>
-          {!goalOpen && (
-            <button type="button" onClick={() => setGoalOpen(true)} className={`sm:hidden mt-1 min-h-[36px] text-[14px] font-bold text-vz-accent ${focusRing}`}>
-              اقرا هدف الفصل كامل
-            </button>
-          )}
-        </div>
+        <p className="hidden sm:block text-lg text-white/65 leading-relaxed">{course.goal}</p>
         {!trialLocked && (
           <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
             <button
@@ -458,7 +451,7 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
       ) : (
         <>
           <div ref={tabsTop} aria-hidden="true" />
-          <nav aria-label="أقسام الفصل" className="vz-tabs-sticky sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-6 sm:mb-8">
+          <nav aria-label="أقسام الفصل" className="vz-tabs-sticky sticky top-16 sm:top-[4.9rem] z-20 mb-4 sm:mb-8">
             <Segmented
               items={TABS.map((t) => ({
                 id: t.id,
@@ -478,8 +471,10 @@ export default function ChapterView({ id, userCode, onNavigate }: ChapterViewPro
             <motion.div key={tab} custom={tabDir} variants={panelMotion} initial="enter" animate="center" exit="exit" role="tabpanel" aria-label={TABS[tabIndex].title}>
               {tab === "lessons" && (
                 <section>
-                  <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس تمشي بيه خطوة خطوة: تفهم الفكرة، تشوفها بالرسوم والأرقام، تجربها بنفسك، وبالأخير تطبقها على منتجك.">الدروس</SectionTitle>
-                  <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس اللي كملتها">
+                  <div className="hidden sm:block">
+                    <SectionTitle id="ch-lessons" icon={BookOpen} sub="كل درس تمشي بيه خطوة خطوة: تفهم الفكرة، تشوفها بالرسوم والأرقام، تجربها بنفسك، وبالأخير تطبقها على منتجك.">الدروس</SectionTitle>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/[0.08] overflow-hidden mb-4 sm:mb-5" role="progressbar" aria-valuemin={0} aria-valuemax={course.lessons.length} aria-valuenow={doneLessons.size} aria-label="الدروس اللي كملتها">
                     <div className="h-full rounded-full bg-gradient-to-l from-vz-blue-light to-emerald-400 transition-[width] duration-500" style={{ width: `${Math.round((doneLessons.size / course.lessons.length) * 100)}%` }} />
                   </div>
                   <ol className="relative space-y-3">

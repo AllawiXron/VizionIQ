@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import {
   Home,
   BookOpen,
@@ -13,8 +13,9 @@ import {
   LogOut,
   ChevronLeft
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
-import { EASE_OUT, SPRING, SPRING_SNAPPY, bottomSheetMotion, overlayMotion, sheetMotion } from "../lib/motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
+import { useLiquidGlass } from "../lib/liquidGlass";
+import { EASE_OUT, SPRING, bottomSheetMotion, overlayMotion, sheetMotion } from "../lib/motion";
 import { useOriginSheet } from "../lib/origin";
 import { isFreeTrialUser } from "./LockScreen";
 import type { Route } from "../lib/route";
@@ -66,6 +67,31 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     onNavigate(route);
   };
 
+  // the dock steps aside while reading down a page and comes back on the first scroll up
+  const [tucked, setTucked] = useState(false);
+  useEffect(() => {
+    let last = window.scrollY;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const nearEnd = window.innerHeight + y >= document.documentElement.scrollHeight - 80;
+        if (y < 120 || nearEnd) setTucked(false);
+        else if (y > last + 8) setTucked(true);
+        else if (y < last - 8) setTucked(false);
+        last = y;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [activeView]);
+  useEffect(() => setTucked(false), [activeView]);
+  const hidden = tucked && !isMoreSheetOpen;
+
   const dockItems = [
     { key: "home", label: "الرئيسية", aria: "الرئيسية", icon: Home, active: !isMoreSheetOpen && activeView === "home", onClick: () => go({ view: "home" }) },
     { key: "chapters", label: "الفصول", aria: "فصول الكورس", icon: BookOpen, active: !isMoreSheetOpen && (activeView === "chapters" || activeView === "chapter"), onClick: () => go({ view: "chapters" }) },
@@ -84,6 +110,114 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     { key: "solutions", label: "الحلول", aria: "حلول المشاكل خطوة بخطوة", icon: LifeBuoy, active: !isMoreSheetOpen && (activeView === "solutions" || activeView === "solution"), onClick: () => go({ view: "solutions" }) },
     { key: "more", label: "المزيد", aria: "المزيد", icon: Menu, active: isMoreSheetOpen || activeView === "tools" || activeView === "market" || activeView === "guide" || activeView === "guideModule", expanded: isMoreSheetOpen, onClick: () => setMoreSheetOpen(!isMoreSheetOpen) }
   ];
+
+  // one glass drop marks the current tab; pressing turns it into a lens that follows the finger
+  const barRef = useRef<HTMLDivElement>(null);
+  const lensRef = useRef<HTMLSpanElement>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const reduce = useReducedMotion();
+  const activeIndex = dockItems.findIndex((i) => i.active);
+  const [pressed, setPressed] = useState(false);
+  const press = useRef<{ id: number; startX: number; moved: boolean } | null>(null);
+  const skipClick = useRef(false);
+  const placed = useRef(false);
+  const dropX = useMotionValue(0);
+  const dropW = useMotionValue(0);
+  const glide = { stiffness: 520, damping: 40, mass: 0.7 };
+  const springX = useSpring(dropX, glide);
+  const springW = useSpring(dropW, glide);
+  // the lens is placed with left/width, never a transform: refraction is drawn in the element's own box
+  const lensLeft = useTransform([springX, springW], ([x, w]: number[]) => x - w * 0.09);
+  const lensWidth = useTransform(springW, (w) => w * 1.18);
+
+  useLiquidGlass(barRef, { bezel: 14, strength: 28, extra: "blur(3.5px) saturate(180%) brightness(1.04)" });
+  useLiquidGlass(lensRef, { bezel: 12, strength: 16, magnify: 0.2, dispersion: true, extra: "saturate(190%) brightness(1.16)" });
+
+  const placeOn = (i: number) => {
+    const b = itemRefs.current[i];
+    if (!b) return;
+    dropX.set(b.offsetLeft);
+    dropW.set(b.offsetWidth);
+    if (!placed.current || reduce) {
+      springX.jump(b.offsetLeft);
+      springW.jump(b.offsetWidth);
+      placed.current = true;
+    }
+  };
+
+  useLayoutEffect(() => {
+    if (!pressed && activeIndex >= 0) placeOn(activeIndex);
+  }, [activeIndex, pressed]);
+
+  useEffect(() => {
+    const onResize = () => {
+      if (activeIndex < 0) return;
+      placed.current = false;
+      placeOn(activeIndex);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [activeIndex]);
+
+  const follow = (clientX: number) => {
+    const bar = barRef.current;
+    const first = itemRefs.current[0];
+    if (!bar || !first) return;
+    const box = bar.getBoundingClientRect();
+    const w = first.offsetWidth;
+    dropX.set(Math.max(4, Math.min(box.width - w - 4, clientX - box.left - w / 2)));
+    dropW.set(w);
+  };
+
+  const nearest = (clientX: number) => {
+    const bar = barRef.current;
+    if (!bar) return 0;
+    const x = clientX - bar.getBoundingClientRect().left;
+    let best = 0;
+    let gap = Infinity;
+    itemRefs.current.forEach((b, i) => {
+      if (!b) return;
+      const d = Math.abs(b.offsetLeft + b.offsetWidth / 2 - x);
+      if (d < gap) {
+        gap = d;
+        best = i;
+      }
+    });
+    return best;
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    press.current = { id: e.pointerId, startX: e.clientX, moved: false };
+    setPressed(true);
+    follow(e.clientX);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const p = press.current;
+    if (!p || p.id !== e.pointerId) return;
+    if (!p.moved && Math.abs(e.clientX - p.startX) > 6) {
+      p.moved = true;
+      barRef.current?.setPointerCapture(e.pointerId);
+    }
+    follow(e.clientX);
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    const p = press.current;
+    if (!p || p.id !== e.pointerId) return;
+    press.current = null;
+    if (p.moved) {
+      const i = nearest(e.clientX);
+      placeOn(i);
+      skipClick.current = true;
+      window.setTimeout(() => (skipClick.current = false), 0);
+      dockItems[i]?.onClick();
+    }
+    setPressed(false);
+  };
+  const onPointerCancel = () => {
+    press.current = null;
+    setPressed(false);
+  };
 
   const originSheet = useOriginSheet(isMoreSheetOpen, { width: 480, anchor: "bottom", height: 420 });
   const moreSheetMotion = originSheet === sheetMotion ? bottomSheetMotion : originSheet;
@@ -203,37 +337,51 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         role="navigation"
         aria-label="شريط التنقل السفلي للموبايل"
         initial={{ y: 96, opacity: 0 }}
-        animate={{ y: 0, opacity: 1, transition: { ...SPRING, delay: 0.35 } }}
+        animate={hidden ? { y: 96, opacity: 0, transition: { duration: 0.22, ease: EASE_OUT } } : { y: 0, opacity: 1, transition: { ...SPRING, delay: 0.05 } }}
         exit={{ y: 96, opacity: 0, transition: { duration: 0.25, ease: EASE_OUT } }}
-        className="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-[45] pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] px-3 sm:px-4 pointer-events-none dir-rtl"
+        aria-hidden={hidden || undefined}
+        className={`mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-[45] pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] px-3 sm:px-4 pointer-events-none dir-rtl`}
       >
-        <div className="pointer-events-auto max-w-md mx-auto glass-floating glass-edge rounded-[26px] p-1.5 flex items-center justify-between gap-1">
-          {dockItems.map((item) => {
+        <div
+          ref={barRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerCancel}
+          className={`${hidden ? "pointer-events-none" : "pointer-events-auto"} max-w-md mx-auto lg-glass rounded-[26px] p-1 flex items-center justify-between gap-1 touch-pan-y select-none`}
+        >
+          <motion.span
+            aria-hidden="true"
+            style={{ x: springX, width: springW }}
+            initial={false}
+            animate={{ opacity: activeIndex >= 0 && !pressed ? 1 : 0 }}
+            transition={{ duration: pressed ? 0.12 : 0.3, ease: EASE_OUT, delay: pressed ? 0 : 0.1 }}
+            className="lg-pill absolute left-0 top-1 bottom-1 rounded-[22px] pointer-events-none"
+          />
+          {dockItems.map((item, index) => {
             const Icon = item.icon;
             return (
               <button
                 key={item.key}
-                onClick={item.onClick}
+                ref={(b) => {
+                  itemRefs.current[index] = b;
+                }}
+                onClick={() => {
+                  if (skipClick.current) return;
+                  item.onClick();
+                }}
                 aria-label={item.aria}
                 aria-current={item.active && !item.expanded ? "page" : undefined}
                 aria-expanded={item.expanded}
-                className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-[20px] cursor-pointer min-h-[52px] relative transition-[color,scale] duration-300 active:scale-[0.94] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
-                  item.active ? "text-white" : item.accent ? "text-white/90" : "text-white/50"
+                className={`flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-[22px] cursor-pointer min-h-[50px] relative transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
+                  item.active ? "text-white" : item.accent ? "text-white/90" : "text-white/55"
                 }`}
               >
-                {item.active && (
-                  <motion.span
-                    layoutId="dock-active"
-                    transition={SPRING_SNAPPY}
-                    className="absolute inset-0 rounded-[20px] bg-gradient-to-b from-white/[0.14] to-white/[0.05] border border-white/[0.1] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]"
-                  />
-                )}
                 <motion.span
                   className="relative flex"
                   initial={false}
                   animate={item.active ? { scale: [1, 1.14, 0.97, 1], y: [0, -2, 0, 0] } : { scale: 1, y: 0 }}
                   transition={{ duration: 0.55, times: [0, 0.35, 0.7, 1], ease: EASE_OUT }}
-                  whileTap={{ scale: 0.82 }}
                 >
                   <Icon className="w-5 h-5" strokeWidth={item.active ? 2.4 : 2} />
                   {item.accent && <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#0c1a4a]" />}
@@ -244,6 +392,23 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               </button>
             );
           })}
+          <motion.span
+            ref={lensRef}
+            aria-hidden="true"
+            style={{ left: lensLeft, width: lensWidth }}
+            initial={false}
+            animate={
+              pressed
+                ? { opacity: 1, clipPath: reduce ? "inset(8px 8% 8px 8% round 22px)" : "inset(0px 0% 0px 0% round 28px)" }
+                : { opacity: 0, clipPath: "inset(8px 8% 8px 8% round 22px)" }
+            }
+            transition={
+              pressed
+                ? { type: "spring", stiffness: 520, damping: 26, mass: 0.6, opacity: { duration: 0.1 } }
+                : { type: "spring", stiffness: 420, damping: 30, mass: 0.7, opacity: { duration: 0.26, delay: 0.12, ease: EASE_OUT } }
+            }
+            className="lg-lens absolute -top-1 -bottom-1 rounded-[28px] pointer-events-none"
+          />
         </div>
       </motion.nav>
     </>

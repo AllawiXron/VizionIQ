@@ -104,7 +104,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
   };
 
   return (
-    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 text-right">
+    <article className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-20 sm:pt-28 pb-10 text-right">
       <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
         <button onClick={() => onNavigate({ view: "solutions" })} className={`btn btn-ghost px-3 -mr-3 rounded-full text-xs sm:text-sm gap-1.5 ${focusRing}`}>
           <ArrowRight className="w-4 h-4" />
@@ -126,7 +126,7 @@ export default function PlaybookView({ id, userCode, onNavigate, onOpenAdvisor, 
         )}
       </motion.header>
 
-      <nav aria-label="أقسام الحل" className="vz-tabs-sticky sticky top-[4.75rem] sm:top-[4.9rem] z-20 mb-8 sm:mb-10">
+      <nav aria-label="أقسام الحل" className="vz-tabs-sticky sticky top-16 sm:top-[4.9rem] z-20 mb-8 sm:mb-10">
         <Segmented
           items={sections.map((x) => ({ id: x.id, label: x.label, done: x.id === "pb-plan" && ticked.size === pb.plan.length }))}
           active={current}

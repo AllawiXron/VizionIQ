@@ -209,7 +209,7 @@ export default function App() {
         break;
       case "market":
         screen = (
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-10">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-32 pb-10">
             <React.Suspense fallback={sectionFallback("جاري التحميل...")}><IraqiInsights /></React.Suspense>
           </div>
         );

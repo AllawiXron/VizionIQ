@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { useLiquidGlass } from "../lib/liquidGlass";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { LogOut, Bot, Sparkles, Crown } from "lucide-react";
 import { isFreeTrialUser } from "./LockScreen";
@@ -45,6 +46,8 @@ export default function Navbar({
   const capsuleScale = useTransform(progress, [0, 1], [1.045, 1]);
   const capsuleY = useTransform(progress, [0, 1], [-6, 0]);
   const contentY = useTransform(progress, [0, 1], [0, 4]);
+  const capsuleRef = useRef<HTMLDivElement>(null);
+  useLiquidGlass(capsuleRef, { bezel: 14, strength: 28, enabled: gpuMorph, extra: "blur(3.5px) saturate(180%) brightness(1.04)" });
 
   const desktopLinks: { route: Route; label: string; active: boolean }[] = [
     { route: { view: "home" }, label: "الرئيسية", active: activeView === "home" },
@@ -67,16 +70,17 @@ export default function Navbar({
       >
         <motion.div
           style={gpuMorph ? undefined : { maxWidth: barMaxWidth, marginTop: barOffset, height: barHeight, borderRadius: barRadius }}
-          className={`pointer-events-auto relative mx-auto ${gpuMorph ? "h-16" : ""}`}
+          className={`pointer-events-auto relative mx-auto ${gpuMorph ? "h-14" : ""}`}
         >
           {gpuMorph ? (
             <motion.div
+              ref={capsuleRef}
               aria-hidden="true"
               style={{ opacity: glassOpacity, scale: capsuleScale, y: capsuleY }}
-              className="absolute top-2 bottom-0 inset-x-2.5 rounded-[22px] glass-floating glass-edge"
+              className="absolute top-2 bottom-0 inset-x-2.5 rounded-[22px] lg-glass"
             />
           ) : (
-            <motion.div aria-hidden="true" style={{ opacity: glassOpacity }} className="absolute inset-0 rounded-[inherit] glass-floating glass-edge" />
+            <motion.div aria-hidden="true" style={{ opacity: glassOpacity }} className="absolute inset-0 rounded-[inherit] lg-glass" />
           )}
           <motion.div aria-hidden="true" style={{ opacity: hairlineOpacity }} className="absolute inset-x-0 bottom-0 vz-hairline" />
 

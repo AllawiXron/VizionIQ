@@ -1,4 +1,5 @@
 import { NumberField } from "./ui/NumberField";
+import { CopyButton } from "./ui/CopyButton";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SPRING_SNAPPY, collapseMotion, viewSwapMotion } from "../lib/motion";
@@ -363,7 +364,7 @@ export default function VizionGrowthSuite() {
         )}
       </div>
 
-      <div className="vizion-tool-categories flex flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
+      <div className="vizion-tool-categories hidden lg:flex flex-wrap items-center justify-start gap-2 pb-2 relative z-10 px-1">
         {toolCategories.map((cat) => {
           const isActive = selectedCategory === cat.id;
           const count = cat.id === "all" ? toolTabs.length : toolTabs.filter(t => t.category === cat.id).length;
@@ -402,7 +403,7 @@ export default function VizionGrowthSuite() {
               className="w-full flex items-center justify-between p-5 hover:bg-white/[0.04] transition-colors duration-300 cursor-pointer min-h-[44px] active:bg-white/[0.06] motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy"
             >
               <div className="text-right">
-                <span className="text-[11px] text-white/50 block font-bold mb-1.5">اختار أداة من القائمة ({filteredToolTabs.length})</span>
+                <span className="text-[11px] text-white/50 block font-bold mb-1.5">اختار أداة من القائمة ({toolTabs.length})</span>
                 <span className="text-base font-black text-white flex items-center gap-2 drop-shadow-md">
                   {toolTabs.find(t => t.id === activeTab)?.label}
                 </span>
@@ -423,7 +424,7 @@ export default function VizionGrowthSuite() {
                   className="border-t border-white/[0.07] max-h-[60vh] overflow-y-auto no-scrollbar"
                 >
                   <div className="p-4 space-y-2.5">
-                    {filteredToolTabs.map((tab) => {
+                    {toolTabs.map((tab) => {
                       const isActive = tab.id === activeTab;
                       return (
                         <button                           key={tab.id}
@@ -659,12 +660,9 @@ export default function VizionGrowthSuite() {
                 {t1ShowReport && (
                   <div id="t1-report" className="scroll-mt-24 p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
       <div className="flex justify-end">
-        <button onClick={() => {
-          navigator.clipboard.writeText(`تقرير التشخيص:
+        <CopyButton text={`تقرير التشخيص:
 الإيرادات: ${diagResult.totalRevenue.toLocaleString()} د.ع
-الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`);
-          alert('انتسخ');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">انسخ النتيجة</button>
+الصافي: ${diagResult.netProfit.toLocaleString()} د.ع`} label="انسخ النتيجة" />
       </div>
                     <h4 className="text-sm font-black text-vz-accent flex items-center gap-2 border-b border-white/5 pb-2">
                       <span>تقرير فحص الأداء والأرباح:</span>
@@ -915,12 +913,9 @@ export default function VizionGrowthSuite() {
                 {t4ShowReport && (
                   <div id="t4-report" className="scroll-mt-24 p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4 animate-fade-in-down">
       <div className="flex justify-end">
-        <button onClick={() => {
-          navigator.clipboard.writeText(`تقرير المحادثات:
+        <CopyButton text={`تقرير المحادثات:
 معدل الإغلاق: ${((t4Orders / t4Messages) * 100).toFixed(1)}%
-`);
-          alert('انتسخ');
-        }} className="text-xs text-vz-accent hover:text-white border border-white/14 px-3 py-1 rounded-lg min-h-[44px] active:scale-[0.97] transition-all motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-vz-navy">انسخ النتيجة</button>
+`} label="انسخ النتيجة" />
       </div>
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <h4 className="text-sm font-black text-vz-accent">نتيجة إتمام البيعات:</h4>

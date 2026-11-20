@@ -209,13 +209,13 @@ export default function LockScreen({ onSuccess }: LockScreenProps) {
         setIsSuccess(true);
         setTimeout(() => {
           onSuccess(password.trim());
-        }, 800);
+        }, 260);
       } else {
         setIsLoading(false);
         setError("الرمز غلط أو مو مفعل. تأكد منه وجرب مرة ثانية.");
         triggerShake();
       }
-    }, 1200);
+    }, 120);
   };
 
   const triggerShake = () => {

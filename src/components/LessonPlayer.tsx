@@ -408,7 +408,7 @@ function ApplyScreen({ block, storageKey }: { block: Extract<Block, { kind: "app
         <p className="text-[18px] sm:text-[21px] font-bold text-white leading-[1.8]">{sentence}</p>
         {filled && (
           <button type="button" onClick={copy} className="mt-3 btn btn-glass min-h-[44px] px-4 rounded-xl text-[15px]">
-            {copied ? "تم النسخ" : "انسخ الجملة"}
+            {copied ? "انتسخ" : "انسخ الجملة"}
           </button>
         )}
       </div>
@@ -658,7 +658,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   const readOn = useCallback(() => {
     const el = scroller.current;
     if (!el) return;
-    glide(el.scrollTop + Math.round(Math.min(remaining(), el.clientHeight * 0.72)));
+    glide(el.scrollTop + Math.round(Math.min(remaining(), el.clientHeight * 0.85)));
   }, [glide, remaining]);
 
   // the main button never dead-ends: it scrolls while there is more of this screen, otherwise it moves on
@@ -749,7 +749,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       >
         <div
           ref={content}
-          className={`relative w-full max-w-2xl mx-auto px-5 py-8 sm:py-12 min-h-full flex flex-col ${centered ? "justify-center" : "justify-start sm:justify-center"}`}
+          className={`relative w-full max-w-2xl mx-auto px-5 py-6 sm:py-12 min-h-full flex flex-col ${centered ? "justify-center" : "justify-start sm:justify-center"}`}
         >
           <AnimatePresence mode="popLayout" initial={false} custom={dir} onExitComplete={measure}>
             <motion.div
