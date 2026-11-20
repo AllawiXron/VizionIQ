@@ -7,7 +7,7 @@ import { lessonMinutes } from "../data/course";
 import { VISUALS } from "./lesson/visuals";
 import { GENERIC } from "./lesson/generic";
 import { EASE_OUT, SPRING_BOUNCY, allowBlur } from "../lib/motion";
-import { clearPages, pageOfNew, planPages, showPage, type PagePlan } from "../lib/fitPages";
+import { clearPages, fitWhole, pageOfNew, planPages, showPage, type PagePlan } from "../lib/fitPages";
 
 const BLUR = allowBlur();
 const soft = (px: number) => (BLUR ? { filter: `blur(${px}px)` } : {});
@@ -551,6 +551,7 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
   const pageNow = useRef(0);
   const lastChunks = useRef<HTMLElement[]>([]);
   const lastScreen = useRef("");
+  const wholeScreens = useRef(new Set<string>());
   const counts = useMemo(() => {
     const c = { checks: 0, visuals: 0, apply: false };
     for (const b of lesson.blocks) {
@@ -650,8 +651,13 @@ export default function LessonPlayer({ chapterId = "course", chapterLabel, lesso
       const typing = document.activeElement;
       if (typing && cur.contains(typing) && /^(TEXTAREA|INPUT|SELECT)$/.test(typing.tagName)) return;
       // a write-your-own form stays in one piece: every box and the sentence it builds can be reached by scrolling
-      if (kind === "apply") {
-        clearPages(cur);
+      // anything you tap or type into stays on one page with what it changes: shrink a little, then scroll
+      // and stays that way after its last button is used, so a finished exercise isn't cut in two
+      if (cur.querySelector("button, input, select, textarea")) wholeScreens.current.add(lastScreen.current);
+      const interactive = kind !== "apply" && wholeScreens.current.has(lastScreen.current);
+      if (kind === "apply" || interactive) {
+        if (interactive) fitWhole(cur, Math.floor(space * 0.97), 0.69);
+        else clearPages(cur);
         plan.current = null;
         lastChunks.current = [];
         pageNow.current = 0;

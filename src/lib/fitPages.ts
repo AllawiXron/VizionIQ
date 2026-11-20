@@ -75,6 +75,13 @@ export const clearPages = (screen: HTMLElement) => {
   unshrink(screen);
 };
 
+/** keep a screen in one piece: shrink it towards the stage, never below the floor; whatever is left scrolls */
+export function fitWhole(screen: HTMLElement, room: number, floor: number) {
+  clearPages(screen);
+  const full = screen.offsetHeight;
+  if (full > room) shrink(screen, Math.max(floor, room / full));
+}
+
 /** plan pages for a screen measured with everything visible; returns null when it already fits */
 export function planPages(screen: HTMLElement, room: number, shrinkFloor: number): PagePlan | null {
   clearPages(screen);
