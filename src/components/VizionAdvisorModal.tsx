@@ -16,18 +16,15 @@ import {
   Zap,
   Lock,
   Crown,
-  ShieldAlert,
   KeyRound,
   HelpCircle,
   Sliders,
   FileText,
   Compass,
   ChevronRight,
-  TrendingDown,
   Package,
   DollarSign,
   PhoneCall,
-  Flame,
   CheckCircle2,
   ArrowRight,
   Bookmark,
@@ -47,7 +44,8 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import { EASE_OUT, SPRING_SNAPPY, overlayMotion } from "../lib/motion";
 import { useOriginSheet } from "../lib/origin";
-import { getAllValidCodes, normalizeCode, isFreeTrialUser } from "./LockScreen";
+import { normalizeCode } from "./LockScreen";
+import { readLessonNotes } from "../lib/lessonNotes";
 import { OfferPrice, SubscribeButton } from "./OfferPrice";
 import { BusinessDiagnosticStepper } from "./BusinessDiagnosticStepper";
 import { AdvisorActionCard } from "./AdvisorActionCard";
@@ -1033,9 +1031,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     showToast("success", "رجعنا التقييم، تكدر تقيم من جديد");
   };
 
-  const [vipUpgradeInput, setVipUpgradeInput] = useState("");
-  const [upgradeError, setUpgradeError] = useState<string | null>(null);
-  const [upgradeSuccessMsg, setUpgradeSuccessMsg] = useState<string | null>(null);
   const [lastFailedPrompt, setLastFailedPrompt] = useState<{ text: string; presetSuggestions?: string[]; errorText?: string } | null>(null);
   const [restoredText, setRestoredText] = useState<string>("");
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
@@ -1163,7 +1158,11 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     const responseFinished = prevIsLoadingRef.current && !isLoading;
     const isInitial = isInitialOpenRef.current;
 
-    if (isInitial || messagesCountChanged || responseFinished) {
+    if (isInitial && !messages.some((m) => m.role === "user")) {
+      // a fresh chat opens on its greeting and starter questions, not halfway down them
+      chatScrollRef.current?.scrollTo({ top: 0 });
+      isInitialOpenRef.current = false;
+    } else if (isInitial || messagesCountChanged || responseFinished) {
       scrollToBottom(isInitial ? "auto" : "smooth");
       isInitialOpenRef.current = false;
     }
@@ -1201,38 +1200,6 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
     };
   };
 
-  const handleVipUpgrade = (e: React.FormEvent) => {
-    e.preventDefault();
-    setUpgradeError(null);
-    setUpgradeSuccessMsg(null);
-
-    const trimmed = vipUpgradeInput.trim();
-    if (!trimmed) {
-      setUpgradeError("الرجاء إدخال رمز التفعيل للمتابعة.");
-      return;
-    }
-
-    const normalizedInput = normalizeCode(trimmed);
-    if (!normalizedInput.includes("#ai")) {
-      setUpgradeError("هذا الرمز ما يتضمن صلاحية المستشار الذكي (لازم يحتوي على #ai).");
-      return;
-    }
-
-    const validCodes = getAllValidCodes();
-    const isValid = validCodes.includes(normalizedInput);
-
-    if (isValid) {
-      setUpgradeSuccessMsg("تم تفعيل اشتراك المستشار الذكي. نفتح المستشار");
-      localStorage.setItem("sales_guide_user_code", trimmed);
-      setTimeout(() => {
-        if (onUpgradeSuccess) {
-          onUpgradeSuccess(trimmed);
-        }
-      }, 1000);
-    } else {
-      setUpgradeError("الرمز اللي دخلته غير صحيح أو مو مفعل.");
-    }
-  };
 
   const handleStartNewTopic = () => {
     const hasUserMessages = messages.some((m) => m.role === "user");
@@ -1414,6 +1381,8 @@ export const VizionAdvisorModal: React.FC<VizionAdvisorModalProps> = ({
         diagnosticProfile: options.diagnosticProfile,
         profile: businessProfile,
         userContext: { isVip, platform: "Vizion Iraq E-Commerce Suite" },
+        code: userCode,
+        lessonNotes: readLessonNotes(),
       };
       let outcome: StreamOutcome;
       try {
@@ -1685,7 +1654,7 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
               </div>
             </div>
 
-            {!isVip && isFreeTrialUser(userCode) ? (
+            {!isVip ? (
               <div role="region" aria-label="المستشار متوفر ويا الاشتراك الكامل" className="flex-1 overflow-y-auto p-4 sm:p-8 text-right">
                 <div className="max-w-xl mx-auto space-y-5">
                   <div className="text-center space-y-3">
@@ -1721,146 +1690,6 @@ ${customProductNote.trim() ? `ملاحظات إضافية عن المنتج: ${c
                       مشترك وعندك الرمز؟ افتح حسابك
                     </button>
                   </div>
-                </div>
-              </div>
-            ) : !isVip ? (
-              <div 
-                role="region"
-                aria-label="اشتراك المستشار الذكي"
-                className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-6 text-right"
-              >
-                <div className="max-w-xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-white/10 via-white/10 to-white/10 border border-white/22 text-xs sm:text-sm font-black text-vz-accent shadow-md">
-                    <Sparkles className="w-4 h-4 text-vz-accent animate-pulse" />
-                    <span>مستشارك الشخصي بالتجارة الإلكترونية بالسوق العراقي</span>
-                  </div>
-
-                  <h3 className="text-xl sm:text-3xl font-black text-white leading-tight">
-                    اشترك بـ<span className="text-transparent bg-clip-text bg-gradient-to-r from-vz-blue-light via-white to-vz-blue">المستشار الذكي</span> بـ 14,000 دينار بس
-                  </h3>
-                  
-                  <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
-                    خبير بالإعلانات والمبيعات بموبايلك على مدار 24 ساعة، يحلل حملاتك ويكتبلك سكريبتات تساعدك تكمل البيعة بالواتساب.
-                  </p>
-                </div>
-
-                <div className="max-w-xl mx-auto glass border-2 rounded-3xl p-5 sm:p-7 space-y-5 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 bg-gradient-to-r from-vz-blue-light to-vz-blue text-white font-black text-[11px] sm:text-xs px-4 py-1.5 rounded-br-2xl shadow-md flex items-center gap-1.5">
-                    <Flame className="w-3.5 h-3.5 fill-white" />
-                    <span>اشترك هسه وفعل اشتراكك الشهري</span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-white/14 pb-4 pt-6 sm:pt-3">
-                    <div>
-                      <span className="text-xs font-bold text-vz-accent block mb-1">الاشتراك الشهري المباشر</span>
-                      <h4 className="text-lg sm:text-2xl font-black text-white">المستشار الذكي <span dir="ltr" className="inline-block whitespace-nowrap">(Vizion AI)</span></h4>
-                      <span className="text-[11px] text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full inline-block mt-1">
-                        بس 466 دينار باليوم (أقل من سعر استكان شاي)
-                      </span>
-                    </div>
-
-                    <div className="text-right sm:text-left shrink-0 flex sm:block items-baseline gap-2">
-                      <div className="text-2xl sm:text-4xl font-black text-vz-accent font-mono tracking-tight">14,000</div>
-                      <div className="text-xs font-bold text-vz-accent">دينار عراقي / شهريا</div>
-                    </div>
-                  </div>
-
-                  <div className="bg-black/30 border border-white/14 rounded-2xl p-3.5 text-xs text-white/90 space-y-2">
-                    <div className="flex items-center gap-2 text-vz-accent font-bold text-xs sm:text-sm">
-                      <TrendingDown className="w-4 h-4 text-emerald-400" />
-                      <span>حسبة بسيطة: شلون هالاشتراك يوفر عليك هواية فلوس؟</span>
-                    </div>
-                    <p className="text-[11px] sm:text-xs text-white/75 leading-relaxed">
-                      حملة إعلانية وحدة فاشلة بالفيسبوك ممكن تخسرك <strong className="text-rose-400">من 50,000 إلى 100,000 دينار</strong>. المستشار الذكي يساعدك تتجنب هالخسارة من خلال حسبة تسعير وحدة أو سكريبت رد واحد بالواتساب، وممكن يوفرلك أضعاف قيمة الاشتراك من أول يوم
-                    </p>
-                  </div>
-
-                  <div className="space-y-2.5">
-                    <span className="text-xs font-black text-white/90 block border-b border-white/10 pb-1.5">
-                      شنو راح تحصل عليه مباشرة بعد الاشتراك؟
-                    </span>
-                    <ul className="space-y-2 text-xs sm:text-sm text-white/90">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تشخيص <strong className="text-rose-400">المشكلة الحقيقية</strong> (السعر، المنتج، الاستهداف، لو المحادثة) قبل لا تغير إعلانك للمرة العاشرة.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>تحليل <strong className="text-white">محادثات ما كملت بيها البيعة</strong>، دخل المحادثة للمستشار وراح يحددلك أخطاءك ويكتبلك الرد المناسب.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>حل مشكلة <strong className="text-white">الزبون اللي يستفسر ويختفي</strong>، وسكريبتات تساعدك تحول الزبون المتردد إلى مشتري.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>اكتشف <strong className="text-vz-accent">وين تضيع ميزانيتك</strong>، وافهم شلون الإعلان والمنتج والزبون يأثرون على بعض.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span><strong className="text-white">خبير وياك 24 ساعة</strong>، مو بس تتعلم التسويق، تتعلم شلون تفهم مشروعك وتتعامل ويا مشاكله.</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="pt-2 space-y-3">
-                    <a 
-                      href="https://wa.me/9647757851379?text=هلا،%20أريد%20أشترك%20بالمستشار%20الذكي%20بـ%2014,000%20دينار%20عراقي%20شهريا"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl hover:scale-[1.01] active:scale-[0.97] transition cursor-pointer min-h-[50px]"
-                    >
-                      <Sparkles className="w-5 h-5 text-vz-accent animate-pulse" />
-                      <span>اشترك عن طريق الواتساب (14,000 دينار بالشهر)</span>
-                    </a>
-                    <p className="text-[11px] text-center text-white/60">
-                      راسل فريق الدعم مباشرة بالواتساب: <strong className="text-emerald-400 font-mono">07757851379</strong>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="max-w-xl mx-auto glass-subtle p-4 sm:p-5 rounded-2xl border space-y-3 text-right">
-                  <div className="space-y-1">
-                    <label htmlFor="vip-code-input" className="text-xs font-bold text-vz-accent flex items-center gap-1.5">
-                      <KeyRound className="w-4 h-4 text-vz-accent" />
-                      <span>عندك رمز تفعيل الاشتراك؟ دخله هنا:</span>
-                    </label>
-                    <p className="text-[11px] text-white/60">اكتب الرمز اللي وصلك بالواتساب حتى يتفعل اشتراكك مباشرة.</p>
-                  </div>
-
-                  <form onSubmit={handleVipUpgrade} className="flex flex-col sm:flex-row gap-2">
-                    <input 
-                      id="vip-code-input"
-                      type="text"
-                      value={vipUpgradeInput}
-                      onChange={(e) => setVipUpgradeInput(e.target.value)}
-                      placeholder="VIZION-VIP-XXXX#vip"
-                      className="flex-1 px-3.5 py-2.5 bg-black/35 border border-white/15 rounded-xl text-white text-sm placeholder-white/30 font-mono focus:border-white/35 outline-none text-center sm:text-right min-h-[44px]"
-                      aria-label="رمز تفعيل VIP"
-                    />
-
-                    <button 
-                      type="submit"
-                      className="btn btn-primary px-5 py-2.5 rounded-xl text-white font-black text-xs sm:text-sm whitespace-nowrap min-h-[44px] flex items-center justify-center gap-1.5"
-                    >
-                      <span>تفعيل الرمز</span>
-                      <ArrowLeft className="w-4 h-4" />
-                    </button>
-                  </form>
-
-                  {upgradeError && (
-                    <div role="alert" className="p-2.5 bg-rose-950/70 border border-rose-500/40 rounded-xl text-xs text-rose-200 flex items-center gap-2">
-                      <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0" />
-                      <span>{upgradeError}</span>
-                    </div>
-                  )}
-
-                  {upgradeSuccessMsg && (
-                    <div role="status" className="p-2.5 bg-emerald-950/70 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span>{upgradeSuccessMsg}</span>
-                    </div>
-                  )}
                 </div>
               </div>
             ) : (

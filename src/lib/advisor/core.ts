@@ -3,6 +3,7 @@ import { generateIraqiAdvisorFallback } from "../iraqiAdvisorFallback.js";
 import { buildSystemInstruction } from "./prompt.js";
 import { retrieveKnowledge } from "./knowledge.js";
 import { formatProfileForPrompt, sanitizeProfile } from "./profile.js";
+import { isPaidCode } from "../codes.js";
 
 export const ADVISOR_MODELS = ["gemini-3.8-flash", "gemini-3.1-flash-lite", "gemini-flash-latest"];
 
@@ -32,6 +33,7 @@ export interface ChatOptions {
   diagnosticProfile?: unknown;
   profile?: unknown;
   continueFrom?: string;
+  lessonNotes?: string;
 }
 
 type Part = { text: string } | { inlineData: { mimeType: string; data: string } };
@@ -92,7 +94,13 @@ export function buildRequestInstruction(messages: ChatMessagePayload[], options:
   if (options.diagnosticProfile) extra += `نتائج فحص المشروع: ${JSON.stringify(options.diagnosticProfile).slice(0, 2000)}\n`;
   if (options.userContext) extra += `سياق المستخدم: ${JSON.stringify(options.userContext).slice(0, 500)}`;
   return {
-    instruction: buildSystemInstruction({ profile: formatProfileForPrompt(profile), knowledge, topic: options.topicContext, extra: extra.trim() }),
+    instruction: buildSystemInstruction({
+      profile: formatProfileForPrompt(profile),
+      notes: options.lessonNotes ? options.lessonNotes.slice(0, 3000) : undefined,
+      knowledge,
+      topic: options.topicContext,
+      extra: extra.trim(),
+    }),
     sources: chunks.map((c) => ({ id: c.id, source: c.source, chapterId: c.chapterId })),
   };
 }
@@ -340,6 +348,10 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
   const fwd = req.headers["x-forwarded-for"];
   const ip = (Array.isArray(fwd) ? fwd[0] : fwd)?.split(",")[0]?.trim() || req.socket?.remoteAddress || "unknown";
   if (rateLimited(ip)) return sendJson(res, 429, { error: "أسئلة هواية بوقت قصير. استراحة دقايق وارجع.", requestId });
+  // the page hides the advisor from free visitors; the server refuses them too
+  if (!isPaidCode(typeof b.code === "string" ? b.code : "")) {
+    return sendJson(res, 403, { error: "المستشار للمشتركين بالكورس الكامل. اشترك حتى ينفتحلك.", requestId });
+  }
 
   const messages = b.messages as ChatMessagePayload[] | undefined;
   if (!Array.isArray(messages) || messages.length === 0) return sendJson(res, 400, { error: "مصفوفة الرسائل مطلوبة.", requestId });
@@ -351,6 +363,7 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
     diagnosticProfile: b.diagnosticProfile,
     profile: b.profile,
     continueFrom: typeof b.continueFrom === "string" ? b.continueFrom : undefined,
+    lessonNotes: typeof b.lessonNotes === "string" ? b.lessonNotes : undefined,
     requestId,
   };
 

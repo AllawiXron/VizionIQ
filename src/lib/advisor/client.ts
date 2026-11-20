@@ -14,6 +14,10 @@ export interface AdvisorRequest {
   userContext?: unknown;
   profile?: BusinessProfile;
   continueFrom?: string;
+  /** the student's access code: the server answers paid codes only */
+  code?: string;
+  /** what the student wrote in the course's write-your-own steps */
+  lessonNotes?: string;
 }
 
 export interface StreamHandlers {

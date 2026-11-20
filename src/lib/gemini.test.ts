@@ -119,7 +119,7 @@ describe("Advisor streaming", () => {
       {
         method: "POST",
         headers: { "x-forwarded-for": "10.0.0.1" },
-        body: { stream: true, messages: [{ role: "user", text: "مرحبا" }] },
+        body: { stream: true, code: "ali4#vip", messages: [{ role: "user", text: "مرحبا" }] },
         on: (_event: string, cb: () => void) => cb(),
       },
       res,
@@ -135,9 +135,27 @@ describe("Advisor streaming", () => {
   it("keeps the old JSON response when stream is not requested", async () => {
     let body = "";
     const res = { statusCode: 0, setHeader: () => {}, write: () => true, end: (c?: string) => (body = c || "") };
-    await handleAdvisorRequest({ method: "POST", headers: {}, body: { messages: [{ role: "user", text: "مرحبا" }] } }, res, fakeClient([["جواب"]]));
+    await handleAdvisorRequest({ method: "POST", headers: {}, body: { code: "ali4#vip", messages: [{ role: "user", text: "مرحبا" }] } }, res, fakeClient([["جواب"]]));
     expect(res.statusCode).toBe(200);
     expect(JSON.parse(body).reply).toBe("جواب");
+  });
+
+  it("refuses the free trial, unknown codes and requests without a code", async () => {
+    for (const code of ["free#1", "made-up#vip", undefined]) {
+      let body = "";
+      const res = { statusCode: 0, setHeader: () => {}, write: () => true, end: (c?: string) => (body = c || "") };
+      await handleAdvisorRequest({ method: "POST", headers: {}, body: { code, messages: [{ role: "user", text: "مرحبا" }] } }, res, fakeClient([["جواب"]]));
+      expect(res.statusCode).toBe(403);
+      expect(JSON.parse(body).reply).toBeUndefined();
+    }
+  });
+
+  it("puts the student's own lesson answers into the instructions", () => {
+    const { instruction } = buildRequestInstruction([{ role: "user", text: "شلون أكتب إعلاني؟" }], {
+      lessonNotes: "الفصل 1، الدرس 1 (اكتب جملة زبونك):\n- منو زبونك؟ موظف ببغداد",
+    });
+    expect(instruction).toContain("طبقها على منتجك");
+    expect(instruction).toContain("موظف ببغداد");
   });
 });
 

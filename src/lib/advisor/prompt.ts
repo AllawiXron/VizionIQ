@@ -96,13 +96,18 @@ ${guideCatalog()}
 ${TOOLS}
 `.trim();
 
-export function buildSystemInstruction(context: { profile?: string; knowledge?: string; topic?: string; extra?: string }): string {
+export function buildSystemInstruction(context: { profile?: string; notes?: string; knowledge?: string; topic?: string; extra?: string }): string {
   const parts = [BASE];
   parts.push(
     context.profile
       ? `# ملف مشروع التاجر (معلومات مؤكدة منه، استعملها وخصص الجواب عليها)\n${context.profile}`
       : `# ملف مشروع التاجر\nفارغ لحد الآن. إذا السؤال يحتاج أرقام مشروعه، اسأله عنها بلطف (وسجلها بـ PROFILE من يذكرها).`
   );
+  if (context.notes) {
+    parts.push(
+      `# اللي كتبه التاجر بنفسه بخطوات "طبقها على منتجك" بالكورس\nهذا كلامه عن منتجه وزبونه وعرضه. استعمله حتى تخصص الجواب، لا تسأله عن شي كتبه هنا، واذا تعارض ويا ملف المشروع اعتمد الأحدث اللي يكوله بالمحادثة.\n${context.notes}`
+    );
+  }
   if (context.knowledge) parts.push(`# مقتطفات من محتوى كورس فيزيون ذات صلة بالسؤال (استند عليها وأشر للفصل إذا تفيد)\n${context.knowledge}`);
   if (context.topic) parts.push(`# الموضوع المختار من الواجهة\n${context.topic}`);
   if (context.extra) parts.push(`# بيانات إضافية من أدوات المنصة\n${context.extra}`);
