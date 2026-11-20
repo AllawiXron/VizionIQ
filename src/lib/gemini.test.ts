@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { sanitizeMessageForHistory, prepareCleanContents, handleAdvisorRequest } from "./gemini";
-import { buildRequestInstruction, HISTORY_WINDOW, runAdvisor, thinkingLevelFor } from "./advisor/core";
+import { buildRequestInstruction, HISTORY_WINDOW, resetTrialCounts, runAdvisor, thinkingLevelFor } from "./advisor/core";
 
 const textOf = (parts: Array<{ text?: string }>) => parts.map((p) => p.text ?? "").join(" ");
 
@@ -140,8 +140,33 @@ describe("Advisor streaming", () => {
     expect(JSON.parse(body).reply).toBe("جواب");
   });
 
-  it("refuses the free trial, unknown codes and requests without a code", async () => {
-    for (const code of ["free#1", "made-up#vip", undefined]) {
+  it("gives the free trial three questions per phone, then says the trial is over", async () => {
+    resetTrialCounts();
+    const ask = async (device: string, extra: Record<string, unknown> = {}, client: ReturnType<typeof fakeClient> = fakeClient([["جواب"]])) => {
+      let body = "";
+      const res = { statusCode: 0, setHeader: () => {}, write: () => true, end: (c?: string) => (body = c || "") };
+      await handleAdvisorRequest({ method: "POST", headers: { "x-forwarded-for": "10.9.9.9" }, body: { code: "free#1", device, messages: [{ role: "user", text: "مرحبا" }], ...extra } }, res, client);
+      return { status: res.statusCode, data: JSON.parse(body) };
+    };
+    const first = await ask("phone-a");
+    expect(first.status).toBe(200);
+    expect(first.data.trialLeft).toBe(2);
+    // finishing a cut-off answer is not a new question
+    expect((await ask("phone-a", { continueFrom: "نص" })).data.trialLeft).toBe(2);
+    expect((await ask("phone-a")).data.trialLeft).toBe(1);
+    expect((await ask("phone-a")).data.trialLeft).toBe(0);
+    const over = await ask("phone-a");
+    expect(over.status).toBe(403);
+    expect(over.data.trialOver).toBe(true);
+    // another phone behind the same network address still gets its own questions
+    expect((await ask("phone-b")).status).toBe(200);
+    // a failed answer gives the question back
+    await ask("phone-c", {}, fakeClient([new Error("down")]));
+    expect((await ask("phone-c")).data.trialLeft).toBe(2);
+  });
+
+  it("refuses unknown codes and requests without a code", async () => {
+    for (const code of ["made-up#vip", undefined]) {
       let body = "";
       const res = { statusCode: 0, setHeader: () => {}, write: () => true, end: (c?: string) => (body = c || "") };
       await handleAdvisorRequest({ method: "POST", headers: {}, body: { code, messages: [{ role: "user", text: "مرحبا" }] } }, res, fakeClient([["جواب"]]));
@@ -156,6 +181,14 @@ describe("Advisor streaming", () => {
     });
     expect(instruction).toContain("طبقها على منتجك");
     expect(instruction).toContain("موظف ببغداد");
+  });
+
+  it("tells the advisor when it is answering a free trial question, and never to sell", () => {
+    const { instruction } = buildRequestInstruction([{ role: "user", text: "ليش ماكو طلبات؟" }], { trial: { n: 3, of: 3 } });
+    expect(instruction).toContain("السؤال رقم 3 من 3");
+    expect(instruction).toContain("لا تبيع");
+    expect(instruction).toContain("آخر سؤال مجاني");
+    expect(buildRequestInstruction([{ role: "user", text: "سؤال" }], {}).instruction).not.toContain("تجربة مجانية");
   });
 });
 

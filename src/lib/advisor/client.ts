@@ -18,6 +18,8 @@ export interface AdvisorRequest {
   code?: string;
   /** what the student wrote in the course's write-your-own steps */
   lessonNotes?: string;
+  /** this phone's id, so the free trial is counted per phone */
+  device?: string;
 }
 
 export interface StreamHandlers {
@@ -32,10 +34,12 @@ export interface StreamOutcome {
   error?: string;
   truncated?: boolean;
   cut?: boolean;
+  /** free trial: questions left after this answer */
+  trialLeft?: number;
 }
 
 export class AdvisorHttpError extends Error {
-  constructor(message: string, readonly status: number) {
+  constructor(message: string, readonly status: number, readonly trialOver = false) {
     super(message);
   }
 }
@@ -51,14 +55,14 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
   const type = res.headers.get("content-type") || "";
   if (!type.includes("ndjson")) {
     const raw = await res.text();
-    let data: { reply?: string; error?: string; requestId?: string; fallback?: boolean } = {};
+    let data: { reply?: string; error?: string; requestId?: string; fallback?: boolean; trialOver?: boolean; trialLeft?: number } = {};
     try {
       data = JSON.parse(raw);
     } catch {
     }
-    if (!res.ok || !data.reply) throw new AdvisorHttpError(data.error || `تعذر الحصول على رد (${res.status}).`, res.status);
+    if (!res.ok || !data.reply) throw new AdvisorHttpError(data.error || `تعذر الحصول على رد (${res.status}).`, res.status, Boolean(data.trialOver));
     onDelta(data.reply);
-    return { text: data.reply, requestId: data.requestId, fallback: data.fallback };
+    return { text: data.reply, requestId: data.requestId, fallback: data.fallback, trialLeft: data.trialLeft };
   }
 
   if (!res.body) throw new AdvisorHttpError("المتصفح ما يدعم استقبال الرد.", 500);
@@ -71,7 +75,7 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
 
   const handle = (line: string) => {
     if (!line.trim()) return;
-    let ev: { t: string; v?: string; requestId?: string; fallback?: boolean; truncated?: boolean };
+    let ev: { t: string; v?: string; requestId?: string; fallback?: boolean; truncated?: boolean; trialLeft?: number };
     try {
       ev = JSON.parse(line);
     } catch {
@@ -86,6 +90,7 @@ export async function streamAdvisor(body: AdvisorRequest, { onDelta, signal }: S
       if (ev.t === "done") {
         sawEnd = true;
         if (ev.truncated) outcome.truncated = true;
+        if (typeof ev.trialLeft === "number") outcome.trialLeft = ev.trialLeft;
       }
     } else if (ev.t === "error") {
       sawEnd = true;

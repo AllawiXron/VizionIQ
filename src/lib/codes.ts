@@ -62,3 +62,9 @@ const PAID = new Set(HARDCODED_CODES.map(normalizeCode).filter((c) => !c.include
 
 /** a code from the built-in list that is not the free trial */
 export const isPaidCode = (code: string | undefined | null): boolean => PAID.has(normalizeCode(code));
+
+/** the free trial code, however it was typed */
+export const isTrialCode = (code: string | undefined | null): boolean => normalizeCode(code).includes("free");
+
+/** advisor questions a free visitor gets before the offer */
+export const TRIAL_QUESTIONS = 3;

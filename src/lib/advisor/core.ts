@@ -3,7 +3,7 @@ import { generateIraqiAdvisorFallback } from "../iraqiAdvisorFallback.js";
 import { buildSystemInstruction } from "./prompt.js";
 import { retrieveKnowledge } from "./knowledge.js";
 import { formatProfileForPrompt, sanitizeProfile } from "./profile.js";
-import { isPaidCode } from "../codes.js";
+import { TRIAL_QUESTIONS, isPaidCode, isTrialCode } from "../codes.js";
 
 export const ADVISOR_MODELS = ["gemini-3.8-flash", "gemini-3.1-flash-lite", "gemini-flash-latest"];
 
@@ -34,6 +34,8 @@ export interface ChatOptions {
   profile?: unknown;
   continueFrom?: string;
   lessonNotes?: string;
+  /** free trial: which question this is, out of how many */
+  trial?: { n: number; of: number };
 }
 
 type Part = { text: string } | { inlineData: { mimeType: string; data: string } };
@@ -97,6 +99,7 @@ export function buildRequestInstruction(messages: ChatMessagePayload[], options:
     instruction: buildSystemInstruction({
       profile: formatProfileForPrompt(profile),
       notes: options.lessonNotes ? options.lessonNotes.slice(0, 3000) : undefined,
+      trial: options.trial,
       knowledge,
       topic: options.topicContext,
       extra: extra.trim(),
@@ -317,6 +320,22 @@ function rateLimited(ip: string): boolean {
   return list.length > RATE_MAX;
 }
 
+// Free trial: a few questions per phone. Kept in memory, so a fresh server starts the count again.
+// Phones on the same network often share one address, so the address only gets a wider cap.
+const TRIAL_PER_ADDRESS = 30;
+const trialCounts = new Map<string, { day: string; n: number }>();
+const today = () => new Date().toISOString().slice(0, 10);
+const trialCount = (key: string) => {
+  const c = trialCounts.get(key);
+  return c && c.day === today() ? c.n : 0;
+};
+const bumpTrial = (key: string, by: number) => {
+  if (trialCounts.size > 20000) trialCounts.clear();
+  trialCounts.set(key, { day: today(), n: Math.max(0, trialCount(key) + by) });
+};
+/** test hook: forget every trial count */
+export const resetTrialCounts = () => trialCounts.clear();
+
 function sendJson(res: Res, status: number, body: unknown) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -348,13 +367,45 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
   const fwd = req.headers["x-forwarded-for"];
   const ip = (Array.isArray(fwd) ? fwd[0] : fwd)?.split(",")[0]?.trim() || req.socket?.remoteAddress || "unknown";
   if (rateLimited(ip)) return sendJson(res, 429, { error: "أسئلة هواية بوقت قصير. استراحة دقايق وارجع.", requestId });
-  // the page hides the advisor from free visitors; the server refuses them too
-  if (!isPaidCode(typeof b.code === "string" ? b.code : "")) {
-    return sendJson(res, 403, { error: "المستشار للمشتركين بالكورس الكامل. اشترك حتى ينفتحلك.", requestId });
+  const code = typeof b.code === "string" ? b.code : "";
+  const messages = b.messages as ChatMessagePayload[] | undefined;
+  const continuing = typeof b.continueFrom === "string";
+
+  // paid codes ask freely; the free trial gets a few questions; anyone else is refused
+  let trial: { n: number; of: number } | undefined;
+  let refund = () => {};
+  let leftNow = (): number | undefined => undefined;
+  if (!isPaidCode(code)) {
+    if (!isTrialCode(code)) {
+      return sendJson(res, 403, { error: "المستشار بس للمشتركين بالكورس الكامل. اشترك حتى ينفتحلك.", requestId });
+    }
+    const device = typeof b.device === "string" ? b.device.slice(0, 64) : "";
+    const phoneKey = `p|${ip}|${device}`;
+    const addressKey = `a|${ip}`;
+    const used = trialCount(phoneKey);
+    // finishing an answer that was cut off is part of the same question
+    if (continuing ? used === 0 || used > TRIAL_QUESTIONS : used >= TRIAL_QUESTIONS || trialCount(addressKey) >= TRIAL_PER_ADDRESS) {
+      return sendJson(res, 403, { error: "خلصت أسئلتك المجانية.", trialOver: true, requestId });
+    }
+    if (!continuing) {
+      bumpTrial(phoneKey, 1);
+      bumpTrial(addressKey, 1);
+      let refunded = false;
+      refund = () => {
+        if (refunded) return;
+        refunded = true;
+        bumpTrial(phoneKey, -1);
+        bumpTrial(addressKey, -1);
+      };
+    }
+    trial = { n: continuing ? used : used + 1, of: TRIAL_QUESTIONS };
+    leftNow = () => Math.max(0, TRIAL_QUESTIONS - trialCount(phoneKey));
   }
 
-  const messages = b.messages as ChatMessagePayload[] | undefined;
-  if (!Array.isArray(messages) || messages.length === 0) return sendJson(res, 400, { error: "مصفوفة الرسائل مطلوبة.", requestId });
+  if (!Array.isArray(messages) || messages.length === 0) {
+    refund();
+    return sendJson(res, 400, { error: "مصفوفة الرسائل مطلوبة.", requestId });
+  }
 
   const options: ChatOptions = {
     userContext: b.userContext,
@@ -364,6 +415,7 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
     profile: b.profile,
     continueFrom: typeof b.continueFrom === "string" ? b.continueFrom : undefined,
     lessonNotes: typeof b.lessonNotes === "string" ? b.lessonNotes : undefined,
+    trial,
     requestId,
   };
 
@@ -371,14 +423,17 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
   try {
     ai = client ?? getGeminiClient();
   } catch (e) {
+    refund();
     return sendJson(res, 500, { error: (e as Error).message, requestId });
   }
-
+  // a canned fallback (the model was unreachable) doesn't spend a free question
   if (!b.stream) {
     try {
       const result = await runAdvisor(messages, options, () => {}, undefined, ai);
-      return sendJson(res, 200, { reply: result.text, requestId, fallback: result.fallback || undefined, timestamp: new Date().toISOString() });
+      if (result.fallback) refund();
+      return sendJson(res, 200, { reply: result.text, requestId, fallback: result.fallback || undefined, trialLeft: leftNow(), timestamp: new Date().toISOString() });
     } catch (e) {
+      refund();
       return sendJson(res, 500, { error: (e as Error).message, requestId });
     }
   }
@@ -398,9 +453,12 @@ export async function handleAdvisorRequest(req: Req, res: Res, client?: Pick<Goo
   emit({ t: "start", requestId });
   try {
     const result = await runAdvisor(messages, options, (text) => emit({ t: "delta", v: text }), () => aborted, ai);
-    emit({ t: "done", requestId, fallback: result.fallback || undefined, truncated: result.truncated || undefined, model: result.model });
+    if (result.fallback) refund();
+    emit({ t: "done", requestId, fallback: result.fallback || undefined, truncated: result.truncated || undefined, model: result.model, trialLeft: leftNow() });
   } catch (e) {
-    emit({ t: "error", v: (e as Error).message, partial: Boolean((e as { partial?: string }).partial), requestId });
+    const partial = Boolean((e as { partial?: string }).partial);
+    if (!partial) refund();
+    emit({ t: "error", v: (e as Error).message, partial, requestId });
   }
   res.end();
 }
