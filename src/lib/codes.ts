@@ -40,6 +40,8 @@ export const HARDCODED_CODES = [
   "allawidev#vip",
   "allawidev#vip#ai",
   "masarra#vip#ai",
+  "jafar#vip",
+  "jafar#vip#ai",
   "free#1"
 ];
 
